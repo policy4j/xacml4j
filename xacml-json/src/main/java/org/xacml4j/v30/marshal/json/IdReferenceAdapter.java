@@ -72,13 +72,6 @@ public class IdReferenceAdapter implements JsonDeserializer<BaseCompositeDecisio
 		if (version != null) {
 			builder.versionAsString(version);
 		}
-		if (earliestVersion != null) {
-			builder.earliest(earliestVersion);
-		}
-		if (latestVersion != null) {
-			builder.latest(latestVersion);
-		}
-
 		return builder;
 	}
 
@@ -91,13 +84,6 @@ public class IdReferenceAdapter implements JsonDeserializer<BaseCompositeDecisio
 		if (src.getVersion() != null) {
 			o.addProperty(VERSION_PROPERTY, src.getVersion().getPattern());
 		}
-		if (src.getEarliestVersion() != null) {
-			o.addProperty(EARLIEST_VERSION_PROPERTY, src.getEarliestVersion().getPattern());
-		}
-		if (src.getLatestVersion() != null) {
-			o.addProperty(LATEST_VERSION_PROPERTY, src.getLatestVersion().getPattern());
-		}
-
 		return o;
 	}
 

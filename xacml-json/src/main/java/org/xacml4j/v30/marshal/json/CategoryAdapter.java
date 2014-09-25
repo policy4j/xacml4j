@@ -50,7 +50,7 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 	/**
 	 * Short well know category aliases
 	 */
-	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
+	public final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
 			ImmutableBiMap.<String, CategoryId>builder()
 			.put("Action", Categories.ACTION)
 			.put("Environment", Categories.ENVIRONMENT)

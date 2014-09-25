@@ -55,7 +55,6 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, RETURN_POLICY_ID_LIST_PROPERTY, false);
 		boolean combinedDecision = GsonUtil.getAsBoolean(o, COMBINED_DECISION_PROPERTY, false);
 		JsonArray array = o.getAsJsonArray(JsonProperties.CATEGORY_ARRAY_NAME);
-		Preconditions.checkState(array != null);
 		Collection<Category> attributes = context.deserialize(array,
 				new TypeToken<Collection<Category>>() {
 				}.getType());
@@ -81,7 +80,6 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		JsonObject o = new JsonObject();
 		o.addProperty(RETURN_POLICY_ID_LIST_PROPERTY, src.isReturnPolicyIdList());
 		o.addProperty(COMBINED_DECISION_PROPERTY, src.isCombinedDecision());
-		// TODO: add support for predefined Attributes objects: Subject, Action, Resource, Environment
 		o.add(JsonProperties.CATEGORY_ARRAY_NAME, context.serialize(src.getAttributes()));
 		// SPEC: There must be at least one RequestReference object inside the MultiRequests object
 		Collection<RequestReference> requestReferences = src.getRequestReferences();

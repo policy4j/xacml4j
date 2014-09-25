@@ -55,7 +55,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	private static final String STATUS_PROPERTY = "Status";
 	private static final String OBLIGATIONS_PROPERTY = "Obligations";
 	private static final String ASSOCIATED_ADVICE_PROPERTY = "AssociatedAdvice";
-	private static final String ATTRIBUTES_PROPERTY = "Category";
+	private static final String CATEGORIES_PROPERTY = "Category";
 	private static final String POLICY_IDENTIFIER_PROPERTY = "PolicyIdentifier";
 	private static final String POLICY_ID_REFERENCE_PROPERTY = "PolicyIdReference";
 	private static final String POLICY_SET_ID_REFERENCE_PROPERTY = "PolicySetIdReference";
@@ -102,7 +102,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 			builder.advice(advice);
 		}
 
-		Collection<Category> attributes = context.deserialize(o.get(ATTRIBUTES_PROPERTY), ATTRIBUTES_TYPE);
+		Collection<Category> attributes = context.deserialize(o.get(CATEGORIES_PROPERTY), ATTRIBUTES_TYPE);
 		if (attributes != null) {
 			builder.includeInResultAttr(attributes);
 		}
@@ -145,7 +145,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		}
 		Collection<Category> attributes = src.getIncludeInResultAttributes();
 		if (attributes != null && !attributes.isEmpty()) {
-			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes));
+			o.add(CATEGORIES_PROPERTY, context.serialize(attributes));
 		}
 		serializePolicyIdentifiers(src, context, o);
 		return o;
