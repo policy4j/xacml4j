@@ -33,15 +33,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.junit.Test;
 import org.oasis.xacml.v30.jaxb.ResponseType;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.StringExp;
 
 
@@ -96,14 +88,11 @@ public class Xacml30ResponseContextUnmarshallerTest {
 
 		// Test policy references
 		assertEquals(2, r1.getPolicyIdentifiers().size());
-		Iterator<CompositeDecisionRuleIDReference> refIterator = r1.getPolicyIdentifiers().iterator();
-		CompositeDecisionRuleIDReference pi1 = refIterator.next();
+		Iterator<IdReference> refIterator = r1.getPolicyIdentifiers().iterator();
+		IdReference pi1 = refIterator.next();
 		assertEquals("1.0", pi1.getVersion().toString());
-		assertNull(pi1.getEarliestVersion());
-		assertNull(pi1.getLatestVersion());
 
-		CompositeDecisionRuleIDReference pi2 = refIterator.next();
+		IdReference pi2 = refIterator.next();
 		assertEquals("2.0",  pi2.getVersion().toString());
-		assertNull(pi2.getLatestVersion());
 	}
 }

@@ -24,8 +24,6 @@ package org.xacml4j.v30;
 
 import javax.xml.stream.Location;
 
-import org.xacml4j.v30.pdp.XacmlException;
-
 
 public class XacmlSyntaxException extends XacmlException
 {

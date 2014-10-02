@@ -25,6 +25,8 @@ package org.xacml4j.v30;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 import org.xacml4j.v30.Version;
@@ -38,6 +40,7 @@ public class VersionMatchTest
 	public void testMatchAnySubsequentialVersions() throws XacmlSyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.+");
+        assertTrue(m.isWildcard());
 		assertThat(m.getPattern(), is("1.+"));
 		assertThat(m.match(Version.parse("1.2.1")), is(true));
 		assertThat(m.match(Version.parse("1.1")), is(true));
@@ -82,4 +85,15 @@ public class VersionMatchTest
 		assertThat(m.match(Version.parse("1.0.1")), is(true));
 		assertThat(m.match(Version.parse("2.1.1")), is(false));
 	}
+
+    @Test
+    public void testIsWildcard() throws XacmlSyntaxException
+    {
+       assertFalse(new VersionMatch("1.2.1").isWildcard());
+       assertTrue(new VersionMatch("1.*").isWildcard());
+       assertTrue(new VersionMatch("1.2.+").isWildcard());
+       assertFalse(new VersionMatch("1.2.1.2.4.1").isWildcard());
+       assertTrue(new VersionMatch("*.*").isWildcard());
+
+    }
 }

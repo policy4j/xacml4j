@@ -25,8 +25,10 @@ package org.xacml4j.v30;
 import java.util.Collection;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 public class ResponseContext
 {
@@ -43,6 +45,8 @@ public class ResponseContext
 	public Collection<Result> getResults(){
 		return results;
 	}
+
+    public Optional<Result> getResult() { return  Optional.of(Iterables.getOnlyElement(results, null));}
 
 	@Override
 	public int hashCode(){

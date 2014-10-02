@@ -27,18 +27,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.Marshaller;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -59,8 +50,8 @@ public class JsonResponseContextMarshaller implements Marshaller<ResponseContext
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
-				.registerTypeAdapter(PolicyIDReference.class, new IdReferenceAdapter())
-				.registerTypeAdapter(PolicySetIDReference.class, new IdReferenceAdapter()).create();
+				.registerTypeAdapter(IdReference.PolicyIdRef.class, new IdReferenceAdapter())
+				.registerTypeAdapter(IdReference.PolicySetIdRef.class, new IdReferenceAdapter()).create();
 	}
 
 	@Override

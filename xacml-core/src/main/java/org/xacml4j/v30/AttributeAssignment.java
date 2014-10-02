@@ -22,8 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -139,21 +137,6 @@ public class AttributeAssignment
 		public Builder id(String attributeId){
 			Preconditions.checkNotNull(attributeId);
 			this.attributeId = attributeId;
-			return this;
-		}
-
-		/**
-		 * Copies all state from a given {@link AttributeAssignmentExpression}
-		 * except attribute value expression
-		 *
-		 * @param attrAssigExp attribute assignment expression
-		 * @return {@link Builder}
-		 */
-		public Builder from(AttributeAssignmentExpression attrAssigExp)
-		{
-			this.attributeId = attrAssigExp.getAttributeId();
-			this.category = attrAssigExp.getCategory();
-			this.issuer = attrAssigExp.getIssuer();
 			return this;
 		}
 

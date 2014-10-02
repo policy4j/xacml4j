@@ -24,12 +24,14 @@ package org.xacml4j.v30;
 
 import java.util.regex.Pattern;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 
 public class VersionMatch
 {
 	private static final String PATTERN_STRING = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";
 	private static final Pattern VERSION_PATTERN = Pattern.compile(PATTERN_STRING);
+    private final static CharMatcher WILDCARD_MATCH = CharMatcher.anyOf("*+");
 
 	private static final Pattern AST_PATTERN = Pattern.compile("\\*");
 	private static final String AST_REPLACEMENT = "\\\\d";
@@ -40,6 +42,7 @@ public class VersionMatch
 
 	private final String pattern;
     private final Pattern compiledPattern;
+
 
 	/**
      * Constructs version match constraint
@@ -98,6 +101,18 @@ public class VersionMatch
 	    return DOT_PATTERN.matcher(phase2).replaceAll(DOT_REPLACEMENT);
     }
 
+
+    /**
+     * Tests if version string includes
+     * at least one "*" or "+" symbol
+     *
+     * @return <code>true</code> if this
+     * version match contains at least
+     * one wildcard character
+     */
+    public boolean isWildcard(){
+        return WILDCARD_MATCH.matchesAnyOf(pattern);
+    }
     /**
      * Gets version match constraint
      *

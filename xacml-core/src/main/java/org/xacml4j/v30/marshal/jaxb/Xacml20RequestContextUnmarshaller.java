@@ -56,7 +56,7 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
-import org.xacml4j.v30.pdp.RequestSyntaxException;
+import org.xacml4j.v30.RequestSyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Optional;

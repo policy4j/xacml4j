@@ -53,29 +53,7 @@ import org.oasis.xacml.v30.jaxb.StatusCodeType;
 import org.oasis.xacml.v30.jaxb.StatusDetailType;
 import org.oasis.xacml.v30.jaxb.StatusType;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.RequestDefaults;
-import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.StatusCodeIds;
-import org.xacml4j.v30.StatusDetail;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.*;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
@@ -171,27 +149,23 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 				.build();
 	}
 
-	private Collection<CompositeDecisionRuleIDReference> create(
+	private Collection<IdReference> create(
 			PolicyIdentifierListType policyIdentifierList) throws XacmlSyntaxException {
 		if (policyIdentifierList == null) {
 			return ImmutableList.of();
 		}
- 		Collection<CompositeDecisionRuleIDReference> list = new LinkedList<CompositeDecisionRuleIDReference>();
+ 		Collection<IdReference> list = new LinkedList<IdReference>();
 		for(JAXBElement<IdReferenceType> o: policyIdentifierList.getPolicyIdReferenceOrPolicySetIdReference()) {
 			if (o.getName().getLocalPart().equals("PolicyIdReference")) {
-				list.add(PolicyIDReference
-						.builder(o.getValue().getValue())
-						.versionAsString(o.getValue().getVersion())
-						.earliest(o.getValue().getEarliestVersion())
-						.latest(o.getValue().getLatestVersion())
-						.build());
+				list.add(IdReference
+                        .policyIdRef(o.getValue().getValue())
+                        .version(o.getValue().getVersion())
+                        .build());
 			} else if(o.getName().getLocalPart().equals("PolicySetIdReference")) {
-				list.add(PolicySetIDReference
-						.builder(o.getValue().getValue())
-						.versionAsString(o.getValue().getVersion())
-						.earliest(o.getValue().getEarliestVersion())
-						.latest(o.getValue().getLatestVersion())
-						.build());
+                list.add(IdReference
+                        .policySetIdRef(o.getValue().getValue())
+                        .version(o.getValue().getVersion())
+                        .build());
 			}
 		}
 		return list;
@@ -214,12 +188,12 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		result.setAssociatedAdvice(advice);
 		result.setObligations(obligations);
 		PolicyIdentifierListType ids = new PolicyIdentifierListType();
-		for(CompositeDecisionRuleIDReference id : r.getPolicyIdentifiers()){
-			if(id instanceof PolicyIDReference){
+		for(IdReference id : r.getPolicyIdentifiers()){
+			if(id instanceof IdReference.PolicyIdRef){
 				ids.getPolicyIdReferenceOrPolicySetIdReference().add(
 						factory.createPolicyIdReference(create(id)));
 			}
-			if(id instanceof PolicySetIDReference){
+			if(id instanceof IdReference.PolicySetIdRef){
 				ids.getPolicyIdReferenceOrPolicySetIdReference().add(
 						factory.createPolicySetIdReference(create(id)));
 			}
@@ -230,7 +204,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return result;
 	}
 
-	private IdReferenceType create(CompositeDecisionRuleIDReference ref)
+	private IdReferenceType create(IdReference ref)
 	{
 		IdReferenceType idRef = new IdReferenceType();
 		idRef.setValue(ref.getId());

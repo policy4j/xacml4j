@@ -23,12 +23,12 @@ package org.xacml4j.spring;
  */
 
 import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.pdp.PolicySetReference;
 
 
-public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicySetIDReference>
+public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicySetReference>
 {
-	private PolicySetIDReference.Builder ref = PolicySetIDReference.builder();
+	private PolicySetReference.Builder ref = PolicySetReference.builder();
 
 	public void setId(String id){
 		this.ref.id(id);
@@ -47,12 +47,12 @@ public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicyS
 	}
 
 	@Override
-	public Class<PolicySetIDReference> getObjectType() {
-		return PolicySetIDReference.class;
+	public Class<PolicySetReference> getObjectType() {
+		return PolicySetReference.class;
 	}
 
 	@Override
-	protected PolicySetIDReference createInstance() throws Exception
+	protected PolicySetReference createInstance() throws Exception
 	{
 		return ref.build();
 	}

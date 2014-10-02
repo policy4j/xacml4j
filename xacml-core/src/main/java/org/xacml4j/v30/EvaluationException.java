@@ -22,8 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.XacmlException;
-
 import com.google.common.base.Preconditions;
 
 

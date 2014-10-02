@@ -38,4 +38,6 @@ public interface CompositeDecisionRule extends DecisionRule
 	 * pointing to this composite decision rule
 	 */
 	CompositeDecisionRuleIDReference getReference();
+
+    IdReference getIdReference();
 }

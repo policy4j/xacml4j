@@ -39,7 +39,7 @@ public class Result
 	private final Map<String, Obligation> obligations;
 	private final Map<String, Advice> associatedAdvice;
 	private final Map<CategoryId, Category> includeInResultAttributes;
-	private final Collection<CompositeDecisionRuleIDReference> policyReferences;
+	private final Collection<IdReference> policyReferences;
 	private final Map<CategoryId, Category> resolvedAttributes;
 	private final int hashCode;
 
@@ -193,7 +193,7 @@ public class Result
 	 *
 	 * @return list of policy identifiers
 	 */
-	public Collection<CompositeDecisionRuleIDReference> getPolicyIdentifiers(){
+	public Collection<IdReference> getPolicyIdentifiers(){
 		return policyReferences;
 	}
 
@@ -243,7 +243,7 @@ public class Result
 		private Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
 		private Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
 		private ImmutableMap.Builder<CategoryId, Category> includeInResultAttributes = ImmutableMap.builder();
-		private ImmutableCollection.Builder<CompositeDecisionRuleIDReference> policyReferences = ImmutableList.builder();
+		private ImmutableCollection.Builder<IdReference> policyReferences = ImmutableList.builder();
 		private ImmutableMap.Builder<CategoryId, Category> resolvedAttributes = ImmutableMap.builder();
 
 
@@ -278,20 +278,20 @@ public class Result
 			return this;
 		}
 
-		public Builder referencedPolicy(CompositeDecisionRuleIDReference ... refs)
+		public Builder referencedPolicy(IdReference ... refs)
 		{
 			Preconditions.checkNotNull(refs);
-			for(CompositeDecisionRuleIDReference ref : refs){
+			for(IdReference ref : refs){
 				Preconditions.checkNotNull(ref);
 				this.policyReferences.add(ref);
 			}
 			return this;
 		}
 
-		public Builder evaluatedPolicies(Iterable<? extends CompositeDecisionRuleIDReference> refs)
+		public Builder evaluatedPolicies(Iterable<? extends IdReference> refs)
 		{
 			Preconditions.checkNotNull(refs);
-			for(CompositeDecisionRuleIDReference ref : refs){
+			for(IdReference ref : refs){
 				Preconditions.checkNotNull(ref);
 				this.policyReferences.add(ref);
 			}
