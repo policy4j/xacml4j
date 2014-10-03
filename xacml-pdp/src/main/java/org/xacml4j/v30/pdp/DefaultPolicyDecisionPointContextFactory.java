@@ -24,10 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import java.util.Random;
 
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
@@ -49,7 +46,7 @@ final class DefaultPolicyDecisionPointContextFactory
 	private PolicyDecisionCache decisionCache;
 	private XPathProvider xpathProvider;
 	private PolicyReferenceResolver policyReferenceResolver;
-	private CompositeDecisionRule policyDomain;
+	private DecisionRule policyDomain;
 	private RequestContextHandlerChain requestHandlers;
 
 	private boolean decisionCacheEnabled = true;
@@ -59,7 +56,7 @@ final class DefaultPolicyDecisionPointContextFactory
 	private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 
 	DefaultPolicyDecisionPointContextFactory(
-			CompositeDecisionRule policyDomain,
+			DecisionRule policyDomain,
 			PolicyRepository repository,
 			PolicyDecisionAuditor auditor,
 			PolicyDecisionCache cache,

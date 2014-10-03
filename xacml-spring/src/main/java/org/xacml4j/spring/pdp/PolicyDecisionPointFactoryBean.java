@@ -27,6 +27,8 @@ import java.util.List;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.CompositeDecisionRuleIDReference;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
@@ -72,7 +74,7 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean<PolicyDe
 		this.pdpBuilder.pip(pip);
 	}
 
-	public void setDomainPolicy(CompositeDecisionRule policyStore){
+	public void setDomainPolicy(DecisionRule policyStore){
 		this.pdpBuilder.rootPolicy(policyStore);
 	}
 

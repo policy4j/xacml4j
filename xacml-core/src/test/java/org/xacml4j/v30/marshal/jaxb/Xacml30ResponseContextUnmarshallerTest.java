@@ -90,9 +90,9 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals(2, r1.getPolicyIdentifiers().size());
 		Iterator<IdReference> refIterator = r1.getPolicyIdentifiers().iterator();
 		IdReference pi1 = refIterator.next();
-		assertEquals("1.0", pi1.getVersion().toString());
+		assertEquals("1.0", pi1.getVersion().getValue());
 
 		IdReference pi2 = refIterator.next();
-		assertEquals("2.0",  pi2.getVersion().toString());
+		assertEquals("2.0",  pi2.getVersion().getValue());
 	}
 }

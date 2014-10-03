@@ -30,6 +30,7 @@ import javax.management.NotCompliantMBeanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler;
 import org.xacml4j.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
@@ -55,7 +56,7 @@ public final class PolicyDecisionPointBuilder
 	private PolicyDecisionCache decisionCache;
 	private PolicyRepository repository;
 	private PolicyInformationPoint pip;
-	private CompositeDecisionRule rootPolicy;
+	private DecisionRule rootPolicy;
 	private List<RequestContextHandler> handlers;
 	private int defaultDecisionCacheTTL;
 
@@ -93,7 +94,7 @@ public final class PolicyDecisionPointBuilder
 		return this;
 	}
 
-	public PolicyDecisionPointBuilder rootPolicy(CompositeDecisionRule r)
+	public PolicyDecisionPointBuilder rootPolicy(DecisionRule r)
 	{
 		Preconditions.checkNotNull(r);
 		this.rootPolicy = r;

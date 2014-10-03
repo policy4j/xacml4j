@@ -208,7 +208,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	{
 		IdReferenceType idRef = new IdReferenceType();
 		idRef.setValue(ref.getId());
-		idRef.setVersion(ref.getVersion().toString());
+		idRef.setVersion(ref.getVersion().getValue());
 		return idRef;
 	}
 
