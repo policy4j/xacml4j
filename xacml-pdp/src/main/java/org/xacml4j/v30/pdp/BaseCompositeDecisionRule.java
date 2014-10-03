@@ -41,7 +41,7 @@ import com.google.common.collect.Multimap;
  * @author Giedrius Trumpickas
  */
 abstract class BaseCompositeDecisionRule extends BaseDecisionRule
-	implements CompositeDecisionRule, Versionable
+	implements CompositeDecisionRule
 {
 	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
 

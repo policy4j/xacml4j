@@ -64,12 +64,12 @@ public class IdReference {
     }
 
 
-    public static PolicyIdRef.Builder policyIdRef(CompositeDecisionRule rule){
-        return new PolicyIdRef.Builder().id(rule.getId());
+    public static PolicyIdRef policyIdRef(CompositeDecisionRule rule){
+        return new PolicyIdRef.Builder().id(rule.getId()).version(rule.getVersion()).build();
     }
 
-    public static PolicySetIdRef.Builder policySetIdRef(CompositeDecisionRule rule){
-        return new PolicySetIdRef.Builder().id(rule.getId());
+    public static PolicySetIdRef policySetIdRef(CompositeDecisionRule rule){
+        return new PolicySetIdRef.Builder().id(rule.getId()).version(rule.getVersion()).build();
     }
 
     public static PolicyIdRef.Builder policyIdRef(String id){

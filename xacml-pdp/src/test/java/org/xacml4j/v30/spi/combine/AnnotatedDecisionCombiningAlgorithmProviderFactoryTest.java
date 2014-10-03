@@ -88,7 +88,7 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 	@Test
 	public void doTestValidMethod()
 	{
-		DecisionCombiningAlgorithm<Rule> a = p.createRuleDecisionCombineAlgorithm(
+		DecisionCombiningAlgorithm a = p.createRuleDecisionCombineAlgorithm(
 				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "testValidMethod"));
 		assertNotNull(a);
 		assertEquals("test2Algo", a.getId());

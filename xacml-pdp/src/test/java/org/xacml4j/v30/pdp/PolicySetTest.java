@@ -55,7 +55,7 @@ public class PolicySetTest
 	private Condition condition;
 
 
-	private DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlg;
+	private DecisionCombiningAlgorithm combiningAlg;
 
 	private Expression denyObligationAttributeExp;
 	private Expression permitObligationAttributeExp;

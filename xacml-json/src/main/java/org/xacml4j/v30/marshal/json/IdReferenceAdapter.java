@@ -27,9 +27,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.lang.reflect.Type;
 
 import org.xacml4j.v30.IdReference;
-import org.xacml4j.v30.pdp.BaseCompositeDecisionRuleIDReference;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

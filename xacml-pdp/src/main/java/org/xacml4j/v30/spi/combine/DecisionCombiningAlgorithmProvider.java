@@ -39,7 +39,7 @@ public interface DecisionCombiningAlgorithmProvider
 	 * @return {@link DecisionCombiningAlgorithm} for combining
 	 * rule decision results
 	 */
-	DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId);
+	DecisionCombiningAlgorithm getRuleAlgorithm(String algorithmId);
 
 	/**
 	 * Gets {@link CompositeDecisionRule} combining algorithm via
@@ -49,7 +49,7 @@ public interface DecisionCombiningAlgorithmProvider
 	 * @return {@link DecisionCombiningAlgorithm} for combining
 	 * policy or policy set decision results
 	 */
-	DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(String algorithmId);
+	DecisionCombiningAlgorithm getPolicyAlgorithm(String algorithmId);
 
 	/**
 	 * Gets identifiers of all supported XACML

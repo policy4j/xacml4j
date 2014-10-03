@@ -58,7 +58,7 @@ public class RuleTest
 	private Expression permitAdviceAttributeExp;
 
 	private Rule.Builder builder;
-	private DecisionCombiningAlgorithm<Rule> combiner;
+	private DecisionCombiningAlgorithm combiner;
 
 	@Before
 	public void init()

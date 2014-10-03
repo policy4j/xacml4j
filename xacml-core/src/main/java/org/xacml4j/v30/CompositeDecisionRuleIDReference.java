@@ -25,7 +25,7 @@ package org.xacml4j.v30;
 
 
 public interface CompositeDecisionRuleIDReference
-	extends CompositeDecisionRule
+	extends DecisionRule
 {
 	VersionMatch getVersion();
 	VersionMatch getEarliestVersion();

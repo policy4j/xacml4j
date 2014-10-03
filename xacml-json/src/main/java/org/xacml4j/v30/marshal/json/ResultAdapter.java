@@ -28,15 +28,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.*;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Lists;
@@ -66,9 +58,9 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	}.getType();
 	private static final Type ATTRIBUTES_TYPE = new TypeToken<Collection<Category>>() {
 	}.getType();
-	private static final Type POLICY_ID_REFERENCES_TYPE = new TypeToken<Collection<PolicyIDReference>>() {
+	private static final Type POLICY_ID_REFERENCES_TYPE = new TypeToken<Collection<IdReference.PolicyIdRef>>() {
 	}.getType();
-	private static final Type POLICY_SET_ID_REFERENCES_TYPE = new TypeToken<Collection<PolicySetIDReference>>() {
+	private static final Type POLICY_SET_ID_REFERENCES_TYPE = new TypeToken<Collection<IdReference.PolicySetIdRef>>() {
 	}.getType();
 
 	private static ImmutableBiMap<Decision, String> DECISION_VALUE_MAP = ImmutableBiMap.of(
@@ -113,12 +105,12 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	private void deserializePolicyIdentifiers(JsonObject o, JsonDeserializationContext context, Result.Builder builder) {
 		JsonObject jsonPolicyIdentifiers = o.getAsJsonObject(POLICY_IDENTIFIER_PROPERTY);
 		if (jsonPolicyIdentifiers != null) {
-			Collection<PolicyIDReference> policyIdReferences = context.deserialize(
+			Collection<IdReference.PolicyIdRef> policyIdReferences = context.deserialize(
 					jsonPolicyIdentifiers.get(POLICY_ID_REFERENCE_PROPERTY), POLICY_ID_REFERENCES_TYPE);
 			if (policyIdReferences != null) {
 				builder.evaluatedPolicies(policyIdReferences);
 			}
-			Collection<PolicySetIDReference> policySetIdReferences = context.deserialize(
+			Collection<IdReference.PolicySetIdRef> policySetIdReferences = context.deserialize(
 					jsonPolicyIdentifiers.get(POLICY_SET_ID_REFERENCE_PROPERTY), POLICY_SET_ID_REFERENCES_TYPE);
 			if (policySetIdReferences != null) {
 				builder.evaluatedPolicies(policySetIdReferences);
@@ -152,11 +144,11 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	}
 
 	private void serializePolicyIdentifiers(Result src, JsonSerializationContext context, JsonObject o) {
-		Collection<CompositeDecisionRuleIDReference> policyIdentifiers = src.getPolicyIdentifiers();
+		Collection<IdReference> policyIdentifiers = src.getPolicyIdentifiers();
 		if (policyIdentifiers != null && !policyIdentifiers.isEmpty()) {
 			JsonObject policyIdentifiersJson = new JsonObject();
-			List<PolicyIDReference> policyIdReferences = Lists.newArrayList();
-			List<PolicySetIDReference> policySetIdReferences = Lists.newArrayList();
+			List<IdReference.PolicyIdRef> policyIdReferences = Lists.newArrayList();
+			List<IdReference.PolicySetIdRef> policySetIdReferences = Lists.newArrayList();
 			splitPolicyIdentifiers(policyIdentifiers, policyIdReferences, policySetIdReferences);
 			if (!policyIdReferences.isEmpty()) {
 				policyIdentifiersJson.add(POLICY_ID_REFERENCE_PROPERTY, context.serialize(policyIdReferences));
@@ -168,13 +160,14 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		}
 	}
 
-	private void splitPolicyIdentifiers(Collection<CompositeDecisionRuleIDReference> policyIdentifiers,
-			List<PolicyIDReference> policyIdReferences, List<PolicySetIDReference> policySetIdReferences) {
-		for (CompositeDecisionRuleIDReference policyId : policyIdentifiers) {
-			if (policyId instanceof PolicyIDReference) {
-				policyIdReferences.add((PolicyIDReference) policyId);
-			} else if (policyId instanceof PolicySetIDReference) {
-				policySetIdReferences.add((PolicySetIDReference) policyId);
+	private void splitPolicyIdentifiers(Collection<IdReference> policyIdentifiers,
+			List<IdReference.PolicyIdRef> policyIdReferences,
+            List<IdReference.PolicySetIdRef> policySetIdReferences) {
+		for (IdReference policyId : policyIdentifiers) {
+			if (policyId instanceof IdReference.PolicyIdRef) {
+				policyIdReferences.add((IdReference.PolicyIdRef) policyId);
+			} else if (policyId instanceof IdReference.PolicySetIdRef) {
+				policySetIdReferences.add((IdReference.PolicySetIdRef) policyId);
 			} else {
 				throw new IllegalArgumentException(String.format("Invalid policy ID type %s.", policyId.getClass()
 						.getName()));

@@ -226,11 +226,11 @@ public class XacmlPolicyTestSupport {
 	}
 
 	private static void assertPolicyIdentifiers(
-			Collection<CompositeDecisionRuleIDReference> p1,
-			Collection<CompositeDecisionRuleIDReference> p2) {
-		assertArrayEquals(p1, p2, new Matcher<CompositeDecisionRuleIDReference>() {
+			Collection<IdReference> p1,
+			Collection<IdReference> p2) {
+		assertArrayEquals(p1, p2, new Matcher<IdReference>() {
 			@Override
-			public boolean matches(CompositeDecisionRuleIDReference o1, CompositeDecisionRuleIDReference o2) {
+			public boolean matches(IdReference o1, IdReference o2) {
 				return o1.getId().equals(o2.getId());
 			}
 		});
@@ -343,7 +343,7 @@ public class XacmlPolicyTestSupport {
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
 					functionProviderBuilder.build(),
-					decisionAlgoProviderBuilder.create());
+					decisionAlgoProviderBuilder.build());
 			for (Supplier<InputStream> in : policies) {
 				repository.importPolicy(in);
 			}

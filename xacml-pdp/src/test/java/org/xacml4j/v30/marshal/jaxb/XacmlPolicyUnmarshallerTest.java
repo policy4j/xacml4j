@@ -63,7 +63,7 @@ public class XacmlPolicyUnmarshallerTest
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder
 				.builder()
-				.withDefaultAlgorithms().create());
+				.withDefaultAlgorithms().build());
 		writer = new Xacml30PolicyMarshaller();
 	}
 
@@ -86,8 +86,8 @@ public class XacmlPolicyUnmarshallerTest
 		assertEquals(XPathVersion.XPATH1, p0.getDefaults().getXPathVersion());
 		assertNotNull(p0.getTarget());
 		assertTrue(p0.getTarget().getAnyOf().isEmpty());
-		assertEquals(1, p0.getRules().size());
-		Rule r = p0.getRules().get(0);
+		assertEquals(1, p0.getChildRules().size());
+		Rule r = p0.getChildRules().get(0);
 		assertEquals("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF005:rule", r.getId());
 		assertEquals("Julius Hibbert can read or write Bart Simpson's medical record.", r.getDescription());
 		assertEquals(Effect.PERMIT, r.getEffect());
@@ -114,7 +114,7 @@ public class XacmlPolicyUnmarshallerTest
 		assertNotNull(p0.getDefaults());
 		assertEquals(XPathVersion.XPATH1, p0.getDefaults().getXPathVersion());
 		assertNotNull(p0.getTarget());
-		assertEquals(1, p0.getDecisions().size());
+		assertEquals(1, p0.getChildRules().size());
 	}
 
 	@Test
@@ -163,8 +163,8 @@ public class XacmlPolicyUnmarshallerTest
 		assertEquals("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides", p.getRuleCombiningAlgorithm().getId());
 		assertNotNull(p.getTarget());
 		assertEquals(0, p.getTarget().getAnyOf().size());
-		assertEquals(1, p.getRules().size());
-		Rule r = p.getRules().get(0);
+		assertEquals(1, p.getChildRules().size());
+		Rule r = p.getChildRules().get(0);
 		assertEquals("urn:oasis:names:tc:xacml:3.0:example:ruleid:1", r.getId());
 		assertEquals(Effect.PERMIT, r.getEffect());
 		assertNotNull(r.getDescription());

@@ -27,6 +27,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.pdp.Rule;
@@ -34,7 +35,7 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
-public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule>
+public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm
 {
 	private final static Logger log = LoggerFactory.getLogger(LegacyDenyOverridesRuleCombineAlgorithm.class);
 
@@ -49,8 +50,8 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 	}
 
 	@Override
-	public Decision combine(DecisionRuleEvaluationContext context, List<Rule> rules){
-		return doCombine(context, rules);
+	public Decision combine(DecisionRuleEvaluationContext context, List<? extends DecisionRule> rules){
+		return doCombine(context, (List<Rule>)rules);
 	}
 
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.1:rule-combining-algorithm:ordered-deny-overrides")

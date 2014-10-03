@@ -126,11 +126,6 @@ public final class PolicySetReference extends BaseCompositeDecisionRuleIDReferen
     }
 
 	@Override
-	public CompositeDecisionRuleIDReference getReference() {
-		return this;
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;

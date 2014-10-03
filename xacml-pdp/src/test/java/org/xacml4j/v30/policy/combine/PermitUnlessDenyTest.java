@@ -44,13 +44,13 @@ public class PermitUnlessDenyTest {
 	private IMocksControl mockCtl;
 
 	private List<DecisionRule> decisions;
-	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
+	private DecisionCombiningAlgorithm algorithm;
 	private DecisionRuleEvaluationContext context;
 
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
-		this.algorithm = new PermitUnlessDeny<DecisionRule>("aaaa");
+		this.algorithm = new PermitUnlessDeny("aaaa");
 
 		mockCtl = createStrictControl();
 		this.context = mockCtl.createMock(DecisionRuleEvaluationContext.class);

@@ -28,9 +28,11 @@ import java.util.List;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
+import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 
 
 /**
@@ -46,7 +48,7 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
  * @author Giedrius Trumpickas
  */
 public class OnPermitApplySecondPolicyCombiningAlgorithm extends
-	BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
+	BaseDecisionCombiningAlgorithm
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:on-permit-apply-second";
 
@@ -56,9 +58,15 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 		super(ID);
 	}
 
-	@Override
-	public Decision combine(DecisionRuleEvaluationContext context,
-			List<CompositeDecisionRule> policies) {
+    @Override
+    public Decision combine(DecisionRuleEvaluationContext context,
+                            List<? extends DecisionRule> policies) {
+        return doCombine(context, policies);
+    }
+
+    @XacmlPolicyDecisionCombiningAlgorithm(ID)
+	public static Decision doCombine(DecisionRuleEvaluationContext context,
+			List<? extends DecisionRule> policies) {
 		if(policies.size() != 2){
 			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_DP;

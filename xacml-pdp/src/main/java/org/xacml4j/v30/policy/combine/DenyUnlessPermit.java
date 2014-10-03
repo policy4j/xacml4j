@@ -34,23 +34,24 @@ import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
-public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
+public class DenyUnlessPermit extends BaseDecisionCombiningAlgorithm
 {
 	protected DenyUnlessPermit(String algorithmId){
 		super(algorithmId);
 	}
 
 	@Override
-	public final Decision combine(DecisionRuleEvaluationContext context, List<D> decisions)
+	public final Decision combine(DecisionRuleEvaluationContext context, List<? extends DecisionRule> decisions)
 	{
 		return doCombine(context, decisions);
 	}
 
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit")
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit")
-	public static <D extends DecisionRule> Decision doCombine(DecisionRuleEvaluationContext context, List<D> decisions)
+	public static <D extends DecisionRule> Decision doCombine(DecisionRuleEvaluationContext context,
+                                                              List<? extends DecisionRule> decisions)
 	{
-		for(D d : decisions){
+		for(DecisionRule d : decisions){
 			Decision decision = evaluateIfMatch(context, d);
 			if(decision == Decision.PERMIT){
 				return decision;

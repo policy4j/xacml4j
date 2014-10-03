@@ -67,7 +67,7 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.create());
+				.build());
 
 		List<Supplier<InputStream>> policyStreams = Arrays.asList(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),

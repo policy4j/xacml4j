@@ -60,12 +60,6 @@ public final class PolicyReference extends
 	}
 
 	@Override
-	public CompositeDecisionRuleIDReference getReference() {
-		return this;
-	}
-
-
-	@Override
 	public DecisionRuleEvaluationContext createContext(EvaluationContext ctx)
 	{
         DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;

@@ -43,13 +43,13 @@ import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 public class PermitOverridesTest
 {
 	private List<DecisionRule> decisions;
-	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
+	private DecisionCombiningAlgorithm algorithm;
 	private DecisionRuleEvaluationContext context;
 
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
-		this.algorithm = new PermitOverrides<DecisionRule>("aaaa");
+		this.algorithm = new PermitOverrides("aaaa");
 		this.context = createStrictMock(DecisionRuleEvaluationContext.class);
 	}
 

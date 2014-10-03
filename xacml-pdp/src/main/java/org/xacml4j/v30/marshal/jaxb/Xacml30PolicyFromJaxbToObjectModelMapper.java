@@ -60,14 +60,7 @@ import org.oasis.xacml.v30.jaxb.VariableReferenceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
 import org.xacml4j.v30.pdp.*;
 import org.xacml4j.v30.pdp.PolicyReference;
@@ -203,10 +196,10 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.build();
 	}
 
-	private Collection<CompositeDecisionRule> createPolicies(PolicySetType policySet)
+	private Collection<DecisionRule> createPolicies(PolicySetType policySet)
 		throws XacmlSyntaxException
 	{
-		Collection<CompositeDecisionRule> all = new LinkedList<CompositeDecisionRule>();
+		Collection<DecisionRule> all = new LinkedList<DecisionRule>();
 		for(JAXBElement<?> e : policySet.getPolicySetOrPolicyOrPolicySetIdReference())
 		{
 			if(e.getValue() instanceof PolicyType){

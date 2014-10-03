@@ -36,7 +36,6 @@ import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
 
 public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
@@ -84,7 +83,7 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		}
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.create());
+				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.build());
 		for(final Resource r : resources){
 			repository.importPolicy(new Supplier<InputStream>() {
 				@Override

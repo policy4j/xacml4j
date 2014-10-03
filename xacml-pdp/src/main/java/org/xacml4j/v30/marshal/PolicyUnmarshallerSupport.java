@@ -83,9 +83,9 @@ public class PolicyUnmarshallerSupport
 	 * @throws XacmlSyntaxException if no algorithm can be found
 	 * for given identifier
 	 */
-	protected final DecisionCombiningAlgorithm<Rule> createRuleCombiningAlgorithm(
+	protected final DecisionCombiningAlgorithm createRuleCombiningAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
-		DecisionCombiningAlgorithm<Rule> algorithm = combiningAlgorithms
+		DecisionCombiningAlgorithm algorithm = combiningAlgorithms
 				.getRuleAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new XacmlSyntaxException(
@@ -104,9 +104,9 @@ public class PolicyUnmarshallerSupport
 	 * @throws XacmlSyntaxException if no algorithm can be found
 	 * for given identifier
 	 */
-	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombiningAlgorithm(
+	protected final DecisionCombiningAlgorithm createPolicyCombiningAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
-		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combiningAlgorithms
+		DecisionCombiningAlgorithm algorithm = combiningAlgorithms
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
 			throw new XacmlSyntaxException(

@@ -34,20 +34,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.SubjectAttributes;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.StringExp;
 import org.xml.sax.InputSource;
 
@@ -130,11 +117,12 @@ public class JsonResponseContextUnmarshallerTest {
 						.build();
 		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
 
-		resultBuilder.evaluatedPolicies(ImmutableList.<PolicyIDReference> of(PolicyIDReference.builder("policy1")
-				.versionAsString("1.0").earliest("0.5").latest("1.5").build(), PolicyIDReference.builder("policy2").build()));
-		resultBuilder.evaluatedPolicies(ImmutableList.<PolicySetIDReference> of(
-				PolicySetIDReference.builder("policySet3").versionAsString("1.1").earliest("1.0").latest("1.9").build(),
-				PolicySetIDReference.builder("policySet4").versionAsString("2.0").build()));
+		resultBuilder.evaluatedPolicies(ImmutableList.<IdReference.PolicyIdRef> of(
+                IdReference.policyIdRef("policy1").version("1.0").build(),
+                IdReference.policyIdRef("policy2").version("1.0").build()));
+		resultBuilder.evaluatedPolicies(ImmutableList.<IdReference.PolicySetIdRef> of(
+                IdReference.policySetIdRef("policySet3").version("1.1").build(),
+                IdReference.policySetIdRef("policySet4").version("2.0").build()));
 
 		return ResponseContext.builder().result(resultBuilder.build()).build();
 	}

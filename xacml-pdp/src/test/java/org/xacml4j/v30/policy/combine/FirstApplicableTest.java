@@ -44,13 +44,13 @@ public class FirstApplicableTest
 {
 
 	private List<DecisionRule> decisions;
-	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
+	private DecisionCombiningAlgorithm algorithm;
 	private DecisionRuleEvaluationContext context;
 
 	@Before
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
-		this.algorithm = new FirstApplicable<DecisionRule>("test");
+		this.algorithm = new FirstApplicable("test");
 		this.context = createStrictMock(DecisionRuleEvaluationContext.class);
 	}
 

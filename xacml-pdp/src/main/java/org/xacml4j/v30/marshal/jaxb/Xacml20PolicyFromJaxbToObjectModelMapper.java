@@ -63,14 +63,7 @@ import org.oasis.xacml.v20.jaxb.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.jaxb.policy.VariableReferenceType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.util.Xacml20XPathTo30Transformer;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
 import org.xacml4j.v30.pdp.*;
 import org.xacml4j.v30.pdp.PolicyReference;
@@ -157,9 +150,9 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 		}
 	}
 
-	private Collection<CompositeDecisionRule> getPolicies(PolicySetType p)
+	private Collection<DecisionRule> getPolicies(PolicySetType p)
 			throws XacmlSyntaxException {
-		Collection<CompositeDecisionRule> policies = new LinkedList<CompositeDecisionRule>();
+		Collection<DecisionRule> policies = new LinkedList<DecisionRule>();
 		for (JAXBElement<?> o : p.getPolicySetOrPolicyOrPolicySetIdReference()) {
 			Object v = o.getValue();
 			if (v instanceof PolicySetType) {

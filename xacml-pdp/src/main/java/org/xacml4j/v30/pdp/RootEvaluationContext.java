@@ -163,7 +163,12 @@ public final class RootEvaluationContext implements DecisionRuleEvaluationContex
 
 	@Override
 	public final void addEvaluationResult(CompositeDecisionRule rule, Decision result) {
-		this.evaluatedPolicies.add();
+        if(rule instanceof Policy){
+            this.evaluatedPolicies.add(IdReference.policyIdRef(rule));
+        }
+        if(rule instanceof PolicySet){
+            this.evaluatedPolicies.add(IdReference.policySetIdRef(rule));
+        }
 	}
 
 	@Override

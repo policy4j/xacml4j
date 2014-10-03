@@ -53,11 +53,7 @@ import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.*;
 import org.xacml4j.v30.pdp.PolicyReference;
 
@@ -82,7 +78,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 	}
 
 
-	public JAXBElement<?> toJaxb(CompositeDecisionRule d){
+	public JAXBElement<?> toJaxb(DecisionRule d){
 		if(d instanceof PolicySet){
 			return toJaxb((PolicySet)d);
 		}
@@ -178,7 +174,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		for(VariableDefinition var : p.getVariableDefinitions()){
 			jaxbPolicy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().add(toJaxb(var));
 		}
-		for(Rule r : p.getRules()){
+		for(Rule r : p.getChildRules()){
 			jaxbPolicy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().add(toJaxb(r));
 		}
 		return factory.createPolicy(jaxbPolicy);
@@ -202,7 +198,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		}
 		jaxbPolicySet.setAdviceExpressions(toJaxbAdvices(ps.getAdviceExpressions()));
 		jaxbPolicySet.setObligationExpressions(toJaxbObligations(ps.getObligationExpressions()));
-		for(CompositeDecisionRule r : ps.getDecisions()){
+		for(DecisionRule r : ps.getChildRules()){
 			jaxbPolicySet.getPolicySetOrPolicyOrPolicySetIdReference().add(toJaxb(r));
 		}
 		return factory.createPolicySet(jaxbPolicySet);

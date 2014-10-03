@@ -28,13 +28,14 @@ import java.util.List;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 
 
 public class LegacyPermitOverridesPolicyCombineAlgorithm
-	extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
+	extends BaseDecisionCombiningAlgorithm
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides";
 
@@ -48,17 +49,17 @@ public class LegacyPermitOverridesPolicyCombineAlgorithm
 
 	@Override
 	public final Decision combine(DecisionRuleEvaluationContext context,
-			List<CompositeDecisionRule> rules){
+			List<? extends DecisionRule> rules){
 		return doCombine(context, rules);
 	}
 
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:permit-overrides")
 	public static Decision doCombine(DecisionRuleEvaluationContext context,
-			List<CompositeDecisionRule> rules)
+			List<? extends DecisionRule> rules)
 	{
 		boolean atLeastOneError = false;
 		boolean atLeastOneDeny = false;
-		for(CompositeDecisionRule r : rules){
+		for(DecisionRule r : rules){
 			Decision d = evaluateIfMatch(context, r);
 			if(d == Decision.DENY){
 				atLeastOneDeny = true;

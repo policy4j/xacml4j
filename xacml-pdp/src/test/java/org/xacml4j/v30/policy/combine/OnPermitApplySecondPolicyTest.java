@@ -42,7 +42,7 @@ import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 public class OnPermitApplySecondPolicyTest
 {
 	private List<CompositeDecisionRule> decisions;
-	private DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm;
+	private DecisionCombiningAlgorithm algorithm;
 	private DecisionRuleEvaluationContext context;
 	private IMocksControl c;
 

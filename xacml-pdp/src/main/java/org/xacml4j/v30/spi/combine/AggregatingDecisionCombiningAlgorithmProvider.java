@@ -103,7 +103,7 @@ final class AggregatingDecisionCombiningAlgorithmProvider
 	}
 
 	@Override
-	public final DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(
+	public final DecisionCombiningAlgorithm getPolicyAlgorithm(
 			String algorithmId)
 	{
 		DecisionCombiningAlgorithmProvider p = policyAlgorithms.get(algorithmId);
@@ -111,7 +111,7 @@ final class AggregatingDecisionCombiningAlgorithmProvider
 	}
 
 	@Override
-	public final DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId)
+	public final DecisionCombiningAlgorithm getRuleAlgorithm(String algorithmId)
 	{
 		DecisionCombiningAlgorithmProvider p = ruleAlgorithms.get(algorithmId);
 		return (p == null)?null:p.getRuleAlgorithm(algorithmId);

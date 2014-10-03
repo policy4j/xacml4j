@@ -27,6 +27,7 @@ import static org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithms.evaluateIf
 import java.util.List;
 
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.pdp.Rule;
@@ -34,7 +35,7 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
-public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm<Rule>
+public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombiningAlgorithm
 {
 	private final static String ID ="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides";
 
@@ -47,10 +48,12 @@ public class LegacyPermitOverridesRuleCombineAlgorithm extends BaseDecisionCombi
 		super(ID);
 	}
 
+    public Decision combine(DecisionRuleEvaluationContext context, List<? extends DecisionRule> rules){
+        return doCombine(context, (List<Rule>)rules);
+    }
 
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:permit-overrides")
-	@Override
-	public Decision combine(DecisionRuleEvaluationContext context, List<Rule> rules)
+	public static Decision doCombine(DecisionRuleEvaluationContext context, List<Rule> rules)
 	{
 		boolean atLeastOneError = false;
 		boolean potentialPermit = false;

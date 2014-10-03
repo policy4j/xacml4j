@@ -42,7 +42,7 @@ import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 public class DenyOverridesTest
 {
 	private List<DecisionRule> decisions;
-	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
+	private DecisionCombiningAlgorithm algorithm;
 	private DecisionRuleEvaluationContext context;
 	private IMocksControl c;
 
@@ -50,7 +50,7 @@ public class DenyOverridesTest
 	public void init(){
 		this.c = createControl();
 		this.decisions = new LinkedList<DecisionRule>();
-		this.algorithm = new DenyOverrides<DecisionRule>("aaaa");
+		this.algorithm = new DenyOverrides("aaaa");
 		this.context = c.createMock(DecisionRuleEvaluationContext.class);
 	}
 

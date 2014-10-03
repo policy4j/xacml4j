@@ -29,7 +29,7 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 
 
-public interface DecisionCombiningAlgorithm <D extends DecisionRule>
+public interface DecisionCombiningAlgorithm
 {
 	/**
 	 * Gets algorithm identifier
@@ -45,5 +45,5 @@ public interface DecisionCombiningAlgorithm <D extends DecisionRule>
 	 * @param decisions a multiple decisions
 	 * @return {@link Decision} context
 	 */
-	Decision combine(DecisionRuleEvaluationContext context, List<D> decisions);
+	Decision combine(DecisionRuleEvaluationContext context, List<? extends DecisionRule> decisions);
 }

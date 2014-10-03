@@ -54,7 +54,7 @@ public class PolicyTest
 	private Condition condition;
 
 
-	private DecisionCombiningAlgorithm<Rule> combingingAlg;
+	private DecisionCombiningAlgorithm combingingAlg;
 
 	private Expression denyObligationAttributeExp;
 	private Expression permitObligationAttributeExp;

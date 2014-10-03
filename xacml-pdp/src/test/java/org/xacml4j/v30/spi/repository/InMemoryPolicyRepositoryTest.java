@@ -57,7 +57,7 @@ public class InMemoryPolicyRepositoryTest
 	private Policy p1v4;
 
 	private PolicyRepository r;
-	private DecisionCombiningAlgorithm<Rule> algorithm;
+	private DecisionCombiningAlgorithm algorithm;
 
 	private IMocksControl c;
 	private PolicyRepositoryListener l;

@@ -70,12 +70,12 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	 */
 	public DecisionCombiningAlgorithmProvider create(Class<?> clazz)
 	{
-		final List<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms = new LinkedList<DecisionCombiningAlgorithm<Rule>>();
+		final List<DecisionCombiningAlgorithm> ruleAlgorithms = new LinkedList<DecisionCombiningAlgorithm>();
 		for(Method m : Reflections.getAnnotatedMethods(clazz,
 				XacmlRuleDecisionCombiningAlgorithm.class)){
 			ruleAlgorithms.add(createRuleDecisionCombineAlgorithm(m));
 		}
-		final List<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms = new LinkedList<DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+		final List<DecisionCombiningAlgorithm> policyAlgorithms = new LinkedList<DecisionCombiningAlgorithm>();
 		for(Method m : Reflections.getAnnotatedMethods(clazz,
 				XacmlPolicyDecisionCombiningAlgorithm.class)){
 			policyAlgorithms.add(createPolicyDecisionCombineAlgorithm(m));
@@ -84,7 +84,7 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	}
 
 
-	DecisionCombiningAlgorithm<Rule> createRuleDecisionCombineAlgorithm(Method m)
+	DecisionCombiningAlgorithm createRuleDecisionCombineAlgorithm(Method m)
 	{
 		validateDecisionCombiningMethod(m);
 
@@ -99,7 +99,7 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 		return createDecisionCombiningAlgorithm(algo.value(), invocationFactory.<Decision>create(null, m));
 	}
 
-	DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyDecisionCombineAlgorithm(Method m)
+	DecisionCombiningAlgorithm createPolicyDecisionCombineAlgorithm(Method m)
 	{
 		validateDecisionCombiningMethod(m);
 		XacmlPolicyDecisionCombiningAlgorithm algo = m.getAnnotation(XacmlPolicyDecisionCombiningAlgorithm.class);
@@ -113,15 +113,16 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 		return createDecisionCombiningAlgorithm(algo.value(), invocationFactory.<Decision>create(null, m));
 	}
 
-	private <D extends DecisionRule> DecisionCombiningAlgorithm<D> createDecisionCombiningAlgorithm(
+	private DecisionCombiningAlgorithm createDecisionCombiningAlgorithm(
 			final String algorithmId, final Invocation<Decision> invocation)
 	{
 		Preconditions.checkNotNull(algorithmId);
 		Preconditions.checkNotNull(invocation);
-		return new BaseDecisionCombiningAlgorithm<D>(algorithmId)
+		return new BaseDecisionCombiningAlgorithm(algorithmId)
 		{
 			@Override
-			public Decision combine(DecisionRuleEvaluationContext context, List<D> decisions) {
+			public Decision combine(DecisionRuleEvaluationContext context,
+                                    List<? extends DecisionRule> decisions) {
 				try{
 					return invocation.invoke(context, decisions);
 				}catch(Exception e){

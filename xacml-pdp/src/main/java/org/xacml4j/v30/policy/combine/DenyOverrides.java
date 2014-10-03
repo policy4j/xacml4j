@@ -51,26 +51,27 @@ import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
  *
  * @param <D> a {@link DecisionRule} implementation type
  */
-public class DenyOverrides <D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
+public class DenyOverrides extends BaseDecisionCombiningAlgorithm
 {
 	protected DenyOverrides(String id){
 		super(id);
 	}
 
 	@Override
-	public final Decision combine(DecisionRuleEvaluationContext context, List<D> decisions){
+	public final Decision combine(DecisionRuleEvaluationContext context, List<? extends DecisionRule> decisions){
 		return doCombine(context, decisions);
 	}
 
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides")
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides")
-	public static <D extends DecisionRule>  Decision doCombine(DecisionRuleEvaluationContext context, List<D> decisions)
+	public static Decision doCombine(DecisionRuleEvaluationContext context,
+                                                               List<? extends DecisionRule> decisions)
 	{
 		boolean atLeastOneIndeterminateD = false;
 		boolean atLeastOneIndeterminateP = false;
 		boolean atLeastOneIndeterminateDP = false;
 		boolean atLeastOnePermit = false;
-		for(D d : decisions)
+		for(DecisionRule d : decisions)
 		{
 			Decision decision = d.evaluate(d.createContext(context));
 			if(decision == Decision.DENY){

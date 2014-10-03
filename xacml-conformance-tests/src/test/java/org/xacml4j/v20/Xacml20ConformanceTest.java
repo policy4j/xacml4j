@@ -74,7 +74,7 @@ public class Xacml20ConformanceTest
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.create());
+				.build());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 
 		addAllPolicies(repository, "IIA", 22);

@@ -40,35 +40,35 @@ import org.xacml4j.v30.pdp.Rule;
  */
 public class DecisionCombiningAlgorithmProviderImpl implements DecisionCombiningAlgorithmProvider
 {
-	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
-	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
+	private Map<String, DecisionCombiningAlgorithm> ruleAlgo;
+	private Map<String, DecisionCombiningAlgorithm> policyAlgo;
 
 	protected DecisionCombiningAlgorithmProviderImpl(){
-		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
-		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm>();
+		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm>();
 	}
 
 	public DecisionCombiningAlgorithmProviderImpl(
-			Collection<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms,
-			Collection<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms){
-		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
-		for(DecisionCombiningAlgorithm<Rule> algo : ruleAlgorithms){
+			Collection<DecisionCombiningAlgorithm> ruleAlgorithms,
+			Collection<DecisionCombiningAlgorithm> policyAlgorithms){
+		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm>();
+		for(DecisionCombiningAlgorithm algo : ruleAlgorithms){
 			addRuleCombineAlgorithm(algo);
 		}
-		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
-		for(DecisionCombiningAlgorithm<CompositeDecisionRule> algo : policyAlgorithms){
+		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm>();
+		for(DecisionCombiningAlgorithm algo : policyAlgorithms){
 			addCompositeRuleCombineAlgorithm(algo);
 		}
 	}
 
 	@Override
-	public final DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyAlgorithm(
+	public final DecisionCombiningAlgorithm getPolicyAlgorithm(
 			String algorithmId) {
 		return policyAlgo.get(algorithmId);
 	}
 
 	@Override
-	public final DecisionCombiningAlgorithm<Rule> getRuleAlgorithm(String algorithmId) {
+	public final DecisionCombiningAlgorithm getRuleAlgorithm(String algorithmId) {
 		return ruleAlgo.get(algorithmId);
 	}
 
@@ -84,9 +84,9 @@ public class DecisionCombiningAlgorithmProviderImpl implements DecisionCombining
 	}
 
 	public final void addRuleCombineAlgorithm(
-			DecisionCombiningAlgorithm<Rule> algorithm)
+			DecisionCombiningAlgorithm algorithm)
 	{
-		DecisionCombiningAlgorithm<Rule> oldAlgo = ruleAlgo.put(algorithm.getId(), algorithm);
+		DecisionCombiningAlgorithm oldAlgo = ruleAlgo.put(algorithm.getId(), algorithm);
 		if(oldAlgo != null){
 			throw new IllegalArgumentException(
 					String.format("Rule algorithm with identifier=\"%s\" already exists", algorithm));
@@ -94,9 +94,9 @@ public class DecisionCombiningAlgorithmProviderImpl implements DecisionCombining
 	}
 
 	public final void addCompositeRuleCombineAlgorithm(
-			DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm)
+			DecisionCombiningAlgorithm algorithm)
 	{
-		DecisionCombiningAlgorithm<CompositeDecisionRule> oldAlgo = policyAlgo.put(
+		DecisionCombiningAlgorithm oldAlgo = policyAlgo.put(
 				algorithm.getId(), algorithm);
 		if(oldAlgo != null){
 			throw new IllegalArgumentException(

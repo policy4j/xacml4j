@@ -34,8 +34,7 @@ import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
-public class PermitUnlessDeny <DecisionType extends DecisionRule>
-	extends BaseDecisionCombiningAlgorithm<DecisionType>
+public class PermitUnlessDeny extends BaseDecisionCombiningAlgorithm
 {
 	protected PermitUnlessDeny(String id){
 		super(id);
@@ -45,9 +44,9 @@ public class PermitUnlessDeny <DecisionType extends DecisionRule>
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:permit-unless-deny")
 	@Override
 	public Decision combine(DecisionRuleEvaluationContext context,
-			List<DecisionType> decisions)
+			List<? extends DecisionRule> decisions)
 	{
-		for(DecisionType d : decisions){
+		for(DecisionRule d : decisions){
 			Decision decision = evaluateIfMatch(context, d);
 			if(decision == Decision.DENY){
 				return decision;

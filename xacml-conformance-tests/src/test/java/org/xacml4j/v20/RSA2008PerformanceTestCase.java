@@ -59,7 +59,7 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.create());
+				.build());
 
 		ImmutableList<Supplier<InputStream>> policyStreams = ImmutableList.of(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),

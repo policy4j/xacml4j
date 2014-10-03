@@ -28,8 +28,8 @@ import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule>
-	implements DecisionCombiningAlgorithm <D>
+public abstract class BaseDecisionCombiningAlgorithm
+	implements DecisionCombiningAlgorithm
 {
 	private final String algorithmId;
 
@@ -64,11 +64,11 @@ public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule>
 			return true;
 		}
 
-		if(!(o instanceof BaseDecisionCombiningAlgorithm<?>)){
+		if(!(o instanceof BaseDecisionCombiningAlgorithm)){
 			return false;
 		}
 
-		BaseDecisionCombiningAlgorithm<?> a = (BaseDecisionCombiningAlgorithm<?>)o;
+		BaseDecisionCombiningAlgorithm a = (BaseDecisionCombiningAlgorithm)o;
 		return algorithmId.equals(a.algorithmId);
 	}
 

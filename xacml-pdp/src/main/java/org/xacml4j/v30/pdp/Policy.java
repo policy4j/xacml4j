@@ -45,7 +45,7 @@ public class Policy extends BaseCompositeDecisionRule
 	private final PolicyDefaults policyDefaults;
 	private final Map<String, VariableDefinition> variableDefinitions;
 	private final List<Rule> rules;
-	private final DecisionCombiningAlgorithm<Rule> combiningAlgorithm;
+	private final DecisionCombiningAlgorithm combiningAlgorithm;
 	private final Map<String, Multimap<String, CombinerParameter>> ruleCombiningParameters;
 
 	/**
@@ -101,7 +101,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 *
 	 * @return {@link DecisionCombiningAlgorithm} instance
 	 */
-	public DecisionCombiningAlgorithm<Rule> getRuleCombiningAlgorithm(){
+	public DecisionCombiningAlgorithm getRuleCombiningAlgorithm(){
 		return combiningAlgorithm;
 	}
 
@@ -136,7 +136,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 * @return a collection of {@link Rule}
 	 * instances
 	 */
-	public List<Rule> getRules(){
+	public List<Rule> getChildRules(){
 		return rules;
 	}
 
@@ -291,7 +291,7 @@ public class Policy extends BaseCompositeDecisionRule
 
 	public final static class Builder extends BaseCompositeDecisionRule.Builder<Builder>
 	{
-		private DecisionCombiningAlgorithm<Rule> combiningAlgorithm;
+		private DecisionCombiningAlgorithm combiningAlgorithm;
 		private Collection<VariableDefinition> variables = Lists.newLinkedList();
 		private PolicyDefaults policyDefaults;
 
@@ -377,7 +377,7 @@ public class Policy extends BaseCompositeDecisionRule
 			return this;
 		}
 
-		public Builder combiningAlgorithm(DecisionCombiningAlgorithm<Rule> alg)
+		public Builder combiningAlgorithm(DecisionCombiningAlgorithm alg)
 		{
 			Preconditions.checkNotNull(alg);
 			this.combiningAlgorithm = alg;

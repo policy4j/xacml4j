@@ -42,8 +42,8 @@ public class PolicySet extends
 	BaseCompositeDecisionRule
 {
 	private final PolicySetDefaults policySetDefaults;
-	private final DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
-	private final List<CompositeDecisionRule> decisionRules;
+	private final DecisionCombiningAlgorithm combiningAlgorithm;
+	private final List<? extends DecisionRule> decisionRules;
 
 	private final Map<String, Multimap<String, CombinerParameter>> policyCombinerParameters;
 	private	final Map<String, Multimap<String, CombinerParameter>> policySetCombinerParameters;
@@ -132,7 +132,7 @@ public class PolicySet extends
 	 *
 	 * @return a decision combining algorithm
 	 */
-	public DecisionCombiningAlgorithm<CompositeDecisionRule> getPolicyDecisionCombiningAlgorithm(){
+	public DecisionCombiningAlgorithm getPolicyDecisionCombiningAlgorithm(){
 		return combiningAlgorithm;
 	}
 
@@ -173,7 +173,7 @@ public class PolicySet extends
 		return combiningAlgorithm.combine(context, decisionRules);
 	}
 
-	public List<? extends CompositeDecisionRule> getDecisions() {
+	public List<? extends DecisionRule> getChildRules() {
 		return decisionRules;
 	}
 
@@ -291,9 +291,9 @@ public class PolicySet extends
 
 	public final static class Builder extends BaseCompositeDecisionRule.Builder<Builder>
 	{
-		private DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
+		private DecisionCombiningAlgorithm combiningAlgorithm;
 		private PolicySetDefaults policyDefaults;
-		private ImmutableList.Builder<CompositeDecisionRule> policies = ImmutableList.builder();
+		private ImmutableList.Builder<DecisionRule> policies = ImmutableList.builder();
 
 		private Map<String, Multimap<String, CombinerParameter>> policyCombinerParams = Maps.newLinkedHashMap();
 		private Map<String, Multimap<String, CombinerParameter>> policySetCombinerParams = Maps.newLinkedHashMap();
@@ -359,13 +359,13 @@ public class PolicySet extends
 			return this;
 		}
 
-		public Builder compositeDecisionRules(Iterable<CompositeDecisionRule> rules)
+		public Builder compositeDecisionRules(Iterable<? extends DecisionRule> rules)
 		{
 			this.policies.addAll(rules);
 			return getThis();
 		}
 
-		public Builder compositeDecisionRules(CompositeDecisionRule ... rules)
+		public Builder compositeDecisionRules(DecisionRule ... rules)
 		{
 			this.policies.add(rules);
 			return getThis();
@@ -388,7 +388,7 @@ public class PolicySet extends
 			return this;
 		}
 
-		public Builder withCombiningAlgorithm(DecisionCombiningAlgorithm<CompositeDecisionRule> alg)
+		public Builder withCombiningAlgorithm(DecisionCombiningAlgorithm alg)
 		{
 			Preconditions.checkNotNull(alg);
 			this.combiningAlgorithm = alg;

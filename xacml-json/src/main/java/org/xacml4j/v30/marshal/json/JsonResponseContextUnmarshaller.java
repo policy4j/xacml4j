@@ -25,19 +25,8 @@ package org.xacml4j.v30.marshal.json;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.Unmarshaller;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -56,8 +45,8 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
-				.registerTypeAdapter(PolicyIDReference.class, new IdReferenceAdapter())
-				.registerTypeAdapter(PolicySetIDReference.class, new IdReferenceAdapter()).create();
+				.registerTypeAdapter(IdReference.PolicyIdRef.class, new IdReferenceAdapter())
+				.registerTypeAdapter(IdReference.PolicySetIdRef.class, new IdReferenceAdapter()).create();
 	}
 
 	@Override

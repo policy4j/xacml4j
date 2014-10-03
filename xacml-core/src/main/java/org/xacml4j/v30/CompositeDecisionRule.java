@@ -22,12 +22,14 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Collection;
+
 /**
  * An interface for a composite decision rules
  *
  * @author Giedrius Trumpickas
  */
-public interface CompositeDecisionRule extends DecisionRule
+public interface CompositeDecisionRule extends DecisionRule, Versionable
 {
 
 	/**
@@ -39,5 +41,5 @@ public interface CompositeDecisionRule extends DecisionRule
 	 */
 	CompositeDecisionRuleIDReference getReference();
 
-    IdReference getIdReference();
+    Collection<? extends DecisionRule> getChildRules();
 }

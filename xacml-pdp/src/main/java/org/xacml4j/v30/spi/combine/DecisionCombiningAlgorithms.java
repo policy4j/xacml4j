@@ -47,7 +47,8 @@ public final class DecisionCombiningAlgorithms
 	 * @param decision a decision rule to be evaluated
 	 * @return evaluation result as {@link Decision} instance
 	 */
-	public static <D extends DecisionRule> Decision evaluateIfMatch(DecisionRuleEvaluationContext context, D decision) {
+	public static  Decision evaluateIfMatch(DecisionRuleEvaluationContext context,
+                                            DecisionRule decision) {
 		EvaluationContext decisionContext = decision.createContext(context);
 		return decision.evaluate(decisionContext);
 	}
@@ -61,7 +62,7 @@ public final class DecisionCombiningAlgorithms
 	 * @param decision a decision rule to be evaluated
 	 * @return evaluation result as {@link Decision} instance
 	 */
-	public static <D extends DecisionRule> Decision evaluate(DecisionRuleEvaluationContext context, D decision) {
+	public static Decision evaluate(DecisionRuleEvaluationContext context, DecisionRule decision) {
 		EvaluationContext decisionContext = decision.createContext(context);
 		return decision.evaluate(decisionContext);
 	}

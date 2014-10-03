@@ -34,22 +34,24 @@ import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
-public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
+public class FirstApplicable extends BaseDecisionCombiningAlgorithm
 {
 	protected FirstApplicable(String algorithmId) {
 		super(algorithmId);
 	}
 
 	@Override
-	public final Decision combine(DecisionRuleEvaluationContext context, List<D> decisions){
+	public final Decision combine(DecisionRuleEvaluationContext context,
+                                  List<? extends DecisionRule> decisions){
 		return doCombine(context, decisions);
 	}
 
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable")
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable")
-	public static <D extends DecisionRule> Decision doCombine(DecisionRuleEvaluationContext context, List<D> decisions)
+	public static Decision doCombine(DecisionRuleEvaluationContext context,
+                                     List<? extends DecisionRule> decisions)
 	{
-		for(D d : decisions){
+		for(DecisionRule d : decisions){
 			Decision decision = evaluateIfMatch(context, d);
 			if(decision == Decision.DENY){
 				return decision;
