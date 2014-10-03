@@ -22,10 +22,7 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
@@ -56,7 +53,7 @@ public interface PolicyDecisionPointContext
 	 * @return {@link CompositeDecisionRule} a root
 	 * policy
 	 */
-	CompositeDecisionRule getDomainPolicy();
+	DecisionRule getDomainPolicy();
 
 	XPathProvider getXPathProvider();
 

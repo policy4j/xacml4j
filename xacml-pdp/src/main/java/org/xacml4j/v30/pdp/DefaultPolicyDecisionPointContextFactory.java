@@ -130,7 +130,7 @@ final class DefaultPolicyDecisionPointContextFactory
 			}
 
 			@Override
-			public CompositeDecisionRule getDomainPolicy() {
+			public DecisionRule getDomainPolicy() {
 				return policyDomain;
 			}
 

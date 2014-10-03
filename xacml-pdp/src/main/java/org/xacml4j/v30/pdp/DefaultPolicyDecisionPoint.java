@@ -140,7 +140,7 @@ final class DefaultPolicyDecisionPoint
 				return r;
 			}
 			RootEvaluationContext evalContext = context.createEvaluationContext(request);
-			CompositeDecisionRule rootPolicy = context.getDomainPolicy();
+			DecisionRule rootPolicy = context.getDomainPolicy();
 			Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
 			incrementDecisionCounters(decision);
 			r = createResult(evalContext,
