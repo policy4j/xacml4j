@@ -59,7 +59,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							Status.syntaxError()
 							.message("Found repeating categories in the request")
 							.build())
-							.includeInResultAttr(request.getIncludeInResultAttributes()).build());
+							.includeInResultAttributes(request.getIncludeInResultAttributes()).build());
 		}
 		Category resource = request.getOnlyAttributes(Categories.RESOURCE);
 		if(resource == null){
@@ -79,7 +79,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							.message("Found more than AttributeId=\"%s\" " +
 									"value of type=\"%s\"", RESOURCE_ID_ATTRIBUTE,
 									XacmlTypes.XPATH).build())
-							.includeInResultAttr(request.getIncludeInResultAttributes())
+							.includeInResultAttributes(request.getIncludeInResultAttributes())
 							.build());
 		}
 		Collection<Category> attributes = new LinkedList<Category>();

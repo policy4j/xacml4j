@@ -28,10 +28,13 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Optional;
+import com.google.common.collect.FluentIterable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 
 import com.google.common.collect.ImmutableBiMap;
-import com.google.common.collect.Lists;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -41,7 +44,9 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<Result> {
+public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<Result>
+{
+    private final static Logger log = LoggerFactory.getLogger(ResultAdapter.class);
 
 	private static final String DECISION_PROPERTY = "Decision";
 	private static final String STATUS_PROPERTY = "Status";
@@ -76,33 +81,27 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		final String decisionValue = GsonUtil.getAsString(o, DECISION_PROPERTY, null);
 		Decision decision = DECISION_VALUE_MAP.inverse().get(decisionValue);
 		if (decision == null) {
-			throw new JsonParseException(String.format("Invalid 'Decision' value: \"%s\"", decisionValue));
+			throw new JsonParseException(String.format(
+                    "Invalid 'Decision' value: \"%s\"", decisionValue));
 		}
 		Status status = context.deserialize(o.get(STATUS_PROPERTY), Status.class);
-
 		Result.Builder builder = Result.builder(decision, status);
-
-		Collection<Obligation> obligations = context.deserialize(o.get(OBLIGATIONS_PROPERTY), OBLIGATIONS_TYPE);
-		if (obligations != null) {
-			checkArgument(!obligations.isEmpty(), "At least one obligation should be specified.");
-			builder.obligation(obligations);
-		}
-
-		Collection<Advice> advice = context.deserialize(o.get(ASSOCIATED_ADVICE_PROPERTY), ADVICE_TYPE);
-		if (advice != null) {
-			checkArgument(!advice.isEmpty(), "At least one advice should be specified.");
-			builder.advice(advice);
-		}
-
-		Collection<Category> attributes = context.deserialize(o.get(CATEGORIES_PROPERTY), ATTRIBUTES_TYPE);
-		if (attributes != null) {
-			builder.includeInResultAttr(attributes);
-		}
+		builder.obligation(context.<List<Obligation>>deserialize(o.get(OBLIGATIONS_PROPERTY), OBLIGATIONS_TYPE));
+		builder.advices(context.<List<Advice>>deserialize(o.get(ASSOCIATED_ADVICE_PROPERTY), ADVICE_TYPE));
+		builder.includeInResultAttributes(context.<List<Category>>deserialize(o.get(CATEGORIES_PROPERTY), ATTRIBUTES_TYPE));
+        for(String catId : Categories.getCategoryShortNames()){
+            JsonElement category = o.get(catId);
+            if(category != null){
+                CategoryId categoryId = Categories.parse(catId);
+                builder.includeInResultAttribute(CategoryAdapter.deserializeCategory(categoryId, category, context));
+            }
+        }
 		deserializePolicyIdentifiers(o, context, builder);
 		return builder.build();
 	}
 
-	private void deserializePolicyIdentifiers(JsonObject o, JsonDeserializationContext context, Result.Builder builder) {
+	private void deserializePolicyIdentifiers(JsonObject o, JsonDeserializationContext context,
+                                              Result.Builder builder) {
 		JsonObject jsonPolicyIdentifiers = o.getAsJsonObject(POLICY_IDENTIFIER_PROPERTY);
 		if (jsonPolicyIdentifiers != null) {
 			Collection<IdReference.PolicyIdRef> policyIdReferences = context.deserialize(
@@ -119,46 +118,59 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 	}
 
 	@Override
-	public JsonElement serialize(Result src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(Result src, Type typeOfSrc, JsonSerializationContext context)
+    {
 		JsonObject o = new JsonObject();
 		o.addProperty(DECISION_PROPERTY, DECISION_VALUE_MAP.get(src.getDecision()));
-
-		if (src.getStatus() != null) {
-			o.add(STATUS_PROPERTY, context.serialize(src.getStatus()));
+        o.add(STATUS_PROPERTY, context.serialize(src.getStatus()));
+        Collection<Category> customCategories = Categories.getCustomCategories(src.getIncludeInResultAttributes());
+		if (customCategories != null && !customCategories.isEmpty()) {
+			o.add(CATEGORIES_PROPERTY, context.serialize(customCategories));
 		}
-
-		Collection<Obligation> obligations = src.getObligations();
-		if (obligations != null && !obligations.isEmpty()) {
-			o.add(OBLIGATIONS_PROPERTY, context.serialize(obligations, OBLIGATIONS_TYPE));
-		}
-		Collection<Advice> associatedAdvice = src.getAssociatedAdvice();
-		if (associatedAdvice != null && !associatedAdvice.isEmpty()) {
-			o.add(ASSOCIATED_ADVICE_PROPERTY, context.serialize(associatedAdvice, ADVICE_TYPE));
-		}
-		Collection<Category> attributes = src.getIncludeInResultAttributes();
-		if (attributes != null && !attributes.isEmpty()) {
-			o.add(CATEGORIES_PROPERTY, context.serialize(attributes));
-		}
+        Collection<Category> defaultCategories = Categories.getDefaultCategories(src.getIncludeInResultAttributes());
+        for(Category category : defaultCategories){
+            JsonElement categoryJson = CategoryAdapter.serializeDefaultCategory(category, context);
+            o.add(category.getCategoryId().getShortName(), categoryJson);
+        }
+        Collection<Obligation> obligations = src.getObligations();
+        if (obligations != null && !obligations.isEmpty()) {
+            o.add(OBLIGATIONS_PROPERTY,
+                    context.serialize(obligations, OBLIGATIONS_TYPE));
+        }
+        Collection<Advice> associatedAdvice = src.getAssociatedAdvice();
+        if (associatedAdvice != null && !associatedAdvice.isEmpty()) {
+            o.add(ASSOCIATED_ADVICE_PROPERTY,
+                    context.serialize(associatedAdvice, ADVICE_TYPE));
+        }
 		serializePolicyIdentifiers(src, context, o);
 		return o;
 	}
 
 	private void serializePolicyIdentifiers(Result src, JsonSerializationContext context, JsonObject o) {
 		Collection<IdReference> policyIdentifiers = src.getPolicyIdentifiers();
-		if (policyIdentifiers != null && !policyIdentifiers.isEmpty()) {
-			JsonObject policyIdentifiersJson = new JsonObject();
-			List<IdReference.PolicyIdRef> policyIdReferences = Lists.newArrayList();
-			List<IdReference.PolicySetIdRef> policySetIdReferences = Lists.newArrayList();
-			splitPolicyIdentifiers(policyIdentifiers, policyIdReferences, policySetIdReferences);
-			if (!policyIdReferences.isEmpty()) {
-				policyIdentifiersJson.add(POLICY_ID_REFERENCE_PROPERTY, context.serialize(policyIdReferences));
-			}
-			if (!policySetIdReferences.isEmpty()) {
-				policyIdentifiersJson.add(POLICY_SET_ID_REFERENCE_PROPERTY, context.serialize(policySetIdReferences));
-			}
-			o.add(POLICY_IDENTIFIER_PROPERTY, policyIdentifiersJson);
-		}
+		if (policyIdentifiers == null ||
+                policyIdentifiers.isEmpty()) {
+            return;
+        }
+        JsonObject policyIdentifiersJson = new JsonObject();
+        Collection<IdReference.PolicyIdRef> policyIdReferences = getPolicyIdRefs(policyIdentifiers);
+        Collection<IdReference.PolicySetIdRef> policySetIdReferences = getPolicySetIdRefs(policyIdentifiers);
+        if (!policyIdReferences.isEmpty()) {
+            policyIdentifiersJson.add(POLICY_ID_REFERENCE_PROPERTY, context.serialize(policyIdReferences));
+        }
+        if (!policySetIdReferences.isEmpty()) {
+            policyIdentifiersJson.add(POLICY_SET_ID_REFERENCE_PROPERTY, context.serialize(policySetIdReferences));
+        }
+        o.add(POLICY_IDENTIFIER_PROPERTY, policyIdentifiersJson);
 	}
+
+    private Collection<IdReference.PolicySetIdRef> getPolicySetIdRefs(Collection<? extends IdReference> ids){
+        return FluentIterable.from(ids).filter(IdReference.PolicySetIdRef.class).toList();
+    }
+
+    private Collection<IdReference.PolicyIdRef> getPolicyIdRefs(Collection<? extends IdReference> ids){
+        return FluentIterable.from(ids).filter(IdReference.PolicyIdRef.class).toList();
+    }
 
 	private void splitPolicyIdentifiers(Collection<IdReference> policyIdentifiers,
 			List<IdReference.PolicyIdRef> policyIdReferences,

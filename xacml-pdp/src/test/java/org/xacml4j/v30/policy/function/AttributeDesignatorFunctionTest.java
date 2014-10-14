@@ -94,7 +94,7 @@ public class AttributeDesignatorFunctionTest
 				.build())).andReturn(StringExp.of("aaaa").toBag());
 		c.replay();
 		BagOfAttributeExp v = func.invoke(context,
-				AnyURIExp.of(Categories.SUBJECT_ACCESS.getId()),
+				AnyURIExp.of(Categories.SUBJECT_ACCESS.getName()),
 				AnyURIExp.of("testId"),
 				AnyURIExp.of(XacmlTypes.STRING.getDataTypeId()),
 				BooleanExp.valueOf(false),

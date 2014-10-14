@@ -33,6 +33,9 @@ import java.util.LinkedList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.base.Predicates;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
@@ -112,6 +115,29 @@ public class CategoryTest
 		assertTrue(content1.isEqualNode(e.getContent()));
 		assertEquals(Categories.RESOURCE, test.getCategoryId());
 	}
+
+    @Test
+    public void testFluentWellKnownCatgories(){
+        Category.Action().build();
+        Category.Resource().build();
+    }
+
+    @Test
+    public void testFluentAttributes(){
+        Category c = Category.Resource().defaultIssuer("testIsser")
+                .build();
+        Category d = Category.Action().copyOf(c,
+                new Function<Attribute, Attribute>() {
+                    @Override
+                    public Attribute apply(Attribute input) {
+                        if(input.getAttributeId().equals("testId2")){
+                            return null;
+                        }
+                        return input;
+                    }
+                }).build();
+        assertEquals(c, d);
+    }
 
 	@Test
 	public void testGetAttributesById()

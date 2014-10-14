@@ -40,10 +40,9 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 				.registerTypeAdapter(Result.class, new ResultAdapter())
 				.registerTypeAdapter(Status.class, new StatusAdapter())
 				.registerTypeAdapter(StatusCode.class, new StatusCodeAdapter())
-				.registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
+                .registerTypeAdapter(Category.class, new CategoryAdapter()).registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(AttributeAssignment.class, new AttributeAssignmentDeserializer())
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
-				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
 				.registerTypeAdapter(IdReference.PolicyIdRef.class, new IdReferenceAdapter())
 				.registerTypeAdapter(IdReference.PolicySetIdRef.class, new IdReferenceAdapter()).create();

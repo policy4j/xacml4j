@@ -33,6 +33,7 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import com.google.common.collect.FluentIterable;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeExp;
 
@@ -43,6 +44,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import org.xacml4j.v30.XacmlSyntaxException;
 
 class AttributeSerializer implements JsonSerializer<Attribute> 
 {
@@ -65,8 +67,10 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 
 	private void serializeValue(JsonSerializationContext context, JsonObject o, 
 			Collection<AttributeExp> values) {
-		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
 		AttributeExp firstValue = Iterables.getFirst(values, null);
+        if(firstValue  == null){
+            return;
+        }
 		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getShortDataTypeId());
 		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(firstValue.getType());
 		checkState(toGson.isPresent());

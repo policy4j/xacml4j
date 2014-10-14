@@ -59,7 +59,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
-public class Xacml30RequestContextFromJaxbToObjectModelMapper
+class Xacml30RequestContextFromJaxbToObjectModelMapper
 {
 	private ObjectFactory factory;
 
@@ -142,10 +142,10 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private Result create(ResultType result) throws XacmlSyntaxException {
 		return Result
 				.builder(create(result.getDecision()), create(result.getStatus()))
-				.advice(createAdvices(result.getAssociatedAdvice()))
+				.advices(createAdvices(result.getAssociatedAdvice()))
 				.obligation(createObligations(result.getObligations()))
 				.evaluatedPolicies(create(result.getPolicyIdentifierList()))
-				.includeInResultAttr(create(result.getAttributes()))
+				.includeInResultAttributes(create(result.getAttributes()))
 				.build();
 	}
 

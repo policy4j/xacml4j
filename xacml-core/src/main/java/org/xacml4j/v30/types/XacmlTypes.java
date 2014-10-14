@@ -32,6 +32,8 @@ import javax.security.auth.x500.X500Principal;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.google.common.base.*;
+import com.google.common.primitives.Primitives;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -48,7 +50,6 @@ import org.xacml4j.v30.Time;
 import org.xacml4j.v30.XPathExpression;
 import org.xacml4j.v30.YearMonthDuration;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
@@ -57,7 +58,7 @@ import com.google.common.collect.ImmutableSet;
  *
  * @author Giedrius Trumpickas
  */
-public enum XacmlTypes implements AttributeExpType
+public enum XacmlTypes implements AttributeExpType, Function<Object, AttributeExp>
 {
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI", "anyURI"){
 		public AnyURIExp of(Object v){
@@ -298,11 +299,13 @@ public enum XacmlTypes implements AttributeExpType
 	private String shortTypeId;
 	private BagOfAttributeExpType bagType;
 	private Set<String> aliases;
+    private CharMatcher typeValueMatcher;
 
 	private XacmlTypes(String typeId, String shortTypeId, String ...aliases){
 		this.typeId = typeId;
 		this.shortTypeId = shortTypeId;
 		this.bagType = new BagOfAttributeExpType(this);
+        this.typeValueMatcher = typeValueMatcher;
 		this.aliases = (aliases == null)?ImmutableSet.<String>of():ImmutableSet
 				.<String>builder()
 				.add(shortTypeId)
@@ -344,10 +347,12 @@ public enum XacmlTypes implements AttributeExpType
 		return bagType;
 	}
 
+
 	@Override
 	public final BagOfAttributeExp bagOf(AttributeExp... attrs) {
 		return bagType.create(attrs);
 	}
+
 
 	@Override
 	public final BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
@@ -359,7 +364,7 @@ public enum XacmlTypes implements AttributeExpType
 		return bagType.createEmpty();
 	}
 
-	@Override
+    @Override
 	public String toString(){
 		return typeId;
 	}
@@ -372,4 +377,14 @@ public enum XacmlTypes implements AttributeExpType
 	public AttributeExpType getDataType(){
 		return this;
 	}
+
+    @Override
+    public AttributeExp apply(Object o) {
+        return of(Preconditions.checkNotNull(o));
+    }
+
+    @Override
+    public Function<Object, AttributeExp> getFactoryFunction(){
+        return this;
+    }
 }

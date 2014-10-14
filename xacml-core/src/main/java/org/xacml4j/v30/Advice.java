@@ -29,7 +29,7 @@ import com.google.common.base.Preconditions;
  * In some applications it is helpful to specify supplemental
  * information about a decision. XACML provides facilities
  * to specify supplemental information about a decision with
- * the {@link Advice}. Such advice may be safely ignored by the PEP.
+ * the {@link Advice}. Such advices may be safely ignored by the PEP.
  *
  * @author Giedrius Trumpickas
  */
@@ -62,11 +62,11 @@ public class Advice extends BaseDecisionRuleResponse
 	}
 
 	/**
-	 * Combines this advice attributes with a
-	 * given advice attributes
+	 * Combines this advices attributes with a
+	 * given advices attributes
 	 *
-	 * @param a an advice
-	 * @return a new advice instance with combined attributes
+	 * @param a an advices
+	 * @return a new advices instance with combined attributes
 	 */
 	public Advice merge(Advice a)
 	{

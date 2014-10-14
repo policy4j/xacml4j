@@ -31,6 +31,8 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
+import static com.google.common.base.Preconditions.*;
+
 /**
  * Represents an XACML expression of {@link XacmlTypes#ANYURI} type.
  * 
@@ -58,20 +60,19 @@ public final class AnyURIExp extends BaseAttributeExp<URI>
 	}
 	
 	public static AnyURIExp valueOf(StringExp v){
-		return of(v.getValue());
+		return of(checkNotNull(v).getValue());
 	}
 	
 	public static AnyURIExp of(URL v){
 		try {
-			return new AnyURIExp(v.toURI());
+			return new AnyURIExp(checkNotNull(v).toURI());
 		} catch (URISyntaxException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}
 	
 	public static AnyURIExp of(URI v){
-		Preconditions.checkNotNull(v);
-		return new AnyURIExp(v);
+		return new AnyURIExp(checkNotNull(v));
 	}
 	
 	public StringExp toStringExp(){

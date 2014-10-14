@@ -24,7 +24,8 @@ package org.xacml4j.v30.types;
 
 import org.xacml4j.v30.BagOfAttributeExp;
 
-import com.google.common.base.Preconditions;
+
+import static com.google.common.base.Preconditions.*;
 
 public final class BooleanExp extends
 	BaseAttributeExp<Boolean>
@@ -43,12 +44,11 @@ public final class BooleanExp extends
 	}
 	
 	public static BooleanExp of(String v){
-		return Boolean.parseBoolean(v)?BooleanExp.TRUE:BooleanExp.FALSE;
+		return Boolean.parseBoolean(checkNotNull(v))?BooleanExp.TRUE:BooleanExp.FALSE;
 	}
 	
 	public static BooleanExp valueOf(Boolean v){
-		Preconditions.checkNotNull(v);
-		return v?BooleanExp.TRUE:BooleanExp.FALSE;
+		return checkNotNull(v)?BooleanExp.TRUE:BooleanExp.FALSE;
 	}
 	
 	public StringExp toStringExp(){

@@ -25,11 +25,12 @@ package org.xacml4j.v30.marshal.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.RequestReference;
+import com.google.common.base.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.util.DOMUtil;
+import org.xacml4j.v30.*;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -41,36 +42,57 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-final class RequestContextAdapter implements JsonDeserializer<RequestContext>, JsonSerializer<RequestContext> {
+final class RequestContextAdapter implements JsonDeserializer<RequestContext>, JsonSerializer<RequestContext>
+{
+    private final static Logger log = LoggerFactory.getLogger(RequestContextAdapter.class);
 
+    private static final String REQUEST_PROPERTY = "Request";
 	private static final String REQUEST_REFERENCE_PROPERTY = "RequestReference";
 	private static final String RETURN_POLICY_ID_LIST_PROPERTY = "ReturnPolicyIdList";
 	private static final String COMBINED_DECISION_PROPERTY = "CombinedDecision";
-	private static final String MULTI_REQUESTS_PROPERTY = "MultiRequests";
+	private static final String MULTI_REQUESTS_PROPERTY = "MultipleRequests";
+    private static final String CATEGORY_ARRAY_NAME = "Category";
 
 	@Override
 	public RequestContext deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
-		JsonObject o = json.getAsJsonObject();
-		boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, RETURN_POLICY_ID_LIST_PROPERTY, false);
-		boolean combinedDecision = GsonUtil.getAsBoolean(o, COMBINED_DECISION_PROPERTY, false);
-		JsonArray array = o.getAsJsonArray(JsonProperties.CATEGORY_ARRAY_NAME);
-		Collection<Category> attributes = context.deserialize(array,
-				new TypeToken<Collection<Category>>() {
-				}.getType());
-
+		JsonObject reqJson1 = json.getAsJsonObject();
+        JsonObject reqJson = reqJson1.getAsJsonObject(REQUEST_PROPERTY);
+        if(reqJson == null){
+            throw new JsonParseException(
+                    "Failed to locate Request property");
+        }
+        Boolean returnPolicyIdList = GsonUtil.getAsBoolean(reqJson, RETURN_POLICY_ID_LIST_PROPERTY, null);
+		Boolean combinedDecision = GsonUtil.getAsBoolean(reqJson, COMBINED_DECISION_PROPERTY, null);
+		JsonArray array = reqJson.getAsJsonArray(CATEGORY_ARRAY_NAME);
+        ImmutableList.Builder<Category> builder = ImmutableList.builder();
+        if(array != null){
+            for(int i = 0; i < array.size(); i++) {
+                JsonObject categoryObject = array.get(i).getAsJsonObject();
+                CategoryId categoryId = CategoryAdapter.getCategoryId(categoryObject);
+                builder.add(CategoryAdapter.deserializeCategory(categoryId, categoryObject, context));
+            }
+        }
+        for(String categoryId : Categories.getCategoryShortNames()){
+            JsonObject categoryJson = reqJson.getAsJsonObject(categoryId);
+            if(categoryJson != null){
+                builder.add(CategoryAdapter.deserializeCategory(
+                        Categories.parse(categoryId),
+                        categoryJson, context));
+            }
+        }
+        Collection<Category> categories = builder.build();
 		Collection<RequestReference> reqRefs = ImmutableList.of();
-		JsonObject multiRequests = o.getAsJsonObject(MULTI_REQUESTS_PROPERTY);
-		if (multiRequests != null) {
+		JsonObject multiRequests = reqJson.getAsJsonObject(MULTI_REQUESTS_PROPERTY);
+		if(multiRequests != null) {
 			reqRefs = context.deserialize(multiRequests.getAsJsonArray(REQUEST_REFERENCE_PROPERTY),
 					new TypeToken<Collection<RequestReference>>() {
 					}.getType());
 		}
-
 		return RequestContext.builder()
 				.returnPolicyIdList(returnPolicyIdList)
 				.combineDecision(combinedDecision)
-				.attributes(attributes)
+				.attributes(categories)
 				.reference(reqRefs)
 				.build();
 	}
@@ -78,17 +100,46 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 	@Override
 	public JsonElement serialize(RequestContext src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		o.addProperty(RETURN_POLICY_ID_LIST_PROPERTY, src.isReturnPolicyIdList());
-		o.addProperty(COMBINED_DECISION_PROPERTY, src.isCombinedDecision());
-		o.add(JsonProperties.CATEGORY_ARRAY_NAME, context.serialize(src.getAttributes()));
-		// SPEC: There must be at least one RequestReference object inside the MultiRequests object
+        JsonObject reqJson = new JsonObject();
+		reqJson.addProperty(RETURN_POLICY_ID_LIST_PROPERTY, src.isReturnPolicyIdList());
+		reqJson.addProperty(COMBINED_DECISION_PROPERTY, src.isCombinedDecision());
+        Collection<Category> defaultCategories = Categories.getDefaultCategories(src.getAttributes());
+        Collection<Category> customCategories = Categories.getCustomCategories(src.getAttributes());
+        // serialize custom categories to array
+        if(customCategories != null &&
+                !customCategories.isEmpty()){
+            reqJson.add(JsonProperties.CATEGORY_ARRAY_NAME,
+                    context.serialize(customCategories));
+        }
+        // serialize default categories
+        for(Category category : defaultCategories){
+            reqJson.add(category.getCategoryId().getShortName(),
+                    CategoryAdapter.serializeDefaultCategory(category, context));
+        }
 		Collection<RequestReference> requestReferences = src.getRequestReferences();
-		if (requestReferences != null && !requestReferences.isEmpty()) {
+		if (requestReferences != null &&
+                !requestReferences.isEmpty()) {
 			JsonObject multiRequests = new JsonObject();
 			multiRequests.add(REQUEST_REFERENCE_PROPERTY, context.serialize(requestReferences));
-			o.add(MULTI_REQUESTS_PROPERTY, multiRequests);
+			reqJson.add(MULTI_REQUESTS_PROPERTY, multiRequests);
 		}
-		return o;
+		o.add(REQUEST_PROPERTY, reqJson);
+        return o;
 	}
+
+
+    private JsonObject serialize(Category src,
+                                JsonSerializationContext context) {
+        JsonObject o = new JsonObject();
+        if (src.getId() != null) {
+            o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
+        }
+        Entity e = src.getEntity();
+        Optional<String> shortName = Categories.getShortName(src.getCategoryId());
+        o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, (shortName.isPresent())?shortName.get():src.getCategoryId().getName());
+        o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));
+        o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
+        return o;
+    }
 
 }

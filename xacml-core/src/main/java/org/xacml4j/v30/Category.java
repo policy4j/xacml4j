@@ -22,12 +22,15 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
+import com.google.common.base.*;
 
 
+/**
+ * Represents a set of XACML attributes
+ * of a given category
+ *
+ * @author Giedrius Trumpickas
+ */
 public class Category
 {
 	private final String id;
@@ -42,10 +45,9 @@ public class Category
 	 */
 	private Category(Builder b) {
 		Preconditions.checkNotNull(b.category);
-		Preconditions.checkNotNull(b.entity);
 		this.id = b.id;
 		this.categoryId = b.category;
-		this.entity = b.entity;
+		this.entity = b.b.build();
 		this.ref = (b.id == null)
 				? null
 				: CategoryReference.builder().id(b.id).build();
@@ -62,9 +64,39 @@ public class Category
 		return new Builder(category);
 	}
 
+    public static Builder SubjectAccess(){
+        return new Builder(Categories.SUBJECT_ACCESS);
+    }
+    public static Builder SubjectCodebase(){
+        return new Builder(Categories.SUBJECT_CODEBASE);
+    }
+    public static Builder SubjectIntermediary(){
+        return new Builder(Categories.SUBJECT_INTERMEDIARY);
+    }
+    public static Builder SubjectRecepient(){
+        return new Builder(Categories.SUBJECT_RECIPIENT);
+    }
+    public static Builder SubjectRequestingMachine(){
+        return new Builder(Categories.SUBJECT_REQUESTING_MACHINE);
+    }
+    public static Builder Action(){
+        return new Builder(Categories.ACTION);
+    }
+    public static Builder Resource(){
+        return new Builder(Categories.RESOURCE);
+    }
+    public static Builder Enviroment(){
+        return new Builder(Categories.ENVIRONMENT);
+    }
+
+
 	public static Builder builder(){
 		return new Builder();
 	}
+
+    public static Builder Custom(String categoryId){
+        return new Builder().category(Categories.parse(categoryId));
+    }
 
 	/**
 	 * An unique identifier of the attribute in
@@ -125,18 +157,37 @@ public class Category
 	{
 		private String id;
 		private CategoryId category;
-		private Entity entity;
+		private Entity.Builder b = Entity.builder();
+        private String defaultIssuer;
+
+        private Builder(){
+        }
 
 		private Builder(CategoryId category){
 			Preconditions.checkNotNull(category);
 			this.category = category;
 		}
 
-		private Builder(){
-		}
+        /**
+         * A default issuer is used by this builder
+         * to set an issuer on the attributes created
+         * via fluent attribute creation methods
+         *
+         * @param issuer an default issuer
+         * @return this builder reference
+         */
+        public Builder defaultIssuer(String issuer){
+            this.defaultIssuer = defaultIssuer;
+            return this;
+        }
 
-		public Builder entity(Entity entity){
-			this.entity = entity;
+        public Builder noDefaultIssuer(){
+            this.defaultIssuer = null;
+            return this;
+        }
+
+        public Builder entity(Entity entity){
+			b.copyOf(entity);
 			return this;
 		}
 
@@ -149,9 +200,18 @@ public class Category
 			Preconditions.checkNotNull(a);
 			id(a.getId());
 			category(a.getCategoryId());
-			entity(Entity.builder().copyOf(a.entity, f).build());
+			b.copyOf(a.entity, f);
 			return this;
 		}
+
+        public Builder copyOf(Category a,
+                              Function<Attribute, Attribute> f){
+            Preconditions.checkNotNull(a);
+            id(a.getId());
+            category(a.getCategoryId());
+            b.copyOf(a.entity, f);
+            return this;
+        }
 
 		public Builder id(String id){
 			this.id = id;

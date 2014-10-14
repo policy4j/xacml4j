@@ -26,13 +26,17 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -64,7 +68,7 @@ public class JsonRequestUnmarshallerTest {
 		marshaller = new JsonRequestContextMarshaller();
 	}
 
-	@Test
+    @Test
 	public void testXacmlJsonRequestRoundtrip() throws Exception {
 		RequestContext reqIn = createTestRequest();
 		Object o = marshaller.marshal(reqIn);
@@ -73,9 +77,18 @@ public class JsonRequestUnmarshallerTest {
 		assertThat(reqOut, is(equalTo(reqIn)));
 	}
 
+    @Test
+    public void testXacmlRequestParse() throws Exception{
+        Reader input = new InputStreamReader(Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("xacml30-test-req01.json"));
+        RequestContext req = unmarshaller.unmarshal(input);
+        assertEquals(4, req.getAttributes().size());
+        assertEquals(3, req.getRequestReferences().size());
+    }
+
 	private RequestContext createTestRequest() throws Exception {
 		Category subjectAttributes = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.SubjectAccess()
 				.id("SubjectAttributes")
 				.entity(
 						Entity
@@ -96,7 +109,7 @@ public class JsonRequestUnmarshallerTest {
 						.build())
 				.build();
 		Category resourceAttributes = Category
-				.builder(Categories.RESOURCE)
+				.Resource()
 				.id("ResourceAttributes")
 				.entity(Entity
 						.builder()
@@ -105,7 +118,7 @@ public class JsonRequestUnmarshallerTest {
 								.includeInResult(true).value(StringExp.of("testResourceId")).build())).build())
 						.build();
 		Category actionAttributes = Category
-				.builder(Categories.ACTION)
+				.Action()
 				.entity(Entity
 						.builder()
 						.attributes(
@@ -113,7 +126,7 @@ public class JsonRequestUnmarshallerTest {
 								.includeInResult(false).value(StringExp.of("VIEW")).build())).build())
 				.build();
 		Category environmentAttributes = Category
-				.builder(Categories.ENVIRONMENT)
+				.Enviroment()
 				.id("EnvironmentAttributes")
 				.entity(Entity
 						.builder()
@@ -123,7 +136,7 @@ public class JsonRequestUnmarshallerTest {
 						.build())
 				.build();
 		Category subjectIntermAttributes = Category
-				.builder(Categories.SUBJECT_INTERMEDIARY)
+				.SubjectIntermediary()
 				.id("SubjectIntermediaryAttributes")
 				.entity(Entity
 						.builder()

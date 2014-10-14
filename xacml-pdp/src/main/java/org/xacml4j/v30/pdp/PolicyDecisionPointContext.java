@@ -55,14 +55,41 @@ public interface PolicyDecisionPointContext
 	 */
 	DecisionRule getDomainPolicy();
 
+    /**
+     * Gets {@link org.xacml4j.v30.xpath.XPathProvider}
+     *
+     * @return {@link org.xacml4j.v30.xpath.XPathProvider}
+     */
 	XPathProvider getXPathProvider();
 
+    /**
+     * Gets {@link org.xacml4j.v30.spi.pdp.PolicyDecisionCache}
+     *
+     * @return {@link org.xacml4j.v30.spi.pdp.PolicyDecisionCache}s
+     */
 	PolicyDecisionCache getDecisionCache();
 
+    /**
+     * Gets {@link org.xacml4j.v30.spi.audit.PolicyDecisionAuditor}
+     *
+     * @return {@link org.xacml4j.v30.spi.audit.PolicyDecisionAuditor}
+     */
 	PolicyDecisionAuditor getDecisionAuditor();
 
+    /**
+     * Invokes {@link org.xacml4j.v30.PolicyDecisionPoint}
+     * via {@link org.xacml4j.v30.pdp.PolicyDecisionPointContext}
+     *
+     * @param req a request context
+     * @return {@link org.xacml4j.v30.Result} a PDP decision result
+     */
 	Result requestDecision(RequestContext req);
 
+    /**
+     * Gets all {@link org.xacml4j.v30.pdp.AbstractRequestContextHandler}
+     *
+     * @return
+     */
 	RequestContextHandler getRequestHandlers();
 
 	boolean isDecisionCacheEnabled();

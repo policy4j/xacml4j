@@ -403,7 +403,7 @@ public interface TypeToXacml30 extends TypeCapability
 				XPathExp xpath = (XPathExp)v;
 				xacml30.setDataType(XacmlTypes.XPATH.getDataTypeId());
 				xacml30.getContent().add(xpath.getPath());
-				xacml30.getOtherAttributes().put(XPATH_CATEGORY_ATTR_NAME, xpath.getCategory().getId());
+				xacml30.getOtherAttributes().put(XPATH_CATEGORY_ATTR_NAME, xpath.getCategory().getName());
 				return xacml30;
 			}
 

@@ -26,6 +26,7 @@ package org.xacml4j.v30;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.google.common.base.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -41,11 +42,6 @@ import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
 /**
@@ -275,6 +271,14 @@ public final class Entity extends AttributeContainer
 			attributes(Collections2.filter(a.getAttributes(), f));
 			return this;
 		}
+
+        public Builder copyOf(Entity a,
+                              Function<Attribute, Attribute> f){
+            Preconditions.checkNotNull(a);
+            content(a.getContent());
+            attributes(Collections2.transform(a.getAttributes(), f));
+            return this;
+        }
 
 		@Override
 		protected Builder getThis() {

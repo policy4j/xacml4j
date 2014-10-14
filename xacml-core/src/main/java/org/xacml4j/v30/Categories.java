@@ -23,12 +23,14 @@ package org.xacml4j.v30;
  */
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import com.google.common.base.*;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableBiMap;
 
 public enum Categories implements CategoryId
 {
@@ -56,13 +58,26 @@ public enum Categories implements CategoryId
 
 	private static final Map<String, CategoryId> BY_ID = new HashMap<String, CategoryId>();
 
+
+    private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
+            ImmutableBiMap.<String, CategoryId>builder()
+                    .put("Action", Categories.ACTION)
+                    .put("Environment", Categories.ENVIRONMENT)
+                    .put("Resource", Categories.RESOURCE)
+                    .put("AccessSubject", Categories.SUBJECT_ACCESS)
+                    .put("Codebase", Categories.SUBJECT_CODEBASE)
+                    .put("IntermediarySubject", Categories.SUBJECT_INTERMEDIARY)
+                    .put("RecipientSubject", Categories.SUBJECT_RECIPIENT)
+                    .put("RequestingMachine", Categories.SUBJECT_REQUESTING_MACHINE)
+                    .build();
+
 	static
 	{
 		for(CategoryId category : EnumSet.allOf(Categories.class)){
-			BY_ID.put(category.getId(), category);
+			BY_ID.put(category.getName(), category);
 			CategoryId delegate = category.toDelegatedCategory();
 			if(delegate != null){
-				BY_ID.put(delegate.getId(), delegate);
+				BY_ID.put(delegate.getName(), delegate);
 			}
 		}
 	}
@@ -76,11 +91,17 @@ public enum Categories implements CategoryId
 	}
 
 	@Override
-	public String getId(){
+	public String getName(){
 		return categoryURI;
 	}
 
-	@Override
+    @Override
+    public String getShortName() {
+        String shortName = SHORT_NAMES.inverse().get(this);
+        return shortName == null? getName():shortName;
+    }
+
+    @Override
 	public boolean isDelegated() {
 		return delegated != null;
 	}
@@ -114,10 +135,31 @@ public enum Categories implements CategoryId
 		}
 		CategoryId c = BY_ID.get(v);
 		if(c == null){
-			c = new CustomCategory(v);
+            c = SHORT_NAMES.get(v);
+            if(c == null){
+                c = new CustomCategory(v);
+            }
 		}
 		return c;
 	}
+
+    public static CategoryId parse(Supplier<String> s)
+            throws XacmlSyntaxException
+    {
+        String v = s.get();
+        if(Strings.isNullOrEmpty(v)){
+            throw new XacmlSyntaxException("Given value can't be " +
+                    "converted to XACML CategoryId");
+        }
+        CategoryId c = BY_ID.get(v);
+        if(c == null){
+            c = SHORT_NAMES.get(v);
+            if(c == null){
+                c = new CustomCategory(v);
+            }
+        }
+        return c;
+    }
 
 	public static CategoryId parse(URI categoryUri) throws XacmlSyntaxException{
 		Preconditions.checkArgument(categoryUri != null);
@@ -150,7 +192,46 @@ public enum Categories implements CategoryId
 		return DELEGATED_CATEGORY_PREFIX + categoryURI;
 	}
 
-	private static class CustomCategory
+    /**
+     * Gets category name alias if its available
+     *
+     * @param id a category
+     * @return an optional category short alias
+     */
+    public static Optional<String> getShortName(CategoryId id){
+        return Optional.fromNullable(SHORT_NAMES.inverse().get(id.getName()));
+    }
+
+    /**
+     * Gets all short names available for categories
+     *
+     * @return an iterator over short category names
+     */
+    public static Iterable<String> getCategoryShortNames(){
+        return SHORT_NAMES.keySet();
+    }
+
+
+    public static Collection<Category> getDefaultCategories(final Iterable<Category> categories){
+        return FluentIterable.from(categories).filter(new Predicate<Category>() {
+            @Override
+            public boolean apply(Category category) {
+                return SHORT_NAMES.inverse().containsKey(category.getCategoryId());
+            }
+        }).toList();
+    }
+
+    public static Collection<Category> getCustomCategories(final Iterable<Category> categories){
+        return FluentIterable.from(categories).filter(new Predicate<Category>() {
+            @Override
+            public boolean apply(Category category) {
+                return !SHORT_NAMES.inverse().containsKey(category.getCategoryId());
+            }
+        }).toList();
+    }
+
+
+    private static class CustomCategory
 		implements CategoryId
 	{
 		private String categoryURI;
@@ -166,11 +247,17 @@ public enum Categories implements CategoryId
 		}
 
 		@Override
-		public String getId(){
+		public String getName(){
 			return categoryURI;
 		}
 
-		@Override
+        @Override
+        public String getShortName() {
+            String shortName = SHORT_NAMES.inverse().get(this);
+            return shortName == null? getName():shortName;
+        }
+
+        @Override
 		public boolean isDelegated() {
 			return delegated == null;
 		}
@@ -194,7 +281,7 @@ public enum Categories implements CategoryId
 				return false;
 			}
 			CategoryId c = (CategoryId)obj;
-			return c.getId().equals(categoryURI);
+			return c.getName().equals(categoryURI);
 		}
 
 		@Override

@@ -100,7 +100,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	}
 
 	/**
-	 * Gets advice expressions in this rule
+	 * Gets advices expressions in this rule
 	 *
 	 * @return a collection of {@link AdviceExpression}
 	 */
@@ -139,7 +139,7 @@ abstract class BaseDecisionRule implements DecisionRule
 
 	/**
 	 * Evaluates all matching to the given
-	 * decision rule advice and obligations
+	 * decision rule advices and obligations
 	 *
 	 * @param context an evaluation context
 	 * @param result a rule evaluation result
@@ -175,7 +175,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	}
 
 	/**
-	 * Evaluates advice expressions matching given decision
+	 * Evaluates advices expressions matching given decision
 	 * {@link Decision} result
 	 *
 	 * @param context an evaluation context
@@ -195,7 +195,7 @@ abstract class BaseDecisionRule implements DecisionRule
 			for(AdviceExpression adviceExp : adviceExpressions){
 				if(adviceExp.isApplicable(result)){
 					if(log.isDebugEnabled()){
-						log.debug("Evaluating advice id=\"{}\"",
+						log.debug("Evaluating advices id=\"{}\"",
 								adviceExp.getId());
 					}
 					Advice a = adviceExp.evaluate(context);

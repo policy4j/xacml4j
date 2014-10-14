@@ -58,9 +58,9 @@ public class JsonEntityMarshallingTest
 	@Before
 	public void init(){
 		this.json = new GsonBuilder()
-				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
+                .registerTypeAdapter(Category.class, new CategoryAdapter())
 				.create();
 	}
 	

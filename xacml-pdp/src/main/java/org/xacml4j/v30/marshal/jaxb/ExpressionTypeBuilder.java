@@ -106,7 +106,7 @@ interface ExpressionTypeBuilder
  				AttributeDesignatorKey k = d.getReferenceKey();
  				AttributeDesignatorType exp = factory.createAttributeDesignatorType();
  				exp.setAttributeId(k.getAttributeId());
- 				exp.setCategory(k.getCategory().getId());
+ 				exp.setCategory(k.getCategory().getName());
  				exp.setIssuer(k.getIssuer());
  				exp.setDataType(k.getDataType().getDataTypeId());
  				exp.setMustBePresent(d.isMustBePresent());
@@ -121,7 +121,7 @@ interface ExpressionTypeBuilder
  				AttributeSelectorType exp = factory.createAttributeSelectorType();
  				AttributeSelectorKey k = s.getReferenceKey();
  				exp.setPath(k.getPath());
- 				exp.setCategory(k.getCategory().getId());
+ 				exp.setCategory(k.getCategory().getName());
  				exp.setDataType(k.getDataType().getDataTypeId());
  				exp.setMustBePresent(s.isMustBePresent());
  				exp.setContextSelectorId(k.getContextSelectorId());

@@ -1,4 +1,4 @@
-package org.xacml4j.v30;
+package org.xacml4j.v30.types;
 
 /*
  * #%L
@@ -22,25 +22,16 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.CharMatcher;
 
-public interface PolicyDecisionPoint extends PolicyDecisionPointMBean
+/**
+ *
+ */
+public class XacmlTypesTest
 {
-	/**
-	 * Gets policy decision point
-	 * unique identifier
-	 *
-	 * @return unique identifier
-	 */
-	String getId();
 
-	/**
-	 * Evaluates a given XACML {@link RequestContext}
-	 * and returns {@link org.xacml4j.v30.ResponseContext}
-	 *
-	 * @param request a XACML request
-	 * @return {@link org.xacml4j.v30.ResponseContext}
-	 */
-	ResponseContext decide(RequestContext request);
-
-	void close();
+    public void testIntegerMatcher(){
+        CharMatcher.DIGIT.matchesAllOf("120393");
+        CharMatcher.DIGIT.and(CharMatcher.anyOf("."));
+    }
 }

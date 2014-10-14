@@ -59,7 +59,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 				results.add(
 						Result
 						.indeterminate(e.getStatus())
-						.includeInResultAttr(request.getIncludeInResultAttributes())
+						.includeInResultAttributes(request.getIncludeInResultAttributes())
 						.build());
 			}
 		}

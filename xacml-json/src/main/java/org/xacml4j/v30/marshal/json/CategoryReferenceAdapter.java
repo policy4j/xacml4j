@@ -34,7 +34,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-final class AttributesReferenceAdapter implements JsonDeserializer<CategoryReference>,
+final class CategoryReferenceAdapter implements JsonDeserializer<CategoryReference>,
 		JsonSerializer<CategoryReference> {
 	@Override
 	public CategoryReference deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

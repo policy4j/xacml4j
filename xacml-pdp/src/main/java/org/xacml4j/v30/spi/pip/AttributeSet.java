@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.BagOfAttributeExp;
 
 import com.google.common.base.Objects;
@@ -179,17 +180,28 @@ public final class AttributeSet
 			return resolver(r.getDescriptor());
 		}
 
+        public Builder attribute(String id, AttributeExp value){
+            if(value == null){
+                return this;
+            }
+            return attribute(id, value.toBag());
+        }
 		public Builder attribute(String id, BagOfAttributeExp value){
 			Preconditions.checkNotNull(id);
 			Preconditions.checkNotNull(value);
 			AttributeDescriptor attrDesc = d.getAttribute(id);
-
+            if(value == null){
+                return this;
+            }
 			Preconditions.checkArgument(!(attrDesc == null),
 					"Attribute=\"%s\" is not defined by resolver=\"%s\"",
 					id, d.getId());
 			Preconditions.checkArgument(attrDesc.getDataType().equals(value.getDataType()),
 					"Given attribute=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",
 					id, value.getDataType(), attrDesc.getDataType());
+            if(value == null){
+                return this;
+            }
 			this.mapBuilder.put(id, value);
 			return this;
 		}

@@ -45,11 +45,11 @@ public class JsonResponseContextMarshaller implements Marshaller<ResponseContext
 				.registerTypeAdapter(Result.class, new ResultAdapter())
 				.registerTypeAdapter(Status.class, new StatusAdapter())
 				.registerTypeAdapter(StatusCode.class, new StatusCodeAdapter())
-				.registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
+                .registerTypeAdapter(Category.class, new CategoryAdapter())
+                .registerTypeAdapter(Obligation.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(AttributeAssignment.class, new AttributeAssignmentSerializer())
 				.registerTypeAdapter(Advice.class, new ObligationOrAdviceAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
-				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(IdReference.PolicyIdRef.class, new IdReferenceAdapter())
 				.registerTypeAdapter(IdReference.PolicySetIdRef.class, new IdReferenceAdapter()).create();
 	}

@@ -274,7 +274,7 @@ implements RequestUnmarshaller
 		{
 			org.oasis.xacml.v30.jaxb.AttributeValueType v30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
 			v30.getOtherAttributes().putAll(av.getOtherAttributes());
-			Optional<AttributeExpType> type = XacmlTypes.getType(a.getDataType());
+			Optional<? extends AttributeExpType> type = XacmlTypes.getType(a.getDataType());
 			Preconditions.checkState(type.isPresent());
 			Optional<TypeToXacml30> xacml30 = TypeToXacml30.Types.getIndex().get(type.get());
 			Preconditions.checkState(xacml30.isPresent());
@@ -284,7 +284,7 @@ implements RequestUnmarshaller
 					v30.getContent().add(
 							Xacml20XPathTo30Transformer.transform20PathTo30((String)av.getContent().get(0)));
 					v30.getOtherAttributes().put(TypeToXacml30.Types.XPATH_CATEGORY_ATTR_NAME,
-							Categories.RESOURCE.getId());
+							Categories.RESOURCE.getName());
 					return xacml30.get().fromXacml30(v30);
 				}
 				throw new XacmlSyntaxException("Not content found for xpath expression");

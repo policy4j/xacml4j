@@ -45,7 +45,7 @@ public class JsonResponseContextUnmarshallerTest {
 	@Test
 	public void testUnmarshal() throws Exception {
 		Reader input = new InputStreamReader(Thread.currentThread().getContextClassLoader()
-				.getResourceAsStream("xacml30-response.json"));
+				.getResourceAsStream("xacml30-test-res01.json"));
 		JsonResponseContextUnmarshaller unmarshaller = new JsonResponseContextUnmarshaller();
 		ResponseContext response = unmarshaller.unmarshal(input);
 		assertThat(response, is(createExpectedResponse()));
@@ -83,18 +83,18 @@ public class JsonResponseContextUnmarshallerTest {
 										.value(StringExp.of("same old apelsinas"))
 						                .build()))
 				.build());
-		resultBuilder.advice(ImmutableList.of(
-				Advice
-					.builder("advice1")
-					.attributes(
-							ImmutableList.<AttributeAssignment> of(
-								AttributeAssignment
-										.builder()
-										.id("test:advice1")
-										.value(StringExp.of("nespjauk i sulini"))
-										.build()))
-					.build(),
-				Advice.builder("advice2").build()));
+		resultBuilder.advices(ImmutableList.of(
+                Advice
+                        .builder("advice1")
+                        .attributes(
+                                ImmutableList.<AttributeAssignment>of(
+                                        AttributeAssignment
+                                                .builder()
+                                                .id("test:advice1")
+                                                .value(StringExp.of("nespjauk i sulini"))
+                                                .build()))
+                        .build(),
+                Advice.builder("advice2").build()));
 
 		Category subjectAttributes = Category
 				.builder(Categories.SUBJECT_ACCESS)
@@ -115,7 +115,7 @@ public class JsonResponseContextUnmarshallerTest {
 										.includeInResult(false).issuer("testIssuer")
 										.value(StringExp.of("TestDomain")).build())).build())
 						.build();
-		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
+		resultBuilder.includeInResultAttributes(ImmutableList.<Category>of(subjectAttributes));
 
 		resultBuilder.evaluatedPolicies(ImmutableList.<IdReference.PolicyIdRef> of(
                 IdReference.policyIdRef("policy1").version("1.0").build(),

@@ -41,7 +41,9 @@ public interface TypeCapability
 	
 	
 	/**
-	 * An index for type capabilities
+	 * An index for type capabilities,
+     * index can be queried via type reference
+     * or type identifier
 	 * 
 	 * @author Giedrius Trumpickas
 	 *

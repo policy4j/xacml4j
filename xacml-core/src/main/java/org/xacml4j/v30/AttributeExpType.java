@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.Function;
+
 import java.util.Set;
 
 public interface AttributeExpType extends ValueType
@@ -43,7 +45,7 @@ public interface AttributeExpType extends ValueType
 	String getShortDataTypeId();
 	
 	Set<String> getDataTypeIdAliases();
-	
+
 	/**
 	 * A factory method to create an 
 	 * {@link AttributeExp} of this type
@@ -53,6 +55,8 @@ public interface AttributeExpType extends ValueType
 	 * @return {@link AttributeExp} value
 	 */
 	AttributeExp of(Object v);
+
+    Function<Object, AttributeExp> getFactoryFunction();
 	
 	/**
 	 * Creates type representing collection of

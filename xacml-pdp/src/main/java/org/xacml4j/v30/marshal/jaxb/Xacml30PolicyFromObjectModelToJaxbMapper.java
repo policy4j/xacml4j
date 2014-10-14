@@ -387,7 +387,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		JAXBElement<?> expression = ExpressionTypeBuilder.Expressions.getBuilder(exp.getExpression()).from(exp.getExpression());
 		jaxbExp.setExpression(expression);
 		jaxbExp.setAttributeId(exp.getAttributeId());
-		jaxbExp.setCategory(exp.getCategory().getId());
+		jaxbExp.setCategory(exp.getCategory().getName());
 		jaxbExp.setIssuer(exp.getIssuer());
 		return jaxbExp;
 	}

@@ -29,6 +29,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Date;
 
+import static com.google.common.base.Preconditions.*;
 
 public final class DateExp extends BaseAttributeExp<Date>
 	implements Comparable<DateExp>
@@ -44,23 +45,23 @@ public final class DateExp extends BaseAttributeExp<Date>
 	}
 	
 	public static DateExp of(String v){
-		return new DateExp(Date.valueOf(v));
+		return new DateExp(Date.valueOf(checkNotNull(v)));
 	}
 	
 	public static DateExp of(StringExp v){
-		return of(v.getValue());
+		return of(checkNotNull(v).getValue());
 	}
 	
 	public static DateExp of(XMLGregorianCalendar v){
-		return new DateExp(Date.valueOf(v));
+		return new DateExp(Date.valueOf(checkNotNull(v)));
 	}
 	
 	public static DateExp of(Calendar v){
-		return new DateExp(Date.valueOf(v));
+		return new DateExp(Date.valueOf(checkNotNull(v)));
 	}
 	
 	public static DateExp of(Date v){
-		return new DateExp(v);
+		return new DateExp(checkNotNull(v));
 	}
 	
 	public StringExp toStringExp(){

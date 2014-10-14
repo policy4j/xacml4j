@@ -22,16 +22,18 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 
+import com.google.common.base.*;
+import com.google.common.collect.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.types.EntityExp;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableMultiset;
+import org.xacml4j.v30.types.TypeToString;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * A XACML request context attribute
@@ -40,6 +42,8 @@ import com.google.common.collect.ImmutableMultiset;
  */
 public class Attribute
 {
+    private final static Logger log = LoggerFactory.getLogger(Attribute.class);
+
 	private final String attributeId;
 	private final ImmutableMultiset<AttributeExp> values;
 	private final boolean includeInResult;
@@ -54,8 +58,12 @@ public class Attribute
 	}
 
 	public static Builder builder(String attributeId){
-		return new Builder(attributeId);
+		return new Builder().id(attributeId);
 	}
+
+    public static Builder builder(){
+        return new Builder();
+    }
 
 	/**
 	 * Gets this attribute issuer
@@ -88,16 +96,13 @@ public class Attribute
 		return attributeId;
 	}
 
-	/**
-	 * Gets attribute values as collection of
-	 * {@link AttributeExp} instances
-	 *
-	 * @return collection of {@link AttributeExp}
-	 * instances
-	 */
-	public Collection<AttributeExp> getValues(){
-		return values;
-	}
+    public boolean containsAll(Collection<AttributeExp> values){
+        return this.values.containsAll(values);
+    }
+
+    public boolean containsAll(AttributeExp ...values){
+        return this.values.containsAll(Arrays.asList(values));
+    }
 
 	/**
 	 * Gets all instances of {@link AttributeExp} by type
@@ -105,14 +110,20 @@ public class Attribute
 	 * @param type an attribute type
 	 * @return a collection of {@link AttributeExp} of given type
 	 */
-	public Collection<AttributeExp> getValuesByType(final AttributeExpType type) {
-		return Collections2.filter(values, new Predicate<AttributeExp>() {
-			@Override
-			public boolean apply(AttributeExp a) {
-				return a.getType().equals(type);
-			}
-		});
+	public Iterable<AttributeExp> getValuesByType(final AttributeExpType type) {
+		return FluentIterable
+                .from(values)
+                .filter(new Predicate<AttributeExp>() {
+                    @Override
+                    public boolean apply(AttributeExp a) {
+                        return a.getType().equals(type);
+                    }
+                });
 	}
+
+    public Collection<AttributeExp> getValues(){
+        return values;
+    }
 
 	@Override
 	public final String toString(){
@@ -149,19 +160,40 @@ public class Attribute
 	{
 		private String attributeId;
 		private String issuer;
-		private boolean includeInResult;
-		private ImmutableMultiset.Builder<AttributeExp> valueBuilder;
-
-		private Builder(String attributeId){
-			Preconditions.checkArgument(!Strings.isNullOrEmpty(attributeId));
-			this.attributeId = attributeId;
-			this.valueBuilder = ImmutableMultiset.builder();
-		}
+		private boolean includeInResult = false;
+		private ImmutableMultiset.Builder<AttributeExp> valueBuilder = ImmutableMultiset.builder();
 
 		public Builder issuer(String issuer){
 			this.issuer = Strings.emptyToNull(issuer);
 			return this;
 		}
+
+        public Builder id(String attributeId){
+            this.attributeId = Strings.emptyToNull(attributeId);
+            return this;
+        }
+
+        public Builder copyOf(Attribute attr, Predicate<AttributeExp> p){
+            this.issuer = attr.getIssuer();
+            this.attributeId = attr.getAttributeId();
+            this.valueBuilder.addAll(FluentIterable.from(attr.getValues()).filter(p));
+            return this;
+        }
+
+        public Builder copyOf(Attribute attr){
+            return copyOf(attr, Predicates.<AttributeExp>alwaysTrue());
+        }
+
+        public Builder copyOf(Attribute attr,
+                              Function<AttributeExp, AttributeExp> f)
+        {
+            Preconditions.checkNotNull(attr);
+            issuer(attr.getIssuer());
+            id(attr.getAttributeId());
+            includeInResult(attr.isIncludeInResult());
+            values(attr.getValues());
+            return this;
+        }
 
 		public Builder includeInResult(boolean include){
 			this.includeInResult = include;
@@ -174,52 +206,141 @@ public class Attribute
 		}
 
 		public Builder value(AttributeExp ...values){
-			Preconditions.checkNotNull(values);
-			for(AttributeExp v : values){
-				valueBuilder.add(v);
-			}
+           return values(FluentIterable.of(values));
+		}
+
+        public Builder values(Iterable<AttributeExp> values){
+            this.valueBuilder.addAll(FluentIterable
+                    .from(values)
+                    .filter(Predicates.notNull()));
+            return this;
+        }
+
+        private Builder values(Function<Object, AttributeExp> function,
+                                                 Iterable<? extends Object> values){
+            Iterable<AttributeExp> v = FluentIterable
+                    .from(values)
+                    .transform(function)
+                    .filter(Predicates.notNull());
+            this.valueBuilder.addAll(v);
+            return this;
+        }
+
+		public Builder entityValue(Entity ...values){
+            values(XacmlTypes.ENTITY, FluentIterable.of(values));
 			return this;
 		}
 
-		/**
-		 * Wraps given entities to via {@link EntityExp#of(Entity)}
-		 * and adds them to this entity builder
-		 *
-		 * @param values an array of entities
-		 * @return reference to this builder
-		 */
-		public Builder entity(Entity ...values){
-			Preconditions.checkNotNull(values);
-			for(Entity v : values){
-				valueBuilder.add(EntityExp.of(v));
-			}
-			return this;
-		}
+        public Builder entityValues(Iterable<Entity> it){
+            return values(XacmlTypes.ENTITY, it);
+        }
 
-		/**
-		 * Wraps given entities to via {@link EntityExp#of(Entity)}
-		 * and adds them to this entity builder
-		 *
-		 * @param it an iterator over collection of {@link Entity}
-		 * @return reference to this builder
-		 */
-		public Builder entities(Iterable<Entity> it){
-			Preconditions.checkNotNull(it);
-			for(Entity v : it){
-				valueBuilder.add(EntityExp.of(v));
-			}
-			return this;
-		}
+        public Builder stringValue(String ...values){
+            values(XacmlTypes.STRING, FluentIterable.of(values));
+            return this;
+        }
 
-		public Builder values(Iterable<AttributeExp> values){
-			Preconditions.checkNotNull(values);
-			for(AttributeExp v : values){
-				valueBuilder.add(v);
-			}
-			return this;
-		}
+        public Builder stringValues(Iterable<String> values){
+            values(XacmlTypes.STRING, values);
+            return this;
+        }
 
-		public Attribute build(){
+        public Builder booleanValue(Boolean ...values){
+            values(XacmlTypes.BOOLEAN, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder booleanValues(Iterable<String> values){
+            values(XacmlTypes.BOOLEAN, values);
+            return this;
+        }
+
+        public Builder intValue(Integer ...values){
+            values(XacmlTypes.INTEGER, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder intValues(Iterable<Integer> values){
+            values(XacmlTypes.INTEGER, values);
+            return this;
+        }
+
+        public Builder shortValue(Short ...values){
+            values(XacmlTypes.INTEGER, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder byteValue(Byte ...values){
+            values(XacmlTypes.INTEGER, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder dateTimeValue(Calendar...values){
+            values(XacmlTypes.DATETIME, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder dateTimeValue(String...values){
+            values(XacmlTypes.DATETIME, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder dateTimeValues(Iterable<?> values){
+            values(XacmlTypes.DATETIME, values);
+            return this;
+        }
+
+        public Builder dateValue(Calendar...values){
+            values(XacmlTypes.DATE, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder dateValue(String...values){
+            values(XacmlTypes.DATE, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder hexValue(byte[]...values){
+            values(XacmlTypes.HEXBINARY, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder base64Value(byte[]...values){
+            values(XacmlTypes.BASE64BINARY, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder ipAddressValue(String...values){
+            values(XacmlTypes.IPADDRESS, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder ipAddressValue(IPAddress...values){
+            values(XacmlTypes.IPADDRESS, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder ipAddressValues(Iterable<?> values){
+            values(XacmlTypes.IPADDRESS, values);
+            return this;
+        }
+
+        public Builder rfc822NameValue(RFC822Name...values){
+            values(XacmlTypes.RFC822NAME, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder rfc822NameValue(String...values){
+            values(XacmlTypes.RFC822NAME, FluentIterable.of(values));
+            return this;
+        }
+
+        public Builder rfc822NameValue(Iterable<?> values){
+            values(XacmlTypes.RFC822NAME, values);
+            return this;
+        }
+
+        public Attribute build(){
 			return new Attribute(this);
 		}
 	}

@@ -28,6 +28,7 @@ import java.util.Map;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -77,12 +78,16 @@ public class Result
 	 * @return decision builder
 	 */
 	public static Result.Builder ok(Decision d){
-		Preconditions.checkArgument(!d.isIndeterminate());
+		Preconditions.checkArgument(!d.isIndeterminate(),
+                "Given decision value=\"%s\" can NOT be " +
+                        "used with OK response", d);
 		return new Result.Builder().decision(d).status(Status.ok().build());
 	}
 
 	public static Result.Builder indeterminate(Status status){
-		Preconditions.checkArgument(status.isFailure());
+		Preconditions.checkArgument(status.isFailure(),
+                "Given status value=\"%s\" can NOT be " +
+                        "used with INDETERMINATE response", status);
 		return new Result.Builder().decision(Decision.INDETERMINATE).status(status);
 	}
 
@@ -168,20 +173,20 @@ public class Result
 	}
 
 	/**
-	 * Returns a collection of advice that provide supplemental
+	 * Returns a collection of advices that provide supplemental
 	 * information to the PEP. If the PEP does not understand
-	 * an advice, the PEP may safely ignore the advice.
+	 * an advices, the PEP may safely ignore the advices.
 	 *
-	 * @return a collection of associated advice
+	 * @return a collection of associated advices
 	 */
 	public Collection<Advice> getAssociatedAdvice(){
 		return associatedAdvice.values();
 	}
 
 	/**
-	 * Gets associated advice via advice identifier
+	 * Gets associated advices via advices identifier
 	 *
-	 * @param adviceId an advice identifier
+	 * @param adviceId an advices identifier
 	 * @return {@link Advice}
 	 */
 	public Advice getAssociatedAdvice(String adviceId){
@@ -264,23 +269,35 @@ public class Result
 			return this;
 		}
 
-		public Builder includeInResultAttr(Iterable<Category> attributes){
+        public Builder includeInResultAttribute(Category... categories){
+            return includeInResultAttributes(FluentIterable.of(categories));
+        }
+
+		public Builder includeInResultAttributes(Iterable<Category> attributes){
+            if(attributes == null){
+                return this;
+            }
 			for(Category a : attributes){
 				includeInResultAttributes.put(a.getCategoryId(), a);
 			}
 			return this;
 		}
 
-		public Builder resolvedAttr(Iterable<Category> attributes){
+		public Builder resolvedAttribute(Iterable<Category> attributes){
+            if(attributes == null){
+                return this;
+            }
 			for(Category a : attributes){
 				resolvedAttributes.put(a.getCategoryId(), a);
 			}
 			return this;
 		}
 
-		public Builder referencedPolicy(IdReference ... refs)
+		public Builder evaluatedPolicy(IdReference... refs)
 		{
-			Preconditions.checkNotNull(refs);
+            if(refs == null){
+                return this;
+            }
 			for(IdReference ref : refs){
 				Preconditions.checkNotNull(ref);
 				this.policyReferences.add(ref);
@@ -290,7 +307,9 @@ public class Result
 
 		public Builder evaluatedPolicies(Iterable<? extends IdReference> refs)
 		{
-			Preconditions.checkNotNull(refs);
+            if(refs == null){
+                return this;
+            }
 			for(IdReference ref : refs){
 				Preconditions.checkNotNull(ref);
 				this.policyReferences.add(ref);
@@ -298,21 +317,30 @@ public class Result
 			return this;
 		}
 
-		public Builder advice(Iterable<Advice> advice){
+		public Builder advices(Iterable<Advice> advice){
+            if(advice == null){
+                return this;
+            }
 			for(Advice a : advice){
 				addAdvice(a);
 			}
 			return this;
 		}
 
-		public Builder advice(Advice ... advices){
-			for(Advice a : advices){
+		public Builder advice(Advice ... advice){
+            if(advice == null){
+                return this;
+            }
+			for(Advice a : advice){
 				addAdvice(a);
 			}
 			return this;
 		}
 
 		public Builder obligation(Obligation ... obligations){
+            if(obligations == null){
+                return this;
+            }
 			for(Obligation o : obligations){
 				addObligation(o);
 			}
@@ -320,6 +348,9 @@ public class Result
 		}
 
 		public Builder obligation(Iterable<Obligation> obligations){
+            if(obligations == null){
+                return this;
+            }
 			for(Obligation o : obligations){
 				addObligation(o);
 			}

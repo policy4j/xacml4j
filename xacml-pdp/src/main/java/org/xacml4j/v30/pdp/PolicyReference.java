@@ -28,6 +28,11 @@ import org.xacml4j.v30.*;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * A reference to the {@link Policy}
+ *
+ * @author Giedrius Trumpickas
+ */
 public final class PolicyReference extends
 	BaseCompositeDecisionRuleIDReference implements PolicyElement
 {

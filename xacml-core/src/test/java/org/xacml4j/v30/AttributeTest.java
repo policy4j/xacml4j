@@ -27,14 +27,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute.Builder;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.*;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -66,8 +71,7 @@ public class AttributeTest
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
 		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertTrue(attr.containsAll(values));
 	}
 
 	@Test
@@ -100,27 +104,29 @@ public class AttributeTest
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
 		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertTrue(attr.containsAll(values));
 		assertFalse(attr.equals(attr1));
 		assertFalse(attr.equals(attr2));
 		assertTrue(attr.equals(attr3));
 	}
 
+    @Test
+    public void testBuilderValues(){
 
-	@Test
-	public void testCreateWithIdAndValuesVarArg()
-	{
-		Attribute attr = Attribute.builder("testId")
-				.value(IntegerExp.of(1), IntegerExp.of(2), IntegerExp.of(3), IntegerExp.of(2))
-				.build();
-		assertEquals("testId", attr.getAttributeId());
-		assertNull(attr.getIssuer());
-		assertFalse(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
-	}
+       Attribute a = Attribute
+                .builder("testId")
+                .value(StringExp.of("a"), null, StringExp.of("b"))
+                .build();
+
+       Attribute b = Attribute
+               .builder("testId")
+               .stringValue("a")
+               .stringValues(ImmutableList.of("b"))
+               .build();
+        assertTrue(b.containsAll(StringExp.of("a")));
+        assertTrue(b.containsAll(StringExp.of("b")));
+        assertEquals(a, b);
+    }
 
 	@Test
 	public void testBuilder()
@@ -131,5 +137,38 @@ public class AttributeTest
 		.value(StringExp.of("test2"), StringExp.of("test3"))
 		.build();
 	}
+
+
+    @Test
+    public void testCopyOf(){
+        Attribute a = Attribute.builder("testId")
+                .value(StringExp.of("1"), StringExp.of("2"), StringExp.of("3"), StringExp.of("4"))
+                .build();
+        assertEquals(a, Attribute.builder().copyOf(a).build());
+
+
+    }
+
+
+    @Test
+    public void testBuilderTypeValueMethods(){
+        Calendar now = Calendar.getInstance();
+        Attribute a =
+                Attribute.builder()
+                        .id("testId")
+                        .stringValue("a")
+                        .booleanValue(false)
+                        .dateTimeValue(now)
+                        .dateValue(now)
+                        .intValue(1, 2, 4, 5, 7)
+                        .ipAddressValue("192.168.1.2:80-443")
+                        .ipAddressValues(ImmutableList.of("111.168.1.2:80-443"))
+                        .entityValue(Entity.builder().build())
+                .build();
+        assertTrue(a.containsAll(StringExp.of("a")));
+        assertTrue(a.containsAll(DateTimeExp.of(now)));
+        assertTrue(a.containsAll(DateExp.of(now)));
+        assertTrue(a.containsAll(EntityExp.of(Entity.builder().build())));
+    }
 
 }

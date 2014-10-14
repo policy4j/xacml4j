@@ -27,11 +27,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.RequestReference;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.Marshaller;
 
 import com.google.gson.Gson;
@@ -45,10 +41,10 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 
 	public JsonRequestContextMarshaller() {
 		this.json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
-				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
+				.registerTypeAdapter(Category.class, new CategoryAdapter())
+                .registerTypeAdapter(CategoryReference.class, new CategoryReferenceAdapter()).create();
 	}
 
 	@Override
@@ -59,16 +55,13 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 	@Override
 	public void marshal(RequestContext source, Object target) throws IOException {
 		if (target instanceof Writer) {
-			json.toJson(source, RequestContext.class, new JsonWriter((Writer) target));
+			json.toJson(source, RequestContext.class,
+                    new JsonWriter((Writer) target));
 			return;
 		}
 		if (target instanceof OutputStream) {
-			json.toJson(source, RequestContext.class, new JsonWriter(new OutputStreamWriter((OutputStream) target)));
-			return;
-		}
-		if (target instanceof JsonObject) {
-			JsonObject o = (JsonObject) target;
-			o.add("Request", json.toJsonTree(source));
+			json.toJson(source, RequestContext.class,
+                    new JsonWriter(new OutputStreamWriter((OutputStream) target)));
 			return;
 		}
 		throw new IllegalArgumentException("Unsupported marshalling target");

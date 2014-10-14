@@ -23,14 +23,14 @@ package org.xacml4j.v30;
  */
 
 import java.util.Collection;
+import java.util.Collections;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Iterables;
+import com.google.common.base.*;
+import com.google.common.collect.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * Base class for XACML attribute containers
@@ -39,6 +39,8 @@ import com.google.common.collect.Iterables;
  */
 public class AttributeContainer
 {
+    private final static Logger log = LoggerFactory.getLogger(AttributeContainer.class);
+
 	protected final ImmutableMultimap<String, Attribute> attributes;
 
 	protected AttributeContainer(Builder<?> b){
@@ -176,10 +178,7 @@ public class AttributeContainer
 		private ImmutableListMultimap.Builder<String, Attribute> attrsBuilder = ImmutableListMultimap.builder();
 
 		public T attribute(Attribute... attrs) {
-			for(Attribute attr : attrs){
-				attrsBuilder.put(attr.getAttributeId(), attr);
-			}
-			return getThis();
+			return attributes(FluentIterable.of(attrs));
 		}
 
 		public T noAttributes() {
@@ -187,15 +186,36 @@ public class AttributeContainer
 			return getThis();
 		}
 
-		public T attributes(Iterable<Attribute> attrs) {
-			if(attrs == null){
-				return getThis();
-			}
-			for(Attribute attr : attrs){
-				attrsBuilder.put(attr.getAttributeId(), attr);
-			}
+		public T attributes(Iterable<Attribute> attrs,
+                            Predicate<Attribute> p) {
+            if(attrs == null){
+                return getThis();
+            }
+            FluentIterable<Attribute> fluent = FluentIterable.
+                    from(attrs)
+                    .filter(Predicates.and(Predicates.notNull(), p));
+            for(Attribute attr : fluent){
+                this.attrsBuilder.put(attr.getAttributeId(), attr);
+            }
 			return getThis();
-		}
+        }
+
+        public T attributes(Iterable<Attribute> attrs,
+                            Function<Attribute, Attribute> f) {
+            FluentIterable<Attribute> fluent = FluentIterable
+                    .from(attrs)
+                    .transform(f)
+                    .filter(Predicates.notNull());
+            for(Attribute attr : fluent){
+                this.attrsBuilder.put(attr.getAttributeId(), attr);
+            }
+            return getThis();
+        }
+
+        public T attributes(Iterable<Attribute> attrs) {
+            attributes(attrs, Predicates.<Attribute>alwaysTrue());
+            return getThis();
+        }
 
 		protected abstract T getThis();
 	}

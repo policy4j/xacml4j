@@ -192,7 +192,7 @@ public class Xacml20ResponseContextMarshaller
 			for(Obligation o : obligations){
 				obligationsv2.getObligation().add(create(o));
 			}
-			// Map advice to XACML 2.0 obligations
+			// Map advices to XACML 2.0 obligations
 			for(Advice a : advices){
 				obligationsv2.getObligation().add(create(a));
 			}

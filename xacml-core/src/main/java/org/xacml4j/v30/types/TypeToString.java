@@ -22,17 +22,19 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import com.google.common.base.Function;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 
 import com.google.common.base.Preconditions;
 
-public interface TypeToString extends TypeCapability 
+public interface TypeToString extends TypeCapability
 {
 	String toString(AttributeExp exp);
 	AttributeExp fromString(String v);
+    Function<String, AttributeExp> getFactoryFunction();
 	
-	public enum Types implements TypeToString
+	public enum Types implements TypeToString, Function<String, AttributeExp>
 	{
 		ANYURI(XacmlTypes.ANYURI){
 			@Override
@@ -233,14 +235,24 @@ public interface TypeToString extends TypeCapability
 		private final static TypeCapability.Index<TypeToString> INDEX = TypeCapability.Index.<TypeToString>build(values());
 		
 		private AttributeExpType type;
-		
+
 		private Types(AttributeExpType type){
-			this.type = type;	
-		}
+			this.type = type;
+       	}
 		
 		public AttributeExpType getType(){
 			return type;
 		}
+
+        @Override
+        public Function<String, AttributeExp> getFactoryFunction(){
+            return this;
+        }
+
+        @Override
+        public AttributeExp apply(String v){
+            return fromString(v);
+        }
 		
 		public static TypeCapability.Index<TypeToString> getIndex(){
 			return INDEX;

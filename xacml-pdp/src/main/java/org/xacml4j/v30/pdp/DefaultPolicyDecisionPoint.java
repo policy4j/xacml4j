@@ -186,8 +186,8 @@ final class DefaultPolicyDecisionPoint
 		if(decision == Decision.NOT_APPLICABLE){
 			return Result
 					.ok(decision)
-					.includeInResultAttr(includeInResult)
-					.resolvedAttr(resolvedAttributes)
+					.includeInResultAttributes(includeInResult)
+					.resolvedAttribute(resolvedAttributes)
 					.build();
 		}
 		if(decision.isIndeterminate()){
@@ -195,17 +195,17 @@ final class DefaultPolicyDecisionPoint
 					Status.processingError().build():context.getEvaluationStatus();
 			return Result
 					.builder(decision, status)
-					.includeInResultAttr(includeInResult)
-					.resolvedAttr(resolvedAttributes)
+					.includeInResultAttributes(includeInResult)
+					.resolvedAttribute(resolvedAttributes)
 					.build();
 		}
 		Iterable<Advice> advice = context.getMatchingAdvices(decision);
 		Iterable<Obligation> obligation = context.getMatchingObligations(decision);
 		Result.Builder b = Result.ok(decision)
-				.advice(advice)
+				.advices(advice)
 				.obligation(obligation)
-				.includeInResultAttr(includeInResult)
-				.resolvedAttr(resolvedAttributes);
+				.includeInResultAttributes(includeInResult)
+				.resolvedAttribute(resolvedAttributes);
 		if(returnPolicyIdList){
 			b.evaluatedPolicies(
 					context.getEvaluatedPolicies());

@@ -31,8 +31,8 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
         implements PolicyElement
 {
 	/**
-	 * Constructs advice expression with a given identifier
-	 * @param b an advice expression builder
+	 * Constructs advices expression with a given identifier
+	 * @param b an advices expression builder
 	 * @exception XacmlSyntaxException
 	 */
 	private AdviceExpression(Builder b){
@@ -40,7 +40,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	}
 
 	/**
-	 * Evaluates this advice expression by evaluating
+	 * Evaluates this advices expression by evaluating
 	 * all {@link AttributeAssignmentExpression}
 	 *
 	 * @param context an evaluation context

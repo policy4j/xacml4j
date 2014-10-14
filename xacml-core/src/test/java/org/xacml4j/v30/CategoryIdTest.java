@@ -29,8 +29,6 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CategoryId;
 
 
 public class CategoryIdTest
@@ -41,19 +39,19 @@ public class CategoryIdTest
 		CategoryId c1 = Categories.parse("test");
 		CategoryId c2 = Categories.parse("test");
 		assertEquals(c1, c2);
-		assertEquals("test", c1.getId());
+		assertEquals("test", c1.getName());
 		assertFalse(c1.isDelegated());
 		assertEquals("test", c1.toString());
 		CategoryId d1 = c1.toDelegatedCategory();
 		CategoryId d2 = c1.toDelegatedCategory();
 		assertEquals(d1, d2);
-		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d1.getId());
-		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d2.getId());
+		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d1.getName());
+		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d2.getName());
 		assertTrue(d1.isDelegated());
 		assertTrue(d2.isDelegated());
 		assertNull(d1.toDelegatedCategory());
 		assertNull(d2.toDelegatedCategory());
-		CategoryId c3 = Categories.parse(Categories.ENVIRONMENT.toDelegatedCategory().getId());
+		CategoryId c3 = Categories.parse(Categories.ENVIRONMENT.toDelegatedCategory().getName());
 		assertEquals(Categories.ENVIRONMENT.toDelegatedCategory(), c3);
 		assertSame(Categories.ENVIRONMENT.toDelegatedCategory(), c3);
 	}
@@ -62,7 +60,7 @@ public class CategoryIdTest
 	public void testDelegatedCategory() throws Exception
 	{
 		CategoryId c = Categories.parse("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory");
-		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory", c.getId());
+		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory", c.getName());
 		assertTrue(c.isDelegated());
 		assertNull(c.toDelegatedCategory());
 

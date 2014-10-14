@@ -29,7 +29,9 @@ public interface CategoryId
 	 *
 	 * @return a XACML category identifier
 	 */
-	String getId();
+	String getName();
+
+    String getShortName();
 
 	/**
 	 * Tests if this category is delegated

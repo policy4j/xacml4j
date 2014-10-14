@@ -25,6 +25,8 @@ package org.xacml4j.v30.types;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.BinaryValue;
 
+import static com.google.common.base.Preconditions.*;
+
 public final class Base64BinaryExp extends BaseAttributeExp<BinaryValue>
 {
 	private static final long serialVersionUID = 3298986540546649848L;
@@ -34,15 +36,15 @@ public final class Base64BinaryExp extends BaseAttributeExp<BinaryValue>
 	}
 	
 	public static Base64BinaryExp of(byte[] v){
-		return new Base64BinaryExp(BinaryValue.valueOf(v));
+		return new Base64BinaryExp(BinaryValue.valueOf(checkNotNull(v)));
 	}
 	
 	public static Base64BinaryExp of(String v){
-		return new Base64BinaryExp(BinaryValue.valueOfBase64Enc(v));
+		return new Base64BinaryExp(BinaryValue.valueOfBase64Enc(checkNotNull(v)));
 	}
 	
 	public static Base64BinaryExp of(BinaryValue v){
-		return new Base64BinaryExp(v);
+		return new Base64BinaryExp(checkNotNull(v));
 	}
 	
 	public StringExp toStringExp(){

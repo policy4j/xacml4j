@@ -22,7 +22,6 @@ package org.xacml4j.v30.marshal.json;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -33,6 +32,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.Marshaller;
@@ -57,8 +57,9 @@ public class JsonResponseContextMarshallerTest {
 	public void testMarshal() throws Exception {
 		ResponseContext reqIn = createTestResponse();
 		Object o = marshaller.marshal(reqIn);
+        System.out.print(o);
 		ResponseContext reqOut = unmarshaller.unmarshal(o);
-		assertThat(reqOut, is(equalTo(reqIn)));
+		assertEquals(reqIn, reqOut);
 	}
 
 	private ResponseContext createTestResponse() throws Exception {
@@ -95,17 +96,17 @@ public class JsonResponseContextMarshallerTest {
 										.value(StringExp.of("same old apelsinas"))
 						                .build()))
 				.build());
-		resultBuilder.advice(ImmutableList.of(
-				Advice.builder("advice1")
-						.attributes(
-								ImmutableList.<AttributeAssignment> of(
-										AttributeAssignment
-												.builder()
-												.id("test:advice1")
-												.value(StringExp.of("nespjauk i sulini"))
-												.build()))
-						.build(),
-				Advice.builder("advice2").build()));
+		resultBuilder.advices(ImmutableList.of(
+                Advice.builder("advice1")
+                        .attributes(
+                                ImmutableList.<AttributeAssignment>of(
+                                        AttributeAssignment
+                                                .builder()
+                                                .id("test:advice1")
+                                                .value(StringExp.of("nespjauk i sulini"))
+                                                .build()))
+                        .build(),
+                Advice.builder("advice2").build()));
 
 		Category subjectAttributes = Category
 				.builder(Categories.SUBJECT_ACCESS)
@@ -126,7 +127,7 @@ public class JsonResponseContextMarshallerTest {
 										.includeInResult(false).issuer("testIssuer")
 										.value(StringExp.of("TestDomain")).build())).build())
 						.build();
-		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
+		resultBuilder.includeInResultAttributes(ImmutableList.<Category>of(subjectAttributes));
 
 		resultBuilder.evaluatedPolicies(ImmutableList.<IdReference.PolicyIdRef> of(
                 IdReference.policyIdRef("policy1").version("1.0").build(),

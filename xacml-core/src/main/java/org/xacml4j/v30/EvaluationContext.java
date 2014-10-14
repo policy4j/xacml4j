@@ -38,7 +38,7 @@ public interface EvaluationContext
 	/**
 	 * Indicates that evaluation is performed
 	 * just to determine extended indeterminate
-	 * and there is no need to evaluate advice and
+	 * and there is no need to evaluate advices and
 	 * obligations in the decision rules
 	 *
 	 * @return {@code true} if context

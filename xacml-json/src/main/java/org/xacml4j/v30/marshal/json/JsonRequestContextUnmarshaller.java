@@ -25,12 +25,7 @@ package org.xacml4j.v30.marshal.json;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
 
 import com.google.gson.Gson;
@@ -43,10 +38,10 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	public JsonRequestContextUnmarshaller()
 	{
 		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
-				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
+                .registerTypeAdapter(Category.class, new CategoryAdapter())
+                .registerTypeAdapter(CategoryReference.class, new CategoryReferenceAdapter()).create();
 	}
 
 	@Override
