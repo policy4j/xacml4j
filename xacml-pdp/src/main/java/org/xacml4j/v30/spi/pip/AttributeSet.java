@@ -76,9 +76,9 @@ public final class AttributeSet
 	}
 
 	/**
-	 * Gets issuer for attributes in this set
+	 * Gets issuer for attribute in this set
 	 *
-	 * @return an issuer for attributes in this set
+	 * @return an issuer for attribute in this set
 	 */
 	public String getIssuer(){
 		return d.getIssuer();

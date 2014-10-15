@@ -137,7 +137,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.builder()
 				.returnPolicyIdList(false)
 				.combineDecision(false)
-				.attributes(attr0, attr1, attr2, attr3, attr4)
+				.attribute(attr0, attr1, attr2, attr3, attr4)
 				.reference(reference0, reference1)
 				.build();
 
@@ -199,7 +199,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(attr0, attr1)
+				.attribute(attr0, attr1)
 				.build();
 
 		expect(pdp.requestDecision(request)).andReturn(

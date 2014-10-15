@@ -57,7 +57,6 @@ public class JsonResponseContextMarshallerTest {
 	public void testMarshal() throws Exception {
 		ResponseContext reqIn = createTestResponse();
 		Object o = marshaller.marshal(reqIn);
-        System.out.print(o);
 		ResponseContext reqOut = unmarshaller.unmarshal(o);
 		assertEquals(reqIn, reqOut);
 	}

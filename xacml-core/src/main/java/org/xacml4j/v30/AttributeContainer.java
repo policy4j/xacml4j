@@ -59,11 +59,11 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Gets all attributes with a given identifier
+	 * Gets all attribute with a given identifier
 	 *
 	 * @param attributeId an attribute identifier
-	 * @return a collection of attributes if there is no
-	 * attributes with a given identifier empty collection
+	 * @return a collection of attribute if there is no
+	 * attribute with a given identifier empty collection
 	 * is returned
 	 */
 	public Collection<Attribute> getAttributes(String attributeId){
@@ -83,12 +83,12 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Gets all attributes with a given attribute
+	 * Gets all attribute with a given attribute
 	 * identifier and issuer
 	 *
 	 * @param attributeId an attribute identifier
 	 * @param issuer an attribute issuer
-	 * @return a collection of attributes with a given identifier
+	 * @return a collection of attribute with a given identifier
 	 * and given issuer
 	 */
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
@@ -155,7 +155,7 @@ public class AttributeContainer
 
 	/**
 	 * Gets all {@link AttributeExp} instances
-	 * contained in this attributes instance
+	 * contained in this attribute instance
 	 *
 	 * @param attributeId an attribute id
 	 * @param issuer an attribute issuer

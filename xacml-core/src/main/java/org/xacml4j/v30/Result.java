@@ -129,7 +129,7 @@ public class Result
 	}
 
 	/**
-	 * Gets a list of attributes that were part of the request.
+	 * Gets a list of attribute that were part of the request.
 	 *
 	 * @return a collection of {@link Category} instances
 	 */
@@ -138,9 +138,9 @@ public class Result
 	}
 
 	/**
-	 * Gets all resolved by PIP attributes from external sources during request context evaluation
+	 * Gets all resolved by PIP attribute from external sources during request context evaluation
 	 *
-	 * @return a collection of resolved attributes
+	 * @return a collection of resolved attribute
 	 */
 	public Collection<Category> getResolvedAttributes(){
 		return resolvedAttributes.values();

@@ -26,7 +26,7 @@ import com.google.common.base.*;
 
 
 /**
- * Represents a set of XACML attributes
+ * Represents a set of XACML attribute
  * of a given category
  *
  * @author Giedrius Trumpickas
@@ -109,6 +109,15 @@ public class Category
 		return id;
 	}
 
+    /**
+     * Test if this category is a default/well-known category
+     *
+     * @return {@link true} if this category is a well-known category
+     */
+    public boolean isDefault(){
+        return categoryId.isDefault();
+    }
+
 	public CategoryReference getReference(){
 		return ref;
 	}
@@ -170,7 +179,7 @@ public class Category
 
         /**
          * A default issuer is used by this builder
-         * to set an issuer on the attributes created
+         * to set an issuer on the attribute created
          * via fluent attribute creation methods
          *
          * @param issuer an default issuer

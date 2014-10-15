@@ -45,7 +45,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 import com.google.common.collect.Collections2;
 
 /**
- * An entity represents a collection of related attributes
+ * An entity represents a collection of related attribute
  *
  * @author Giedrius Trumpickas
  */
@@ -68,8 +68,8 @@ public final class Entity extends AttributeContainer
 
 	/**
 	 * Gets entity with all include
-	 * in result attributes
-	 * @return {@link Entity} with all include in result attributes
+	 * in result attribute
+	 * @return {@link Entity} with all include in result attribute
 	 */
 	public Entity getIncludeInResult(){
 		return Entity
@@ -227,7 +227,7 @@ public final class Entity extends AttributeContainer
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-		.add("attributes", attributes)
+		.add("attribute", attributes)
 		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
 		.toString();
 	}

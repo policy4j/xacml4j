@@ -104,18 +104,18 @@ public class DefaultPolicyInformationPoint
 				attributes = r.resolve(rContext);
 				if (attributes.isEmpty()) {
 					if (log.isDebugEnabled()) {
-						log.debug("Resolver id=\"{}\" failed to resolve attributes",
+						log.debug("Resolver id=\"{}\" failed to resolve attribute",
 								d.getId());
 					}
 					continue;
 				}
 				if (log.isDebugEnabled()) {
-					log.debug("Resolved attributes=\"{}\"",
+					log.debug("Resolved attribute=\"{}\"",
 							attributes);
 				}
 			} catch (Exception e) {
 				if (log.isDebugEnabled()) {
-					log.debug("Resolver id=\"{}\" failed to resolve attributes", d.getId(), e);
+					log.debug("Resolver id=\"{}\" failed to resolve attribute", d.getId(), e);
 				}
 				continue;
 			}

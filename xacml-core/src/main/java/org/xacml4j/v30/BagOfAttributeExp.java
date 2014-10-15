@@ -55,10 +55,10 @@ public final class BagOfAttributeExp
 	private final int hashCode;
 
 	/**
-	 * Constructs bag of attributes.
+	 * Constructs bag of attribute.
 	 *
 	 * @param type a bag attribute type
-	 * @param attributes a collection of attributes
+	 * @param attributes a collection of attribute
 	 */
 	BagOfAttributeExp(BagOfAttributeExpType type,
 			Iterable<AttributeExp> attributes){
@@ -111,7 +111,7 @@ public final class BagOfAttributeExp
 	 * Gets number of {@link AttributeExp}
 	 * instances in this bag
 	 *
-	 * @return number of attributes
+	 * @return number of attribute
 	 * in this bag
 	 */
 	public int size() {

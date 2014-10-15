@@ -29,7 +29,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
- * Represents a XACML bag of attributes type.
+ * Represents a XACML bag of attribute type.
  *
  * @author Giedrius Trumpickas
  */
@@ -40,7 +40,7 @@ public final class BagOfAttributeExpType implements ValueType
 	private AttributeExpType type;
 
 	/**
-	 * Constructs bag of attributes types with a given
+	 * Constructs bag of attribute types with a given
 	 * attribute type.
 	 *
 	 * @param type an attribute type
@@ -69,10 +69,10 @@ public final class BagOfAttributeExpType implements ValueType
 	}
 
 	/**
-	 * Creates bag from given collection of attributes.
+	 * Creates bag from given collection of attribute.
 	 *
-	 * @param attr a collection of attributes
-	 * @return {@link BagOfAttributeExp} containing given attributes
+	 * @param attr a collection of attribute
+	 * @return {@link BagOfAttributeExp} containing given attribute
 	 */
 	public BagOfAttributeExp create(
 			Iterable<AttributeExp> attr){
@@ -90,10 +90,10 @@ public final class BagOfAttributeExpType implements ValueType
 	}
 
 	/**
-	 * Creates bag from given array of attributes.
+	 * Creates bag from given array of attribute.
 	 *
-	 * @param attr an array of attributes
-	 * @return {@link BagOfAttributeExp} containing given attributes
+	 * @param attr an array of attribute
+	 * @return {@link BagOfAttributeExp} containing given attribute
 	 */
 	public BagOfAttributeExp create(AttributeExp ...attr){
 		return new BagOfAttributeExp(this, Arrays.asList(attr));

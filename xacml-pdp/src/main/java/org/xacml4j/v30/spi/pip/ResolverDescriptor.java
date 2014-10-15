@@ -60,14 +60,14 @@ public interface ResolverDescriptor
 	List<AttributeReferenceKey> getKeyRefs();
 
 	/**
-	 * Test if attributes resolved by resolver can be cached by PIP
+	 * Test if attribute resolved by resolver can be cached by PIP
 	 *
-	 * @return {@code true} if attributes can be cached
+	 * @return {@code true} if attribute can be cached
 	 */
 	boolean isCacheable();
 
 	/**
-	 * Gets preferred cache TTL for an attributes resolved via this resolver
+	 * Gets preferred cache TTL for an attribute resolved via this resolver
 	 *
 	 * @return a TTL in seconds or {@code 0}
 	 */

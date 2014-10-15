@@ -214,7 +214,7 @@ final class DefaultPolicyDecisionPoint
 	}
 
 	/**
-	 * Gets all attributes from an {@link EvaluationContext} which were resolved
+	 * Gets all attribute from an {@link EvaluationContext} which were resolved
 	 * and not present in the original access decision request
 	 *
 	 * @param context an evaluation context

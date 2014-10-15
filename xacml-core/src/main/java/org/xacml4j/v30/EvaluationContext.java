@@ -65,7 +65,7 @@ public interface EvaluationContext
 	/**
 	 * Gets an authorization decision cache TTL,
 	 * cache TTL is calculated based on
-	 * the attributes used in the authorization
+	 * the attribute used in the authorization
 	 * decision caching TTLs
 	 *
 	 * @return a decision cache TTL in seconds

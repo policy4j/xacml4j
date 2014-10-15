@@ -33,7 +33,7 @@ public interface AttributeResolverDescriptor
 {
 	/**
 	 * Gets an issuer identifier
-	 * for this resolver attributes
+	 * for this resolver attribute
 	 *
 	 * @return an issuer identifier
 	 */
@@ -59,10 +59,10 @@ public interface AttributeResolverDescriptor
 	AttributeDescriptor getAttribute(String attributeId);
 
 	/**
-	 * Gets number of attributes
+	 * Gets number of attribute
 	 * provided by this resolver
 	 *
-	 * @return a number of attributes
+	 * @return a number of attribute
 	 * provided by this resolver
 	 */
 	int getAttributesCount();
@@ -75,7 +75,7 @@ public interface AttributeResolverDescriptor
 	Set<String> getProvidedAttributeIds();
 
 	/**
-	 * Gets supported attributes
+	 * Gets supported attribute
 	 *
 	 * @return a map by the attribute id
 	 */

@@ -123,7 +123,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		// if there is no content
 		// specified ignore it and return
 		if(content == null){
-			throw new RequestSyntaxException("Request attributes category=\"%s\" content " +
+			throw new RequestSyntaxException("Request attribute category=\"%s\" content " +
 					"for selector=\"%s\" must be specified",
 					attribute.getCategoryId(), selector.getValue());
 		}

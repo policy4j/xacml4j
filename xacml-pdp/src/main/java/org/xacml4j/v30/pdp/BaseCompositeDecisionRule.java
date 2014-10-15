@@ -64,9 +64,9 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 
 	/**
-	 * Gets this rule issuer attributes
+	 * Gets this rule issuer attribute
 	 *
-	 * @return this rule issuer attributes
+	 * @return this rule issuer attribute
 	 */
 	public Entity getIssuer(){
 		return policyIssuer;

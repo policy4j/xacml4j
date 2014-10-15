@@ -25,66 +25,60 @@ package org.xacml4j.v30;
 import java.net.URI;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.google.common.base.*;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableMap;
 
 public enum Categories implements CategoryId
 {
 
-	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
-	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment"),
-	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource"),
-	OBLIGATION("urn:oasis:names:tc:xacml:3.0:attribute-category:obligation"),
-	STATUS_DETAIL("urn:oasis:names:tc:xacml:3.0:attribute-category:status-detail"),
-	SUBJECT_ACCESS("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"),
-	SUBJECT_CODEBASE("urn:oasis:names:tc:xacml:1.0:subject-category:codebase"),
-	SUBJECT_INTERMEDIARY("urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject"),
-	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject"),
-	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine"),
-	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority"),
-	DELEGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate"),
-	DELEGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info");
+	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action", "Action"),
+	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment", "Environment"),
+	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource", "Resource"),
+	OBLIGATION("urn:oasis:names:tc:xacml:3.0:attribute-category:obligation", "Obligation"),
+	STATUS_DETAIL("urn:oasis:names:tc:xacml:3.0:attribute-category:status-detail", "StatusDetail"),
+	SUBJECT_ACCESS("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject", "AccessSubject"),
+	SUBJECT_CODEBASE("urn:oasis:names:tc:xacml:1.0:subject-category:codebase", "Codebase"),
+	SUBJECT_INTERMEDIARY("urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject", "IntermediarySubject"),
+	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject", "Recipient"),
+	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine", "RequestingMachine"),
+	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority", "RoleEnablementAuthority"),
+	DELEGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate", "Delegate"),
+	DELEGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info", "DelegateInfo");
 
 
 	private String categoryURI;
-
 	private CategoryId delegated;
+    private String alias;
+    private boolean isDefaultCategory;
 
 	private static final String DELEGATED_CATEGORY_PREFIX= "urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:";
 
-	private static final Map<String, CategoryId> BY_ID = new HashMap<String, CategoryId>();
-
-
-    private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
-            ImmutableBiMap.<String, CategoryId>builder()
-                    .put("Action", Categories.ACTION)
-                    .put("Environment", Categories.ENVIRONMENT)
-                    .put("Resource", Categories.RESOURCE)
-                    .put("AccessSubject", Categories.SUBJECT_ACCESS)
-                    .put("Codebase", Categories.SUBJECT_CODEBASE)
-                    .put("IntermediarySubject", Categories.SUBJECT_INTERMEDIARY)
-                    .put("RecipientSubject", Categories.SUBJECT_RECIPIENT)
-                    .put("RequestingMachine", Categories.SUBJECT_REQUESTING_MACHINE)
-                    .build();
+	private static final ImmutableMap<String, CategoryId> BY_ID;
+    private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES;
 
 	static
 	{
+        ImmutableBiMap.Builder<String, CategoryId> shortNamesBuilder = ImmutableBiMap.builder();
+        ImmutableMap.Builder<String, CategoryId> byIdBuilder = ImmutableMap.builder();
 		for(CategoryId category : EnumSet.allOf(Categories.class)){
-			BY_ID.put(category.getName(), category);
+            byIdBuilder.put(category.getName(), category);
+            shortNamesBuilder.put(category.getShortName(), category);
 			CategoryId delegate = category.toDelegatedCategory();
 			if(delegate != null){
-				BY_ID.put(delegate.getName(), delegate);
+                byIdBuilder.put(delegate.getName(), delegate);
 			}
 		}
+        SHORT_NAMES = shortNamesBuilder.build();
+        BY_ID = byIdBuilder.build();
 	}
 
 	private Categories(
-			String categoryURI){
+			String categoryURI,  String alias){
 		this.categoryURI = categoryURI;
+        this.alias = alias;
 		if(!isDelegate(categoryURI)){
 			this.delegated = new CustomCategory(toDelegateURI(categoryURI));
 		}
@@ -97,8 +91,12 @@ public enum Categories implements CategoryId
 
     @Override
     public String getShortName() {
-        String shortName = SHORT_NAMES.inverse().get(this);
-        return shortName == null? getName():shortName;
+        return alias;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return true;
     }
 
     @Override
@@ -193,16 +191,6 @@ public enum Categories implements CategoryId
 	}
 
     /**
-     * Gets category name alias if its available
-     *
-     * @param id a category
-     * @return an optional category short alias
-     */
-    public static Optional<String> getShortName(CategoryId id){
-        return Optional.fromNullable(SHORT_NAMES.inverse().get(id.getName()));
-    }
-
-    /**
      * Gets all short names available for categories
      *
      * @return an iterator over short category names
@@ -211,26 +199,40 @@ public enum Categories implements CategoryId
         return SHORT_NAMES.keySet();
     }
 
-
+    /**
+     * Filters given iterable of categories by excluding custom categories
+     *
+     * @param categories an iterable over categories
+     * @return filtered iterable containing default categories
+     */
     public static Collection<Category> getDefaultCategories(final Iterable<Category> categories){
         return FluentIterable.from(categories).filter(new Predicate<Category>() {
             @Override
             public boolean apply(Category category) {
-                return SHORT_NAMES.inverse().containsKey(category.getCategoryId());
+                return category.getCategoryId().isDefault();
             }
         }).toList();
     }
 
+    /**
+     * Filters given iterable of categories by excluding default categories
+     *
+     * @param categories an iterable over categories
+     * @return filtered iterable containing custom categories
+     */
     public static Collection<Category> getCustomCategories(final Iterable<Category> categories){
         return FluentIterable.from(categories).filter(new Predicate<Category>() {
             @Override
             public boolean apply(Category category) {
-                return !SHORT_NAMES.inverse().containsKey(category.getCategoryId());
+                return !category.getCategoryId().isDefault();
             }
         }).toList();
     }
 
 
+    /**
+     * A custom category implementation
+     */
     private static class CustomCategory
 		implements CategoryId
 	{
@@ -253,8 +255,12 @@ public enum Categories implements CategoryId
 
         @Override
         public String getShortName() {
-            String shortName = SHORT_NAMES.inverse().get(this);
-            return shortName == null? getName():shortName;
+            return categoryURI;
+        }
+
+        @Override
+        public boolean isDefault() {
+            return false;
         }
 
         @Override

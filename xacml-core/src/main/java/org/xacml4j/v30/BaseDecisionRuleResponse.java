@@ -89,7 +89,7 @@ public abstract class BaseDecisionRuleResponse
 	public final String toString(){
 		return Objects.toStringHelper(this)
 		.add("id", id)
-		.add("attributes", attributes)
+		.add("attribute", attributes)
 		.add("fullFillOn", fulfillOn)
 		.toString();
 	}

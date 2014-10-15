@@ -24,7 +24,7 @@ package org.xacml4j.v30;
 
 
 /**
- * A well known XACML resource category attributes attributes
+ * A well known XACML resource category attribute attribute
  *
  * @author Giedrius Trumpickas
 

@@ -23,7 +23,7 @@ package org.xacml4j.v30;
  */
 
 /**
- * A well known XACML subject attributes
+ * A well known XACML subject attribute
  *
  * @author Giedrius Trumpickas
  *

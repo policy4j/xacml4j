@@ -138,7 +138,7 @@ implements RequestUnmarshaller
 			{
 				attributes.add(createEnvironment(req.getEnvironment()));
 			}
-			return RequestContext.builder().returnPolicyIdList(false).attributes(attributes).build();
+			return RequestContext.builder().returnPolicyIdList(false).categories(attributes).build();
 		}
 
 		private Collection<Category> normalize(Multimap<CategoryId, Category> attributes)

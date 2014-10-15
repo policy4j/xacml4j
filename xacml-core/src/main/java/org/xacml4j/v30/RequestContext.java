@@ -111,11 +111,11 @@ public class RequestContext
 	}
 
 	/**
-	 * Gets occurrence of the given category attributes
+	 * Gets occurrence of the given category attribute
 	 * in this request
 	 *
 	 * @param category a category
-	 * @return a non-negative number indicating attributes of given
+	 * @return a non-negative number indicating attribute of given
 	 * category occurrence in this request
 	 */
 	public int getCategoryOccurrences(CategoryId category){
@@ -169,13 +169,12 @@ public class RequestContext
 	/**
 	 * Resolves attribute reference to {@link Category}
 	 *
-	 * @param reference an attributes reference
+	 * @param reference an attribute reference
 	 * @return {@link Category} or {@code null} if
 	 * reference can not be resolved
 	 */
 	public Category getReferencedCategory(CategoryReference reference){
-		Preconditions.checkNotNull(reference);
-		return attributesByXmlId.get(reference.getReferenceId());
+		return reference != null?attributesByXmlId.get(reference.getReferenceId()):null;
 	}
 
 	/**
@@ -184,7 +183,7 @@ public class RequestContext
 	 *
 	 * @param categoryId an attribute category
 	 * @return a collection of {@link Category}, if
-	 * a request does not have attributes of a specified
+	 * a request does not have attribute of a specified
 	 * category an empty collection is returned
 	 */
 	public Collection<Category> getAttributes(CategoryId categoryId){
@@ -208,12 +207,12 @@ public class RequestContext
 	 *
 	 * @param category a category identifier
 	 * @return {@link Category} or {@code null}
-	 * if request does not have attributes of given category
+	 * if request does not have attribute of given category
 	 * @exception IllegalArgumentException if a request
 	 * has more than one instance of {@link Category}
 	 * of the requested category
 	 */
-	public Category getOnlyAttributes(CategoryId category){
+	public Category getOnlyCategory(CategoryId category){
 		Collection<Category> attributes = getAttributes(category);
 		return Iterables.getOnlyElement(attributes, null);
 	}
@@ -230,7 +229,7 @@ public class RequestContext
 	 * same {@link Category#getCategoryId()} value
 	 *
 	 * @return {@code true} if this request
-	 * has multiple attributes of same category
+	 * has multiple attribute of same category
 	 */
 	public boolean containsRepeatingCategories() {
 		for (CategoryId category : getCategories()) {
@@ -255,7 +254,7 @@ public class RequestContext
 	}
 
 	/**
-	 * Tests if a given request context contains attributes with a given
+	 * Tests if a given request context contains attribute with a given
 	 * identifier of the given type for any category
 	 *
 	 * @param attributeId an attribute identifier
@@ -314,7 +313,8 @@ public class RequestContext
 	 * @param dataType an attribute data type
 	 * @return {@link AttributeExp} or {@code null}
 	 */
-	public AttributeExp getAttributeValue(CategoryId categoryId,
+	public AttributeExp getAttributeValue(
+            CategoryId categoryId,
 			String attributeId,
 			AttributeExpType dataType){
 		return Iterables.getOnlyElement(
@@ -323,7 +323,7 @@ public class RequestContext
 
 	/**
 	 * Gets all {@link Category} instances
-	 * containing an attributes with {@link Attribute#isIncludeInResult()}
+	 * containing an attribute with {@link Attribute#isIncludeInResult()}
 	 * returning {@code true}
 	 *
 	 * @return a collection of {@link Category} instances
@@ -351,7 +351,7 @@ public class RequestContext
 		return Objects.toStringHelper(this)
 		.add("ReturnPolicyIDList", returnPolicyIdList)
 		.add("CombineDecision", combinedDecision)
-		.addValue(attributes.values())
+		.add("Attribute", attributes.values())
 		.add("RequestReferences", requestReferences)
 		.add("RequestDefaults", requestDefaults).toString();
 	}
@@ -427,14 +427,14 @@ public class RequestContext
 			combineDecision(req.isCombinedDecision());
 			returnPolicyIdList(req.isReturnPolicyIdList());
 			reqDefaults(req.getRequestDefaults());
-			attributes(req.getAttributes());
+			categories(req.getAttributes());
 			reference(req.getRequestReferences());
 			return this;
 		}
 
 		/**
 		 * Copies all state to this builder from
-		 * a given request context except attributes
+		 * a given request context except attribute
 		 *
 		 * @param req a request context
 		 * @return {@link Builder}
@@ -444,7 +444,7 @@ public class RequestContext
 			combineDecision(req.isCombinedDecision());
 			returnPolicyIdList(req.isReturnPolicyIdList());
 			reqDefaults(req.getRequestDefaults());
-			attributes(attributes);
+			categories(attributes);
 			return this;
 		}
 
@@ -453,7 +453,7 @@ public class RequestContext
 			return this;
 		}
 
-		public Builder attributes(Category ... attrs)
+		public Builder attribute(Category... attrs)
 		{
 			Preconditions.checkNotNull(attrs);
 			for(Category a : attrs){
@@ -462,7 +462,7 @@ public class RequestContext
 			return this;
 		}
 
-		public Builder attributes(Iterable<Category> attrs)
+		public Builder categories(Iterable<Category> attrs)
 		{
 			Preconditions.checkNotNull(attrs);
 			for(Category a : attrs){

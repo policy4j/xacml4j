@@ -123,7 +123,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext context = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject, resource)
+				.attribute(subject, resource)
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
@@ -190,7 +190,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext context = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject, resource)
+				.attribute(subject, resource)
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
@@ -232,13 +232,13 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attribute selector11 = r1.getOnlyEntity(Categories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPathExp.of("//md:record/md:patient[1]", Categories.RESOURCE),  Iterables.getOnlyElement(selector10.getValues()));
-		assertEquals(XPathExp.of("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
+		assertEquals(XPathExp.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
 
 		Attribute selector20 = r2.getOnlyEntity(Categories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 		Attribute selector21 = r2.getOnlyEntity(Categories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPathExp.of("//md:record/md:patient[2]", Categories.RESOURCE),  Iterables.getOnlyElement(selector20.getValues()));
-		assertEquals(XPathExp.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector21.getValues()));
+		assertEquals(XPathExp.of("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector21.getValues()));
 
 
 		Attribute selector30 = r3.getOnlyEntity(Categories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
@@ -277,7 +277,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 
 		RequestContext request = RequestContext.builder()
-				.attributes(resource, subject)
+				.attribute(resource, subject)
 				.build();
 
 		assertFalse(request.containsRepeatingCategories());
@@ -322,7 +322,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 
 		RequestContext request = RequestContext.builder()
-				.attributes(resource, subject)
+				.attribute(resource, subject)
 				.build();
 
 		assertFalse(request.containsRepeatingCategories());

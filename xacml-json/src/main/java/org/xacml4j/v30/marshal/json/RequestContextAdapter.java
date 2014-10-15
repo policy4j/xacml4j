@@ -92,7 +92,7 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		return RequestContext.builder()
 				.returnPolicyIdList(returnPolicyIdList)
 				.combineDecision(combinedDecision)
-				.attributes(categories)
+				.categories(categories)
 				.reference(reqRefs)
 				.build();
 	}
@@ -134,11 +134,9 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
         if (src.getId() != null) {
             o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
         }
-        Entity e = src.getEntity();
-        Optional<String> shortName = Categories.getShortName(src.getCategoryId());
-        o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, (shortName.isPresent())?shortName.get():src.getCategoryId().getName());
-        o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));
-        o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
+        o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getShortName());
+        o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(src.getEntity().getContent()));
+        o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(src.getEntity().getAttributes()));
         return o;
     }
 

@@ -31,12 +31,6 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.types.StringExp;
 
 
@@ -96,13 +90,13 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0)
+				.attribute(subject0, resource0)
 				.build();
 		assertFalse(request.containsRepeatingCategories());
 		request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0, resource1)
+				.attribute(subject0, resource0, resource1)
 				.build();
 		assertTrue(request.containsRepeatingCategories());
 	}
@@ -115,7 +109,7 @@ public class RequestContextTest
 		RequestContext request1 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0, resource1)
+				.attribute(subject0, resource0, resource1)
 				.build();
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getAttributes().size());
@@ -126,7 +120,7 @@ public class RequestContextTest
 		RequestContext request2 = RequestContext
 				.builder()
 				.returnPolicyIdList(true)
-				.attributes(subject0, resource0, resource1)
+				.attribute(subject0, resource0, resource1)
 				.build();
 
 		assertTrue(request2.isReturnPolicyIdList());
@@ -142,7 +136,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0, resource1)
+				.attribute(subject0, resource0, resource1)
 				.build();
 		Collection<Category> attr = request.getAttributes(Categories.RESOURCE);
 		assertEquals(2, attr.size());
@@ -159,7 +153,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0)
+				.attribute(subject0, resource0)
 				.build();
 		Collection<Category> attr = request.getAttributes(Categories.ACTION);
 		assertNotNull(attr);
@@ -171,9 +165,9 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0, resource1)
+				.attribute(subject0, resource0, resource1)
 				.build();
-		request.getOnlyAttributes(Categories.RESOURCE);
+		request.getOnlyCategory(Categories.RESOURCE);
 	}
 
 	@Test
@@ -182,9 +176,9 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0)
+				.attribute(subject0, resource0)
 				.build();
-		Category attr = request.getOnlyAttributes(Categories.RESOURCE);
+		Category attr = request.getOnlyCategory(Categories.RESOURCE);
 		assertEquals(resource0, attr);
 	}
 
@@ -193,7 +187,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0, resource1)
+				.attribute(subject0, resource0, resource1)
 				.build();
 		assertNotNull(request.getRequestDefaults());
 		assertEquals(XPathVersion.XPATH1, request.getRequestDefaults().getXPathVersion());
@@ -206,7 +200,7 @@ public class RequestContextTest
 		RequestContext request0 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, resource0)
+				.attribute(subject0, resource0)
 				.build();
 
 		assertEquals(0, request0.getIncludeInResultAttributes().size());
@@ -214,7 +208,7 @@ public class RequestContextTest
 		RequestContext request1 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, subject1, resource0, resource1)
+				.attribute(subject0, subject1, resource0, resource1)
 				.build();
 
 		assertEquals(2, request1.getIncludeInResultAttributes().size());
@@ -222,7 +216,7 @@ public class RequestContextTest
 		RequestContext request2 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attributes(subject0, subject1, resource0, resource1)
+				.attribute(subject0, subject1, resource0, resource1)
 				.build();
 		assertEquals(2, request2.getIncludeInResultAttributes().size());
 	}

@@ -61,7 +61,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							.build())
 							.includeInResultAttributes(request.getIncludeInResultAttributes()).build());
 		}
-		Category resource = request.getOnlyAttributes(Categories.RESOURCE);
+		Category resource = request.getOnlyCategory(Categories.RESOURCE);
 		if(resource == null){
 			return handleNext(request, context);
 		}

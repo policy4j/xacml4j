@@ -34,14 +34,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
@@ -157,8 +155,8 @@ public class JsonRequestUnmarshallerTest {
 				.combineDecision(false)
 				.returnPolicyIdList()
 				.reqDefaults(new RequestDefaults())
-				.attributes(subjectAttributes, resourceAttributes, actionAttributes, environmentAttributes,
-						subjectIntermAttributes).reference(requestRef1, requestRef2).build();
+				.attribute(subjectAttributes, resourceAttributes, actionAttributes, environmentAttributes,
+                        subjectIntermAttributes).reference(requestRef1, requestRef2).build();
 		return reqIn;
 	}
 

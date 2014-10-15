@@ -59,11 +59,11 @@ public class Obligation
 
 
 	/**
-	 * Combines this obligation attributes with a
-	 * given obligation attributes
+	 * Combines this obligation attribute with a
+	 * given obligation attribute
 	 *
 	 * @param o an obligation
-	 * @return a new obligation instance with combined attributes
+	 * @return a new obligation instance with combined attribute
 	 */
 	public Obligation merge(Obligation o)
 	{

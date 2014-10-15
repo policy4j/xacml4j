@@ -70,7 +70,7 @@ class Xacml30RequestContextFromJaxbToObjectModelMapper
 	public RequestContext create(RequestType req) throws XacmlSyntaxException
 	{
 		RequestContext.Builder b = RequestContext.builder();
-		b.attributes(create(req.getAttributes()));
+		b.categories(create(req.getAttributes()));
 		if(req.getMultiRequests() != null){
 			for(RequestReferenceType m : req.getMultiRequests().getRequestReference()){
 				b.reference(create(m));

@@ -81,7 +81,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	{
 		checkArgument(context.getDescriptor().getId().equals(descriptor.getId()));
 		if(log.isDebugEnabled()){
-			log.debug("Retrieving attributes via resolver id=\"{}\" name=\"{}\"",
+			log.debug("Retrieving attribute via resolver id=\"{}\" name=\"{}\"",
 					descriptor.getId(), descriptor.getName());
 		}
 		Timer.Context timerCtx = timer.time();

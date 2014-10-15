@@ -36,9 +36,9 @@ public class RequestReference
 	}
 
 	/**
-	 * Gets all referenced attributes
+	 * Gets all referenced attribute
 	 *
-	 * @return collection of referenced attributes
+	 * @return collection of referenced attribute
 	 */
 	public Collection<CategoryReference> getReferencedCategories(){
 		return references;
@@ -82,7 +82,7 @@ public class RequestReference
 						"Failed to resolve attribute reference",
 						ref.getReferenceId());
 			}
-			b.attributes();
+			b.attribute();
 		}
 		return b.build();
 	}

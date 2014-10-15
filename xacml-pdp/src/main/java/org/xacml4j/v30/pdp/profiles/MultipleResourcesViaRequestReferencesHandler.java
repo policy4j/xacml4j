@@ -79,7 +79,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			}
 			resolved.add(attributes);
 		}
-		return RequestContext.builder().attributes(resolved).returnPolicyIdList(req.isReturnPolicyIdList()).build();
+		return RequestContext.builder().categories(resolved).returnPolicyIdList(req.isReturnPolicyIdList()).build();
 	}
 
 }
