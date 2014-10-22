@@ -58,7 +58,7 @@ public class JsonResponseContextUnmarshallerTest {
 	@Test
 	public void testUnmarshal() throws Exception {
 		Reader input = new InputStreamReader(Thread.currentThread().getContextClassLoader()
-				.getResourceAsStream("xacml30-response.json"));
+				.getResourceAsStream("xacml30-test-res01.json"));
 		JsonResponseContextUnmarshaller unmarshaller = new JsonResponseContextUnmarshaller();
 		ResponseContext response = unmarshaller.unmarshal(input);
 		assertThat(response, is(createExpectedResponse()));
@@ -71,42 +71,42 @@ public class JsonResponseContextUnmarshallerTest {
 				.obligation(Obligation
 						.builder("obligation1")
 						.attributes(
-								ImmutableList.<AttributeAssignment> of(
+								ImmutableList.of(
 										AttributeAssignment.builder()
-												.id(SubjectAttributes.SUBJECT_ID.toString())
-												.category(Categories.ACTION)
-												.issuer("Vytenai")
-												.value(StringExp.of("obuolys"))
-												.build(),
+										                   .id(SubjectAttributes.SUBJECT_ID.toString())
+										                   .category(Categories.ACTION)
+										                   .issuer("Vytenai")
+										                   .value(StringExp.of("obuolys"))
+										                   .build(),
 										AttributeAssignment.builder()
-												.id(SubjectAttributes.KEY_INFO.toString())
-												.category(Categories.ACTION)
-												.issuer("ispanija")
-												.value(StringExp.of("apelsinas"))
-												.build()))
+										                   .id(SubjectAttributes.KEY_INFO.toString())
+										                   .category(Categories.ACTION)
+										                   .issuer("ispanija")
+										                   .value(StringExp.of("apelsinas"))
+										                   .build()))
 						.build());
 		resultBuilder.obligation(Obligation
 				.builder("obligation2")
 				.attributes(
-						ImmutableList.<AttributeAssignment> of(
+						ImmutableList.of(
 								AttributeAssignment
 										.builder()
 										.id("custom:attribute1")
 										.category("totaly:made:up:attribute-category1")
 										.value(StringExp.of("same old apelsinas"))
-						                .build()))
+										.build()))
 				.build());
 		resultBuilder.advice(ImmutableList.of(
 				Advice
-					.builder("advice1")
-					.attributes(
-							ImmutableList.<AttributeAssignment> of(
-								AttributeAssignment
-										.builder()
-										.id("test:advice1")
-										.value(StringExp.of("nespjauk i sulini"))
-										.build()))
-					.build(),
+						.builder("advice1")
+						.attributes(
+								ImmutableList.of(
+										AttributeAssignment
+												.builder()
+												.id("test:advice1")
+												.value(StringExp.of("nespjauk i sulini"))
+												.build()))
+						.build(),
 				Advice.builder("advice2").build()));
 
 		Category subjectAttributes = Category
@@ -116,7 +116,7 @@ public class JsonResponseContextUnmarshallerTest {
 						.builder()
 						.content(sampleContent1())
 						.attributes(
-						ImmutableList.<Attribute> of(
+						ImmutableList.of(
 								Attribute
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
@@ -125,15 +125,16 @@ public class JsonResponseContextUnmarshallerTest {
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
-										.includeInResult(false).issuer("testIssuer")
-										.value(StringExp.of("TestDomain")).build())).build())
+								         .includeInResult(false).issuer("testIssuer")
+								         .value(StringExp.of("TestDomain")).build())).build())
 						.build();
-		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
+		resultBuilder.includeInResultAttr(ImmutableList.of(subjectAttributes));
 
-		resultBuilder.evaluatedPolicies(ImmutableList.<PolicyIDReference> of(PolicyIDReference.builder("policy1")
-				.versionAsString("1.0").earliest("0.5").latest("1.5").build(), PolicyIDReference.builder("policy2").build()));
-		resultBuilder.evaluatedPolicies(ImmutableList.<PolicySetIDReference> of(
-				PolicySetIDReference.builder("policySet3").versionAsString("1.1").earliest("1.0").latest("1.9").build(),
+		resultBuilder.evaluatedPolicies(ImmutableList.of(
+				PolicyIDReference.builder("policy1").versionAsString("1.0").build(),
+				PolicyIDReference.builder("policy2").versionAsString("1.1").build()));
+		resultBuilder.evaluatedPolicies(ImmutableList.of(
+				PolicySetIDReference.builder("policySet3").versionAsString("1.1").build(),
 				PolicySetIDReference.builder("policySet4").versionAsString("2.0").build()));
 
 		return ResponseContext.builder().result(resultBuilder.build()).build();

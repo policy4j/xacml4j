@@ -36,7 +36,6 @@ import org.xacml4j.v30.marshal.Marshaller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 
 public class JsonRequestContextMarshaller implements Marshaller<RequestContext> {
@@ -44,11 +43,13 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 	private final Gson json;
 
 	public JsonRequestContextMarshaller() {
-		this.json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
-				.registerTypeAdapter(Category.class, new CategoryAdapter())
+		this.json = new GsonBuilder()
+				.registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeSerializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
+				.registerTypeAdapter(Category.class, new CategoryAdapter())
+                .registerTypeAdapter(CategoryReference.class, new CategoryReferenceAdapter())
+                .create();
 	}
 
 	@Override
@@ -59,16 +60,13 @@ public class JsonRequestContextMarshaller implements Marshaller<RequestContext> 
 	@Override
 	public void marshal(RequestContext source, Object target) throws IOException {
 		if (target instanceof Writer) {
-			json.toJson(source, RequestContext.class, new JsonWriter((Writer) target));
+			json.toJson(source, RequestContext.class,
+                    new JsonWriter((Writer) target));
 			return;
 		}
 		if (target instanceof OutputStream) {
-			json.toJson(source, RequestContext.class, new JsonWriter(new OutputStreamWriter((OutputStream) target)));
-			return;
-		}
-		if (target instanceof JsonObject) {
-			JsonObject o = (JsonObject) target;
-			o.add("Request", json.toJsonTree(source));
+			json.toJson(source, RequestContext.class,
+                    new JsonWriter(new OutputStreamWriter((OutputStream) target)));
 			return;
 		}
 		throw new IllegalArgumentException("Unsupported marshalling target");

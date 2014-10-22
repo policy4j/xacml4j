@@ -22,9 +22,7 @@ package org.xacml4j.v30.marshal.json;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
 
@@ -71,7 +69,7 @@ public class JsonResponseContextMarshallerTest {
 		ResponseContext reqIn = createTestResponse();
 		Object o = marshaller.marshal(reqIn);
 		ResponseContext reqOut = unmarshaller.unmarshal(o);
-		assertThat(reqOut, is(equalTo(reqIn)));
+		assertEquals(reqIn, reqOut);
 	}
 
 	private ResponseContext createTestResponse() throws Exception {
@@ -81,10 +79,10 @@ public class JsonResponseContextMarshallerTest {
 				.obligation(Obligation
 						.builder("obligation1")
 						.attributes(
-								ImmutableList.<AttributeAssignment> of(
+								ImmutableList.of(
 										AttributeAssignment
 												.builder()
-										        .id(SubjectAttributes.SUBJECT_ID.toString())
+												.id(SubjectAttributes.SUBJECT_ID.toString())
 												.category(Categories.ACTION)
 												.issuer("Vytenai")
 												.value(StringExp.of("obuolys"))
@@ -100,24 +98,24 @@ public class JsonResponseContextMarshallerTest {
 		resultBuilder.obligation(Obligation
 				.builder("obligation2")
 				.attributes(
-						ImmutableList.<AttributeAssignment> of(
+						ImmutableList.of(
 								AttributeAssignment
 										.builder()
 										.id("custom:attribute1")
 										.category(Categories.parse("totaly:made:up:attribute-category1"))
 										.value(StringExp.of("same old apelsinas"))
-						                .build()))
+										.build()))
 				.build());
 		resultBuilder.advice(ImmutableList.of(
 				Advice.builder("advice1")
-						.attributes(
-								ImmutableList.<AttributeAssignment> of(
-										AttributeAssignment
-												.builder()
-												.id("test:advice1")
-												.value(StringExp.of("nespjauk i sulini"))
-												.build()))
-						.build(),
+				      .attributes(
+						      ImmutableList.of(
+								      AttributeAssignment
+										      .builder()
+										      .id("test:advice1")
+										      .value(StringExp.of("nespjauk i sulini"))
+										      .build()))
+				      .build(),
 				Advice.builder("advice2").build()));
 
 		Category subjectAttributes = Category
@@ -127,7 +125,7 @@ public class JsonResponseContextMarshallerTest {
 						.builder()
 						.content(sampleContent1())
 						.attributes(
-						ImmutableList.<Attribute> of(
+						ImmutableList.of(
 								Attribute
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
@@ -136,16 +134,17 @@ public class JsonResponseContextMarshallerTest {
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
-										.includeInResult(false).issuer("testIssuer")
-										.value(StringExp.of("TestDomain")).build())).build())
+								         .includeInResult(false).issuer("testIssuer")
+								         .value(StringExp.of("TestDomain")).build())).build())
 						.build();
-		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
+		resultBuilder.includeInResultAttr(ImmutableList.of(subjectAttributes));
 
-		resultBuilder.evaluatedPolicies(ImmutableList.<PolicyIDReference> of(PolicyIDReference.builder("policy1")
-				.versionAsString("1.0").earliest("0.5").latest("1.5").build(), PolicyIDReference.builder("policy2").build()));
-		resultBuilder.evaluatedPolicies(ImmutableList.<PolicySetIDReference> of(
-				PolicySetIDReference.builder("policySet3").versionAsString("1.1").earliest("1.0").latest("1.9").build(),
-				PolicySetIDReference.builder("policySet4").versionAsString("2.0").build()));
+		resultBuilder.evaluatedPolicies(ImmutableList.of(
+				PolicyIDReference.builder().id("policy1").versionAsString("1.0").build(),
+				PolicyIDReference.builder().id("policy2").versionAsString("1.0").build()));
+		resultBuilder.evaluatedPolicies(ImmutableList.of(
+				PolicySetIDReference.builder().id("policySet3").versionAsString("1.1").build(),
+				PolicySetIDReference.builder().id("policySet4").versionAsString("2.0").build()));
 
 		return ResponseContext.builder().result(resultBuilder.build()).build();
 	}

@@ -32,6 +32,24 @@ public interface CategoryId
 	String getId();
 
 	/**
+	 * Gets category short name if its available,
+	 * if short name is not available, value
+	 * {@link this#getId()} is returned
+	 * @return
+	 */
+	String getShortName();
+
+	/**
+	 * Test if this category is a default category.
+	 * A default category is a category defined by
+	 * XACML 3.0 specification
+	 *
+	 * @return <code>true<code/> if this
+	 * category is a default category
+	 */
+	boolean isDefault();
+
+	/**
 	 * Tests if this category is delegated
 	 *
 	 * @return {@code true} if this

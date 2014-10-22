@@ -43,10 +43,10 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	public JsonRequestContextUnmarshaller()
 	{
 		json = new GsonBuilder().registerTypeAdapter(RequestContext.class, new RequestContextAdapter())
-				.registerTypeAdapter(Category.class, new CategoryAdapter())
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
-				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
+                .registerTypeAdapter(Category.class, new CategoryAdapter())
+                .registerTypeAdapter(CategoryReference.class, new CategoryReferenceAdapter()).create();
 	}
 
 	@Override

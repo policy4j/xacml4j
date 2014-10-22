@@ -23,61 +23,83 @@ package org.xacml4j.v30;
  */
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
+import com.google.common.base.Supplier;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableMap;
 
 public enum Categories implements CategoryId
 {
+	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action", "Action"),
+	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment", "Environment"),
+	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource", "Resource"),
+	OBLIGATION("urn:oasis:names:tc:xacml:3.0:attribute-category:obligation", "Obligation"),
+	STATUS_DETAIL("urn:oasis:names:tc:xacml:3.0:attribute-category:status-detail", "StatusDetail"),
+	SUBJECT_ACCESS("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject", "AccessSubject"),
+	SUBJECT_CODEBASE("urn:oasis:names:tc:xacml:1.0:subject-category:codebase", "Codebase"),
+	SUBJECT_INTERMEDIARY("urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject", "IntermediarySubject"),
+	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject", "Recipient"),
+	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine", "RequestingMachine"),
+	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority", "RoleEnablementAuthority"),
+	DELEGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate", "Delegate"),
+	DELEGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info", "DelegateInfo");
 
-	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action"),
-	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment"),
-	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource"),
-	OBLIGATION("urn:oasis:names:tc:xacml:3.0:attribute-category:obligation"),
-	STATUS_DETAIL("urn:oasis:names:tc:xacml:3.0:attribute-category:status-detail"),
-	SUBJECT_ACCESS("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"),
-	SUBJECT_CODEBASE("urn:oasis:names:tc:xacml:1.0:subject-category:codebase"),
-	SUBJECT_INTERMEDIARY("urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject"),
-	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject"),
-	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine"),
-	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority"),
-	DELEGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate"),
-	DELEGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info");
 
-
-	private String categoryURI;
-
-	private CategoryId delegated;
+	private final String categoryURI;
+	private final CategoryId delegated;
+	private final String alias;
 
 	private static final String DELEGATED_CATEGORY_PREFIX= "urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:";
 
-	private static final Map<String, CategoryId> BY_ID = new HashMap<String, CategoryId>();
+	private static final ImmutableMap<String, CategoryId> BY_ID;
+	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES;
 
 	static
 	{
+		ImmutableBiMap.Builder<String, CategoryId> shortNamesBuilder = ImmutableBiMap.builder();
+		ImmutableMap.Builder<String, CategoryId> byIdBuilder = ImmutableMap.builder();
 		for(CategoryId category : EnumSet.allOf(Categories.class)){
-			BY_ID.put(category.getId(), category);
+			byIdBuilder.put(category.getId(), category);
+			shortNamesBuilder.put(category.getShortName(), category);
 			CategoryId delegate = category.toDelegatedCategory();
 			if(delegate != null){
-				BY_ID.put(delegate.getId(), delegate);
+				byIdBuilder.put(delegate.getId(), delegate);
 			}
 		}
+		SHORT_NAMES = shortNamesBuilder.build();
+		BY_ID = byIdBuilder.build();
 	}
 
 	private Categories(
-			String categoryURI){
+			String categoryURI,  String alias){
 		this.categoryURI = categoryURI;
+		this.alias = alias;
 		if(!isDelegate(categoryURI)){
 			this.delegated = new CustomCategory(toDelegateURI(categoryURI));
+		} else {
+			this.delegated = null;
 		}
 	}
 
 	@Override
 	public String getId(){
 		return categoryURI;
+	}
+
+	@Override
+	public String getShortName() {
+		return alias;
+	}
+
+	@Override
+	public boolean isDefault() {
+		return true;
 	}
 
 	@Override
@@ -106,7 +128,7 @@ public enum Categories implements CategoryId
 	 * {@link Categories} value
 	 */
 	public static CategoryId parse(String v)
-		throws XacmlSyntaxException
+			throws XacmlSyntaxException
 	{
 		if(Strings.isNullOrEmpty(v)){
 			throw new XacmlSyntaxException("Given value can't be " +
@@ -114,13 +136,34 @@ public enum Categories implements CategoryId
 		}
 		CategoryId c = BY_ID.get(v);
 		if(c == null){
-			c = new CustomCategory(v);
+			c = SHORT_NAMES.get(v);
+			if(c == null){
+				c = new CustomCategory(v);
+			}
+		}
+		return c;
+	}
+
+	public static CategoryId parse(Supplier<String> s)
+			throws XacmlSyntaxException
+	{
+		String v = s.get();
+		if(Strings.isNullOrEmpty(v)){
+			throw new XacmlSyntaxException("Given value can't be " +
+					"converted to XACML CategoryId");
+		}
+		CategoryId c = BY_ID.get(v);
+		if(c == null){
+			c = SHORT_NAMES.get(v);
+			if(c == null){
+				c = new CustomCategory(v);
+			}
 		}
 		return c;
 	}
 
 	public static CategoryId parse(URI categoryUri) throws XacmlSyntaxException{
-		Preconditions.checkArgument(categoryUri != null);
+		Preconditions.checkArgument(categoryUri != null, "Category URI can not be null");
 		return parse(categoryUri.toString());
 	}
 
@@ -150,24 +193,73 @@ public enum Categories implements CategoryId
 		return DELEGATED_CATEGORY_PREFIX + categoryURI;
 	}
 
-	private static class CustomCategory
-		implements CategoryId
-	{
-		private String categoryURI;
-		private CategoryId delegated;
+	/**
+	 * Gets all short names available for categories
+	 *
+	 * @return an iterator over short category names
+	 */
+	public static Iterable<String> getCategoryShortNames(){
+		return SHORT_NAMES.keySet();
+	}
+
+	/**
+	 * Filters given iterable of categories by excluding custom categories
+	 *
+	 * @param categories an iterable over categories
+	 * @return filtered iterable containing default categories
+	 */
+	public static Collection<Category> getDefaultCategories(final Iterable<Category> categories){
+		return FluentIterable.from(categories).filter(new Predicate<Category>() {
+			@Override
+			public boolean apply(Category category) {
+				return category.getCategoryId().isDefault();
+			}
+		}).toImmutableList();
+	}
+
+	/**
+	 * Filters given iterable of categories by excluding default categories
+	 *
+	 * @param categories an iterable over categories
+	 * @return filtered iterable containing custom categories
+	 */
+	public static Collection<Category> getCustomCategories(final Iterable<Category> categories){
+		return FluentIterable.from(categories).filter(new Predicate<Category>() {
+			@Override
+			public boolean apply(Category category) {
+				return !category.getCategoryId().isDefault();
+			}
+		}).toImmutableList();
+	}
+
+
+	/**
+	 * A custom category implementation
+	 */
+	private static class CustomCategory implements CategoryId {
+		private final String categoryURI;
+		private final CategoryId delegated;
 
 		private CustomCategory(
 				String categoryURI)
 		{
 			this.categoryURI = categoryURI;
-			if(!Categories.isDelegate(categoryURI)){
-				this.delegated = new CustomCategory(toDelegateURI(categoryURI));
-			}
+			this.delegated = Categories.isDelegate(categoryURI) ? null : new CustomCategory(toDelegateURI(categoryURI));
 		}
 
 		@Override
 		public String getId(){
 			return categoryURI;
+		}
+
+		@Override
+		public String getShortName() {
+			return categoryURI;
+		}
+
+		@Override
+		public boolean isDefault() {
+			return false;
 		}
 
 		@Override
