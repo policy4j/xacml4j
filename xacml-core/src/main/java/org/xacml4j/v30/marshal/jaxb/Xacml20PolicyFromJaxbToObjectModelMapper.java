@@ -10,12 +10,12 @@ package org.xacml4j.v30.marshal.jaxb;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -62,6 +62,8 @@ import org.oasis.xacml.v20.jaxb.policy.TargetType;
 import org.oasis.xacml.v20.jaxb.policy.VariableDefinitionType;
 import org.oasis.xacml.v20.jaxb.policy.VariableReferenceType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.util.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
@@ -103,16 +105,19 @@ import com.google.common.collect.ImmutableMap;
 
 public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
 {
-	private final static Map<String, Categories> designatorMappings = ImmutableMap.of(
+	private static final Map<String, Categories> designatorMappings = ImmutableMap.of(
 			"ResourceAttributeDesignator",	Categories.RESOURCE,
 			"ActionAttributeDesignator", Categories.ACTION,
 			"EnvironmentAttributeDesignator", Categories.ENVIRONMENT);
 
-	private final static Map<EffectType, Effect> v20ToV30EffectMapping = ImmutableMap.of(
+	private static final Map<EffectType, Effect> v20ToV30EffectMapping = ImmutableMap.of(
 			EffectType.DENY, Effect.DENY,
 			EffectType.PERMIT, Effect.PERMIT);
 
-	private final static TypeCapability.Index<TypeToXacml30> INDEX = TypeCapability.Index.<TypeToXacml30>build(TypeToXacml30.Types.values());
+	private static final TypeCapability.Index<TypeToXacml30> INDEX = TypeCapability.Index.<TypeToXacml30>build(TypeToXacml30.Types.values());
+
+	/** Log */
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	public Xacml20PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions,
@@ -478,6 +483,9 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			throws XacmlSyntaxException {
 		Collection<AttributeAssignmentExpression> expressions = new LinkedList<AttributeAssignmentExpression>();
 		for (AttributeAssignmentType attr : exp) {
+			for (Object o : attr.getContent()) {
+				log.debug("AttributeAssignmentType content {}:{}", o.getClass(), o);
+			}
 			AttributeExp value = createValue(attr);
 			expressions.add(AttributeAssignmentExpression
 					.builder(attr.getAttributeId())
