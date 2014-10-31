@@ -10,12 +10,12 @@ package org.xacml4j.v30.marshal.jaxb;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -34,6 +34,7 @@ import java.util.Iterator;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Version;
@@ -43,6 +44,7 @@ import org.xacml4j.v30.marshal.PolicyMarshaller;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
 import org.xacml4j.v30.pdp.AttributeDesignator;
+import org.xacml4j.v30.pdp.AttributeSelector;
 import org.xacml4j.v30.pdp.MatchAnyOf;
 import org.xacml4j.v30.pdp.ObligationExpression;
 import org.xacml4j.v30.pdp.Policy;
@@ -52,6 +54,7 @@ import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
 
@@ -220,23 +223,31 @@ public class XacmlPolicyUnmarshallerTest
 		Policy p = getPolicy("xacml2.0-policy-with-obligations.xml");
 
 		Collection<ObligationExpression> obligations = p.getObligationExpressions();
-		assertThat(obligations.size(), is(2));
+		assertThat(obligations.size(), is(1));
 
 		ObligationExpression o1 = Iterables.get(obligations, 0);
-		assertThat(o1.getId(), is("urn:org:xacml4j:tests:policy-with-obligations:obligation1"));
+		assertThat(o1.getId(), is("urn:oasis:names:tc:xacml:example:obligation:email"));
 		Collection<AttributeAssignmentExpression> o1AttrExps = o1.getAttributeAssignmentExpressions();
-		assertThat(o1AttrExps.size(), is(1));
+		assertThat(o1AttrExps.size(), is(3));
+
 		AttributeAssignmentExpression o1AttrExp1 = Iterables.get(o1AttrExps, 0);
-		assertThat(o1AttrExp1.getAttributeId(), is("urn:org:xacml4j:tests:policy-with-obligations:obligation1:assignment1"));
-		assertThat(o1AttrExp1.getExpression(), instanceOf(StringExp.class));
+		assertThat(o1AttrExp1.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:mailto"));
+		assertThat(o1AttrExp1.getExpression(), instanceOf(AttributeSelector.class));
+		AttributeSelector attributeSelector = (AttributeSelector) o1AttrExp1.getExpression();
+		System.err.println(attributeSelector.getReferenceKey());
+		assertThat(attributeSelector.getReferenceKey().getPath(), is("//md:/record/md:patient/md:patientContact/md:email"));
+		assertThat(attributeSelector.getReferenceKey().getDataType(), is(XacmlTypes.STRING.getDataType()));
 
-		ObligationExpression o2 = Iterables.get(obligations, 1);
-		assertThat(o2.getId(), is("urn:org:xacml4j:tests:policy-with-obligations:obligation2"));
-		Collection<AttributeAssignmentExpression> o2AttrExps = o2.getAttributeAssignmentExpressions();
-		assertThat(o2AttrExps.size(), is(1));
-		AttributeAssignmentExpression o2AttrExp1 = Iterables.get(o2AttrExps, 0);
-		assertThat(o2AttrExp1.getAttributeId(), is("urn:org:xacml4j:tests:policy-with-obligations:obligation2:assignment1"));
-		assertThat(o2AttrExp1.getExpression(), instanceOf(AttributeDesignator.class));
+		AttributeAssignmentExpression o1AttrExp2 = Iterables.get(o1AttrExps, 1);
+		assertThat(o1AttrExp2.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));
+		assertThat(o1AttrExp2.getExpression(), instanceOf(StringExp.class));
 
+		AttributeAssignmentExpression o1AttrExp3 = Iterables.get(o1AttrExps, 2);
+		assertThat(o1AttrExp3.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));
+		assertThat(o1AttrExp3.getExpression(), instanceOf(AttributeDesignator.class));
+		AttributeDesignator attributeDesignator = (AttributeDesignator) o1AttrExp3.getExpression();
+		assertThat(attributeDesignator.getReferenceKey().getCategory().getId(), is(Categories.SUBJECT_ACCESS.getId()));
+		assertThat(attributeDesignator.getReferenceKey().getAttributeId(), is("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
+		assertThat(attributeDesignator.getReferenceKey().getDataType(), is(XacmlTypes.STRING.getDataType()));
 	}
 }
