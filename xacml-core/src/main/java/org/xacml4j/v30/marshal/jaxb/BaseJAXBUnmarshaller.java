@@ -29,9 +29,13 @@ import java.io.InputStream;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.ValidationEvent;
+import javax.xml.bind.ValidationEventHandler;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.Unmarshaller;
@@ -42,6 +46,9 @@ import com.google.common.base.Preconditions;
 public abstract class BaseJAXBUnmarshaller <T>
 	implements Unmarshaller<T>
 {
+	/** Log */
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	private final JAXBContext context;
 
 	protected BaseJAXBUnmarshaller(JAXBContext context){
@@ -55,6 +62,14 @@ public abstract class BaseJAXBUnmarshaller <T>
 		Preconditions.checkNotNull(source);
 		try{
 			javax.xml.bind.Unmarshaller u = context.createUnmarshaller();
+			u.setEventHandler(new ValidationEventHandler() {
+				@Override
+				public boolean handleEvent(ValidationEvent event) {
+					log.warn("{}", event);
+					return true;
+				}
+			});
+
 			JAXBElement<?> jaxbInstance = null;
 			if(source instanceof InputSource){
 				jaxbInstance = (JAXBElement<?>)u.unmarshal((InputSource)source);
