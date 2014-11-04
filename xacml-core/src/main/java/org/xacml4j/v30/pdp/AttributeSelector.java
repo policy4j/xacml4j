@@ -67,15 +67,12 @@ public class AttributeSelector extends
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof AttributeSelector)){
 			return false;
 		}
 		AttributeSelector s = (AttributeSelector)o;
 		return selectorKey.equals(s.selectorKey) &&
-		(isMustBePresent() ^ s.isMustBePresent());
+		isMustBePresent() == s.isMustBePresent();
 	}
 
 	@Override
@@ -113,7 +110,7 @@ public class AttributeSelector extends
 				&& isMustBePresent()){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve xpath=\"{}\", category=\"{}\"",
-						selectorKey.getPath(), 
+						selectorKey.getPath(),
 						selectorKey.getCategory());
 			}
 			throw new AttributeReferenceEvaluationException(selectorKey);

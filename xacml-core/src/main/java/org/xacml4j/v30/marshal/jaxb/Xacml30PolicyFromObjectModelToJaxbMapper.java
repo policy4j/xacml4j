@@ -88,31 +88,25 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 
 	private final static ObjectFactory factory = new ObjectFactory();
 
-	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings;
+	private final static Map<Effect, EffectType> nativeToJaxbEffectMappings = ImmutableMap.of(
+			Effect.DENY, EffectType.DENY,
+			Effect.PERMIT, EffectType.PERMIT);
 
-	static {
-		ImmutableMap.Builder<Effect, EffectType> nativeToJaxbB = ImmutableMap.builder();
-		nativeToJaxbB.put(Effect.DENY, EffectType.DENY);
-		nativeToJaxbB.put(Effect.PERMIT, EffectType.PERMIT);
-		nativeToJaxbEffectMappings = nativeToJaxbB.build();
-	}
-
-
-	public JAXBElement<?> toJaxb(CompositeDecisionRule d){
+	public JAXBElement<?> map(CompositeDecisionRule d){
 		if(d instanceof PolicySet){
-			return toJaxb((PolicySet)d);
+			return factory.createPolicySet(toJaxb((PolicySet)d));
 		}
 		if(d instanceof Policy){
-			return toJaxb((Policy)d);
+			return factory.createPolicy(toJaxb((Policy)d));
 		}
 		if(d instanceof Rule){
-			return toJaxb((Rule)d);
+			return factory.createRule(toJaxb((Rule)d));
 		}
 		if(d instanceof PolicyIDReference){
-			return toJaxb((PolicyIDReference)d);
+			return factory.createPolicyIdReference(toJaxb((PolicyIDReference)d));
 		}
 		if(d instanceof PolicySetIDReference){
-			return toJaxb((PolicySetIDReference)d);
+			return factory.createPolicySetIdReference(toJaxb((PolicySetIDReference)d));
 		}
 		throw new IllegalArgumentException(
 				String.format(
@@ -120,7 +114,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 						d.getClass().getName()));
 	}
 
-	private JAXBElement<?> toJaxb(PolicyIDReference ref)
+	private IdReferenceType toJaxb(PolicyIDReference ref)
 	{
 		IdReferenceType jaxbRef = factory.createIdReferenceType();
 		if(ref.getEarliestVersion() != null){
@@ -133,10 +127,10 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 			jaxbRef.setLatestVersion(ref.getVersion().getPattern());
 		}
 		jaxbRef.setValue(ref.getId());
-		return factory.createPolicyIdReference(jaxbRef);
+		return jaxbRef;
 	}
 
-	private JAXBElement<?> toJaxb(PolicySetIDReference ref)
+	private IdReferenceType toJaxb(PolicySetIDReference ref)
 	{
 		IdReferenceType jaxbRef = factory.createIdReferenceType();
 		if(ref.getEarliestVersion() != null){
@@ -149,10 +143,10 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 			jaxbRef.setLatestVersion(ref.getVersion().getPattern());
 		}
 		jaxbRef.setValue(ref.getId());
-		return factory.createPolicySetIdReference(jaxbRef);
+		return jaxbRef;
 	}
 
-	private JAXBElement<?> toJaxb(Rule rule){
+	private RuleType toJaxb(Rule rule){
 		if(log.isDebugEnabled()){
 			log.debug("Mapping Rule id=\"{}\"", rule.getId());
 		}
@@ -170,14 +164,15 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		}
 		jaxbRule.setAdviceExpressions(toJaxbAdvices(rule.getAdviceExpressions()));
 		jaxbRule.setObligationExpressions(toJaxbObligations(rule.getObligationExpressions()));
-		return factory.createRule(jaxbRule);
+		return jaxbRule;
 	}
 
-	private JAXBElement<?> toJaxb(Policy p){
+	private PolicyType toJaxb(Policy p){
 		if(log.isDebugEnabled()){
 			log.debug("Mapping Policy id=\"{}\"", p.getId());
 		}
 		PolicyType jaxbPolicy = factory.createPolicyType();
+		jaxbPolicy.setVersion(p.getVersion().getValue());
 		jaxbPolicy.setPolicyId(p.getId());
 		jaxbPolicy.setPolicyIssuer(toJaxb(p.getIssuer()));
 		jaxbPolicy.setPolicyDefaults(toJaxb(p.getDefaults()));
@@ -197,15 +192,16 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		for(Rule r : p.getRules()){
 			jaxbPolicy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().add(toJaxb(r));
 		}
-		return factory.createPolicy(jaxbPolicy);
+		return jaxbPolicy;
 	}
 
-	private JAXBElement<?> toJaxb(PolicySet ps){
+	private PolicySetType toJaxb(PolicySet ps){
 		if(log.isDebugEnabled()){
 			log.debug("Mapping PolicySet id=\"{}\"", ps.getId());
 		}
 		PolicySetType jaxbPolicySet = factory.createPolicySetType();
 		jaxbPolicySet.setPolicySetId(ps.getId());
+		jaxbPolicySet.setVersion(ps.getVersion().getValue());
 		jaxbPolicySet.setPolicyIssuer(toJaxb(ps.getIssuer()));
 		jaxbPolicySet.setPolicySetDefaults(toJaxb(ps.getDefaults()));
 		jaxbPolicySet.setDescription(ps.getDescription());
@@ -219,9 +215,9 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		jaxbPolicySet.setAdviceExpressions(toJaxbAdvices(ps.getAdviceExpressions()));
 		jaxbPolicySet.setObligationExpressions(toJaxbObligations(ps.getObligationExpressions()));
 		for(CompositeDecisionRule r : ps.getDecisions()){
-			jaxbPolicySet.getPolicySetOrPolicyOrPolicySetIdReference().add(toJaxb(r));
+			jaxbPolicySet.getPolicySetOrPolicyOrPolicySetIdReference().add(map(r));
 		}
-		return factory.createPolicySet(jaxbPolicySet);
+		return jaxbPolicySet;
 	}
 
 	private DefaultsType toJaxb(PolicyDefaults d)

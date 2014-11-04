@@ -106,15 +106,14 @@ public class AttributeDesignator extends AttributeReference
 			}
 			return getDataType().bagType().createEmpty();
 		}
-		if((v == null || v.isEmpty()) &&
-				isMustBePresent()){
+		if((v == null || v.isEmpty()) && isMustBePresent()){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to resolve attributeId=\"{}\", category=\"{}\"",
 						designatorKey.getAttributeId(), designatorKey.getCategory());
 			}
 			throw new AttributeReferenceEvaluationException(designatorKey);
 		}
-		return ((v == null)?getDataType().bagType().createEmpty():v);
+		return (v == null) ? getDataType().bagType().createEmpty() : v;
 	}
 
 	@Override
@@ -137,15 +136,12 @@ public class AttributeDesignator extends AttributeReference
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof AttributeDesignator)){
 			return false;
 		}
 		AttributeDesignator d = (AttributeDesignator)o;
 		return designatorKey.equals(d.designatorKey) &&
-		(isMustBePresent() ^ d.isMustBePresent());
+		isMustBePresent() == d.isMustBePresent();
 	}
 
 	@Override

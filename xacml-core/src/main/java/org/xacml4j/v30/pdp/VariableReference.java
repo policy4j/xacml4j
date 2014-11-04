@@ -34,7 +34,7 @@ import com.google.common.base.Preconditions;
 
 public class VariableReference implements Expression
 {
-	private VariableDefinition varDef;
+	private final VariableDefinition varDef;
 
 	/**
 	 * Constructs variable reference with a given definition.
@@ -103,13 +103,10 @@ public class VariableReference implements Expression
 
 	@Override
 	public boolean equals(Object o){
-		if(o == this){
+		if (o == this) {
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
-		if(!(o instanceof VariableReference)){
+		if (!(o instanceof VariableReference)) {
 			return false;
 		}
 		VariableReference r = (VariableReference)o;

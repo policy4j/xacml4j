@@ -71,28 +71,22 @@ public abstract class BaseJAXBUnmarshaller <T>
 			});
 
 			JAXBElement<?> jaxbInstance = null;
-			if(source instanceof InputSource){
-				jaxbInstance = (JAXBElement<?>)u.unmarshal((InputSource)source);
+			if (source instanceof InputSource) {
+				jaxbInstance = (JAXBElement<?>) u.unmarshal((InputSource) source);
+			} else if (source instanceof InputStream) {
+				jaxbInstance = (JAXBElement<?>) u.unmarshal((InputStream) source);
+			} else if (source instanceof JAXBElement<?>) {
+				jaxbInstance = (JAXBElement<?>) source;
+			} else if (source instanceof XMLStreamReader) {
+				jaxbInstance = (JAXBElement<?>) u.unmarshal((XMLStreamReader) source);
+			} else if (source instanceof Node) {
+				jaxbInstance = (JAXBElement<?>) u.unmarshal((Node) source);
+			} else if (source instanceof Source) {
+				jaxbInstance = (JAXBElement<?>) u.unmarshal((Source) source);
+			} else if (source instanceof byte[]) {
+				jaxbInstance = (JAXBElement<?>) u.unmarshal(new ByteArrayInputStream((byte[]) source));
 			}
-			if(source instanceof InputStream){
-				jaxbInstance = (JAXBElement<?>)u.unmarshal((InputStream)source);
-			}
-			if(source instanceof JAXBElement<?>){
-				jaxbInstance =  (JAXBElement<?>)source;
-			}
-			if(source instanceof XMLStreamReader){
-				jaxbInstance = (JAXBElement<?>)u.unmarshal((XMLStreamReader)source);
-			}
-			if(source instanceof Node){
-				jaxbInstance = (JAXBElement<?>)u.unmarshal((Node)source);
-			}
-			if(source instanceof Source){
-				jaxbInstance =  (JAXBElement<?>)u.unmarshal((Source)source);
-			}
-			if(source instanceof byte[]){
-				jaxbInstance = (JAXBElement<?>)u.unmarshal(new ByteArrayInputStream((byte[])source));
-			}
-			if(jaxbInstance != null){
+			if (jaxbInstance != null) {
 				return create(jaxbInstance);
 			}
 			throw new IllegalArgumentException(
