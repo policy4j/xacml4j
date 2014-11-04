@@ -28,12 +28,17 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.xml.bind.JAXBElement;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.oasis.xacml.v30.jaxb.PolicyType;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
@@ -206,16 +211,40 @@ public class XacmlPolicyUnmarshallerTest
 	public void testPolicy3() throws Exception
 	{
 		Policy p = getPolicy("Policy3.xml");
+		assertThat(p.getVersion().getValue(), is("1.0"));
 		assertThat(p.getVariableDefinitions().size(), is(5));
 		assertThat(p.getVariableDefinition("VAR01"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR02"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR03"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR04"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR05"), notNullValue());
-		Object jaxb = writer.marshal(p);
+		@SuppressWarnings("unchecked")
+		JAXBElement<PolicyType> jaxb = (JAXBElement<PolicyType>) writer.marshal(p);
+		assertThat(jaxb.getValue().getVersion(), is("1.0"));
 		Policy p1 = (Policy)reader.unmarshal(jaxb);
-//		FIXME: implement marshalling properly
-//		assertEquals(p, p1);
+		assertThat(p, is(p1));
+	}
+
+	@Test
+	public void testPolicyRoundTrip() throws Exception
+	{
+		Policy p = getPolicy("v30-test-policy.xml");
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		writer.marshal(p, os);
+		os.close();
+		Policy p1 = (Policy)reader.unmarshal(new ByteArrayInputStream(os.toByteArray()));
+		assertThat(p, is(p1));
+	}
+
+	@Test
+	public void testPolicySetRoundTrip() throws Exception
+	{
+		PolicySet p = getPolicy("PolicySet1.xml");
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		writer.marshal(p, os);
+		os.close();
+		PolicySet p1 = (PolicySet)reader.unmarshal(new ByteArrayInputStream(os.toByteArray()));
+		assertThat(p, is(p1));
 	}
 
 	@Test
