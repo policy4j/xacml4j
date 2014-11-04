@@ -84,8 +84,7 @@ public class Target implements PolicyElement
 			}
 		}
 		if(log.isDebugEnabled()){
-			log.debug("Target " +
-					"match state=\"{}\"", state);
+			log.debug("Target match state=\"{}\"", state);
 		}
 		return state;
 	}
