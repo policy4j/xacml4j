@@ -29,6 +29,7 @@ import org.oasis.xacml.v30.jaxb.AttributeType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.oasis.xacml.v30.jaxb.ContentType;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Attribute;
@@ -450,8 +451,13 @@ public interface TypeToXacml30 extends TypeCapability
 			@Override
 			public AttributeExp fromXacml30(AttributeValueType v) {
 				if(v.getContent().size() > 0){
+					final Object firstContent = v.getContent().get(0);
+					final String val = firstContent instanceof Element
+							? ((Element) firstContent).getTextContent()
+							: firstContent.toString();
+
 					return asTypeToString(TypeToString.Types.YEARMONTHDURATION)
-							.fromString((String) v.getContent().get(0));
+							.fromString(val);
 				}
 				throw new XacmlSyntaxException(
 						"No content found for the attribute value");

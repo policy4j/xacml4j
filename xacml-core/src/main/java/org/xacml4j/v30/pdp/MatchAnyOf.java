@@ -38,15 +38,15 @@ public class MatchAnyOf
 {
 	private final static Logger log = LoggerFactory.getLogger(MatchAnyOf.class);
 
-	private final Collection<MatchAllOf> anyOfs;
+	private final Collection<MatchAllOf> allOfs;
 
 	private MatchAnyOf(Builder b){
-		this.anyOfs = b.allMatchAllOfs.build();
-		Preconditions.checkArgument(anyOfs.size() >= 1);
+		this.allOfs = b.allMatchAllOfs.build();
+		Preconditions.checkArgument(allOfs.size() >= 1, "At least one MatchAllOf instance is required");
 	}
 
 	public Collection<MatchAllOf> getAllOf(){
-		return anyOfs;
+		return allOfs;
 	}
 
 	public static Builder builder(){
@@ -57,12 +57,11 @@ public class MatchAnyOf
 	public MatchResult match(EvaluationContext context)
 	{
 		MatchResult state = MatchResult.NOMATCH;
-		for(Matchable m : anyOfs){
+		for(Matchable m : allOfs){
 			MatchResult result = m.match(context);
 			if(result == MatchResult.INDETERMINATE){
 				if(log.isDebugEnabled()){
-					log.debug("AnyOf matchable " +
-							"match result=\"{}\"", result);
+					log.debug("AnyOf matchable match result=\"{}\"", result);
 				}
 				state = MatchResult.INDETERMINATE;
 				continue;
@@ -81,7 +80,7 @@ public class MatchAnyOf
 	@Override
 	public void accept(PolicyVisitor v) {
 		v.visitEnter(this);
-		for(Matchable m : anyOfs){
+		for(Matchable m : allOfs){
 			m.accept(v);
 		}
 		v.visitLeave(this);
@@ -90,13 +89,13 @@ public class MatchAnyOf
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-				.add("AnyOf", anyOfs)
+				.add("AllOf", allOfs)
 				.toString();
 	}
 
 	@Override
 	public int hashCode(){
-		return anyOfs.hashCode();
+		return allOfs.hashCode();
 	}
 
 	@Override
@@ -111,7 +110,7 @@ public class MatchAnyOf
 			return false;
 		}
 		MatchAnyOf m = (MatchAnyOf)o;
-		return anyOfs.equals(m.anyOfs);
+		return allOfs.equals(m.allOfs);
 	}
 
 

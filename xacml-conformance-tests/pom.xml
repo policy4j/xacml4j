@@ -10,7 +10,7 @@
 	<name>Xacml4J Conformance Tests</name>
 
 	<properties>
-		<license.excludes>**/oasis-xacml20-compat-test/*,**/rsa2008-interop/XacmlPolicySet*</license.excludes>
+		<license.excludes>**/oasis-xacml20-compat-test/*,**/rsa2008-interop/XacmlPolicySet*,**/Example_*/*</license.excludes>
 	</properties>
 
 	<dependencies>
