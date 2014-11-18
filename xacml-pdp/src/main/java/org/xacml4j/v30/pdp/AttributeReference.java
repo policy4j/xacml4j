@@ -32,7 +32,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 
 /**
- * A base class for XACML attribute references
+ * A base class for XACML category references
  * in the XACML policies
  *
  * @author Giedrius Trumpickas
@@ -42,9 +42,9 @@ public abstract class AttributeReference implements Expression
 	private final boolean mustBePresent;
 
 	/**
-	 * Constructs attribute reference
+	 * Constructs category references
 	 *
-	 * @param b attribute reference builder
+	 * @param b category references builder
 	 * data type
 	 */
 	protected AttributeReference(Builder<?> b){
@@ -57,15 +57,15 @@ public abstract class AttributeReference implements Expression
 	}
 
 	/**
-	 * Gets attribute reference key
+	 * Gets category references key
 	 *
-	 * @return an attribute reference key
+	 * @return an category references key
 	 */
 	public abstract AttributeReferenceKey getReferenceKey();
 
 	/**
-	 * Gets bag returned by this reference
-	 * attribute XACML primitive data type
+	 * Gets bag returned by this references
+	 * category XACML primitive data type
 	 *
 	 * @return {@link AttributeExpType}
 	 */
@@ -74,20 +74,20 @@ public abstract class AttributeReference implements Expression
 	}
 
 	/**
-	 * Gets attribute category.
+	 * Gets category category.
 	 *
-	 * @return attribute category
+	 * @return category category
 	 */
 	public CategoryId getCategory(){
 		return getReferenceKey().getCategory();
 	}
 
 	/**
-	 * Governs whether this reference evaluates
+	 * Governs whether this references evaluates
 	 * to an empty bag or {@link EvaluationException}
-	 * is thrown during this reference evaluation
+	 * is thrown during this references evaluation
 	 *
-	 * @return {@code true} if attribute
+	 * @return {@code true} if category
 	 * must be present
 	 */
 	public boolean isMustBePresent(){

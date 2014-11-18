@@ -101,12 +101,12 @@ public class AttributeSelector extends
 			if(isMustBePresent()){
 				throw e;
 			}
-			return getDataType().bagType().createEmpty();
+			return getDataType().bagType().emptyBag();
 		}catch(Exception e){
 			if(isMustBePresent()){
 				throw new AttributeReferenceEvaluationException(selectorKey);
 			}
-			return getDataType().bagType().createEmpty();
+			return getDataType().bagType().emptyBag();
 		}
 		if((v == null ||
 				v.isEmpty())
@@ -118,7 +118,7 @@ public class AttributeSelector extends
 			}
 			throw new AttributeReferenceEvaluationException(selectorKey);
 		}
-		return ((v == null)?getDataType().bagType().createEmpty():v);
+		return ((v == null)?getDataType().bagType().emptyBag():v);
 	}
 
 	public interface AttributeSelectorVisitor extends ExpressionVisitor

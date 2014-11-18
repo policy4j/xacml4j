@@ -29,9 +29,9 @@
       </Description>
       <Target/>
       <Condition>
-       <!-- True if hl7:radiology:dissented-subject-id NOTEQUALTO subject:subject-id -->
+       <!-- True if hl7:radiology:dissented-subject-attributeId NOTEQUALTO subject:subject-attributeId -->
        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:not">
-        <!-- True if hl7:radiology:dissented-subject-id EQUALTO subject:subject-id   -->
+        <!-- True if hl7:radiology:dissented-subject-attributeId EQUALTO subject:subject-attributeId   -->
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:any-of">
           <Function FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal"/>
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -56,7 +56,7 @@
     </Rule>
     <Obligations>
       <!-- These obligations provide specific instructions to PEP in the response -->
-      <!-- This obligation instructs the PEP to apply privacy constraints to      -->
+      <!-- This obligations instructs the PEP to apply privacy constraints to      -->
       <!--  user's responsibility for the data.                                   -->
       <Obligation
           ObligationId=

@@ -28,7 +28,6 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.FluentIterable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +85,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		}
 		Status status = context.deserialize(o.get(STATUS_PROPERTY), Status.class);
 		Result.Builder builder = Result.builder(decision, status);
-		builder.obligation(context.<List<Obligation>>deserialize(o.get(OBLIGATIONS_PROPERTY), OBLIGATIONS_TYPE));
+		builder.obligations(context.<List<Obligation>>deserialize(o.get(OBLIGATIONS_PROPERTY), OBLIGATIONS_TYPE));
 		builder.advices(context.<List<Advice>>deserialize(o.get(ASSOCIATED_ADVICE_PROPERTY), ADVICE_TYPE));
 		builder.includeInResultAttributes(context.<List<Category>>deserialize(o.get(CATEGORIES_PROPERTY), ATTRIBUTES_TYPE));
         for(String catId : Categories.getCategoryShortNames()){
@@ -171,20 +170,4 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
     private Collection<IdReference.PolicyIdRef> getPolicyIdRefs(Collection<? extends IdReference> ids){
         return FluentIterable.from(ids).filter(IdReference.PolicyIdRef.class).toList();
     }
-
-	private void splitPolicyIdentifiers(Collection<IdReference> policyIdentifiers,
-			List<IdReference.PolicyIdRef> policyIdReferences,
-            List<IdReference.PolicySetIdRef> policySetIdReferences) {
-		for (IdReference policyId : policyIdentifiers) {
-			if (policyId instanceof IdReference.PolicyIdRef) {
-				policyIdReferences.add((IdReference.PolicyIdRef) policyId);
-			} else if (policyId instanceof IdReference.PolicySetIdRef) {
-				policySetIdReferences.add((IdReference.PolicySetIdRef) policyId);
-			} else {
-				throw new IllegalArgumentException(String.format("Invalid policy ID type %s.", policyId.getClass()
-						.getName()));
-			}
-		}
-	}
-
 }

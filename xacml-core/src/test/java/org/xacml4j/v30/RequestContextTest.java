@@ -90,13 +90,13 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0)
+				.category(subject0, resource0)
 				.build();
 		assertFalse(request.containsRepeatingCategories());
 		request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0, resource1)
+				.category(subject0, resource0, resource1)
 				.build();
 		assertTrue(request.containsRepeatingCategories());
 	}
@@ -109,7 +109,7 @@ public class RequestContextTest
 		RequestContext request1 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0, resource1)
+				.category(subject0, resource0, resource1)
 				.build();
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getAttributes().size());
@@ -120,7 +120,7 @@ public class RequestContextTest
 		RequestContext request2 = RequestContext
 				.builder()
 				.returnPolicyIdList(true)
-				.attribute(subject0, resource0, resource1)
+				.category(subject0, resource0, resource1)
 				.build();
 
 		assertTrue(request2.isReturnPolicyIdList());
@@ -136,7 +136,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0, resource1)
+				.category(subject0, resource0, resource1)
 				.build();
 		Collection<Category> attr = request.getAttributes(Categories.RESOURCE);
 		assertEquals(2, attr.size());
@@ -153,7 +153,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0)
+				.category(subject0, resource0)
 				.build();
 		Collection<Category> attr = request.getAttributes(Categories.ACTION);
 		assertNotNull(attr);
@@ -165,7 +165,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0, resource1)
+				.category(subject0, resource0, resource1)
 				.build();
 		request.getOnlyCategory(Categories.RESOURCE);
 	}
@@ -176,7 +176,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0)
+				.category(subject0, resource0)
 				.build();
 		Category attr = request.getOnlyCategory(Categories.RESOURCE);
 		assertEquals(resource0, attr);
@@ -187,7 +187,7 @@ public class RequestContextTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0, resource1)
+				.category(subject0, resource0, resource1)
 				.build();
 		assertNotNull(request.getRequestDefaults());
 		assertEquals(XPathVersion.XPATH1, request.getRequestDefaults().getXPathVersion());
@@ -200,7 +200,7 @@ public class RequestContextTest
 		RequestContext request0 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, resource0)
+				.category(subject0, resource0)
 				.build();
 
 		assertEquals(0, request0.getIncludeInResultAttributes().size());
@@ -208,7 +208,7 @@ public class RequestContextTest
 		RequestContext request1 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, subject1, resource0, resource1)
+				.category(subject0, subject1, resource0, resource1)
 				.build();
 
 		assertEquals(2, request1.getIncludeInResultAttributes().size());
@@ -216,7 +216,7 @@ public class RequestContextTest
 		RequestContext request2 = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject0, subject1, resource0, resource1)
+				.category(subject0, subject1, resource0, resource1)
 				.build();
 		assertEquals(2, request2.getIncludeInResultAttributes().size());
 	}

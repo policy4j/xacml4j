@@ -84,7 +84,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		Map<Version, Policy> byId = policies.get(id);
 		if(log.isDebugEnabled() &&
 				byId != null){
-			log.debug("Found=\"{}\" versions of policy with id=\"{}\"",
+			log.debug("Found=\"{}\" versions of policy with attributeId=\"{}\"",
 					byId.size(), id);
 		}
 		return find((byId != null)?byId.values():null, version, earliest, latest);
@@ -100,7 +100,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		Map<Version, PolicySet> byId = policySets.get(id);
 		if(log.isDebugEnabled() &&
 				byId != null){
-			log.debug("Found=\"{}\" versions of policy set with id=\"{}\"",
+			log.debug("Found=\"{}\" versions of policy set with attributeId=\"{}\"",
 					byId.size(), id);
 		}
 		return find((byId != null)?byId.values():null, version, earliest, latest);
@@ -124,7 +124,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		Version v = policy.getVersion();
 		if(log.isDebugEnabled()){
 			log.debug("Adding Policy with " +
-					"id=\"{}\" version=\"{}\"", id, v);
+					"attributeId=\"{}\" version=\"{}\"", id, v);
 		}
 		ConcurrentNavigableMap<Version, Policy> versions = policies.get(id);
 		if(versions == null){
@@ -145,7 +145,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		Version v = policySet.getVersion();
 		if(log.isDebugEnabled()){
 			log.debug("Adding PolicySet with " +
-					"id=\"{}\" version=\"{}\"", id, v);
+					"attributeId=\"{}\" version=\"{}\"", id, v);
 		}
 		ConcurrentNavigableMap<Version, PolicySet> versions = policySets.get(id);
 		if(versions == null){
@@ -166,7 +166,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		Version v = p.getVersion();
 		if(log.isDebugEnabled()){
 			log.debug("Removing Policy with " +
-					"id=\"{}\" version=\"{}\"", id, v);
+					"attributeId=\"{}\" version=\"{}\"", id, v);
 		}
 		ConcurrentNavigableMap<Version, Policy> versions = policies.get(id);
 		if(versions != null){
@@ -183,7 +183,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		Version v = p.getVersion();
 		if(log.isDebugEnabled()){
 			log.debug("Removing PolicySet with " +
-					"id=\"{}\" version=\"{}\"", id, v);
+					"attributeId=\"{}\" version=\"{}\"", id, v);
 		}
 		ConcurrentNavigableMap<Version, PolicySet> versions = policySets.get(id);
 		if(versions != null){

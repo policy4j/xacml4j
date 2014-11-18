@@ -25,6 +25,7 @@ package org.xacml4j.v30;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.io.StringReader;
 import java.util.Collection;
@@ -34,15 +35,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.google.common.base.Function;
-import com.google.common.base.Functions;
-import com.google.common.base.Predicates;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -111,7 +106,7 @@ public class CategoryTest
 				.build();
 		Entity e = test.getEntity();
 		assertTrue(e.getAttributes().containsAll(attributes));
-		assertNull(test.getId());
+		assertNull(test.getReferenceId());
 		assertTrue(content1.isEqualNode(e.getContent()));
 		assertEquals(Categories.RESOURCE, test.getCategoryId());
 	}
@@ -198,4 +193,43 @@ public class CategoryTest
 		assertEquals(2, e.getAttributeValues("testId11", "testIssuer", XacmlTypes.STRING).size());
 		assertEquals(1, e.getAttributeValues("testId11", "testIssuer", XacmlTypes.INTEGER).size());
 	}
+
+    @Test
+    public void testCategoryBuilderCopyOf(){
+        Attribute a0 = Attribute
+                .builder("testId1")
+                .stringValue("aa", "bb")
+                .build();
+        Attribute a1 = Attribute
+                .builder("testId2")
+                .stringValue("cc", "dd")
+                .build();
+
+        Category c0 = Category.Resource()
+                .entity(Entity
+                        .builder()
+                        .attribute(
+                                Attribute
+                                        .builder("testId1")
+                                        .stringValue("aa", "bb")
+                                        .build(),
+                                Attribute
+                                        .builder("testId2")
+                                        .stringValue("cc", "dd")
+                                        .build()
+                        )
+                        .build())
+                .build();
+        Category c1 = Category.builder().copyOf(c0, new Function<Attribute, Attribute>() {
+            @Override
+            public Attribute apply(Attribute attribute) {
+                if(attribute.getAttributeId().equals("testId1")){
+                    return attribute;
+                }
+                return null;
+            }
+        }).build();
+        assertTrue(c1.getEntity().getAttributes().contains(a0));
+        assertFalse(c1.getEntity().getAttributes().contains(a1));
+    }
 }

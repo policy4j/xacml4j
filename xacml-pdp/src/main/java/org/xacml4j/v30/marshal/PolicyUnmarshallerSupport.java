@@ -69,7 +69,7 @@ public class PolicyUnmarshallerSupport
 		FunctionSpec spec = functions.getFunction(functionId);
 		if (spec == null) {
 			throw new XacmlSyntaxException(
-					"Function with id=\"%s\" can not be resolved", functionId);
+					"Function with attributeId=\"%s\" can not be resolved", functionId);
 		}
 		return spec;
 	}

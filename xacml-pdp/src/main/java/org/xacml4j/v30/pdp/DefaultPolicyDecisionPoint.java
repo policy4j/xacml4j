@@ -203,7 +203,7 @@ final class DefaultPolicyDecisionPoint
 		Iterable<Obligation> obligation = context.getMatchingObligations(decision);
 		Result.Builder b = Result.ok(decision)
 				.advices(advice)
-				.obligation(obligation)
+				.obligations(obligation)
 				.includeInResultAttributes(includeInResult)
 				.resolvedAttribute(resolvedAttributes);
 		if(returnPolicyIdList){
@@ -214,7 +214,7 @@ final class DefaultPolicyDecisionPoint
 	}
 
 	/**
-	 * Gets all attribute from an {@link EvaluationContext} which were resolved
+	 * Gets all category from an {@link EvaluationContext} which were resolved
 	 * and not present in the original access decision request
 	 *
 	 * @param context an evaluation context

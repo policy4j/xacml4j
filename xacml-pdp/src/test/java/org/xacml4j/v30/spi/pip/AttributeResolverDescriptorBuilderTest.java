@@ -44,7 +44,7 @@ public class AttributeResolverDescriptorBuilderTest
 	public void testBuildDescriptorWithContextKeyReferringToThisDescriptor()
 	{
 		AttributeResolverDescriptorBuilder.builder(
-				"id", "name", "issuer", Categories.SUBJECT_ACCESS)
+				"attributeId", "name", "issuer", Categories.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
 		.attribute("testId2", XacmlTypes.STRING)
 		.requestContextKey(Categories.SUBJECT_ACCESS, "testId1", XacmlTypes.INTEGER)
@@ -55,10 +55,10 @@ public class AttributeResolverDescriptorBuilderTest
 	public void testBuildDescriptorWithIssuer()
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", "issuer", Categories.SUBJECT_ACCESS)
+				"attributeId", "name", "issuer", Categories.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
 		.attribute("testId2", XacmlTypes.STRING).build();
-		assertEquals("id", d.getId());
+		assertEquals("attributeId", d.getId());
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(Categories.SUBJECT_ACCESS, d.getCategory());
@@ -104,10 +104,10 @@ public class AttributeResolverDescriptorBuilderTest
 	public void testBuildDescriptorWithIssuerNull()
 	{
 		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", null, Categories.SUBJECT_ACCESS)
+				"attributeId", "name", null, Categories.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
 		.attribute("testId2", XacmlTypes.STRING).build();
-		assertEquals("id", d.getId());
+		assertEquals("attributeId", d.getId());
 		assertEquals("name", d.getName());
 		assertNull(d.getIssuer());
 		assertEquals(Categories.SUBJECT_ACCESS, d.getCategory());

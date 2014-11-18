@@ -27,7 +27,7 @@ import org.xacml4j.v30.*;
 import com.google.common.base.Preconditions;
 
 /**
- * A XACML {@link PolicySet} reference
+ * A XACML {@link PolicySet} references
  *
  * @author Giedrius Trumpickas
  */
@@ -48,10 +48,10 @@ public final class PolicySetReference extends BaseCompositeDecisionRuleIDReferen
 	}
 
 	/**
-	 * Test this reference points to a given policy
+	 * Test this references points to a given policy
 	 *
 	 * @param policy a policy
-	 * @return {@code true} if a this reference
+	 * @return {@code true} if a this references
 	 * points to a given policies
 	 */
 	@Override
@@ -62,7 +62,7 @@ public final class PolicySetReference extends BaseCompositeDecisionRuleIDReferen
 	}
 
 	/**
-	 * Creates an {@link DecisionRuleEvaluationContext} to evaluate this reference.
+	 * Creates an {@link DecisionRuleEvaluationContext} to evaluate this references.
 	 */
 	@Override
 	public DecisionRuleEvaluationContext createContext(EvaluationContext ctx)
@@ -137,16 +137,16 @@ public final class PolicySetReference extends BaseCompositeDecisionRuleIDReferen
 	/**
 	 * A static helper method to detect cyclic references
 	 *
-	 * @param ref a policy set id reference
+	 * @param ref a policy set attributeId references
 	 * @param context an evaluation context
-	 * @return {@code true} if a given reference
+	 * @return {@code true} if a given references
 	 */
 	private static boolean isReferenceCyclic(PolicySetReference ref,
 	                                         DecisionRuleEvaluationContext context)
 	{
 		if(context.getCurrentPolicySetIDReference() != null){
 			if(ref.equals(context.getCurrentPolicySetIDReference())){
-				throw new IllegalStateException("Cyclic reference detected");
+				throw new IllegalStateException("Cyclic references detected");
 			}
 			return isReferenceCyclic(ref, context.getParentContext());
 		}

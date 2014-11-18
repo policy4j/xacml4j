@@ -25,8 +25,6 @@ package org.xacml4j.v30;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.types.IntegerExp;
 
 
@@ -38,7 +36,7 @@ public class AttributeAssignmentTest
 		AttributeAssignment a0 =  AttributeAssignment.builder()
 				.id("testId")
 				.category(Categories.ACTION)
-				.value(IntegerExp.of(10))
+				.attribute(IntegerExp.of(10))
 				.build();
 		assertEquals("testId", a0.getAttributeId());
 		assertEquals(Categories.ACTION, a0.getCategory());
@@ -46,7 +44,7 @@ public class AttributeAssignmentTest
 		AttributeAssignment a1 =  AttributeAssignment.builder()
 				.id("testId")
 				.category(Categories.ACTION)
-				.value(IntegerExp.of(10))
+				.attribute(IntegerExp.of(10))
 				.build();
 		assertEquals(a0, a1);
 	}

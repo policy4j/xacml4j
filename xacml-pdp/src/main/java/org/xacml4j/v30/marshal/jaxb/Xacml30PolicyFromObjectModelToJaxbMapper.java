@@ -134,7 +134,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 
 	private JAXBElement<?> toJaxb(Rule rule){
 		if(log.isDebugEnabled()){
-			log.debug("Mapping Rule id=\"{}\"", rule.getId());
+			log.debug("Mapping Rule attributeId=\"{}\"", rule.getId());
 		}
 		RuleType jaxbRule = factory.createRuleType();
 		jaxbRule.setRuleId(rule.getId());
@@ -155,7 +155,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 
 	private JAXBElement<?> toJaxb(Policy p){
 		if(log.isDebugEnabled()){
-			log.debug("Mapping Policy id=\"{}\"", p.getId());
+			log.debug("Mapping Policy attributeId=\"{}\"", p.getId());
 		}
 		PolicyType jaxbPolicy = factory.createPolicyType();
 		jaxbPolicy.setPolicyId(p.getId());
@@ -182,7 +182,7 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 
 	private JAXBElement<?> toJaxb(PolicySet ps){
 		if(log.isDebugEnabled()){
-			log.debug("Mapping PolicySet id=\"{}\"", ps.getId());
+			log.debug("Mapping PolicySet attributeId=\"{}\"", ps.getId());
 		}
 		PolicySetType jaxbPolicySet = factory.createPolicySetType();
 		jaxbPolicySet.setPolicySetId(ps.getId());

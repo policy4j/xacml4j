@@ -107,7 +107,7 @@ public class MultipleResourcesHandlerTest
 				.builder()
 				.returnPolicyIdList(false)
 				.combineDecision(true)
-				.attribute(subject0, subject1, resource0, resource1)
+				.category(subject0, subject1, resource0, resource1)
 				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
@@ -145,7 +145,7 @@ public class MultipleResourcesHandlerTest
 				.builder()
 				.returnPolicyIdList(false)
 				.combineDecision(true)
-				.attribute(subject0, subject1, resource0, resource1)
+				.category(subject0, subject1, resource0, resource1)
 				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
@@ -184,7 +184,7 @@ public class MultipleResourcesHandlerTest
 				.builder()
 				.returnPolicyIdList(false)
 				.combineDecision(true)
-				.attribute(subject0, subject1, resource0, resource1)
+				.category(subject0, subject1, resource0, resource1)
 				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
@@ -227,7 +227,7 @@ public class MultipleResourcesHandlerTest
 				.builder()
 				.returnPolicyIdList(false)
 				.combineDecision(true)
-				.attribute(subject0, subject1, resource0, resource1)
+				.category(subject0, subject1, resource0, resource1)
 				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
@@ -264,7 +264,7 @@ public class MultipleResourcesHandlerTest
 				.builder()
 				.returnPolicyIdList(false)
 				.combineDecision(true)
-				.attribute(subject0, resource0)
+				.category(subject0, resource0)
 				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();

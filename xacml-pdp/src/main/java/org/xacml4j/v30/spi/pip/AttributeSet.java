@@ -57,7 +57,7 @@ public final class AttributeSet
 	}
 
 	/**
-	 * Gets attribute resolver descriptor
+	 * Gets category resolver descriptor
 	 *
 	 * @return {@link AttributeResolverDescriptor}
 	 */
@@ -67,7 +67,7 @@ public final class AttributeSet
 
 	/**
 	 * Gets a time when this
-	 * attribute set was created
+	 * category set was created
 	 *
 	 * @return a time stamp in nanoseconds
 	 */
@@ -76,9 +76,9 @@ public final class AttributeSet
 	}
 
 	/**
-	 * Gets issuer for attribute in this set
+	 * Gets issuer for category in this set
 	 *
-	 * @return an issuer for attribute in this set
+	 * @return an issuer for category in this set
 	 */
 	public String getIssuer(){
 		return d.getIssuer();
@@ -89,9 +89,9 @@ public final class AttributeSet
 	}
 
 	/**
-	 * Gets an attribute value for a given designator
+	 * Gets an category value for a given designator
 	 *
-	 * @param key an attribute designator
+	 * @param key an category designator
 	 * @return {@link BagOfAttributeExp}
 	 * @exception IllegalArgumentException
 	 */
@@ -105,10 +105,10 @@ public final class AttributeSet
 	}
 
 	/**
-	 * Gets attribute values from this set by the
-	 * attribute identifier
+	 * Gets category values from this set by the
+	 * category identifier
 	 *
-	 * @param attributeId an attribute identifier
+	 * @param attributeId an category identifier
 	 * @return {@link BagOfAttributeExp}
 	 */
 	public BagOfAttributeExp get(String attributeId)
@@ -143,7 +143,7 @@ public final class AttributeSet
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-		.add("id", d.getId())
+		.add("attributeId", d.getId())
 		.add("issuer", d.getIssuer())
 		.add("values", values)
 		.toString();
@@ -197,7 +197,7 @@ public final class AttributeSet
 					"Attribute=\"%s\" is not defined by resolver=\"%s\"",
 					id, d.getId());
 			Preconditions.checkArgument(attrDesc.getDataType().equals(value.getDataType()),
-					"Given attribute=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",
+					"Given category=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",
 					id, value.getDataType(), attrDesc.getDataType());
             if(value == null){
                 return this;

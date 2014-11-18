@@ -36,9 +36,9 @@ public class RequestReference
 	}
 
 	/**
-	 * Gets all referenced attribute
+	 * Gets all referenced category
 	 *
-	 * @return collection of referenced attribute
+	 * @return collection of referenced category
 	 */
 	public Collection<CategoryReference> getReferencedCategories(){
 		return references;
@@ -79,10 +79,10 @@ public class RequestReference
 			Category a = context.getReferencedCategory(ref);
 			if(a == null){
 				throw new RequestSyntaxException(
-						"Failed to resolve attribute reference",
+						"Failed to resolve category references",
 						ref.getReferenceId());
 			}
-			b.attribute();
+			b.category();
 		}
 		return b.build();
 	}

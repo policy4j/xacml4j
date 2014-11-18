@@ -35,7 +35,7 @@
             },
             {
                 "Id":"attr3",
-                "CategoryId": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+                "CategoryId": "urn:oasis:names:tc:xacml:3.0:category-category:action",
                 "Attribute": [
                     {
                         "IncludeInResult" : "true",

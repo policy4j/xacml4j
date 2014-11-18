@@ -34,7 +34,7 @@ public class InMemoryPolicyRepositoryDefinitionParser extends AbstractSingleBean
 	}
 
 	protected void doParse(Element element, BeanDefinitionBuilder bean) {
-		bean.addConstructorArgValue(element.getAttribute("id"));
+		bean.addConstructorArgValue(element.getAttribute("attributeId"));
 		bean.addPropertyReference("policies", element.getAttribute("policies"));
 		if (StringUtils.hasText(element.getAttribute("extensionFunctions"))) {
 			bean.addPropertyReference("extensionFunctions",

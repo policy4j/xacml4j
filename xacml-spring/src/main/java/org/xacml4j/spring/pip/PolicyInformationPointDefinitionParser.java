@@ -36,7 +36,7 @@ public class PolicyInformationPointDefinitionParser extends AbstractBeanDefiniti
 	protected AbstractBeanDefinition parseInternal(Element element,
 			ParserContext parserContext) {
 		BeanDefinitionBuilder pip = BeanDefinitionBuilder.rootBeanDefinition(PolicyInformationPointFactoryBean.class);
-		pip.addConstructorArgValue(element.getAttribute("id"));
+		pip.addConstructorArgValue(element.getAttribute("attributeId"));
 		String resolvers = element.getAttribute("resolvers");
 		if (StringUtils.hasText(resolvers)) {
 			pip.addPropertyReference("resolvers", resolvers);

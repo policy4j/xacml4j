@@ -66,7 +66,7 @@ public abstract class BaseContentResolver implements ContentResolver
 	{
 		Preconditions.checkArgument(context.getDescriptor() == descriptor);
 		if(log.isDebugEnabled()){
-			log.debug("Retrieving content via resolver id=\"{}\" name=\"{}\"",
+			log.debug("Retrieving content via resolver attributeId=\"{}\" name=\"{}\"",
 					descriptor.getId(),
 					descriptor.getName());
 		}

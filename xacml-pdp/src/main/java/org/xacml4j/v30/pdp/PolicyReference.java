@@ -29,7 +29,7 @@ import org.xacml4j.v30.*;
 import com.google.common.base.Preconditions;
 
 /**
- * A reference to the {@link Policy}
+ * A references to the {@link Policy}
  *
  * @author Giedrius Trumpickas
  */
@@ -51,10 +51,10 @@ public final class PolicyReference extends
 	}
 
 	/**
-	 * Test this reference points to a given policy
+	 * Test this references points to a given policy
 	 *
 	 * @param policy a policy
-	 * @return {@code true} if a this reference
+	 * @return {@code true} if a this references
 	 * points to a given policy
 	 */
 	@Override
@@ -76,18 +76,18 @@ public final class PolicyReference extends
 			CompositeDecisionRule resolvedPolicy = context.resolve(this);
 			if(resolvedPolicy == null){
 				if(log.isDebugEnabled()){
-					log.debug("Failed to resolve policy reference=\"{}\"", this);
+					log.debug("Failed to resolve policy references=\"{}\"", this);
 				}
 				return refContext;
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found matching policy " +
-						"to the policy reference\"{}\"", this);
+						"to the policy references\"{}\"", this);
 			}
 			return (DecisionRuleEvaluationContext)resolvedPolicy.createContext(refContext);
 		}catch(PolicyResolutionException e){
 			if(log.isDebugEnabled()){
-				log.debug("Failed to resolve policy reference=\"{}\"", this, e);
+				log.debug("Failed to resolve policy references=\"{}\"", this, e);
 			}
 			return refContext;
 		}
@@ -143,12 +143,12 @@ public final class PolicyReference extends
 	}
 
 	/**
-	 * Validates if a given reference is cyclic
+	 * Validates if a given references is cyclic
 	 * in a given evaluation context
 	 *
-	 * @param ref a reference
+	 * @param ref a references
 	 * @param context an evaluation context
-	 * @return {@code true} if given reference is cyclic; returns {@code false} otherwise
+	 * @return {@code true} if given references is cyclic; returns {@code false} otherwise
 	 */
 	private static boolean isReferenceCyclic(PolicyReference ref,
 			DecisionRuleEvaluationContext context)
@@ -157,7 +157,7 @@ public final class PolicyReference extends
 		if(otherRef != null){
 			if(ref.equals(otherRef)){
 				if(log.isDebugEnabled()){
-					log.debug("Policy reference=\"{}\" cycle detected", ref);
+					log.debug("Policy references=\"{}\" cycle detected", ref);
 				}
 				return true;
 			}
@@ -181,7 +181,7 @@ public final class PolicyReference extends
 		 * @param context a parent evaluation context
 		 * @exception IllegalArgumentException if enclosing context
 		 * {@link org.xacml4j.v30.pdp.DecisionRuleEvaluationContext#getCurrentPolicySet()} returns
-		 * {@code null} or given policy ID reference is {@code null}
+		 * {@code null} or given policy ID references is {@code null}
 		 */
 		PolicyIDReferenceEvaluationContext(DecisionRuleEvaluationContext context){
 			super(context);

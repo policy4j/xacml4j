@@ -38,7 +38,7 @@ public class DefaultRequestContextCallback
 		Preconditions.checkNotNull(request);
 		Preconditions.checkArgument(
 				!request.containsRepeatingCategories(),
-				"RequestContext has repeating attribute categories");
+				"RequestContext has repeating category categories");
 		Preconditions.checkArgument(
 				!request.containsRequestReferences(),
 				"RequestContext contains multiple request references");

@@ -33,7 +33,7 @@ import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**
- * Base class for XACML attribute containers
+ * Base class for XACML category containers
  *
  * @author Giedrius Trumpickas
  */
@@ -49,9 +49,9 @@ public class AttributeContainer
 
 	/**
 	 * Tests if this instance contains an
-	 * attribute with a given identifier
+	 * category with a given identifier
 	 *
-	 * @param attributeId an attribute id
+	 * @param attributeId an category attributeId
 	 * @return {@code true} if contains
 	 */
 	public boolean containsAttribute(String attributeId){
@@ -59,11 +59,11 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Gets all attribute with a given identifier
+	 * Gets all category with a given identifier
 	 *
-	 * @param attributeId an attribute identifier
-	 * @return a collection of attribute if there is no
-	 * attribute with a given identifier empty collection
+	 * @param attributeId an category identifier
+	 * @return a collection of category if there is no
+	 * category with a given identifier empty collection
 	 * is returned
 	 */
 	public Collection<Attribute> getAttributes(String attributeId){
@@ -72,23 +72,23 @@ public class AttributeContainer
 
 	/**
 	 * Gets a single {@link Attribute} instance with
-	 * a given attribute identifier
+	 * a given category identifier
 	 *
-	 * @param attributeId an attribute identifier
+	 * @param attributeId an category identifier
 	 * @return {@link Attribute} instance or {@code null}
-	 * if no attribute available with a given identifier
+	 * if no category available with a given identifier
 	 */
 	public Attribute getOnlyAttribute(String attributeId){
 		return Iterables.getOnlyElement(attributes.get(attributeId), null);
 	}
 
 	/**
-	 * Gets all attribute with a given attribute
+	 * Gets all category with a given category
 	 * identifier and issuer
 	 *
-	 * @param attributeId an attribute identifier
-	 * @param issuer an attribute issuer
-	 * @return a collection of attribute with a given identifier
+	 * @param attributeId an category identifier
+	 * @param issuer an category issuer
+	 * @return a collection of category with a given identifier
 	 * and given issuer
 	 */
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
@@ -102,7 +102,7 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Gets all attribute {@link Attribute}
+	 * Gets all category {@link Attribute}
 	 * instances
 	 *
 	 * @return immutable collection of {@link Attribute}
@@ -139,10 +139,10 @@ public class AttributeContainer
 
 	/**
 	 * Gets only one {@link AttributeExp} instance of the given type
-	 * from an attribute with a given identifier
+	 * from an category with a given identifier
 	 *
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute value data type
+	 * @param attributeId an category identifier
+	 * @param dataType an category value data type
 	 * @return {@link AttributeExp} of the given type or {@code null}
 	 * if value matching given criteria does not exist
 	 * @exception IllegalArgumentException if more than one value is found
@@ -155,11 +155,11 @@ public class AttributeContainer
 
 	/**
 	 * Gets all {@link AttributeExp} instances
-	 * contained in this attribute instance
+	 * contained in this category instance
 	 *
-	 * @param attributeId an attribute id
-	 * @param issuer an attribute issuer
-	 * @param type an attribute value data type
+	 * @param attributeId an category attributeId
+	 * @param issuer an category issuer
+	 * @param type an category value data type
 	 * @return a collection of {@link AttributeExp} instances
 	 */
 	public Collection<AttributeExp> getAttributeValues(
@@ -177,8 +177,9 @@ public class AttributeContainer
 	{
 		private ImmutableListMultimap.Builder<String, Attribute> attrsBuilder = ImmutableListMultimap.builder();
 
-		public T attribute(Attribute... attrs) {
-			return attributes(FluentIterable.of(attrs));
+		public T  attribute(Attribute... attrs) {
+            Iterable<Attribute> it = FluentIterable.of(attrs);
+			return attributes(it);
 		}
 
 		public T noAttributes() {
@@ -191,7 +192,7 @@ public class AttributeContainer
             if(attrs == null){
                 return getThis();
             }
-            FluentIterable<Attribute> fluent = FluentIterable.
+            FluentIterable<? extends Attribute> fluent = FluentIterable.
                     from(attrs)
                     .filter(Predicates.and(Predicates.notNull(), p));
             for(Attribute attr : fluent){

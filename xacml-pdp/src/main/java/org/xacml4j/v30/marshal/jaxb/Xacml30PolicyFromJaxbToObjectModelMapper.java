@@ -139,7 +139,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			if(o instanceof RuleType){
 				RuleType r = (RuleType)o;
 				if(log.isDebugEnabled()){
-					log.debug("Mapping Rule id=\"{}\"", r.getRuleId());
+					log.debug("Mapping Rule attributeId=\"{}\"", r.getRuleId());
 				}
 				rules.add(create(r, m));
 			}
@@ -216,7 +216,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 					if (e.getName().getLocalPart().equals("PolicySetIdReference")) {
 						if(ref.getValue() == null){
 							throw new XacmlSyntaxException(
-									"PolicySet reference id can't be null");
+									"PolicySet references attributeId can't be null");
 						}
 						PolicySetReference policySetRef = PolicySetReference
 								.builder(ref.getValue())
@@ -230,7 +230,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 					if(e.getName().getLocalPart().equals("PolicyIdReference")) {
 						if(ref.getValue() == null){
 							throw new XacmlSyntaxException(
-									"Policy reference id can't be null");
+									"Policy references attributeId can't be null");
 						}
 						PolicyReference policySetRef = PolicyReference
 								.builder(ref.getValue())
@@ -489,7 +489,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		AttributeValueType v = m.getAttributeValue();
 		if (v == null) {
 			throw new XacmlSyntaxException(
-					"Match=\"%s\" attribute value must be specified");
+					"Match=\"%s\" category value must be specified");
 		}
 		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(v.getDataType());
 		Preconditions.checkState(toXacml30.isPresent());
@@ -627,7 +627,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			}
 			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
 			if(varDefExp == null){
-				throw new XacmlSyntaxException("Variable with id=\"%s\" " +
+				throw new XacmlSyntaxException("Variable with attributeId=\"%s\" " +
 						"is not defined", varRef.getVariableId());
 			}
 			m.pushVariableDefinition(varRef.getVariableId());

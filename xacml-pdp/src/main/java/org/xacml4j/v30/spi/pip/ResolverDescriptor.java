@@ -32,7 +32,7 @@ public interface ResolverDescriptor
 {
 	/**
 	 * An unique identifier for
-	 * this attribute resolver
+	 * this category resolver
 	 *
 	 * @return an unique identifier
 	 */
@@ -60,14 +60,14 @@ public interface ResolverDescriptor
 	List<AttributeReferenceKey> getKeyRefs();
 
 	/**
-	 * Test if attribute resolved by resolver can be cached by PIP
+	 * Test if category resolved by resolver can be cached by PIP
 	 *
-	 * @return {@code true} if attribute can be cached
+	 * @return {@code true} if category can be cached
 	 */
 	boolean isCacheable();
 
 	/**
-	 * Gets preferred cache TTL for an attribute resolved via this resolver
+	 * Gets preferred cache TTL for an category resolved via this resolver
 	 *
 	 * @return a TTL in seconds or {@code 0}
 	 */

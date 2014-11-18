@@ -31,14 +31,8 @@ import org.oasis.xacml.v30.jaxb.ContentType;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.XPathExpression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.XPath;
 import org.xacml4j.v30.types.EntityExp;
 import org.xacml4j.v30.types.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
@@ -72,7 +66,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.ANYURI).fromString(s);
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		BOOLEAN(XacmlTypes.BOOLEAN){
@@ -92,7 +86,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String) v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		BASE64BINARY(XacmlTypes.BASE64BINARY){
@@ -112,7 +106,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		DATE(XacmlTypes.DATE){
@@ -132,7 +126,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		DATETIME(XacmlTypes.DATETIME){
@@ -152,7 +146,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		DAYTIMEDURATION(XacmlTypes.DAYTIMEDURATION){
@@ -172,7 +166,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		DNSNAME(XacmlTypes.DNSNAME){
@@ -191,7 +185,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.DNSNAME)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException("No content found for the attribute value");
+				throw new XacmlSyntaxException("No content found for the category value");
 			}
 		},
 		DOUBLE(XacmlTypes.DOUBLE){
@@ -211,7 +205,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		ENTITY(XacmlTypes.ENTITY){
@@ -273,7 +267,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		INTEGER(XacmlTypes.INTEGER){
@@ -293,7 +287,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		IPADDRESS(XacmlTypes.IPADDRESS){
@@ -313,7 +307,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		RFC822NAME(XacmlTypes.RFC822NAME){
@@ -333,7 +327,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		STRING(XacmlTypes.STRING){
@@ -352,7 +346,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		TIME(XacmlTypes.TIME){
@@ -372,7 +366,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String)v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		X500NAME(XacmlTypes.X500NAME){
@@ -392,7 +386,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String) v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		XPATH(XacmlTypes.XPATH){
@@ -416,11 +410,11 @@ public interface TypeToXacml30 extends TypeCapability
 								"XPath category can not be null");
 					}
 					return XPathExp.of(
-							new XPathExpression((String)(v.getContent().get(0)),
+							new XPath((String)(v.getContent().get(0)),
 									categoryId));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		},
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
@@ -440,7 +434,7 @@ public interface TypeToXacml30 extends TypeCapability
 							.fromString((String) v.getContent().get(0));
 				}
 				throw new XacmlSyntaxException(
-						"No content found for the attribute value");
+						"No content found for the category value");
 			}
 		};
 

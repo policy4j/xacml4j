@@ -36,8 +36,8 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 /**
- * A function reference expression, used
- * to pass function reference to higher order
+ * A function references expression, used
+ * to pass function references to higher order
  * functions as an argument
  *
  * @author Giedrius Trumpickas
@@ -50,7 +50,7 @@ public class FunctionReference implements Expression
 	private final ValueType returnType;
 
 	/**
-	 * Constructs function reference expression
+	 * Constructs function references expression
 	 *
 	 * @param spec a function specification
 	 */
@@ -89,7 +89,7 @@ public class FunctionReference implements Expression
 			Expression ...params) throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
-				log.debug("Invoking function reference=\"{}\"",
+				log.debug("Invoking function references=\"{}\"",
 						spec.getId());
 		}
 		return spec.invoke(context, params);

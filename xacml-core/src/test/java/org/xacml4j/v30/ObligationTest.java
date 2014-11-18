@@ -44,19 +44,19 @@ public class ObligationTest {
 				.builder()
 				.category(Categories.ACTION)
 				.id("actionId1")
-				.value(IntegerExp.of(1))
+				.attribute(IntegerExp.of(1))
 				.build();
 		AttributeAssignment attr2 = AttributeAssignment
 				.builder()
 				.category(Categories.ACTION)
 				.id("actionId1")
-				.value(IntegerExp.of(2))
+				.attribute(IntegerExp.of(2))
 				.build();
 		AttributeAssignment attr3 = AttributeAssignment
 				.builder()
 				.category(Categories.ACTION)
 				.id("actionId1")
-				.value(IntegerExp.of(3))
+				.attribute(IntegerExp.of(3))
 				.build();
 
 		o1 = Obligation.builder("id1").attribute(attr1).attribute(attr2).build();

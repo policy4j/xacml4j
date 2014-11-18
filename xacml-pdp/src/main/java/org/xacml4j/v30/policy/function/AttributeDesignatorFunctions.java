@@ -56,7 +56,7 @@ import com.google.common.base.Preconditions;
 public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 {
 	
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:attribute-designator")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:category-designator")
 	@XacmlFuncReturnTypeResolver(resolverClass=AttributeDesignatorFunctions.class)
 	public static BagOfAttributeExp designator(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
@@ -84,7 +84,7 @@ public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 				.build());
 	}
 	
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:attribute-selector")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:category-selector")
 	@XacmlFuncReturnTypeResolver(resolverClass=AttributeDesignatorFunctions.class)
 	public static BagOfAttributeExp selector(
 			@XacmlFuncParamEvaluationContext EvaluationContext context,
@@ -114,7 +114,7 @@ public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 		AttributeExpType typeId = (AttributeExpType)typeUri.getEvaluatesTo();
 		Optional<AttributeExpType> resolvedType = XacmlTypes.getType(typeUri.getValue().toString());
 		if(!resolvedType.isPresent()){
-			throw new XacmlSyntaxException("Unknown XACML type id=\"%s\"",
+			throw new XacmlSyntaxException("Unknown XACML type attributeId=\"%s\"",
 						typeId);
 		}
 		return resolvedType.get();

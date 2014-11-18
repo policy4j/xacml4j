@@ -26,10 +26,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.Result;
 import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.ImmutableList;
@@ -62,7 +58,7 @@ public class ResultTest
 	{
 		Result.Builder b = Result.ok(Decision.DENY);
 		b.obligation(denyObligationWithId1);
-		b.obligation(ImmutableList.of(denyObligationWithId2, denyObligationWithSameId1));
+		b.obligations(ImmutableList.of(denyObligationWithId2, denyObligationWithSameId1));
 		Result r = b.build();
 		assertEquals(Obligation
 				.builder("id1", Effect.DENY)

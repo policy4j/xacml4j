@@ -35,14 +35,14 @@ import com.google.common.base.Objects;
 
 /**
  * The {@link AttributeDesignator} retrieves a bag of values for a
- * named attribute from the request context. A named attribute is
- * considered present if there is at least one attribute that
+ * named category from the request context. A named category is
+ * considered present if there is at least one category that
  * matches the criteria set out below.
  *
  *
  * The {@link AttributeDesignator} returns a bag containing all
- * the attribute values that are matched by the named attribute. In the
- * event that no matching attribute is present in the context, the
+ * the category values that are matched by the named category. In the
+ * event that no matching category is present in the context, the
  * {@link AttributeDesignator#isMustBePresent()} governs whether it
  * evaluates to an empty bag or {@link EvaluationException} exception.
  *
@@ -71,11 +71,11 @@ public class AttributeDesignator extends AttributeReference
 	}
 
 	/**
-	 * Evaluates this attribute designator by resolving
-	 * attribute via {@link EvaluationContext#resolve(org.xacml4j.v30.AttributeDesignatorKey)}
+	 * Evaluates this category designator by resolving
+	 * category via {@link EvaluationContext#resolve(org.xacml4j.v30.AttributeDesignatorKey)}
 	 *
 	 * @return {@link BagOfAttributeExp} instance
-	 * @exception EvaluationException if attribute can't be resolved
+	 * @exception EvaluationException if category can't be resolved
 	 * and {@link AttributeDesignator#mustBePresent} is true
 	 */
 	@Override
@@ -94,7 +94,7 @@ public class AttributeDesignator extends AttributeReference
 			if(isMustBePresent()){
 				throw e;
 			}
-			return getDataType().bagType().createEmpty();
+			return getDataType().emptyBag();
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug("Reference=\"{}\" evaluation " +
@@ -104,7 +104,7 @@ public class AttributeDesignator extends AttributeReference
 			if(isMustBePresent()){
 				throw new AttributeReferenceEvaluationException(designatorKey);
 			}
-			return getDataType().bagType().createEmpty();
+			return getDataType().emptyBag();
 		}
 		if((v == null || v.isEmpty()) &&
 				isMustBePresent()){
@@ -114,7 +114,7 @@ public class AttributeDesignator extends AttributeReference
 			}
 			throw new AttributeReferenceEvaluationException(designatorKey);
 		}
-		return ((v == null)?getDataType().bagType().createEmpty():v);
+		return ((v == null)?getDataType().bagType().emptyBag():v);
 	}
 
 	@Override

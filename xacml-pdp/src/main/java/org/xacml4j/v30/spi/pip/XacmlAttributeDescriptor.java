@@ -32,9 +32,9 @@ import java.lang.annotation.Target;
 public @interface XacmlAttributeDescriptor
 {
 	/**
-	 * An attribute identifier
+	 * An category identifier
 	 *
-	 * @return attribute identifier
+	 * @return category identifier
 	 */
 	String id();
 
@@ -46,10 +46,10 @@ public @interface XacmlAttributeDescriptor
 	String dataType();
 
 	/**
-	 * A default values for the attribute
+	 * A default values for the category
 	 *
 	 * @return an array of default values for
-	 * the attribute
+	 * the category
 	 */
 	String[] defaultValue() default {};
 }

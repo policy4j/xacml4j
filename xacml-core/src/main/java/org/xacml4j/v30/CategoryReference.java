@@ -40,10 +40,10 @@ public class CategoryReference
 	}
 
 	/**
-	 * Gets an attribute reference
+	 * Gets an category references
 	 * identifier
 	 *
-	 * @return reference identifier
+	 * @return references identifier
 	 */
 	public String getReferenceId(){
 		return referenceId;
@@ -82,18 +82,18 @@ public class CategoryReference
 
 		public Builder id(String id){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(id),
-					"Attribute id can't be null or empty");
+					"Attribute attributeId can't be null or empty");
 			this.id = id;
 			return this;
 		}
 
 		public Builder from(Category a){
-			return id(a.getId());
+			return id(a.getReferenceId());
 		}
 
 		public CategoryReference build(){
 			Preconditions.checkState(!Strings.isNullOrEmpty(id),
-					"Attribute id can't be null or empty");
+					"Attribute attributeId can't be null or empty");
 			return new CategoryReference(this);
 		}
 	}

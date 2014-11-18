@@ -34,19 +34,19 @@ import com.google.common.collect.ImmutableMap;
 public enum Categories implements CategoryId
 {
 
-	ACTION("urn:oasis:names:tc:xacml:3.0:attribute-category:action", "Action"),
-	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:attribute-category:environment", "Environment"),
-	RESOURCE("urn:oasis:names:tc:xacml:3.0:attribute-category:resource", "Resource"),
-	OBLIGATION("urn:oasis:names:tc:xacml:3.0:attribute-category:obligation", "Obligation"),
-	STATUS_DETAIL("urn:oasis:names:tc:xacml:3.0:attribute-category:status-detail", "StatusDetail"),
+	ACTION("urn:oasis:names:tc:xacml:3.0:category-category:action", "Action"),
+	ENVIRONMENT("urn:oasis:names:tc:xacml:3.0:category-category:environment", "Environment"),
+	RESOURCE("urn:oasis:names:tc:xacml:3.0:category-category:resource", "Resource"),
+	OBLIGATION("urn:oasis:names:tc:xacml:3.0:category-category:obligations", "Obligation"),
+	STATUS_DETAIL("urn:oasis:names:tc:xacml:3.0:category-category:status-detail", "StatusDetail"),
 	SUBJECT_ACCESS("urn:oasis:names:tc:xacml:1.0:subject-category:access-subject", "AccessSubject"),
 	SUBJECT_CODEBASE("urn:oasis:names:tc:xacml:1.0:subject-category:codebase", "Codebase"),
 	SUBJECT_INTERMEDIARY("urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject", "IntermediarySubject"),
 	SUBJECT_RECIPIENT("urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject", "Recipient"),
 	SUBJECT_REQUESTING_MACHINE("urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine", "RequestingMachine"),
 	SUBJECT_ROLE_ENABLEMENT_AUTHORITY("urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority", "RoleEnablementAuthority"),
-	DELEGATE("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate", "Delegate"),
-	DELEGATE_INFO("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info", "DelegateInfo");
+	DELEGATE("urn:oasis:names:tc:xacml:3.0:category-category:delegate", "Delegate"),
+	DELEGATE_INFO("urn:oasis:names:tc:xacml:3.0:category-category:delegate-info", "DelegateInfo");
 
 
 	private String categoryURI;
@@ -54,7 +54,7 @@ public enum Categories implements CategoryId
     private String alias;
     private boolean isDefaultCategory;
 
-	private static final String DELEGATED_CATEGORY_PREFIX= "urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:";
+	private static final String DELEGATED_CATEGORY_PREFIX= "urn:oasis:names:tc:xacml:3.0:category-category:delegated:";
 
 	private static final ImmutableMap<String, CategoryId> BY_ID;
     private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES;
@@ -127,18 +127,7 @@ public enum Categories implements CategoryId
 	public static CategoryId parse(String v)
 		throws XacmlSyntaxException
 	{
-		if(Strings.isNullOrEmpty(v)){
-			throw new XacmlSyntaxException("Given value can't be " +
-					"converted to XACML CategoryId");
-		}
-		CategoryId c = BY_ID.get(v);
-		if(c == null){
-            c = SHORT_NAMES.get(v);
-            if(c == null){
-                c = new CustomCategory(v);
-            }
-		}
-		return c;
+		return parse(Suppliers.ofInstance(v));
 	}
 
     public static CategoryId parse(Supplier<String> s)
@@ -160,8 +149,7 @@ public enum Categories implements CategoryId
     }
 
 	public static CategoryId parse(URI categoryUri) throws XacmlSyntaxException{
-		Preconditions.checkArgument(categoryUri != null);
-		return parse(categoryUri.toString());
+		return parse(Suppliers.ofInstance(Preconditions.checkNotNull(categoryUri.toString())));
 	}
 
 	/**
@@ -187,7 +175,9 @@ public enum Categories implements CategoryId
 		if(categoryURI.startsWith(DELEGATED_CATEGORY_PREFIX)){
 			return categoryURI;
 		}
-		return DELEGATED_CATEGORY_PREFIX + categoryURI;
+		return new StringBuilder(DELEGATED_CATEGORY_PREFIX)
+                .append(categoryURI)
+                .toString();
 	}
 
     /**

@@ -227,7 +227,7 @@ public abstract class AbstractPolicyRepository
 				return true;
 			}
 			if(log.isWarnEnabled()){
-				log.warn("Policy with id=\"{}\" " +
+				log.warn("Policy with attributeId=\"{}\" " +
 						"and version=\"{}\" already exist in this repository",
 						p.getId(), p.getVersion());
 			}
@@ -239,7 +239,7 @@ public abstract class AbstractPolicyRepository
 				return true;
 			}
 			if(log.isWarnEnabled()){
-				log.warn("PolicySet with id=\"{}\" " +
+				log.warn("PolicySet with attributeId=\"{}\" " +
 						"and version=\"{}\" already exist in this repository",
 						p.getId(), p.getVersion());
 			}

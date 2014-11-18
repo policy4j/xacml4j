@@ -84,13 +84,13 @@ public class DefaultPolicyInformationPoint
 			AttributeSet attributes = null;
 			if (d.isCacheable()) {
 				if (log.isDebugEnabled()) {
-					log.debug("Trying to find resolver id=\"{}\" values in cache", d.getId());
+					log.debug("Trying to find resolver attributeId=\"{}\" values in cache", d.getId());
 				}
 				attributes = cache.getAttributes(rContext);
 				if (attributes != null &&
 						!isExpired(attributes, context)) {
 					if (log.isDebugEnabled()) {
-						log.debug("Found cached resolver id=\"{}\" values=\"{}\"",
+						log.debug("Found cached resolver attributeId=\"{}\" values=\"{}\"",
 								d.getId(), attributes);
 					}
 					return attributes.get(ref.getAttributeId());
@@ -98,24 +98,24 @@ public class DefaultPolicyInformationPoint
 			}
 			try {
 				if (log.isDebugEnabled()) {
-					log.debug("Trying to resolve values with resolver id=\"{}\"",
+					log.debug("Trying to resolve values with resolver attributeId=\"{}\"",
 							d.getId());
 				}
 				attributes = r.resolve(rContext);
 				if (attributes.isEmpty()) {
 					if (log.isDebugEnabled()) {
-						log.debug("Resolver id=\"{}\" failed to resolve attribute",
+						log.debug("Resolver attributeId=\"{}\" failed to resolve category",
 								d.getId());
 					}
 					continue;
 				}
 				if (log.isDebugEnabled()) {
-					log.debug("Resolved attribute=\"{}\"",
+					log.debug("Resolved category=\"{}\"",
 							attributes);
 				}
 			} catch (Exception e) {
 				if (log.isDebugEnabled()) {
-					log.debug("Resolver id=\"{}\" failed to resolve attribute", d.getId(), e);
+					log.debug("Resolver attributeId=\"{}\" failed to resolve category", d.getId(), e);
 				}
 				continue;
 			}

@@ -62,11 +62,11 @@ public class Advice extends BaseDecisionRuleResponse
 	}
 
 	/**
-	 * Combines this advices attribute with a
-	 * given advices attribute
+	 * Combines this advices category with a
+	 * given advices category
 	 *
 	 * @param a an advices
-	 * @return a new advices instance with combined attribute
+	 * @return a new advices instance with combined category
 	 */
 	public Advice merge(Advice a)
 	{

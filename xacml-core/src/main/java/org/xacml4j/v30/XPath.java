@@ -26,22 +26,21 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.events.Namespace;
 
-public final class XPathExpression
+public final class XPath
 {
 	private String path;
 	private CategoryId categoryId;
     private NamespaceContext nsContext;
 
-	public XPathExpression(String path,
-			CategoryId category){
+	public XPath(String path,
+                 CategoryId category){
 		this(path, category, null);
 	}
 
-    public XPathExpression(String path,
-                           CategoryId category,
-                           NamespaceContext context){
+    public XPath(String path,
+                 CategoryId category,
+                 NamespaceContext context){
         Preconditions.checkNotNull(path);
         Preconditions.checkNotNull(category);
         this.path = path;
@@ -69,10 +68,10 @@ public final class XPathExpression
 		if(o == this){
 			return true;
 		}
-		if(!(o instanceof XPathExpression)){
+		if(!(o instanceof XPath)){
 			return false;
 		}
-		XPathExpression xpath = (XPathExpression)o;
+		XPath xpath = (XPath)o;
 		return categoryId.equals(xpath.categoryId)
 				&& path.equals(xpath.path);
 	}

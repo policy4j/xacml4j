@@ -84,7 +84,7 @@ public class AttributeDesignatorFunctionTest
 
 	@Test
 	public void testDesignatorFunctionWithCategoryId(){
-		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator");
+		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:category-designator");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.resolve(AttributeDesignatorKey
 				.builder()
@@ -105,7 +105,7 @@ public class AttributeDesignatorFunctionTest
 
 	@Test
 	public void testDesignatorFunctionWithEntity(){
-		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator");
+		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:category-designator");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		c.replay();
 		BagOfAttributeExp v = func.invoke(context,

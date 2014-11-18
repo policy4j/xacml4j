@@ -48,8 +48,8 @@ public final class AttributeSelectorKey
 
 	/**
 	 * An XPath expression whose context node is the Content
-	 * element of the attribute category indicated by the Category
-	 * attribute. There SHALL be no restriction on the XPath syntax,
+	 * element of the category category indicated by the Category
+	 * category. There SHALL be no restriction on the XPath syntax,
 	 * but the XPath MUST NOT refer to or traverse any content
 	 * outside the Content element in any way.
 	 *
@@ -60,15 +60,15 @@ public final class AttributeSelectorKey
 	}
 
 	/**
-	 * This attribute id refers to the attribute (by its AttributeId)
-	 * in the request context in the category given by the Category attribute.
-	 * The referenced attribute MUST have data type
+	 * This category attributeId refers to the category (by its AttributeId)
+	 * in the request context in the category given by the Category category.
+	 * The referenced category MUST have data type
 	 * urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression,
 	 * and must select a single node in the content element.
-	 * The XPathCategory attribute of the referenced attribute MUST
-	 * be equal to the Category attribute of the attribute selector
+	 * The XPathCategory category of the referenced category MUST
+	 * be equal to the Category category of the category selector
 	 *
-	 * @return context selector id
+	 * @return context selector attributeId
 	 */
 	public String getContextSelectorId(){
 		return contextSelectorId;

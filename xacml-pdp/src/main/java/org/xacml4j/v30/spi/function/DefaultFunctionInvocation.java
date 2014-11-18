@@ -51,7 +51,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 	 *
 	 * @param invocation an expression invocation
 	 * @param evalContextRequired a flag indicating if method
-	 * requires an {@link EvaluationContext} reference
+	 * requires an {@link EvaluationContext} references
 	 */
 	DefaultFunctionInvocation(
 			Invocation<ValueExpression> invocation,

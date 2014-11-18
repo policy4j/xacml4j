@@ -92,7 +92,7 @@
     </Rule>
     <Obligations>
       <!-- These obligations provide specific instructions to PEP in the response -->
-      <!-- This obligation informs the PEP user granted emergency access      -->
+      <!-- This obligations informs the PEP user granted emergency access      -->
       <Obligation
         ObligationId="urn:va:xacml:2.0:interop:rsa8:obligation:emergency:permit"
         FulfillOn="Permit"/>

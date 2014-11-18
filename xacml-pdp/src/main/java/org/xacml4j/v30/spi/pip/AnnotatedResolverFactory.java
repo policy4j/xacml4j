@@ -92,7 +92,7 @@ class AnnotatedResolverFactory
 		for(Method m : methods){
 			AttributeResolver r = parseAttributeResolver(instance, m);
 			if(log.isDebugEnabled()){
-				log.debug("Parsing attribute resolver=\"{}\"",
+				log.debug("Parsing category resolver=\"{}\"",
 						r.getDescriptor().getId());
 			}
 			resolvers.add(r);
@@ -115,7 +115,7 @@ class AnnotatedResolverFactory
 		XacmlAttributeDescriptor[] attributes = d.attributes();
 		if(attributes == null ||
 				attributes.length == 0){
-			throw new XacmlSyntaxException("At least attribute " +
+			throw new XacmlSyntaxException("At least category " +
 					"must be specified by the descriptor on method=\"{}\"", m.getName());
 		}
 		for(XacmlAttributeDescriptor attr : attributes){
@@ -131,7 +131,7 @@ class AnnotatedResolverFactory
 		b.keys(info.getSecond());
 		TypeToken<?> returnType = TypeToken.of(m.getGenericReturnType());
 		if(log.isDebugEnabled()){
-			log.debug("Attribute resolver id=\"{}\" return type=\"{}\"",
+			log.debug("Attribute resolver attributeId=\"{}\" return type=\"{}\"",
 					d.id(), returnType.toString());
 		}
 		if(!ATTR_RESOLVER_RETURN_TYPE.equals(returnType)){

@@ -168,7 +168,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 				if (o.getName().getLocalPart().equals("PolicySetIdReference")) {
 					if(ref.getValue() == null){
 						throw new XacmlSyntaxException(
-								"PolicySet reference id can't be null");
+								"PolicySet references attributeId can't be null");
 					}
 					PolicySetReference policySetRef = PolicySetReference
 						.builder(ref.getValue())
@@ -182,7 +182,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 				if (o.getName().getLocalPart().equals("PolicyIdReference")) {
 					if(ref.getValue() == null){
 						throw new XacmlSyntaxException(
-								"Policy reference id can't be null");
+								"Policy references attributeId can't be null");
 					}
 					PolicyReference policyRef = PolicyReference
 							.builder(ref.getValue())
@@ -667,8 +667,8 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 
 	/**
 	 * Creates {@link AttributeDesignator}
-	 * @param categoryId attribute category identifier
-	 * @param ref attribute designator type
+	 * @param categoryId category category identifier
+	 * @param ref category designator type
 	 * @return {@link AttributeDesignator} instance
 	 * @throws XacmlSyntaxException
 	 */
@@ -689,7 +689,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 
 	/**
 	 * Gets {@link Categories} from a given XACML 2.0
-	 * attribute designator instance
+	 * category designator instance
 	 *
 	 * @param element an designator element
 	 * @return {@link Categories} instance
@@ -705,14 +705,14 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					.parse(subjectRef.getSubjectCategory());
 			if(categoryId == null) {
 				throw new XacmlSyntaxException("Unknown subject "
-						+ "attribute designator category=\"%s\"", ref);
+						+ "category designator category=\"%s\"", ref);
 			}
 			return categoryId;
 		}
 		Categories categoryId = designatorMappings.get(element.getName().getLocalPart());
 		if (categoryId == null) {
 			throw new XacmlSyntaxException(
-					"Unknown attribute designator=\"%s\"", element.getName());
+					"Unknown category designator=\"%s\"", element.getName());
 		}
 		return categoryId;
 	}

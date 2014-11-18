@@ -33,7 +33,7 @@ public interface ResolverRegistry
 	 * evaluation context and given {@link AttributeDesignatorKey}
 	 *
 	 * @param context an evaluation context
-	 * @param key an attribute designator key
+	 * @param key an category designator key
 	 * @return instance of {@link AttributeResolver}
 	 * or <ii>null</ii> if not matching resolver is found
 	 */
@@ -46,16 +46,16 @@ public interface ResolverRegistry
 	 * evaluation context and given {@link CategoryId}
 	 *
 	 * @param context evaluation context
-	 * @param category attribute category
+	 * @param category category category
 	 * @return content resolver
 	 */
 	ContentResolver getMatchingContentResolver(
 			DecisionRuleEvaluationContext context, CategoryId category);
 
 	/**
-	 * Adds top level attribute resolver
+	 * Adds top level category resolver
 	 *
-	 * @param r a top level attribute resolver
+	 * @param r a top level category resolver
 	 */
 	void addAttributeResolver(AttributeResolver r);
 
@@ -73,11 +73,11 @@ public interface ResolverRegistry
 	void addContentResolver(ContentResolver r);
 
 	/**
-	 * Adds an attribute resolver bound to the specific
+	 * Adds an category resolver bound to the specific
 	 * policy identifier and all child policies
 	 *
 	 * @param policyId a policy identifier
-	 * @param r an attribute resolver
+	 * @param r an category resolver
 	 */
 	void addAttributeResolver(String policyId, AttributeResolver r);
 
@@ -91,7 +91,7 @@ public interface ResolverRegistry
 	void addContentResolver(String policyId, ContentResolver r);
 
 	/**
-	 * Gets attribute resolve by identifier
+	 * Gets category resolve by identifier
 	 * @param id a resolver identifier
 	 * @return {@link AttributeResolver} or {@code null} if not resolver found
 	 */

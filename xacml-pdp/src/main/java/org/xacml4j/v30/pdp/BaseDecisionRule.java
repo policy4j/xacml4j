@@ -109,7 +109,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	}
 
 	/**
-	 * Gets obligation expressions in this rule
+	 * Gets obligations expressions in this rule
 	 *
 	 * @return a collection of {@link ObligationExpression}
 	 */
@@ -188,14 +188,14 @@ abstract class BaseDecisionRule implements DecisionRule
 		throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Evaluating advices for decision rule id=\"{}\"", getId());
+			log.debug("Evaluating advices for decision rule attributeId=\"{}\"", getId());
 		}
 		Collection<Advice> advices = new LinkedList<Advice>();
 		try{
 			for(AdviceExpression adviceExp : adviceExpressions){
 				if(adviceExp.isApplicable(result)){
 					if(log.isDebugEnabled()){
-						log.debug("Evaluating advices id=\"{}\"",
+						log.debug("Evaluating advices attributeId=\"{}\"",
 								adviceExp.getId());
 					}
 					Advice a = adviceExp.evaluate(context);
@@ -223,7 +223,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	}
 
 	/**
-	 * Evaluates obligation matching given decision
+	 * Evaluates obligations matching given decision
 	 * {@link Decision} result
 	 *
 	 * @param context an evaluation context
@@ -235,14 +235,14 @@ abstract class BaseDecisionRule implements DecisionRule
 		throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
-			log.debug("Evaluating obligations for decision rule id=\"{}\"", getId());
+			log.debug("Evaluating obligations for decision rule attributeId=\"{}\"", getId());
 		}
 		Collection<Obligation> obligations = new LinkedList<Obligation>();
 		try{
 			for(ObligationExpression obligationExp : obligationExpressions){
 				if(obligationExp.isApplicable(result)){
 					if(log.isDebugEnabled()){
-						log.debug("Evaluating obligation id=\"{}\"",
+						log.debug("Evaluating obligations attributeId=\"{}\"",
 								obligationExp.getId());
 					}
 					Obligation o  = obligationExp.evaluate(context);
@@ -271,7 +271,7 @@ abstract class BaseDecisionRule implements DecisionRule
 	}
 
 	protected Objects.ToStringHelper toStringBuilder(Objects.ToStringHelper b){
-		return b.add("id", id)
+		return b.add("attributeId", id)
 				.add("description", description)
 				.add("target", target)
 				.add("condition", condition)

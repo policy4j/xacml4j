@@ -45,7 +45,7 @@ public interface MultipleResourcesResolver
 	 * the given resource
 	 *
 	 * @param resource a resource identifier
-	 * @param callback a request context attribute callback
+	 * @param callback a request context category callback
 	 * @return a collection of immediate children of the given resource
 	 */
 	Collection<AttributeExp> resolveChildrenResources(

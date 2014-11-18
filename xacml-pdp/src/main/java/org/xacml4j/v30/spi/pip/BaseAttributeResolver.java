@@ -81,7 +81,7 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	{
 		checkArgument(context.getDescriptor().getId().equals(descriptor.getId()));
 		if(log.isDebugEnabled()){
-			log.debug("Retrieving attribute via resolver id=\"{}\" name=\"{}\"",
+			log.debug("Retrieving category via resolver attributeId=\"{}\" name=\"{}\"",
 					descriptor.getId(), descriptor.getName());
 		}
 		Timer.Context timerCtx = timer.time();
@@ -103,11 +103,11 @@ public abstract class BaseAttributeResolver implements AttributeResolver
 	}
 
 	/**
-	 * Performs actual attribute resolution
+	 * Performs actual category resolution
 	 *
 	 * @param context a policy information context
-	 * @return a resolved map of attribute values as instances a
-	 *  {@link BagOfAttributeExp} mapped by an attribute identifier
+	 * @return a resolved map of category values as instances a
+	 *  {@link BagOfAttributeExp} mapped by an category identifier
 	 * @throws Exception if an error occurs
 	 */
 	protected abstract Map<String, BagOfAttributeExp> doResolve(

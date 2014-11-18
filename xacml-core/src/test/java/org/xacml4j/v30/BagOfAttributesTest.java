@@ -29,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import static org.xacml4j.v30.types.XacmlTypes.INTEGER;
 import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
@@ -37,11 +38,6 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.BagOfAttributeExpType;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -65,7 +61,7 @@ public class BagOfAttributesTest
 		content.add(StringExp.of("1"));
 		content.add(StringExp.of("2"));
 		content.add(StringExp.of("3"));
-		BagOfAttributeExp bag = bagType.create(content);
+		BagOfAttributeExp bag = bagType.of(content);
 		assertTrue(bag.contains(StringExp.of("1")));
 		assertTrue(bag.contains(StringExp.of("2")));
 		assertTrue(bag.contains(StringExp.of("3")));
@@ -86,7 +82,7 @@ public class BagOfAttributesTest
 				StringExp.of("1"),
 				StringExp.of("aaa"),
 				StringExp.of("BB"));
-		StringExp v = b.value();
+		StringExp v = b.first();
 		assertEquals(StringExp.of("1"), v);
 	}
 	
@@ -240,4 +236,18 @@ public class BagOfAttributesTest
 		assertEquals(bag1, bag3);
 		assertEquals(bag1, bag4);
 	}
+
+    @Test
+    public void testFirstAndLast(){
+        BagOfAttributeExp.Builder b = XacmlTypes.INTEGER.bag();
+        BagOfAttributeExp bag = b.build();
+        assertNull(bag.first());
+        assertNull(bag.last());
+        bag = b.value(1).build();
+        assertEquals(IntegerExp.of(1), bag.first());
+        assertEquals(IntegerExp.of(1), bag.last());
+        bag = b.value(2).build();
+        assertEquals(IntegerExp.of(1), bag.first());
+        assertEquals(IntegerExp.of(2), bag.last());
+    }
 }

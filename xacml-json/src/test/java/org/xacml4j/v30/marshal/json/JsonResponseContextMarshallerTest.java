@@ -22,8 +22,6 @@ package org.xacml4j.v30.marshal.json;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 import java.io.StringReader;
 
@@ -74,14 +72,14 @@ public class JsonResponseContextMarshallerTest {
 										        .id(SubjectAttributes.SUBJECT_ID.toString())
 												.category(Categories.ACTION)
 												.issuer("Vytenai")
-												.value(StringExp.of("obuolys"))
+												.attribute(StringExp.of("obuolys"))
 												.build(),
 										AttributeAssignment
 												.builder()
 												.id(SubjectAttributes.KEY_INFO.toString())
 												.category(Categories.ACTION)
 												.issuer("ispanija")
-												.value(StringExp.of("apelsinas"))
+												.attribute(StringExp.of("apelsinas"))
 												.build()))
 						.build());
 		resultBuilder.obligation(Obligation
@@ -91,8 +89,8 @@ public class JsonResponseContextMarshallerTest {
 								AttributeAssignment
 										.builder()
 										.id("custom:attribute1")
-										.category(Categories.parse("totaly:made:up:attribute-category1"))
-										.value(StringExp.of("same old apelsinas"))
+										.category(Categories.parse("totaly:made:up:category-category1"))
+										.attribute(StringExp.of("same old apelsinas"))
 						                .build()))
 				.build());
 		resultBuilder.advices(ImmutableList.of(
@@ -102,7 +100,7 @@ public class JsonResponseContextMarshallerTest {
                                         AttributeAssignment
                                                 .builder()
                                                 .id("test:advice1")
-                                                .value(StringExp.of("nespjauk i sulini"))
+                                                .attribute(StringExp.of("nespjauk i sulini"))
                                                 .build()))
                         .build(),
                 Advice.builder("advice2").build()));

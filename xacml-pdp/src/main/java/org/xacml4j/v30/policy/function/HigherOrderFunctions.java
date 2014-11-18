@@ -187,7 +187,7 @@ public class HigherOrderFunctions
 			values.add((AttributeExp)ref.invoke(context, v));
 		}
 		AttributeExpType type = (AttributeExpType)ref.getEvaluatesTo();
-		return type.bagType().create(values);
+		return type.bagType().of(values);
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class HigherOrderFunctions
 					"dynamically, function requires 2 parameters to be specified", spec.getId());
 			Expression ref = arguments.get(0);
 			Preconditions.checkArgument(ref instanceof FunctionReference,
-					"First function argument must be function reference");
+					"First function argument must be function references");
 			AttributeExpType type = (AttributeExpType)ref.getEvaluatesTo();
 			return type.bagType();
 		}

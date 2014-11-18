@@ -131,7 +131,7 @@ public class DefaultPolicyInformationPointTest
 				.attribute("testAttributeId1", StringExp.of("v1").toBag())
 				.build();
 
-		// attribute resolver found
+		// category resolver found
 		expect(registry.getMatchingAttributeResolvers(context, a0))
 		.andReturn(ImmutableList.of(resolver1, resolver2));
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
@@ -166,7 +166,7 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeDesignatorKey a0 = attr0.build();
 
-		// attribute resolver found
+		// category resolver found
 		expect(registry.getMatchingAttributeResolvers(context, a0)).andReturn(
 				ImmutableList.of(resolver1, resolver2));
 
@@ -218,7 +218,7 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignatorKey a0 = attr0.build();
 		AttributeDesignatorKey k = key.build();
 
-		// attribute resolver found
+		// category resolver found
 		expect(registry.getMatchingAttributeResolvers(context, a0)).andReturn(
 				ImmutableList.of(resolver1, resolver2));
 
@@ -271,7 +271,7 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignatorKey a0 = attr0.build();
 		AttributeDesignatorKey k = key.build();
 
-		// attribute resolver found
+		// category resolver found
 		expect(registry.getMatchingAttributeResolvers(context, a0)).andReturn(ImmutableList.of(resolver1));
 		expect(resolver1.getDescriptor()).andReturn(descriptor1WithNoCache);
 

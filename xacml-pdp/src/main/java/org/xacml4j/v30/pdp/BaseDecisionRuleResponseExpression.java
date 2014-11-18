@@ -114,12 +114,12 @@ abstract class BaseDecisionRuleResponseExpression
                     .id(attrExp.getAttributeId());
 			ValueExpression val = attrExp.evaluate(context);
 			if(val instanceof AttributeExp){
-				attr.add(b.value((AttributeExp)val).build());
+				attr.add(b.attribute((AttributeExp) val).build());
 				continue;
 			}
 			BagOfAttributeExp bag = (BagOfAttributeExp)val;
 			for(AttributeExp v : bag.values()){
-				attr.add(b.value(v).build());
+				attr.add(b.attribute(v).build());
 			}
 		}
 		return attr.build();
@@ -133,7 +133,7 @@ abstract class BaseDecisionRuleResponseExpression
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-		.add("id", id)
+		.add("attributeId", id)
 		.add("effect", effect)
 		.add("expressions", attributeExpressions)
 		.toString();

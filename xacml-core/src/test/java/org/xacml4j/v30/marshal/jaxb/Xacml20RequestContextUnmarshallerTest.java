@@ -182,6 +182,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		Entity resource0 = it.next().getEntity();
 		Attribute resourceId0 = Iterables.getOnlyElement(resource0.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId0);
+
 		assertTrue(resourceId0.isIncludeInResult());
 		assertEquals(AnyURIExp.of("http://medico.com/record/patient/BartSimpson"), Iterables.getOnlyElement(resourceId0.getValues()));
 

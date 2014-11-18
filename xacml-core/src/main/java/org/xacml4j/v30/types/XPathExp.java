@@ -23,25 +23,39 @@ package org.xacml4j.v30.types;
  */
 
 import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.XPathExpression;
+import org.xacml4j.v30.XPath;
 
-public final class XPathExp extends BaseAttributeExp<XPathExpression>
+import javax.xml.namespace.NamespaceContext;
+
+public final class XPathExp extends BaseAttributeExp<XPath>
 {
 	private static final long serialVersionUID = 8576542145890616101L;
 
-	XPathExp(XPathExpression xp){
+	XPathExp(XPath xp){
 		super(XacmlTypes.XPATH,
 				xp);
 	}
 	
-	public static XPathExp of(XPathExpression xp){
+	public static XPathExp of(XPath xp){
 		return new XPathExp(xp);
 	}
 	
 	public static XPathExp of(String xpath, CategoryId category){
-		return new XPathExp(new XPathExpression(xpath, category));
+		return new XPathExp(new XPath(xpath, category));
 	}
+
+    /**
+     * Creates {@link org.xacml4j.v30.types.XPathExp}
+     * from a given xpath string and
+     * category {@link org.xacml4j.v30.Categories#RESOURCE}
+     * @param xpath
+     * @return {@link org.xacml4j.v30.types.XPathExp}
+     */
+    public static XPathExp of(String xpath){
+        return of(xpath, Categories.RESOURCE);
+    }
 
 	public String getPath(){
 		return getValue().getPath();
@@ -50,6 +64,8 @@ public final class XPathExp extends BaseAttributeExp<XPathExpression>
 	public CategoryId getCategory(){
 		return getValue().getCategory();
 	}
+
+    public NamespaceContext getNamespaceContext() { return getValue().getNamespaceContext(); }
 	
 	public static BagOfAttributeExp emptyBag(){
 		return XacmlTypes.XPATH.emptyBag();
@@ -58,4 +74,6 @@ public final class XPathExp extends BaseAttributeExp<XPathExpression>
 	public static BagOfAttributeExp.Builder bag(){
 		return XacmlTypes.XPATH.bag();
 	}
+
+
 }

@@ -67,29 +67,29 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	public void testResolveRequestsWithValidReferences() throws RequestSyntaxException
 	{
 		Category attr0 = Category
-				.builder(Categories.RESOURCE)
+				.Resource()
 				.id("resourceAttr0")
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId1").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId2").value(StringExp.of("value1")).build())
+								Attribute.builder("testId1").stringValue("value0").build(),
+								Attribute.builder("testId2").stringValue("value1").build())
 						.build())
 				.build();
 
 		Category attr1 = Category
-				.builder(Categories.RESOURCE)
+				.Resource()
 				.id("resourceAttr1")
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId3").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId4").value(StringExp.of("value1")).build())
+								Attribute.builder("testId3").stringValue("value0").build(),
+								Attribute.builder("testId4").stringValue("value1").build())
 						.build())
 				.build();
 
 		Category attr2 = Category
-				.builder(Categories.ACTION)
+				.Action()
 				.id("actionAttr0")
 				.entity(
 						Entity.builder()
@@ -100,7 +100,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.build();
 
 		Category attr3 = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.SubjectAccess()
 				.id("subjectAttr0")
 				.entity(
 						Entity.builder()
@@ -111,7 +111,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.build();
 
 		Category attr4 = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.SubjectAccess()
 				.id("subjectAttr1")
 				.entity(
 						Entity.builder()
@@ -137,7 +137,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.builder()
 				.returnPolicyIdList(false)
 				.combineDecision(false)
-				.attribute(attr0, attr1, attr2, attr3, attr4)
+				.category(attr0, attr1, attr2, attr3, attr4)
 				.reference(reference0, reference1)
 				.build();
 
@@ -199,7 +199,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		RequestContext request = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(attr0, attr1)
+				.category(attr0, attr1)
 				.build();
 
 		expect(pdp.requestDecision(request)).andReturn(

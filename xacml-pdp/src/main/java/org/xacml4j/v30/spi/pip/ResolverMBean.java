@@ -25,7 +25,7 @@ package org.xacml4j.v30.spi.pip;
 public interface ResolverMBean
 {
 	/**
-	 * Gets preferred attribute
+	 * Gets preferred category
 	 * cache duration in seconds
 	 *
 	 * @return cache duration in
@@ -34,7 +34,7 @@ public interface ResolverMBean
 	int getPreferredCacheTTL();
 
 	/**
-	 * Sets preferred attribute
+	 * Sets preferred category
 	 * cache duration in seconds
 	 *
 	 * @param ttl a preferred cache duration in

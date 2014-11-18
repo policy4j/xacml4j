@@ -40,18 +40,18 @@ public class Xacml20ConformanceAttributeResolver
 			category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
 			attributes={
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#string",
-						id="urn:oasis:names:tc:xacml:1.0:example:attribute:role")
+						id="urn:oasis:names:tc:xacml:1.0:example:category:role")
 	})
 	public Map<String, BagOfAttributeExp> IIA002(
 			@XacmlAttributeDesignator(
 					category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
-					attributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+					attributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-attributeId",
 					dataType="http://www.w3.org/2001/XMLSchema#string") BagOfAttributeExp subjectId)
 	{
-		StringExp name = BagOfAttributeExp.value(subjectId);
+		StringExp name = subjectId.first();
 		Map<String, BagOfAttributeExp> attributes = new HashMap<String, BagOfAttributeExp>();
 		if(name.getValue().equalsIgnoreCase("Julius Hibbert")){
-			attributes.put("urn:oasis:names:tc:xacml:1.0:example:attribute:role",
+			attributes.put("urn:oasis:names:tc:xacml:1.0:example:category:role",
 					StringExp.of("Physician").toBag());
 		}
 		return attributes;

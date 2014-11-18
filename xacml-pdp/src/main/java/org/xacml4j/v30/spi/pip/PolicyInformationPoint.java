@@ -49,7 +49,7 @@ public interface PolicyInformationPoint
 	 * Resolves a given {@link AttributeDesignatorKey}
 	 *
 	 * @param context an evaluation context
-	 * @param ref an attribute designator
+	 * @param ref an category designator
 	 * @return {@link BagOfAttributeExp}
 	 * @throws Exception if an error occurs
 	 */
@@ -60,10 +60,10 @@ public interface PolicyInformationPoint
 
 
 	/**
-	 * Resolves a content for a given attribute category
+	 * Resolves a content for a given category category
 	 *
 	 * @param context an evaluation context
-	 * @param category an attribute category
+	 * @param category an category category
 	 * @return {@link Node} or {@code null}
 	 * @throws Exception if an error occurs
 	 */

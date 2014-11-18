@@ -27,15 +27,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute.Builder;
@@ -155,7 +151,7 @@ public class AttributeTest
         Calendar now = Calendar.getInstance();
         Attribute a =
                 Attribute.builder()
-                        .id("testId")
+                        .attributeId("testId")
                         .stringValue("a")
                         .booleanValue(false)
                         .dateTimeValue(now)

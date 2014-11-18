@@ -44,7 +44,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 {
 	final static String FEATURE_ID = "urn:oasis:names:tc:xacml:2.0:profile:multiple:xpath-expression";
 
-	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
+	final static String RESOURCE_ID_ATTRIBUTE = "urn:oasis:names:tc:xacml:1.0:resource:resource-attributeId";
 
 	public MultipleResourcesViaXPathExpressionLegacyHandler(){
 		super(FEATURE_ID);

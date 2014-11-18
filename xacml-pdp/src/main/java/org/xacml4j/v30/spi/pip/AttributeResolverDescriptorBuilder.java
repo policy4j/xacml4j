@@ -153,9 +153,9 @@ public final class AttributeResolverDescriptorBuilder
 				.issuer(issuer)
 				.build();
 		Preconditions.checkState(attributesById.put(attributeId, d) == null,
-				"Builder already has an attribute with id=\"%s\"", attributeId);
+				"Builder already has an category with attributeId=\"%s\"", attributeId);
 		Preconditions.checkState( this.attributesByKey.put(key, d) == null,
-				"Builder already has an attribute with id=\"%s\"", attributeId);
+				"Builder already has an category with attributeId=\"%s\"", attributeId);
 		return this;
 	}
 
@@ -178,7 +178,7 @@ public final class AttributeResolverDescriptorBuilder
 			for(AttributeReferenceKey k : keys){
 				if(k instanceof AttributeDesignatorKey){
 					Preconditions.checkArgument(!canResolve((AttributeDesignatorKey)k),
-							"Resolver refers to itself via context reference key=\"{}\"", k);
+							"Resolver refers to itself via context references key=\"{}\"", k);
 				}
 			}
 		}

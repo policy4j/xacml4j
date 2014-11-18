@@ -87,12 +87,12 @@ public abstract class BaseCompositeDecisionRuleIDReference
 
 	/**
 	 * Matches a given identifier and version
-	 * against this reference
+	 * against this references
 	 *
 	 * @param id an identifier
 	 * @param v a version
 	 * @return {@code true} if given identifier
-	 * and version matches this reference version constraints
+	 * and version matches this references version constraints
 	 */
 	protected boolean matches(String id, Version v) {
 		return this.id.equals(id) &&( (version == null || version.match(v)) &&
@@ -103,7 +103,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	@Override
 	public final String toString() {
 		return Objects.toStringHelper(this)
-		.add("id", id)
+		.add("attributeId", id)
 		.add("version", version)
 		.add("earliest", earliest)
 		.add("latest", latest).toString();

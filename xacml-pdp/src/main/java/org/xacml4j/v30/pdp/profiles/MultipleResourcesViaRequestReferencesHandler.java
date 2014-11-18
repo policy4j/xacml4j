@@ -37,7 +37,7 @@ import org.xacml4j.v30.RequestSyntaxException;
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {
-	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
+	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:references";
 
 	public MultipleResourcesViaRequestReferencesHandler() {
 		super(FEATURE_ID);
@@ -74,7 +74,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			Category attributes = req.getReferencedCategory(ref);
 			if(attributes == null){
 				throw new RequestSyntaxException(
-						"Failed to resolve attribute reference",
+						"Failed to resolve category references",
 						ref.getReferenceId());
 			}
 			resolved.add(attributes);

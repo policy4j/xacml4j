@@ -54,7 +54,7 @@ public interface DecisionRuleEvaluationContext extends EvaluationContext {
 	 * Gets currently evaluated policy.
 	 * If invocation returns
 	 * {@code null}, {@link #getCurrentPolicySet()}
-	 * will return NOT {@code null} reference
+	 * will return NOT {@code null} references
 	 * to the currently evaluated policy set
 	 *
 	 *
@@ -92,12 +92,12 @@ public interface DecisionRuleEvaluationContext extends EvaluationContext {
 	CompositeDecisionRuleIDReference getCurrentPolicySetIDReference();
 	/**
 	 * Resolves given {@link org.xacml4j.v30.CompositeDecisionRuleIDReference}
-	 * reference
+	 * references
 	 *
-	 * @param ref a policy reference
+	 * @param ref a policy references
 	 * @return resolved {@link org.xacml4j.v30.CompositeDecisionRule} instance
 	 * @throws PolicyResolutionException if
-	 * policy reference can not be resolved
+	 * policy references can not be resolved
 	 */
 	CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
 			throws PolicyResolutionException;

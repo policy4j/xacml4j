@@ -30,13 +30,11 @@ import com.google.common.base.*;
 import com.google.common.collect.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.types.EntityExp;
 
-import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**
- * A XACML request context attribute
+ * A XACML request context category
  *
  * @author Giedrius Trumpickas
  */
@@ -58,7 +56,7 @@ public class Attribute
 	}
 
 	public static Builder builder(String attributeId){
-		return new Builder().id(attributeId);
+		return new Builder().attributeId(attributeId);
 	}
 
     public static Builder builder(){
@@ -66,9 +64,9 @@ public class Attribute
     }
 
 	/**
-	 * Gets this attribute issuer
+	 * Gets this category issuer
 	 *
-	 * @return issuer of this attribute
+	 * @return issuer of this category
 	 * identifier or {@code null}
 	 * if it's not available
 	 */
@@ -77,20 +75,20 @@ public class Attribute
 	}
 
 	/**
-	 * Tests if this attribute needs
+	 * Tests if this category needs
 	 * to be included back to the
 	 * evaluation result
 	 *
-	 * @return {@code true} if the attribute needs to be included
+	 * @return {@code true} if the category needs to be included
 	 */
 	public boolean isIncludeInResult(){
 		return includeInResult;
 	}
 
 	/**
-	 * Gets attribute identifier.
+	 * Gets category identifier.
 	 *
-	 * @return attribute identifier
+	 * @return category identifier
 	 */
 	public String getAttributeId(){
 		return attributeId;
@@ -107,7 +105,7 @@ public class Attribute
 	/**
 	 * Gets all instances of {@link AttributeExp} by type
 	 *
-	 * @param type an attribute type
+	 * @param type an category type
 	 * @return a collection of {@link AttributeExp} of given type
 	 */
 	public Iterable<AttributeExp> getValuesByType(final AttributeExpType type) {
@@ -168,7 +166,7 @@ public class Attribute
 			return this;
 		}
 
-        public Builder id(String attributeId){
+        public Builder attributeId(String attributeId){
             this.attributeId = Strings.emptyToNull(attributeId);
             return this;
         }
@@ -189,7 +187,7 @@ public class Attribute
         {
             Preconditions.checkNotNull(attr);
             issuer(attr.getIssuer());
-            id(attr.getAttributeId());
+            attributeId(attr.getAttributeId());
             includeInResult(attr.isIncludeInResult());
             values(attr.getValues());
             return this;

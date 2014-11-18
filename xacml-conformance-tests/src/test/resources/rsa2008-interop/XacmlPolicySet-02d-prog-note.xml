@@ -46,7 +46,7 @@
 	   </Description>
       <Target/>
       <Condition>
-        <!-- True if hl7:dissented-subject-id EQUAL TO subject:subject-id  -->
+        <!-- True if hl7:dissented-subject-attributeId EQUAL TO subject:subject-attributeId  -->
         <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:any-of">
           <Function FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal"/>
           <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
@@ -70,7 +70,7 @@
     </Rule>
     <Obligations>
       <!-- These obligations provide specific instructions to PEP in the response -->
-      <!-- This obligation informs the PEP access denied unsigned non-author      -->
+      <!-- This obligations informs the PEP access denied unsigned non-author      -->
       <Obligation
         ObligationId="urn:va:xacml:2.0:interop:rsa8:obligation:deny:unsigned:non-author"
         FulfillOn="Deny"/>

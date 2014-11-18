@@ -62,7 +62,7 @@ public final class Content
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-		.add("id", d.getId())
+		.add("attributeId", d.getId())
 		.add("content", DOMUtil.toString((Element)content))
 		.toString();
 	}

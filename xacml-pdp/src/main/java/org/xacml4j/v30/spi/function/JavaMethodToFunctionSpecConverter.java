@@ -123,7 +123,7 @@ class JavaMethodToFunctionSpecConverter
 				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
 					throw new XacmlSyntaxException(
-							"Unknown XACML type id=\"%s\"", param.typeId());
+							"Unknown XACML type attributeId=\"%s\"", param.typeId());
 				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
@@ -136,11 +136,11 @@ class JavaMethodToFunctionSpecConverter
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.debug("Expecting attribute value at index=\"{}\", "
+					log.debug("Expecting category value at index=\"{}\", "
 							+ "actual type type=\"{}\"", i, types[i].getName());
 					throw new IllegalArgumentException(
 							String.format(
-									"Parameter type annotates attribute value of "
+									"Parameter type annotates category value of "
 											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 									type, m.getName(), types[i]));
 				}
@@ -153,7 +153,7 @@ class JavaMethodToFunctionSpecConverter
 				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
 					throw new XacmlSyntaxException(
-							"Unknown XACML type id=\"%s\"", param.typeId());
+							"Unknown XACML type attributeId=\"%s\"", param.typeId());
 				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
@@ -166,11 +166,11 @@ class JavaMethodToFunctionSpecConverter
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.debug("Expecting attribute value at index=\"{}\", "
+					log.debug("Expecting category value at index=\"{}\", "
 							+ "actual type type=\"{}\"", i, types[i].getName());
 					throw new IllegalArgumentException(
 							String.format(
-									"Parameter type annotates attribute value of "
+									"Parameter type annotates category value of "
 											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
 									type, m.getName(), types[i]));
 				}
@@ -196,7 +196,7 @@ class JavaMethodToFunctionSpecConverter
 				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
 					throw new XacmlSyntaxException(
-							"Unknown XACML type id=\"%s\"", param.typeId());
+							"Unknown XACML type attributeId=\"%s\"", param.typeId());
 				}
 				b.varArg(param.isBag() ? type.get().bagType() : type.get(), param.min(),
 						param.max());
@@ -230,7 +230,7 @@ class JavaMethodToFunctionSpecConverter
 			Optional<AttributeExpType> type = XacmlTypes.getType(returnType.typeId());
 			if(!type.isPresent()){
 				throw new XacmlSyntaxException(
-						"Unknown XACML type id=\"%s\"", returnType.typeId());
+						"Unknown XACML type attributeId=\"%s\"", returnType.typeId());
 			}
 			return b.build(returnType.isBag() ? type.get().bagType() : type.get(),
 					(validator != null) ? createValidator(validator
@@ -272,7 +272,7 @@ class JavaMethodToFunctionSpecConverter
 					m.getName(), returnType.typeId(), m.getReturnType());
 		}
 		if(!returnType.isBag() && BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
-			throw new XacmlSyntaxException("Method=\"%s\" return type declared XACML attribute type=\"%s\" "
+			throw new XacmlSyntaxException("Method=\"%s\" return type declared XACML category type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),
 					returnType.typeId(), m.getReturnType());
 		}

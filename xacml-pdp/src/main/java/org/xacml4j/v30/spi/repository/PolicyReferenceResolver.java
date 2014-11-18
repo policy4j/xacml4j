@@ -37,7 +37,7 @@ public interface PolicyReferenceResolver
 	/**
 	 * Resolves a given {@link org.xacml4j.v30.pdp.PolicyReference}
 	 *
-	 * @param ref a policy reference
+	 * @param ref a policy references
 	 * @return {@link Policy} instance
 	 * @throws PolicyResolutionException
 	 */
@@ -48,7 +48,7 @@ public interface PolicyReferenceResolver
 	 * Resolves a given {@link org.xacml4j.v30.pdp.PolicySetReference}
 	 *
 	 *
-	 * @param ref a policy reference
+	 * @param ref a policy references
 	 * @return {@link PolicySet} instance
 	 * @throws PolicyResolutionException
 	 */

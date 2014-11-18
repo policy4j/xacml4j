@@ -24,28 +24,22 @@ package org.xacml4j.v30;
 
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import com.google.common.base.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.ProcessingInstruction;
-import org.w3c.dom.Text;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.xpath.XPathProvider;
-import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Collections2;
 
 /**
- * An entity represents a collection of related attribute
+ * An entity represents a collection of related category
  *
  * @author Giedrius Trumpickas
  */
@@ -68,8 +62,8 @@ public final class Entity extends AttributeContainer
 
 	/**
 	 * Gets entity with all include
-	 * in result attribute
-	 * @return {@link Entity} with all include in result attribute
+	 * in result category
+	 * @return {@link Entity} with all include in result category
 	 */
 	public Entity getIncludeInResult(){
 		return Entity
@@ -130,13 +124,13 @@ public final class Entity extends AttributeContainer
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(xpath, contextNode);
 			if(nodeSet == null ||
 					nodeSet.getLength() == 0){
-				return type.bagType().createEmpty();
+				return type.bagType().emptyBag();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\"",
 						new Object[]{nodeSet.getLength(), xpath});
 			}
-			return toBag(xpath, type, nodeSet);
+			return DOMUtil.toBag(xpath, type, nodeSet);
 		}
 		catch(EvaluationException e){
 			if(log.isDebugEnabled()){
@@ -152,73 +146,6 @@ public final class Entity extends AttributeContainer
 		}
 	}
 
-	/**
-	 * Converts a given node list to the {@link BagOfAttributeExp}
-	 *
-	 * @param xpath XPath for nodes
-	 * @param type attribute type
-	 * @param nodeSet a node set
-	 * @return {@link BagOfAttributeExp}
-	 * @throws EvaluationException
-	 */
-	private BagOfAttributeExp toBag(String xpath,
-			AttributeExpType type, NodeList nodeSet)
-		throws XPathEvaluationException
-	{
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
-		for(int i = 0; i< nodeSet.getLength(); i++)
-		{
-			Node n = nodeSet.item(i);
-			String v = null;
-			switch(n.getNodeType()){
-				case Node.TEXT_NODE:
-					v = ((Text)n).getData();
-					break;
-				case Node.PROCESSING_INSTRUCTION_NODE:
-					v = ((ProcessingInstruction)n).getData();
-					break;
-				case Node.ATTRIBUTE_NODE:
-					v = ((Attr)n).getValue();
-					break;
-				case Node.COMMENT_NODE:
-					v = ((Comment)n).getData();
-					break;
-				default:
-					throw new XPathEvaluationException(
-							xpath,
-							Status.syntaxError().build(),
-							"Unsupported DOM node type=\"%d\"",
-							n.getNodeType());
-			}
-			try
-			{
-				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(type);
-				if(!toString.isPresent()){
-					throw new XPathEvaluationException(
-							xpath,
-							Status.syntaxError().build(),
-							"Unsupported XACML type=\"%d\"",
-							type.getDataTypeId());
-				}
-				AttributeExp value = toString.get().fromString(v);
-				if(log.isDebugEnabled()){
-					log.debug("Node of type=\"{}\" converted attribute=\"{}\"",
-							n.getNodeType(), value);
-				}
-				values.add(value);
-			}catch(EvaluationException e){
-				throw e;
-			}catch(Exception e){
-				throw new XPathEvaluationException(xpath,
-						Status.processingError().build(),
-						e, e.getMessage());
-			}
-		}
-	  	return type.bagType().create(values);
-	}
-
-
-
 	public BagOfAttributeExp getAttributeValues(String attributeId, AttributeExpType type, String issuer){
 		Collection<AttributeExp> values = getAttributeValues(attributeId, issuer, type);
 		return type.bagOf(values);
@@ -227,7 +154,7 @@ public final class Entity extends AttributeContainer
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-		.add("attribute", attributes)
+		.add("category", attributes)
 		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
 		.toString();
 	}

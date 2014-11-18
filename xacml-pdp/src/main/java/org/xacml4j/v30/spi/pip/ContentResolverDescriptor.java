@@ -29,7 +29,7 @@ public interface ContentResolverDescriptor extends ResolverDescriptor
 	/**
 	 * Tests if given category content can be resolved via this resolver
 	 *
-	 * @param category an attribute category
+	 * @param category an category category
 	 * @return {@code true} if content can be resolved
 	 */
 	boolean canResolve(CategoryId category);

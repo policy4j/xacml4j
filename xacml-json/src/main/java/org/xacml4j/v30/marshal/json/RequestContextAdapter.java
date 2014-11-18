@@ -25,7 +25,6 @@ package org.xacml4j.v30.marshal.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.util.DOMUtil;
@@ -93,7 +92,7 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 				.returnPolicyIdList(returnPolicyIdList)
 				.combineDecision(combinedDecision)
 				.categories(categories)
-				.reference(reqRefs)
+				.references(reqRefs)
 				.build();
 	}
 
@@ -131,8 +130,8 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
     private JsonObject serialize(Category src,
                                 JsonSerializationContext context) {
         JsonObject o = new JsonObject();
-        if (src.getId() != null) {
-            o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
+        if (src.getReferenceId() != null) {
+            o.addProperty(JsonProperties.ID_PROPERTY, src.getReferenceId());
         }
         o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getShortName());
         o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(src.getEntity().getContent()));

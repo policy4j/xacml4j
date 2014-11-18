@@ -297,7 +297,7 @@ public final class RootEvaluationContext implements DecisionRuleEvaluationContex
 			return resolve((PolicySetReference)ref);
 		}
 		throw new PolicyResolutionException(this,
-				"Failed to resolve reference");
+				"Failed to resolve references");
 	}
 
 	private Policy resolve(PolicyReference ref)
@@ -305,11 +305,11 @@ public final class RootEvaluationContext implements DecisionRuleEvaluationContex
 		Policy p =	resolver.resolve(ref);
 		if(log.isDebugEnabled()){
 			log.debug("Trying to resolve " +
-					"Policy reference=\"{}\"", ref);
+					"Policy references=\"{}\"", ref);
 		}
 		if(p == null){
 			throw new PolicyResolutionException(this,
-					"Failed to resolve PolicySet reference");
+					"Failed to resolve PolicySet references");
 		}
 		return p;
 	}
@@ -319,11 +319,11 @@ public final class RootEvaluationContext implements DecisionRuleEvaluationContex
 		PolicySet p = resolver.resolve(ref);
 		if(log.isDebugEnabled()){
 			log.debug("Trying to resolve " +
-					"PolicySet reference=\"{}\"", ref);
+					"PolicySet references=\"{}\"", ref);
 		}
 		if(p == null){
 			throw new PolicyResolutionException(this,
-					"Failed to resolve PolicySet reference");
+					"Failed to resolve PolicySet references");
 		}
 		return p;
 	}

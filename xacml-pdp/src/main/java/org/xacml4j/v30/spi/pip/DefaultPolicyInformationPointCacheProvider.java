@@ -31,7 +31,7 @@ public final class DefaultPolicyInformationPointCacheProvider
 	private final Cache<ResolverCacheKey, Content> contentCache;
 
 	/**
-	 * Default maximum number of items in the attribute cache
+	 * Default maximum number of items in the category cache
 	 */
 	private static final int DEFAULT_MAX_ATTRIBUTE_ITEMS = 2048;
 

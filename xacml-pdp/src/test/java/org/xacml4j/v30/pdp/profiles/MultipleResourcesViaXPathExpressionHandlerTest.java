@@ -27,9 +27,7 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.io.StringReader;
 import java.util.Collection;
@@ -98,32 +96,32 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 	{
 
 		Category resource = Category
-				.builder(Categories.RESOURCE)
+				.Resource()
 				.entity(
-						Entity.builder()
-						.content(content)
-						.attribute(
-								Attribute.builder("testId3").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId4").value(StringExp.of("value1")).build(),
-								Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-								.value(XPathExp.of("//md:record/md:patient", Categories.RESOURCE)).build())
-						.build())
+                        Entity.builder()
+                                .content(content)
+                                .attribute(
+                                        Attribute.builder("testId3").value(StringExp.of("value0")).build(),
+                                        Attribute.builder("testId4").value(StringExp.of("value1")).build(),
+                                        Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+                                                .value(XPathExp.of("//md:record/md:patient", Categories.RESOURCE)).build())
+                                .build())
 				.build();
 
 		Category subject = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.SubjectAccess()
 				.entity(
-						Entity.builder()
-						.attribute(
-						Attribute.builder("testId7").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId8").value(StringExp.of("value1")).build())
-						.build())
+                        Entity.builder()
+                                .attribute(
+                                        Attribute.builder("testId7").value(StringExp.of("value0")).build(),
+                                        Attribute.builder("testId8").value(StringExp.of("value1")).build())
+                                .build())
 				.build();
 
 		RequestContext context = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject, resource)
+				.category(subject, resource)
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
@@ -148,7 +146,11 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext r1 = c1.getValue();
 
 		Attribute selector0 = r0.getOnlyEntity(Categories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
-		Attribute selector1 = r1.getOnlyEntity(Categories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
+        assertNotNull(selector0);
+
+        Attribute selector1 = r1.getOnlyEntity(Categories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
+        assertNotNull(selector1);
+
 
 		assertEquals(XPathExp.of("//md:record/md:patient[1]", Categories.RESOURCE),  Iterables.getOnlyElement(selector0.getValues()));
 		assertEquals(XPathExp.of("//md:record/md:patient[2]", Categories.RESOURCE),  Iterables.getOnlyElement(selector1.getValues()));
@@ -190,7 +192,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		RequestContext context = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject, resource)
+				.category(subject, resource)
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
@@ -277,7 +279,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 
 
 		RequestContext request = RequestContext.builder()
-				.attribute(resource, subject)
+				.category(resource, subject)
 				.build();
 
 		assertFalse(request.containsRepeatingCategories());
@@ -322,7 +324,7 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		expect(pdp.getXPathProvider()).andReturn(xpathProvider);
 
 		RequestContext request = RequestContext.builder()
-				.attribute(resource, subject)
+				.category(resource, subject)
 				.build();
 
 		assertFalse(request.containsRepeatingCategories());

@@ -91,7 +91,7 @@ public class Xacml20ResponseContextMarshaller
 		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
 
 		private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
-		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
+		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-attributeId";
 
 		private final static Map<Decision, DecisionType> V30_TO_V20_DECISION_MAPPING = ImmutableMap.<Decision, DecisionType>builder()
 				.put(Decision.DENY, DecisionType.DENY)
@@ -146,10 +146,10 @@ public class Xacml20ResponseContextMarshaller
 		}
 
 		/**
-		 * Tries to locate resource id attribute
+		 * Tries to locate resource attributeId category
 		 *
 		 * @param result an evaluation result
-		 * @return a resource id attribute
+		 * @return a resource attributeId category
 		 */
 		private String getResourceId(Result result)
 		{

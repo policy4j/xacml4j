@@ -64,9 +64,9 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 
 	/**
-	 * Gets this rule issuer attribute
+	 * Gets this rule issuer category
 	 *
-	 * @return this rule issuer attribute
+	 * @return this rule issuer category
 	 */
 	public Entity getIssuer(){
 		return policyIssuer;
@@ -108,13 +108,13 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	public Decision evaluate(EvaluationContext ctx) {
         DecisionRuleEvaluationContext context = (DecisionRuleEvaluationContext)ctx;
 		if(log.isDebugEnabled()){
-			log.debug("Evaluating composite decision rule with id=\"{}\"", id);
+			log.debug("Evaluating composite decision rule with attributeId=\"{}\"", id);
 		}
 		MatchResult r = isMatch(context);
 		if(r == MatchResult.NOMATCH){
 			if(log.isDebugEnabled()){
 				log.debug("Composite decision rule " +
-						"id=\"{}\" target is NO_MATCH, " +
+						"attributeId=\"{}\" target is NO_MATCH, " +
 						"decision result is NOT_APPLICABLE", id);
 			}
 			return Decision.NOT_APPLICABLE;
@@ -125,7 +125,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 				Decision decision = combineDecisions(context);
 				if(log.isDebugEnabled()){
 					log.debug("Composite decision rule " +
-							"id=\"{}\" condition eval is TRUE, " +
+							"attributeId=\"{}\" condition eval is TRUE, " +
 							"decision result is=\"{}\"", id, decision);
 				}
 				if(!decision.isIndeterminate() ||
@@ -146,7 +146,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 			if(result == ConditionResult.FALSE){
 				if(log.isDebugEnabled()){
 					log.debug("Composite decision rule " +
-							"id=\"{}\" condition eval is FALSE, " +
+							"attributeId=\"{}\" condition eval is FALSE, " +
 							"decision result is=\"{}\"", id, Decision.NOT_APPLICABLE);
 				}
 				return Decision.NOT_APPLICABLE;

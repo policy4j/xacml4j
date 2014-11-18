@@ -27,7 +27,7 @@ import java.net.URI;
 import com.google.common.base.Preconditions;
 
 /**
- * A base class for attribute references
+ * A base class for category references
  *
  * @author Giedrius Trumpickas
  */

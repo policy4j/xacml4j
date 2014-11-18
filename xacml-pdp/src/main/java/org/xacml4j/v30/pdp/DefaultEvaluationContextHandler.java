@@ -155,7 +155,7 @@ class DefaultEvaluationContextHandler
 	 * Resolves category content via {@link PolicyInformationPoint}
 	 *
 	 * @param context an evaluation context
-	 * @param category an attribute category
+	 * @param category an category category
 	 * @return {@link BagOfAttributeExp}
 	 * @exception Exception
 	 */
@@ -226,7 +226,7 @@ class DefaultEvaluationContextHandler
 					nodeSet.getLength() == 0){
 				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty",
 						ref.getPath(), ref.getCategory());
-				return ref.getDataType().bagType().createEmpty();
+				return ref.getDataType().bagType().emptyBag();
 			}
 			if(log.isDebugEnabled()){
 				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"",
@@ -260,7 +260,7 @@ class DefaultEvaluationContextHandler
 	 * Converts a given node list to the {@link BagOfAttributeExp}
 	 *
 	 * @param context an evaluation context
-	 * @param ref an attribute selector
+	 * @param ref an category selector
 	 * @param nodeSet a node set
 	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException
@@ -303,14 +303,14 @@ class DefaultEvaluationContextHandler
 				AttributeExp value = toString.get().fromString(v);
 				if(log.isDebugEnabled()){
 					log.debug("Node of type=\"{}\" " +
-							"converted attribute=\"{}\"", n.getNodeType(), value);
+							"converted category=\"{}\"", n.getNodeType(), value);
 				}
 				values.add(value);
 			}catch(Exception e){
 				throw new AttributeReferenceEvaluationException(ref);
 			}
 		}
-	  	return ref.getDataType().bagType().create(values);
+	  	return ref.getDataType().bagType().of(values);
 	}
 
 	@Override

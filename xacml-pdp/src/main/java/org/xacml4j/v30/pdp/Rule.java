@@ -106,7 +106,7 @@ public class Rule extends BaseDecisionRule
 		}
 		MatchResult m  = isMatch(context);
 		if(log.isDebugEnabled()){
-			log.debug("Decision rule id=\"{}\" " +
+			log.debug("Decision rule attributeId=\"{}\" " +
 					"target evaluation is=\"{}\"", id, m);
 		}
 		if(m == MatchResult.INDETERMINATE){
@@ -117,7 +117,7 @@ public class Rule extends BaseDecisionRule
 		}
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
 		if(log.isDebugEnabled()){
-			log.debug("Decision rule id=\"{}\" " +
+			log.debug("Decision rule attributeId=\"{}\" " +
 					"condition evaluation is=\"{}\"", id, result);
 		}
 		if(result == ConditionResult.TRUE){

@@ -51,10 +51,10 @@ public class Match implements PolicyElement, Matchable
 				"Expecting function with 2 arguments");
 		Preconditions.checkArgument(b.predicate.getParamSpecAt(0).
 				isValidParamType(b.attr.getEvaluatesTo()),
-				"Given function argument at index=\"0\" type is not compatible with a given attribute value type");
+				"Given function argument at index=\"0\" type is not compatible with a given category value type");
 		Preconditions.checkArgument(b.predicate.getParamSpecAt(1).
 				isValidParamType((b.attrRef.getDataType())),
-				"Given function argument at index=\"1\" type is not compatible with a given attribute reference type");
+				"Given function argument at index=\"1\" type is not compatible with a given category references type");
 		this.value = b.attr;
 		this.predicate = b.predicate;
 		this.attributeRef = b.attrRef;
@@ -73,7 +73,7 @@ public class Match implements PolicyElement, Matchable
 	}
 
 	/**
-	 * Gets match attribute value.
+	 * Gets match category value.
 	 *
 	 * @return {@link AttributeExp} instance
 	 */
@@ -82,7 +82,7 @@ public class Match implements PolicyElement, Matchable
 	}
 
 	/**
-	 * Gets attribute reference
+	 * Gets category references
 	 *
 	 * @return {@link AttributeReference}
 	 */
@@ -97,7 +97,7 @@ public class Match implements PolicyElement, Matchable
 		{
 			BagOfAttributeExp attributes = attributeRef.evaluate(context);
 			if(log.isDebugEnabled()){
-				log.debug("Evaluated attribute reference=\"{}\" to " +
+				log.debug("Evaluated category references=\"{}\" to " +
 						"bag=\"{}\"", attributeRef, attributes);
 			}
 			for(AttributeExp v : attributes.values()){
@@ -105,7 +105,7 @@ public class Match implements PolicyElement, Matchable
 				if((Boolean)match.getValue()){
 					if(log.isDebugEnabled()){
 						log.debug("Attribute value=\"{}\" " +
-								"matches attribute value=\"{}\"", value, v);
+								"matches category value=\"{}\"", value, v);
 					}
 					return MatchResult.MATCH;
 				}

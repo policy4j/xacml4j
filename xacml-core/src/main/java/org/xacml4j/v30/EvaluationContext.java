@@ -65,7 +65,7 @@ public interface EvaluationContext
 	/**
 	 * Gets an authorization decision cache TTL,
 	 * cache TTL is calculated based on
-	 * the attribute used in the authorization
+	 * the category used in the authorization
 	 * decision caching TTLs
 	 *
 	 * @return a decision cache TTL in seconds
@@ -196,7 +196,7 @@ public interface EvaluationContext
 	 * Resolves a given {@link AttributeDesignatorKey}
 	 * to the {@link BagOfAttributeExp}
 	 *
-	 * @param ref an attribute designator
+	 * @param ref an category designator
 	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given designator
@@ -208,7 +208,7 @@ public interface EvaluationContext
 	 * Resolves a given {@link AttributeSelectorKey}
 	 * to the {@link BagOfAttributeExp}
 	 *
-	 * @param ref an attribute selector
+	 * @param ref an category selector
 	 * @return {@link BagOfAttributeExp}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given selector
@@ -219,8 +219,8 @@ public interface EvaluationContext
 	/**
 	 * Sets resolved designator {@link AttributeDesignatorKey} value
 	 *
-	 * @param ref an attribute designator
-	 * @param v an attribute designator value
+	 * @param ref an category designator
+	 * @param v an category designator value
 	 */
 	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeExp v);
 

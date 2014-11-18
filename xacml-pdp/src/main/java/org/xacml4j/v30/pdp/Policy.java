@@ -49,7 +49,7 @@ public class Policy extends BaseCompositeDecisionRule
 	private final Map<String, Multimap<String, CombinerParameter>> ruleCombiningParameters;
 
 	/**
-	 * A reference to itself
+	 * A references to itself
 	 */
 	private final PolicyReference reference;
 
@@ -268,7 +268,7 @@ public class Policy extends BaseCompositeDecisionRule
 			Preconditions.checkNotNull(value);
 			Preconditions.checkArgument(
 					variableDefinitions.containsKey(variableId),
-					"Given variable id=\"%s\" is not defined the policy id=\"%s\"",
+					"Given variable attributeId=\"%s\" is not defined the policy attributeId=\"%s\"",
 					variableId, id);
 			varDefEvalResults.put(variableId, value);
 		}

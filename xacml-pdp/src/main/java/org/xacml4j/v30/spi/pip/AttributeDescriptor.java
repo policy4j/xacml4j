@@ -34,10 +34,10 @@ public final class AttributeDescriptor
 	private BagOfAttributeExp defaultValue;
 
 	/**
-	 * Constructs attribute descriptor
+	 * Constructs category descriptor
 	 *
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
+	 * @param attributeId an category identifier
+	 * @param dataType an category data type
 	 */
 	public AttributeDescriptor(String attributeId,
 			AttributeExpType dataType)
@@ -49,27 +49,27 @@ public final class AttributeDescriptor
 	}
 
 	/**
-	 * Gets an attribute identifier
+	 * Gets an category identifier
 	 *
-	 * @return attribute identifier
+	 * @return category identifier
 	 */
 	public String getAttributeId(){
 		return attributeId;
 	}
 
 	/**
-	 * Gets attribute default value
-	 * @return attribute default value
+	 * Gets category default value
+	 * @return category default value
 	 */
 	public BagOfAttributeExp getDefaultValue(){
 		return defaultValue;
 	}
 
 	/**
-	 * Gets expected attribute data type
+	 * Gets expected category data type
 	 *
 	 * @return {@link AttributeExpType} an
-	 * attribute data type
+	 * category data type
 	 */
 	public AttributeExpType getDataType(){
 		return dataType;

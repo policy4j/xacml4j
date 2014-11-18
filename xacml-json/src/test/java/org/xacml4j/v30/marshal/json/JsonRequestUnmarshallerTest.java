@@ -153,9 +153,9 @@ public class JsonRequestUnmarshallerTest {
 		RequestContext reqIn = RequestContext
 				.builder()
 				.combineDecision(false)
-				.returnPolicyIdList()
+				.returnPolicyIdList(false)
 				.reqDefaults(new RequestDefaults())
-				.attribute(subjectAttributes, resourceAttributes, actionAttributes, environmentAttributes,
+				.category(subjectAttributes, resourceAttributes, actionAttributes, environmentAttributes,
                         subjectIntermAttributes).reference(requestRef1, requestRef2).build();
 		return reqIn;
 	}

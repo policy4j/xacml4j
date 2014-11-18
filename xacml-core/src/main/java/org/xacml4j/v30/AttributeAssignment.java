@@ -35,14 +35,14 @@ public class AttributeAssignment
 	private final String issuer;
 
 	/**
-	 * Creates attribute assignment with a
-	 * given attribute identifier
+	 * Creates category assignment with a
+	 * given category identifier
 	 *
-	 * @param b attribute assignment builder
+	 * @param b category assignment builder
 	 */
 	private AttributeAssignment(Builder b)
 	{
-		Preconditions.checkNotNull(b.attributeId, "Attribute id can't be null");
+		Preconditions.checkNotNull(b.attributeId, "Attribute attributeId can't be null");
 		Preconditions.checkNotNull(b.value, "Attribute value can't be null");
 		this.attributeId = b.attributeId;
 		this.category = b.category;
@@ -55,27 +55,27 @@ public class AttributeAssignment
 	}
 
 	/**
-	 * Gets attribute identifier
+	 * Gets category identifier
 	 *
-	 * @return attribute identifier
+	 * @return category identifier
 	 */
 	public String getAttributeId(){
 		return attributeId;
 	}
 
 	/**
-	 * Gets attribute value
+	 * Gets category value
 	 *
-	 * @return attribute value
+	 * @return category value
 	 */
 	public AttributeExp getAttribute(){
 		return attribute;
 	}
 
 	/**
-	 * Gets attribute category
+	 * Gets category category
 	 *
-	 * @return attribute category
+	 * @return category category
 	 */
 	public CategoryId getCategory(){
 		return category;
@@ -83,9 +83,9 @@ public class AttributeAssignment
 
 
 	/**
-	 * Gets attribute issuer identifier
+	 * Gets category issuer identifier
 	 *
-	 * @return attribute issuer
+	 * @return category issuer
 	 */
 	public String getIssuer(){
 		return issuer;
@@ -130,8 +130,8 @@ public class AttributeAssignment
 	public static class Builder
 	{
 		private String attributeId;
+        private String issuer;
 		private CategoryId category;
-		private String issuer;
 		private AttributeExp value;
 
 		public Builder id(String attributeId){
@@ -155,7 +155,7 @@ public class AttributeAssignment
 			return this;
 		}
 
-		public Builder value(AttributeExp v){
+		public Builder attribute(AttributeExp v){
 			Preconditions.checkNotNull(v);
 			this.value = v;
 			return this;

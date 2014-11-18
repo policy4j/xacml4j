@@ -27,9 +27,10 @@ import java.util.Collections;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 /**
- * Represents a XACML bag of attribute type.
+ * Represents a XACML bag of category type.
  *
  * @author Giedrius Trumpickas
  */
@@ -37,23 +38,27 @@ public final class BagOfAttributeExpType implements ValueType
 {
 	private static final long serialVersionUID = 1317103379388105997L;
 
-	private AttributeExpType type;
 
+
+	private AttributeExpType type;
+    private BagOfAttributeExp emptyBag;
 	/**
-	 * Constructs bag of attribute types with a given
-	 * attribute type.
+	 * Constructs bag of category types with a given
+	 * category type.
 	 *
-	 * @param type an attribute type
+	 * @param type an category type
 	 */
 	public BagOfAttributeExpType(AttributeExpType type){
 		Preconditions.checkNotNull(type);
 		this.type = type;
+        this.emptyBag = new BagOfAttributeExp(this,
+                ImmutableList.<AttributeExp>of());
 	}
 
 	/**
-	 * Gets bag attribute type.
+	 * Gets bag category type.
 	 *
-	 * @return bag attribute type
+	 * @return bag category type
 	 */
 	public AttributeExpType getDataType(){
 		return type;
@@ -68,16 +73,6 @@ public final class BagOfAttributeExpType implements ValueType
 		return new BagOfAttributeExp.Builder(type);
 	}
 
-	/**
-	 * Creates bag from given collection of attribute.
-	 *
-	 * @param attr a collection of attribute
-	 * @return {@link BagOfAttributeExp} containing given attribute
-	 */
-	public BagOfAttributeExp create(
-			Iterable<AttributeExp> attr){
-		return new BagOfAttributeExp(this, attr);
-	}
 
 	/**
 	 * Creates an empty bag.
@@ -85,21 +80,33 @@ public final class BagOfAttributeExpType implements ValueType
 	 * @return instance of {@link BagOfAttributeExp} with
 	 * no {@link BagOfAttributeExp} instances
 	 */
-	public  BagOfAttributeExp createEmpty(){
-		return new BagOfAttributeExp(this, Collections.<AttributeExp>emptyList());
+	public  BagOfAttributeExp emptyBag(){
+		return emptyBag;
 	}
 
 	/**
-	 * Creates bag from given array of attribute.
+	 * Creates bag from given array of category.
 	 *
-	 * @param attr an array of attribute
-	 * @return {@link BagOfAttributeExp} containing given attribute
+	 * @param attr an array of category
+	 * @return {@link BagOfAttributeExp} containing given category
 	 */
-	public BagOfAttributeExp create(AttributeExp ...attr){
+	public BagOfAttributeExp value(AttributeExp... attr){
 		return new BagOfAttributeExp(this, Arrays.asList(attr));
 	}
 
-	@Override
+    /**
+     * Creates bag from given collection of category.
+     *
+     * @param attr a collection of category
+     * @return {@link BagOfAttributeExp} containing given category
+     */
+    public BagOfAttributeExp of(
+            Iterable<? extends AttributeExp> attr){
+        return new BagOfAttributeExp(this, attr);
+    }
+
+
+    @Override
 	public boolean equals(Object o){
 		if(o == this){
 			return true;
@@ -122,7 +129,7 @@ public final class BagOfAttributeExpType implements ValueType
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)
-		.add("TypeId", type.getDataTypeId())
+		.add("DataType", type.getDataTypeId())
 		.toString();
 	}
 }

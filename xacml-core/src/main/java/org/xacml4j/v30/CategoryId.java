@@ -25,9 +25,9 @@ package org.xacml4j.v30;
 public interface CategoryId
 {
 	/**
-	 * Gets XACML category identifier
+	 * Gets XACML category identifier/name
 	 *
-	 * @return a XACML category identifier
+	 * @return a XACML category identifier/name
 	 */
 	String getName();
 

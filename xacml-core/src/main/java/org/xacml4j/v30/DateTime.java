@@ -22,7 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;

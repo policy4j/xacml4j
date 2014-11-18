@@ -27,7 +27,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
 /**
- * A base class which represents a reference
+ * A base class which represents a references
  * to a single decision rule
  */
 public class IdReference {
@@ -83,7 +83,7 @@ public class IdReference {
     @Override
     public final String toString() {
         return Objects.toStringHelper(this)
-                .add("id", id)
+                .add("attributeId", id)
                 .toString();
     }
 

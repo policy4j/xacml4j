@@ -143,7 +143,7 @@ class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return Result
 				.builder(create(result.getDecision()), create(result.getStatus()))
 				.advices(createAdvices(result.getAssociatedAdvice()))
-				.obligation(createObligations(result.getObligations()))
+				.obligations(createObligations(result.getObligations()))
 				.evaluatedPolicies(create(result.getPolicyIdentifierList()))
 				.includeInResultAttributes(create(result.getAttributes()))
 				.build();
@@ -215,7 +215,7 @@ class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private AttributesType create(Category a)
 	{
 		AttributesType attributes = new AttributesType();
-		attributes.setId(a.getId());
+		attributes.setId(a.getReferenceId());
 		attributes.setCategory(a.getCategoryId().toString());
 		for(Attribute attr : a.getEntity().getAttributes()){
 			attributes.getAttribute().add(create(attr));
@@ -401,7 +401,7 @@ class Xacml30RequestContextFromJaxbToObjectModelMapper
 				.id(a.getAttributeId())
 				.category(a.getCategory())
 				.issuer(a.getIssuer())
-				.value(value)
+				.attribute(value)
 				.build();
 	}
 

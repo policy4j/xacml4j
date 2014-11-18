@@ -51,12 +51,12 @@ public class DefaultPolicyReferenceResolverTest
 		this.c = createControl();
 		this.repository = c.createMock(PolicyRepository.class);
 		this.p1v1 = Policy
-				.builder("id")
+				.builder("attributeId")
 				.version("1.0.0")
 				.combiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class))
 				.build();
 		this.ps1v1 = PolicySet
-				.builder("id")
+				.builder("attributeId")
 				.version("1.2.1")
 				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).build();
 
@@ -67,10 +67,10 @@ public class DefaultPolicyReferenceResolverTest
 	{
 		Capture<PolicyRepositoryListener> listener = new Capture<PolicyRepositoryListener>();
 		repository.addPolicyRepositoryListener(capture(listener));
-		expect(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
+		expect(repository.getPolicy("attributeId", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
 		c.replay();
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicyReference ref = PolicyReference.builder("id").versionAsString("1.0.0").build();
+		PolicyReference ref = PolicyReference.builder("attributeId").versionAsString("1.0.0").build();
 		Policy p = r.resolve(ref);
 		assertSame(p1v1, p);
 		r.policyRemoved(p1v1);
@@ -84,10 +84,10 @@ public class DefaultPolicyReferenceResolverTest
 	{
 		Capture<PolicyRepositoryListener> listener = new Capture<PolicyRepositoryListener>();
 		repository.addPolicyRepositoryListener(capture(listener));
-		expect(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
+		expect(repository.getPolicySet("attributeId", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
 		c.replay();
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicySetReference ref = PolicySetReference.builder("id").versionAsString("1.0.0").build();
+		PolicySetReference ref = PolicySetReference.builder("attributeId").versionAsString("1.0.0").build();
 		PolicySet p = r.resolve(ref);
 		assertSame(ps1v1, p);
 		r.policySetRemoved(ps1v1);

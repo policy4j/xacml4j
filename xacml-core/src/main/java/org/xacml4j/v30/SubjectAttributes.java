@@ -23,7 +23,7 @@ package org.xacml4j.v30;
  */
 
 /**
- * A well known XACML subject attribute
+ * A well known XACML subject category
  *
  * @author Giedrius Trumpickas
  *
@@ -33,14 +33,14 @@ public enum SubjectAttributes
 	/**
 	 * This identifier indicates the name of the subject.
 	 */
-	SUBJECT_ID("urn:oasis:names:tc:xacml:1.0:subject:subject-id"),
+	SUBJECT_ID("urn:oasis:names:tc:xacml:1.0:subject:subject-attributeId"),
 
 	/**
 	 * This identifier indicates the security domain of the subject.
 	 * It identifies the administrator and policy that manages the
-	 * name-space in which the subject id is administered.
+	 * name-space in which the subject attributeId is administered.
 	 */
-	SUBJECT_ID_QUALIFIER("urn:oasis:names:tc:xacml:1.0:subject:subject-id-qualifier"),
+	SUBJECT_ID_QUALIFIER("urn:oasis:names:tc:xacml:1.0:subject:subject-attributeId-qualifier"),
 
 	/**
 	 * This identifier indicates a public key used to confirm the subject's identity.
@@ -73,7 +73,7 @@ public enum SubjectAttributes
 	 * This identifier indicates an identifier for subject's
 	 * current session.
 	 */
-	SESSION_IDENTIFIER("urn:xacml4j:names:tc:xacml:1.0:subject:session-id"),
+	SESSION_IDENTIFIER("urn:xacml4j:names:tc:xacml:1.0:subject:session-attributeId"),
 
 	/**
 	 * The following identifiers indicate the location where authentication

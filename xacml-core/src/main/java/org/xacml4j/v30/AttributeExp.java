@@ -29,7 +29,7 @@ public interface AttributeExp
 	extends ValueExpression, Serializable
 {
 	/**
-	 * Gets attribute type
+	 * Gets category type
 	 *
 	 * @return {@link AttributeExpType}
 	 */
@@ -37,14 +37,14 @@ public interface AttributeExp
 	AttributeExpType getType();
 
 	/**
-	 * Gets attribute expression value
+	 * Gets category expression value
 	 *
-	 * @return an attribute expression value
+	 * @return an category expression value
 	 */
 	Object getValue();
 
 	/**
-	 * Creates bag with this attribute in the bag
+	 * Creates bag with this category in the bag
 	 *
 	 * @return {@link BagOfAttributeExp}
 	 */

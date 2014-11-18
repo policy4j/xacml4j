@@ -35,13 +35,13 @@ public class ContentResolverDescriptorBuilderTest
 	@Test
 	public void testBuildDescriptor()
 	{
-		ContentResolverDescriptor d = ContentResolverDescriptorBuilder.builder("id", "name", Categories.SUBJECT_ACCESS)
+		ContentResolverDescriptor d = ContentResolverDescriptorBuilder.builder("attributeId", "name", Categories.SUBJECT_ACCESS)
 		.build();
 		assertEquals(Categories.SUBJECT_ACCESS, d.getCategory());
 		assertTrue(d.canResolve(Categories.SUBJECT_ACCESS));
 		assertFalse(d.canResolve(Categories.ENVIRONMENT));
 		assertFalse(d.canResolve(Categories.SUBJECT_CODEBASE));
-		assertEquals("id", d.getId());
+		assertEquals("attributeId", d.getId());
 		assertEquals("name", d.getName());
 	}
 }

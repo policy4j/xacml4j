@@ -34,15 +34,15 @@
                     "Id": "obligation1",
                     "AttributeAssignment": [
                         {
-                            "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id"
-                            "Category": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+                            "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-attributeId"
+                            "Category": "urn:oasis:names:tc:xacml:3.0:category-category:action",
                             "DataType": "http://www.w3.org/2001/XMLSchema#string",
                             "Value": "obuolys",
                             "Issuer": "Vytenai"
                         },
                         {
                             "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:key-info",
-                            "Category": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+                            "Category": "urn:oasis:names:tc:xacml:3.0:category-category:action",
                             "Value": "apelsinas",
                             "Issuer": "ispanija"
                         }
@@ -53,7 +53,7 @@
                     "AttributeAssignment": [
                         {
                             "AttributeId": "custom:attribute1",
-                            "Category": "totaly:made:up:attribute-category1",
+                            "Category": "totaly:made:up:category-category1",
                             "Value": "same old apelsinas"
                         }
                     ]

@@ -48,6 +48,17 @@ public final class StringExp extends BaseAttributeExp<String>
 		return new StringExp(v);
 	}
 
+    public static StringExp ofAny(Object any){
+        Preconditions.checkNotNull(any);
+        if(any instanceof String){
+            return new StringExp((String)any);
+        }
+        if(any instanceof StringExp){
+            return (StringExp)any;
+        }
+        return new StringExp(any.toString());
+    }
+
 	/**
 	 * Delegates to {@link XacmlTypes#STRING#emptyBag()}
 	 *

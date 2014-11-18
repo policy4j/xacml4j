@@ -92,7 +92,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		RequestContext context = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject, resource0, resource1)
+				.category(subject, resource0, resource1)
 				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();
@@ -145,7 +145,7 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		RequestContext context = RequestContext
 				.builder()
 				.returnPolicyIdList(false)
-				.attribute(subject, resource0)
+				.category(subject, resource0)
 				.build();
 
 		Capture<RequestContext> c0 = new Capture<RequestContext>();

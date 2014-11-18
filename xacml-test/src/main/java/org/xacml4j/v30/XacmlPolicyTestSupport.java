@@ -220,7 +220,7 @@ public class XacmlPolicyTestSupport {
 		assertArrayEquals(a1, a2, new Matcher<Category>() {
 			@Override
 			public boolean matches(Category o1, Category o2) {
-				return o1.getId().equals(o2.getId()) && o1.getCategoryId().equals(o2.getCategoryId());
+				return o1.getReferenceId().equals(o2.getReferenceId()) && o1.getCategoryId().equals(o2.getCategoryId());
 			}
 		});
 	}

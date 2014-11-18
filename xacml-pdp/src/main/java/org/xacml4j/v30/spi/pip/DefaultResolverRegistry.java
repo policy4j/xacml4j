@@ -56,7 +56,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	private final static Logger log = LoggerFactory.getLogger(DefaultResolverRegistry.class);
 
 	/**
-	 * Resolvers index by category and attribute identifier
+	 * Resolvers index by category and category identifier
 	 */
 	private final Map<CategoryId, Map<String, Multimap<String, AttributeResolver>>> attributeResolvers;
 	private final ConcurrentMap<String, AttributeResolver> attributeResolversById;
@@ -98,7 +98,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	{
 		AttributeResolverDescriptor d = resolver.getDescriptor();
 		Preconditions.checkArgument(!attributeResolversById.containsKey(d.getId()),
-				"Attribute resolver with id=\"{}\" is already registered with this registry", d.getId());
+				"Attribute resolver with attributeId=\"{}\" is already registered with this registry", d.getId());
 		Lock lock = attributeResolverRWLock.writeLock();
 		try
 		{
@@ -121,7 +121,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 			}
 			for(String attributeId : d.getProvidedAttributeIds()){
 				if(log.isDebugEnabled()){
-						log.debug("Indexing resolver id=\"{}\" category=\"{}\", issuer=\"{}\" attributeId=\"{}\"",
+						log.debug("Indexing resolver attributeId=\"{}\" category=\"{}\", issuer=\"{}\" attributeId=\"{}\"",
 								new Object[]{d.getId(), d.getCategory(), d.getIssuer(), attributeId});
 				}
 				byIssuer.put(attributeId, resolver);
@@ -178,7 +178,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 		}
 		AttributeResolverDescriptor d = r.getDescriptor();
 		if(log.isDebugEnabled()){
-			log.debug("Adding policyId=\"{}\" scoped attribute " +
+			log.debug("Adding policyId=\"{}\" scoped category " +
 					"resolver=\"{}\" for category=\"{}\"",
 					new Object[]{policyId, d.getId(), d.getCategory()});
 		}
@@ -227,7 +227,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 	 * {@link AttributeResolver} instance
 	 *
 	 * @param context an evaluation context
-	 * @param ref an attribute reference
+	 * @param ref an category references
 	 */
 	private void findMatchingAttributeResolvers(
 			DecisionRuleEvaluationContext context,
@@ -262,7 +262,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 							if(d.canResolve(ref)){
 								if(log.isDebugEnabled()){
 									log.debug("Found root resolver=\"{}\" " +
-											"for a reference=\"{}\"", d.getId(), ref);
+											"for a references=\"{}\"", d.getId(), ref);
 								}
 								found.add(r);
 							}
@@ -299,7 +299,7 @@ class DefaultResolverRegistry implements ResolverRegistry
 					AttributeResolverDescriptor d = r.getDescriptor();
 					if(d.canResolve(ref)){
 						if(log.isDebugEnabled()){
-							log.debug("Found PolicyId=\"{}\" scoped resolver for reference=\"{}\"",
+							log.debug("Found PolicyId=\"{}\" scoped resolver for references=\"{}\"",
 									policyId, ref);
 						}
 						found.add(r);
@@ -314,10 +314,10 @@ class DefaultResolverRegistry implements ResolverRegistry
 
 	/**
 	 * Gets matching content resolver for a given
-	 * evaluation context and attribute category
+	 * evaluation context and category category
 	 *
 	 * @param context an evaluation context
-	 * @param category an attribute category
+	 * @param category an category category
 	 * @return {@link ContentResolver} or {@code null}
 	 *
 	 */

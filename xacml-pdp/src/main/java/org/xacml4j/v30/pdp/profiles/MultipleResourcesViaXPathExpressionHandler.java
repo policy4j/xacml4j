@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.base.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -58,7 +59,14 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 
 	final static String FEATURE_ID= "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 
+    /**
+     * Multiple content selector attribute identifier
+     */
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
+
+    /**
+     * Content selector attribute identifier
+     */
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 
 	public MultipleResourcesViaXPathExpressionHandler(){
@@ -87,16 +95,16 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			XPathProvider xpathProvider = context.getXPathProvider();
 			List<Set<Category>> all = new LinkedList<Set<Category>>();
 			for(Category attribute : request.getAttributes()){
-				all.add(getAttributes(request, attribute, xpathProvider));
+				all.add(getCategories(request, attribute, xpathProvider));
 			}
 			Set<List<Category>> cartesian = Sets.cartesianProduct(all);
 			List<Result> results = new LinkedList<Result>();
-			for(List<Category> requestAttr : cartesian)
+			for(List<Category> categories : cartesian)
 			{
-				RequestContext req = RequestContext.builder().copyOf(request, requestAttr).build();
-				if(log.isDebugEnabled()){
-					log.debug("Created request=\"{}\"", req);
-				}
+				RequestContext req = RequestContext.builder().copyOf(request, categories).build();
+                if(log.isDebugEnabled()){
+                    log.debug("XACML request=\"{}\"", req);
+                }
 				results.addAll(handleNext(req, context));
 			}
 			return results;
@@ -108,66 +116,80 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 	}
 
-	private Set<Category> getAttributes(RequestContext request, Category attribute,
-			XPathProvider xpathProvider)
-		throws RequestSyntaxException
+	private Set<Category> getCategories(RequestContext request,
+                                        Category attributes,
+                                        XPathProvider xpathProvider) throws RequestSyntaxException
 	{
-		Entity entity = attribute.getEntity();
+		Entity entity = attributes.getEntity();
 		Collection<AttributeExp> values = entity.getAttributeValues(MULTIPLE_CONTENT_SELECTOR,
 				XacmlTypes.XPATH);
 		if(values.isEmpty()){
-			return ImmutableSet.of(attribute);
+			return ImmutableSet.of(attributes);
 		}
 		XPathExp selector = (XPathExp)Iterables.getOnlyElement(values, null);
-		Node content = attribute.getEntity().getContent();
+        if(log.isDebugEnabled()){
+            log.debug("Found multiple content " +
+                    "selector attribute=\"{}\"", selector);
+        }
+		Node content = attributes.getEntity().getContent();
 		// if there is no content
 		// specified ignore it and return
 		if(content == null){
-			throw new RequestSyntaxException("Request attribute category=\"%s\" content " +
+			throw new RequestSyntaxException("Request category category=\"%s\" content " +
 					"for selector=\"%s\" must be specified",
-					attribute.getCategoryId(), selector.getValue());
+					attributes.getCategoryId(), selector.getValue());
 		}
 		try
 		{
 			NodeList nodeSet = xpathProvider.evaluateToNodeSet(selector.getPath(), content);
-			Set<Category> attributes = new LinkedHashSet<Category>();
+			Set<Category> categories = new LinkedHashSet<Category>();
 			for(int i = 0; i < nodeSet.getLength(); i++){
 				String xpath = DOMUtil.getXPath(nodeSet.item(i));
-				attributes.add(transform(xpath, attribute));
+                if(log.isDebugEnabled()){
+                    log.debug("XPath=\"{}\"", xpath);
+                }
+				categories.add(transform(xpath, attributes));
 			}
-			return attributes;
+			return categories;
 		}
 		catch (XPathEvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate xpath " +
 						"expression", e);
 			}
-			return ImmutableSet.of(attribute);
+			return ImmutableSet.of(attributes);
 		}
 	}
 
-	private Category transform(String xpath, Category attributes)
-	{
-		Collection<Attribute> newAttributes = new LinkedList<Attribute>();
-		Entity e =  attributes.getEntity();
-		for(Attribute a : e.getAttributes())
-		{
-			if(a.getAttributeId().equals(MULTIPLE_CONTENT_SELECTOR)){
-				Attribute selectorAttr =
-						Attribute.builder(CONTENT_SELECTOR)
-						.issuer(a.getIssuer())
-						.includeInResult(a.isIncludeInResult())
-						.value(XPathExp.of(xpath, attributes.getCategoryId()))
-						.build();
-				newAttributes.add(selectorAttr);
-				continue;
-			}
-			newAttributes.add(a);
-		}
-		return Category
-				.builder(attributes.getCategoryId())
-				.id(attributes.getId())
-				.entity(Entity.builder().content(e.getContent()).attributes(newAttributes).build())
-				.build();
+    /**
+     * Replaces {@link #MULTIPLE_CONTENT_SELECTOR}
+     * attribute with {@link #CONTENT_SELECTOR} in the given
+     * category object
+     *
+     * @param xpath an XPATH
+     * @param category an category object
+     * @return transformed category object
+     */
+	private Category transform(final String xpath,
+                               final Category category){
+        Category.Builder b = Category.builder();
+        b.copyOf(category, new Function<Attribute, Attribute>() {
+            @Override
+            public Attribute apply(Attribute attribute) {
+                if(!attribute.getAttributeId().equals(
+                        MULTIPLE_CONTENT_SELECTOR)){
+                    return attribute;
+                }
+                return Attribute.builder()
+                                .issuer(attribute.getIssuer())
+                                .attributeId(CONTENT_SELECTOR)
+                                .noValues()
+                                .value(XPathExp.of(xpath, category.getCategoryId()))
+                                .build();
+            }
+        });
+        Category category1 = b.build();
+        log.debug("Test=\"{}\"", category1);
+        return category1;
 	}
 }

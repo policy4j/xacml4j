@@ -45,8 +45,8 @@ public class CategoryIdTest
 		CategoryId d1 = c1.toDelegatedCategory();
 		CategoryId d2 = c1.toDelegatedCategory();
 		assertEquals(d1, d2);
-		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d1.getName());
-		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:test", d2.getName());
+		assertEquals("urn:oasis:names:tc:xacml:3.0:category-category:delegated:test", d1.getName());
+		assertEquals("urn:oasis:names:tc:xacml:3.0:category-category:delegated:test", d2.getName());
 		assertTrue(d1.isDelegated());
 		assertTrue(d2.isDelegated());
 		assertNull(d1.toDelegatedCategory());
@@ -59,8 +59,8 @@ public class CategoryIdTest
 	@Test
 	public void testDelegatedCategory() throws Exception
 	{
-		CategoryId c = Categories.parse("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory");
-		assertEquals("urn:oasis:names:tc:xacml:3.0:attribute-category:delegated:testCategory", c.getName());
+		CategoryId c = Categories.parse("urn:oasis:names:tc:xacml:3.0:category-category:delegated:testCategory");
+		assertEquals("urn:oasis:names:tc:xacml:3.0:category-category:delegated:testCategory", c.getName());
 		assertTrue(c.isDelegated());
 		assertNull(c.toDelegatedCategory());
 

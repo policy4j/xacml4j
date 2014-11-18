@@ -43,12 +43,12 @@ public class AttributeSetTest
 	@Before
 	public void init(){
 		this.noIssuer = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", null, Categories.SUBJECT_ACCESS)
+				"attributeId", "name", null, Categories.SUBJECT_ACCESS)
 				.attribute("testId1", XacmlTypes.INTEGER)
 				.attribute("testId2", XacmlTypes.STRING)
 				.build();
 		this.withIssuer = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", "issuer", Categories.SUBJECT_ACCESS)
+				"attributeId", "name", "issuer", Categories.SUBJECT_ACCESS)
 				.attribute("testId1", XacmlTypes.INTEGER)
 				.attribute("testId2", XacmlTypes.STRING)
 				.build();

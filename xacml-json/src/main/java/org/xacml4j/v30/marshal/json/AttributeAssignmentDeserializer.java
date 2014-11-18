@@ -67,7 +67,7 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 				.id(attrId)
 				.category(category)
 				.issuer(issuer)
-				.value(value)
+				.attribute(value)
 				.build();
 	}
 

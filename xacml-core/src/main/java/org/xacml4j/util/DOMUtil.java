@@ -22,35 +22,25 @@ package org.xacml4j.util;
  * #L%
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
+import javax.xml.transform.*;
 import javax.xml.transform.Result;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.TypeToString;
 import org.xml.sax.InputSource;
 
 import com.google.common.base.Preconditions;
@@ -276,6 +266,26 @@ public class DOMUtil
 		}
 	}
 
+    public static void nodeToString(Node node, Result result)
+    {
+        if (node == null) {
+            return;
+        }
+        final Transformer transformer;
+        try {
+            transformer = transformerFactory.newTransformer();
+        } catch (TransformerConfigurationException e) {
+            throw new IllegalStateException(String.format("Failed to build %s",
+                    Transformer.class.getName()), e);
+        }
+        DOMSource source = new DOMSource(node);
+        try {
+            transformer.transform(source, result);
+        } catch (TransformerException e) {
+            throw new IllegalArgumentException("Failed to serialize Node to String.", e);
+        }
+    }
+
 	public static void serializeToXml(
 			Node node,
 			OutputStream out,
@@ -316,7 +326,7 @@ public class DOMUtil
 	 * @param n a DOM node
 	 * @return a string representation
 	 */
-	public static String toString(Element n){
+	public static String toString(Node n){
 		if(n == null){
 			return null;
 		}
@@ -389,4 +399,57 @@ public class DOMUtil
 						Collections.singleton(prefix).iterator();
 		}
 	}
+
+    public static BagOfAttributeExp toBag(String xpath,
+                                    AttributeExpType type,
+                                    NodeList nodeSet)
+            throws XPathEvaluationException
+    {
+        Collection<AttributeExp> values = new LinkedList<AttributeExp>();
+        for(int i = 0; i< nodeSet.getLength(); i++)
+        {
+            Node n = nodeSet.item(i);
+            String v = null;
+            switch(n.getNodeType()){
+                case Node.TEXT_NODE:
+                    v = ((Text)n).getData();
+                    break;
+                case Node.PROCESSING_INSTRUCTION_NODE:
+                    v = ((ProcessingInstruction)n).getData();
+                    break;
+                case Node.ATTRIBUTE_NODE:
+                    v = ((Attr)n).getValue();
+                    break;
+                case Node.COMMENT_NODE:
+                    v = ((Comment)n).getData();
+                    break;
+                default:
+                    throw new XPathEvaluationException(
+                            xpath,
+                            Status.syntaxError().build(),
+                            "Unsupported DOM node type=\"%d\"",
+                            n.getNodeType());
+            }
+            try
+            {
+                Optional<TypeToString> toString = TypeToString.Types.getIndex().get(type);
+                if(!toString.isPresent()){
+                    throw new XPathEvaluationException(
+                            xpath,
+                            Status.syntaxError().build(),
+                            "Unsupported XACML type=\"%d\"",
+                            type.getDataTypeId());
+                }
+                AttributeExp value = toString.get().fromString(v);
+                values.add(value);
+            }catch(EvaluationException e){
+                throw e;
+            }catch(Exception e){
+                throw new XPathEvaluationException(xpath,
+                        Status.processingError().build(),
+                        e, e.getMessage());
+            }
+        }
+        return type.bagType().of(values);
+    }
 }

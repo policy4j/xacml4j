@@ -33,7 +33,7 @@ import com.google.common.cache.CacheBuilder;
 
 /**
  * A default implementation of {@link PolicyReferenceResolver}.
- * Maintains a cache of resolved policies by the reference.
+ * Maintains a cache of resolved policies by the references.
  *
  * @author Giedrius Trumpickas
  */
@@ -79,8 +79,8 @@ public class DefaultPolicyReferenceResolver
 		Policy p =  policyIDRefCache.getIfPresent(ref);
 		if(p != null){
 			if(log.isDebugEnabled()){
-				log.debug("Found Policy id=\"{}\" " +
-						"version=\"{}\" for reference=\"{}\" in the cache",
+				log.debug("Found Policy attributeId=\"{}\" " +
+						"version=\"{}\" for references=\"{}\" in the cache",
 						new Object[]{p.getId(), p.getVersion(), ref});
 			}
 			return p;
@@ -96,8 +96,8 @@ public class DefaultPolicyReferenceResolver
 		}
 		if(p != null &&
 				log.isDebugEnabled()){
-			log.debug("Resolved policy id=\"{}\" " +
-					"version=\"{}\" for reference=\"{}\" from repository",
+			log.debug("Resolved policy attributeId=\"{}\" " +
+					"version=\"{}\" for references=\"{}\" from repository",
 					new Object[]{p.getId(), p.getVersion(), ref});
 		}
 		return p;
@@ -110,8 +110,8 @@ public class DefaultPolicyReferenceResolver
 		PolicySet p = policySetIDRefCache.getIfPresent(ref);
 		if(p != null){
 			if(log.isDebugEnabled()){
-				log.debug("Found PolicySet id=\"{}\" " +
-						"version=\"{}\" for reference=\"{}\" in the cache",
+				log.debug("Found PolicySet attributeId=\"{}\" " +
+						"version=\"{}\" for references=\"{}\" in the cache",
 						new Object[]{p.getId(), p.getVersion(), ref});
 			}
 			return p;
@@ -126,8 +126,8 @@ public class DefaultPolicyReferenceResolver
 			policySetIDRefCache.put(ref, p);
 		}
 		if(p != null && log.isDebugEnabled()){
-			log.debug("Resolved policy set id=\"{}\" " +
-					"version=\"{}\" for reference=\"{}\" from repository",
+			log.debug("Resolved policy set attributeId=\"{}\" " +
+					"version=\"{}\" for references=\"{}\" from repository",
 					new Object[]{p.getId(), p.getVersion(), ref});
 		}
 		return p;

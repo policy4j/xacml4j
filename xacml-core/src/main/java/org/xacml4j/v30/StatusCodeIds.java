@@ -32,7 +32,7 @@ import com.google.common.base.Strings;
 public enum StatusCodeIds implements StatusCodeId
 {
 	OK("urn:oasis:names:tc:xacml:1.0:status:ok"),
-	MISSING_ATTRIBUTE("urn:oasis:names:tc:xacml:1.0:status:missing-attribute"),
+	MISSING_ATTRIBUTE("urn:oasis:names:tc:xacml:1.0:status:missing-category"),
 	SYNTAX_ERROR("urn:oasis:names:tc:xacml:1.0:status:syntax-error"),
 	STATUS_PROCESSING_ERROR("urn:oasis:names:tc:xacml:1.0:status:processing-error");
 

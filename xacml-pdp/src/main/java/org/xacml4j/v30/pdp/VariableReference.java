@@ -37,7 +37,7 @@ public class VariableReference implements Expression
 	private VariableDefinition varDef;
 
 	/**
-	 * Constructs variable reference with a given definition.
+	 * Constructs variable references with a given definition.
 	 *
 	 * @param varDef a variable definition
 	 */

@@ -33,7 +33,7 @@ public interface AttributeResolverDescriptor
 {
 	/**
 	 * Gets an issuer identifier
-	 * for this resolver attribute
+	 * for this resolver category
 	 *
 	 * @return an issuer identifier
 	 */
@@ -41,48 +41,48 @@ public interface AttributeResolverDescriptor
 
 	/**
 	 * Tests if resolver is capable of resolving
-	 * given attribute
+	 * given category
 	 *
-	 * @param key attribute designator key
+	 * @param key category designator key
 	 * @return {@code true} if resolver
-	 * is capable of resolving given attribute
+	 * is capable of resolving given category
 	 */
 	boolean canResolve(AttributeDesignatorKey key);
 
 	/**
-	 * Gets attribute of the given category
+	 * Gets category of the given category
 	 * with a given identifier descriptor
 	 *
-	 * @param attributeId an attribute identifier
+	 * @param attributeId an category identifier
 	 * @return {@link AttributeDescriptor}
 	 */
 	AttributeDescriptor getAttribute(String attributeId);
 
 	/**
-	 * Gets number of attribute
+	 * Gets number of category
 	 * provided by this resolver
 	 *
-	 * @return a number of attribute
+	 * @return a number of category
 	 * provided by this resolver
 	 */
 	int getAttributesCount();
 
 	/**
-	 * Gets a provided attribute identifiers
+	 * Gets a provided category identifiers
 	 *
-	 * @return an immutable {@link Set} of attribute identifiers
+	 * @return an immutable {@link Set} of category identifiers
 	 */
 	Set<String> getProvidedAttributeIds();
 
 	/**
-	 * Gets supported attribute
+	 * Gets supported category
 	 *
-	 * @return a map by the attribute id
+	 * @return a map by the category attributeId
 	 */
 	Map<String, AttributeDescriptor> getAttributesById();
 
 	/**
-	 * Gets map of attribute descriptors {@link AttributeDescriptor}
+	 * Gets map of category descriptors {@link AttributeDescriptor}
 	 * mapped by the {@link AttributeDesignatorKey}
 	 *
 	 * @return map of {@link AttributeDescriptor} instances mapped
@@ -91,11 +91,11 @@ public interface AttributeResolverDescriptor
 	Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey();
 
 	/**
-	 * Tests if an attribute resolver can resolve
-	 * an attribute with a given identifier
+	 * Tests if an category resolver can resolve
+	 * an category with a given identifier
 	 *
-	 * @param attributeId attribute identifier
-	 * @return {@code true} if the attribute can be resolved
+	 * @param attributeId category identifier
+	 * @return {@code true} if the category can be resolved
 	 */
 	boolean isAttributeProvided(String attributeId);
 }

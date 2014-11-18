@@ -24,12 +24,16 @@ package org.xacml4j.v30;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.NoSuchElementException;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 
 /**
@@ -46,7 +50,7 @@ import com.google.common.collect.Multiset;
  * @author Giedrius Trumpickas
  */
 public final class BagOfAttributeExp
-	implements ValueExpression, Serializable
+	implements ValueExpression, Serializable, Iterable<AttributeExp>
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 
@@ -55,13 +59,13 @@ public final class BagOfAttributeExp
 	private final int hashCode;
 
 	/**
-	 * Constructs bag of attribute.
+	 * Constructs bag of category.
 	 *
-	 * @param type a bag attribute type
-	 * @param attributes a collection of attribute
+	 * @param type a bag category type
+	 * @param attributes a collection of category
 	 */
 	BagOfAttributeExp(BagOfAttributeExpType type,
-			Iterable<AttributeExp> attributes){
+			Iterable<? extends AttributeExp> attributes){
 		for (AttributeExp attr : attributes) {
 			assertExpressionType(attr, type);
 		}
@@ -81,7 +85,20 @@ public final class BagOfAttributeExp
 		return (Iterable<T>)values;
 	}
 
-	/**
+    @Override
+    public Iterator<AttributeExp> iterator() {
+        return values.iterator();
+    }
+
+    public <T extends AttributeExp> T first(){
+        return Iterables.getFirst((Iterable<T>)values, null);
+    }
+
+    public <T extends AttributeExp> T last(){
+        return Iterables.getLast((Iterable<T>)this, null);
+    }
+
+    /**
 	 * Gets bag value data type
 	 *
 	 * @return {@link AttributeExpType}
@@ -96,22 +113,10 @@ public final class BagOfAttributeExp
 	}
 
 	/**
-	 * Gets first attribute value
-	 * in this bag
-	 *
-	 * @return first {@link AttributeExp}
-	 * instance in this bag
-	 * @exception NoSuchElementException if bag is empty
-	 */
-	public <T extends AttributeExp> T value(){
-		return this.<T>values().iterator().next();
-	}
-
-	/**
 	 * Gets number of {@link AttributeExp}
 	 * instances in this bag
 	 *
-	 * @return number of attribute
+	 * @return number of category
 	 * in this bag
 	 */
 	public int size() {
@@ -128,10 +133,10 @@ public final class BagOfAttributeExp
 	}
 
 	/**
-	 * Tests if this bag contains given attribute.
+	 * Tests if this bag contains given category.
 	 *
-	 * @param attr an attribute
-	 * @return {@code true} if bag contains given attribute
+	 * @param attr an category
+	 * @return {@code true} if bag contains given category
 	 */
 	public boolean contains(AttributeExp attr){
 		return values.contains(attr);
@@ -139,9 +144,9 @@ public final class BagOfAttributeExp
 
 	/**
 	 * Returns the number of elements in this bag equal
-	 * to the specified attribute value.
+	 * to the specified category value.
 	 *
-	 * @param value an attribute value
+	 * @param value an category value
 	 * @return a number of elements equal to the
 	 * specified value
 	 */
@@ -163,7 +168,7 @@ public final class BagOfAttributeExp
 		Set<AttributeExp> union = new HashSet<AttributeExp>();
 		union.addAll(bag.values);
 		union.addAll(values);
-		return type.create(union);
+		return type.of(union);
 	}
 
 	/**
@@ -176,14 +181,16 @@ public final class BagOfAttributeExp
 	 */
 	public BagOfAttributeExp intersection(BagOfAttributeExp bag)
 	{
-		Preconditions.checkArgument(type.equals(bag.type));
+		if(!getDataType().equals(bag.getDataType())){
+            return getDataType().emptyBag();
+        }
 		Set<AttributeExp> intersection = new HashSet<AttributeExp>();
 		for(AttributeExp attr : values){
 			if(bag.values.contains(attr)){
 				intersection.add(attr);
 			}
 		}
-		return type.create(intersection);
+		return type.of(intersection);
 	}
 
 	/**
@@ -196,7 +203,7 @@ public final class BagOfAttributeExp
 	 */
 	public boolean containsAtLeastOneOf(BagOfAttributeExp bag)
 	{
-		for(AttributeExp v : bag.values){
+		for(AttributeExp v : this){
 			if(values.contains(v)){
 				return true;
 			}
@@ -252,23 +259,6 @@ public final class BagOfAttributeExp
 		 return hashCode;
 	}
 
-	/**
-	 * A static helper method to retrieve a single
-	 * value from a given bag
-	 *
-	 * @param <T> attribute expression type
-	 * @param v a bag of values
-	 * @return a single value or {@code null}
-	 * if a given bag is {@code null} or empty
-	 */
-	public static <T extends AttributeExp> T value(BagOfAttributeExp v){
-		if(v == null ||
-				v.isEmpty()){
-			return null;
-		}
-		return v.value();
-	}
-
 	@Override
 	public void accept(ExpressionVisitor expv) {
 		BagOfAttributeVisitor v = (BagOfAttributeVisitor)expv;
@@ -285,7 +275,7 @@ public final class BagOfAttributeExp
 	private static void assertExpressionType(AttributeExp value, BagOfAttributeExpType bagType) {
 		if (!value.getType().equals(bagType.getDataType())) {
 			throw new IllegalArgumentException(String.format(
-					"Given attribute value=\"%s\" " +
+					"Given category value=\"%s\" " +
 							"can't be used as a value of bag=\"%s\"", value, bagType));
 		}
 	}
@@ -300,35 +290,38 @@ public final class BagOfAttributeExp
 			this.bagType = new BagOfAttributeExpType(type);
 		}
 
-		public Builder attribute(AttributeExp ...values){
-			for(AttributeExp v : values){
-				assertExpressionType(v, bagType);
-				this.valuesBuilder.add(v);
-			}
-			return this;
-		}
 
 		public Builder value(Object ...values){
-			for(Object v : values){
-				this.valuesBuilder.add(bagType.getDataType().of(v));
-			}
-			return this;
+			return values(FluentIterable.of(values));
 		}
 
-		public Builder values(Iterable<Object> values){
-			for(Object v : values){
-				this.valuesBuilder.add(bagType.getDataType().of(v));
-			}
+		public Builder values(Iterable<? extends Object> values){
+            this.valuesBuilder.addAll(
+                    FluentIterable
+                            .from(values)
+                            .filter(Predicates.notNull())
+                            .transform(bagType.getDataType()));
 			return this;
 		}
 
 		public Builder attributes(Iterable<AttributeExp> values){
-			for (AttributeExp v : values) {
-				assertExpressionType(v, bagType);
-			}
-			this.valuesBuilder.addAll(values);
+            Iterable<AttributeExp> byType =
+			FluentIterable.from(values).filter(new Predicate<AttributeExp>() {
+                @Override
+                public boolean apply(AttributeExp attributeExp) {
+                    if(attributeExp == null){
+                        return false;
+                    }
+                    return attributeExp.getType().equals(bagType.getDataType());
+                }
+            });
+			this.valuesBuilder.addAll(byType);
 			return this;
 		}
+
+        public Builder attribute(AttributeExp ...values){
+            return attributes(FluentIterable.of(values));
+        }
 
 		public BagOfAttributeExp build(){
 			return new BagOfAttributeExp(this);

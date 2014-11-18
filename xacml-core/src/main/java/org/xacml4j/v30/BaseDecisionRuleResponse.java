@@ -88,8 +88,8 @@ public abstract class BaseDecisionRuleResponse
 	@Override
 	public final String toString(){
 		return Objects.toStringHelper(this)
-		.add("id", id)
-		.add("attribute", attributes)
+		.add("attributeId", id)
+		.add("category", attributes)
 		.add("fullFillOn", fulfillOn)
 		.toString();
 	}
@@ -148,7 +148,7 @@ public abstract class BaseDecisionRuleResponse
 						.id(id)
 						.category(category)
 						.issuer(issuer)
-						.value(v)
+						.attribute(v)
 						.build());
 			}
 			return getThis();

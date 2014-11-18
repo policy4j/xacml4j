@@ -113,7 +113,7 @@ public final class PolicyInformationPointBuilder
 
 	public PolicyInformationPoint build(ResolverRegistry registry){
 		if(log.isDebugEnabled()){
-			log.debug("Creating PIP id=\"{}\"", id);
+			log.debug("Creating PIP attributeId=\"{}\"", id);
 		}
 		return new DefaultPolicyInformationPoint(id,
 				registryBuilder.build(registry), cache);

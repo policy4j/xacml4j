@@ -86,7 +86,7 @@ implements ResponseUnmarshaller
 	{
 		private final static Logger log = LoggerFactory.getLogger(Mapper.class);
 
-		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
+		private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-attributeId";
 
 		private final static Map<DecisionType, Decision> V20_TO_V30_DECISION_MAPPING = ImmutableMap.of(
 				DecisionType.DENY, Decision.DENY,
@@ -118,7 +118,7 @@ implements ResponseUnmarshaller
 			}
 			Result.Builder b = Result
 					.builder(d, create(result.getStatus()))
-					.obligation(getObligations(result));
+					.obligations(getObligations(result));
 			if(result.getResourceId() != null){
 				b.includeInResult(Category
 						.builder(Categories.RESOURCE)
@@ -156,7 +156,7 @@ implements ResponseUnmarshaller
 				attrs.add(
 						AttributeAssignment.builder()
 						.id(a.getAttributeId())
-						.value(createValue(a.getDataType(), a.getOtherAttributes(), a.getContent())).build());
+						.attribute(createValue(a.getDataType(), a.getOtherAttributes(), a.getContent())).build());
 			}
 			return Obligation
 					.builder(o.getObligationId(), V20_TO_V30_EFFECT_MAPPING.get(o.getFulfillOn()))

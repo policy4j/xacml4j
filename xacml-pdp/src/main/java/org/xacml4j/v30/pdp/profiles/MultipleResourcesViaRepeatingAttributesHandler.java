@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import com.google.common.collect.FluentIterable;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.RequestContext;
@@ -39,7 +40,7 @@ import com.google.common.collect.Sets;
 
 final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
-	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:repeated-attribute-categories";
+	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:repeated-category-categories";
 
 	public MultipleResourcesViaRepeatingAttributesHandler(){
 		super(FEATURE_ID);

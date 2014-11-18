@@ -1,6 +1,5 @@
 package org.xacml4j.v30.marshal.json;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 import com.google.gson.*;
@@ -30,8 +29,8 @@ public class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializ
     public static JsonObject serialize(Category src,
                                  JsonSerializationContext context) {
         JsonObject o = new JsonObject();
-        if (src.getId() != null) {
-            o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
+        if (src.getReferenceId() != null) {
+            o.addProperty(JsonProperties.ID_PROPERTY, src.getReferenceId());
         }
         Entity e = src.getEntity();
         o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getShortName());
@@ -43,8 +42,8 @@ public class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializ
     public static JsonObject serializeDefaultCategory(Category src,
                                        JsonSerializationContext context) {
         JsonObject o = new JsonObject();
-        if (src.getId() != null) {
-            o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
+        if (src.getReferenceId() != null) {
+            o.addProperty(JsonProperties.ID_PROPERTY, src.getReferenceId());
         }
         Entity e = src.getEntity();
         o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));

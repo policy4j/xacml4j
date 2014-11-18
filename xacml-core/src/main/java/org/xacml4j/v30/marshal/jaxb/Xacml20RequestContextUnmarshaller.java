@@ -71,30 +71,6 @@ implements RequestUnmarshaller
 {
 	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 
-	private final static Map<Decision, DecisionType> V30_TO_V20_DECISION_MAPPING = ImmutableMap.<Decision, DecisionType>builder()
-			.put(Decision.DENY, DecisionType.DENY)
-			.put(Decision.PERMIT, DecisionType.PERMIT)
-			.put(Decision.NOT_APPLICABLE, DecisionType.NOT_APPLICABLE)
-			.put(Decision.INDETERMINATE, DecisionType.INDETERMINATE)
-			.put(Decision.INDETERMINATE_D, DecisionType.INDETERMINATE)
-			.put(Decision.INDETERMINATE_P, DecisionType.INDETERMINATE)
-			.put(Decision.INDETERMINATE_DP, DecisionType.INDETERMINATE)
-			.build();
-
-	private final static Map<DecisionType, Decision> V20_TO_V30_DECISION_MAPPING = ImmutableMap.of(
-			DecisionType.DENY, Decision.DENY,
-			DecisionType.PERMIT, Decision.PERMIT,
-			DecisionType.NOT_APPLICABLE, Decision.NOT_APPLICABLE,
-			DecisionType.INDETERMINATE, Decision.INDETERMINATE);
-
-	private final static Map<EffectType, Effect> V20_TO_V30_EFFECT_MAPPING = ImmutableMap.of(
-			EffectType.DENY, Effect.DENY,
-			EffectType.PERMIT, Effect.PERMIT);
-
-	private final static Map<Effect, EffectType> V30_TO_V20_EFFECT_MAPPING = ImmutableMap.of(
-			Effect.DENY, EffectType.DENY,
-			Effect.PERMIT, EffectType.PERMIT);
-
 	private final Mapper mapper20;
 
 	public Xacml20RequestContextUnmarshaller(){
@@ -134,11 +110,14 @@ implements RequestUnmarshaller
 			if(req.getAction() != null){
 				attributes.add(createAction(req.getAction()));
 			}
-			if(req.getEnvironment() != null)
-			{
+			if(req.getEnvironment() != null){
 				attributes.add(createEnvironment(req.getEnvironment()));
 			}
-			return RequestContext.builder().returnPolicyIdList(false).categories(attributes).build();
+			return RequestContext
+                    .builder()
+                    .returnPolicyIdList(false)
+                    .categories(attributes)
+                    .build();
 		}
 
 		private Collection<Category> normalize(Multimap<CategoryId, Category> attributes)
@@ -178,7 +157,7 @@ implements RequestUnmarshaller
 		{
 			CategoryId category = Categories.parse(id);
 			if(category == null){
-				throw new RequestSyntaxException("Unknown attribute category=\"%s\"", id);
+				throw new RequestSyntaxException("Unknown category category=\"%s\"", id);
 			}
 			return category;
 		}
@@ -187,7 +166,7 @@ implements RequestUnmarshaller
 			throws XacmlSyntaxException
 		{
 			return Category
-					.builder(Categories.ENVIRONMENT)
+					.Enviroment()
 					.entity(Entity
 							.builder()
 							.attributes(create(env.getAttribute(), Categories.ENVIRONMENT, false))
@@ -198,7 +177,7 @@ implements RequestUnmarshaller
 		private Category createAction(ActionType subject) throws XacmlSyntaxException
 		{
 			return Category
-					.builder(Categories.ACTION)
+					.Action()
 					.entity(Entity
 							.builder()
 							.attributes(create(subject.getAttribute(), Categories.ACTION, false))
@@ -214,7 +193,7 @@ implements RequestUnmarshaller
 				content = DOMUtil.copyNode(content);
 			}
 			return Category
-					.builder(Categories.RESOURCE)
+					.Resource()
 					.entity(Entity
 							.builder()
 							.attributes(create(resource.getAttribute(), Categories.RESOURCE, multipleResources))
@@ -259,13 +238,13 @@ implements RequestUnmarshaller
 			for(AttributeValueType v : a.getAttributeValue()){
 				AttributeExp value = createValue(a, v);
 				if(log.isDebugEnabled()){
-					log.debug("Found attribute value=\"{}\" in request", value);
+					log.debug("Found category value=\"{}\" in request", value);
 				}
 				values.add(value);
 			}
 			return Attribute.builder(a.getAttributeId())
 					.issuer(a.getIssuer())
-					.includeInResult(a.getAttributeId().equals(RESOURCE_ID)? includeInResultResourceId :false)
+					.includeInResult(a.getAttributeId().equals(RESOURCE_ID) && includeInResultResourceId)
 					.values(values)
 					.build();
 		}

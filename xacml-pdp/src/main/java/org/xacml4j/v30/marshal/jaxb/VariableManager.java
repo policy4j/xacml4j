@@ -61,7 +61,7 @@ class VariableManager <VExpression>
 		if(resolutionStack.contains(variableId)){
 			throw new IllegalArgumentException(
 					String.format(
-							"Cyclic variable reference=\"%s\" detected", variableId));
+							"Cyclic variable references=\"%s\" detected", variableId));
 		}
 		this.resolutionStack.push(variableId);
 	}

@@ -26,15 +26,21 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.base.Predicates;
+import com.google.common.collect.*;
 
 public class Result
 {
+    private final Function<Category, CategoryId> MAP_CATEGORY = new Function<Category, CategoryId>() {
+        @Override
+        public CategoryId apply(Category category) {
+            return category.getCategoryId();
+        }
+    };
+
 	private final Status status;
 	private final Decision decision;
 	private final Map<String, Obligation> obligations;
@@ -55,13 +61,13 @@ public class Result
 		this.associatedAdvice = ImmutableMap.copyOf(b.associatedAdvice);
 		this.includeInResultAttributes = b.includeInResultAttributes.build();
 		this.policyReferences = b.policyReferences.build();
-		this.resolvedAttributes = b.resolvedAttributes.build();
+		this.resolvedAttributes = Maps.uniqueIndex(b.resolvedAttributes.build(), MAP_CATEGORY);
 		this.hashCode = Objects.hashCode(decision, status,
-				associatedAdvice,
-				obligations,
-				includeInResultAttributes,
-				policyReferences,
-				resolvedAttributes);
+                associatedAdvice,
+                obligations,
+                includeInResultAttributes,
+                policyReferences,
+                resolvedAttributes);
 	}
 
 	public static Result.Builder builder(){
@@ -129,7 +135,7 @@ public class Result
 	}
 
 	/**
-	 * Gets a list of attribute that were part of the request.
+	 * Gets a list of category that were part of the request.
 	 *
 	 * @return a collection of {@link Category} instances
 	 */
@@ -138,9 +144,9 @@ public class Result
 	}
 
 	/**
-	 * Gets all resolved by PIP attribute from external sources during request context evaluation
+	 * Gets all resolved by PIP category from external sources during request context evaluation
 	 *
-	 * @return a collection of resolved attribute
+	 * @return a collection of resolved category
 	 */
 	public Collection<Category> getResolvedAttributes(){
 		return resolvedAttributes.values();
@@ -153,7 +159,7 @@ public class Result
 	/**
 	 * Returns a collection of obligations that MUST be
 	 * fulfilled by the PEP. If the PEP does not understand
-	 * or cannot fulfill an obligation, then the action of the
+	 * or cannot fulfill an obligations, then the action of the
 	 * PEP is determined by its bias
 	 *
 	 * @return a collection of obligations
@@ -163,9 +169,9 @@ public class Result
 	}
 
 	/**
-	 * Gets obligation via obligation identifier
+	 * Gets obligations via obligations identifier
 	 *
-	 * @param obligationId an obligation identifier
+	 * @param obligationId an obligations identifier
 	 * @return {@link Obligation}
 	 */
 	public Obligation getObligation(String obligationId){
@@ -249,7 +255,7 @@ public class Result
 		private Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
 		private ImmutableMap.Builder<CategoryId, Category> includeInResultAttributes = ImmutableMap.builder();
 		private ImmutableCollection.Builder<IdReference> policyReferences = ImmutableList.builder();
-		private ImmutableMap.Builder<CategoryId, Category> resolvedAttributes = ImmutableMap.builder();
+		private ImmutableCollection.Builder<Category> resolvedAttributes = ImmutableList.builder();
 
 
 		public Builder includeInResult(Category a){
@@ -273,7 +279,15 @@ public class Result
             return includeInResultAttributes(FluentIterable.of(categories));
         }
 
-		public Builder includeInResultAttributes(Iterable<Category> attributes){
+        public Builder includeInResultAttributes(RequestContext request){
+           if(request == null){
+               return this;
+           }
+           return includeInResultAttributes(request.getIncludeInResultAttributes());
+        }
+
+
+        public Builder includeInResultAttributes(Iterable<Category> attributes){
             if(attributes == null){
                 return this;
             }
@@ -284,36 +298,20 @@ public class Result
 		}
 
 		public Builder resolvedAttribute(Iterable<Category> attributes){
-            if(attributes == null){
-                return this;
-            }
-			for(Category a : attributes){
-				resolvedAttributes.put(a.getCategoryId(), a);
-			}
-			return this;
+
+            this.resolvedAttributes.addAll(
+                    FluentIterable
+                    .from(attributes)
+                    .filter(Predicates.notNull()));
+            return this;
 		}
 
-		public Builder evaluatedPolicy(IdReference... refs)
-		{
-            if(refs == null){
-                return this;
-            }
-			for(IdReference ref : refs){
-				Preconditions.checkNotNull(ref);
-				this.policyReferences.add(ref);
-			}
-			return this;
+		public Builder evaluatedPolicy(IdReference... refs){
+			return evaluatedPolicies(FluentIterable.of(refs));
 		}
 
-		public Builder evaluatedPolicies(Iterable<? extends IdReference> refs)
-		{
-            if(refs == null){
-                return this;
-            }
-			for(IdReference ref : refs){
-				Preconditions.checkNotNull(ref);
-				this.policyReferences.add(ref);
-			}
+		public Builder evaluatedPolicies(Iterable<? extends IdReference> refs){
+            this.policyReferences.addAll(FluentIterable.from(refs).filter(Predicates.notNull()));
 			return this;
 		}
 
@@ -328,26 +326,14 @@ public class Result
 		}
 
 		public Builder advice(Advice ... advice){
-            if(advice == null){
-                return this;
-            }
-			for(Advice a : advice){
-				addAdvice(a);
-			}
-			return this;
+			return advices(FluentIterable.of(advice));
 		}
 
 		public Builder obligation(Obligation ... obligations){
-            if(obligations == null){
-                return this;
-            }
-			for(Obligation o : obligations){
-				addObligation(o);
-			}
-			return this;
+            return obligations(FluentIterable.of(obligations));
 		}
 
-		public Builder obligation(Iterable<Obligation> obligations){
+		public Builder obligations(Iterable<Obligation> obligations){
             if(obligations == null){
                 return this;
             }

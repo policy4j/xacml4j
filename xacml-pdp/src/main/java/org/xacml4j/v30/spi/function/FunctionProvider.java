@@ -53,7 +53,7 @@ public interface FunctionProvider
 	 * Removes a function with a given identifier
 	 *
 	 * @param functionId a function identifier
-	 * @return {@link FunctionSpec} a reference
+	 * @return {@link FunctionSpec} a references
 	 * to removed function or {@code null}
 	 */
 	FunctionSpec remove(String functionId);

@@ -26,7 +26,7 @@ import com.google.common.base.Function;
 
 import java.util.Set;
 
-public interface AttributeExpType extends ValueType
+public interface AttributeExpType extends ValueType, Function<Object, AttributeExp>
 {
 	/**
 	 * Gets fully qualified data type identifier
@@ -60,13 +60,21 @@ public interface AttributeExpType extends ValueType
 	
 	/**
 	 * Creates type representing collection of
-	 * attribute values of this
+	 * category values of this
 	 * data type
 	 *
 	 * @return {@link BagOfAttributeExpType} instance
 	 */
 	BagOfAttributeExpType bagType();
 
+    /**
+     * Creates instance of
+     * {@link org.xacml4j.v30.BagOfAttributeExp.Builder}
+     * to build a bag containing attribute values
+     * of this type
+     *
+     * @return {@link org.xacml4j.v30.BagOfAttributeExp.Builder}
+     */
 	BagOfAttributeExp.Builder bag();
 
 	/**
@@ -90,7 +98,7 @@ public interface AttributeExpType extends ValueType
 	 * @exception IllegalArgumentException if bag
 	 * can not be created from a given values
 	 */
-	BagOfAttributeExp bagOf(Iterable<AttributeExp> values);
+	BagOfAttributeExp bagOf(Iterable<? extends AttributeExp> values);
 
 	/**
 	 * Creates an empty bag

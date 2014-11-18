@@ -437,7 +437,7 @@ public class RuleTest
 		Rule r1 = builder.build();
 		Rule r2 = builder.build();
 		Policy p1 = Policy
-				.builder("policy-id")
+				.builder("policy-attributeId")
 				.combiningAlgorithm(combiner)
 				.build();
 		assertEquals(r1, r2);

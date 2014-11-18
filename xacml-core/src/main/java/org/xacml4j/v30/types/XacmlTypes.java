@@ -33,22 +33,8 @@ import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.google.common.base.*;
-import com.google.common.primitives.Primitives;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.BagOfAttributeExpType;
-import org.xacml4j.v30.BinaryValue;
-import org.xacml4j.v30.DNSName;
-import org.xacml4j.v30.Date;
-import org.xacml4j.v30.DateTime;
-import org.xacml4j.v30.DayTimeDuration;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.IPAddress;
-import org.xacml4j.v30.RFC822Name;
-import org.xacml4j.v30.Time;
-import org.xacml4j.v30.XPathExpression;
-import org.xacml4j.v30.YearMonthDuration;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.XPath;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -208,10 +194,7 @@ public enum XacmlTypes implements AttributeExpType, Function<Object, AttributeEx
 	},
 	STRING("http://www.w3.org/2001/XMLSchema#string", "string"){
 		public StringExp of(Object v){
-			if(v instanceof StringExp){
-				return StringExp.of(((StringExp)v).getValue());
-			}
-			return StringExp.of((String)v);
+			return StringExp.ofAny(v);
 		}
 	},
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", "rfc822Name"){
@@ -257,7 +240,7 @@ public enum XacmlTypes implements AttributeExpType, Function<Object, AttributeEx
 		  "xpathExpression", "urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
 		  "urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression"){
 		public XPathExp of(Object v){
-			return XPathExp.of((XPathExpression)v);
+			return XPathExp.of((XPath)v);
 		}
 	},
 	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration",
@@ -305,7 +288,7 @@ public enum XacmlTypes implements AttributeExpType, Function<Object, AttributeEx
 		this.typeId = typeId;
 		this.shortTypeId = shortTypeId;
 		this.bagType = new BagOfAttributeExpType(this);
-        this.typeValueMatcher = typeValueMatcher;
+        this.typeValueMatcher = CharMatcher.ANY;
 		this.aliases = (aliases == null)?ImmutableSet.<String>of():ImmutableSet
 				.<String>builder()
 				.add(shortTypeId)
@@ -350,18 +333,18 @@ public enum XacmlTypes implements AttributeExpType, Function<Object, AttributeEx
 
 	@Override
 	public final BagOfAttributeExp bagOf(AttributeExp... attrs) {
-		return bagType.create(attrs);
+		return bagType.value(attrs);
 	}
 
 
 	@Override
-	public final BagOfAttributeExp bagOf(Iterable<AttributeExp> values) {
-		return bagType.create(values);
+	public final BagOfAttributeExp bagOf(Iterable<? extends AttributeExp> values) {
+		return bagType.of(values);
 	}
 
 	@Override
 	public final BagOfAttributeExp emptyBag() {
-		return bagType.createEmpty();
+		return bagType.emptyBag();
 	}
 
     @Override

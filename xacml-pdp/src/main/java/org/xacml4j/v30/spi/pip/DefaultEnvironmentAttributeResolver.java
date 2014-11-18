@@ -36,7 +36,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 
 /**
- * A default XACML environment attribute resolver
+ * A default XACML environment category resolver
  *
  * @author Giedrius Trumpickas
  */

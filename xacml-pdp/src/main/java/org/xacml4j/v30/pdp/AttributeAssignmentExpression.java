@@ -36,9 +36,9 @@ public class AttributeAssignmentExpression implements PolicyElement
 	private final Expression expression;
 
 	/**
-	 * Constructs attribute assignment
+	 * Constructs category assignment
 	 *
-	 * @param b attribute assignment builder
+	 * @param b category assignment builder
 	 */
 	private AttributeAssignmentExpression(Builder b){
 		this.attributeId = Preconditions.checkNotNull(b.id);
@@ -52,17 +52,17 @@ public class AttributeAssignmentExpression implements PolicyElement
 	}
 
 	/**
-	 * Gets attribute identifier
+	 * Gets category identifier
 	 *
-	 * @return attribute identifier
+	 * @return category identifier
 	 */
 	public String getAttributeId(){
 		return attributeId;
 	}
 
 	/**
-	 * An optional category of the attribute.
-	 * If category is not specified, the attribute has no category
+	 * An optional category of the category.
+	 * If category is not specified, the category has no category
 	 *
 	 * @return category identifier or {@code null}
 	 */
@@ -71,11 +71,11 @@ public class AttributeAssignmentExpression implements PolicyElement
 	}
 
 	/**
-	 * Gets an issuer of the attribute.
-	 * If issuer is not specified, the attribute
+	 * Gets an issuer of the category.
+	 * If issuer is not specified, the category
 	 * has not issuer
 	 *
-	 * @return attribute issuer or {@code null}
+	 * @return category issuer or {@code null}
 	 */
 	public String getIssuer(){
 		return issuer;

@@ -70,7 +70,7 @@ public final class ResolverRegistryBuilder
 	/**
 	 * Adds a given {@link AttributeResolver}
 	 *
-	 * @param resolver an attribute resolver
+	 * @param resolver an category resolver
 	 * @return {@link ResolverRegistryBuilder}
 	 */
 	public ResolverRegistryBuilder withAttributeResolver(AttributeResolver resolver){

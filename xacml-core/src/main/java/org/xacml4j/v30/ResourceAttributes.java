@@ -24,7 +24,7 @@ package org.xacml4j.v30;
 
 
 /**
- * A well known XACML resource category attribute attribute
+ * A well known XACML resource category category category
  *
  * @author Giedrius Trumpickas
 
@@ -33,20 +33,20 @@ public enum ResourceAttributes
 {
 
 	/**
-	 * This attribute identifies the resource to which access is requested.
+	 * This category identifies the resource to which access is requested.
 	 */
-	RESOURCE_ID("urn:oasis:names:tc:xacml:1.0:resource:resource-id"),
+	RESOURCE_ID("urn:oasis:names:tc:xacml:1.0:resource:resource-attributeId"),
 
 	/**
-	 * This attribute identifies the namespace of the top element(s) of the
+	 * This category identifies the namespace of the top element(s) of the
 	 * contents of the {@link org.xacml4j.v30.Entity#getContent()}.
 	 * In the case where the resource content is supplied in
 	 * the request context and the resource namespaces are defined in the resource,
-	 * the PEP MAY provide this attribute in the request to
+	 * the PEP MAY provide this category in the request to
 	 * indicate the namespaces of the resource content. In this case
-	 * there SHALL be one value of this attribute for each unique namespace
+	 * there SHALL be one value of this category for each unique namespace
 	 * of the top level elements in the {@link org.xacml4j.v30.Entity#getContent()}.
-	 * The type of the corresponding attribute SHALL be {@link org.xacml4j.v30.types.XacmlTypes#ANYURI}
+	 * The type of the corresponding category SHALL be {@link org.xacml4j.v30.types.XacmlTypes#ANYURI}
 	 */
 	TARGET_NAMESPACE("urn:oasis:names:tc:xacml:2.0:resource:target-namespace");
 

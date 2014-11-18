@@ -69,7 +69,7 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 		{
 			Decision d = r.evaluate(r.createContext(context));
 			if(log.isDebugEnabled()){
-				log.debug("Decision rule id=\"{}\" evaluation result=\"{}\"", r.getId(), d);
+				log.debug("Decision rule attributeId=\"{}\" evaluation result=\"{}\"", r.getId(), d);
 			}
 			if (d == Decision.DENY){
 				return Decision.DENY;

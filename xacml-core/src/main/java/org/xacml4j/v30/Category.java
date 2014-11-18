@@ -26,7 +26,7 @@ import com.google.common.base.*;
 
 
 /**
- * Represents a set of XACML attribute
+ * Represents a set of XACML category
  * of a given category
  *
  * @author Giedrius Trumpickas
@@ -44,7 +44,8 @@ public class Category
 	 * @param b a category builder
 	 */
 	private Category(Builder b) {
-		Preconditions.checkNotNull(b.category);
+		Preconditions.checkNotNull(b.category,
+                "Category identifier must be specified");
 		this.id = b.id;
 		this.categoryId = b.category;
 		this.entity = b.b.build();
@@ -55,9 +56,9 @@ public class Category
 
 	/**
 	 * Constructs {@link Category.Builder} for given
-	 * attribute category
+	 * category category
 	 *
-	 * @param category attribute category
+	 * @param category category category
 	 * @return {@link Category.Builder} instance
 	 */
 	public static Builder builder(CategoryId category){
@@ -99,16 +100,20 @@ public class Category
     }
 
 	/**
-	 * An unique identifier of the attribute in
+	 * An unique identifier of the category in
 	 * the request context
 	 *
 	 * @return unique identifier of the
-	 * attribute in the request context
+	 * category in the request context
 	 */
-	public String getId(){
+	public String getReferenceId(){
 		return id;
 	}
 
+
+    public boolean isReferencable(){
+        return id != null;
+    }
     /**
      * Test if this category is a default/well-known category
      *
@@ -127,9 +132,9 @@ public class Category
 	}
 
 	/**
-	 * Gets an attribute category
+	 * Gets an category category
 	 *
-	 * @return attribute category
+	 * @return category category
 	 */
 	public CategoryId getCategoryId(){
 		return categoryId;
@@ -139,7 +144,7 @@ public class Category
 	public String toString(){
 		return Objects.toStringHelper(this)
 		.add("category", categoryId)
-		.add("id", id)
+		.add("attributeId", id)
 		.add("entity", entity)
 		.toString();
 	}
@@ -179,11 +184,11 @@ public class Category
 
         /**
          * A default issuer is used by this builder
-         * to set an issuer on the attribute created
-         * via fluent attribute creation methods
+         * to set an issuer on the category created
+         * via fluent category creation methods
          *
          * @param issuer an default issuer
-         * @return this builder reference
+         * @return this builder references
          */
         public Builder defaultIssuer(String issuer){
             this.defaultIssuer = defaultIssuer;
@@ -207,7 +212,7 @@ public class Category
 		public Builder copyOf(Category a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
-			id(a.getId());
+			id(a.getReferenceId());
 			category(a.getCategoryId());
 			b.copyOf(a.entity, f);
 			return this;
@@ -216,7 +221,7 @@ public class Category
         public Builder copyOf(Category a,
                               Function<Attribute, Attribute> f){
             Preconditions.checkNotNull(a);
-            id(a.getId());
+            id(a.getReferenceId());
             category(a.getCategoryId());
             b.copyOf(a.entity, f);
             return this;

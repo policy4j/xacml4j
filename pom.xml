@@ -35,6 +35,8 @@
 		<xml.resolver.version>1.2</xml.resolver.version>
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jayway-jsonpath.version>1.1.0</jayway-jsonpath.version>
+        <jackson.core.version>2.4.0</jackson.core.version>
 		<license.licenseName>lgpl_v3</license.licenseName>
 	</properties>
 
@@ -104,7 +106,22 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${jayway-jsonpath.version}</version>
+            </dependency>
+            <dependency>
 			    <groupId>com.codahale.metrics</groupId>
 			    <artifactId>metrics-core</artifactId>
 			    <version>${yammer.metrics.version}</version>
@@ -208,14 +225,18 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<version>1.7</version>
-				<configuration>
-				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>update-file-header</goal>
 						</goals>
 						<phase>process-sources</phase>
+                        <configuration>
+                            <excludes>
+                                <exclude>*.txt</exclude>
+                                <exclude>*.json</exclude>
+                            </excludes>
+                        </configuration>
 					</execution>
 				</executions>
 			</plugin>
