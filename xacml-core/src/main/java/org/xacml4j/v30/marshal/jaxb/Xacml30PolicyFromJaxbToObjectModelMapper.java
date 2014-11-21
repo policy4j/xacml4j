@@ -22,6 +22,7 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -103,7 +104,6 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	extends PolicyUnmarshallerSupport
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromJaxbToObjectModelMapper.class);
-
 
 	private final static Map<EffectType, Effect> JAXB_TO_NATIVE_EFFECT_MAPPINGS = ImmutableMap.of(
 			EffectType.DENY, Effect.DENY,
@@ -412,7 +412,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		if (expressions == null) {
 			return Collections.emptyList();
 		}
-		Collection<ObligationExpression> obligations = new LinkedList<ObligationExpression>();
+		Collection<ObligationExpression> obligations = new ArrayList<ObligationExpression>(expressions.getObligationExpression().size());
 		for (ObligationExpressionType e : expressions.getObligationExpression()) {
 			obligations.add(create(e, m));
 		}
@@ -574,8 +574,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 					.build();
 		}
 		throw new XacmlSyntaxException(
-				"Given JAXB object instance of=\"%s\" can not be converted"
-						+ "to XACML AttributeSelector or AttributeDesignator",
+				"Given JAXB object instance of=\"%s\" can not be converted to XACML AttributeSelector or AttributeDesignator",
 				ref.getClass().getName());
 	}
 
@@ -647,20 +646,20 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			return toXacml30.get().fromXacml30(t);
 		}
 		if (e instanceof VariableReferenceType) {
-			VariableReferenceType varRef = (VariableReferenceType)e;
-			VariableDefinition varDef = m.getVariableDefinition(varRef.getVariableId());
-			if(varDef != null){
-				return new VariableReference(varDef);
+			final VariableReferenceType varRef = (VariableReferenceType)e;
+			final VariableDefinition existingVarDef = m.getVariableDefinition(varRef.getVariableId());
+			if (existingVarDef != null) {
+				return new VariableReference(existingVarDef);
 			}
-			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
-			if(varDefExp == null){
-				throw new XacmlSyntaxException("Variable with id=\"%s\" " +
-						"is not defined", varRef.getVariableId());
+			final JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
+			if (varDefExp == null) {
+				throw new XacmlSyntaxException(
+						"Variable with id=\"%s\" is not defined",
+						varRef.getVariableId());
 			}
 			m.pushVariableDefinition(varRef.getVariableId());
-			parseExpression(varDefExp, m);
-			varDef = m.getVariableDefinition(varRef.getVariableId());
-			Preconditions.checkState(varDef != null);
+			final Expression parsedExpression = parseExpression(varDefExp, m);
+			VariableDefinition varDef = new VariableDefinition(varRef.getVariableId(), parsedExpression);
 			m.resolveVariableDefinition(varDef);
 			return new VariableReference(varDef);
 		}
@@ -688,11 +687,9 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			throws XacmlSyntaxException
 	{
 		try {
-			List<Object> objects = p
-					.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition();
-			if (objects == null || objects.isEmpty()) {
-				return new VariableManager<JAXBElement<?>>(Collections
-						.<String, JAXBElement<?>> emptyMap());
+			List<Object> objects = p.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition();
+			if (objects.isEmpty()) {
+				return new VariableManager<JAXBElement<?>>(Collections.<String, JAXBElement<?>> emptyMap());
 			}
 			Map<String, JAXBElement<?>> expressions = new HashMap<String, JAXBElement<?>>();
 			for (Object o : objects) {
@@ -702,7 +699,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				VariableDefinitionType varDef = (VariableDefinitionType) o;
 				if (expressions.containsKey(varDef.getVariableId())) {
 					throw new XacmlSyntaxException(
-							"Policy contains a variableId=\"%s\" is already "
+							"Policy contains a variableId=\"%s\" that is already "
 									+ "used for previously defined variable",
 							varDef.getVariableId());
 				}
@@ -722,15 +719,17 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 	{
 		for (String varId : m.getVariableDefinitionExpressions())
 		{
-			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varId);
-			m.pushVariableDefinition(varId);
-			Expression expression = parseExpression(varDefExp, m);
-			Preconditions.checkState(expression != null);
-			if(log.isDebugEnabled()){
-				log.debug("Resolved variable " +
-						"definition variableId=\"{}\", expression=\"{}\"", varId, expression);
+			if (m.getVariableDefinition(varId) == null) {
+				JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varId);
+				m.pushVariableDefinition(varId);
+				Expression expression = parseExpression(varDefExp, m);
+				Preconditions.checkState(expression != null);
+				if (log.isDebugEnabled()) {
+					log.debug("Resolved variable definition variableId=\"{}\", expression=\"{}\"",
+							varId, expression);
+				}
+				m.resolveVariableDefinition(new VariableDefinition(varId, expression));
 			}
-			m.resolveVariableDefinition(new VariableDefinition(varId, expression));
 		}
 	}
 }
