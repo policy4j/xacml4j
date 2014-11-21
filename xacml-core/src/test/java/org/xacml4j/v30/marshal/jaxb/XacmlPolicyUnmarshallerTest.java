@@ -22,6 +22,7 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -38,6 +39,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.oasis.xacml.v30.jaxb.PolicyType;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -47,6 +49,7 @@ import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.PolicyMarshaller;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
+import org.xacml4j.v30.pdp.Apply;
 import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
 import org.xacml4j.v30.pdp.AttributeDesignator;
 import org.xacml4j.v30.pdp.AttributeSelector;
@@ -56,7 +59,10 @@ import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.pdp.Target;
+import org.xacml4j.v30.pdp.VariableDefinition;
+import org.xacml4j.v30.pdp.VariableReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -66,20 +72,25 @@ import com.google.common.collect.Iterables;
 
 public class XacmlPolicyUnmarshallerTest
 {
+	@org.junit.Rule
+	public ExpectedException expectedException = ExpectedException.none();
+
 	private static PolicyUnmarshaller reader;
 	private static PolicyMarshaller writer;
+	private static FunctionProvider functionProvider;
 
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new XacmlPolicyUnmarshaller(
-				FunctionProviderBuilder
+		functionProvider = FunctionProviderBuilder
 				.builder()
 				.defaultFunctions()
-				.build(),
+				.build();
+		reader = new XacmlPolicyUnmarshaller(
+				functionProvider,
 				DecisionCombiningAlgorithmProviderBuilder
-				.builder()
-				.withDefaultAlgorithms().create());
+						.builder()
+						.withDefaultAlgorithms().create());
 		writer = new Xacml30PolicyMarshaller();
 	}
 
@@ -160,13 +171,21 @@ public class XacmlPolicyUnmarshallerTest
 		assertThat(p.getVariableDefinition("VAR05"), notNullValue());
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
-	public void testFeatures002Policy() throws Exception
-	{
-		Policy p = getPolicy("002B-Policy.xml");
-		assertThat(p.getVariableDefinitions().size(), is(2));
+	@Test
+	public void testFeatures002Policy() throws Exception {
+		expectedException.expect(XacmlSyntaxException.class);
+		getPolicy("002B-Policy.xml");
+	}
+
+	@Test
+	public void testFeatures003Policy() throws Exception {
+		Policy p = getPolicy("003B-Policy.xml");
+		assertThat(p.getVariableDefinitions().size(), is(5));
 		assertThat(p.getVariableDefinition("VAR01"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR02"), notNullValue());
+		assertThat(p.getVariableDefinition("VAR03"), notNullValue());
+		assertThat(p.getVariableDefinition("VAR04"), notNullValue());
+		assertThat(p.getVariableDefinition("VAR05"), notNullValue());
 	}
 
 	@Test
@@ -208,21 +227,91 @@ public class XacmlPolicyUnmarshallerTest
 	}
 
 	@Test
-	public void testPolicy3() throws Exception
+	public void testPolicyWithVariables1() throws Exception
 	{
-		Policy p = getPolicy("Policy3.xml");
+		final VariableDefinition expectedVar01 = new VariableDefinition(
+				"VAR01",
+				AttributeDesignator.builder()
+				                   .attributeId("urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number")
+				                   .category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
+				                   .mustBePresent(true)
+				                   .dataType(XacmlTypes.STRING)
+				                   .build());
+		final VariableDefinition expectedVar02 = new VariableDefinition(
+				"VAR02",
+				AttributeSelector.builder()
+						.xpath("//md:record/md:patient/md:patient-number/text()")
+						.category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
+						.mustBePresent(true)
+						.dataType(XacmlTypes.STRING)
+						.build());
+
+		final VariableDefinition expectedVar03 = new VariableDefinition(
+				"VAR03",
+				Apply.builder(functionProvider.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"))
+						.param(new VariableReference(expectedVar01))
+						.build());
+
+		final VariableDefinition expectedVar04 = new VariableDefinition(
+				"VAR04",
+				Apply.builder(functionProvider.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"))
+				     .param(new VariableReference(expectedVar02))
+				     .build());
+
+		final VariableDefinition expectedVar05 = new VariableDefinition(
+				"VAR05",
+				Apply.builder(functionProvider.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-equal"))
+				     .param(new VariableReference(expectedVar03))
+				     .param(new VariableReference(expectedVar04))
+				     .build());
+
+		Policy p = getPolicy("v30-policy-with-variables-1.xml");
+		assertThat(p.getVersion().getValue(), is("1.0"));
+		assertThat(p.getVariableDefinitions().size(), is(5));
+		assertThat(p.getVariableDefinition("VAR01"), equalTo(expectedVar01));
+		assertThat(p.getVariableDefinition("VAR02"), equalTo(expectedVar02));
+		assertThat(p.getVariableDefinition("VAR03"), equalTo(expectedVar03));
+		assertThat(p.getVariableDefinition("VAR04"), equalTo(expectedVar04));
+		assertThat(p.getVariableDefinition("VAR05"), equalTo(expectedVar05));
+
+		@SuppressWarnings("unchecked")
+		JAXBElement<PolicyType> jaxb = (JAXBElement<PolicyType>) writer.marshal(p);
+		assertThat(jaxb.getValue().getVersion(), is("1.0"));
+		Policy p1 = (Policy)reader.unmarshal(jaxb);
+		assertThat(p, is(p1));
+	}
+
+	@Test
+	public void testPolicyWithVariables2() throws Exception
+	{
+		final VariableDefinition expectedVar05 = new VariableDefinition(
+				"VAR05",
+				AttributeDesignator.builder()
+				                   .attributeId("urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number")
+				                   .category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
+				                   .mustBePresent(true)
+				                   .dataType(XacmlTypes.STRING)
+				                   .build());
+
+		Policy p = getPolicy("v30-policy-with-variables-2.xml");
 		assertThat(p.getVersion().getValue(), is("1.0"));
 		assertThat(p.getVariableDefinitions().size(), is(5));
 		assertThat(p.getVariableDefinition("VAR01"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR02"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR03"), notNullValue());
 		assertThat(p.getVariableDefinition("VAR04"), notNullValue());
-		assertThat(p.getVariableDefinition("VAR05"), notNullValue());
+		assertThat(p.getVariableDefinition("VAR05"), equalTo(expectedVar05));
 		@SuppressWarnings("unchecked")
 		JAXBElement<PolicyType> jaxb = (JAXBElement<PolicyType>) writer.marshal(p);
 		assertThat(jaxb.getValue().getVersion(), is("1.0"));
 		Policy p1 = (Policy)reader.unmarshal(jaxb);
 		assertThat(p, is(p1));
+	}
+
+	@Test
+	public void testPolicyWithVariables3_CyclicError() throws Exception {
+		expectedException.expect(XacmlSyntaxException.class);
+		getPolicy("v30-policy-with-variables-3.xml");
 	}
 
 	@Test
