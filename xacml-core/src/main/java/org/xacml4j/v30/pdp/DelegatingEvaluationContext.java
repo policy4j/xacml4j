@@ -254,12 +254,6 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public void setResolvedDesignatorValue(AttributeDesignatorKey ref,
-			BagOfAttributeExp v) {
-		delegate.setResolvedDesignatorValue(ref, v);
-	}
-
-	@Override
 	public int getDecisionCacheTTL() {
 		return delegate.getDecisionCacheTTL();
 	}

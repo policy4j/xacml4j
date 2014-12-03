@@ -73,9 +73,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 	private final List<CompositeDecisionRuleIDReference> evaluatedPolicies;
 	private final TimeZone timezone;
 	private final Calendar currentDateTime;
-	private final Map<AttributeDesignatorKey, BagOfAttributeExp> designCache;
-	private final Map<AttributeSelectorKey, BagOfAttributeExp> selectCache;
-	private final Map<AttributeDesignatorKey, BagOfAttributeExp> resolvedDesignators;
+	private final Map<AttributeDesignatorKey, BagOfAttributeExp> designatorCache;
+	private final Map<AttributeSelectorKey, BagOfAttributeExp> selectorCache;
 	private final Ticker ticker = Ticker.systemTicker();
 	private boolean validateFuncParamsAtRuntime = false;
 	private Status evaluationStatus;
@@ -99,9 +98,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
-		this.designCache = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>(128);
-		this.selectCache = new HashMap<AttributeSelectorKey, BagOfAttributeExp>(128);
-		this.resolvedDesignators = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>();
+		this.designatorCache = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>(128);
+		this.selectorCache = new HashMap<AttributeSelectorKey, BagOfAttributeExp>(128);
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 		this.defaultXPathVersion = defaultXPathVersion;
 	}
@@ -122,7 +120,6 @@ public final class RootEvaluationContext implements EvaluationContext {
 	public XPathVersion getXPathVersion() {
 		return defaultXPathVersion;
 	}
-
 
 	@Override
 	public Ticker getTicker(){
@@ -375,21 +372,21 @@ public final class RootEvaluationContext implements EvaluationContext {
 			AttributeDesignatorKey ref)
 		throws EvaluationException
 	{
-		BagOfAttributeExp v = designCache.get(ref);
-		if(v != null){
-			if(log.isDebugEnabled()){
-				log.debug("Found designator=\"{}\" " +
-						"value=\"{}\" in cache", ref, v);
+		BagOfAttributeExp v = designatorCache.get(ref);
+		if (v != null) {
+			if (log.isDebugEnabled()) {
+				log.debug("Found designator=\"{}\" value=\"{}\" in cache",
+						ref, v);
 			}
 			return v;
 		}
 		v = contextHandler.resolve(this, ref);
 		v = (v == null)?ref.getDataType().emptyBag():v;
-		if(log.isDebugEnabled()){
-			log.debug("Resolved " +
-					"designator=\"{}\" to value=\"{}\"", ref, v);
+		if (log.isDebugEnabled()) {
+			log.debug("Resolved designator=\"{}\" to value=\"{}\"",
+					ref, v);
 		}
-		this.designCache.put(ref, v);
+		this.designatorCache.put(ref, v);
 		return v;
 	}
 
@@ -398,7 +395,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 			AttributeSelectorKey ref)
 			throws EvaluationException
 	{
-		BagOfAttributeExp v = selectCache.get(ref);
+		BagOfAttributeExp v = selectorCache.get(ref);
 		if(v != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found selector=\"{}\" " +
@@ -412,17 +409,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 			log.debug("Resolved " +
 					"selector=\"{}\" to value=\"{}\"", ref, v);
 		}
-		this.selectCache.put(ref, v);
+		this.selectorCache.put(ref, v);
 		return v;
-	}
-
-	@Override
-	public void setResolvedDesignatorValue(
-			AttributeDesignatorKey key,
-			BagOfAttributeExp v){
-		Preconditions.checkNotNull(key);
-		this.resolvedDesignators.put(key, (v == null) ? key.getDataType().emptyBag() : v);
-		this.designCache.put(key, (v == null) ? key.getDataType().emptyBag() : v);
 	}
 
 	@Override
@@ -432,7 +420,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 
 	@Override
 	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
-		return Collections.unmodifiableMap(resolvedDesignators);
+		return Collections.unmodifiableMap(designatorCache);
 	}
 
 	@Override
@@ -459,9 +447,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 				.add("evaluatedPolicies", evaluatedPolicies)
 				.add("timezone", timezone)
 				.add("currentDateTime", currentDateTime)
-				.add("designCache", designCache)
-				.add("selectCache", selectCache)
-				.add("resolvedDesignators", resolvedDesignators)
+				.add("designatorCache", designatorCache)
+				.add("selectorCache", selectorCache)
 				.add("ticker", ticker)
 				.add("validateFuncParamsAtRuntime", validateFuncParamsAtRuntime)
 				.add("evaluationStatus", evaluationStatus)
@@ -482,9 +469,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 				evaluatedPolicies,
 				timezone,
 				currentDateTime,
-				designCache,
-				selectCache,
-				resolvedDesignators,
+				designatorCache,
+				selectorCache,
 				validateFuncParamsAtRuntime,
 				evaluationStatus,
 				combinedDecisionCacheTTL,
@@ -510,9 +496,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 			&& Objects.equal(evaluatedPolicies, c.evaluatedPolicies)
 			&& Objects.equal(timezone, c.timezone)
 			&& Objects.equal(currentDateTime, c.currentDateTime)
-			&& Objects.equal(designCache, c.designCache)
-			&& Objects.equal(selectCache, c.selectCache)
-			&& Objects.equal(resolvedDesignators, c.resolvedDesignators)
+			&& Objects.equal(designatorCache, c.designatorCache)
+			&& Objects.equal(selectorCache, c.selectorCache)
 			&& Objects.equal(validateFuncParamsAtRuntime, c.validateFuncParamsAtRuntime)
 			&& Objects.equal(evaluationStatus, c.evaluationStatus)
 			&& Objects.equal(combinedDecisionCacheTTL, c.combinedDecisionCacheTTL)
@@ -524,8 +509,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 	 */
 	public void clear() {
 		this.combinedDecisionCacheTTL = null;
-		this.designCache.clear();
-		this.selectCache.clear();
+		this.designatorCache.clear();
+		this.selectorCache.clear();
 		this.evaluatedPolicies.clear();
 	}
 }

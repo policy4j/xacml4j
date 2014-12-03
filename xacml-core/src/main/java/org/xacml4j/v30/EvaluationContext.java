@@ -275,14 +275,6 @@ public interface EvaluationContext
 		throws EvaluationException;
 
 	/**
-	 * Sets resolved designator {@link AttributeDesignatorKey} value
-	 *
-	 * @param ref an attribute designator
-	 * @param v an attribute designator value
-	 */
-	void setResolvedDesignatorValue(AttributeDesignatorKey ref, BagOfAttributeExp v);
-
-	/**
 	 * Gets all resolved designators in this context
 	 *
 	 * @return a map of all resolved designators
