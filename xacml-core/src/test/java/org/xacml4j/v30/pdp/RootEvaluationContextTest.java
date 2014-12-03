@@ -24,12 +24,16 @@ package org.xacml4j.v30.pdp;
 
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
@@ -55,15 +59,15 @@ public class RootEvaluationContextTest
 	{
 		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
 		c.replay();
-		assertEquals(0, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(0));
 		context.setDecisionCacheTTL(20);
-		assertEquals(20, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(20));
 		context.setDecisionCacheTTL(10);
-		assertEquals(10, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(10));
 		context.setDecisionCacheTTL(-1);
-		assertEquals(0, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(0));
 		context.setDecisionCacheTTL(10);
-		assertEquals(0, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(0));
 		c.verify();
 	}
 
@@ -72,32 +76,15 @@ public class RootEvaluationContextTest
 	{
 		RootEvaluationContext context = new RootEvaluationContext(false, 10, resolver, handler);
 		c.replay();
-		assertEquals(10, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(10));
 		context.setDecisionCacheTTL(20);
-		assertEquals(10, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(10));
 		context.setDecisionCacheTTL(5);
-		assertEquals(5, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(5));
 		context.setDecisionCacheTTL(-1);
-		assertEquals(0, context.getDecisionCacheTTL());
+		assertThat(context.getDecisionCacheTTL(), is(0));
 		context.setDecisionCacheTTL(10);
-		assertEquals(0, context.getDecisionCacheTTL());
-		c.verify();
-	}
-
-	@Test
-	public void testResolveDesignatorValueValueIsInContext() throws EvaluationException
-	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
-		c.replay();
-		AttributeDesignatorKey k = AttributeDesignatorKey
-				.builder()
-				.category(Categories.SUBJECT_ACCESS)
-				.attributeId("testId")
-				.dataType(XacmlTypes.STRING)
-				.issuer("test")
-				.build();
-		context.setResolvedDesignatorValue(k, StringExp.of("aaa").toBag());
-		assertEquals(StringExp.of("aaa").toBag(), context.resolve(k));
+		assertThat(context.getDecisionCacheTTL(), is(0));
 		c.verify();
 	}
 
@@ -112,11 +99,16 @@ public class RootEvaluationContextTest
 				.dataType(XacmlTypes.STRING)
 				.issuer("test")
 				.build();
-		expect(handler.resolve(context, k)).andReturn(StringExp.bag().value("aaa", "ccc").build());
+		BagOfAttributeExp expectedValue = StringExp.bag().value("aaa", "ccc").build();
+
+		expect(handler.resolve(context, k)).andReturn(expectedValue);
 
 		c.replay();
-		assertEquals(StringExp.bag().value("aaa", "ccc").build(), context.resolve(k));
-		assertEquals(StringExp.bag().value("aaa", "ccc").build(), context.resolve(k));
+		assertThat(context.resolve(k), is(expectedValue));
+		assertThat(context.resolve(k), is(expectedValue));
 		c.verify();
+
+		assertThat(context.getResolvedDesignators().keySet(), hasItem(k));
+		assertThat(context.getResolvedDesignators().values(), hasItem(expectedValue));
 	}
 }
