@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.xacml4j</groupId>
 		<artifactId>xacml</artifactId>
-		<version>1.3.2</version>
+		<version>1.3.3-SNAPSHOT</version>
 	</parent>
     <artifactId>xacml-conformance-tests</artifactId>
 	<name>Xacml4J Conformance Tests</name>

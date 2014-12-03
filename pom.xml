@@ -9,7 +9,7 @@
 	<groupId>org.xacml4j</groupId>
 	<artifactId>xacml</artifactId>
 	<packaging>pom</packaging>
-	<version>1.3.2</version>
+	<version>1.3.3-SNAPSHOT</version>
 	<name>Xacml4J Project</name>
 	<url>https://github.com/xacml4j/xacml4j</url>
 	<description>
