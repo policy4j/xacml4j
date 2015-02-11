@@ -22,11 +22,15 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import com.google.common.base.*;
+import com.google.common.collect.Iterators;
 
 /**
  * A XACML version  is expressed as a sequence of decimal numbers,
@@ -36,25 +40,31 @@ import com.google.common.base.Strings;
  */
 public final class Version implements Comparable<Version>
 {
-	private static final String VERSION_PATTERN_STRING = "(\\d+\\.)*\\d+";
-	private static final Pattern VERSION_PATTERN = Pattern.compile(VERSION_PATTERN_STRING);
-	private static final Pattern VERSION_PART_SPLITTER = Pattern.compile("\\.");
-
 	private final String value;
-    private final int[] version;
+    private final Integer[] version;
     private final int hashCode;
 
-    /**
-     * Constructs version from
-     * a given string
-     *
-     * @param version a version represented as string
-     * @exception XacmlSyntaxException if version can not be parsed
-     */
-    private Version(String version) {
-	    this.value = version;
-    	this.version = parseVersion(version);
-    	this.hashCode = value.hashCode();
+    private Version(String v) {
+    	this.version = parseVersion(v);
+    	this.hashCode = Objects.hashCode(version);
+        this.value = v;
+    }
+
+    Version(Integer[] v) {
+        this.version = v;
+        this.hashCode = Objects.hashCode(v);
+        StringBuilder b = new StringBuilder();
+        for(int i = 0; i < v.length; i++){
+            b.append(v[i]);
+            if(i < v.length - 1){
+                b.append('.');
+            }
+        }
+        this.value = b.toString();
+    }
+
+    public Iterator<Integer> iterator(){
+        return Iterators.forArray(version);
     }
 
     /**
@@ -65,6 +75,25 @@ public final class Version implements Comparable<Version>
      */
     public String getValue() {
        return value;
+    }
+
+    /**
+     * Gets version component at given index
+     *
+     * @param index a version component index
+     * @return version component at given index
+     */
+    public Integer getComponent(int index){
+        return version[index];
+    }
+
+    /**
+     * Gets version length
+     *
+     * @return
+     */
+    public int getLength(){
+        return version.length;
     }
 
     @Override
@@ -99,11 +128,14 @@ public final class Version implements Comparable<Version>
         		return r > 0?1:-1;
         	}
         }
-        if (checkAllZeros(version, min) && checkAllZeros(v.version, min)) {
+        if (checkAllZeros(version, min) &&
+                checkAllZeros(v.version, min)) {
         	return 0;
         }
         return version.length - v.version.length;
     }
+
+
 
     /**
      * Checks if a given version vector starting at given pos is all {@code 0}
@@ -111,13 +143,15 @@ public final class Version implements Comparable<Version>
      * @param startIdx a start index
      * @return {@code true} if all versions are equal to {@code 0}
      */
-    private boolean checkAllZeros(int[] versions, int startIdx)
+    private boolean checkAllZeros(Integer[] versions, int startIdx)
     {
-		for (int i = versions.length-1; i >= startIdx; i--) {
+		for (int i = versions.length - 1; i >= startIdx; i--) {
 			if (versions[i] != 0) return false;
 		}
 		return true;
 	}
+
+
 
     /**
      * Parses given version string and returns
@@ -126,24 +160,23 @@ public final class Version implements Comparable<Version>
      * @param version a version string
      * @return an array of non-negative integers
      */
-	private static int[] parseVersion(
+	private static Integer[] parseVersion(
 			String version)
     {
-    	if(!VERSION_PATTERN.matcher(version).matches()){
-    		throw new IllegalArgumentException(
-    				String.format(
-						    "Invalid version=\"%s\", does not match regular expression=\"%s\"",
-    				        version, VERSION_PATTERN_STRING));
-    	}
-    	 String[] vc = VERSION_PART_SPLITTER.split(version);
-    	 int[] v = new int[vc.length];
-    	 for(int i = 0; i < vc.length; i++){
-    		 v[i] = Integer.parseInt(vc[i]);
+        List<String> components = Splitter.on('.').splitToList(version);
+        Integer[] v = new Integer[components.size()];
+        for(int i = 0; i < components.size(); i++){
+            String component = components.get(i);
+            if(!CharMatcher.DIGIT.matchesAllOf(component)){
+                throw new IllegalArgumentException(String.format("Version=\"%s\" component=\"%s\" " +
+                        "at index=\"%d\" is not a number", version, component, i));
+            }
+            v[i] = Integer.parseInt(component);
     		 if(v[i] < 0){
     			 throw new IllegalArgumentException(
     					 String.format(
-							     "Invalid version=\"%s\", component=\"%d\", number is negative",
-							     version, v[i]));
+							     "Invalid version=\"%s\", component=\"%d\" at " +
+                                         "index=\"%d\", number is negative", version, v[i], i));
     		 }
     	 }
     	 return v;
@@ -158,8 +191,8 @@ public final class Version implements Comparable<Version>
 	 * @return {@link Version} instance
 	 */
     public static Version parse(String version){
-        return Strings.isNullOrEmpty(version)?
-        		new Version("1.0.0"):new Version(version);
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(version));
+        return new Version(version);
     }
 
     /**

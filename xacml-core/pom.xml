@@ -8,7 +8,9 @@
 	<artifactId>xacml-core</artifactId>
 	<packaging>jar</packaging>
 	<name>Xacml4J Core Engine Implementation</name>
-
+    <properties>
+        <license.excludes>**/*.json</license.excludes>
+    </properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.google.guava</groupId>

@@ -22,29 +22,28 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.regex.Pattern;
+import java.util.Iterator;
+import java.util.List;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+
+import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class VersionMatch
 {
-	private static final String PATTERN_STRING = "((\\d+|\\*)\\.)*(\\d+|\\*|\\+)";
-	private static final Pattern VERSION_PATTERN = Pattern.compile(PATTERN_STRING);
-    private final static CharMatcher WILDCARD_MATCH = CharMatcher.anyOf("*+");
+    private final static Logger log = LoggerFactory.getLogger(VersionMatch.class);
 
-	private static final Pattern AST_PATTERN = Pattern.compile("\\*");
-	private static final String AST_REPLACEMENT = "\\\\d";
-	private static final Pattern PLUS_PATTERN = Pattern.compile("\\.\\+");
-	private static final String PLUS_REPLACEMENT = "(.\\\\d+)*";
-	private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
-	private static final String DOT_REPLACEMENT = "\\\\.";
+    private final static CharMatcher ANY_NUM = CharMatcher.is('*');
+    private final static CharMatcher ANY_SUB_NUM = CharMatcher.is('+');
 
-	private final String pattern;
-    private final Pattern compiledPattern;
+    private final String pattern;
+    private List<MatchToken> match;
 
-
-	/**
+    /**
      * Constructs version match constraint
      * from a given string representation.
      * A version match is '.'-separated,
@@ -58,61 +57,50 @@ public class VersionMatch
      *
      * @param versionMatchPattern version match pattern
      */
-    public VersionMatch(String versionMatchPattern)
-    {
-    	if(Strings.isNullOrEmpty(versionMatchPattern)){
-    		throw new XacmlSyntaxException("Version can't be null or empty");
-    	}
-    	if(!VERSION_PATTERN.matcher(versionMatchPattern).matches()){
-    		throw new XacmlSyntaxException(
-				    "Given version match=\"%s\" should match regular expression=\"%s\"",
-        		    versionMatchPattern, PATTERN_STRING);
-    	}
+    public VersionMatch(String versionMatchPattern) {
+        if (Strings.isNullOrEmpty(versionMatchPattern)) {
+            throw new XacmlSyntaxException("Version can't be null or empty");
+        }
         this.pattern = versionMatchPattern;
-        this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));
+        this.match = parseMatch(versionMatchPattern);
     }
 
-    /**
-     * Matches given version to this
-     * version match constraint
-     *
-     * @param version a version
-     * @return {@code true} if given
-     * version matches this constraint
-     */
-    public boolean match(Version version) {
-    	return compiledPattern.matcher(version.getValue()).matches();
+    private boolean match(Version v, MatchType t){
+        Iterator<Integer> it = v.iterator();
+        Iterator<MatchToken> itTokens = match.iterator();
+        while(itTokens.hasNext()){
+            MatchToken token = itTokens.next();
+            if(token.isEndToken()){
+                return true;
+            }
+            if(!token.match(it, t)) {
+                return false;
+            }
+            if(!itTokens.hasNext()){
+                while(it.hasNext()){
+                    Integer n = it.next();
+                    if(n != 0){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
-    /**
-     * A helper method to convert XACML version
-     * match regular expression to java regular
-     * expression syntax
-     *
-     * @param pattern an XACML regular expression
-     * @return equivalent java regular expression
-     */
-    private static String convertVersionMatchToJavaRE(String pattern) {
-	    // replace all "*" with "\d"
-		final String phase1 = AST_PATTERN.matcher(pattern).replaceAll(AST_REPLACEMENT);
-	    // replace all ".+" with "(.\d+)*"
-		String phase2 = PLUS_PATTERN.matcher(phase1).replaceAll(PLUS_REPLACEMENT);
-	    // replace all "." with "\\.", include the "." in "(.\d+)*"
-	    return DOT_PATTERN.matcher(phase2).replaceAll(DOT_REPLACEMENT);
+    public boolean isEqualThan(Version v){
+        return match(v, MatchType.EQUALS);
     }
 
-
-    /**
-     * Tests if version string includes
-     * at least one "*" or "+" symbol
-     *
-     * @return <code>true</code> if this
-     * version match contains at least
-     * one wildcard character
-     */
-    public boolean isWildcard(){
-        return WILDCARD_MATCH.matchesAnyOf(pattern);
+    public boolean isLaterThan(Version v){
+        return match(v, MatchType.LATER);
     }
+
+    public boolean isEarlierThan(Version v){
+        return match(v, MatchType.EARLIER);
+    }
+
     /**
      * Gets version match constraint
      *
@@ -123,36 +111,154 @@ public class VersionMatch
     }
 
     /**
-     * @see VersionMatch#VersionMatch(String)
-     *
      * @param pattern a version match constraint
      * @return {@link VersionMatch} instance
-     * @exception IllegalArgumentException if a given version
-     * match constraint can not be parsed
+     * @throws IllegalArgumentException if a given version
+     *                                  match constraint can not be parsed
+     * @see VersionMatch#VersionMatch(String)
      */
     public static VersionMatch parse(String pattern) {
         return new VersionMatch(pattern);
     }
 
+    public static interface MatchToken
+    {
+        boolean match(Iterator<Integer> it, MatchType t);
+        boolean isEndToken();
+    }
+
+    public static enum MatchType
+    {
+        EQUALS,
+        LATER,
+        EARLIER;
+    }
+
+    public enum MatchTokens
+    {
+        ANY{
+            public boolean isApplicable(String seq){
+                return ANY_NUM.matchesAllOf(seq);
+            }
+
+            public MatchToken create(final String seq){
+                return new MatchToken() {
+                    @Override
+                    public boolean match(Iterator<Integer> it, MatchType t) {
+                          if(it.hasNext()){
+                              it.next();
+                          }
+                          return true;
+                    };
+
+                    @Override
+                    public boolean isEndToken(){
+                        return false;
+                    }
+                }
+            }
+        },
+        NUMBER{
+            public boolean isApplicable(String seq){
+                return CharMatcher.DIGIT.matchesAllOf(seq);
+            }
+            public MatchToken create(final String seq){
+                final Integer num = Integer.parseInt(seq);
+                return new MatchToken() {
+                    @Override
+                    public boolean match(Iterator<Integer> it, MatchType t) {
+                        Integer n = 0;
+                        if(it.hasNext()){
+                            n = it.next();
+                        }
+                        if(t == MatchType.EQUALS){
+                            return n.equals(num);
+                        }
+                        if(t == MatchType.EARLIER){
+                            return num <= n;
+                        }
+                        return num >= n;
+                    }
+
+                    @Override
+                    public boolean isEndToken(){
+                        return false;
+                    }
+                };
+            }
+        },
+        ALL_AFTER{
+            public boolean isApplicable(String seq){
+                return ANY_SUB_NUM.matchesAllOf(seq);
+            };
+
+            public MatchToken create(final String seq){
+                return new MatchToken() {
+                    @Override
+                    public boolean match(Iterator<Integer> it, MatchType t) {
+                        while(it.hasNext()){
+                            it.next();
+                        }
+                        return true;
+                    }
+
+                    @Override
+                    public boolean isEndToken(){
+                        return true;
+                    }
+                };
+            }
+        };
+
+        public abstract boolean isApplicable(String seq);
+        public abstract MatchToken create(String token);
+
+        public static MatchToken createToken(String seq){
+            for(MatchTokens t : values()){
+                if(t.isApplicable(seq)){
+                    return t.create(seq);
+                }
+            }
+            return null;
+        }
+
+    }
+
+
+    private static List<MatchToken> parseMatch(String pattern){
+        List<String> match = Splitter.on('.').splitToList(pattern);
+        ImmutableList.Builder<MatchToken> builder = ImmutableList.builder();
+        for(int index = 0; index < match.size(); index++){
+            MatchToken token = MatchTokens.createToken(match.get(index));
+            if(token == null){
+                throw new IllegalArgumentException(String.format("Incorrect XACML version match " +
+                        "pattern=\"%s\" at index=\"%s\"", pattern, index ));
+            }
+            builder.add(token);
+        }
+
+        return builder.build();
+    };
+
     @Override
-    public boolean equals(Object o){
-    	if(o == this){
-    		return true;
-    	}
-    	if(!(o instanceof VersionMatch)){
-    		return false;
-    	}
-    	VersionMatch vm = (VersionMatch)o;
-    	return pattern.equals(vm.pattern);
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VersionMatch)) {
+            return false;
+        }
+        VersionMatch vm = (VersionMatch) o;
+        return pattern.equals(vm.pattern);
     }
 
     @Override
     public String toString() {
-    	return pattern;
+        return pattern;
     }
 
     @Override
-    public int hashCode(){
-    	return pattern.hashCode();
+    public int hashCode() {
+        return pattern.hashCode();
     }
 }

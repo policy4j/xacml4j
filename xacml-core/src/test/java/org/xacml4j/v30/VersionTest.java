@@ -49,6 +49,13 @@ public class VersionTest
 		assertFalse(v1.equals("1.0.0"));
 	}
 
+    @Test
+    public void testNormalization()
+    {
+        Version v1 = Version.parse("1.0.0.0");
+        assertEquals("1.0.0.0", v1.getValue());
+    }
+
 	@Test
 	public void testLessThanVersion()
 	{
@@ -64,13 +71,6 @@ public class VersionTest
 		assertTrue(v4.compareTo(v2) == 0);
 	}
 
-	@Test
-	public void testDefaultVersion()
-	{
-		Version v = Version.parse(null);
-		assertEquals("1.0.0", v.getValue());
-	}
-
 	@Test(expected=IllegalArgumentException.class)
 	public void testNegativeComponent() throws XacmlSyntaxException
 	{
@@ -81,14 +81,5 @@ public class VersionTest
 	public void testUnparseableVersion()
 	{
 		Version.parse("1.a....");
-	}
-
-	@Test
-	public void sortVersion() {
-		Collection<Version> versions = new LinkedList<Version>();
-		versions.add(Version.parse("1.0.0"));
-		versions.add(Version.parse("1.0.1"));
-		versions.add(Version.parse("1.1.0"));
-		versions.add(Version.parse("1.2.0"));
 	}
 }

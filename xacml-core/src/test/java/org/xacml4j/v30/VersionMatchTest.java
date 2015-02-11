@@ -24,76 +24,55 @@ package org.xacml4j.v30;
 
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.XacmlSyntaxException;
 
 
 public class VersionMatchTest
 {
 	@Test
-	public void testMatchAnySubsequentialVersions() throws XacmlSyntaxException
+	public void testMatchEquals() throws XacmlSyntaxException
 	{
-		VersionMatch m = new VersionMatch("1.+");
-        assertTrue(m.isWildcard());
-		assertThat(m.getPattern(), is("1.+"));
-		assertThat(m.match(Version.parse("1.2.1")), is(true));
-		assertThat(m.match(Version.parse("1.1")), is(true));
-		assertThat(m.match(Version.parse("2.1")), is(false));
-		m = new VersionMatch("1.*.+");
-		assertThat(m.match(Version.parse("1.0")), is(true));
-	}
-
-	@Test
-	public void testMatchAnySingleNumber() throws XacmlSyntaxException
-	{
-		VersionMatch m = new VersionMatch("1.*.1");
-		assertThat(m.getPattern(), is("1.*.1"));
-		assertThat(m.match(Version.parse("1.2.1")), is(true));
-		assertThat(m.match(Version.parse("1.0.1")), is(true));
-		assertThat(m.match(Version.parse("2.1.1")), is(false));
-	}
-
-	@Test(expected=XacmlSyntaxException.class)
-	public void testCreateWithSubsquentialTwoTimes() throws XacmlSyntaxException
-	{
-		new VersionMatch("1.+.+");
-	}
-
-	@Test
-	public void testMatchAnySingleNumberTwoTimesInTheRow() throws XacmlSyntaxException
-	{
-		VersionMatch m = new VersionMatch("1.*.*.1");
-		assertThat(m.getPattern(), is("1.*.*.1"));
-		assertThat(m.match(Version.parse("1.2.1.1")), is(true));
-		assertThat(m.match(Version.parse("1.2.1.1")), is(true));
-		assertThat(m.match(Version.parse("1.0.0.1")), is(true));
-		assertThat(m.match(Version.parse("1.0.1")), is(false));
-	}
-
-	@Test
-	public void testCreateWithAnySingleDigitAndSubseq() throws XacmlSyntaxException
-	{
-		VersionMatch m = new VersionMatch("1.*.+");
-		assertThat(m.match(Version.parse("1.2.1")), is(true));
-		assertThat(m.match(Version.parse("1.2.1.2")), is(true));
-		assertThat(m.match(Version.parse("1.0.1")), is(true));
-		assertThat(m.match(Version.parse("2.1.1")), is(false));
+		VersionMatch m = new VersionMatch("1.2.*.2.+");
+		assertThat(m.isEqualThan(Version.parse("1.2.1")), is(false));
+        assertThat(m.isEqualThan(Version.parse("1.2.1.2")), is(true));
+        assertThat(m.isEqualThan(Version.parse("1.2.1.2.1.2")), is(true));
 	}
 
     @Test
-    public void testIsWildcard() throws XacmlSyntaxException
+    public void testIsLaterWildCards() throws XacmlSyntaxException
     {
-       assertFalse(new VersionMatch("1.2.1").isWildcard());
-       assertTrue(new VersionMatch("1.*").isWildcard());
-       assertTrue(new VersionMatch("1.2.+").isWildcard());
-       assertFalse(new VersionMatch("1.2.1.2.4.1").isWildcard());
-       assertTrue(new VersionMatch("*.*").isWildcard());
+        VersionMatch m = new VersionMatch("1.2.*.2.+");
+
+        assertThat(m.isLaterThan(Version.parse("1.1.2")), is(true));
+        assertThat(m.isLaterThan(Version.parse("1.1.2.1.2.3")), is(true));
+
+        assertThat(m.isLaterThan(Version.parse("1.3.2")), is(false));
+        assertThat(m.isLaterThan(Version.parse("1.3.2.2.3.4.5")), is(false));
+    }
+
+    @Test
+    public void testIsEarlierWildCards() throws XacmlSyntaxException
+    {
+        VersionMatch m = new VersionMatch("1.2.*.2.+");
+
+        assertThat(m.isEarlierThan(Version.parse("1.2.2.3")), is(true));
+        assertThat(m.isEarlierThan(Version.parse("1.1.2")), is(false));
+    }
+
+    @Test
+    public void testIsLaterNoWildcards() throws XacmlSyntaxException
+    {
+        VersionMatch m = new VersionMatch("1.2.3.2");
+
+        assertThat(m.isLaterThan(Version.parse("1.1.2")), is(true));
+
+        assertThat(m.isLaterThan(Version.parse("1.2.3.2.1")), is(false));
+        assertThat(m.isLaterThan(Version.parse("1.2.3.2.0.0")), is(true));
 
     }
+
+
+
 }
