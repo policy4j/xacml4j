@@ -1,4 +1,4 @@
-package org.xacml4j.v30.types;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -25,8 +25,6 @@ package org.xacml4j.v30.types;
 import java.util.Arrays;
 import java.util.Map;
 
-import org.xacml4j.v30.AttributeExpType;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableMap;
 
@@ -37,11 +35,17 @@ import com.google.common.collect.ImmutableMap;
  */
 public interface TypeCapability 
 {
+    /**
+     * Gets related {@link org.xacml4j.v30.AttributeExpType}
+     * for this capability
+     * *
+     * @return {@link org.xacml4j.v30.AttributeExpType}
+     */
 	AttributeExpType getType();
 	
 	
 	/**
-	 * An index for type capabilities,
+	 * An utility class - an index for type capabilities,
      * index can be queried via type references
      * or type identifier
 	 * 
@@ -59,11 +63,28 @@ public interface TypeCapability
 			this.byType = byType.build();
 			this.byTypeId = byTypeId.build();
 		}
-		
+
+        /**
+         * A helper static method to build capabilities index
+         * from the given array of capabilities
+         * *
+         * @param capabilities an array of capabilities
+         * @param <T>
+         * @return a capabilities index
+         */
 		public static <T extends TypeCapability> Index<T> build(T[] capabilities){
 			return build(Arrays.asList(capabilities));
 		}
-		
+
+        /**
+         * A helper static method to build capabilities index
+         * from the given {@link java.lang.Iterable} 
+         * over capabilities
+         * *
+         * @param capabilities an iterable over capabilities
+         * @param <T>
+         * @return a capabilities index
+         */
 		public static <T extends TypeCapability> Index<T> build(Iterable<? extends T> capabilities){
 			ImmutableMap.Builder<AttributeExpType, T> byType = ImmutableMap.builder();
 			ImmutableMap.Builder<String, T> byTypeId = ImmutableMap.builder();
@@ -76,11 +97,26 @@ public interface TypeCapability
 			}
 			return new Index<T>(byType, byTypeId);
 		}
-		
+
+        /**
+         * Gets capability for a given type
+         *
+         * @param type an attribute type
+         * @return {@link com.google.common.base.Optional}
+         * with a reference to the capability
+         */
 		public Optional<T> get(AttributeExpType type){
 			return Optional.fromNullable(byType.get(type));
 		}
-		
+
+        /**
+         * Gets capability for a given type
+         * identifier
+         *
+         * @param typeId a type identifier
+         * @return {@link com.google.common.base.Optional}
+         * with a reference to the capability
+         */
 		public Optional<T> get(String typeId){
 			return Optional.fromNullable(byTypeId.get(typeId));
 		}

@@ -40,7 +40,7 @@ import org.junit.Test;
 import org.xacml4j.v30.*;
 
 
-public class PolicySetIDReferenceTest
+public class PolicySetReferenceTest
 {
 	private DecisionRuleEvaluationContext context;
 	private PolicySet policySet;
@@ -59,7 +59,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testEvaluateFailToResolveReferenceViaException() throws XacmlException
 	{
-		PolicySetReference ref = PolicySetReference.builder("testId").versionAsString("1.+").build();
+		PolicySetReference ref = PolicySetReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -82,7 +82,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testEvaluateFailToResolveReferenceReturnsNull() throws XacmlException
 	{
-		PolicySetReference ref = PolicySetReference.builder("testId").versionAsString("1.+").build();
+		PolicySetReference ref = PolicySetReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(null);
@@ -110,7 +110,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testIsApplicableFailToResolveReference() throws XacmlException
 	{
-		PolicySetReference ref = PolicySetReference.builder("testId").versionAsString("1.+").build();
+		PolicySetReference ref = PolicySetReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
@@ -135,14 +135,14 @@ public class PolicySetIDReferenceTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testPolicyIDResolutionViaWrongEvaluationContext() throws EvaluationException
 	{
-		PolicySetReference ref = PolicySetReference.builder("testId").versionAsString("1.+").build();
+		PolicySetReference ref = PolicySetReference.builder("testId").version("1.+").build();
 		ref.evaluate(context);
 	}
 
 	@Test
 	public void testIsApplicablePolicyIDReference() throws XacmlException
 	{
-		PolicySetReference ref = PolicySetReference.builder("testId").versionAsString("1.+").build();
+		PolicySetReference ref = PolicySetReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
@@ -178,7 +178,7 @@ public class PolicySetIDReferenceTest
 	@Test
 	public void testEvaluateIfApplicable() throws XacmlException
 	{
-		PolicySetReference ref = PolicySetReference.builder("testId").versionAsString("1.+").build();
+		PolicySetReference ref = PolicySetReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
@@ -210,9 +210,9 @@ public class PolicySetIDReferenceTest
 
 	@Test
 	public void testObjectMethods() {
-		PolicySetReference ref1 = PolicySetReference.builder("testId1").versionAsString("1.+").build();
-		PolicySetReference ref2 = PolicySetReference.builder("testId1").versionAsString("1.+").build();
-		PolicySetReference ref3 = PolicySetReference.builder("testId2").versionAsString("1.+").build();
+		PolicySetReference ref1 = PolicySetReference.builder("testId1").version("1.+").build();
+		PolicySetReference ref2 = PolicySetReference.builder("testId1").version("1.+").build();
+		PolicySetReference ref3 = PolicySetReference.builder("testId2").version("1.+").build();
 
 
 		assertTrue(ref1.equals(ref1));
@@ -220,7 +220,7 @@ public class PolicySetIDReferenceTest
 		assertFalse(ref1.equals(null));
 		assertFalse(ref1.equals(ref3));
 		assertFalse(ref1.equals("some string"));
-		assertFalse(ref1.equals(PolicyReference.builder("testId1").versionAsString("1.+").build()));
+		assertFalse(ref1.equals(PolicyReference.builder("testId1").version("1.+").build()));
 
 		assertEquals(ref1.hashCode(), ref2.hashCode());
 		assertEquals(ref1.toString(), ref2.toString());

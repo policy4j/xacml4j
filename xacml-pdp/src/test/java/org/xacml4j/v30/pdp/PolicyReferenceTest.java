@@ -41,7 +41,7 @@ import org.junit.Test;
 import org.xacml4j.v30.*;
 
 
-public class PolicyIDReferenceTest
+public class PolicyReferenceTest
 {
 	private DecisionRuleEvaluationContext context;
 	private Policy refPolicy;
@@ -57,7 +57,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testEvaluateFailedToResolveReference() throws XacmlException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
@@ -93,7 +93,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testEvaluateFailedToResolveReferenceAndReturnNull() throws XacmlException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
@@ -126,7 +126,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testEvaluateIfApplicableFailedToResolveReferenceViaException() throws XacmlException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
@@ -147,7 +147,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testEvaluateIfApplicableFailedToResolveReferenceReturnsNull() throws XacmlException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
@@ -170,7 +170,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testIsApplicableFailedToResolveReference() throws XacmlException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
@@ -192,7 +192,7 @@ public class PolicyIDReferenceTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testPolicyIDResolutionViaWrongEvaluationContext() throws EvaluationException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 		ref.evaluate(context);
 	}
 
@@ -200,7 +200,7 @@ public class PolicyIDReferenceTest
 	public void testCreatePolicyIDReferenceEvaluatonConntext()
 				throws EvaluationException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
@@ -224,7 +224,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testEvaluateIfApplicablePolicyCanBeResolved() throws XacmlException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
@@ -251,7 +251,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testIsApplicablePolicyCanBeResolved() throws XacmlException
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
@@ -285,7 +285,7 @@ public class PolicyIDReferenceTest
 	@Test
 	public void testRefersTo() throws Exception
 	{
-		PolicyReference ref = PolicyReference.builder("testId").versionAsString("1.+").build();
+		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
 		expect(refPolicy.getId()).andReturn("testId");
 		expect(refPolicy.getVersion()).andReturn(Version.parse("1.0.1"));
 		c.replay();
@@ -298,15 +298,15 @@ public class PolicyIDReferenceTest
 	{
 		PolicyReference.Builder b = PolicyReference.builder("testId");
 		assertEquals("testId", b.build().getId());
-		b.versionAsString("1.0");
+		b.version("1.0");
 		assertEquals("testId", b.build().getId());
 		assertEquals(VersionMatch.parse("1.0"), b.build().getVersion());
 		b = PolicyReference.builder("testId");
-		b.versionAsString(null);
+		b.version((Version)null);
 		assertEquals("testId", b.build().getId());
 		assertNull(b.build().getVersion());
 		b = PolicyReference.builder("testId");
-		b.versionAsString("");
+		b.version("");
 		assertEquals("testId", b.build().getId());
 		assertNull(b.build().getVersion());
 		b = PolicyReference.builder("testId");
@@ -323,9 +323,9 @@ public class PolicyIDReferenceTest
 
 	@Test
 	public void testObjectMethods() {
-		PolicyReference ref1 = PolicyReference.builder("testId1").versionAsString("1.+").build();
-		PolicyReference ref2 = PolicyReference.builder("testId1").versionAsString("1.+").build();
-		PolicyReference ref3 = PolicyReference.builder("testId2").versionAsString("1.+").build();
+		PolicyReference ref1 = PolicyReference.builder("testId1").version("1.+").build();
+		PolicyReference ref2 = PolicyReference.builder("testId1").version("1.+").build();
+		PolicyReference ref3 = PolicyReference.builder("testId2").version("1.+").build();
 
 
 		assertTrue(ref1.equals(ref1));
@@ -333,7 +333,7 @@ public class PolicyIDReferenceTest
 		assertFalse(ref1.equals(null));
 		assertFalse(ref1.equals(ref3));
 		assertFalse(ref1.equals("some string"));
-		assertFalse(ref1.equals(PolicySetReference.builder("testId1").versionAsString("1.+").build()));
+		assertFalse(ref1.equals(PolicySetReference.builder("testId1").version("1.+").build()));
 
 		assertEquals(ref1.hashCode(), ref2.hashCode());
 		assertEquals(ref1.toString(), ref2.toString());

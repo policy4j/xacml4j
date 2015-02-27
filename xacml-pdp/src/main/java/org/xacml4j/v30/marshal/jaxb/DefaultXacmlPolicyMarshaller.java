@@ -27,12 +27,12 @@ import java.io.IOException;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.marshal.PolicyMarshaller;
 
-public class Xacml30PolicyMarshaller extends BaseJAXBMarshaller<CompositeDecisionRule>
+public class DefaultXacmlPolicyMarshaller extends BaseJAXBMarshaller<CompositeDecisionRule>
 	implements PolicyMarshaller
 {
 	private Xacml30PolicyFromObjectModelToJaxbMapper mapper;
 	
-	public Xacml30PolicyMarshaller() {
+	public DefaultXacmlPolicyMarshaller() {
 		super(JAXBContextUtil.getInstance());
 		this.mapper = new Xacml30PolicyFromObjectModelToJaxbMapper();
 	}

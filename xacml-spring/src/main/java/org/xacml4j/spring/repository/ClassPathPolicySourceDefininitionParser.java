@@ -27,7 +27,7 @@ import org.springframework.beans.factory.xml.AbstractSingleBeanDefinitionParser;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
-public class InMemoryPolicyRepositoryDefinitionParser extends AbstractSingleBeanDefinitionParser {
+public class ClassPathPolicySourceDefininitionParser extends AbstractSingleBeanDefinitionParser {
 
 	protected Class<InMemoryPolicyRepositoryFactoryBean> getBeanClass(Element element) {
 		return InMemoryPolicyRepositoryFactoryBean.class;

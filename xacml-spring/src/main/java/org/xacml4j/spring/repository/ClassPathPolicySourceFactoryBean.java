@@ -37,14 +37,14 @@ import org.xacml4j.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 
-public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<PolicyRepository>
+public class ClassPathPolicySourceFactoryBean extends AbstractFactoryBean<PolicyRepository>
 {
 	private final String id;
 	private Resource[] resources;
 	private FunctionProvider extensionFunctions;
 	private DecisionCombiningAlgorithmProvider extensionDecisionCombiningAlgorithms;
 
-	public InMemoryPolicyRepositoryFactoryBean(String id){
+	public ClassPathPolicySourceFactoryBean(String id){
 		Preconditions.checkNotNull(id);
 		this.id = id;
 	}
@@ -77,9 +77,9 @@ public class InMemoryPolicyRepositoryFactoryBean extends AbstractFactoryBean<Pol
 		}
 		DecisionCombiningAlgorithmProviderBuilder decisionAlgorithmProviderBuilder =
 			DecisionCombiningAlgorithmProviderBuilder.builder()
-			.withDefaultAlgorithms();
+			.defaultAlgorithms();
 		if(extensionDecisionCombiningAlgorithms != null){
-			decisionAlgorithmProviderBuilder.withAlgorithmProvider(extensionDecisionCombiningAlgorithms);
+			decisionAlgorithmProviderBuilder.algorithmProvider(extensionDecisionCombiningAlgorithms);
 		}
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
