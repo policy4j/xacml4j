@@ -22,30 +22,23 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.google.common.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
+import org.xacml4j.util.Pair;
+import org.xacml4j.util.Reflections;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.XacmlTypes;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.xacml4j.util.Pair;
-import org.xacml4j.util.Reflections;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.types.XacmlTypes;
-
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.reflect.TypeToken;
 
 class AnnotatedResolverFactory
 {

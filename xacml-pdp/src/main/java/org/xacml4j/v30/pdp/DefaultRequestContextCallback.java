@@ -22,11 +22,10 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.RequestContext;
-
-import com.google.common.base.Preconditions;
 
 public class DefaultRequestContextCallback
 	implements RequestContextCallback

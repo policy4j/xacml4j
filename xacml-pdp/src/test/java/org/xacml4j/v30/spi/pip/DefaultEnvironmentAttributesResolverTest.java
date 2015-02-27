@@ -22,13 +22,7 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.Calendar;
-
+import com.google.common.base.Ticker;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +30,12 @@ import org.xacml4j.v30.types.DateExp;
 import org.xacml4j.v30.types.DateTimeExp;
 import org.xacml4j.v30.types.TimeExp;
 
-import com.google.common.base.Ticker;
+import java.util.Calendar;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class DefaultEnvironmentAttributesResolverTest
 {

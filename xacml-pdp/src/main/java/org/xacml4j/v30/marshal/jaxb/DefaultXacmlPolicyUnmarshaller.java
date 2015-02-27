@@ -22,14 +22,16 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 
 public class DefaultXacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule>
 	implements PolicyUnmarshaller
@@ -38,6 +40,19 @@ public class DefaultXacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<Composi
 	private final Xacml20PolicyFromJaxbToObjectModelMapper v20mapper;
 
 	private final boolean supportsXacml20Policies;
+
+    public DefaultXacmlPolicyUnmarshaller()
+    {
+        this(JAXBContextUtil.getInstance(),
+                FunctionProviderBuilder
+                        .builder()
+                        .defaultFunctions()
+                        .build(),
+                DecisionCombiningAlgorithmProviderBuilder
+                        .builder()
+                        .defaultAlgorithms()
+                        .build(), true);
+    }
 
 	public DefaultXacmlPolicyUnmarshaller(
             JAXBContext context,

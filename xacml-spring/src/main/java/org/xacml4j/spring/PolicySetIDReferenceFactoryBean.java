@@ -39,7 +39,7 @@ public class PolicySetIDReferenceFactoryBean extends AbstractFactoryBean<PolicyS
 	}
 
 	public void setVersion(String version){
-		this.ref.versionAsString(version);
+		this.ref.version(version);
 	}
 
 	public void setLatest(String latest){

@@ -22,12 +22,11 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.CategoryId;
 
-import com.google.common.base.Preconditions;
+import java.util.List;
 
 class ResolverDescriptorDelegate implements ResolverDescriptor
 {

@@ -41,7 +41,7 @@ public class DecisionCombiningAlgorithmProvidersFactoryBean
 	public void setProviders(Collection<DecisionCombiningAlgorithmProvider> providers)
 	{
 		Preconditions.checkNotNull(providers);
-		this.builder.withAlgorithmProviders(providers);
+		this.builder.algorithmProviders(providers);
 	}
 
 	@Override

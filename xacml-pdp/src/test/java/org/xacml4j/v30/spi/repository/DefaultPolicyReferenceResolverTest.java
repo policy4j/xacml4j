@@ -22,18 +22,13 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertSame;
-
-import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.pdp.*;
-import org.xacml4j.v30.pdp.PolicyReference;
+import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.Policy;
+import org.xacml4j.v30.pdp.PolicySet;
+
+import static org.easymock.EasyMock.createControl;
 
 
 public class DefaultPolicyReferenceResolverTest
@@ -58,41 +53,7 @@ public class DefaultPolicyReferenceResolverTest
 		this.ps1v1 = PolicySet
 				.builder("attributeId")
 				.version("1.2.1")
-				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).build();
+				.combiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).build();
 
-	}
-
-	@Test
-	public void testResolvePolicyIDReference() throws Exception
-	{
-		Capture<PolicyRepositoryListener> listener = new Capture<PolicyRepositoryListener>();
-		repository.addPolicyRepositoryListener(capture(listener));
-		expect(repository.getPolicy("attributeId", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
-		c.replay();
-		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicyReference ref = PolicyReference.builder("attributeId").versionAsString("1.0.0").build();
-		Policy p = r.resolve(ref);
-		assertSame(p1v1, p);
-		r.policyRemoved(p1v1);
-		p = r.resolve(ref);
-		assertSame(p1v1, p);
-		c.verify();
-	}
-
-	@Test
-	public void testResolvePolicySetIDReference() throws Exception
-	{
-		Capture<PolicyRepositoryListener> listener = new Capture<PolicyRepositoryListener>();
-		repository.addPolicyRepositoryListener(capture(listener));
-		expect(repository.getPolicySet("attributeId", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
-		c.replay();
-		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
-		PolicySetReference ref = PolicySetReference.builder("attributeId").versionAsString("1.0.0").build();
-		PolicySet p = r.resolve(ref);
-		assertSame(ps1v1, p);
-		r.policySetRemoved(ps1v1);
-		p = r.resolve(ref);
-		assertSame(ps1v1, p);
-		c.verify();
 	}
 }

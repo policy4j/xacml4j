@@ -22,15 +22,12 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
-import org.xacml4j.v30.CompositeDecisionRule;
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-
-import com.google.common.base.Preconditions;
 
 /**
  * A support class for dealing with XACML
@@ -45,7 +42,7 @@ public class PolicyUnmarshallerSupport
 
 	protected PolicyUnmarshallerSupport(
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms) throws Exception
+			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms)
 	{
 		Preconditions.checkNotNull(functions,
 				"Function provider can't be null");

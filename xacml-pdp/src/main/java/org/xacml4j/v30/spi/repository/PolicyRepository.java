@@ -22,10 +22,7 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-
+import com.google.common.base.Supplier;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
@@ -33,7 +30,9 @@ import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 
-import com.google.common.base.Supplier;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
 
 
 /**

@@ -22,13 +22,7 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
+import com.google.common.collect.Iterables;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +33,9 @@ import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.Iterables;
+import static org.easymock.EasyMock.createStrictControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.*;
 
 public class DefaultResolverRegistryTest
 {

@@ -22,36 +22,27 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.xpath.DefaultXPathProvider;
-import org.xacml4j.v30.xpath.XPathProvider;
 import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.xpath.DefaultXPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 
 public class DefaultEvaluationContextHandlerTest

@@ -22,9 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
@@ -33,6 +30,9 @@ import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.RFC822NameExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.X500NameExp;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class SpecialMatchFunctionsTest

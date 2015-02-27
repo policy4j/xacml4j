@@ -22,12 +22,11 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.AttributeDesignatorKey;
 
-import com.google.common.base.Preconditions;
+import java.util.Map;
+import java.util.Set;
 
 class AttributeResolverDescriptorDelegate
 	extends ResolverDescriptorDelegate implements AttributeResolverDescriptor

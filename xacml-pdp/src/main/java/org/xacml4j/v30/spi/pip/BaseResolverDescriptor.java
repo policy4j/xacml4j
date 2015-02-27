@@ -22,13 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.List;
-
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.CategoryId;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.util.List;
 
 public abstract class BaseResolverDescriptor
 	implements ResolverDescriptor

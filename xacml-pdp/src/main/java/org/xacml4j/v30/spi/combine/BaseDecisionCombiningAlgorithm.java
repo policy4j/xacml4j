@@ -22,11 +22,9 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 
 public abstract class BaseDecisionCombiningAlgorithm
 	implements DecisionCombiningAlgorithm

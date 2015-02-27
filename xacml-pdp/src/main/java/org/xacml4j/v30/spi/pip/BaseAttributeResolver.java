@@ -22,21 +22,20 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static org.xacml4j.v30.pdp.MetricsSupport.getOrCreate;
-import static org.xacml4j.v30.pdp.MetricsSupport.name;
-
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfAttributeExp;
 
-import com.codahale.metrics.Histogram;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static org.xacml4j.v30.pdp.MetricsSupport.getOrCreate;
+import static org.xacml4j.v30.pdp.MetricsSupport.name;
 
 /**
  * A base implementation of {@link AttributeResolver}

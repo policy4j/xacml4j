@@ -22,11 +22,16 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.List;
-
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
+import java.util.List;
+
+/**
+ * Function parameters validator
+ * 
+ * @author Giedrius Trumpickas
+ */
 public interface FunctionParametersValidator
 {
 	/**

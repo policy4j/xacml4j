@@ -33,7 +33,7 @@ import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class VersionMatch
+public final class VersionMatch
 {
     private final static Logger log = LoggerFactory.getLogger(VersionMatch.class);
 
@@ -57,7 +57,7 @@ public class VersionMatch
      *
      * @param versionMatchPattern version match pattern
      */
-    public VersionMatch(String versionMatchPattern) {
+    private VersionMatch(String versionMatchPattern) {
         if (Strings.isNullOrEmpty(versionMatchPattern)) {
             throw new XacmlSyntaxException("Version can't be null or empty");
         }
@@ -70,11 +70,12 @@ public class VersionMatch
         Iterator<MatchToken> itTokens = match.iterator();
         while(itTokens.hasNext()){
             MatchToken token = itTokens.next();
-            if(token.isEndToken()){
-                return true;
-            }
-            if(!token.match(it, t)) {
+            MatchToken.MatchResult r = token.match(it, t);
+            if(r == MatchToken.MatchResult.STOP_NOMATCH) {
                 return false;
+            }
+            if(r == MatchToken.MatchResult.STOP_MATCH){
+                return true;
             }
             if(!itTokens.hasNext()){
                 while(it.hasNext()){
@@ -89,16 +90,16 @@ public class VersionMatch
         return false;
     }
 
-    public boolean isEqualThan(Version v){
+    public boolean isEqual(Version v){
         return match(v, MatchType.EQUALS);
     }
 
     public boolean isLaterThan(Version v){
-        return match(v, MatchType.LATER);
+        return match(v, MatchType.LATER_THAN);
     }
 
     public boolean isEarlierThan(Version v){
-        return match(v, MatchType.EARLIER);
+        return match(v, MatchType.EARLIER_THAN);
     }
 
     /**
@@ -123,15 +124,21 @@ public class VersionMatch
 
     public static interface MatchToken
     {
-        boolean match(Iterator<Integer> it, MatchType t);
-        boolean isEndToken();
+        MatchResult match(Iterator<Integer> it, MatchType t);
+
+        public enum MatchResult
+        {
+            CONTINUE,
+            STOP_MATCH,
+            STOP_NOMATCH;
+        }
     }
 
     public static enum MatchType
     {
         EQUALS,
-        LATER,
-        EARLIER;
+        LATER_THAN,
+        EARLIER_THAN;
     }
 
     public enum MatchTokens
@@ -144,18 +151,14 @@ public class VersionMatch
             public MatchToken create(final String seq){
                 return new MatchToken() {
                     @Override
-                    public boolean match(Iterator<Integer> it, MatchType t) {
-                          if(it.hasNext()){
-                              it.next();
+                    public MatchResult match(Iterator<Integer> it, MatchType t) {
+                          if(!it.hasNext()){
+                              return MatchResult.STOP_MATCH;
                           }
-                          return true;
+                          it.next();
+                          return MatchResult.CONTINUE;
                     };
-
-                    @Override
-                    public boolean isEndToken(){
-                        return false;
-                    }
-                }
+                };
             }
         },
         NUMBER{
@@ -166,23 +169,31 @@ public class VersionMatch
                 final Integer num = Integer.parseInt(seq);
                 return new MatchToken() {
                     @Override
-                    public boolean match(Iterator<Integer> it, MatchType t) {
+                    public MatchResult match(Iterator<Integer> it, MatchType t) {
                         Integer n = 0;
+                        // if version
+                        // does not have any more
+                        // numbers assumption is 0
                         if(it.hasNext()){
                             n = it.next();
                         }
+                        // if numbers are equal
+                        // continue match
+                        if(n.equals(num)){
+                           return MatchResult.CONTINUE;
+                        }
+                        // if numbers are not equal
+                        // and match is for an equality
+                        // stop matching - NO MATCH
                         if(t == MatchType.EQUALS){
-                            return n.equals(num);
+                            return MatchResult.STOP_NOMATCH;
                         }
-                        if(t == MatchType.EARLIER){
-                            return num <= n;
+                        // match if version vector
+                        // component is earlier
+                        if(t == MatchType.EARLIER_THAN){
+                            return num < n?MatchResult.STOP_MATCH:MatchResult.STOP_NOMATCH;
                         }
-                        return num >= n;
-                    }
-
-                    @Override
-                    public boolean isEndToken(){
-                        return false;
+                        return num > n?MatchResult.STOP_MATCH:MatchResult.STOP_NOMATCH;
                     }
                 };
             }
@@ -195,16 +206,8 @@ public class VersionMatch
             public MatchToken create(final String seq){
                 return new MatchToken() {
                     @Override
-                    public boolean match(Iterator<Integer> it, MatchType t) {
-                        while(it.hasNext()){
-                            it.next();
-                        }
-                        return true;
-                    }
-
-                    @Override
-                    public boolean isEndToken(){
-                        return true;
+                    public MatchResult match(Iterator<Integer> it, MatchType t) {
+                        return MatchResult.STOP_MATCH;
                     }
                 };
             }

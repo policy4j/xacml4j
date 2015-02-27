@@ -23,10 +23,8 @@ package org.xacml4j.v30;
  */
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import com.google.common.base.*;
@@ -109,7 +107,7 @@ public final class Version implements Comparable<Version>
 
     @Override
     public String toString(){
-    	return Objects.toStringHelper(this).
+    	return MoreObjects.toStringHelper(this).
     	add("version", value).toString();
     }
 
@@ -134,8 +132,6 @@ public final class Version implements Comparable<Version>
         }
         return version.length - v.version.length;
     }
-
-
 
     /**
      * Checks if a given version vector starting at given pos is all {@code 0}

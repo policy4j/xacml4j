@@ -22,14 +22,14 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Random;
-
 import org.slf4j.MDC;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 import org.xacml4j.v30.spi.pip.ContentResolverDescriptor;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
+
+import java.util.Random;
 
 
 public class MDCSupport

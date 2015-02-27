@@ -22,13 +22,12 @@
   -->
 
 <PolicySet
-      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
-      xmlns:md="http://www.medico.com/schemas/record"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+        xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
         access_control-xacml-2.0-policy-schema-os.xsd"
-      PolicySetId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policySet"
-      PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable">
+        PolicySetId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policySet"
+        PolicyCombiningAlgId="urn:oasis:names:tc:xacml:1.0:policy-combining-algorithm:first-applicable">
     <Description>Policy Set for Conformance Test IIIF006.</Description>
     <PolicySetDefaults>
         <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>

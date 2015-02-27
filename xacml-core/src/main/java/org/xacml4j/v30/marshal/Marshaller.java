@@ -22,10 +22,21 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
+import com.google.common.net.MediaType;
+
 import java.io.IOException;
+import java.util.Set;
 
 public interface Marshaller <T>
 {
+    /**
+     * Gets content type
+     *
+     * @return media type
+     */
+    //MediaType getContentType();
+    
+    
 	Object marshal(T source)
 		throws IOException;
 

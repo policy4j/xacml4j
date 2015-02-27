@@ -22,19 +22,19 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Random;
-
-import org.xacml4j.v30.*;
+import com.google.common.base.Preconditions;
+import org.xacml4j.v30.DecisionRule;
+import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.xpath.XPathProvider;
 
-import com.google.common.base.Preconditions;
+import java.util.Random;
 
 final class DefaultPolicyDecisionPointContextFactory
 	implements PolicyDecisionPointContextFactory
@@ -57,7 +57,7 @@ final class DefaultPolicyDecisionPointContextFactory
 
 	DefaultPolicyDecisionPointContextFactory(
 			DecisionRule policyDomain,
-			PolicyRepository repository,
+			PolicyReferenceResolver resolver,
 			PolicyDecisionAuditor auditor,
 			PolicyDecisionCache cache,
 			XPathProvider xpathProvider,
@@ -65,12 +65,12 @@ final class DefaultPolicyDecisionPointContextFactory
 			RequestContextHandlerChain handlerChain)
 	{
 		Preconditions.checkArgument(policyDomain != null);
-		Preconditions.checkArgument(repository != null);
+		Preconditions.checkArgument(resolver != null);
 		Preconditions.checkArgument(xpathProvider != null);
 		Preconditions.checkArgument(pip != null);
 		Preconditions.checkArgument(auditor != null);
 		Preconditions.checkArgument(cache != null);
-		this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
+		this.policyReferenceResolver = resolver;
 		this.pip = pip;
 		this.xpathProvider = xpathProvider;
 		this.policyDomain = policyDomain;

@@ -22,13 +22,7 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +35,12 @@ import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 public class DefaultFunctionSpecTest
 {

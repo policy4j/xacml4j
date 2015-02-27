@@ -25,7 +25,6 @@ package org.xacml4j.v30.pdp;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 
 public class PolicyResolutionException extends EvaluationException
 {

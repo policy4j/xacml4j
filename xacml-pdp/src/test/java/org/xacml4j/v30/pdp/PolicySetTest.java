@@ -22,30 +22,19 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import com.google.common.collect.Iterables;
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringExp;
 
-import com.google.common.collect.Iterables;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 public class PolicySetTest
 {
@@ -90,7 +79,7 @@ public class PolicySetTest
 				.version("1.0")
 				.target(target)
 				.condition(condition)
-				.withCombiningAlgorithm(combiningAlg)
+				.combiningAlgorithm(combiningAlg)
 				.obligation(ObligationExpression
 						.builder("denyObligation", Effect.DENY)
 							.attribute("testId", denyObligationAttributeExp))

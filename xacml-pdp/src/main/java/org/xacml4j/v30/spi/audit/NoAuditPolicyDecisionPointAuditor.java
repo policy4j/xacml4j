@@ -22,9 +22,9 @@ package org.xacml4j.v30.spi.audit;
  * #L%
  */
 
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.PolicyDecisionPoint;
 
 
 public class NoAuditPolicyDecisionPointAuditor implements PolicyDecisionAuditor

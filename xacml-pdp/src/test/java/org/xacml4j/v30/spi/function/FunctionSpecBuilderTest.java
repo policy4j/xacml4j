@@ -23,12 +23,7 @@ package org.xacml4j.v30.spi.function;
  */
 
 
-import static org.easymock.EasyMock.createControl;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +34,11 @@ import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+
+import static org.easymock.EasyMock.createControl;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class FunctionSpecBuilderTest
 {

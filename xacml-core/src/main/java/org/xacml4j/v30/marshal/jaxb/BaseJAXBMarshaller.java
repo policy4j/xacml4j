@@ -24,14 +24,17 @@ package org.xacml4j.v30.marshal.jaxb;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.io.Writer;
 
+import javax.print.attribute.standard.Media;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Result;
 
+import com.google.common.net.MediaType;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.marshal.Marshaller;
 
@@ -41,10 +44,11 @@ public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 {
 	private JAXBContext context;
 
-	public BaseJAXBMarshaller(JAXBContext context){
-		Preconditions.checkArgument(context != null);
-		this.context = context;
+	protected BaseJAXBMarshaller(JAXBContext context){
+		this.context = Preconditions.checkNotNull(context);
 	}
+    
+
 
 	@Override
 	public final void marshal(T source, Object target) throws IOException

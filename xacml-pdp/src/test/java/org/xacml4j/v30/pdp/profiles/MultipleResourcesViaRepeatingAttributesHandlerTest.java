@@ -22,30 +22,18 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.types.StringExp;
+
+import java.util.Collection;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 
 public class MultipleResourcesViaRepeatingAttributesHandlerTest

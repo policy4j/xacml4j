@@ -22,36 +22,24 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
-import org.xacml4j.v30.RequestSyntaxException;
-import org.xacml4j.v30.xpath.XPathEvaluationException;
-import org.xacml4j.v30.xpath.XPathProvider;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.xpath.XPathEvaluationException;
+import org.xacml4j.v30.xpath.XPathProvider;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
+import java.util.*;
 
 final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestContextHandler
 {

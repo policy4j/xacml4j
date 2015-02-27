@@ -31,7 +31,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.TypeCapability;
+import org.xacml4j.v30.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 

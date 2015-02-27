@@ -29,8 +29,8 @@ import org.w3c.dom.Element;
 
 public class ClassPathPolicySourceDefininitionParser extends AbstractSingleBeanDefinitionParser {
 
-	protected Class<InMemoryPolicyRepositoryFactoryBean> getBeanClass(Element element) {
-		return InMemoryPolicyRepositoryFactoryBean.class;
+	protected Class<ClassPathPolicySourceFactoryBean> getBeanClass(Element element) {
+		return ClassPathPolicySourceFactoryBean.class;
 	}
 
 	protected void doParse(Element element, BeanDefinitionBuilder bean) {

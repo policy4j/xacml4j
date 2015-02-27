@@ -22,12 +22,11 @@ package org.xacml4j.v30.spi.pdp;
  * #L%
  */
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler;
 
-import com.google.common.base.Preconditions;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class RequestContextHandlerChainBuilder
 {

@@ -22,10 +22,9 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.BagOfAttributeExp;
-
-import com.google.common.base.Preconditions;
 
 public final class AttributeDescriptor
 {

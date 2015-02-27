@@ -22,61 +22,24 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.JAXBElement;
-
-import org.oasis.xacml.v20.jaxb.policy.ActionMatchType;
-import org.oasis.xacml.v20.jaxb.policy.ActionType;
-import org.oasis.xacml.v20.jaxb.policy.ActionsType;
-import org.oasis.xacml.v20.jaxb.policy.ApplyType;
-import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
-import org.oasis.xacml.v20.jaxb.policy.AttributeDesignatorType;
-import org.oasis.xacml.v20.jaxb.policy.AttributeSelectorType;
-import org.oasis.xacml.v20.jaxb.policy.ConditionType;
-import org.oasis.xacml.v20.jaxb.policy.DefaultsType;
-import org.oasis.xacml.v20.jaxb.policy.EffectType;
-import org.oasis.xacml.v20.jaxb.policy.EnvironmentMatchType;
-import org.oasis.xacml.v20.jaxb.policy.EnvironmentType;
-import org.oasis.xacml.v20.jaxb.policy.EnvironmentsType;
-import org.oasis.xacml.v20.jaxb.policy.FunctionType;
-import org.oasis.xacml.v20.jaxb.policy.IdReferenceType;
-import org.oasis.xacml.v20.jaxb.policy.ObligationType;
-import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
-import org.oasis.xacml.v20.jaxb.policy.PolicySetType;
-import org.oasis.xacml.v20.jaxb.policy.PolicyType;
-import org.oasis.xacml.v20.jaxb.policy.ResourceMatchType;
-import org.oasis.xacml.v20.jaxb.policy.ResourceType;
-import org.oasis.xacml.v20.jaxb.policy.ResourcesType;
-import org.oasis.xacml.v20.jaxb.policy.RuleType;
-import org.oasis.xacml.v20.jaxb.policy.SubjectAttributeDesignatorType;
-import org.oasis.xacml.v20.jaxb.policy.SubjectMatchType;
-import org.oasis.xacml.v20.jaxb.policy.SubjectType;
-import org.oasis.xacml.v20.jaxb.policy.SubjectsType;
-import org.oasis.xacml.v20.jaxb.policy.TargetType;
-import org.oasis.xacml.v20.jaxb.policy.VariableDefinitionType;
-import org.oasis.xacml.v20.jaxb.policy.VariableReferenceType;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import org.oasis.xacml.v20.jaxb.policy.*;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.util.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
 import org.xacml4j.v30.pdp.*;
-import org.xacml4j.v30.pdp.PolicyReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.TypeCapability;
+import org.xacml4j.v30.TypeCapability;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
+import javax.xml.bind.JAXBElement;
+import java.util.*;
 
-public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
+class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
 {
 	private final static Map<String, Categories> designatorMappings = ImmutableMap.of(
 			"ResourceAttributeDesignator",	Categories.RESOURCE,
@@ -91,7 +54,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 
 	public Xacml20PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
+			DecisionCombiningAlgorithmProvider decisionAlgorithms){
 		super(functions, decisionAlgorithms);
 	}
 
@@ -139,7 +102,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					.description(p.getDescription())
 					.target(create(p.getTarget()))
 					.defaults(createPolicySetDefaults(p.getPolicySetDefaults()))
-					.withCombiningAlgorithm(createPolicyCombiningAlgorithm(p.getPolicyCombiningAlgId()))
+					.combiningAlgorithm(createPolicyCombiningAlgorithm(p.getPolicyCombiningAlgId()))
 					.obligation(getObligations(p.getObligations()))
 					.compositeDecisionRules(getPolicies(p))
 					.build();
@@ -172,7 +135,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					}
 					PolicySetReference policySetRef = PolicySetReference
 						.builder(ref.getValue())
-						.versionAsString(ref.getVersion())
+						.version(ref.getVersion())
 						.earliest(ref.getEarliestVersion())
 						.latest(ref.getLatestVersion())
 						.build();
@@ -186,7 +149,7 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 					}
 					PolicyReference policyRef = PolicyReference
 							.builder(ref.getValue())
-							.versionAsString(ref.getVersion())
+							.version(ref.getVersion())
 							.earliest(ref.getEarliestVersion())
 							.latest(ref.getLatestVersion())
 							.build();

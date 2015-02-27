@@ -22,18 +22,17 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.PolicyVisitor;
+
+import java.util.Collection;
 
 public class MatchAnyOf
 	implements PolicyElement, Matchable

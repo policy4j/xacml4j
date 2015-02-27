@@ -22,13 +22,7 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
+import com.google.common.collect.ImmutableList;
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
@@ -40,7 +34,9 @@ import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.ImmutableList;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class DefaultPolicyInformationPointTest
 {

@@ -22,15 +22,6 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -38,6 +29,12 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 
 public class OnlyOneApplicablePolicyCombiningAlgorithmTest

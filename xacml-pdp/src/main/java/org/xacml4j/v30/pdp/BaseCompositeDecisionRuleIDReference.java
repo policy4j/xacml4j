@@ -22,13 +22,12 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import org.xacml4j.v30.CompositeDecisionRuleIDReference;
+import org.xacml4j.v30.Version;
+import org.xacml4j.v30.VersionMatch;
 
 public abstract class BaseCompositeDecisionRuleIDReference
 	implements CompositeDecisionRuleIDReference
@@ -87,7 +86,8 @@ public abstract class BaseCompositeDecisionRuleIDReference
 
 	/**
 	 * Matches a given identifier and version
-	 * against this references
+	 * against this reference.
+     * Note: identifier equality is case insensitive
 	 *
 	 * @param id an identifier
 	 * @param v a version
@@ -95,15 +95,16 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	 * and version matches this references version constraints
 	 */
 	protected boolean matches(String id, Version v) {
-		return this.id.equals(id) &&( (version == null || version.match(v)) &&
-				(earliest == null || earliest.match(v)) &&
-				(latest == null || latest.match(v)));
+		return this.id.equalsIgnoreCase(id) &&
+                ((version == null || version.isEqual(v)) &&
+				(earliest == null || earliest.isEarlierThan(v)) &&
+				(latest == null || latest.isLaterThan(v)));
 	}
 
 	@Override
 	public final String toString() {
 		return Objects.toStringHelper(this)
-		.add("attributeId", id)
+		.add("id", id)
 		.add("version", version)
 		.add("earliest", earliest)
 		.add("latest", latest).toString();
@@ -134,25 +135,25 @@ public abstract class BaseCompositeDecisionRuleIDReference
 			return getThis();
 		}
 
-		public T versionAsString(String version){
-			if(Strings.isNullOrEmpty(version)){
+		public T version(String versionMatch){
+			if(Strings.isNullOrEmpty(versionMatch)){
 				this.version = null;
 				return getThis();
 			}
-			this.version = VersionMatch.parse(version);
+			this.version = VersionMatch.parse(versionMatch);
 			return getThis();
 		}
 
-		public T version(Version version){
-			if(version == null){
-				this.version = null;
-				return getThis();
-			}
-			this.version = VersionMatch.parse(version.getValue());
-			return getThis();
-		}
+        public T version(Version version){
+            if(version == null){
+                this.version = null;
+                return getThis();
+            }
+            this.version = VersionMatch.parse(version.getValue());
+            return getThis();
+        }
 
-		public T versionMatch(VersionMatch version){
+		public T version(VersionMatch version){
 			this.version = version;
 			return getThis();
 		}

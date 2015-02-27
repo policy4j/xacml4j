@@ -22,16 +22,10 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.ExpressionVisitor;
-
-import com.google.common.base.Objects;
+import org.xacml4j.v30.*;
 
 public class AttributeSelector extends
 	AttributeReference

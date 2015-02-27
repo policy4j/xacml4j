@@ -22,32 +22,18 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Ticker;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.XPathExp;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TimeZone;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.XPathVersion;
-import org.xacml4j.v30.types.XPathExp;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Ticker;
 
 /**
  * An implementation of {@link EvaluationContext} which

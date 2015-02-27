@@ -22,18 +22,12 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.*;
 
 /**
  * A function references expression, used

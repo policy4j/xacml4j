@@ -34,7 +34,7 @@ import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.XPath;
 import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.TypeCapability;
+import org.xacml4j.v30.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -42,6 +42,12 @@ import org.xacml4j.v30.types.XacmlTypes;
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
+/**
+ * A strategy to convert primitive XACML 3.0
+ * types to/from XACML XML format
+ *
+ * @author Giedrius Trumpickas
+ */
 public interface TypeToXacml30 extends TypeCapability
 {
 	AttributeValueType toXacml30(AttributeExp v);

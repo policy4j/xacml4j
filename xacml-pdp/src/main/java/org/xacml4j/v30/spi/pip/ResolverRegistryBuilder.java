@@ -22,15 +22,14 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.xacml4j.v30.XacmlSyntaxException;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.xacml4j.v30.XacmlSyntaxException;
-
-import com.google.common.base.Preconditions;
 
 public final class ResolverRegistryBuilder
 {

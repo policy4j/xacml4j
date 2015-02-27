@@ -22,16 +22,14 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.createMockBuilder;
-import static org.easymock.EasyMock.expect;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.easymock.EasyMock.*;
 
 
 public class BaseAttributeResolverTest

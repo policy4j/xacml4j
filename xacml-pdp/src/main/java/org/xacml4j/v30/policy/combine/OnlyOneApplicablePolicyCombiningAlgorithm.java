@@ -22,12 +22,15 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import java.util.List;
-
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
+import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
 import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 import org.xacml4j.v30.spi.combine.XacmlPolicyDecisionCombiningAlgorithm;
+
+import java.util.List;
 
 
 public final class OnlyOneApplicablePolicyCombiningAlgorithm extends

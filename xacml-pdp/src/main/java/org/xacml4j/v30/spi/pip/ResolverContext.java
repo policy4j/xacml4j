@@ -22,13 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.Calendar;
-import java.util.List;
-
+import com.google.common.base.Ticker;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationException;
 
-import com.google.common.base.Ticker;
+import java.util.Calendar;
+import java.util.List;
 
 
 public interface ResolverContext

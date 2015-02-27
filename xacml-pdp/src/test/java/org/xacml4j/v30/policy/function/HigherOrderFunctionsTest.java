@@ -22,15 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-import java.util.LinkedList;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +37,13 @@ import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.*;
 
 
 

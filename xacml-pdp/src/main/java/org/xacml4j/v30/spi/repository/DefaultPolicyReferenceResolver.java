@@ -22,175 +22,116 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.pdp.*;
-import org.xacml4j.v30.pdp.PolicyReference;
-
-import com.google.common.base.Preconditions;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 /**
- * A default implementation of {@link PolicyReferenceResolver}.
- * Maintains a cache of resolved policies by the references.
+ * A default implementation of {@link PolicyReferenceResolver}
  *
  * @author Giedrius Trumpickas
  */
-public class DefaultPolicyReferenceResolver
-	implements PolicyReferenceResolver, PolicyRepositoryListener
+
+final class DefaultPolicyReferenceResolver
+	implements PolicyReferenceResolver
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolver.class);
 
-	private final Cache<PolicyReference, Policy> policyIDRefCache;
-	private final Cache<PolicySetReference, PolicySet> policySetIDRefCache;
+    /**
+     * A high performance non-blocking
+     * policy index, for quick policy
+     * lookup by id and version
+     */
+    private PolicyIndex ruleIndex;
 
-	private final PolicyRepository repository;
-	private final boolean enableRefCache;
-
-	public DefaultPolicyReferenceResolver(
-			PolicyRepository repository){
-		this(repository, true, 1024);
+	private DefaultPolicyReferenceResolver(Builder b){
+        this.ruleIndex = b.source;
 	}
 
-	public DefaultPolicyReferenceResolver(
-			PolicyRepository policyRepository,
-			boolean enabledRefCache, int size)
-	{
-		Preconditions.checkNotNull(policyRepository);
-		this.repository = policyRepository;
-		Preconditions.checkState(repository != null);
-		this.enableRefCache = enabledRefCache;
-		this.policyIDRefCache = CacheBuilder
-				.newBuilder()
-				.initialCapacity(1024)
-				.build();
-		this.policySetIDRefCache = CacheBuilder
-				.newBuilder()
-				.initialCapacity(1024)
-				.build();
-		this.repository.addPolicyRepositoryListener(this);
-	}
+    @Override
+    public CompositeDecisionRule resolve(String id, String version){
+        return resolve(id, version ,null, null);
+    }
 
-	@Override
+    @Override
+    public CompositeDecisionRule resolve(String id, String version,
+                                         String earliest, String latest)
+            throws PolicyResolutionException
+    {
+       PolicySet p =  resolve(PolicySetReference
+               .builder(id)
+               .version(version)
+               .earliest(earliest)
+               .latest(latest)
+               .build());
+        if(p != null){
+            return p;
+        }
+       return resolve(PolicyReference
+               .builder(id)
+               .version(version)
+               .earliest(earliest)
+               .latest(latest)
+               .build());
+    }
+
+    @Override
 	public Policy resolve(PolicyReference ref)
 			throws PolicyResolutionException
 	{
-		Policy p =  policyIDRefCache.getIfPresent(ref);
-		if(p != null){
-			if(log.isDebugEnabled()){
-				log.debug("Found Policy attributeId=\"{}\" " +
-						"version=\"{}\" for references=\"{}\" in the cache",
-						new Object[]{p.getId(), p.getVersion(), ref});
-			}
-			return p;
-		}
-		p =  repository.getPolicy(
-					ref.getId(),
-					ref.getVersion(),
-					ref.getEarliestVersion(),
-					ref.getLatestVersion());
-		if(p != null &&
-				enableRefCache){
-			policyIDRefCache.put(ref, p);
-		}
-		if(p != null &&
-				log.isDebugEnabled()){
-			log.debug("Resolved policy attributeId=\"{}\" " +
-					"version=\"{}\" for references=\"{}\" from repository",
-					new Object[]{p.getId(), p.getVersion(), ref});
-		}
-		return p;
+        Iterable<Policy> found = ruleIndex.getPolicies(ref);
+        Policy p = Iterables.getFirst(found, null);
+        if(p == null) {
+            return null;
+        }
+        if(log.isDebugEnabled()) {
+            log.debug("Resolved policy id=\"{}\" " +
+                            "version=\"{}\" for references=\"{}\" " +
+                            "from repository=\"{}\"",
+                    new Object[]{p.getId(), p.getVersion(),
+                            ref, ruleIndex.getId()});
+        }
+        return p;
 	}
 
-	@Override
-	public PolicySet resolve(PolicySetReference ref)
-			throws PolicyResolutionException
-	{
-		PolicySet p = policySetIDRefCache.getIfPresent(ref);
-		if(p != null){
-			if(log.isDebugEnabled()){
-				log.debug("Found PolicySet attributeId=\"{}\" " +
-						"version=\"{}\" for references=\"{}\" in the cache",
-						new Object[]{p.getId(), p.getVersion(), ref});
-			}
-			return p;
-		}
-		p =  repository.getPolicySet(
-					ref.getId(),
-					ref.getVersion(),
-					ref.getEarliestVersion(),
-					ref.getLatestVersion());
-		if(p != null &&
-				enableRefCache){
-			policySetIDRefCache.put(ref, p);
-		}
-		if(p != null && log.isDebugEnabled()){
-			log.debug("Resolved policy set attributeId=\"{}\" " +
-					"version=\"{}\" for references=\"{}\" from repository",
-					new Object[]{p.getId(), p.getVersion(), ref});
-		}
-		return p;
-	}
+    @Override
+    public PolicySet resolve(PolicySetReference ref)
+            throws PolicyResolutionException
+    {
+        Iterable<PolicySet> found = ruleIndex.getPolicySets(ref);
+        PolicySet p = Iterables.getFirst(found, null);
+        if(p == null) {
+            return null;
+        }
+        if(log.isDebugEnabled()) {
+            log.debug("Resolved policy set id=\"{}\" " +
+                                    "version=\"{}\" for references=\"{}\" " +
+                                    "from repository=\"{}\"",
+                           new Object[]{p.getId(), p.getVersion(),
+                                   ref, ruleIndex.getId()});
+        }
+        return p;
+    }
 
-	protected final void clearRefCache(){
-		policyIDRefCache.invalidateAll();
-		policySetIDRefCache.invalidateAll();
-	}
+    public static Builder builder(){
+        return new Builder();
+    }
 
-	/**
-	 * Removes a cached references pointing
-	 * to the given policy
-	 *
-	 * @param p a policy
-	 */
-	private void removeCachedReferences(Policy p)
-	{
-		for(PolicyReference ref : policyIDRefCache.asMap().keySet()){
-			if(ref.isReferenceTo(p)){
-				if(log.isDebugEnabled()){
-					log.debug("Removing=\"{}\" from cache", ref);
-				}
-				policyIDRefCache.invalidate(ref);
-			}
-		}
-	}
+    public static class Builder
+    {
+        private PolicyIndex source;
 
-	/**
-	 * Removes a cached references pointing
-	 * to the given policy set
-	 *
-	 * @param p a policy set
-	 */
-	private void removeCachedReferences(PolicySet p)
-	{
-		for(PolicySetReference ref : policySetIDRefCache.asMap().keySet()){
-			if(ref.isReferenceTo(p)){
-				if(log.isDebugEnabled()){
-					log.debug("Removing=\"{}\" from cache", ref);
-				}
-				policySetIDRefCache.invalidate(ref);
-			}
-		}
-	}
+        public Builder source(PolicySource source){
+            Preconditions.checkNotNull(source);
+            this.source = new PolicyIndex(source);
+            return this;
+        }
 
-	@Override
-	public void policyAdded(Policy p) {
-		removeCachedReferences(p);
-	}
-
-	@Override
-	public void policyRemoved(Policy p) {
-		removeCachedReferences(p);
-	}
-
-	@Override
-	public void policySetAdded(PolicySet p) {
-		removeCachedReferences(p);
-	}
-
-	@Override
-	public void policySetRemoved(PolicySet p) {
-		removeCachedReferences(p);
-	}
+        public PolicyReferenceResolver build(){
+            return new DefaultPolicyReferenceResolver(this);
+        }
+    }
 }

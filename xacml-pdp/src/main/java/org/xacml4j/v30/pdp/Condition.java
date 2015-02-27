@@ -22,17 +22,16 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-
 /**
- * Condition represents a Boolean expression that refines the applicability
- * of the rule beyond the predicates implied by its target.
- * Therefore, it may be absent in the {@link Rule}
+ * Condition represents a Boolean expression that refines the 
+ * applicability of the rule beyond the predicates implied by its
+ * target therefore, it may be absent in the {@link Rule}
  *
  * @author Giedrius Trumpickas
  */

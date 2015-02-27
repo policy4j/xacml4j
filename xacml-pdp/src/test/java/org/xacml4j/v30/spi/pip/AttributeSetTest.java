@@ -22,10 +22,8 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
@@ -33,7 +31,7 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.Iterables;
+import static org.junit.Assert.*;
 
 public class AttributeSetTest
 {

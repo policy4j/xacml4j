@@ -22,14 +22,9 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.management.NotCompliantMBeanException;
-
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler;
@@ -40,11 +35,13 @@ import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.spi.repository.PolicyRepository;
+import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.xpath.DefaultXPathProvider;
 import org.xacml4j.v30.xpath.XPathProvider;
 
-import com.google.common.base.Preconditions;
+import javax.management.NotCompliantMBeanException;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class PolicyDecisionPointBuilder
 {
@@ -54,9 +51,14 @@ public final class PolicyDecisionPointBuilder
 	private XPathProvider xpathProvider;
 	private PolicyDecisionAuditor decisionAuditor;
 	private PolicyDecisionCache decisionCache;
-	private PolicyRepository repository;
+	private PolicyReferenceResolver resolver;
 	private PolicyInformationPoint pip;
-	private DecisionRule rootPolicy;
+
+    private DecisionRule rootPolicy;
+
+    private String rootPolicyId;
+    private String rootPolicyVersion;
+
 	private List<RequestContextHandler> handlers;
 	private int defaultDecisionCacheTTL;
 
@@ -101,10 +103,22 @@ public final class PolicyDecisionPointBuilder
 		return this;
 	}
 
-	public PolicyDecisionPointBuilder policyRepository(
-			PolicyRepository repository){
+    public PolicyDecisionPointBuilder rootPolicy(String id, String version)
+    {
+        Preconditions.checkNotNull(id);
+        this.rootPolicyId= id;
+        this.rootPolicyVersion= version;
+        return this;
+    }
+
+    public PolicyDecisionPointBuilder rootPolicy(String id){
+        return rootPolicy(id, null);
+    }
+
+	public PolicyDecisionPointBuilder policyResolver(
+            PolicyReferenceResolver repository){
 		Preconditions.checkNotNull(repository);
-		this.repository = repository;
+		this.resolver = repository;
 		return this;
 	}
 
@@ -144,14 +158,18 @@ public final class PolicyDecisionPointBuilder
 			log.debug("Creating PDP=\"{}\"", id);
 		}
 		Preconditions.checkState(id != null);
-		Preconditions.checkState(repository != null);
+		Preconditions.checkState(resolver != null);
 		Preconditions.checkState(pip != null);
-		Preconditions.checkState(rootPolicy != null);
-		Preconditions.checkState(id != null);
+		Preconditions.checkState(rootPolicy != null || rootPolicyId != null);
 		RequestContextHandlerChain chain = new RequestContextHandlerChain(handlers);
+        DecisionRule resolvedRootPolicy = rootPolicy;
+        if(resolvedRootPolicy == null){
+            resolvedRootPolicy = resolver.resolve(rootPolicyId, rootPolicyVersion);
+            Preconditions.checkState(resolvedRootPolicy != null, "Failed to resolve root policy");
+        }
 		DefaultPolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
-				rootPolicy, 
-				repository, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
+				resolvedRootPolicy,
+                resolver, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
 		factory.setDefaultDecisionCacheTTL(defaultDecisionCacheTTL);
 		try{
 			return new DefaultPolicyDecisionPoint(id, factory);

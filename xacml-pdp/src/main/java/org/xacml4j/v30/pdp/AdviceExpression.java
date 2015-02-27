@@ -22,9 +22,9 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
 import org.xacml4j.v30.*;
+
+import java.util.Collection;
 
 
 public class AdviceExpression extends BaseDecisionRuleResponseExpression

@@ -40,6 +40,8 @@ import org.oasis.xacml.v20.jaxb.context.StatusType;
 import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.marshal.jaxb.JAXBContextUtil;
 import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
@@ -50,6 +52,8 @@ import com.google.common.io.Closeables;
 
 public class Xacml20TestUtility
 {
+    private final static Logger log = LoggerFactory.getLogger(Xacml20TestUtility.class);
+    
 	private static final JAXBContext context = JAXBContextUtil.getInstance();
 	private static final Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 
@@ -159,6 +163,11 @@ public class Xacml20TestUtility
 		InputStream in = null;
 		try {
 			in = getClasspathResource(resourcePath).get();
+            if(in == null){
+                log.warn("Classpath resource=\"{}\" stream is null", resourcePath);
+                throw new NullPointerException("Can't load input " +
+                        "stream, for resource - " + resourcePath);
+            }
 			return requestUnmarshaller.unmarshal(in);
 		} finally {
 			Closeables.closeQuietly(in);

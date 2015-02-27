@@ -25,6 +25,7 @@ package org.xacml4j.v30.marshal.jaxb;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -77,9 +78,13 @@ public abstract class BaseJAXBUnmarshaller <T>
 			if(source instanceof byte[]){
 				jaxbInstance = (JAXBElement<?>)u.unmarshal(new ByteArrayInputStream((byte[])source));
 			}
+            if(source instanceof String){
+                jaxbInstance = (JAXBElement<?>)u.unmarshal(new StringReader((String)source));
+            }
 			if(jaxbInstance != null){
 				return create(jaxbInstance);
 			}
+            
 			throw new IllegalArgumentException(
 					String.format("Unsupported source=\"%s\"",
 							source.getClass().getName()));

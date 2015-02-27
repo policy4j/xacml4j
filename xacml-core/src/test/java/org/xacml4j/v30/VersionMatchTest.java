@@ -34,16 +34,16 @@ public class VersionMatchTest
 	@Test
 	public void testMatchEquals() throws XacmlSyntaxException
 	{
-		VersionMatch m = new VersionMatch("1.2.*.2.+");
-		assertThat(m.isEqualThan(Version.parse("1.2.1")), is(false));
-        assertThat(m.isEqualThan(Version.parse("1.2.1.2")), is(true));
-        assertThat(m.isEqualThan(Version.parse("1.2.1.2.1.2")), is(true));
+		VersionMatch m =  VersionMatch.parse("1.2.*.2.+");
+		assertThat(m.isEqual(Version.parse("1.2.1")), is(false));
+        assertThat(m.isEqual(Version.parse("1.2.1.2")), is(true));
+        assertThat(m.isEqual(Version.parse("1.2.1.2.1.2")), is(true));
 	}
 
     @Test
     public void testIsLaterWildCards() throws XacmlSyntaxException
     {
-        VersionMatch m = new VersionMatch("1.2.*.2.+");
+        VersionMatch m = VersionMatch.parse("1.2.*.2.+");
 
         assertThat(m.isLaterThan(Version.parse("1.1.2")), is(true));
         assertThat(m.isLaterThan(Version.parse("1.1.2.1.2.3")), is(true));
@@ -55,7 +55,7 @@ public class VersionMatchTest
     @Test
     public void testIsEarlierWildCards() throws XacmlSyntaxException
     {
-        VersionMatch m = new VersionMatch("1.2.*.2.+");
+        VersionMatch m = VersionMatch.parse("1.2.*.2.+");
 
         assertThat(m.isEarlierThan(Version.parse("1.2.2.3")), is(true));
         assertThat(m.isEarlierThan(Version.parse("1.1.2")), is(false));
@@ -64,7 +64,7 @@ public class VersionMatchTest
     @Test
     public void testIsLaterNoWildcards() throws XacmlSyntaxException
     {
-        VersionMatch m = new VersionMatch("1.2.3.2");
+        VersionMatch m = VersionMatch.parse("1.2.3.2");
 
         assertThat(m.isLaterThan(Version.parse("1.1.2")), is(true));
 
@@ -73,6 +73,14 @@ public class VersionMatchTest
 
     }
 
+    @Test
+    public void testIssueInPolicyIndexTestCase() throws XacmlSyntaxException
+    {
+        VersionMatch earlier = VersionMatch.parse("1.1.0");
+        VersionMatch later = VersionMatch.parse("1.3.0");
+        Version v = Version.parse("1.2.1");
+        assertTrue(earlier.isEarlierThan(v));
+        assertTrue(later.isLaterThan(v));
 
-
+    }
 }

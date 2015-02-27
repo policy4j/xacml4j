@@ -27,6 +27,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeExpType;
 
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.TypeCapability;
 
 public interface TypeToString extends TypeCapability
 {

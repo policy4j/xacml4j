@@ -22,35 +22,18 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.pdp.FunctionReference;
+import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.spi.function.*;
+import org.xacml4j.v30.types.BooleanExp;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.pdp.FunctionReference;
-import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionParametersValidator;
-import org.xacml4j.v30.spi.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlFuncParamAnyAttribute;
-import org.xacml4j.v30.spi.function.XacmlFuncParamAnyBag;
-import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncParamFunctionReference;
-import org.xacml4j.v30.spi.function.XacmlFuncParamValidator;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.BooleanExp;
-
-import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML higher order functions")
 public class HigherOrderFunctions

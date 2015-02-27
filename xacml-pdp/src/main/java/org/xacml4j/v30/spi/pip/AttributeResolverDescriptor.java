@@ -22,10 +22,10 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import org.xacml4j.v30.AttributeDesignatorKey;
+
 import java.util.Map;
 import java.util.Set;
-
-import org.xacml4j.v30.AttributeDesignatorKey;
 
 
 public interface AttributeResolverDescriptor

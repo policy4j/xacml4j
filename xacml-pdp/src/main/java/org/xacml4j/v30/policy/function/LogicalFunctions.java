@@ -26,12 +26,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncParamVarArg;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
+import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
 

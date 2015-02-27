@@ -22,27 +22,20 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
+import com.google.common.collect.ImmutableList;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.function.FunctionInvocation;
 import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.ImmutableList;
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 public class MatchTest
 {

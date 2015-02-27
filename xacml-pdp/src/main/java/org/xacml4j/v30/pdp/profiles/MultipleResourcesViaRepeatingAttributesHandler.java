@@ -22,13 +22,7 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Sets;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.RequestContext;
@@ -36,7 +30,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 
-import com.google.common.collect.Sets;
+import java.util.*;
 
 final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {

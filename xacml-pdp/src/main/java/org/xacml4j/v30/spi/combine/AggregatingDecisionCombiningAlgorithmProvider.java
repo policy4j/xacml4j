@@ -22,18 +22,11 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.pdp.Rule;
-
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * An implementation of {@link DecisionCombiningAlgorithmProvider}

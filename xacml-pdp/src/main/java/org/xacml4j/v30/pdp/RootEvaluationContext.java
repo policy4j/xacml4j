@@ -302,30 +302,46 @@ public final class RootEvaluationContext implements DecisionRuleEvaluationContex
 
 	private Policy resolve(PolicyReference ref)
 		throws PolicyResolutionException {
-		Policy p =	resolver.resolve(ref);
-		if(log.isDebugEnabled()){
-			log.debug("Trying to resolve " +
-					"Policy references=\"{}\"", ref);
-		}
-		if(p == null){
-			throw new PolicyResolutionException(this,
-					"Failed to resolve PolicySet references");
-		}
-		return p;
+        try{
+            if(log.isDebugEnabled()){
+                log.debug("Trying to resolve " +
+                        "Policy reference=\"{}\"", ref);
+            }
+            Policy p = resolver.resolve(ref);
+            if(p == null){
+                throw new PolicyResolutionException(this,
+                        "Failed to resolve reference=\"%s\"", ref);
+            }
+            return p;
+        }catch(XacmlSyntaxException e){
+            setEvaluationStatus(Status.syntaxError()
+                    .message("Failed to resolve reference=\"%s\"", ref)
+                    .build());
+            throw new PolicyResolutionException(this,
+                    "Failed to resolve reference=\"%s\"", ref);
+        }
 	}
 
 	private PolicySet resolve(PolicySetReference ref)
 			throws PolicyResolutionException {
-		PolicySet p = resolver.resolve(ref);
-		if(log.isDebugEnabled()){
-			log.debug("Trying to resolve " +
-					"PolicySet references=\"{}\"", ref);
-		}
-		if(p == null){
-			throw new PolicyResolutionException(this,
-					"Failed to resolve PolicySet references");
-		}
-		return p;
+        try{
+            if(log.isDebugEnabled()){
+                log.debug("Trying to resolve " +
+                        "PolicySet reference=\"{}\"", ref);
+            }
+            PolicySet p = resolver.resolve(ref);
+            if(p == null){
+                throw new PolicyResolutionException(this,
+                        "Failed to resolve reference=\"%s\"", ref);
+            }
+            return p;
+        }catch(XacmlSyntaxException e){
+            setEvaluationStatus(Status.syntaxError()
+                    .message("Failed to resolve reference=\"%s\"", ref)
+                    .build());
+            throw new PolicyResolutionException(this,
+                    "Failed to resolve reference=\"%s\"", ref);
+        }
 	}
 
 	@Override

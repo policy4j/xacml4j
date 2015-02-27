@@ -24,11 +24,18 @@ package org.xacml4j.v30.spi.pip;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import static com.google.common.base.Preconditions.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public final class DefaultPolicyInformationPointCacheProvider
 		extends BasePolicyInformationPointCacheProvider {
-	private final Cache<ResolverCacheKey, AttributeSet> attributeCache;
-	private final Cache<ResolverCacheKey, Content> contentCache;
+
+    private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPointCacheProvider.class);
+    
+	private Cache<ResolverCacheKey, AttributeSet> attributeCache;
+	private Cache<ResolverCacheKey, Content> contentCache;
 
 	/**
 	 * Default maximum number of items in the category cache
@@ -41,21 +48,27 @@ public final class DefaultPolicyInformationPointCacheProvider
 	private static final int DEFAULT_MAX_CONTENT_ITEMS = 2048;
 
 	public DefaultPolicyInformationPointCacheProvider() {
-		this(DEFAULT_MAX_ATTRIBUTE_ITEMS, DEFAULT_MAX_CONTENT_ITEMS);
+		
+        this(DEFAULT_MAX_ATTRIBUTE_ITEMS, DEFAULT_MAX_CONTENT_ITEMS);
 	}
 
 	public DefaultPolicyInformationPointCacheProvider(
 			int maxAttrSize,
 			int maxContentSize) {
-		this.attributeCache = CacheBuilder
-				.newBuilder()
-				.maximumSize(maxAttrSize)
-				.build();
-		this.contentCache = CacheBuilder
-				.newBuilder()
-				.maximumSize(maxContentSize)
-				.build();
+		this.attributeCache = CacheBuilder.<ResolverCacheKey, AttributeSet>newBuilder()
+                .maximumSize(maxAttrSize)
+                .build();
+        this.contentCache = CacheBuilder.<ResolverCacheKey, Content>newBuilder()
+                .maximumSize(maxContentSize)
+                .build();
 	}
+
+    public DefaultPolicyInformationPointCacheProvider(
+            Cache<ResolverCacheKey, AttributeSet> attributeCache,
+            Cache<ResolverCacheKey, Content> contentCache) {
+        this.attributeCache = checkNotNull(attributeCache);
+        this.contentCache = checkNotNull(contentCache);
+    }
 
 	@Override
 	protected Content doGetContent(ResolverContext context) {
@@ -65,9 +78,15 @@ public final class DefaultPolicyInformationPointCacheProvider
 				.keys(context.getKeys())
 				.build();
 		Content v = contentCache.getIfPresent(key);
-		if (v != null && isExpired(v, context)) {
-			attributeCache.invalidate(key);
-		}
+		if (v != null 
+                && isExpired(v, context)) {
+                if(log.isDebugEnabled()){
+                    log.debug("Expired content, " +
+                            "invalidating key=\"{}\"", key);
+                }
+            attributeCache.invalidate(key);
+            v = null;
+        }
 		return v;
 	}
 
@@ -88,8 +107,14 @@ public final class DefaultPolicyInformationPointCacheProvider
 				.keys(context.getKeys())
 				.build();
 		AttributeSet v = attributeCache.getIfPresent(key);
-		if (v != null && isExpired(v, context)) {
+		if (v != null 
+                && isExpired(v, context)) {
+            if(log.isDebugEnabled()){
+                log.debug("Expired attribute set, " +
+                        "invalidating key=\"{}\"", key);
+            }
 			attributeCache.invalidate(key);
+            v = null;
 		}
 		return v;
 	}
@@ -102,15 +127,5 @@ public final class DefaultPolicyInformationPointCacheProvider
 				.keys(context.getKeys())
 				.build();
 		attributeCache.put(key, v);
-	}
-
-	private boolean isExpired(AttributeSet v, ResolverContext context) {
-		return ((context.getTicker().read() - v.getCreatedTime()) /
-				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
-	}
-
-	private boolean isExpired(Content v, ResolverContext context) {
-		return ((context.getTicker().read() - v.getTimestamp()) /
-				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
 	}
 }

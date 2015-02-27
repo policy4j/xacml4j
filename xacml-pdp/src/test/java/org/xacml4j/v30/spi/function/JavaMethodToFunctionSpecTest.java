@@ -22,16 +22,16 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
-import java.lang.reflect.Method;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.util.DefaultInvocationFactory;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.StringExp;
+
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class JavaMethodToFunctionSpecTest

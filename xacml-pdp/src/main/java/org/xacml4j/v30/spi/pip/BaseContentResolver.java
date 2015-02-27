@@ -22,13 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.concurrent.atomic.AtomicInteger;
-
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import com.google.common.base.Preconditions;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A base class for {@link ContentResolver} implementations

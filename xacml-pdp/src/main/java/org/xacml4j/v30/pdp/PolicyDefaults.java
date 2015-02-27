@@ -26,8 +26,6 @@ package org.xacml4j.v30.pdp;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.PolicyVisitor;
 
-import java.security.*;
-
 public class PolicyDefaults extends BaseCompositeDecisionRuleDefaults
         implements PolicyElement
 {

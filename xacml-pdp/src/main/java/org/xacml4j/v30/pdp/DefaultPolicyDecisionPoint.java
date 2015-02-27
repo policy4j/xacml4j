@@ -22,22 +22,6 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.xacml4j.v30.pdp.MetricsSupport.name;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.management.NotCompliantMBeanException;
-import javax.management.StandardMBean;
-
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
-import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
-import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Histogram;
 import com.codahale.metrics.MetricRegistry;
@@ -45,6 +29,20 @@ import com.codahale.metrics.Timer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
+import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
+import org.xacml4j.v30.spi.pdp.RequestContextHandler;
+
+import javax.management.NotCompliantMBeanException;
+import javax.management.StandardMBean;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.xacml4j.v30.pdp.MetricsSupport.name;
 
 /**
  * A default implementation of {@link org.xacml4j.v30.PolicyDecisionPoint}

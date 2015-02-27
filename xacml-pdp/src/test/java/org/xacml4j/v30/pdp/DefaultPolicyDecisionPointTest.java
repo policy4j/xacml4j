@@ -22,13 +22,6 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
@@ -37,18 +30,21 @@ import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
+import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.xpath.XPathProvider;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 
 public class DefaultPolicyDecisionPointTest
 {
 	private PolicyDecisionPoint pdp;
 
-	private PolicyRepository repository;
+	private PolicyReferenceResolver repository;
 	private PolicyInformationPoint pip;
 	private CompositeDecisionRule policyDomain;
 	private PolicyDecisionCache decisionCache;
@@ -64,7 +60,7 @@ public class DefaultPolicyDecisionPointTest
 	{
 		this.control = createControl();
 		this.pip = control.createMock(PolicyInformationPoint.class);
-		this.repository = control.createMock(PolicyRepository.class);
+		this.repository = control.createMock(PolicyReferenceResolver.class);
 		this.policyDomain = control.createMock(CompositeDecisionRule.class);
 		this.decisionAuditor = control.createMock(PolicyDecisionAuditor.class);
 		this.decisionCache = control.createMock(PolicyDecisionCache.class);
@@ -72,7 +68,7 @@ public class DefaultPolicyDecisionPointTest
 		this.pdpBuilder = PolicyDecisionPointBuilder
 		.builder("testPdp")
 			.decisionAuditor(decisionAuditor)
-			.policyRepository(repository)
+			.policyResolver(repository)
 			.decisionCache(decisionCache)
 			.decisionCacheTTL(10)
 			.pip(pip)
@@ -87,9 +83,6 @@ public class DefaultPolicyDecisionPointTest
 				.builder()
 				.returnPolicyIdList(false)
 				.build();
-
-		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
-		repository.addPolicyRepositoryListener(capture(c));
 
 		expect(decisionCache.getDecision(req)).andReturn(null);
 		Capture<DecisionRuleEvaluationContext> rootContext = new Capture<DecisionRuleEvaluationContext>();
@@ -121,8 +114,6 @@ public class DefaultPolicyDecisionPointTest
 				.returnPolicyIdList(false)
 				.build();
 
-		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
-		repository.addPolicyRepositoryListener(capture(c));
 
 		expect(decisionCache.getDecision(req)).andReturn(null);
 		Capture<DecisionRuleEvaluationContext> rootContext = new Capture<DecisionRuleEvaluationContext>();

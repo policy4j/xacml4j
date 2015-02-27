@@ -23,13 +23,43 @@ package org.xacml4j.v30;
  */
 
 
-
+/**
+ * An interface for {@link org.xacml4j.v30.CompositeDecisionRule}
+ * references
+ *
+ * @author Giedrius Trumpickas
+ */
 public interface CompositeDecisionRuleIDReference
 	extends DecisionRule
 {
+    /**
+     * Gets version matching constraint
+     *
+     * @return {@link org.xacml4j.v30.VersionMatch} or <code>null</code>
+     */
 	VersionMatch getVersion();
+
+    /**
+     * Gets earliest version matching constraint
+     *
+     * @return {@link org.xacml4j.v30.VersionMatch}
+     */
 	VersionMatch getEarliestVersion();
+
+    /**
+     * Gets latest version matching constraint
+     *
+     * @return {@link org.xacml4j.v30.VersionMatch}
+     */
 	VersionMatch getLatestVersion();
 
+    /**
+     * Tests if this reference is a reference to the
+     * given decision rule
+     *
+     * @param r a decision rule
+     * @return <code>true</code> if this reference
+     * is a reference to the given decision rule
+     */
 	boolean isReferenceTo(CompositeDecisionRule r);
 }

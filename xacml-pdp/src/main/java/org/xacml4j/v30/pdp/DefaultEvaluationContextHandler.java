@@ -22,30 +22,20 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Stack;
-
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Comment;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.ProcessingInstruction;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.XPathEvaluationException;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.xpath.XPathProvider;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XPathExp;
 import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.xpath.XPathProvider;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+import java.util.*;
 
 class DefaultEvaluationContextHandler
 	implements EvaluationContextHandler
@@ -194,8 +184,18 @@ class DefaultEvaluationContextHandler
 		try
 		{
 			Entity entity = requestCallback.getEntity(ref.getCategory());
+            if(log.isDebugEnabled()){
+                if(log.isDebugEnabled()){
+                    log.debug("No entity found for category=\"{}\" " +
+                            "in the request context", ref.getCategory());
+                }
+            }
 			Node content = (entity != null)?entity.getContent():null;
 			if(content == null){
+                if(log.isDebugEnabled()){
+                    log.debug("No content found for category=\"{}\" " +
+                            "in the request context", ref.getCategory());
+                }
 				content = doGetContent(context, ref.getCategory());
 			}
 			Node contextNode = content;

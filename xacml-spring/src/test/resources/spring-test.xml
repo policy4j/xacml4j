@@ -42,8 +42,8 @@
 		<value>classpath:/Policy1.xml</value>
 	</util:list>
 
-	<xacml-spring:InMemoryPolicyRepository
-	id="repository" extensionFunctions="extensionFunctions" policies="resources"/>
+	<xacml-spring:ClassPathPolicySource
+            id="repository" extensionFunctions="extensionFunctions" policies="resources"/>
 
 	<beans:bean id="testResolver" class="org.xacml4j.spring.pip.TestResolver"/>
 

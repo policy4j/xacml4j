@@ -22,18 +22,12 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.List;
-
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import org.xacml4j.v30.*;
+
+import java.util.List;
 
 /**
  * The class denotes application of a function to its arguments,

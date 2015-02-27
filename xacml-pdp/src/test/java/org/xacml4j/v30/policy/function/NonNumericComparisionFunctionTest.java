@@ -22,17 +22,15 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.TimeExp;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
 
 
 

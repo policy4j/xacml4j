@@ -22,21 +22,15 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.*;
+import org.xacml4j.v30.*;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.xacml4j.v30.*;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 public class PolicySet extends
 	BaseCompositeDecisionRule
@@ -303,7 +297,7 @@ public class PolicySet extends
 		}
 
 
-		public Builder withPolicyCombinerParameter(String policyId, CombinerParameter p){
+		public Builder policyCombinerParameter(String policyId, CombinerParameter p){
 			Preconditions.checkNotNull(policyId);
 			Preconditions.checkNotNull(p);
 			Multimap<String, CombinerParameter> params = policyCombinerParams.get(policyId);
@@ -315,7 +309,7 @@ public class PolicySet extends
 			return this;
 		}
 
-		public Builder withPolicySetCombinerParameter(String policySetId, CombinerParameter p){
+		public Builder policySetCombinerParameter(String policySetId, CombinerParameter p){
 			Preconditions.checkNotNull(policySetId);
 			Preconditions.checkNotNull(p);
 			Multimap<String, CombinerParameter> params = policySetCombinerParams.get(policySetId);
@@ -371,13 +365,13 @@ public class PolicySet extends
 			return getThis();
 		}
 
-		public Builder withPolicy(Policy.Builder b){
+		public Builder policy(Policy.Builder b){
 			Preconditions.checkNotNull(b);
 			this.policies.add(b.build());
 			return this;
 		}
 
-		public Builder withPolicy(Builder b){
+		public Builder policy(Builder b){
 			Preconditions.checkNotNull(b);
 			this.policies.add(b.build());
 			return this;
@@ -388,7 +382,7 @@ public class PolicySet extends
 			return this;
 		}
 
-		public Builder withCombiningAlgorithm(DecisionCombiningAlgorithm alg)
+		public Builder combiningAlgorithm(DecisionCombiningAlgorithm alg)
 		{
 			Preconditions.checkNotNull(alg);
 			this.combiningAlgorithm = alg;

@@ -22,10 +22,10 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+
 import java.util.Collection;
 import java.util.LinkedList;
-
-import com.google.common.base.Preconditions;
 
 public final class DecisionCombiningAlgorithmProviderBuilder
 {
@@ -53,13 +53,13 @@ public final class DecisionCombiningAlgorithmProviderBuilder
 	 * @return {@link DecisionCombiningAlgorithmProviderBuilder} with
 	 * a XACML 3.0 & 2.0 decision combining algorithms
 	 */
-	public DecisionCombiningAlgorithmProviderBuilder withDefaultAlgorithms(){
+	public DecisionCombiningAlgorithmProviderBuilder defaultAlgorithms(){
 		this.providers.add(new DefaultXacml30DecisionCombiningAlgorithms());
 		return this;
 	}
 
-	public DecisionCombiningAlgorithmProviderBuilder withAlgorithmProvider(
-			Object provider){
+	public DecisionCombiningAlgorithmProviderBuilder algorithmProvider(
+            Object provider){
 		Preconditions.checkNotNull(provider instanceof DecisionCombiningAlgorithmProvider
 				|| provider instanceof Class<?>);
 		if(provider instanceof Class<?>){
@@ -70,10 +70,10 @@ public final class DecisionCombiningAlgorithmProviderBuilder
 		return this;
 	}
 
-	public DecisionCombiningAlgorithmProviderBuilder withAlgorithmProviders(
-			Iterable<DecisionCombiningAlgorithmProvider> providers){
+	public DecisionCombiningAlgorithmProviderBuilder algorithmProviders(
+            Iterable<DecisionCombiningAlgorithmProvider> providers){
 		for(DecisionCombiningAlgorithmProvider p : providers){
-			withAlgorithmProvider(p);
+			algorithmProvider(p);
 		}
 		return this;
 	}

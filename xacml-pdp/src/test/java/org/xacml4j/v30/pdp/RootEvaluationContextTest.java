@@ -22,10 +22,6 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +31,10 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 
 public class RootEvaluationContextTest

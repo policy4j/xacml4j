@@ -22,12 +22,11 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-import com.google.common.base.Preconditions;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 class BaseFunctionProvider implements FunctionProvider
 {

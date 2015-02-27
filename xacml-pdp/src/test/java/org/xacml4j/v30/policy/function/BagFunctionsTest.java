@@ -22,20 +22,15 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.types.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class BagFunctionsTest

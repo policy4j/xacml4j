@@ -22,16 +22,6 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
@@ -40,18 +30,23 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
 
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
+
 
 public class PolicyReferenceTest
 {
 	private DecisionRuleEvaluationContext context;
 	private Policy refPolicy;
 	private IMocksControl c;
+    private DecisionCombiningAlgorithm algo;
 
 	@Before
 	public void init(){
 		this.c = createStrictControl();
 		this.refPolicy = c.createMock(Policy.class);
 		this.context = c.createMock(DecisionRuleEvaluationContext.class);
+        this.algo = c.createMock(DecisionCombiningAlgorithm.class);
 	}
 
 	@Test
@@ -285,13 +280,20 @@ public class PolicyReferenceTest
 	@Test
 	public void testRefersTo() throws Exception
 	{
-		PolicyReference ref = PolicyReference.builder("testId").version("1.+").build();
-		expect(refPolicy.getId()).andReturn("testId");
-		expect(refPolicy.getVersion()).andReturn(Version.parse("1.0.1"));
+		PolicyReference ref0 = PolicyReference.builder("testId").version("1.+").build();
+        PolicyReference ref1 = PolicyReference.builder("testId").earliest("1.0.0").latest("1.0.2").build();
+        PolicyReference ref2 = PolicyReference.builder("testId").earliest("1.1.0").latest("1.1.2").build();
+        PolicyReference ref3 = PolicyReference.builder("testId").earliest("1.1.0").latest("1.3.0").build();
+        Policy p1 = Policy.builder("testId").version("1.0.1").combiningAlgorithm(algo).build();
+        Policy p2 = Policy.builder("testId").version("1.2.1").combiningAlgorithm(algo).build();
 		c.replay();
-		assertTrue(ref.isReferenceTo(refPolicy));
+		assertTrue(ref0.isReferenceTo(p1));
+        assertTrue(ref1.isReferenceTo(p1));
+        assertFalse(ref2.isReferenceTo(p1));
+        assertTrue(ref3.isReferenceTo(p2));
 		c.verify();
 	}
+
 
 	@Test
 	public void testReferenceBuilder()

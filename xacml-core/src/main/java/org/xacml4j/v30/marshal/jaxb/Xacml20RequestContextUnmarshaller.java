@@ -24,7 +24,6 @@ package org.xacml4j.v30.marshal.jaxb;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
 
@@ -196,7 +195,8 @@ implements RequestUnmarshaller
 					.Resource()
 					.entity(Entity
 							.builder()
-							.attributes(create(resource.getAttribute(), Categories.RESOURCE, multipleResources))
+							.attributes(create(resource.getAttribute(),
+                                    Categories.RESOURCE, multipleResources))
 							.content(content)
 							.build())
 					.build();

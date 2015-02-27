@@ -26,8 +26,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
@@ -35,6 +33,7 @@ import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
+import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.xpath.XPathProvider;
 
@@ -78,9 +77,9 @@ public class PolicyDecisionPointFactoryBean extends AbstractFactoryBean<PolicyDe
 		this.pdpBuilder.rootPolicy(policyStore);
 	}
 
-	public void setPolicyRepository(PolicyRepository policyRepository)
+	public void setPolicyRepository(PolicyReferenceResolver resolver)
 	{
-		this.pdpBuilder.policyRepository(policyRepository);
+		this.pdpBuilder.policyResolver(resolver);
 	}
 
 	public void setHandlers(List<RequestContextHandler> handlers){

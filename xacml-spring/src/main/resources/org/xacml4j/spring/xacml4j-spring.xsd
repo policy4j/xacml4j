@@ -98,7 +98,7 @@
 	<xsd:element name="PolicyIdReference" type="IdReferenceType"/>
 	<xsd:element name="PolicySetIdReference" type="IdReferenceType"/>
 
-	<xsd:complexType name="PolicyRepositoryBaseType">
+	<xsd:complexType name="PolicySourceBaseType">
 		<xsd:complexContent>
 			<xsd:extension base="beans:identifiedType">
 				<xsd:attribute name="extensionFunctions" type="xsd:string"/>
@@ -107,7 +107,7 @@
 		</xsd:complexContent>
 	</xsd:complexType>
 
-	<xsd:element name="InMemoryPolicyRepository">
+	<xsd:element name="ClassPathPolicySource">
 		<xsd:complexType>
 			<xsd:complexContent>
 				<xsd:extension base="PolicyRepositoryBaseType">

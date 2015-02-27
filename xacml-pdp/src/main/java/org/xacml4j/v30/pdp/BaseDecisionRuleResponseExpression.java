@@ -22,16 +22,15 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
-import org.xacml4j.v30.*;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
+import org.xacml4j.v30.*;
+
+import java.util.Collection;
 
 /**
  * A base class for XACML Obligation or Advice expressions

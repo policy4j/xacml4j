@@ -22,10 +22,10 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.xacml4j.v30.XPathVersion;
+
+import static org.junit.Assert.assertEquals;
 
 public class PolicyDefaultsTest
 {

@@ -23,25 +23,8 @@ package org.xacml4j.v30.policy.function;
  */
 
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DNSNameExp;
-import org.xacml4j.v30.types.DateExp;
-import org.xacml4j.v30.types.DateTimeExp;
-import org.xacml4j.v30.types.DayTimeDurationExp;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IPAddressExp;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.RFC822NameExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.TimeExp;
-import org.xacml4j.v30.types.X500NameExp;
-import org.xacml4j.v30.types.YearMonthDurationExp;
+import org.xacml4j.v30.spi.function.*;
+import org.xacml4j.v30.types.*;
 
 
 @XacmlFunctionProvider(description="XACML string functions")

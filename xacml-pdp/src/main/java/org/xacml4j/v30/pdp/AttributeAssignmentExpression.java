@@ -22,11 +22,10 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.*;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import org.xacml4j.v30.*;
 
 public class AttributeAssignmentExpression implements PolicyElement
 {

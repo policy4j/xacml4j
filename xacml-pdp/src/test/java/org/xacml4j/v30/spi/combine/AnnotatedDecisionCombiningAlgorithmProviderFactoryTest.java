@@ -22,21 +22,20 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
-import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.policy.combine.DenyOverrides;
+
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest

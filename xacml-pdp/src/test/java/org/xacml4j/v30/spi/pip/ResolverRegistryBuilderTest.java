@@ -22,13 +22,13 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.easymock.EasyMock.createControl;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class ResolverRegistryBuilderTest
 {

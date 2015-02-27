@@ -22,9 +22,8 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.*;
-
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
 
 /**
  * A XACML {@link PolicySet} references

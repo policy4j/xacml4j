@@ -22,9 +22,8 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.xacml4j.v30.CategoryId;
-
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.CategoryId;
 
 class ContentResolverDescriptorDelegate extends ResolverDescriptorDelegate
 	implements ContentResolverDescriptor

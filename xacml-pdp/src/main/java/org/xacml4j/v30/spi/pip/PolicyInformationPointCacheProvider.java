@@ -24,6 +24,11 @@ package org.xacml4j.v30.spi.pip;
 
 import org.w3c.dom.Node;
 
+/**
+ * A provider interface for pip caches
+ * 
+ * @author Giedrius Trumpickas
+ */
 public interface PolicyInformationPointCacheProvider
 {
 	/**
@@ -34,9 +39,28 @@ public interface PolicyInformationPointCacheProvider
 	 */
 	Content getContent(ResolverContext context);
 
+    /**
+     * Puts given content to this cache
+     * *
+     * @param context a resolver context
+     * @param content a content to be cached
+     */
 	void putContent(ResolverContext context, Content content);
 
+    /**
+     * Tries to locate an [@link AttributeSet} in the
+     * cache for a given resolver context
+     * 
+     * @param context a resolver content
+     * @return {@link org.xacml4j.v30.spi.pip.AttributeSet} or <code>null</code>
+     */
 	AttributeSet getAttributes(ResolverContext context);
 
+    /**
+     * Stores given attribute set in this cache 
+     * *
+     * @param context a resolver context
+     * @param v an attribute set
+     */
 	void putAttributes(ResolverContext context, AttributeSet v);
 }

@@ -22,14 +22,9 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
+import com.google.common.io.Closeables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -37,7 +32,7 @@ import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.XacmlPolicyUnmarshaller;
+import org.xacml4j.v30.marshal.jaxb.DefaultXacmlPolicyUnmarshaller;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
@@ -45,9 +40,13 @@ import org.xacml4j.v30.pdp.PolicyVisitorSupport;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Supplier;
-import com.google.common.io.Closeables;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A base class for {@link PolicyRepository} implementations.
@@ -80,7 +79,7 @@ public abstract class AbstractPolicyRepository
 		this.functions = functions;
 		this.decisionAlgorithms = decisionAlgorithms;
 		this.listeners = new CopyOnWriteArrayList<PolicyRepositoryListener>();
-		this.unmarshaller = new XacmlPolicyUnmarshaller(functions, decisionAlgorithms);
+		this.unmarshaller = new DefaultXacmlPolicyUnmarshaller(functions, decisionAlgorithms);
 	}
 
 	@Override
@@ -209,7 +208,7 @@ public abstract class AbstractPolicyRepository
 	@Override
 	public CompositeDecisionRule get(String id, Version v)
 	{
-		VersionMatch m = new VersionMatch(v.getValue());
+		VersionMatch m = VersionMatch.parse(v.getValue());
 		Policy p = getPolicy(id, m, null, null);
 		return (p != null)?p:getPolicySet(id, m, null, null);
 	}

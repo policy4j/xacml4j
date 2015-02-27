@@ -22,8 +22,6 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.Rule;
-
 public final class DenyUnlessPermitRuleCombiningAlgorithm extends DenyUnlessPermit
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit";

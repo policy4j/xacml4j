@@ -22,8 +22,8 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
+import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.pdp.*;
-import org.xacml4j.v30.pdp.PolicyReference;
 
 
 /**
@@ -34,12 +34,33 @@ import org.xacml4j.v30.pdp.PolicyReference;
  */
 public interface PolicyReferenceResolver
 {
+    /**
+     * Resolves a composite decision rule via
+     * identifier and version match constraints
+     * @param id a composite decision rule identifier
+     * @param version a policy version match constraint
+     * @param earliest an earliest acceptable policy version match constraint
+     * @param latest an latest acceptable policy version match constraint
+     */
+    CompositeDecisionRule resolve(String id, String version,
+                                  String earliest, String latest);
+
+    /**
+     * Resolves a composite decision rule via
+     * identifier and version match constraints
+     * @param id a composite decision rule identifier
+     * @param version a policy version match constraint
+     * @throws org.xacml4j.v30.pdp.PolicyResolutionException
+     */
+    CompositeDecisionRule resolve(String id, String version)
+            throws PolicyResolutionException;
+
 	/**
 	 * Resolves a given {@link org.xacml4j.v30.pdp.PolicyReference}
 	 *
 	 * @param ref a policy references
 	 * @return {@link Policy} instance
-	 * @throws PolicyResolutionException
+	 * @throws olicyResolutionException
 	 */
 	Policy resolve(PolicyReference ref)
 		throws PolicyResolutionException;

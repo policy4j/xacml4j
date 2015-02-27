@@ -31,13 +31,14 @@ import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
-import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.ImmutablePolicySource;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
+import org.xacml4j.v30.spi.repository.PolicySource;
 
-public class ClassPathPolicySourceFactoryBean extends AbstractFactoryBean<PolicyRepository>
+public class ClassPathPolicySourceFactoryBean extends AbstractFactoryBean<PolicySource>
 {
 	private final String id;
 	private Resource[] resources;
@@ -50,8 +51,8 @@ public class ClassPathPolicySourceFactoryBean extends AbstractFactoryBean<Policy
 	}
 
 	@Override
-	public Class<PolicyRepository> getObjectType() {
-		return PolicyRepository.class;
+	public Class<PolicySource> getObjectType() {
+		return PolicySource.class;
 	}
 
 	public void setExtensionFunctions(FunctionProvider functions){
@@ -68,7 +69,7 @@ public class ClassPathPolicySourceFactoryBean extends AbstractFactoryBean<Policy
 	}
 
 	@Override
-	protected PolicyRepository createInstance() throws Exception
+	protected PolicySource createInstance() throws Exception
 	{
 		FunctionProviderBuilder functionProviderBuilder = FunctionProviderBuilder.builder()
 			.defaultFunctions();
@@ -82,22 +83,21 @@ public class ClassPathPolicySourceFactoryBean extends AbstractFactoryBean<Policy
 			decisionAlgorithmProviderBuilder.algorithmProvider(extensionDecisionCombiningAlgorithms);
 		}
 		Preconditions.checkState(resources != null, "Policy resources must be specified");
-		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				id, functionProviderBuilder.build(), decisionAlgorithmProviderBuilder.build());
+		ImmutablePolicySource.Builder builder = ImmutablePolicySource.builder(id);
 		for(final Resource r : resources){
-			repository.importPolicy(new Supplier<InputStream>() {
-				@Override
-				public InputStream get() {
-					try {
-						return r.getInputStream();
-					} catch (IOException e) {
-						throw new IllegalArgumentException(
-								String.format("Could not import policy from resource \"%s\"", r),
-								e);
-					}
-				}
-			});
+			builder.policy(new Supplier<InputStream>() {
+                @Override
+                public InputStream get() {
+                    try {
+                        return r.getInputStream();
+                    } catch (IOException e) {
+                        throw new IllegalArgumentException(
+                                String.format("Could not import policy from resource \"%s\"", r),
+                                e);
+                    }
+                }
+            });
 		}
-		return repository;
+		return builder.build();
 	}
 }

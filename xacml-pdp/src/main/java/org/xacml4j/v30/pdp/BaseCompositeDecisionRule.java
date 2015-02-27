@@ -22,16 +22,15 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.*;
+
+import java.util.Collection;
 
 /**
  * A base class for composite decision rule. A composite decision

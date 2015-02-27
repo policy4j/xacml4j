@@ -27,7 +27,7 @@ import org.xacml4j.spring.pdp.PolicyDecisionPointDefinitionParser;
 import org.xacml4j.spring.pdp.RequestContextHandlerChainDefinitionParser;
 import org.xacml4j.spring.pip.PolicyInformationPointDefinitionParser;
 import org.xacml4j.spring.pip.ResolverRegistryDefinitionParser;
-import org.xacml4j.spring.repository.InMemoryPolicyRepositoryDefinitionParser;
+import org.xacml4j.spring.repository.ClassPathPolicySourceDefininitionParser;
 
 
 public class NamespaceHandler extends NamespaceHandlerSupport
@@ -42,6 +42,6 @@ public class NamespaceHandler extends NamespaceHandlerSupport
 		registerBeanDefinitionParser("RequestContextHandlerChain",  new RequestContextHandlerChainDefinitionParser());
 		registerBeanDefinitionParser("ResolverRegistry",  new ResolverRegistryDefinitionParser());
 		registerBeanDefinitionParser("PolicyDecisionPoint",  new PolicyDecisionPointDefinitionParser());
-		registerBeanDefinitionParser("InMemoryPolicyRepository",  new InMemoryPolicyRepositoryDefinitionParser());
+		registerBeanDefinitionParser("InMemoryPolicyRepository",  new ClassPathPolicySourceDefininitionParser());
 	}
 }

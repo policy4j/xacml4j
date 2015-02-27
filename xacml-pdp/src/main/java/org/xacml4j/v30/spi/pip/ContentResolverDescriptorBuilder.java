@@ -22,17 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.CategoryId;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
+import org.xacml4j.v30.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public final class ContentResolverDescriptorBuilder
 {

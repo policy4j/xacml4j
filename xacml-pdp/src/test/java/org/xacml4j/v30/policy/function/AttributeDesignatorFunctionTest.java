@@ -22,30 +22,21 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.types.*;
 import org.xacml4j.v30.xpath.XPathProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 public class AttributeDesignatorFunctionTest
 {

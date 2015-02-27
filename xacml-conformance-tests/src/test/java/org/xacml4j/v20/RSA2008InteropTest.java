@@ -40,11 +40,12 @@ import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
-import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.ImmutablePolicySource;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.codahale.metrics.CsvReporter;
 import com.google.common.base.Supplier;
+import org.xacml4j.v30.spi.repository.PolicySource;
 
 public class RSA2008InteropTest extends XacmlPolicyTestSupport
 {
@@ -53,46 +54,29 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		CsvReporter reporter = CsvReporter.forRegistry(MetricsSupport.getOrCreate())
-	                .formatFor(Locale.US)
-	                .convertRatesTo(TimeUnit.MILLISECONDS)
-	                .convertDurationsTo(TimeUnit.MILLISECONDS)
-	                .build(new File("target/"));
-		reporter.start(1, TimeUnit.MILLISECONDS);
 
-		PolicyRepository repository = new InMemoryPolicyRepository(
-				"testId",
-				FunctionProviderBuilder.builder()
-				.defaultFunctions()
-				.build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.build());
-
-		List<Supplier<InputStream>> policyStreams = Arrays.asList(
-				_getPolicy("XacmlPolicySet-01-top-level.xml"),
-				_getPolicy("XacmlPolicySet-02a-CDA.xml"),
-				_getPolicy("XacmlPolicySet-02b-N.xml"),
-				_getPolicy("XacmlPolicySet-02c-N-PermCollections.xml"),
-				_getPolicy("XacmlPolicySet-02d-prog-note.xml"),
-				_getPolicy("XacmlPolicySet-02e-MA.xml"),
-				_getPolicy("XacmlPolicySet-02f-emergency.xml"),
-				_getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"),
-				_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
-
-		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
-		for (Supplier<InputStream> policyStream : policyStreams) {
-			policies.add(repository.importPolicy(policyStream));
-		}
+		PolicySource source  = ImmutablePolicySource
+                .builder("testPolicySource")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-01-top-level.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-02a-CDA.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-02b-N.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-02c-N-PermCollections.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-02d-prog-note.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-02e-MA.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-02f-emergency.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-03-N-RPS-med-rec-vrole.xml")
+                .policyFromClasspath("rsa2008-interop/XacmlPolicySet-04-N-PPS-PRD-004.xml")
+                .build();
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
-			.policyRepository(repository)
+             .rootPolicy("urn:va:xacml:2.0:interop:rsa8:policysetid:toplevel", "1.0")
+			.policyResolver(source.createResolver())
 			.pip(
 					PolicyInformationPointBuilder
 					.builder("testPip")
 					.defaultResolvers()
 					.build())
-			.rootPolicy(policies.get(0))
+
 			.build();
 	}
 
@@ -187,9 +171,5 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 				pdp,
 				String.format("rsa2008-interop/XacmlRequest-%02d-%02d.xml", caseId, requestId),
 				String.format("rsa2008-interop/XacmlResponse-%02d-%02d.xml", caseId, requestId));
-	}
-
-	private static Supplier<InputStream> _getPolicy(final String name) {
-		return Xacml20TestUtility.getClasspathResource("rsa2008-interop/" + name);
 	}
 }

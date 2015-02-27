@@ -22,57 +22,24 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.JAXBElement;
-
-import org.oasis.xacml.v30.jaxb.AdviceExpressionType;
-import org.oasis.xacml.v30.jaxb.AdviceExpressionsType;
-import org.oasis.xacml.v30.jaxb.AllOfType;
-import org.oasis.xacml.v30.jaxb.AnyOfType;
-import org.oasis.xacml.v30.jaxb.ApplyType;
-import org.oasis.xacml.v30.jaxb.AttributeAssignmentExpressionType;
-import org.oasis.xacml.v30.jaxb.AttributeDesignatorType;
-import org.oasis.xacml.v30.jaxb.AttributeSelectorType;
-import org.oasis.xacml.v30.jaxb.AttributeType;
-import org.oasis.xacml.v30.jaxb.AttributeValueType;
-import org.oasis.xacml.v30.jaxb.ConditionType;
-import org.oasis.xacml.v30.jaxb.ContentType;
-import org.oasis.xacml.v30.jaxb.DefaultsType;
-import org.oasis.xacml.v30.jaxb.EffectType;
-import org.oasis.xacml.v30.jaxb.FunctionType;
-import org.oasis.xacml.v30.jaxb.IdReferenceType;
-import org.oasis.xacml.v30.jaxb.MatchType;
-import org.oasis.xacml.v30.jaxb.ObligationExpressionType;
-import org.oasis.xacml.v30.jaxb.ObligationExpressionsType;
-import org.oasis.xacml.v30.jaxb.PolicyIssuerType;
-import org.oasis.xacml.v30.jaxb.PolicySetType;
-import org.oasis.xacml.v30.jaxb.PolicyType;
-import org.oasis.xacml.v30.jaxb.RuleType;
-import org.oasis.xacml.v30.jaxb.TargetType;
-import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
-import org.oasis.xacml.v30.jaxb.VariableReferenceType;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import org.oasis.xacml.v30.jaxb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
 import org.xacml4j.v30.pdp.*;
-import org.xacml4j.v30.pdp.PolicyReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
+import javax.xml.bind.JAXBElement;
+import java.util.*;
 
-public class Xacml30PolicyFromJaxbToObjectModelMapper
+class Xacml30PolicyFromJaxbToObjectModelMapper
 	extends PolicyUnmarshallerSupport
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromJaxbToObjectModelMapper.class);
@@ -85,7 +52,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 
 	public Xacml30PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
+			DecisionCombiningAlgorithmProvider decisionAlgorithms) {
 		super(functions, decisionAlgorithms);
 	}
 
@@ -189,7 +156,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 				.issuer(createPolicyIssuer(p.getPolicyIssuer()))
 				.target(create(p.getTarget()))
 				.defaults(createPolicySetDefaults(p.getPolicySetDefaults()))
-				.withCombiningAlgorithm(createPolicyCombiningAlgorithm(p.getPolicyCombiningAlgId()))
+				.combiningAlgorithm(createPolicyCombiningAlgorithm(p.getPolicyCombiningAlgId()))
 				.compositeDecisionRules(createPolicies(p))
 				.obligation(getExpressions(p.getObligationExpressions(), m))
 				.advice(getExpressions(p.getAdviceExpressions(), m))
@@ -220,7 +187,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 						}
 						PolicySetReference policySetRef = PolicySetReference
 								.builder(ref.getValue())
-								.versionAsString(ref.getVersion())
+								.version(ref.getVersion())
 								.earliest(ref.getEarliestVersion())
 								.latest(ref.getLatestVersion())
 								.build();
@@ -234,7 +201,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 						}
 						PolicyReference policySetRef = PolicyReference
 								.builder(ref.getValue())
-								.versionAsString(ref.getVersion())
+								.version(ref.getVersion())
 								.earliest(ref.getEarliestVersion())
 								.latest(ref.getLatestVersion())
 								.build();
@@ -701,7 +668,8 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			Preconditions.checkState(expression != null);
 			if(log.isDebugEnabled()){
 				log.debug("Resolved variable " +
-						"definition variableId=\"{}\", expression=\"{}\"", varId, expression);
+						"definition variableId=\"{}\", " +
+                        "expression=\"{}\"", varId, expression);
 			}
 			m.resolveVariableDefinition(new VariableDefinition(varId, expression));
 		}

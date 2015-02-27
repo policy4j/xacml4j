@@ -22,21 +22,14 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 
 final class MultipleResourcesViaXPathExpressionLegacyHandler

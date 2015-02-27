@@ -22,41 +22,28 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.*;
-
-import java.io.StringReader;
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import com.google.common.collect.Iterables;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.xpath.DefaultXPathProvider;
-import org.xacml4j.v30.xpath.XPathProvider;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XPathExp;
+import org.xacml4j.v30.xpath.DefaultXPathProvider;
+import org.xacml4j.v30.xpath.XPathProvider;
 import org.xml.sax.InputSource;
 
-import com.google.common.collect.Iterables;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.util.Collection;
+import java.util.Iterator;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 public class MultipleResourcesViaXPathExpressionHandlerTest
 {
@@ -228,13 +215,16 @@ public class MultipleResourcesViaXPathExpressionHandlerTest
 		Attribute selector01 = r0.getOnlyEntity(Categories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
 		assertEquals(XPathExp.of("//md:record/md:patient[1]", Categories.RESOURCE),  Iterables.getOnlyElement(selector00.getValues()));
-		assertEquals(XPathExp.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector01.getValues()));
+		assertEquals(XPathExp.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1",
+                Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector01.getValues()));
 
 		Attribute selector10 = r1.getOnlyEntity(Categories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 		Attribute selector11 = r1.getOnlyEntity(Categories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 
-		assertEquals(XPathExp.of("//md:record/md:patient[1]", Categories.RESOURCE),  Iterables.getOnlyElement(selector10.getValues()));
-		assertEquals(XPathExp.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
+		assertEquals(XPathExp.of("//md:record/md:patient[2]", Categories.RESOURCE),
+                Iterables.getOnlyElement(selector10.getValues()));
+		assertEquals(XPathExp.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1",
+                Categories.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
 
 		Attribute selector20 = r2.getOnlyEntity(Categories.RESOURCE).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);
 		Attribute selector21 = r2.getOnlyEntity(Categories.SUBJECT_ACCESS).getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR);

@@ -22,13 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xacml4j.util.DOMUtil;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Ticker;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xacml4j.util.DOMUtil;
 
 public final class Content
 {
@@ -51,7 +50,7 @@ public final class Content
 		return content;
 	}
 
-	public long getTimestamp(){
+	public long getCreatedTime(){
 		return timestamp;
 	}
 

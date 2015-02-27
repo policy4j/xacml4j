@@ -31,27 +31,27 @@ import java.util.Set;
 
 import javax.xml.bind.JAXBElement;
 
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
+import org.xacml4j.v30.marshal.jaxb.DefaultXacmlPolicyUnmarshaller;
 import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
-import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
-import org.xacml4j.v30.spi.repository.PolicyRepository;
+import org.xacml4j.v30.spi.repository.ImmutablePolicySource;
 
 import com.google.common.base.Strings;
 import com.google.common.base.Supplier;
+import org.xacml4j.v30.spi.repository.PolicySource;
 
 
 public class Xacml20ConformanceTest
@@ -60,54 +60,18 @@ public class Xacml20ConformanceTest
 	private static final Logger LOG = LoggerFactory.getLogger(Xacml20ConformanceTest.class);
 
 	private static ResponseMarshaller responseMarshaller;
-	private static PolicyRepository repository;
+    private static PolicyUnmarshaller policyUnmarshaller;
+	private static PolicySource source;
 
-	private PolicyDecisionPointBuilder pdpBuilder;
+
 
 	@BeforeClass
 	public static void init_static() throws Exception
-	{
-		repository = new InMemoryPolicyRepository(
-				"testRepositoryId",
-				FunctionProviderBuilder.builder()
-				.defaultFunctions()
-				.build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.build());
+    {
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
-
-		addAllPolicies(repository, "IIA", 22);
-		addAllPolicies(repository, "IIB", 54);
-		addAllPolicies(repository, "IIC", 233);
-		addAllPolicies(repository, "IID", 30);
-
-		addAllPolicies(repository, "IIIA", 28);
-		addAllPolicies(repository, "IIIF", 7);
-		addAllPolicies(repository, "IIIG", 7);
-
-		addPolicy(repository, "IIE", "Policy.xml", 1);
-		addPolicy(repository, "IIE", "PolicyId1.xml", 1);
-		addPolicy(repository, "IIE", "PolicySetId1.xml", 1);
-
-		addPolicy(repository, "IIE", "Policy.xml", 2);
-		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
-		addPolicy(repository, "IIE", "PolicySetId1.xml", 2);
-
-		addPolicy(repository, "IIE", "Policy.xml", 2);
-		addPolicy(repository, "IIE", "PolicyId1.xml", 2);
-		addPolicy(repository, "IIE", "PolicyId2.xml", 2);
+        policyUnmarshaller = new DefaultXacmlPolicyUnmarshaller();
 	}
 
-	@Before
-	public void init(){
-		this.pdpBuilder = PolicyDecisionPointBuilder.builder("testPdp")
-		.pip(PolicyInformationPointBuilder.builder("testPip")
-				.defaultResolvers()
-				.resolverFromInstance(new Xacml20ConformanceAttributeResolver())
-				.build())
-		.policyRepository(repository);
-	}
 
 	@Test
 	public void testIIATests() throws Exception
@@ -195,71 +159,62 @@ public class Xacml20ConformanceTest
 	@Test
 	public void testExecuteIIIG006() throws Exception
 	{
-		executeTestCase("IIIG", 6);
+		executeTestCase("IIIG", 6, "Policy.xml");
 	}
 
-	private void executeXacmlConformanceTestCase(Set<Integer> exclude, final String testPrefix, int testCount) throws Exception
+	private void executeXacmlConformanceTestCase(Set<Integer> exclude,
+                                                 final String testPrefix, int testCount) throws Exception
 	{
 		for(int i = 1; i < testCount; i++)
 		{
 			if (!exclude.contains(i)) {
-				executeTestCase(testPrefix, i);
+				executeTestCase(testPrefix, i, "Policy.xml");
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void executeTestCase(String testPrefix, int testCaseNum) throws Exception
+	private void executeTestCase(String testPrefix, int testCaseNum, String suffix) throws Exception
 	{
 		final String name = testPrefix + Strings.padStart(Integer.toString(testCaseNum), 3, '0');
 		RequestContext request = getRequest(testPrefix, testCaseNum);
-		final PolicyDecisionPoint pdp = pdpBuilder
-				.rootPolicy(
-						repository.importPolicy(
-								getPolicy(testPrefix, testCaseNum, "Policy.xml")))
+        StringBuilder idBuilder = new StringBuilder().append(testPrefix).append("-").append(testCaseNum);
+        ImmutablePolicySource.Builder policySourceBuilder = ImmutablePolicySource.builder(idBuilder.toString());
+
+        Supplier<InputStream> policyStream = Xacml20TestUtility.getClasspathResource(getPolicyPath(testPrefix, testCaseNum, suffix));
+        policySourceBuilder.policy(policyStream);
+        
+        final PolicyDecisionPoint pdp = PolicyDecisionPointBuilder.builder(name)
+                .policyResolver(policySourceBuilder.build().createResolver())
+				.rootPolicy(policyUnmarshaller.unmarshal(policyStream.get()).getId())
+                .pip(PolicyInformationPointBuilder
+                        .builder("testId")
+                        .defaultResolvers()
+                        .resolverFromInstance(new Xacml20ConformanceAttributeResolver())
+                        .build())
 				.build();
 		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);
 		long end = System.currentTimeMillis();
 		System.out.printf("Executing test=\"%s\", " +
 				"execution took=\"%d\" milliseconds\n", name, (end - start));
+        // Get back XACML 2.0 response
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
+        // Assert against excpected response
 		Xacml20TestUtility.assertResponse(getResponse(testPrefix, testCaseNum), actual);
 	}
 
-	private static Supplier<InputStream> getPolicy(
+	private static String getPolicyPath(
 			String prefix, int number, String suffix) {
-		String path = "oasis-xacml20-compat-test/" + createTestAssetName(prefix, number, suffix);
-		return Xacml20TestUtility.getClasspathResource(path);
+		return "oasis-xacml20-compat-test/" + createTestAssetName(prefix, number, suffix);
 	}
 
-	private static void addAllPolicies(PolicyRepository r,
-	                                   String prefix, int count)
-	{
-		for (int i = 1; i < count; i++) {
-			addPolicy(r, prefix, "Policy.xml", i);
-		}
-	}
-
-	private static void addPolicy(PolicyRepository r, String prefix, String suffix, int index)
-	{
-		try{
-			final Supplier<InputStream> policyStream = getPolicy(prefix, index, suffix);
-			CompositeDecisionRule rule = r.importPolicy(policyStream);
-			if (rule == null) {
-				LOG.info("Could not load policy with prefix: {}, index: {}, suffix {}",
-						new Object[]{prefix, index, suffix});
-			}
-		} catch (Exception e) {
-			LOG.info("Could not load policy with prefix: {}, index: {}, suffix {}",
-					new Object[]{prefix, index, suffix, e});
-		}
-	}
 
 	private static String createTestAssetName(String prefix, int testCaseNum, String suffix)
 	{
 		return prefix + Strings.padStart(Integer.toString(testCaseNum), 3, '0') + suffix;
 	}
+
 
 	private static ResponseType getResponse(String prefix, int num) throws Exception {
 		return Xacml20TestUtility.getResponse("oasis-xacml20-compat-test/" + createTestAssetName(prefix, num, "Response.xml"));

@@ -24,6 +24,8 @@ package org.xacml4j.v30.spi.pip;
 
 import com.google.common.base.Preconditions;
 
+import java.util.concurrent.TimeUnit;
+
 public abstract class BasePolicyInformationPointCacheProvider implements PolicyInformationPointCacheProvider {
 
 	@Override
@@ -56,6 +58,16 @@ public abstract class BasePolicyInformationPointCacheProvider implements PolicyI
 			doPutAttributes(context, v);
 		}
 	}
+
+    protected boolean isExpired(AttributeSet v, ResolverContext context) {
+        return TimeUnit.SECONDS.convert(context.getTicker().read() - v.getCreatedTime(),
+                TimeUnit.NANOSECONDS) >= v.getDescriptor().getPreferredCacheTTL();
+    }
+
+    protected boolean isExpired(Content v, ResolverContext context) {
+        return TimeUnit.SECONDS.convert(context.getTicker().read() - v.getCreatedTime(),
+                TimeUnit.NANOSECONDS) >= v.getDescriptor().getPreferredCacheTTL();
+    }
 
 	protected abstract Content doGetContent(ResolverContext context);
 

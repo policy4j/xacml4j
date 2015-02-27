@@ -22,18 +22,13 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
 
 public class MultipleResourcesHandler extends RequestContextHandlerChain
 {

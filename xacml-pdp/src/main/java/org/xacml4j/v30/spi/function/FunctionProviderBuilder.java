@@ -22,28 +22,13 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.util.CglibInvocationFactory;
 import org.xacml4j.util.InvocationFactory;
-import org.xacml4j.v30.policy.function.ArithmeticFunctions;
-import org.xacml4j.v30.policy.function.BagFunctions;
-import org.xacml4j.v30.policy.function.DateTimeArithmeticFunctions;
-import org.xacml4j.v30.policy.function.EqualityPredicates;
-import org.xacml4j.v30.policy.function.HigherOrderFunctions;
-import org.xacml4j.v30.policy.function.LogicalFunctions;
-import org.xacml4j.v30.policy.function.NonNumericComparisonFunctions;
-import org.xacml4j.v30.policy.function.NumericComparisonFunctions;
-import org.xacml4j.v30.policy.function.NumericConversionFunctions;
-import org.xacml4j.v30.policy.function.RegularExpressionFunctions;
-import org.xacml4j.v30.policy.function.SetFunctions;
-import org.xacml4j.v30.policy.function.SpecialMatchFunctions;
-import org.xacml4j.v30.policy.function.StringConversionFunctions;
-import org.xacml4j.v30.policy.function.StringFunctions;
-import org.xacml4j.v30.policy.function.XPathFunctions;
+import org.xacml4j.v30.policy.function.*;
 
-import com.google.common.base.Preconditions;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class FunctionProviderBuilder
 {

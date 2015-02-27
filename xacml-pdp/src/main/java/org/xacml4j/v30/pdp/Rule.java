@@ -23,10 +23,9 @@ package org.xacml4j.v30.pdp;
  */
 
 
-import org.xacml4j.v30.*;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
 
 public class Rule extends BaseDecisionRule
 {

@@ -22,8 +22,6 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.Rule;
-
 public final class FirstApplicableRuleCombiningAlgorithm extends FirstApplicable
 {
 	private final static String ID = "urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable";

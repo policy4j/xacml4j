@@ -42,8 +42,7 @@ import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
-import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
-import org.xacml4j.v30.spi.repository.PolicyRepository;
+import org.xacml4j.v30.spi.repository.*;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
@@ -284,7 +283,7 @@ public class XacmlPolicyTestSupport {
 		}
 
 		public Builder defaultDecisionAlgorithms(){
-			decisionAlgoProviderBuilder.withDefaultAlgorithms();
+			decisionAlgoProviderBuilder.defaultAlgorithms();
 			return this;
 		}
 
@@ -309,7 +308,7 @@ public class XacmlPolicyTestSupport {
 		}
 
 		public Builder decisionAlgorithmProvider(Object provider){
-			decisionAlgoProviderBuilder.withAlgorithmProvider(provider);
+			decisionAlgoProviderBuilder.algorithmProvider(provider);
 			return this;
 		}
 
@@ -340,19 +339,18 @@ public class XacmlPolicyTestSupport {
 
 		public PolicyDecisionPoint build() throws Exception
 		{
-			PolicyRepository repository = new InMemoryPolicyRepository(
-					repositoryId,
-					functionProviderBuilder.build(),
-					decisionAlgoProviderBuilder.build());
-			for (Supplier<InputStream> in : policies) {
-				repository.importPolicy(in);
-			}
+            PolicySource source =
+                    ImmutablePolicySource
+                            .builder("testSourceId")
+                            .policies(policies)
+                            .build();
+            PolicyReferenceResolver resolver = source.createResolver();
 			return PolicyDecisionPointBuilder
 					.builder(pdpId)
 					.pip(pipBuilder.build())
-					.policyRepository(repository)
+					.policyResolver(resolver)
 					.defaultRequestHandlers()
-					.rootPolicy(repository.get(rootPolicyId, Version.parse(rootPolicyVersion)))
+					.rootPolicy(resolver.resolve(rootPolicyId, rootPolicyVersion))
 					.build();
 		}
 	}

@@ -22,29 +22,7 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
-import org.xacml4j.v30.policy.combine.DenyOverridesPolicyCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyOverridesPolicyOrderedCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyOverridesRuleCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyOverridesRuleOrderedCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyUnlessPermitPolicyCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.DenyUnlessPermitRuleCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.FirstApplicablePolicyCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.FirstApplicableRuleCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyOrderedDenyOverridesRuleCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyOrderedPermitOverridesPolicyCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyDenyOverridesPolicyCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyDenyOverridesRuleCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyOrderedDenyOverridesPolicyCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyOrderedPermitOverridesRuleCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyPermitOverridesPolicyCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.LegacyPermitOverridesRuleCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.OnlyOneApplicablePolicyCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitOverridesPolicyCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitOverridesPolicyOrderedCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitOverridesRuleCombineAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitOverridesRuleOrderedCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitUnlessDenyPolicyCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.PermitUnlessDenyRuleCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.*;
 
 class DefaultXacml30DecisionCombiningAlgorithms
 	extends DecisionCombiningAlgorithmProviderImpl

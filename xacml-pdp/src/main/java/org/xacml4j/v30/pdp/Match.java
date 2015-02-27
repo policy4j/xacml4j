@@ -22,12 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 
 public class Match implements PolicyElement, Matchable
 {

@@ -22,11 +22,11 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
-import java.util.Set;
-
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.Rule;
+
+import java.util.Set;
 
 
 public interface DecisionCombiningAlgorithmProvider

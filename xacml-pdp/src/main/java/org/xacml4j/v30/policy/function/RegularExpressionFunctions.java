@@ -22,29 +22,17 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import java.util.regex.Pattern;
-
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DNSNameExp;
-import org.xacml4j.v30.types.IPAddressExp;
-import org.xacml4j.v30.types.RFC822NameExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.TypeCapability;
-import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.X500NameExp;
+import org.xacml4j.v30.TypeCapability;
+import org.xacml4j.v30.spi.function.*;
+import org.xacml4j.v30.types.*;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+import java.util.regex.Pattern;
 
 
 @XacmlFunctionProvider(description="XACML regular expression functions")

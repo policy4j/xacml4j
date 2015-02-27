@@ -22,15 +22,13 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
+import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.pdp.Rule;
 
 
 /**

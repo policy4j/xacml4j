@@ -22,20 +22,19 @@ package org.xacml4j.v30.spi.pdp;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
+import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 
 /**
  * A chain of {@link RequestContextHandler}

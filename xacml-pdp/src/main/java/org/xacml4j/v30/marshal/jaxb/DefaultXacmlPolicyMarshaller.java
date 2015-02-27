@@ -22,10 +22,10 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import java.io.IOException;
-
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.marshal.PolicyMarshaller;
+
+import java.io.IOException;
 
 public class DefaultXacmlPolicyMarshaller extends BaseJAXBMarshaller<CompositeDecisionRule>
 	implements PolicyMarshaller

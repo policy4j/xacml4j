@@ -22,17 +22,16 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.pdp.FunctionSpec;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.pdp.FunctionSpec;
-
-import com.google.common.base.Preconditions;
 
 /**
  * An implementation of {@link FunctionProvider} which

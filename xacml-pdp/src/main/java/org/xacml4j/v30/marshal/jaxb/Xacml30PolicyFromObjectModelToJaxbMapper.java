@@ -22,47 +22,22 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.xml.bind.JAXBElement;
-
-import org.oasis.xacml.v30.jaxb.AdviceExpressionType;
-import org.oasis.xacml.v30.jaxb.AdviceExpressionsType;
-import org.oasis.xacml.v30.jaxb.AllOfType;
-import org.oasis.xacml.v30.jaxb.AnyOfType;
-import org.oasis.xacml.v30.jaxb.AttributeAssignmentExpressionType;
-import org.oasis.xacml.v30.jaxb.AttributeDesignatorType;
-import org.oasis.xacml.v30.jaxb.AttributeSelectorType;
-import org.oasis.xacml.v30.jaxb.AttributeType;
-import org.oasis.xacml.v30.jaxb.AttributeValueType;
-import org.oasis.xacml.v30.jaxb.ConditionType;
-import org.oasis.xacml.v30.jaxb.DefaultsType;
-import org.oasis.xacml.v30.jaxb.EffectType;
-import org.oasis.xacml.v30.jaxb.IdReferenceType;
-import org.oasis.xacml.v30.jaxb.MatchType;
-import org.oasis.xacml.v30.jaxb.ObjectFactory;
-import org.oasis.xacml.v30.jaxb.ObligationExpressionType;
-import org.oasis.xacml.v30.jaxb.ObligationExpressionsType;
-import org.oasis.xacml.v30.jaxb.PolicyIssuerType;
-import org.oasis.xacml.v30.jaxb.PolicySetType;
-import org.oasis.xacml.v30.jaxb.PolicyType;
-import org.oasis.xacml.v30.jaxb.RuleType;
-import org.oasis.xacml.v30.jaxb.TargetType;
-import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import org.oasis.xacml.v30.jaxb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.*;
-import org.xacml4j.v30.pdp.PolicyReference;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import javax.xml.bind.JAXBElement;
+import java.util.Collection;
+import java.util.Map;
 
-public class Xacml30PolicyFromObjectModelToJaxbMapper
+class Xacml30PolicyFromObjectModelToJaxbMapper
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromObjectModelToJaxbMapper.class);
 

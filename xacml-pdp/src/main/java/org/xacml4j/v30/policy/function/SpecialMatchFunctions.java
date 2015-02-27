@@ -22,8 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import javax.security.auth.x500.X500Principal;
-
 import org.xacml4j.v30.spi.function.XacmlFuncParam;
 import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
@@ -32,6 +30,8 @@ import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.RFC822NameExp;
 import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.X500NameExp;
+
+import javax.security.auth.x500.X500Principal;
 
 
 @XacmlFunctionProvider(description="XACML special match functions")

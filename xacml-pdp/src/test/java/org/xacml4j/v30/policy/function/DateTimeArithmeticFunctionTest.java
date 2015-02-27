@@ -22,9 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
@@ -32,6 +29,9 @@ import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.DateTimeExp;
 import org.xacml4j.v30.types.DayTimeDurationExp;
 import org.xacml4j.v30.types.YearMonthDurationExp;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class DateTimeArithmeticFunctionTest

@@ -22,10 +22,9 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
 
 public final class PolicyInformationPointBuilder
 {

@@ -22,14 +22,13 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.xacml4j.v30.pdp.VariableDefinition;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-
-import org.xacml4j.v30.pdp.VariableDefinition;
-
-import com.google.common.base.Preconditions;
 
 class VariableManager <VExpression>
 {

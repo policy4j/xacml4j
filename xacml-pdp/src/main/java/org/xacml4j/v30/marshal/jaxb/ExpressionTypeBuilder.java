@@ -22,27 +22,16 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import javax.xml.bind.JAXBElement;
-
-import org.oasis.xacml.v30.jaxb.ApplyType;
-import org.oasis.xacml.v30.jaxb.AttributeDesignatorType;
-import org.oasis.xacml.v30.jaxb.AttributeSelectorType;
-import org.oasis.xacml.v30.jaxb.AttributeValueType;
-import org.oasis.xacml.v30.jaxb.FunctionType;
-import org.oasis.xacml.v30.jaxb.ObjectFactory;
-import org.oasis.xacml.v30.jaxb.VariableReferenceType;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import org.oasis.xacml.v30.jaxb.*;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.pdp.Apply;
-import org.xacml4j.v30.pdp.AttributeDesignator;
-import org.xacml4j.v30.pdp.AttributeSelector;
-import org.xacml4j.v30.pdp.FunctionReference;
-import org.xacml4j.v30.pdp.VariableReference;
+import org.xacml4j.v30.pdp.*;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
+import javax.xml.bind.JAXBElement;
 
 interface ExpressionTypeBuilder
 {

@@ -22,35 +22,14 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import java.util.List;
-
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamAnyAttribute;
-import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncParamOptional;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.XacmlTypes;
-
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.spi.function.*;
+import org.xacml4j.v30.types.*;
+
+import java.util.List;
 
 @XacmlFunctionProvider(description="Attribute designator functions for XACML Entity type")
 public class AttributeDesignatorFunctions implements FunctionReturnTypeResolver

@@ -22,14 +22,9 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.List;
+import org.xacml4j.v30.*;
 
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.XacmlSyntaxException;
+import java.util.List;
 
 
 public interface FunctionSpec

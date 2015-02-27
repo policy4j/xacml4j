@@ -22,11 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.ListIterator;
-
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.spi.function.FunctionParamSpecVisitor;
+
+import java.util.ListIterator;
 
 
 public interface FunctionParamSpec

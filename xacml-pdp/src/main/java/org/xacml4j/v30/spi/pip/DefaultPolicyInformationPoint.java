@@ -22,6 +22,8 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -30,9 +32,6 @@ import org.xacml4j.v30.BagOfAttributeExp;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
 
 /**
  * A default implementation of {@link PolicyInformationPoint}
@@ -87,8 +86,7 @@ public class DefaultPolicyInformationPoint
 					log.debug("Trying to find resolver attributeId=\"{}\" values in cache", d.getId());
 				}
 				attributes = cache.getAttributes(rContext);
-				if (attributes != null &&
-						!isExpired(attributes, context)) {
+				if (attributes != null) {
 					if (log.isDebugEnabled()) {
 						log.debug("Found cached resolver attributeId=\"{}\" values=\"{}\"",
 								d.getId(), attributes);
@@ -131,20 +129,6 @@ public class DefaultPolicyInformationPoint
 		return ref.getDataType().emptyBag();
 	}
 
-	private boolean isExpired(AttributeSet v, DecisionRuleEvaluationContext context) {
-		return ((context.getTicker().read() - v.getCreatedTime()) /
-				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
-	}
-
-	private boolean isExpired(Content v, DecisionRuleEvaluationContext context) {
-		long duration = context.getTicker().read() - v.getTimestamp() / 1000000000L;
-
-		if (log.isDebugEnabled()) {
-			log.debug("Attribute set=\"{}\" age=\"{}\" in cache", v, duration);
-		}
-		return duration >= v.getDescriptor().getPreferredCacheTTL();
-	}
-
 	@Override
 	public Node resolve(final DecisionRuleEvaluationContext context,
 	                    CategoryId category)
@@ -158,11 +142,7 @@ public class DefaultPolicyInformationPoint
 		Content v = null;
 		if (d.isCacheable()) {
 			v = cache.getContent(pipContext);
-			if (v != null &&
-					!isExpired(v, context)) {
-				if (log.isDebugEnabled()) {
-					log.debug("Found cached content=\"{}\"", v);
-				}
+			if (v != null) {
 				return v.getContent();
 			}
 		}

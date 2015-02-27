@@ -22,13 +22,6 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +30,13 @@ import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.DecisionRuleEvaluationContext;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.easymock.EasyMock.createStrictControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 
 public class PermitUnlessDenyTest {

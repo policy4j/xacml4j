@@ -22,17 +22,16 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractRequestContextHandler
 	implements RequestContextHandler

@@ -22,30 +22,19 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.marshal.PolicyMarshaller;
+import org.xacml4j.v30.marshal.PolicyUnmarshaller;
+import org.xacml4j.v30.pdp.*;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.XPathVersion;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.marshal.PolicyMarshaller;
-import org.xacml4j.v30.marshal.PolicyUnmarshaller;
-import org.xacml4j.v30.pdp.MatchAnyOf;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.pdp.Rule;
-import org.xacml4j.v30.pdp.Target;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
+import static org.junit.Assert.*;
 
 
 public class XacmlPolicyUnmarshallerTest
@@ -56,15 +45,15 @@ public class XacmlPolicyUnmarshallerTest
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		reader = new XacmlPolicyUnmarshaller(
+		reader = new DefaultXacmlPolicyUnmarshaller(
 				FunctionProviderBuilder
 				.builder()
 				.defaultFunctions()
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder
 				.builder()
-				.withDefaultAlgorithms().build());
-		writer = new Xacml30PolicyMarshaller();
+				.defaultAlgorithms().build());
+		writer = new DefaultXacmlPolicyMarshaller();
 	}
 
 	@SuppressWarnings("unchecked")

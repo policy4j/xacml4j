@@ -22,11 +22,7 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.*;
 
 /**
  * Specialization of {@link org.xacml4j.v30.EvaluationContext}, that is

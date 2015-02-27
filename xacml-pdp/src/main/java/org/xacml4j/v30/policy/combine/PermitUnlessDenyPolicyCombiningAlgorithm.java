@@ -22,8 +22,6 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import org.xacml4j.v30.CompositeDecisionRule;
-
 public final class PermitUnlessDenyPolicyCombiningAlgorithm extends
 	PermitUnlessDeny
 {

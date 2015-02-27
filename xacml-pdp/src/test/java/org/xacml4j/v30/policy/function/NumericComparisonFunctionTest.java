@@ -22,12 +22,12 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.DoubleExp;
 import org.xacml4j.v30.types.IntegerExp;
+
+import static org.junit.Assert.assertEquals;
 
 
 

@@ -180,7 +180,7 @@ public final class Entity extends AttributeContainer
 	public static class Builder
 		extends AttributeContainer.Builder<Builder>
 	{
-		private Node content;
+		private Document content;
 
 		public Builder content(Node node) {
 			this.content = DOMUtil.copyNode(node);

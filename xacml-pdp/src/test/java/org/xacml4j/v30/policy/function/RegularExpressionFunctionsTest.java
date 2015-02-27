@@ -22,11 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +33,11 @@ import org.xacml4j.v30.types.AnyURIExp;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.RFC822NameExp;
 import org.xacml4j.v30.types.StringExp;
+
+import static org.easymock.EasyMock.createControl;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
 
 public class RegularExpressionFunctionsTest

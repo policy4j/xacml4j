@@ -22,13 +22,12 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-import com.google.common.base.Preconditions;
+import java.util.List;
 
 final class StaticFunctionReturnTypeResolver implements FunctionReturnTypeResolver
 {

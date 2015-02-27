@@ -22,17 +22,16 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.util.CglibInvocationFactory;
 import org.xacml4j.util.InvocationFactory;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-import com.google.common.base.Preconditions;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class AnnotationBasedFunctionProvider extends BaseFunctionProvider
 {

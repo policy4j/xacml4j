@@ -22,15 +22,15 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.xacml4j.v30.BagOfAttributeExp;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import static com.google.common.base.Preconditions.*;
 import com.google.common.collect.ImmutableList;
+import org.xacml4j.v30.BagOfAttributeExp;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * A key used to identify uniquely resolver
@@ -42,12 +42,20 @@ public final class ResolverCacheKey implements Serializable
 {
 	private static final long serialVersionUID = -6895205924708410228L;
 
+    /**
+     * Resolver unique identifier
+     */
 	private final String resolverId;
+
+    /**
+     * Request keys used by resolver
+     */
 	private final List<BagOfAttributeExp> keys;
+
 	private final int hashCode;
 
 	public ResolverCacheKey(Builder b) {
-		this.resolverId = b.id;
+		this.resolverId = checkNotNull(b.id);
 		this.keys = b.keysBuilder.build();
 		this.hashCode = Objects.hashCode(resolverId, keys);
 	}

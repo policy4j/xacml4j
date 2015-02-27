@@ -22,12 +22,10 @@
   -->
 
 <Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:md="http://www.med.example.com/schemas/record.xsd"
-	PolicyId="urn:oasis:names:tc:xacml:3.0:example:policyid:1"
-	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides"
-	Version="1.0">
+        xmlns:md="http://www.med.example.com/schemas/record.xsd"
+        PolicyId="urn:oasis:names:tc:xacml:3.0:example:policyid:1"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides"
+        Version="1.0">
 	<PolicyDefaults>
 		<XPathVersion>http://www.w3.org/TR/1999/REC-xpath-19991116</XPathVersion>
 	</PolicyDefaults>

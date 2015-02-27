@@ -22,10 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeExp;
@@ -33,6 +29,8 @@ import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.junit.Assert.*;
 
 
 public class SetFunctionTest

@@ -22,17 +22,16 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
-
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Ticker;
 import com.google.common.collect.ImmutableMap;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.BagOfAttributeExp;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 public final class AttributeSet
 {

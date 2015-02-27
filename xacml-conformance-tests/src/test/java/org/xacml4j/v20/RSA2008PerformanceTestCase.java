@@ -38,11 +38,12 @@ import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointCacheProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
-import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.ImmutablePolicySource;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Supplier;
 import com.google.common.collect.ImmutableList;
+import org.xacml4j.v30.spi.repository.PolicySource;
 
 public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 {
@@ -52,14 +53,6 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		PolicyRepository repository = new InMemoryPolicyRepository(
-				"testId",
-				FunctionProviderBuilder.builder()
-				.defaultFunctions()
-				.build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.build());
 
 		ImmutableList<Supplier<InputStream>> policyStreams = ImmutableList.of(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),
@@ -72,20 +65,21 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 				_getPolicy("XacmlPolicySet-03-N-RPS-med-rec-vrole.xml"),
 				_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 
-		ImmutableList.Builder<CompositeDecisionRule> policies = ImmutableList.builder();
-		for (Supplier<InputStream> policyStream : policyStreams) {
-			policies.add(repository.importPolicy(policyStream));
-		}
+        PolicySource source  = ImmutablePolicySource
+                .builder("testPolicySource")
+                .policies(policyStreams)
+                .build();
 
-		pdp = PolicyDecisionPointBuilder.builder("testPdp")
-			.policyRepository(repository)
+
+        pdp = PolicyDecisionPointBuilder.builder("testPdp")
+			.policyResolver(source.createResolver())
 			.pip(
 					PolicyInformationPointBuilder
 					.builder("testPip")
 					.defaultResolvers()
 					.withCacheProvider(new DefaultPolicyInformationPointCacheProvider(0, 0))
 					.build())
-			.rootPolicy(policies.build().get(0))
+            .rootPolicy("urn:va:xacml:2.0:interop:rsa8:policysetid:toplevel", "1.0")
 			.build();
 
 		requests = new RequestContext[5][4];

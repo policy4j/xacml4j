@@ -23,10 +23,10 @@ package org.xacml4j.v30.pdp;
  */
 
 
-import java.util.List;
-
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
+
+import java.util.List;
 
 
 public interface DecisionCombiningAlgorithm
