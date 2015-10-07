@@ -79,14 +79,20 @@ public class XacmlPolicyTestSupport {
 	}
 
 	protected void verifyXacml30Response(PolicyDecisionPoint pdp,
-			String xacmlRequestResource,
-			String expectedXacmlResponseResource) throws Exception {
-		RequestContext req = getXacml30Request(xacmlRequestResource);
-		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
-		ResponseContext resp = pdp.decide(req);
+			RequestContext request,
+			ResponseContext expectedResponse) throws Exception {
+		ResponseContext resp = pdp.decide(request);
 		log.debug("Expected XACML 3.0 response=\"{}\"", expectedResponse);
 		log.debug("Received XACML 3.0 response=\"{}\"", resp);
 		assertResponse(expectedResponse, resp);
+	}
+
+	protected void verifyXacml30Response(PolicyDecisionPoint pdp,
+										 String xacmlRequestResource,
+										 String expectedXacmlResponseResource) throws Exception {
+		RequestContext req = getXacml30Request(xacmlRequestResource);
+		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
+		verifyXacml30Response(pdp, req, expectedResponse);
 	}
 
 	protected void verifyXacml20Response(
@@ -265,7 +271,7 @@ public class XacmlPolicyTestSupport {
 		private FunctionProviderBuilder functionProviderBuilder;
 		private PolicyInformationPointBuilder pipBuilder;
 		private DecisionCombiningAlgorithmProviderBuilder decisionAlgoProviderBuilder;
-		private Collection<Supplier<InputStream>> policies;
+		private Collection<Object> policies; // might be either Supplier<InputStream> or CompositeDecisionRule
 
 		public Builder(String pdpId, String pipId, String repositoryId){
 			Preconditions.checkNotNull(pdpId);
@@ -274,7 +280,7 @@ public class XacmlPolicyTestSupport {
 			this.functionProviderBuilder = FunctionProviderBuilder.builder();
 			this.decisionAlgoProviderBuilder = DecisionCombiningAlgorithmProviderBuilder.builder();
 			this.pipBuilder = PolicyInformationPointBuilder.builder(pipId);
-			this.policies = new ArrayList<Supplier<InputStream>>();
+			this.policies = new ArrayList<Object>();
 			this.repositoryId = repositoryId;
 			this.pdpId = pdpId;
 		}
@@ -325,6 +331,16 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 
+		public Builder policy(CompositeDecisionRule policy){
+			this.policies.add(policy);
+			return this;
+		}
+
+		public Builder policies(CompositeDecisionRule... policies){
+			Collections.addAll(this.policies, policies);
+			return this;
+		}
+
 		public Builder policyFromClasspath(String path){
 			this.policies.add(getPolicy(path));
 			return this;
@@ -340,14 +356,25 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 
+		@SuppressWarnings("unchecked")
 		public PolicyDecisionPoint build() throws Exception
 		{
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
 					functionProviderBuilder.build(),
 					decisionAlgoProviderBuilder.create());
-			for (Supplier<InputStream> in : policies) {
-				repository.importPolicy(in);
+			for (Object policy : policies) {
+				if (policy instanceof Supplier) {
+					repository.importPolicy((Supplier<InputStream>) policy);
+				} else if (policy instanceof CompositeDecisionRule) {
+					repository.add((CompositeDecisionRule) policy);
+				} else {
+					throw new UnsupportedOperationException(
+						String.format(
+							"Unable to interpret policy represented by '%s'. " +
+							"There are 'Supplier<InputStream>' or 'CompositeDecisionRule' supported only.",
+							policy.getClass()));
+				}
 			}
 			return PolicyDecisionPointBuilder
 					.builder(pdpId)
