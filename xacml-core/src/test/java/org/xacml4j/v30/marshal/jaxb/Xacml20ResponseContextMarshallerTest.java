@@ -99,20 +99,20 @@ public class Xacml20ResponseContextMarshallerTest {
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
 		assertEquals(actual.getResult().size(), 1);
 		List<ResultType> actualResults = actual.getResult();
-		for(int i = 0; i < actualResults.size(); i++){
-			assertEquals(actualResults.get(i).getStatus().getStatusCode().getValue(), "urn:oasis:names:tc:xacml:1.0:status:ok");
-			
-			List<ObligationType> actualObligations = actualResults.get(i).getObligations().getObligation();
+		for (ResultType actualResult : actualResults) {
+			assertEquals(actualResult.getStatus().getStatusCode().getValue(), "urn:oasis:names:tc:xacml:1.0:status:ok");
+
+			List<ObligationType> actualObligations = actualResult.getObligations().getObligation();
 
 			assertEquals(actualObligations.size(), 1);
-			
+
 			Map<String, ObligationType> aMap = new LinkedHashMap<String, ObligationType>();
-			for(ObligationType o : actualObligations){
+			for (ObligationType o : actualObligations) {
 				aMap.put(o.getObligationId(), o);
 			}
 
-			for(String obligationId : aMap.keySet()){
-				ObligationType obligationA = aMap.get(obligationId);
+			for (Map.Entry<String, ObligationType> entry : aMap.entrySet()) {
+				ObligationType obligationA = entry.getValue();
 				List<AttributeAssignmentType> aAttr = obligationA.getAttributeAssignment();
 				assertEquals(aAttr.size(), 18);
 			}
@@ -143,5 +143,5 @@ public class Xacml20ResponseContextMarshallerTest {
 			Closeables.closeQuietly(in);
 		}
 	}
-	
+
 }

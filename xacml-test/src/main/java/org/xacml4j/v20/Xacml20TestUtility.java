@@ -92,9 +92,9 @@ public class Xacml20TestUtility
 		assertTrue(aMap.keySet().containsAll(bMap.keySet()));
 		assertTrue(bMap.keySet().containsAll(aMap.keySet()));
 
-		for(String obligationId : aMap.keySet()){
-			ObligationType obligationA = aMap.get(obligationId);
-			ObligationType obligationB = bMap.get(obligationId);
+		for(Map.Entry<String, ObligationType> entry : aMap.entrySet()){
+			ObligationType obligationA = entry.getValue();
+			ObligationType obligationB = bMap.get(entry.getKey());
 			assertObligation(obligationA, obligationB);
 		}
 	}
@@ -108,9 +108,9 @@ public class Xacml20TestUtility
 		Map<String, AttributeAssignmentType> bMap = toAttributeAssignmentMap(bAttr);
 		assertTrue(aMap.keySet().containsAll(bMap.keySet()));
 		assertTrue(bMap.keySet().containsAll(aMap.keySet()));
-		for(String attributeId : aMap.keySet()){
-			AttributeAssignmentType attrA = aMap.get(attributeId);
-			AttributeAssignmentType attrB = bMap.get(attributeId);
+		for (Map.Entry<String, AttributeAssignmentType> entry : aMap.entrySet()) {
+			AttributeAssignmentType attrA = entry.getValue();
+			AttributeAssignmentType attrB = bMap.get(entry.getKey());
 			assertAttributeAssignment(attrA, attrB);
 		}
 	}
