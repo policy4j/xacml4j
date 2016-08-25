@@ -71,7 +71,7 @@ public class AttributeSelectorTest
 	}
 
 	@Test
-	public void testMustBePresenFalseAndReturnsNonEmptyBag() throws EvaluationException
+	public void testMustBePresentFalseAndReturnsNonEmptyBag() throws EvaluationException
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
@@ -90,7 +90,7 @@ public class AttributeSelectorTest
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresenTrueAndReturnsEmptyBag() throws EvaluationException
+	public void testMustBePresentTrueAndReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
@@ -107,7 +107,7 @@ public class AttributeSelectorTest
 	}
 
 	@Test
-	public void testMustBePresenFalseAndReturnsEmptyBag() throws EvaluationException
+	public void testMustBePresentFalseAndReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
@@ -126,7 +126,7 @@ public class AttributeSelectorTest
 	}
 
 	@Test
-	public void testMustBePresenFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
+	public void testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
@@ -147,7 +147,7 @@ public class AttributeSelectorTest
 	}
 
 	@Test
-	public void testMustBePresenFalseAndContextThrowsRuntimeException() throws EvaluationException
+	public void testMustBePresentFalseAndContextThrowsRuntimeException() throws EvaluationException
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
@@ -166,7 +166,7 @@ public class AttributeSelectorTest
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresenTrueAndContextThrowsRuntimeException() throws EvaluationException
+	public void testMustBePresentTrueAndContextThrowsRuntimeException() throws EvaluationException
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
@@ -183,7 +183,7 @@ public class AttributeSelectorTest
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresenTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
+	public void testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
 		AttributeSelector ref = AttributeSelector
 				.builder()
