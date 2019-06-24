@@ -1,24 +1,10 @@
-xacml4j
-=======
-
-Implementation of [OASIS eXtensible Access Control Markup Language (XACML)](https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=xacml)
-v2.0 and v3.0 specifications in Java programming language
-
-
-# XACML4j XACML
+# Xacml4j XACML Implementation
 
 XACML4j's reference implementation of the OASIS XACML 3.0 Standard. The framework represents the entire XACML 3.0 object set as a collection of Java interfaces and standard implementations of those interfaces.  The PDP engine is built on top of this framework and represents a complete implementation of a XACML 3.0 PDP, including all of the multi-decision profiles. In addition, the framework also contains an implementation of the OASIS XACML 3.0 RESTful API v1.0 and XACML JSON Profile v1.0 WD 14. The PEP API includes annotation functionality, allowing application developers to simply annotate a Java class to provide attributes for a request. The annotation support removes the need for application developers to learn much of the API.
 
 The ramework also includes interfaces and implementations to standardize development of PIP engines that are used by the PDP implementation, and can be used by other implementations built on top of the framework. The framework also includes interfaces and implementations for a PAP distributed cloud infrastructure of PDP nodes that includes support for policy distribution and pip configurations. This PAP infrastructure includes a web application administrative console that contains a XACML 3.0 policy editor, attribute dictionary support, and management of PDP RESTful node instances. In addition, there are tools available for policy simulation.
 
-The [wiki](https://github.com/att/XACML/wiki) has a lot of information on the organization of the software. 
-
-Click here to view the [JavaDoc](http://att.github.io/XACML/javadocs/index.html).
-
-Tutorials and other useful information is also located on our [Github Pages site](http://att.github.io/XACML). TBD - working on this 10/14.
-
-# Release
-
+Currently Xacml4j is used in production: Xfinty Wifi Acccess Control, Xfinity TV Everywhere Access Control
 
 
 # Requirements
