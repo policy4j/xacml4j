@@ -22,23 +22,22 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
+/**
+ * @author Giedrius Trumpickas
+ */
 public class ConditionTest
 {
 	private Expression exp;
@@ -63,14 +62,17 @@ public class ConditionTest
 
 	@Test
 	public void testExpressionThrowsEvaluationException() {
+
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(
 				ctl.createMock(FunctionSpec.class), new NullPointerException()));
-		context.setEvaluationStatus(Status.processingError().build());
+		Capture<Status> statusCapture = new Capture<>();
+		context.setEvaluationStatus(capture(statusCapture));
 
 		ctl.replay();
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, statusCapture.getValue().getStatusCode().getValue());
 		ctl.verify();
 	}
 
@@ -78,18 +80,20 @@ public class ConditionTest
 	public void testExpressionThrowsRuntimeException() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
-		context.setEvaluationStatus(Status.processingError().build());
+		Capture<Status> statusCapture = new Capture<>();
+		context.setEvaluationStatus(capture(statusCapture));
 
 		ctl.replay();
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, statusCapture.getValue().getStatusCode().getValue());
 		ctl.verify();
 	}
 
 	@Test
 	public void testExpressionEvaluatesToFalse() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(BooleanExp.valueOf(false));
+		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
 
 		ctl.replay();
 		Condition c = new Condition(exp);
@@ -100,7 +104,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionEvaluatesToTrue() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(BooleanExp.valueOf(true));
+		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
 
 		ctl.replay();
 		Condition c = new Condition(exp);
@@ -110,8 +114,8 @@ public class ConditionTest
 
 	@Test
 	public void testObjectMethods() {
-		AttributeExp exp1 = ctl.createMock(AttributeExp.class);
-		AttributeExp exp2 = ctl.createMock(AttributeExp.class);
+		AttributeValue exp1 = ctl.createMock(AttributeValue.class);
+		AttributeValue exp2 = ctl.createMock(AttributeValue.class);
 
 		expect(exp1.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN).times(2);
 		expect(exp2.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN).times(1);

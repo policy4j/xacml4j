@@ -22,39 +22,22 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamEvaluationContext;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DNSNameExp;
-import org.xacml4j.v30.types.DateExp;
-import org.xacml4j.v30.types.DateTimeExp;
-import org.xacml4j.v30.types.DayTimeDurationExp;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IPAddressExp;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.RFC822NameExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.TimeExp;
-import org.xacml4j.v30.types.X500NameExp;
-import org.xacml4j.v30.types.YearMonthDurationExp;
+import org.xacml4j.v30.spi.function.*;
+import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
+import org.xacml4j.v30.types.*;
 
 
 @XacmlFunctionProvider(description="XACML string functions")
-public class StringFunctions
+final class StringFunctions
 {
 	/** Private constructor for utility class */
 	private StringFunctions() {}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:string-concatenate")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp concatenate(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static StringValue concatenate(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
 		return a.concat(b);
 	}
@@ -62,300 +45,298 @@ public class StringFunctions
 	@Deprecated
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:uri-string-concatenate")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp uriStringConcatenate(
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#anyURI") AnyURIExp a,
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#string") StringExp b)
+	public static StringValue uriStringConcatenate(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
 		return a.toStringExp().concat(b);
 	}
 
-
-
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-starts-with")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp startsWith(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static BooleanValue startsWith(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		return BooleanExp.of(a.getValue().startsWith(b.getValue()));
+		return XacmlTypes.BOOLEAN.of(a.startsWith(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-starts-with")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp uriStartsWith(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static BooleanValue uriStartsWith(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		return BooleanExp.valueOf(a.toStringExp().startsWith(b));
+		return XacmlTypes.BOOLEAN.of(a.toStringExp().startsWith(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-ends-with")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp endsWith(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static BooleanValue endsWith(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		return BooleanExp.valueOf(a.endsWith(b));
+		return XacmlTypes.BOOLEAN.of(a.endsWith(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-ends-with")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp uriEndsWith(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static BooleanValue uriEndsWith(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		return BooleanExp.valueOf(a.toStringExp().endsWith(b));
+		return XacmlTypes.BOOLEAN.of(a.toStringExp().endsWith(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-contains")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp contains(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static BooleanValue contains(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		return BooleanExp.valueOf(a.contains(b));
+		return XacmlTypes.BOOLEAN.of(a.contains(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-contains")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp uriContains(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp b)
+	public static BooleanValue uriContains(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		return BooleanExp.of(a.toStringExp().contains(b));
+		return XacmlTypes.BOOLEAN.of(a.toStringExp().contains(b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-boolean")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromBoolean(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanExp v)
+	public static StringValue stringFromBoolean(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:boolean-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp booleanFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static BooleanValue booleanFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return BooleanExp.of(v.getValue());
+		return XacmlTypes.BOOLEAN.of(v.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-integer")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromInteger(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp v)
+	public static StringValue stringFromInteger(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue v)
 	{
-		return v.toStringExp();
+		return v.toStringValue();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:integer-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerExp integerFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static IntegerValue integerFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return IntegerExp.of(v.getValue());
+		return XacmlTypes.INTEGER.of(v.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-double")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromDouble(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp v)
+	public static StringValue stringFromDouble(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:double-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
-	public static DoubleExp doubleFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static DoubleValue doubleFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return DoubleExp.of(v.getValue());
+		return XacmlTypes.DOUBLE.of(v.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-time")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromTime(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time")TimeExp v)
+	public static StringValue stringFromTime(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") TimeValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:time-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#time")
-	public static TimeExp timeFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static TimeValue timeFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return TimeExp.of(v.getValue());
+		return XacmlTypes.TIME.of(v.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-date")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromDate(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date")DateExp v)
+	public static StringValue stringFromDate(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") DateValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#date")
-	public static DateExp dateFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static DateValue dateFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return DateExp.of(v);
+		return XacmlTypes.DATE.of(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dateTime")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromDateTime(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime")DateTimeExp v)
+	public static StringValue stringFromDateTime(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") DateTimeValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	public static DateTimeExp dateTimeFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static DateTimeValue dateTimeFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return DateTimeExp.of(v);
+		return XacmlTypes.DATETIME.of(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-anyURI")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromAnyURI(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI")AnyURIExp v)
+	public static StringValue stringFromAnyURI(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#anyURI")
-	public static AnyURIExp anyURIFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static AnyURIValue anyURIFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return AnyURIExp.valueOf(v);
+		return XacmlTypes.ANYURI.of(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dayTimeDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromDayTimeDuration(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")DayTimeDurationExp v)
+	public static StringValue stringFromDayTimeDuration(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") DayTimeDurationValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
-	public static DayTimeDurationExp dayTimeDurationFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static DayTimeDurationValue dayTimeDurationFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return DayTimeDurationExp.of(v);
+		return XacmlTypes.DAYTIMEDURATION.of(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-yearMonthDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromYearMonthDuration(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")YearMonthDurationExp v)
+	public static StringValue stringFromYearMonthDuration(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") YearMonthDurationValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-from-string")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
-	public static YearMonthDurationExp yearMonthDurationFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static YearMonthDurationValue yearMonthDurationFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return YearMonthDurationExp.of(v);
+		return YearMonthDurationValue.of(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-x500Name")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromX500Name(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameExp v)
+	public static StringValue stringFromX500Name(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500NameValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:x500Name-from-string")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
-	public static X500NameExp x500NameFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static X500NameValue x500NameFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return X500NameExp.of(v);
+		return XacmlTypes.X500NAME.of(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-rfc822Name")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromRfc822Name(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameExp v)
+	public static StringValue stringFromRfc822Name(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822NameValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:rfc822Name-from-string")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
-	public static RFC822NameExp rfc822NameFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static RFC822NameValue rfc822NameFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return RFC822NameExp.of(v);
+		return XacmlTypes.RFC822NAME.of(v);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-ipAddress")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromIpAddress(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")IPAddressExp v)
+	public static StringValue stringFromIpAddress(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress") IPAddressValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:ipAddress-from-string")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")
-	public static IPAddressExp ipAddressFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static IPAddressValue ipAddressFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return IPAddressExp.of(v.getValue());
+		return XacmlTypes.IPADDRESS.of(v.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dnsName")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringExp stringFromDnsName(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameExp v)
+	public static StringValue stringFromDnsName(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName") DNSNameValue v)
 	{
 		return v.toStringExp();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dnsName-from-string")
 	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
-	public static DNSNameExp dnsNameFromString(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringExp v)
+	public static DNSNameValue dnsNameFromString(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return DNSNameExp.of(v);
+		return XacmlTypes.DNSNAME.of(v);
 	}
 }

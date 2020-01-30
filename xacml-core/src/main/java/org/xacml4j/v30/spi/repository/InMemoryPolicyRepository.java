@@ -35,11 +35,12 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
+import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.pdp.Versionable;
+import org.xacml4j.v30.Versionable;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.FunctionProvider;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -66,12 +67,13 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	public InMemoryPolicyRepository(
 			String id,
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionAlgorithms)
+			DecisionCombiningAlgorithmProvider decisionAlgorithms,
+			PolicyUnmarshaller unmarshaller)
 		throws Exception
 	{
-		super(id, functions, decisionAlgorithms);
-		this.policies = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, Policy>>(INITIAL_POLICY_MAP_SIZE);
-		this.policySets = new ConcurrentHashMap<String, ConcurrentNavigableMap<Version, PolicySet>>(INITIAL_POLICYSET_MAP_SIZE);
+		super(id, functions, decisionAlgorithms, unmarshaller);
+		this.policies = new ConcurrentHashMap<>(INITIAL_POLICY_MAP_SIZE);
+		this.policySets = new ConcurrentHashMap<>(INITIAL_POLICYSET_MAP_SIZE);
 	}
 
 	@Override

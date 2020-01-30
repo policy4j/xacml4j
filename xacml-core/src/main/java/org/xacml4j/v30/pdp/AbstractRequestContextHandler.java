@@ -22,29 +22,30 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AbstractRequestContextHandler
 	implements RequestContextHandler
 {
 	private AtomicReference<RequestContextHandler> next;
 	private List<String> features;
+	private boolean immutable = false;
 
 	protected AbstractRequestContextHandler(String featureId)
 	{
 		Preconditions.checkNotNull(featureId);
 		this.features = ImmutableList.of(featureId);
-		this.next = new AtomicReference<RequestContextHandler>();
+		this.next = new AtomicReference<>();
 	}
 
 	@Override
@@ -65,20 +66,26 @@ public abstract class AbstractRequestContextHandler
 			PolicyDecisionPointContext context)
 	{
 		RequestContextHandler h = next.get();
-		return (h == null)?
+		return  (h == null)?
 				Collections.singleton(context.requestDecision(request)):
 					h.handle(request, context);
 	}
 
-	/**
-	 * @exception IllegalStateException if this handler
-	 * already has handler set
-	 */
 	@Override
-	public final void setNext(RequestContextHandler handler) {
+	public final void setNext(RequestContextHandler handler, boolean makeImmutable) {
+		Preconditions.checkState(immutable);
 		Preconditions.checkNotNull(handler);
 		Preconditions.checkState(next.get() == null,
 				"Handler is already has next handler");
 		this.next.set(handler);
+		this.immutable = makeImmutable;
+	}
+
+	public final boolean hasNext(){
+		return next.get() != null;
+	}
+
+	public final Optional<RequestContextHandler> getNext(){
+		return Optional.ofNullable(next.get());
 	}
 }

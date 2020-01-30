@@ -29,17 +29,9 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.function.FunctionInvocation;
 import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
@@ -69,19 +61,19 @@ public class MatchTest
 	public void testMatchEvaluation() throws EvaluationException
 	{
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
-		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bagOf(IntegerExp.of(2), IntegerExp.of(1)));
+		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bag().attribute(XacmlTypes.INTEGER.of(2), XacmlTypes.INTEGER.of(1)).build());
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
 		expect(invocation.invoke(spec, context,
-				ImmutableList.<Expression>builder().add(IntegerExp.of(1), IntegerExp.of(2)).build()))
-				.andReturn(BooleanExp.valueOf(false));
+				ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()))
+				.andReturn(XacmlTypes.BOOLEAN.of(false));
 		expect(invocation.invoke(spec, context,
-				ImmutableList.<Expression>builder().add(IntegerExp.of(1), IntegerExp.of(1)).build()))
-				.andReturn(BooleanExp.valueOf(true));
+				ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(1)).build()))
+				.andReturn(XacmlTypes.BOOLEAN.of(true));
 		c.replay();
 		Match m = Match
 				.builder()
 				.predicate(spec)
-				.attribute(IntegerExp.of(1))
+				.attribute(XacmlTypes.INTEGER.of(1))
 				.attrRef(ref)
 				.build();
 		assertEquals(MatchResult.MATCH, m.match(context));
@@ -92,7 +84,7 @@ public class MatchTest
 	public void testMatchEvaluationFailedToResolveAttributeException() throws EvaluationException
 	{
 		AttributeDesignatorKey key  = AttributeDesignatorKey.builder()
-				.category(Categories.RESOURCE)
+				.category(CategoryId.RESOURCE)
 				.dataType(XacmlTypes.INTEGER)
 				.attributeId("testId")
 				.build();
@@ -104,7 +96,7 @@ public class MatchTest
 		Match m = Match
 				.builder()
 				.predicate(spec)
-				.attribute(IntegerExp.of(1))
+				.attribute(XacmlTypes.INTEGER.of(1))
 				.attrRef(ref)
 				.build();
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));

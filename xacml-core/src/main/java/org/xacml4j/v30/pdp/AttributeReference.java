@@ -22,14 +22,9 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.*;
+
+import java.util.Optional;
 
 /**
  * A base class for XACML attribute references
@@ -61,15 +56,15 @@ public abstract class AttributeReference implements Expression
 	 *
 	 * @return an attribute reference key
 	 */
-	public abstract AttributeReferenceKey getReferenceKey();
+	public abstract  <T extends AttributeReferenceKey>  T getReferenceKey();
 
 	/**
 	 * Gets bag returned by this reference
 	 * attribute XACML primitive data type
 	 *
-	 * @return {@link AttributeExpType}
+	 * @return {@link AttributeValueType}
 	 */
-	public AttributeExpType getDataType(){
+	public AttributeValueType getDataType(){
 		return getReferenceKey().getDataType();
 	}
 
@@ -95,27 +90,44 @@ public abstract class AttributeReference implements Expression
 	}
 
 	@Override
-	public abstract BagOfAttributeExp evaluate(EvaluationContext context)
-		throws EvaluationException;
+	public BagOfAttributeValues evaluate(EvaluationContext context)
+		throws EvaluationException
+	{
+		Optional<BagOfAttributeValues> v = resolveImpl(context);
+			if(!v.isPresent() &&
+					isMustBePresent()){
+				throw AttributeReferenceEvaluationException
+						.forMissingRef(getReferenceKey());
+			}
+			return v.orElse(
+					getDataType()
+							.emptyBag());
+	}
+
+	private Optional<BagOfAttributeValues> resolveImpl(EvaluationContext context)
+	{
+		try{
+			return doContextResolve(context);
+		}catch(EvaluationException e){
+			if(isMustBePresent()){
+				throw e;
+			}
+			return Optional.empty();
+		}catch(Exception e){
+			if(isMustBePresent()){
+				throw AttributeReferenceEvaluationException
+						.forMissingRef(getReferenceKey());
+			}
+			return Optional.empty();
+		}
+	}
+
+	protected abstract Optional<BagOfAttributeValues> doContextResolve(EvaluationContext context);
+
 
 	public static abstract class Builder<T>
 	{
-		private boolean mustBePresent = false;
-
-		public T category(CategoryId category){
-			getBuilder().category(category);
-			return getThis();
-		}
-
-		public T category(String category){
-			getBuilder().category(category);
-			return getThis();
-		}
-
-		public T dataType(AttributeExpType type){
-			getBuilder().dataType(type);
-			return getThis();
-		}
+		private boolean mustBePresent;
 
 		public T mustBePresent(boolean present){
 			this.mustBePresent = present;
@@ -123,6 +135,5 @@ public abstract class AttributeReference implements Expression
 		}
 
 		protected abstract T getThis();
-		protected abstract AttributeReferenceKey.Builder<?> getBuilder();
 	}
 }

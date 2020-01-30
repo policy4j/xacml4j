@@ -23,6 +23,9 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import org.w3c.dom.Node;
+import org.xacml4j.v30.EvaluationContext;
+
+import java.util.Optional;
 
 public interface PolicyInformationPointCacheProvider
 {
@@ -32,11 +35,33 @@ public interface PolicyInformationPointCacheProvider
 	 * @param context resolver context
 	 * @return {@link Node} or @{code null}
 	 */
-	Content getContent(ResolverContext context);
+	Optional<ContentRef> getContent(ResolverContext context);
 
-	void putContent(ResolverContext context, Content content);
+	/**
+	 * Adds content to cache
+	 *
+	 * @param context a resolver context
+	 * @param content a content
+	 */
+	void putContent(ResolverContext context, ContentRef content);
 
-	AttributeSet getAttributes(ResolverContext context);
+	/**
+	 * Gets {@link AttributeSet} from cache
+	 *
+	 * @param context a resolver context
+	 * @return {@link Optional<AttributeSet>}
+	 */
+	Optional<AttributeSet> getAttributes(ResolverContext context);
 
+
+	/**
+	 * Adds attributes to cache
+	 *
+	 * @param context a resolver context
+	 * @param v attributes
+	 */
 	void putAttributes(ResolverContext context, AttributeSet v);
+
+
+
 }

@@ -26,14 +26,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import org.junit.Ignore;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.BooleanValue;
+import org.xacml4j.v30.types.IntegerValue;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 @XacmlFunctionProvider(description="TestFunctions")
@@ -45,89 +43,91 @@ public final class TestFunctions
 
 	@XacmlFuncSpec(id="test1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp test1(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
+	public static BooleanValue test1(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return BooleanExp.valueOf(a.equals(b));
+		return XacmlTypes.BOOLEAN.of(a.equals(b));
 	}
 
 	@XacmlFuncSpec(id="test2")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerExp test2(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeExp bag)
+	public static IntegerValue test2(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true) BagOfAttributeValues bag)
 	{
-		return IntegerExp.of(bag.size());
+		return XacmlTypes.INTEGER.of(bag.size());
 	}
 
 	@XacmlFuncSpec(id="test3", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerExp and(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)IntegerExp ...values)
+	public static IntegerValue and(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2) IntegerValue...values)
 		throws EvaluationException
 	{
 		Long v = 0L;
 		for(Expression e : values){
-			v += ((IntegerExp)e.evaluate(context)).getValue();
+			v += ((IntegerValue)e.evaluate(context)).value();
 
 		}
-		return IntegerExp.of(v);
+		return XacmlTypes.INTEGER.of(v);
 	}
 
 	@XacmlFuncSpec(id="test4", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerExp and(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
+	public static IntegerValue and(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)Expression ...values)
 		throws EvaluationException
 	{
 		Long v = 0L;
 		for(Expression e : values){
-			v += ((IntegerExp)e.evaluate(context)).getValue();
+			v += ((IntegerValue)e.evaluate(context)).value();
 
 		}
-		return IntegerExp.of(v);
+		return XacmlTypes.INTEGER.of(v);
 	}
 
 	@XacmlFuncSpec(id="test5")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)
-	public static BagOfAttributeExp test5(
-			@XacmlFuncParamEvaluationContext EvaluationContext context,
+	public static BagOfAttributeValues test5(
+			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionSpec function,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)BagOfAttributeExp bag)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true) BagOfAttributeValues bag)
 		throws EvaluationException
 	{
-		Collection<AttributeExp> attributes = new LinkedList<AttributeExp>();
-		for(AttributeExp attr : bag.values()){
-			AttributeExp v = function.invoke(context, attr);
+		Collection<AttributeValue> attributes = new LinkedList<AttributeValue>();
+		for(AttributeValue attr : bag.values()){
+			AttributeValue v = function.invoke(context, attr);
 			attributes.add(v);
 
 		}
-		return IntegerExp.bag().attributes(attributes).build();
+		return XacmlTypes.INTEGER.bag()
+				.attributes(attributes)
+				.build();
 	}
 
 	@XacmlFuncSpec(id="test5VarArg")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static BooleanExp test5VarArg(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp value,
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)BooleanExp ...values)
+	public static BooleanValue test5VarArg(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue value,
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0) BooleanValue...values)
 		throws EvaluationException
 	{
 		if(values != null){
 			System.out.println(values.length);
 		}
-		return BooleanExp.valueOf(false);
+		return XacmlTypes.BOOLEAN.of(false);
 	}
 
 	@XacmlFuncSpec(id="test6VarArg")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static BooleanExp test6(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b,
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)BooleanExp ...values)
+	public static BooleanValue test6(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b,
+			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0) BooleanValue...values)
 		throws EvaluationException
 	{
-		return BooleanExp.valueOf(false);
+		return XacmlTypes.BOOLEAN.of(false);
 	}
 }

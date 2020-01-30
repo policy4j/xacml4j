@@ -22,16 +22,28 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Throwables;
+import org.xacml4j.util.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+/**
+ * Represents XACML status
+ *
+ * @see  <a href="http://docs.oasis-open.org/xacml/3.0/errata01/os/xacml-3.0-core-spec-errata01-os-complete.html#_Toc489959562"/a>
+ *
+ * @author Giedrius Trumpickas
+ */
 public final class Status
 {
 	private final StatusCode code;
-	private final String message;
-	private final StatusDetail detail;
-	private final int hashCode;
+	private final Optional<String> message;
+	private final Optional<StatusDetail> detail;
+	private int hashCode;
 
 	/**
 	 * Creates status with a given status
@@ -40,39 +52,71 @@ public final class Status
 	 * @param b Status builder
 	 */
 	public Status(Builder b){
-		Preconditions.checkNotNull(b);
-		this.code = b.code;
+		Objects.requireNonNull(b);
+		this.code = java.util.Objects.requireNonNull(b.code, "statusCode");
 		this.message = b.message;
 		this.detail = b.detail;
-		this.hashCode = Objects.hashCode(code, message, detail);
 	}
 
 	public static Builder processingError(){
-		return new Builder().statusCode(StatusCode.createProcessingError());
+		return new Builder().status(StatusCode.processingError());
+	}
+
+	public static Builder processingError(Throwable t){
+		return new Builder()
+				.status(StatusCode.processingError())
+				.message(t.getMessage())
+				.detail(t);
 	}
 
 	public static Builder builder(StatusCode code){
-		return new Builder().statusCode(code);
+		return new Builder()
+				.status(java.util.Objects.requireNonNull(
+				code,"statusCode"));
+	}
+
+	public static Builder from(Status status){
+		return new Builder()
+				.from(Optional.ofNullable(status));
+	}
+
+	public static Builder from(java.util.Optional<Status> status){
+		return new Builder().from(status);
 	}
 
 	public static Builder syntaxError(){
-		return new Builder().statusCode(StatusCode.createSyntaxError());
+		return new Builder().status(
+				StatusCode.syntaxError());
+	}
+
+	public static Builder syntaxError(Throwable e){
+		return new Builder()
+				.status(StatusCode.syntaxError())
+				.message(e.getMessage())
+				.detail(e);
 	}
 
 	public static Builder ok(){
-		return new Builder().statusCode(StatusCode.createOk());
+		return new Builder()
+				.status(StatusCode.ok());
 	}
 
 	public static Builder missingAttribute(AttributeDesignatorKey key){
 		return new Builder()
-		.statusCode(StatusCode.createMissingAttributeError())
-		.message(key.getAttributeId());
+				.status(StatusCode.missingAttributeError())
+				.message(key.getAttributeId())
+				.detail(key.toString());
 	}
 
 	public static Builder missingAttribute(AttributeSelectorKey key){
 		return new Builder()
-			.statusCode(StatusCode.createMissingAttributeError())
-			.message(key.getPath());
+				.status(StatusCode.missingAttributeError())
+				.message(key.getPath())
+				.detail(key.toString());
+	}
+
+	public boolean hasDetails(){
+		return detail != null;
 	}
 
 	public StatusCode getStatusCode(){
@@ -81,6 +125,10 @@ public final class Status
 
 	public boolean isSuccess(){
 		return code.isOk();
+	}
+
+	public boolean isFailure(){
+		return code.isFailure();
 	}
 
 	public boolean isProcessingError(){
@@ -95,24 +143,21 @@ public final class Status
 		return code.isMissingAttributeError();
 	}
 
-	public boolean isFailure(){
-		return !isSuccess();
-	}
 
-	public String getMessage(){
+	public Optional<String> getMessage(){
 		return message;
 	}
 
-	public StatusDetail getDetail(){
+	public java.util.Optional<StatusDetail> getDetail(){
 		return detail;
 	}
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 				.add("code", code)
-				.add("message", message)
-				.add("detail", detail)
+				.add("message", message.orElse(null))
+				.add("detail", detail.orElse(null))
 				.toString();
 	}
 
@@ -125,42 +170,68 @@ public final class Status
 			return false;
 		}
 		Status s = (Status)o;
-		return Objects.equal(code, s.code) &&
-				Objects.equal(message, s.message) &&
-				Objects.equal(detail, s.detail);
+		return code.equals(s.code) &&
+				message.equals(s.message) &&
+				detail.equals(s.detail);
 	}
 
 	@Override
-	public int hashCode(){
+	public int hashCode() {
+		if (hashCode == 0) {
+			this.hashCode = Objects
+					.hash(code, message, detail);
+		}
 		return hashCode;
 	}
 
 	public static class Builder
 	{
 		private StatusCode code;
-		private String message;
-		private StatusDetail detail;
+		private Optional<String> message = Optional.empty();
+		private Optional<StatusDetail> detail = Optional.empty();
 
-
-		public Builder ok(){
-			this.code = StatusCode.createProcessingError();
+		public Builder from(java.util.Optional<Status> status){
+			this.code = status.map(v->v.getStatusCode()).orElse(null);
+			this.message = status.map(v->v.getMessage()).orElse(null);
+			this.detail = status.map(v->v.getDetail()).orElse(null);
 			return this;
 		}
 
-		public Builder statusCode(StatusCode code){
-			Preconditions.checkNotNull(code);
+		public Builder from(Status status) {
+			return from(java.util.Optional.ofNullable(status));
+		}
+
+		public Builder ok(){
+			this.code = StatusCode.ok();
+			return this;
+		}
+
+		public Builder status(StatusCode code){
 			this.code = code;
 			return this;
 		}
 
 		public Builder message(String format, Object ...args){
-			this.message = Strings.isNullOrEmpty(format) ? format : String.format(format, args);
+			this.message = Optional.ofNullable(
+					StringUtils.isNullOrEmpty(format) ? format : String.format(format, args));
 			return this;
 		}
 
 		public Builder detail(StatusDetail detail){
-			this.detail = detail;
+			this.detail = Optional.ofNullable(detail);
 			return this;
+		}
+
+		public Builder detail(Object ...message){
+			return detail(new StatusDetail(message));
+		}
+
+		public Builder detail(List<Object> details){
+			return detail(new StatusDetail(details));
+		}
+
+		public Builder detail(Throwable t){
+			return detail(Throwables.getStackTraceAsString(t));
 		}
 
 		public Status build(){

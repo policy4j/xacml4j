@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.util.Invocation;
+import org.xacml4j.v30.FunctionInvocation;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
@@ -39,12 +39,12 @@ import org.xacml4j.v30.pdp.FunctionSpec;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 
-final class DefaultFunctionInvocation implements FunctionInvocation
+final class DefaultFunctionInvocation implements org.xacml4j.v30.spi.function.FunctionInvocation
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultFunctionInvocation.class);
 
 	private boolean evalContextRequired;
-	private Invocation<ValueExpression> invocation;
+	private FunctionInvocation<ValueExpression> invocation;
 
 	/**
 	 * Constructs XACML function invoker
@@ -54,7 +54,7 @@ final class DefaultFunctionInvocation implements FunctionInvocation
 	 * requires an {@link EvaluationContext} reference
 	 */
 	DefaultFunctionInvocation(
-			Invocation<ValueExpression> invocation,
+			FunctionInvocation<ValueExpression> invocation,
 			boolean evalContextRequired)
 	{
 		Preconditions.checkNotNull(invocation);

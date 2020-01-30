@@ -22,14 +22,27 @@ package org.xacml4j.v30;
  * #L%
  */
 
-
-
 public interface CompositeDecisionRuleIDReference
 	extends CompositeDecisionRule
 {
+	/**
+	 * Gets referenced policy version
+     * match condition
+     *
+	 * @return {@link VersionMatch}
+	 */
 	VersionMatch getVersion();
+
 	VersionMatch getEarliestVersion();
 	VersionMatch getLatestVersion();
 
+    /**
+     * Tests if this reference points
+     * to a given {@Link CompositeDecisionRule}
+     *
+     * @param r a composite decision rule
+     * @return {@code true} if this reference
+     * refers to a given rule
+     */
 	boolean isReferenceTo(CompositeDecisionRule r);
 }

@@ -22,17 +22,15 @@ package org.xacml4j.util;
  * #L%
  */
 
-import java.util.Collections;
-import java.util.Iterator;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
-
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import com.google.common.base.Preconditions;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+import java.util.Collections;
+import java.util.Iterator;
 
 public final class NodeNamespaceContext implements NamespaceContext
 {
@@ -47,17 +45,7 @@ public final class NodeNamespaceContext implements NamespaceContext
 
 	@Override
 	public String getNamespaceURI(String prefix){
-		 if (XMLConstants.XML_NS_PREFIX.equals(prefix)) {
-	            return XMLConstants.XML_NS_URI;
-	     }
-		 if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
-	            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
-	    }
 		String namespaceURI = node.lookupNamespaceURI(prefix);
-		if(log.isDebugEnabled()){
-			log.debug("NamespaceURI=\"{}\" " +
-					"for prefix=\"{}\"", namespaceURI, prefix);
-		}
 		return namespaceURI == null?XMLConstants.NULL_NS_URI:namespaceURI;
 	}
 

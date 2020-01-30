@@ -27,8 +27,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.BagOfAttributeValues;
 
 
 public class IntegerTypeTest
@@ -36,10 +36,10 @@ public class IntegerTypeTest
 	@Test
 	public void testCreate()
 	{
-		AttributeExp v0 = IntegerExp.of((short)2);
-		AttributeExp v1 = IntegerExp.of((byte)2);
-		AttributeExp v2 = IntegerExp.of(2);
-		AttributeExp v3 = IntegerExp.of(2l);
+		AttributeValue v0 = XacmlTypes.INTEGER.of((short)2);
+		AttributeValue v1 = XacmlTypes.INTEGER.of((byte)2);
+		AttributeValue v2 = XacmlTypes.INTEGER.of(2);
+		AttributeValue v3 = XacmlTypes.INTEGER.of(2l);
 		assertEquals(v3, v0);
 		assertEquals(v3, v1);
 		assertEquals(v3, v2);
@@ -48,9 +48,9 @@ public class IntegerTypeTest
 	@Test
 	public void testEquals()
 	{
-		IntegerExp v0 = IntegerExp.of(3l);
-		IntegerExp v1 = IntegerExp.of(2l);
-		IntegerExp v2 = IntegerExp.of(3l);
+		AttributeValue v0 = XacmlTypes.INTEGER.of(3l);
+		AttributeValue v1 = XacmlTypes.INTEGER.of(2l);
+		AttributeValue v2 = XacmlTypes.INTEGER.of(3l);
 		assertEquals(v0, v2);
 		assertFalse(v1.equals(v2));
 	}
@@ -59,11 +59,11 @@ public class IntegerTypeTest
 	@Test
 	public void testBag()
 	{
-		IntegerExp v0 = IntegerExp.of(3l);
-		BagOfAttributeExp bag = IntegerExp.bag().value(1, 4).attribute(v0).build();
-		assertTrue(bag.contains(IntegerExp.of(3l)));
-		assertTrue(bag.contains(IntegerExp.of(1)));
-		assertTrue(bag.contains(IntegerExp.of(4)));
-		assertEquals(IntegerExp.emptyBag(), IntegerExp.emptyBag());
+		IntegerValue v0 = XacmlTypes.INTEGER.of(3l);
+		BagOfAttributeValues bag = XacmlTypes.INTEGER.bag().value(1, 4).attribute(v0).build();
+		assertTrue(bag.contains(XacmlTypes.INTEGER.of(3l)));
+		assertTrue(bag.contains(XacmlTypes.INTEGER.of(1)));
+		assertTrue(bag.contains(XacmlTypes.INTEGER.of(4)));
+		assertEquals(XacmlTypes.INTEGER.emptyBag(), XacmlTypes.INTEGER.emptyBag());
 	}
 }

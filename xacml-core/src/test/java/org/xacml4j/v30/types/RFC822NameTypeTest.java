@@ -27,7 +27,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.AttributeValue;
 
 
 public class RFC822NameTypeTest
@@ -36,10 +36,10 @@ public class RFC822NameTypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeExp n0 = RFC822NameExp.of("test0@test.org");
-		AttributeExp n1 = RFC822NameExp.of("test1@test.org");
-		AttributeExp n2 = RFC822NameExp.of("test0@TEST.org");
-		AttributeExp n3 = RFC822NameExp.of("TEST0@test.org");
+		AttributeValue n0 = XacmlTypes.RFC822NAME.of("test0@test.org");
+		AttributeValue n1 = XacmlTypes.RFC822NAME.of("test1@test.org");
+		AttributeValue n2 = XacmlTypes.RFC822NAME.of("test0@TEST.org");
+		AttributeValue n3 = XacmlTypes.RFC822NAME.of("TEST0@test.org");
 		assertFalse(n0.equals(n1));
 		assertTrue(n0.equals(n2));
 		assertFalse(n0.equals(n3));

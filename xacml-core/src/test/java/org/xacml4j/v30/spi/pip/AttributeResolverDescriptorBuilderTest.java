@@ -30,9 +30,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
+
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
@@ -44,28 +45,34 @@ public class AttributeResolverDescriptorBuilderTest
 	public void testBuildDescriptorWithContextKeyReferringToThisDescriptor()
 	{
 		AttributeResolverDescriptorBuilder.builder(
-				"id", "name", "issuer", Categories.SUBJECT_ACCESS)
+				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
 		.attribute("testId2", XacmlTypes.STRING)
-		.requestContextKey(Categories.SUBJECT_ACCESS, "testId1", XacmlTypes.INTEGER)
+		.contextRef(AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.SUBJECT_ACCESS)
+				.attributeId("testId1")
+				.dataType(XacmlTypes.INTEGER)
+				.build())
 		.build();
 	}
 
 	@Test
 	public void testBuildDescriptorWithIssuer()
 	{
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", "issuer", Categories.SUBJECT_ACCESS)
+		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+				.builder(
+				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
 		.attribute("testId2", XacmlTypes.STRING).build();
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());
-		assertEquals(Categories.SUBJECT_ACCESS, d.getCategory());
+		assertTrue(d.getSupportedCategories().contains(CategoryId.SUBJECT_ACCESS));
 
 		AttributeDesignatorKey.Builder key = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER);
 
@@ -78,14 +85,14 @@ public class AttributeResolverDescriptorBuilderTest
 
 		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER)
 				.issuer("issuer");
 
 		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId2")
 				.dataType(XacmlTypes.STRING)
 				.issuer("issuer");
@@ -103,18 +110,18 @@ public class AttributeResolverDescriptorBuilderTest
 	@Test
 	public void testBuildDescriptorWithIssuerNull()
 	{
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder.builder(
-				"id", "name", null, Categories.SUBJECT_ACCESS)
+		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+				.builder("id", "name", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
 		.attribute("testId2", XacmlTypes.STRING).build();
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertNull(d.getIssuer());
-		assertEquals(Categories.SUBJECT_ACCESS, d.getCategory());
+		assertTrue(d.getSupportedCategories().contains(CategoryId.SUBJECT_ACCESS));
 
 		AttributeDesignatorKey.Builder key = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER);
 
@@ -127,12 +134,12 @@ public class AttributeResolverDescriptorBuilderTest
 
 		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER);
 		AttributeDesignatorKey.Builder key1 = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId2")
 				.dataType(XacmlTypes.STRING);
 

@@ -22,46 +22,81 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
+import static org.xacml4j.util.Preconditions.*;
 
-public abstract class BasePolicyInformationPointCacheProvider implements PolicyInformationPointCacheProvider {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
+
+/**
+ * Base class for {@link PolicyInformationPointCacheProvider} implementations
+ *
+ * @author Giedrius Trumpickas
+ */
+public abstract class BasePolicyInformationPointCacheProvider
+		implements PolicyInformationPointCacheProvider
+{
+	private final static Logger LOG = LoggerFactory.getLogger(BasePolicyInformationPointCacheProvider.class);
 
 	@Override
-	public final Content getContent(ResolverContext context) {
-		return context.getDescriptor().isCacheable() ? doGetContent(context) : null;
+	public final Optional<ContentRef> getContent(ResolverContext context) {
+		return (context.getDescriptor().isCacheable() ?
+				Optional.ofNullable(doGetContent(context)): Optional.empty());
+
 	}
 
 	@Override
-	public final void putContent(ResolverContext context, Content content) {
-		Preconditions.checkArgument(context.getDescriptor().getId().equals(content.getDescriptor().getId()),
-				"Content descriptor Id \"%s\" must match resolver context descriptor Id \"%s\"",
+	public final void putContent(ResolverContext context, ContentRef content) {
+		checkArgument(context.getDescriptor().getId().equals(content.getDescriptor().getId()),
+				"ContentRef descriptor Id \"%s\" " +
+						"must match resolver context descriptor Id \"%s\"",
 				content.getDescriptor().getId(), context.getDescriptor().getId());
 		ContentResolverDescriptor d = (ContentResolverDescriptor) context.getDescriptor();
-		if (d.isCacheable()) {
+		if (d.isCacheable() ||
+				!isExpired(content, context)) {
 			doPutContent(context, content);
 		}
 	}
 
 	@Override
-	public final AttributeSet getAttributes(ResolverContext context) {
-		return context.getDescriptor().isCacheable() ? doGetAttributes(context) : null;
+	public final Optional<AttributeSet> getAttributes(ResolverContext context) {
+		return (context.getDescriptor().isCacheable() ?
+				Optional.ofNullable(doGetAttributes(context)) : Optional.empty());
 	}
 
 	@Override
 	public final void putAttributes(ResolverContext context, AttributeSet v) {
-		Preconditions.checkArgument(context.getDescriptor().getId().equals(v.getDescriptor().getId()),
+		checkArgument(context.getDescriptor().getId().equals(v.getDescriptor().getId()),
 				"Attribute set descriptor Id \"%s\" must match resolver context descriptor Id \"%s\"",
 				v.getDescriptor().getId(), context.getDescriptor().getId());
-		if (context.getDescriptor().isCacheable()) {
+		if (context.getDescriptor().isCacheable() ||
+				isExpired(v, context)) {
 			doPutAttributes(context, v);
 		}
 	}
 
-	protected abstract Content doGetContent(ResolverContext context);
+	protected abstract ContentRef doGetContent(ResolverContext context);
 
 	protected abstract AttributeSet doGetAttributes(ResolverContext context);
 
-	protected abstract void doPutContent(ResolverContext context, Content content);
+	protected abstract void doPutContent(ResolverContext context, ContentRef content);
 
 	protected abstract void doPutAttributes(ResolverContext context, AttributeSet v);
+
+	private static boolean isExpired(AttributeSet v, ResolverContext context) {
+		long duration = context.getClock().millis() - v.getTimestamp() / 1000000000L;
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("AttributeSet=\"{}\" age=\"{}\" in cache", v, duration);
+		}
+		return duration >= v.getDescriptor().getPreferredCacheTTL();
+	}
+
+	private static boolean isExpired(ContentRef v, ResolverContext context) {
+		long duration = context.getClock().millis() - v.getTimestamp() / 1000000000L;
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("ContentRef=\"{}\" age=\"{}\" in cache", v, duration);
+		}
+		return duration >= v.getDescriptor().getPreferredCacheTTL();
+	}
 }

@@ -22,17 +22,16 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
 
 public class MatchAllOf implements PolicyElement, Matchable
 {
@@ -44,7 +43,7 @@ public class MatchAllOf implements PolicyElement, Matchable
 	 * Constructs a {@link MatchAllOf} with
 	 * a given builder
 	 *
-	 * @param b a {@link MatchAllOf} builder instance
+	 * @param b a {@link MatchAllOf} builder defaultProvider
 	 */
 	private MatchAllOf(Builder b){
 		this.matches = b.matches.build();
@@ -88,7 +87,7 @@ public class MatchAllOf implements PolicyElement, Matchable
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 				.add("Matches", matches)
 				.toString();
 	}
@@ -136,8 +135,8 @@ public class MatchAllOf implements PolicyElement, Matchable
 			return this;
 		}
 
-		public Builder match(AttributeExp value,
-				AttributeReference ref, FunctionSpec predicate)
+		public Builder match(AttributeValue value,
+                             AttributeReference ref, FunctionSpec predicate)
 		{
 			return allOf(Match.builder().predicate(predicate).attribute(value).attrRef(ref).build());
 		}

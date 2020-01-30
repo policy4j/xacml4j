@@ -19,19 +19,21 @@
 
 	<modules>
 		<module>xacml-core</module>
-		<module>xacml-spring</module>
 		<module>xacml-json</module>
+		<module>xacml-xml</module>
+		<module>xacml-xml-jaxb</module>
 		<module>xacml-test</module>
 		<module>xacml-conformance-tests</module>
 	</modules>
 
 	<properties>
 		<junit.version>4.11</junit.version>
-		<slf4j.version>1.6.1</slf4j.version>
-		<log4j.version>1.2.14</log4j.version>
+		<slf4j.version>1.7.26</slf4j.version>
+		<log4j.version>1.2.17</log4j.version>
 		<easymock.version>3.1</easymock.version>
-		<guava.version>13.0.1</guava.version>
-		<xml.resolver.version>1.2</xml.resolver.version>
+		<google.guava.version>27.0.1-jre</google.guava.version>
+		<google.auto.version>1.0-rc5</google.auto.version>
+		<google.truth.version>0.45</google.truth.version>
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.licenseName>lgpl_v3</license.licenseName>
@@ -51,10 +53,6 @@
 		<developer>
 			<name>Valdas Sevelis</name>
 			<email>valdas dot s at gmail dot com</email>
-		</developer>
-		<developer>
-			<name>Rolandas Valteris</name>
-			<email>rolisv at gmail dot com</email>
 		</developer>
 	</developers>
 
@@ -100,6 +98,14 @@
 			<groupId>com.codahale.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.google.truth</groupId>
+			<artifactId>truth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.truth.extensions</groupId>
+			<artifactId>truth-java8-extension</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -108,11 +114,6 @@
 			    <artifactId>metrics-core</artifactId>
 			    <version>${yammer.metrics.version}</version>
    			</dependency>
-			<dependency>
-				<groupId>xml-resolver</groupId>
-				<artifactId>xml-resolver</artifactId>
-				<version>${xml.resolver.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
@@ -128,7 +129,7 @@
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
+				<version>${google.guava.version}</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
@@ -156,9 +157,33 @@
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>2.2</version>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>2.3.1</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.jayway.jsonpath</groupId>
+				<artifactId>json-path</artifactId>
+				<version>2.4.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.auto.service</groupId>
+				<artifactId>auto-service</artifactId>
+				<version>${google.auto.version}</version>
+				<optional>true</optional>
+			</dependency>
+			<dependency>
+				<groupId>com.google.truth</groupId>
+				<artifactId>truth</artifactId>
+				<version>${google.truth.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.truth.extensions</groupId>
+				<artifactId>truth-java8-extension</artifactId>
+				<version>${google.truth.version}</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -168,40 +193,21 @@
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.8.0</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.9</source>
+					<target>1.9</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.4</version>
+				<version>3.0.0-M3</version>
 				<configuration>
 					<excludes>
 						<exclude>**/*TestCase.java</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.2</version>
-				<inherited>true</inherited>
-				<configuration>
-					<formats>
-						<format>html</format>
-					</formats>
-					<check>true</check>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -221,28 +227,6 @@
 		</plugins>
 	</build>
 
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.3.1</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
-				<inherited>true</inherited>
-			</plugin>
-			<!-- Coverage Report -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.2</version>
-				<inherited>true</inherited>
-			</plugin>
-		</plugins>
-	</reporting>
 
 	<scm>
 		<connection>scm:git:git@github.com:xacml4j/xacml4j.git</connection>

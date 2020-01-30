@@ -22,13 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Test;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author Valdas Sevelis
@@ -38,30 +36,32 @@ public class ObligationTest {
 	private final Obligation o1;
 	private final Obligation o2;
 	private final Obligation o3;
+	private final Obligation o4;
 
 	public ObligationTest() {
 		AttributeAssignment attr1 = AttributeAssignment
 				.builder()
-				.category(Categories.ACTION)
+				.category(CategoryId.ACTION)
 				.id("actionId1")
-				.value(IntegerExp.of(1))
+				.value(XacmlTypes.INTEGER.of(1))
 				.build();
 		AttributeAssignment attr2 = AttributeAssignment
 				.builder()
-				.category(Categories.ACTION)
+				.category(CategoryId.ACTION)
 				.id("actionId1")
-				.value(IntegerExp.of(2))
+				.value(XacmlTypes.INTEGER.of(2))
 				.build();
 		AttributeAssignment attr3 = AttributeAssignment
 				.builder()
-				.category(Categories.ACTION)
+				.category(CategoryId.ACTION)
 				.id("actionId1")
-				.value(IntegerExp.of(3))
+				.value(XacmlTypes.INTEGER.of(3))
 				.build();
 
 		o1 = Obligation.builder("id1").attribute(attr1).attribute(attr2).build();
 		o2 = Obligation.builder("id1").attribute(attr1).attribute(attr2).build();
 		o3 = Obligation.builder("id1").attribute(attr3).build();
+		o4 = Obligation.builder("id1").attribute(attr2).build();
 	}
 
 	@Test
@@ -82,5 +82,10 @@ public class ObligationTest {
 	public void testToString() {
 		assertThat(o1.toString(), equalTo(o2.toString()));
 		assertThat(o1.toString(), not(equalTo(o3.toString())));
+	}
+
+	@Test
+	public void testMerge() {
+		o1.merge(o2);
 	}
 }

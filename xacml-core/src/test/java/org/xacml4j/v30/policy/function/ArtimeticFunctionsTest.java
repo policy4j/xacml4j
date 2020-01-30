@@ -25,32 +25,31 @@ package org.xacml4j.v30.policy.function;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 public class ArtimeticFunctionsTest
 {
 	@Test
 	public void testAddIntegerFunction()
 	{
-		assertEquals(IntegerExp.of(3),
-				ArithmeticFunctions.addInteger(IntegerExp.of(1),
-						IntegerExp.of(2)));
+		assertEquals(XacmlTypes.INTEGER.of(3),
+				ArithmeticFunctions.addInteger(XacmlTypes.INTEGER.of(1),
+						XacmlTypes.INTEGER.of(2)));
 	}
 
 	@Test
 	public void testAddDoubleFunction()
 	{
-		assertEquals(DoubleExp.of(3.3 + 4.5),
-				ArithmeticFunctions.addDouble(DoubleExp.of(3.3),
-						DoubleExp.of(4.5)));
+		assertEquals(XacmlTypes.DOUBLE.of(3.3 + 4.5),
+				ArithmeticFunctions.addDouble(XacmlTypes.DOUBLE.of(3.3),
+						XacmlTypes.DOUBLE.of(4.5)));
 	}
 
 	@Test
 	public void testDivideIntegerFunction()
 	{
-		assertEquals(DoubleExp.of(2),
-				ArithmeticFunctions.divideInteger(IntegerExp.of(4),
-				IntegerExp.of(2)));
+		assertEquals(XacmlTypes.DOUBLE.of(2),
+				ArithmeticFunctions.divideInteger(XacmlTypes.INTEGER.of(4),
+				XacmlTypes.INTEGER.of(2)));
 	}
 }

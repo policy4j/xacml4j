@@ -22,39 +22,24 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
-import org.xacml4j.v30.spi.xpath.XPathEvaluationException;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.XPathExp;
+import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
 final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestContextHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(MultipleResourcesViaXPathExpressionHandler.class);
+	private final static Logger LOG = LoggerFactory.getLogger(MultipleResourcesViaXPathExpressionHandler.class);
 
 	final static String FEATURE_ID= "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 
@@ -74,8 +59,8 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		if(!request.containsAttributeValues(
 				MULTIPLE_CONTENT_SELECTOR,
 				XacmlTypes.XPATH)){
-			if(log.isDebugEnabled()){
-				log.debug("Request does not have attributeId=\"{}\" of type=\"{}\", " +
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Request does not have id=\"{}\" of type=\"{}\", " +
 						"passing request to next handler",
 						MULTIPLE_CONTENT_SELECTOR,
 						XacmlTypes.XPATH);
@@ -84,18 +69,25 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 		try
 		{
-			XPathProvider xpathProvider = context.getXPathProvider();
 			List<Set<Category>> all = new LinkedList<Set<Category>>();
-			for(Category attribute : request.getAttributes()){
-				all.add(getAttributes(request, attribute, xpathProvider));
+			for(Category c : request.getAttributes()){
+				Set<Category> categories = getCategories(c);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Categories=\"{}\"", categories);
+				}
+				all.add(categories);
 			}
 			Set<List<Category>> cartesian = Sets.cartesianProduct(all);
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Cartesian product=\"{}\"", cartesian.size());
+			}
 			List<Result> results = new LinkedList<Result>();
 			for(List<Category> requestAttr : cartesian)
 			{
-				RequestContext req = RequestContext.builder().copyOf(request, requestAttr).build();
-				if(log.isDebugEnabled()){
-					log.debug("Created request=\"{}\"", req);
+				RequestContext req = RequestContext.builder()
+						.copyOf(request, requestAttr).build();
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Created request=\"{}\"", req);
 				}
 				results.addAll(handleNext(req, context));
 			}
@@ -108,48 +100,52 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 	}
 
-	private Set<Category> getAttributes(RequestContext request, Category attribute,
-			XPathProvider xpathProvider)
+	private Set<Category> getCategories(Category category)
 		throws RequestSyntaxException
 	{
-		Entity entity = attribute.getEntity();
-		Collection<AttributeExp> values = entity.getAttributeValues(MULTIPLE_CONTENT_SELECTOR,
-				XacmlTypes.XPATH);
-		if(values.isEmpty()){
-			return ImmutableSet.of(attribute);
+		Entity entity = category.getEntity();
+		Optional<AttributeValue> value = entity.stream()
+				.filter(a->a.getAttributeId().equalsIgnoreCase(MULTIPLE_CONTENT_SELECTOR))
+				.map(a->a.getValuesByType(XacmlTypes.XPATH, XacmlTypes.JPATH))
+				.flatMap(a->a.stream()).findFirst();
+		if(!value.isPresent()){
+			return ImmutableSet.of(category);
 		}
-		XPathExp selector = (XPathExp)Iterables.getOnlyElement(values, null);
-		Node content = attribute.getEntity().getContent();
-		// if there is no content
-		// specified ignore it and return
-		if(content == null){
+		PathValue path = (PathValue)value.get();
+		Optional<Content> content = entity.getContent().filter(
+				c->c.getType().equals(path.getContentType()));
+		if(!content.isPresent()){
 			throw new RequestSyntaxException("Request attributes category=\"%s\" content " +
 					"for selector=\"%s\" must be specified",
-					attribute.getCategoryId(), selector.getValue());
+					category.getCategoryId(), path.value());
 		}
 		try
 		{
-			NodeList nodeSet = xpathProvider.evaluateToNodeSet(selector.getPath(), content);
-			Set<Category> attributes = new LinkedHashSet<Category>();
-			for(int i = 0; i < nodeSet.getLength(); i++){
-				String xpath = DOMUtil.getXPath(nodeSet.item(i));
-				attributes.add(transform(xpath, attribute));
+			List<String> paths =  content
+					.map(c->c.evaluateToNodePathList(path.getPath()))
+					.orElse(Collections.<String>emptyList());
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Found node paths=\"{}\" for path=\"{}\"", paths, path);
 			}
-			return attributes;
+			return paths.stream()
+					.map(p->transform(p, path.getType(), content.get(), category))
+					.collect(Collectors.toSet());
 		}
-		catch (XPathEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate xpath " +
-						"expression", e);
+		catch (PathEvaluationException e){
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Failed to evaluate xpath " + "expression", e);
 			}
-			return ImmutableSet.of(attribute);
+			return ImmutableSet.of(category);
 		}
 	}
 
-	private Category transform(String xpath, Category attributes)
+	private Category transform(String path, AttributeValueType selectorType, Content content, Category attributes)
 	{
-		Collection<Attribute> newAttributes = new LinkedList<Attribute>();
+		LOG.debug("Processing path=\"{}\"", path);
 		Entity e =  attributes.getEntity();
+		Entity.Builder builder = Entity
+				.builder()
+				.content(content);
 		for(Attribute a : e.getAttributes())
 		{
 			if(a.getAttributeId().equals(MULTIPLE_CONTENT_SELECTOR)){
@@ -157,17 +153,32 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 						Attribute.builder(CONTENT_SELECTOR)
 						.issuer(a.getIssuer())
 						.includeInResult(a.isIncludeInResult())
-						.value(XPathExp.of(xpath, attributes.getCategoryId()))
+						.value(selectorType.of(
+								path, attributes.getCategoryId()))
 						.build();
-				newAttributes.add(selectorAttr);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Adding attribute=\"{}\"", selectorAttr);
+				}
+				builder.attribute(selectorAttr);
 				continue;
 			}
-			newAttributes.add(a);
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Adding attribute=\"{}\"", a);
+			}
+			builder.attribute(a);
 		}
-		return Category
+		Entity categoryEntity = builder.build();
+		if(LOG.isDebugEnabled()){
+			LOG.debug("New Entity=\"{}\"", categoryEntity);
+		}
+		Category category = Category
 				.builder(attributes.getCategoryId())
-				.id(attributes.getId())
-				.entity(Entity.builder().content(e.getContent()).attributes(newAttributes).build())
+				.id(attributes.getRefId())
+				.entity(categoryEntity)
 				.build();
+		if(LOG.isDebugEnabled()){
+			LOG.debug("New Category=\"{}\"", category);
+		}
+		return category;
 	}
 }

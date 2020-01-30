@@ -22,76 +22,111 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.Calendar;
-import java.util.List;
+import java.time.Clock;
+import java.time.ZonedDateTime;
+import java.util.*;
 
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
+import java.util.function.Supplier;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Ticker;
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.MoreObjects;
+import org.xacml4j.v30.*;
+
+
 
 final class DefaultResolverContext implements
 		ResolverContext
 {
+	private Optional<Content.Type> contentType;
 	private EvaluationContext context;
-	private List<BagOfAttributeExp> keys;
-	private ResolverDescriptor descriptor;
+	private Map<AttributeReferenceKey, BagOfAttributeValues> resolvedKeys;
+	private Resolver resolver;
 
 	public DefaultResolverContext(
+			Resolver resolver,
 			EvaluationContext context,
-			ResolverDescriptor descriptor) throws EvaluationException {
-		Preconditions.checkNotNull(context);
-		Preconditions.checkNotNull(descriptor);
-		this.context = context;
-		this.descriptor = descriptor;
-		this.keys = evaluateKeys(context, descriptor.getKeyRefs());
+			Supplier<Optional<Content.Type>> supplier) throws EvaluationException {
+		this.resolver = Objects.requireNonNull(resolver, Resolver.class.getSimpleName());
+		this.context = Objects.requireNonNull(context, ResolverDescriptor.class.getSimpleName());
+		this.contentType = Objects.requireNonNull(supplier, Supplier.class.getSimpleName()).get();
+	}
+
+	public DefaultResolverContext(
+			Resolver resolver,
+			EvaluationContext context){
+		this(resolver, context, ()->Optional.empty());
+	}
+
+	public EvaluationContext getEvaluationContext(){
+		return context;
+	}
+
+		@Override
+	public Optional<Content.Type> getContentType() {
+		return  contentType;
 	}
 
 	@Override
-	public Calendar getCurrentDateTime() {
+	public ZonedDateTime getCurrentDateTime() {
 		return context.getCurrentDateTime();
 	}
 
 	@Override
-	public Ticker getTicker(){
-		return context.getTicker();
+	public Clock getClock(){
+		return context.getClock();
 	}
 
 	@Override
 	public ResolverDescriptor getDescriptor(){
-		return descriptor;
+		return resolver.getDescriptor();
+	}
+
+	public Map<AttributeReferenceKey, BagOfAttributeValues> getResolvedKeys(){
+		if(resolvedKeys == null){
+			this.resolvedKeys = resolver.getDescriptor().resolveKeyRefs(this);
+		}
+		return resolvedKeys;
 	}
 
 	@Override
-	public List<BagOfAttributeExp> getKeys(){
-		return keys;
+	public Optional<BagOfAttributeValues> resolve(AttributeReferenceKey key)
+	{
+		BagOfAttributeValues cachedValue =  resolvedKeys != null?resolvedKeys.get(key):null;
+		if(cachedValue != null){
+			return Optional.ofNullable(cachedValue);
+		}
+		Optional<BagOfAttributeValues> resolvedValue = context.resolve(key);
+		resolvedValue.ifPresent((v)->{
+			if(resolvedKeys == null){
+				this.resolvedKeys = new HashMap<>();
+			}
+			resolvedKeys.putIfAbsent(key, v);
+		});
+		return resolvedValue;
 	}
 
-	private static List<BagOfAttributeExp> evaluateKeys(EvaluationContext context,
-			List<AttributeReferenceKey> keyRefs) throws EvaluationException
-	{
-		if(keyRefs == null){
-			return ImmutableList.of();
-		}
-		ImmutableList.Builder<BagOfAttributeExp> b = ImmutableList.builder();
-		for(AttributeReferenceKey ref : keyRefs){
-			b.add(ref.resolve(context));
-		}
-		return b.build();
+	public Supplier<Optional<BagOfAttributeValues>> resolveRef(AttributeReferenceKey referenceKey){
+		Optional<BagOfAttributeValues> v = resolve(referenceKey);
+		v.ifPresent(bagOfAttributeValues -> resolvedKeys.put(referenceKey, bagOfAttributeValues));
+		return ()->v;
+	}
+
+	public boolean isCacheable(){
+		return resolver
+				.getDescriptor()
+				.isCacheable();
+	}
+
+	@Override
+	public <T extends Resolver> T getResolver() {
+		return (T)resolver;
 	}
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 				.add("context", context)
-				.add("descriptor", descriptor)
-				.add("keys", keys)
+				.add("resolver", resolver)
+				.add("resolvedKeys", resolvedKeys)
 				.toString();
 	}
-
 }

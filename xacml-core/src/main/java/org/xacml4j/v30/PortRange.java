@@ -22,7 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.io.Serializable;
+import java.io.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +30,14 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
-public final class PortRange implements Serializable
+public final class PortRange implements Externalizable
 {
 	private static final long serialVersionUID = -6044059747919356340L;
 
 	private final static Logger log = LoggerFactory.getLogger(PortRange.class);
 
-	private final Integer lowerBound;
-	private final Integer upperBound;
+	private Integer lowerBound;
+	private Integer upperBound;
 
 	/**
 	 * Default constructor used to represent an unbound range. This is typically
@@ -96,7 +96,7 @@ public final class PortRange implements Serializable
 
 
 	/**
-	 * Creates an instance of {@code PortRange} based on the given value.
+	 * Creates an defaultProvider of {@code PortRange} based on the given value.
 	 *
 	 * @param value
 	 *            a {@code String} representing the range
@@ -222,7 +222,7 @@ public final class PortRange implements Serializable
 	}
 
 	/**
-	 * Returns true if the input is an instance of this class and if its value
+	 * Returns true if the input is an defaultProvider of this class and if its value
 	 * equals the value contained in this class.
 	 *
 	 * @param o
@@ -269,5 +269,17 @@ public final class PortRange implements Serializable
 			b.append(getUpperBound());
 		}
 		return b.toString();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(upperBound);
+		out.writeObject(lowerBound);
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		this.upperBound = (Integer)in.readObject();
+		this.lowerBound = (Integer)in.readObject();
 	}
 }

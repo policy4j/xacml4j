@@ -28,17 +28,15 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import com.google.common.truth.Truth;
 
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.types.DateExp;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Optional;
 
 
 public class AttributeSelectorTest
@@ -54,18 +52,24 @@ public class AttributeSelectorTest
 	@Test
 	public void testMustBePresenTrueAndReturnsNonEmptyBag() throws EvaluationException
 	{
-		AttributeSelector ref = AttributeSelector
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
+				.category(CategoryId.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patientDoB/text()")
 				.dataType(XacmlTypes.DATE)
+				.build();
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.key(refKey)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DateExp.of("1992-03-21").toBag());
+		expect(context.resolve(capture(c))).andReturn(Optional.of(
+				XacmlTypes.DATE.of("1992-03-21").toBag()));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateExp.of("1992-03-21").toBag(), v);
+		assertEquals(XacmlTypes.DATE.of("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -73,106 +77,164 @@ public class AttributeSelectorTest
 	@Test
 	public void testMustBePresenFalseAndReturnsNonEmptyBag() throws EvaluationException
 	{
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(XacmlTypes.DATE)
+				.key(refKey)
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(DateExp.of("1992-03-21").toBag());
+		expect(context.resolve(capture(c))).andReturn(Optional.of(
+				XacmlTypes.DATE.of("1992-03-21").toBag()));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(DateExp.of("1992-03-21").toBag(), v);
+		assertEquals(XacmlTypes.DATE.of("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresenTrueAndReturnsEmptyBag() throws EvaluationException
+	@Test
+	public void testMustBePresentTrueAndReturnsEmptyBag() throws EvaluationException
 	{
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(XacmlTypes.DATE)
+				.key(refKey)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(XacmlTypes.DATE.emptyBag());
+		expect(context.resolve(capture(c))).andReturn(Optional.of(
+				XacmlTypes.DATE.emptyBag()));
+		replay(context);
+		Truth.assertThat(ref.evaluate(context)).isEqualTo(XacmlTypes.DATE.emptyBag());
+		verify(context);
+
+	}
+
+	@Test(expected=AttributeReferenceEvaluationException.class)
+	public void testMustBePresentTrueAndReturnsEmptyOptional() throws EvaluationException
+	{
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
+		AttributeSelector ref = AttributeSelector
+				.builder()
+				.key(refKey)
+				.mustBePresent(true)
+				.build();
+		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		expect(context.resolve(capture(c))).andReturn(Optional.empty());
 		replay(context);
 		ref.evaluate(context);
 		verify(context);
 	}
 
 	@Test
-	public void testMustBePresenFalseAndReturnsEmptyBag() throws EvaluationException
+	public void testMustBePresentFalseAndReturnsEmptyBag() throws EvaluationException
 	{
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(XacmlTypes.DATE)
+				.key(refKey)
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
-		expect(context.resolve(capture(c))).andReturn(XacmlTypes.DATE.emptyBag());
+		expect(context.resolve(capture(c))).andReturn(
+				Optional.of(XacmlTypes.DATE.emptyBag()));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, XacmlTypes.DATE.emptyBag());
+		assertEquals(v, XacmlTypes.DATE.bag().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 
 	@Test
-	public void testMustBePresenFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
+	public void testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
+
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(XacmlTypes.DATE)
+				.key(refKey)
 				.mustBePresent(false)
 				.build();
 
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(
-				new AttributeReferenceEvaluationException(ref.getReferenceKey()));
+				AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, XacmlTypes.DATE.emptyBag());
+		assertEquals(v, XacmlTypes.DATE.bag().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 
 	@Test
-	public void testMustBePresenFalseAndContextThrowsRuntimeException() throws EvaluationException
+	public void testMustBePresentFalseAndContextThrowsRuntimeException() throws EvaluationException
 	{
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
+
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(XacmlTypes.DATE)
+				.key(refKey)
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, XacmlTypes.DATE.emptyBag());
+		assertEquals(v, XacmlTypes.DATE.bag().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresenTrueAndContextThrowsRuntimeException() throws EvaluationException
+	public void testMustBePresentTrueAndContextThrowsRuntimeException() throws EvaluationException
 	{
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(XacmlTypes.DATE)
+				.key(refKey)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
@@ -183,18 +245,24 @@ public class AttributeSelectorTest
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresenTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
+	public void testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
+
+		AttributeSelectorKey refKey =
+				AttributeSelectorKey
+						.builder()
+						.category(CategoryId.SUBJECT_RECIPIENT)
+						.xpath("/md:record/md:patient/md:patientDoB/text()")
+						.dataType(XacmlTypes.DATE)
+						.build();
 		AttributeSelector ref = AttributeSelector
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.xpath("/md:record/md:patient/md:patientDoB/text()")
-				.dataType(XacmlTypes.DATE)
+				.key(refKey)
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
 		expect(context.resolve(capture(c))).andThrow(
-				new AttributeReferenceEvaluationException(ref.getReferenceKey()));
+				AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));
 		replay(context);
 		ref.evaluate(context);
 		verify(context);

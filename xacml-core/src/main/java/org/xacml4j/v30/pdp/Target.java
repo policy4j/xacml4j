@@ -22,15 +22,14 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
 
 
 public class Target implements PolicyElement
@@ -40,9 +39,9 @@ public class Target implements PolicyElement
 	private final Collection<MatchAnyOf> matches;
 
 	/**
-	 * Creates target from a given {@link Builder} instance
+	 * Creates target from a given {@link Builder} defaultProvider
 	 *
-	 * @param b a {@link Builder} instance
+	 * @param b a {@link Builder} defaultProvider
 	 */
 	public Target(Builder b){
 		this.matches = b.allAnyOf.build();
@@ -118,7 +117,7 @@ public class Target implements PolicyElement
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("AnyOf", matches)
 				.toString();

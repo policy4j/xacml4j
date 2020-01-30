@@ -26,10 +26,12 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 
+import java.util.Optional;
+
 abstract class BaseFunctionParamSpec implements FunctionParamSpec
 {
 	private final boolean optional;
-	private final Expression defaultValue;
+	private final Optional<Expression> defaultValue;
 	private final boolean variadic;
 
 	protected BaseFunctionParamSpec(){
@@ -46,7 +48,7 @@ abstract class BaseFunctionParamSpec implements FunctionParamSpec
 		}
 		this.optional = optional;
 		this.variadic = variadic;
-		this.defaultValue = defaultValue;
+		this.defaultValue = Optional.ofNullable(defaultValue);
 	}
 
 	@Override
@@ -60,7 +62,7 @@ abstract class BaseFunctionParamSpec implements FunctionParamSpec
 	}
 
 	@Override
-	public final Expression getDefaultValue(){
+	public final Optional<Expression> getDefaultValue(){
 		return defaultValue;
 	}
 }

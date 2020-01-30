@@ -22,69 +22,43 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.xacml4j.util.CglibInvocationFactory;
-import org.xacml4j.util.InvocationFactory;
+import org.xacml4j.v30.FunctionInvocationFactory;
 import org.xacml4j.util.Reflections;
+import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
 import com.google.common.base.Preconditions;
 
+
 public final class AnnotationBasedFunctionProvider extends BaseFunctionProvider
 {
-	private JavaMethodToFunctionSpecConverter converter;
-
-	public AnnotationBasedFunctionProvider(
+	private AnnotationBasedFunctionProvider(
 			Class<?> factoryClass,
-			InvocationFactory invocationFactory)
-		throws Exception
+			FunctionInvocationFactory invocationFactory)
 	{
-		Preconditions.checkNotNull(factoryClass);
-		Preconditions.checkNotNull(invocationFactory);
-		this.converter = new JavaMethodToFunctionSpecConverter(invocationFactory);
-		List<FunctionSpec> functions = findFunctions(factoryClass, null);
-		for(FunctionSpec spec : functions){
-			add(spec);
-		}
+		super(findFunctions(factoryClass, null,
+				invocationFactory).collect(Collectors.toList()));
 	}
 
-	public AnnotationBasedFunctionProvider(Class<?> clazz)
-		throws Exception{
-		this(clazz, new CglibInvocationFactory());
+	public static Collection<FunctionProvider> toProviders(FunctionInvocationFactory factory, Class<?> ... clazz){
+		return Arrays.stream(clazz)
+				.map(c->new AnnotationBasedFunctionProvider(c, factory))
+				.collect(Collectors.toList());
 	}
 
-	public AnnotationBasedFunctionProvider(
-			Object instance,
-			InvocationFactory invocationFactory)
-		throws Exception
-	{
-		Preconditions.checkNotNull(instance);
-		Preconditions.checkNotNull(invocationFactory);
-		this.converter = new JavaMethodToFunctionSpecConverter(invocationFactory);
-		List<FunctionSpec> functions = findFunctions(instance.getClass(), instance);
-		for(FunctionSpec spec : functions){
-			add(spec);
-		}
-	}
-
-	public AnnotationBasedFunctionProvider(Object instance) throws Exception{
-		this(instance, new CglibInvocationFactory());
-	}
-
-	private List<FunctionSpec> findFunctions(Class<?> clazz, Object instance)
+	private static Stream<FunctionSpec> findFunctions(Class<?> clazz, Object instance, FunctionInvocationFactory factory)
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkArgument(clazz.getAnnotation(XacmlFunctionProvider.class) != null,
 				"Function provider=\"%s\" must have provider annotation", clazz.getName());
-		List<FunctionSpec> specs = new LinkedList<FunctionSpec>();
-		List<Method> methods  = Reflections.getAnnotatedMethods(clazz, XacmlFuncSpec.class);
-		for(final Method m : methods){
-			specs.add(converter.createFunctionSpec(m, instance));
-		}
-		return specs;
+		JavaMethodToFunctionSpecConverter converter = new JavaMethodToFunctionSpecConverter(factory);
+		return Reflections.getAnnotatedMethods(clazz, XacmlFuncSpec.class)
+				.stream().map(v->converter.createFunctionSpec(v, instance));
 	}
 }

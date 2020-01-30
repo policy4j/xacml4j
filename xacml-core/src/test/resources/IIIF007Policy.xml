@@ -22,14 +22,13 @@
   -->
 
 <Policy
-      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
-      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
-      xmlns:md="http://www.medico.com/schemas/record"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+        xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+        xmlns:md="http://www.medico.com/schemas/record"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
         access_control-xacml-2.0-policy-schema-os.xsd"
-      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
-      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+        PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
     <Description>
         Policy for Conformance Test IIIF007.
     </Description>

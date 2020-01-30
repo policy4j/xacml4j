@@ -31,7 +31,24 @@ import java.io.Serializable;
  */
 public interface ValueType extends Serializable
 {
+	/**
+	 * Test if given type represents a XACML bag type
+	 *
+	 * @return {@code true} if this type represents XACML bag type
+	 */
 	boolean isBag();
-	
+
+	/**
+	 * Gets XACML data type
+	 *
+	 */
 	ValueType getDataType();
+
+	/**
+	 * Converts this value type to bag type
+	 *
+	 * @param <T>
+	 * @return bag type
+	 */
+	<T extends ValueType> T toBag();
 }

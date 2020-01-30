@@ -22,29 +22,30 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.*;
+import java.util.function.Function;
 
-import org.xacml4j.v30.XacmlSyntaxException;
-
+import com.google.common.reflect.TypeToken;
+import org.xacml4j.v30.*;
 import com.google.common.base.Preconditions;
+
+import static org.xacml4j.v30.types.XacmlTypes.*;
+import static org.xacml4j.v30.types.XacmlTypes.DATETIME;
 
 public final class ResolverRegistryBuilder
 {
-	private Map<String, AttributeResolver> policyScopedAttributeResolvers;
-	private Map<String, ContentResolver> policyScopedContentResolvers;
-	private Collection<AttributeResolver> attributeResolvers;
-	private Collection<ContentResolver> contentResolvers;
+	private Collection<Resolver<AttributeSet>> attributeResolvers;
+	private Collection<Resolver<ContentRef>> contentResolvers;
 	private AnnotatedResolverFactory annotatedResolverFactory;
 
+
+	private final static TypeToken<Resolver<AttributeSet>> ATTRIBUTE_RESOLVER_TYPE = new TypeToken<>(){};
+	private final static TypeToken<Resolver<ContentRef>> CONTENT_RESOLVER_TYPE = new TypeToken<>(){};
+
+
 	private ResolverRegistryBuilder(){
-		this.policyScopedAttributeResolvers = new HashMap<String, AttributeResolver>();
-		this.policyScopedContentResolvers = new HashMap<String, ContentResolver>();
-		this.attributeResolvers = new LinkedList<AttributeResolver>();
-		this.contentResolvers = new LinkedList<ContentResolver>();
+		this.attributeResolvers = new LinkedList<>();
+		this.contentResolvers = new LinkedList<>();
 		this.annotatedResolverFactory = new AnnotatedResolverFactory();
 	}
 
@@ -73,27 +74,27 @@ public final class ResolverRegistryBuilder
 	 * @param resolver an attribute resolver
 	 * @return {@link ResolverRegistryBuilder}
 	 */
-	public ResolverRegistryBuilder withAttributeResolver(AttributeResolver resolver){
+	public ResolverRegistryBuilder withAttributeResolver(Resolver<AttributeSet> resolver){
 		Preconditions.checkNotNull(resolver);
 		this.attributeResolvers.add(resolver);
 		return this;
 	}
 
-	public ResolverRegistryBuilder withAttributeResolvers(Iterable<AttributeResolver> resolvers){
-		for(AttributeResolver r : resolvers){
+	public ResolverRegistryBuilder withAttributeResolvers(Iterable<Resolver<AttributeSet>> resolvers){
+		for(Resolver<AttributeSet> r : resolvers){
 			withAttributeResolver(r);
 		}
 		return this;
 	}
 
-	public ResolverRegistryBuilder withContentResolvers(Iterable<ContentResolver> resolvers){
-		for(ContentResolver r : resolvers){
+	public ResolverRegistryBuilder withContentResolvers(Iterable<Resolver<ContentRef>> resolvers){
+		for(Resolver<ContentRef> r : resolvers){
 			withContentResolver(r);
 		}
 		return this;
 	}
 
-	public ResolverRegistryBuilder withContentResolver(ContentResolver resolver){
+	public ResolverRegistryBuilder withContentResolver(Resolver<ContentRef> resolver){
 		Preconditions.checkNotNull(resolver);
 		this.contentResolvers.add(resolver);
 		return this;
@@ -101,20 +102,9 @@ public final class ResolverRegistryBuilder
 
 	public ResolverRegistryBuilder withResolver(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
-
-		if((annotatedResolver instanceof AttributeResolver) ||
-				annotatedResolver instanceof ContentResolver){
-			if(annotatedResolver instanceof AttributeResolver){
-				withAttributeResolver(
-						(AttributeResolver)annotatedResolver);
-			}
-			if(annotatedResolver instanceof ContentResolver){
-				withContentResolver(
-						(ContentResolver)annotatedResolver);
-			}
-			return this;
-		}
-		try{
+		if(CONTENT_RESOLVER_TYPE.method())
+		try
+		{
 			withAttributeResolvers(annotatedResolverFactory.getAttributeResolvers(annotatedResolver));
 			withContentResolvers(annotatedResolverFactory.getContentResolvers(annotatedResolver));
 			return this;
@@ -123,98 +113,42 @@ public final class ResolverRegistryBuilder
 		}
 	}
 
-	public ResolverRegistryBuilder withPolicyScopedResolver(
-			String policyId,
-			Object annotatedResolver){
-		Preconditions.checkNotNull(annotatedResolver);
-		if((annotatedResolver instanceof AttributeResolver) ||
-				annotatedResolver instanceof ContentResolver){
-
-			if(annotatedResolver instanceof AttributeResolver){
-				withPolicyScopedAttributeResolver(
-						policyId, (AttributeResolver)annotatedResolver);
-			}
-			if(annotatedResolver instanceof ContentResolver){
-				return withPolicyScopedContentResolver(
-						policyId, (ContentResolver)annotatedResolver);
-			}
-			return this;
-		}
-		try{
-			for(AttributeResolver r :
-				annotatedResolverFactory.getAttributeResolvers(annotatedResolver)){
-				withPolicyScopedAttributeResolver(policyId, r);
-			}
-			for(ContentResolver r :
-				annotatedResolverFactory.getContentResolvers(annotatedResolver)){
-				withPolicyScopedContentResolver(policyId, r);
-			}
-			return this;
-		}catch(XacmlSyntaxException e){
-			throw new IllegalArgumentException(e);
-		}
+	public ResolverRegistry build(){
+		return new DefaultResolverRegistry(
+				attributeResolvers, contentResolvers);
 	}
 
-	public ResolverRegistryBuilder withPolicyScopedAttributeResolver(
-			String policyId, AttributeResolver resolver){
-		Preconditions.checkNotNull(resolver);
-		if(policyId == null){
-			withAttributeResolver(resolver);
-			return this;
-		}
-		this.policyScopedAttributeResolvers.put(policyId, resolver);
-		return this;
-	}
 
-	public ResolverRegistryBuilder withPolicyScopedAttributeResolvers(
-			String policyId, Iterable<AttributeResolver> resolvers){
-		for(AttributeResolver r : resolvers){
-			withPolicyScopedAttributeResolver(policyId, r);
-		}
-		return this;
-	}
-
-	public ResolverRegistryBuilder withPolicyScopedContentResolver(
-			String policyId, ContentResolver resolver){
-		Preconditions.checkNotNull(resolver);
-		if(policyId == null){
-			withContentResolver(resolver);
-			return this;
-		}
-		this.policyScopedContentResolvers.put(policyId, resolver);
-		return this;
-	}
-
-	public ResolverRegistryBuilder withPolicyScopedContentResolvers(
-			String policyId, Iterable<ContentResolver> resolvers){
-		for(ContentResolver r : resolvers){
-			withPolicyScopedContentResolver(policyId, r);
-		}
-		return this;
-	}
-
-	public ResolverRegistry build()
+	public class DefaultEnvironmentAttributeResolver implements Resolver<AttributeSet>
 	{
-		return build(new DefaultResolverRegistry());
+		private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
+		private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";
+		private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
+
+		private final static String SHORT_CURRENT_TIME = "current-time";
+		private final static String SHORT_CURRENT_DATE = "current-date";
+		private final static String SHORT_CURRENT_DATETIME = "current-dateTime";
+
+		private Function<ResolverContext, Optional<AttributeSet>> = ( v ) -> { return Optional.empty()};
+
+		private final static AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+				.builder("XacmlEnvironmentResolver",
+						"XACML Environment Attributes Resolver", CategoryId.ENVIRONMENT)
+				.noCache()
+						.attribute(CURRENT_TIME, TIME, SHORT_CURRENT_TIME)
+						.attribute(CURRENT_DATE, DATE, SHORT_CURRENT_DATE)
+						.attribute(CURRENT_DATETIME,DATETIME, SHORT_CURRENT_DATETIME)
+						.build();
+
+		private final static Resolver<AttributeSet> ENV_RESOLVER =
+
+					);
+
+
+		public DefaultEnvironmentAttributeResolver(){
+
+		}
 	}
 
-	public ResolverRegistry build(ResolverRegistry r)
-	{
-		if(r == null){
-			r = new DefaultResolverRegistry();
-		}
-		for(AttributeResolver resolver : attributeResolvers){
-			r.addAttributeResolver(resolver);
-		}
-		for(ContentResolver resolver : contentResolvers){
-			r.addContentResolver(resolver);
-		}
-		for(Entry<String, AttributeResolver> e : policyScopedAttributeResolvers.entrySet()){
-			r.addAttributeResolver(e.getKey(), e.getValue());
-		}
-		for(Entry<String, ContentResolver> e : policyScopedContentResolvers.entrySet()){
-			r.addContentResolver(e.getKey(), e.getValue());
-		}
-		return r;
-	}
+
 }

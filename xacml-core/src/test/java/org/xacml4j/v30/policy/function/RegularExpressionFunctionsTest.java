@@ -27,17 +27,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.RFC822NameExp;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.types.*;
+
 
 
 public class RegularExpressionFunctionsTest
@@ -53,7 +51,9 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testFunctionIfImplemented() throws Exception {
-		FunctionProvider f = new AnnotationBasedFunctionProvider(RegularExpressionFunctions.class);
+		FunctionProvider f = FunctionProvider.builder()
+				.withStandardFunctions()
+				.build();
 		assertThat(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match"), notNullValue());
 		assertThat(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match"), notNullValue());
 		assertThat(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match"), notNullValue());
@@ -64,62 +64,62 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testXacmlRegExpToJERegExpWithCharacterSubtraction() {
-		assertThat(RegularExpressionFunctions.covertXacmlToJavaSyntax("[0-9]{3}-[0-9]{3}-[0-9]{4}"), equalTo(".*[0-9]{3}-[0-9]{3}-[0-9]{4}.*"));
+		assertThat(RegExpFunctions.covertXacmlToJavaSyntax("[0-9]{3}-[0-9]{3}-[0-9]{4}"), equalTo(".*[0-9]{3}-[0-9]{3}-[0-9]{4}.*"));
 	}
 
 	@Test
 	public void testXacmlRegExpWithSpaceBugTrimming() {
-		StringExp regexp1 = StringExp.of("   This  is n*o*t* *IT!  ");
-		StringExp regexp2 = StringExp.of("  *This .*is not IT! *");
-		StringExp input1 = StringExp.of("   This  is not IT!  ");
+		StringValue regexp1 = XacmlTypes.STRING.of("   This  is n*o*t* *IT!  ");
+		StringValue regexp2 = XacmlTypes.STRING.of("  *This .*is not IT! *");
+		StringValue input1 = XacmlTypes.STRING.of("   This  is not IT!  ");
 		c.replay();
-		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(BooleanExp.valueOf(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.of(true)));
 		c.verify();
 		c.reset();
 		c.replay();
-		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp2, input1), equalTo(BooleanExp.valueOf(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp2, input1), equalTo(XacmlTypes.BOOLEAN.of(true)));
 		c.verify();
 	}
 
 	@Test
 	public void testRegExpMatchFromIIC168ConformanceTest() {
-		StringExp regexp1 = StringExp.of("   This  is n*o*t* *IT!  ");
-		StringExp input1 = StringExp.of("   This  is IT!  ");
-		StringExp input2 = StringExp.of("   This  is not IT!  ");
+		StringValue regexp1 = XacmlTypes.STRING.of("   This  is n*o*t* *IT!  ");
+		StringValue input1 = XacmlTypes.STRING.of("   This  is IT!  ");
+		StringValue input2 = XacmlTypes.STRING.of("   This  is not IT!  ");
 		c.replay();
-		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(BooleanExp.valueOf(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.of(true)));
 		c.verify();
 		c.reset();
 		c.replay();
-		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp1, input2), equalTo(BooleanExp.valueOf(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input2), equalTo(XacmlTypes.BOOLEAN.of(true)));
 		c.verify();
 	}
 
 	@Test
 	public void testStringRegExpMatch() throws EvaluationException {
-		StringExp regexp = StringExp.of("S*,Value");
-		StringExp input = StringExp.of("Some,Value");
+		StringValue regexp = XacmlTypes.STRING.of("S*,Value");
+		StringValue input = XacmlTypes.STRING.of("Some,Value");
 		c.replay();
-		assertThat(RegularExpressionFunctions.stringRegexpMatch(context, regexp, input), equalTo(BooleanExp.valueOf(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.of(true)));
 		c.verify();
 	}
 
 	@Test
 	public void testAnyURIRegExpMatch() throws EvaluationException {
-		StringExp regexp = StringExp.of("http://www.test.org/public/*");
-		AnyURIExp input = AnyURIExp.of("http://www.test.org/public/test/a");
+		StringValue regexp = XacmlTypes.STRING.of("http://www.test.org/public/*");
+		AnyURIValue input = XacmlTypes.ANYURI.of("http://www.test.org/public/test/a");
 		c.replay();
-		assertThat(RegularExpressionFunctions.anyURIRegexpMatch(context, regexp, input), equalTo(BooleanExp.valueOf(true)));
+		assertThat(RegExpFunctions.anyURIRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.of(true)));
 		c.verify();
 
 	}
 
 	@Test
 	public void testRFC822NameRegExpMatch() throws EvaluationException{
-		StringExp regexp = StringExp.of(".*@example.com");
-		RFC822NameExp input = RFC822NameExp.of("test@example.com");
+		StringValue regexp = XacmlTypes.STRING.of(".*@example.com");
+		RFC822NameValue input = XacmlTypes.RFC822NAME.of("test@example.com");
 		c.replay();
-		assertThat(RegularExpressionFunctions.rfc822NameRegexpMatch(context, regexp, input), equalTo(BooleanExp.valueOf(true)));
+		assertThat(RegExpFunctions.rfc822NameRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.of(true)));
 		c.verify();
 	}
 }

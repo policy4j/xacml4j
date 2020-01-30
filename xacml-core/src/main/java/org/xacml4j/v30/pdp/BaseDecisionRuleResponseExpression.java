@@ -22,25 +22,16 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
+import org.xacml4j.v30.*;
+
+import java.util.Collection;
 
 /**
  * A base class for XACML Obligation or Advice expressions
@@ -58,7 +49,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 	/**
 	 * Constructs expression from a given expression builder
 	 *
-	 * @param b {@link BaseDecisionRuleResponseExpression} builder instance
+	 * @param b {@link BaseDecisionRuleResponseExpression} builder defaultProvider
 	 */
 	protected BaseDecisionRuleResponseExpression(Builder<?> b)
 	{
@@ -79,9 +70,9 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 	}
 
 	/**
-	 * Gets {@link Effect} instance
+	 * Gets {@link Effect} defaultProvider
 	 *
-	 * @return {@link Effect} instance
+	 * @return {@link Effect} defaultProvider
 	 */
 	public Effect getEffect(){
 		return effect;
@@ -119,12 +110,12 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		for(AttributeAssignmentExpression attrExp : attributeExpressions.values()){
 			AttributeAssignment.Builder b = AttributeAssignment.builder().from(attrExp);
 			ValueExpression val = attrExp.evaluate(context);
-			if(val instanceof AttributeExp){
-				attr.add(b.value((AttributeExp)val).build());
+			if(val instanceof AttributeValue){
+				attr.add(b.value((AttributeValue)val).build());
 				continue;
 			}
-			BagOfAttributeExp bag = (BagOfAttributeExp)val;
-			for(AttributeExp v : bag.values()){
+			BagOfAttributeValues bag = (BagOfAttributeValues)val;
+			for(AttributeValue v : bag.values()){
 				attr.add(b.value(v).build());
 			}
 		}
@@ -138,7 +129,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("id", id)
 		.add("effect", effect)
 		.add("expressions", attributeExpressions)
@@ -168,7 +159,10 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		}
 
 		public T attribute(String id, CategoryId category, Expression exp){
-			return attribute(AttributeAssignmentExpression.builder(id).category(category).expression(exp));
+			return attribute(AttributeAssignmentExpression
+					.builder(id)
+					.category(category)
+					.expression(exp));
 		}
 
 		public T attribute(String id, CategoryId category, String issuer, Expression exp){

@@ -22,16 +22,22 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
+
+import java.net.URI;
 
 
-public class AttributeAssignment
+/**
+ * XACML attribute assigment
+ *
+ * @author Giedrius Trumpickasd
+ */
+public final class AttributeAssignment
 {
-	private final AttributeExp attribute;
+	private final AttributeValue attribute;
 	private final CategoryId category;
 	private final String attributeId;
 	private final String issuer;
@@ -70,7 +76,7 @@ public class AttributeAssignment
 	 *
 	 * @return attribute value
 	 */
-	public AttributeExp getAttribute(){
+	public AttributeValue getAttribute(){
 		return attribute;
 	}
 
@@ -104,8 +110,8 @@ public class AttributeAssignment
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("attributeId", attributeId)
+		return MoreObjects.toStringHelper(this)
+		.add("id", attributeId)
 		.add("category", category)
 		.add("value", attribute)
 		.add("issuer", issuer).toString();
@@ -134,11 +140,31 @@ public class AttributeAssignment
 		private String attributeId;
 		private CategoryId category;
 		private String issuer;
-		private AttributeExp value;
+		private AttributeValue value;
 
 		public Builder id(String attributeId){
 			Preconditions.checkNotNull(attributeId);
 			this.attributeId = attributeId;
+			return this;
+		}
+
+		public Builder category(String category) {
+			this.category = CategoryId.of(category);
+			return this;
+		}
+
+		public Builder category(AttributeValue category) {
+			this.category = CategoryId.of(category);
+			return this;
+		}
+
+		public Builder category(CategoryId category) {
+			this.category = java.util.Objects.requireNonNull(category, "category");
+			return this;
+		}
+
+		public Builder category(URI category) {
+			this.category = CategoryId.of(category);
 			return this;
 		}
 
@@ -149,30 +175,22 @@ public class AttributeAssignment
 		 * @param attrAssigExp attribute assignment expression
 		 * @return {@link Builder}
 		 */
-		public Builder from(AttributeAssignmentExpression attrAssigExp)
+		public Builder from(AttributeAssignmentExpression a)
 		{
-			this.attributeId = attrAssigExp.getAttributeId();
-			this.category = attrAssigExp.getCategory();
-			this.issuer = attrAssigExp.getIssuer();
+			java.util.Objects.requireNonNull(a);
+			this.attributeId = a.getAttributeId();
+			this.category = a.getCategory();
+			this.issuer = a.getIssuer();
 			return this;
 		}
 
-		public Builder category(CategoryId category){
-			this.category = category;
-			return this;
-		}
-
-		public Builder category(String category){
-			this.category = !Strings.isNullOrEmpty(category)?Categories.parse(category):null;
-			return this;
-		}
 
 		public Builder issuer(String issuer){
 			this.issuer =  issuer;
 			return this;
 		}
 
-		public Builder value(AttributeExp v){
+		public Builder value(AttributeValue v){
 			Preconditions.checkNotNull(v);
 			this.value = v;
 			return this;

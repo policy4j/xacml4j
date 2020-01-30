@@ -21,10 +21,8 @@ package org.xacml4j.v30;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
 /**
- * Value expression represents literal
- * expression which evaluates to itself.
+ * Value expressions which evaluates to itself.
  *
  * @author Giedrius Trumpickas
  */
@@ -36,5 +34,19 @@ public interface ValueExpression extends Expression
 	 *
 	 * @return {@link ValueType} type for this value
 	 */
-	ValueType getType();
+	default ValueType getType(){
+		return getEvaluatesTo();
+	}
+
+	/**
+	 * Value expression always evaluates to itself
+	 *
+	 * @param context an evaluation context
+	 * @return itself
+	 * @throws EvaluationException
+	 */
+	default Expression evaluate(
+			EvaluationContext context) throws EvaluationException{
+		return this;
+	}
 }

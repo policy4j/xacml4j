@@ -27,7 +27,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.lang.reflect.Type;
 
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.StatusCodeIds;
+import org.xacml4j.v30.StatusCodeId;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -48,7 +48,7 @@ public class StatusCodeAdapter implements JsonSerializer<StatusCode>, JsonDeseri
 		JsonObject o = json.getAsJsonObject();
 		String value = GsonUtil.getAsString(o, VALUE_PROPERTY, null);
 		checkNotNull(value);
-		StatusCode.Builder builder = StatusCode.builder(StatusCodeIds.parse(value));
+		StatusCode.Builder builder = StatusCode.builder(StatusCodeId.of(value).get());
 
 		StatusCode embeddedStatusCode = context.deserialize(o.getAsJsonObject(STATUS_CODE_PROPERTY), StatusCode.class);
 		if (embeddedStatusCode != null) {

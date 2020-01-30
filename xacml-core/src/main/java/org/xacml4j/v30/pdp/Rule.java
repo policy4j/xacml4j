@@ -23,15 +23,10 @@ package org.xacml4j.v30.pdp;
  */
 
 
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.MatchResult;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
 
 public class Rule extends BaseDecisionRule implements PolicyElement
 {
@@ -91,7 +86,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 
 	@Override
 	public String toString(){
-		return toStringBuilder(Objects.toStringHelper(this))
+		return toStringBuilder(MoreObjects.toStringHelper(this))
 				.add("effect", effect)
 				.toString();
 	}

@@ -22,36 +22,37 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import java.time.Clock;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
 
+import com.google.common.base.MoreObjects;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.BagOfAttributeValues;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Ticker;
 import com.google.common.collect.ImmutableMap;
 
 public final class AttributeSet
 {
 	private final long timestamp;
-	private final ImmutableMap<String, BagOfAttributeExp> values;
+	private final Map<String, BagOfAttributeValues> values;
 	private final AttributeResolverDescriptor d;
-	private final int hashCode;
+	private transient int hashCode;
 
 	private AttributeSet(Builder b){
 		this.d = b.d;
 		this.values = b.mapBuilder.build();
-		this.timestamp = b.ticker.read();
-		this.hashCode = Objects.hashCode(d, values);
+		this.timestamp = b.ticker.millis();
 	}
 
 	public static Builder builder(AttributeResolverDescriptor d){
 		return new Builder(d);
 	}
 
-	public static Builder builder(AttributeResolver r){
+	public static Builder builder(Resolver<AttributeSet> r){
 		return new Builder(r.getDescriptor());
 	}
 
@@ -91,16 +92,13 @@ public final class AttributeSet
 	 * Gets an attribute value for a given designator
 	 *
 	 * @param key an attribute designator
-	 * @return {@link BagOfAttributeExp}
+	 * @return {@link BagOfAttributeValues}
 	 * @exception IllegalArgumentException
 	 */
-	public BagOfAttributeExp get(AttributeDesignatorKey key)
+	public Optional<BagOfAttributeValues> get(AttributeDesignatorKey key)
 	{
-		Preconditions.checkArgument(d.canResolve(key));
 		AttributeDescriptor ad = d.getAttribute(key.getAttributeId());
-		Preconditions.checkArgument(ad != null);
-		BagOfAttributeExp v = values.get(key.getAttributeId());
-		return (v != null)?v:ad.getDataType().emptyBag();
+		return Optional.ofNullable(values.get(ad.getAttributeId()));
 	}
 
 	/**
@@ -108,14 +106,13 @@ public final class AttributeSet
 	 * attribute identifier
 	 *
 	 * @param attributeId an attribute identifier
-	 * @return {@link BagOfAttributeExp}
+	 * @return {@link BagOfAttributeValues}
 	 */
-	public BagOfAttributeExp get(String attributeId)
+	public Optional<BagOfAttributeValues> get(String attributeId)
 	{
-		BagOfAttributeExp v = values.get(attributeId);
 		AttributeDescriptor ad = d.getAttribute(attributeId);
-		Preconditions.checkState(ad != null);
-		return (v != null)?v:ad.getDataType().emptyBag();
+		return Optional.ofNullable(values.get(ad.getAttributeId()));
+
 	}
 
 	public Iterable<String> getAttributeIds(){
@@ -123,7 +120,7 @@ public final class AttributeSet
 	}
 
 	public boolean isEmpty() {
-		for (BagOfAttributeExp v : values.values()) {
+		for (BagOfAttributeValues v : values.values()) {
 			if (!v.isEmpty()) {
 				return false;
 			}
@@ -131,17 +128,18 @@ public final class AttributeSet
 		return true;
 	}
 
+	public long getTimestamp(){
+		return timestamp;
+	}
+
 	public int size(){
 		return d.getAttributesCount();
 	}
 
-	public Map<String, BagOfAttributeExp> toMap(){
-		return values;
-	}
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("id", d.getId())
 		.add("issuer", d.getIssuer())
 		.add("values", values)
@@ -150,14 +148,17 @@ public final class AttributeSet
 
 	@Override
 	public int hashCode(){
+		if(hashCode == 0){
+			this.hashCode = Objects.hash(d, values);
+		}
 		return hashCode;
 	}
 
 	public static class Builder
 	{
-		private Ticker ticker = Ticker.systemTicker();
+		private Clock ticker = Clock.systemUTC();
 		private AttributeResolverDescriptor d;
-		private ImmutableMap.Builder<String, BagOfAttributeExp> mapBuilder = ImmutableMap.builder();
+		private ImmutableMap.Builder<String, BagOfAttributeValues> mapBuilder = ImmutableMap.builder();
 
 		Builder(AttributeResolverDescriptor d){
 			Preconditions.checkNotNull(d);
@@ -170,16 +171,17 @@ public final class AttributeSet
 			return this;
 		}
 
-		public Builder ticker(Ticker t){
+		public Builder ticker(Clock t){
 			this.ticker = t;
 			return this;
 		}
 
-		public Builder resolver(AttributeResolver r){
-			return resolver(r.getDescriptor());
+		public Builder resolver(Resolver<AttributeSet> r){
+			AttributeResolverDescriptor d = r.getDescriptor();
+			return resolver(d);
 		}
 
-		public Builder attribute(String id, BagOfAttributeExp value){
+		public Builder attribute(String id, BagOfAttributeValues value){
 			Preconditions.checkNotNull(id);
 			Preconditions.checkNotNull(value);
 			AttributeDescriptor attrDesc = d.getAttribute(id);
@@ -194,11 +196,11 @@ public final class AttributeSet
 			return this;
 		}
 
-		public Builder attributes(Map<String, BagOfAttributeExp> attributes){
+		public Builder attributes(Map<String, BagOfAttributeValues> attributes){
 			if(attributes == null){
 				return this;
 			}
-			for(Entry<String, BagOfAttributeExp> e : attributes.entrySet()){
+			for(Entry<String, BagOfAttributeValues> e : attributes.entrySet()){
 				attribute(e.getKey(), e.getValue());
 			}
 			return this;

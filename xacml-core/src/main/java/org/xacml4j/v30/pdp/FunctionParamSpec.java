@@ -22,13 +22,19 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.ListIterator;
-
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.spi.function.FunctionParamSpecVisitor;
 
+import java.util.ListIterator;
+import java.util.Optional;
 
+
+/**
+ * A XACML function parameter specification.
+ *
+ * @author Giedrius Trumpickas
+ */
 public interface FunctionParamSpec
 {
 	/**
@@ -44,7 +50,12 @@ public interface FunctionParamSpec
 	 */
 	boolean validate(ListIterator<Expression> it);
 
-	Expression getDefaultValue();
+	/**
+	 * Gets default parameter value
+	 *
+	 * @return {@link Optional}
+	 */
+	Optional<Expression> getDefaultValue();
 	
 	boolean isOptional();
 	
@@ -66,6 +77,11 @@ public interface FunctionParamSpec
 	 * variadic
 	 */
 	boolean isVariadic();
-	
+
+	/**
+	 * Accepts {@link FunctionParamSpecVisitor}
+	 *
+	 * @param v a visitor
+	 */
 	void accept(FunctionParamSpecVisitor v);
 }

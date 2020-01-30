@@ -44,7 +44,7 @@ import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.XPathProvider;
 
 
 public class DefaultPolicyDecisionPointTest
@@ -77,7 +77,6 @@ public class DefaultPolicyDecisionPointTest
 			.decisionAuditor(decisionAuditor)
 			.policyRepository(repository)
 			.decisionCache(decisionCache)
-			.decisionCacheTTL(10)
 			.pip(pip)
 			.rootPolicy(policyDomain)
 			.xpathProvider(xpathProvider);

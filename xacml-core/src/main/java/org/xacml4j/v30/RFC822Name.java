@@ -162,7 +162,11 @@ public final class RFC822Name implements Serializable
 		try {
 			VALID_PATTERN = Pattern.compile(PATTERN_STRING);
 		} catch(PatternSyntaxException e) {
-			LoggerFactory.getLogger(RFC822Name.class).error("Can not parse Email address pattern", e);
+			LoggerFactory
+					.getLogger(RFC822Name.class)
+					.error(String.format(
+							"Can NOT parse email address pattern=\"%s\"",
+							PATTERN_STRING), e);
 			throw e;
 		}
 	}
@@ -213,7 +217,8 @@ public final class RFC822Name implements Serializable
 		String trimmedName = ((String)name).trim();
 		Preconditions.checkArgument(
 				VALID_PATTERN.matcher(trimmedName).matches(),
-				"Given value=\"%s\" is invalid RFC822 name", trimmedName);
+				"Given value=\"%s\" is invalid RFC822 name",
+				trimmedName);
 		String [] parts = NAME_SPLITTER.split(trimmedName);
 		return new RFC822Name(parts[0], parts[1]);
 	}

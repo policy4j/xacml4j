@@ -37,15 +37,12 @@ import org.junit.Test;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextMarshaller;
+import org.xacml4j.v30.xml.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
@@ -69,12 +66,12 @@ public class Xacml20ConformanceTest
 	{
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
-				FunctionProviderBuilder.builder()
+				FunctionProvider.Builder.builder()
 				.defaultFunctions()
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.create());
+				.build());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 
 		addAllPolicies(repository, "IIA", 22);

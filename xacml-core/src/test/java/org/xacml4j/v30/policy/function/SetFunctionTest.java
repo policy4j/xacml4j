@@ -28,10 +28,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.BooleanExp;
+import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -42,8 +41,7 @@ public class SetFunctionTest
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		p = new AnnotationBasedFunctionProvider(
-				SetFunctions.class);
+		p = FunctionProvider.builder().withStandardFunctions().build();
 	}
 
 	@Test
@@ -137,43 +135,43 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanUnion()
 	{
-		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(true));
-		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
-		BagOfAttributeExp c = SetFunctions.booleanUnion(a, b);
+		BagOfAttributeValues a = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)).build();
+		BagOfAttributeValues b = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
+		BagOfAttributeValues c = SetFunctions.booleanUnion(a, b);
 		assertEquals(2, c.size());
-		assertTrue(c.contains(BooleanExp.valueOf(true)));
-		assertTrue(c.contains(BooleanExp.valueOf(false)));
+		assertTrue(c.contains(XacmlTypes.BOOLEAN.of(true)));
+		assertTrue(c.contains(XacmlTypes.BOOLEAN.of(false)));
 	}
 
 	@Test
 	public void testBooleanSetEquals()
 	{
-		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
-		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(false), BooleanExp.valueOf(true));
+		BagOfAttributeValues a = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
+		BagOfAttributeValues b = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(true)).build();
 
-		assertEquals(BooleanExp.valueOf(true), SetFunctions.booleanSetEquals(a, b));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), SetFunctions.booleanSetEquals(a, b));
 	}
 
 	@Test
 	public void testBooleanIntersection()
 	{
-		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
-		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(true));
+		BagOfAttributeValues a = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
+		BagOfAttributeValues b = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)).build();
 
-		assertEquals(BooleanExp.valueOf(true).toBag(), SetFunctions.booleanIntersection(a, b));
+		assertEquals(XacmlTypes.BOOLEAN.of(true).toBag(), SetFunctions.booleanIntersection(a, b));
 	}
 
 	@Test
 	public void testBooleanIntercetion()
 	{
-		BagOfAttributeExp a = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(true));
-		BagOfAttributeExp b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(false), BooleanExp.valueOf(false));
-		BagOfAttributeExp c = SetFunctions.booleanIntersection(a, b);
+		BagOfAttributeValues a = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)).build();
+		BagOfAttributeValues b = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false)).build();
+		BagOfAttributeValues c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(0, c.size());
 
-		b = XacmlTypes.BOOLEAN.bagOf(BooleanExp.valueOf(true), BooleanExp.valueOf(false));
+		b = XacmlTypes.BOOLEAN.bag().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
 		c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(1, c.size());
-		assertTrue(c.contains(BooleanExp.valueOf(true)));
+		assertTrue(c.contains(XacmlTypes.BOOLEAN.of(true)));
 	}
 }

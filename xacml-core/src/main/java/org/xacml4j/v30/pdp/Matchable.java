@@ -35,7 +35,7 @@ public interface Matchable extends PolicyElement
 	 * evaluation context.
 	 *
 	 * @param context an evaluation context
-	 * @return {@link MatchResult} instance
+	 * @return {@link MatchResult} defaultProvider
 	 */
 	MatchResult match(EvaluationContext context);
 }

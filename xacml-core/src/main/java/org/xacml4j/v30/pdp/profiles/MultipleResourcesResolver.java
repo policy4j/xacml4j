@@ -25,7 +25,7 @@ package org.xacml4j.v30.pdp.profiles;
 import java.util.Collection;
 import java.util.Set;
 
-import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.pdp.RequestContextCallback;
 
 
@@ -34,11 +34,11 @@ public interface MultipleResourcesResolver
 	/**
 	 * Gets supported resource identifiers
 	 *
-	 * @return a {@link Set} of {@link AttributeExp}
+	 * @return a {@link Set} of {@link AttributeValue}
 	 * instances representing supported resource
 	 * identifiers
 	 */
-	Set<AttributeExp> getSupportedResourceIds();
+	Set<AttributeValue> getSupportedResourceIds();
 
 	/**
 	 * Resolves immediate children resources of
@@ -48,11 +48,11 @@ public interface MultipleResourcesResolver
 	 * @param callback a request context attribute callback
 	 * @return a collection of immediate children of the given resource
 	 */
-	Collection<AttributeExp> resolveChildrenResources(
-			AttributeExp resource,
+	Collection<AttributeValue> resolveChildrenResources(
+			AttributeValue resource,
 			RequestContextCallback callback);
 
-	Collection<AttributeExp> resolveDescendantResources(
-			AttributeExp resource,
+	Collection<AttributeValue> resolveDescendantResources(
+			AttributeValue resource,
 			RequestContextCallback callback);
 }

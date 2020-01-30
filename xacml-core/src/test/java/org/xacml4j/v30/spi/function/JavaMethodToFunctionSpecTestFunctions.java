@@ -22,9 +22,9 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.types.BooleanValue;
+import org.xacml4j.v30.types.StringValue;
 
 
 public class JavaMethodToFunctionSpecTestFunctions
@@ -39,32 +39,32 @@ public class JavaMethodToFunctionSpecTestFunctions
 		return null;
 	}
 
-	public BooleanExp missingXacmlFuncAnnotation(){
+	public BooleanValue missingXacmlFuncAnnotation(){
 		return null;
 	}
 
 	@XacmlFuncSpec(id="missingReturnTypeDeclaration1")
-	public static BooleanExp missingReturnTypeDeclaration1(){
+	public static BooleanValue missingReturnTypeDeclaration1(){
 		return null;
 	}
 
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)
-	public static BooleanExp returnTypeDeclarationExistButWrongMethodReturnType1(){
+	public static BooleanValue returnTypeDeclarationExistButWrongMethodReturnType1(){
 		return null;
 	}
 	
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp optionalParametersTest(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean")BooleanExp a,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, value={"false", "true"})StringExp b,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", value="false")StringExp c){
+	public static BooleanValue optionalParametersTest(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue a,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, value={"false", "true"}) StringValue b,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", value="false") StringValue c){
 		return null;
 	}
 
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType2")
-	public static BagOfAttributeExp returnTypeDeclarationExistButWrongMethodReturnType2(){
+	public static BagOfAttributeValues returnTypeDeclarationExistButWrongMethodReturnType2(){
 		return null;
 	}
 }

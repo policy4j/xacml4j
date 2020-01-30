@@ -22,18 +22,14 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.List;
-
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
-
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import org.xacml4j.v30.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The class denotes application of a function to its arguments,
@@ -41,14 +37,13 @@ import com.google.common.collect.ImmutableList;
  * applied to a given list of {@link Expression} instances.
  *
  * @author Giedrius Trumpickas
- *
  */
-public class Apply implements Expression
+public final class Apply implements Expression
 {
 	private final FunctionSpec spec;
 	private final List<Expression> arguments;
 
-	private final int hashCode;
+	private int hashCode = 0;
 
 	/**
 	 * Constructs XACML apply expression with given function and list
@@ -60,7 +55,6 @@ public class Apply implements Expression
 	{
 		this.spec = b.func;
 		this.arguments = b.paramsBuilder.build();
-		this.hashCode = Objects.hashCode(spec, arguments);
 	}
 
 	/**
@@ -90,7 +84,7 @@ public class Apply implements Expression
 	/**
 	 * Gets function invocation arguments
 	 *
-	 * @return an immutable instance of {@link List}
+	 * @return an immutable defaultProvider of {@link List}
 	 */
 	public List<Expression> getArguments(){
 		return arguments;
@@ -102,7 +96,7 @@ public class Apply implements Expression
 	 *
 	 * @param context an evaluation context
 	 * @return expression evaluation result as {@link ValueExpression}
-	 * instance
+	 * defaultProvider
 	 */
 	@Override
 	public ValueExpression evaluate(EvaluationContext context)
@@ -119,12 +113,16 @@ public class Apply implements Expression
 
 	@Override
 	public int hashCode(){
+		if(hashCode == 0){
+			this.hashCode = Objects.hash(spec, arguments);
+		}
 		return hashCode;
 	}
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects
+				.toStringHelper(this)
 		.add("function", spec)
 		.add("arguments", arguments)
 		.toString();
@@ -169,14 +167,13 @@ public class Apply implements Expression
 			this.func = spec;
 		}
 
-		public Builder param(Iterable<Expression> params){
+		public Builder params(Iterable<Expression> params){
 			this.paramsBuilder.addAll(params);
 			return this;
 		}
 
 		public Builder param(Expression ...params){
-			this.paramsBuilder.add(params);
-			return this;
+			return params(Arrays.asList(params));
 		}
 
 		public Apply build(){

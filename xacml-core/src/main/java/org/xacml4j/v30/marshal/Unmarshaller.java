@@ -22,9 +22,9 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
-import java.io.IOException;
-
 import org.xacml4j.v30.XacmlSyntaxException;
+
+import java.io.IOException;
 
 
 public interface Unmarshaller<T>

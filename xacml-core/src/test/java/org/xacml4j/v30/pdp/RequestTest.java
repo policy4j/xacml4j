@@ -31,14 +31,8 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.XPathVersion;
-import org.xacml4j.v30.types.StringExp;
-
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class RequestTest
@@ -51,41 +45,41 @@ public class RequestTest
 	@Before
 	public void init()
 	{
-			this.resource0 = Category.builder(Categories.RESOURCE)
+			this.resource0 = Category.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId10").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId11").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId10").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId11").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
-		this.resource1 = Category.builder(Categories.RESOURCE)
+		this.resource1 = Category.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId22").value(StringExp.of("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(StringExp.of("value2")).build(),
-						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(StringExp.of("value2")).build()).build())
+						Attribute.builder("testId11").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId22").value(XacmlTypes.STRING.of("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(XacmlTypes.STRING.of("value2")).build(),
+						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(XacmlTypes.STRING.of("value2")).build()).build())
 				.build();
-		this.subject0 =  Category.builder(Categories.SUBJECT_ACCESS)
+		this.subject0 =  Category.builder(CategoryId.SUBJECT_ACCESS)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId31").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId32").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId31").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId32").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
-		this.subject1 = Category.builder(Categories.SUBJECT_CODEBASE)
+		this.subject1 = Category.builder(CategoryId.SUBJECT_CODEBASE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId22").value(StringExp.of("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(StringExp.of("value2")).build(),
-						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(StringExp.of("value2")).build()).build())
+						Attribute.builder("testId11").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId22").value(XacmlTypes.STRING.of("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(XacmlTypes.STRING.of("value2")).build(),
+						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(XacmlTypes.STRING.of("value2")).build()).build())
 				.build();
 
 	}
@@ -118,10 +112,10 @@ public class RequestTest
 				.attributes(subject0, resource0, resource1)
 				.build();
 		assertFalse(request1.isReturnPolicyIdList());
-		assertEquals(3, request1.getAttributes().size());
-		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(Categories.SUBJECT_ACCESS).contains(subject0));
+		assertEquals(3, request1.getCategories().size());
+		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject0));
 
 		RequestContext request2 = RequestContext
 				.builder()
@@ -130,9 +124,9 @@ public class RequestTest
 				.build();
 
 		assertTrue(request2.isReturnPolicyIdList());
-		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(Categories.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(Categories.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject0));
 	}
 
 	@Test
@@ -144,11 +138,11 @@ public class RequestTest
 				.returnPolicyIdList(false)
 				.attributes(subject0, resource0, resource1)
 				.build();
-		Collection<Category> attr = request.getAttributes(Categories.RESOURCE);
+		Collection<Category> attr = request.getAttributes(CategoryId.RESOURCE);
 		assertEquals(2, attr.size());
 		assertTrue(attr.contains(resource0));
 		assertTrue(attr.contains(resource1));
-		attr = request.getAttributes(Categories.ENVIRONMENT);
+		attr = request.getAttributes(CategoryId.ENVIRONMENT);
 		assertEquals(0, attr.size());
 	}
 
@@ -161,7 +155,7 @@ public class RequestTest
 				.returnPolicyIdList(false)
 				.attributes(subject0, resource0)
 				.build();
-		Collection<Category> attr = request.getAttributes(Categories.ACTION);
+		Collection<Category> attr = request.getAttributes(CategoryId.ACTION);
 		assertNotNull(attr);
 	}
 
@@ -173,7 +167,7 @@ public class RequestTest
 				.returnPolicyIdList(false)
 				.attributes(subject0, resource0, resource1)
 				.build();
-		request.getOnlyAttributes(Categories.RESOURCE);
+		request.getOnlyAttributes(CategoryId.RESOURCE);
 	}
 
 	@Test
@@ -184,7 +178,7 @@ public class RequestTest
 				.returnPolicyIdList(false)
 				.attributes(subject0, resource0)
 				.build();
-		Category attr = request.getOnlyAttributes(Categories.RESOURCE);
+		Category attr = request.getOnlyAttributes(CategoryId.RESOURCE);
 		assertEquals(resource0, attr);
 	}
 

@@ -22,39 +22,24 @@ package org.xacml4j.util;
  * #L%
  */
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Stack;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
+import org.xacml4j.v30.XacmlSyntaxException;
+import org.xml.sax.InputSource;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import java.io.*;
+import java.util.*;
 
 
 public class DOMUtil
@@ -67,6 +52,10 @@ public class DOMUtil
 		try{
 			transformerFactory = TransformerFactory.newInstance();
 			documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setValidating(false);
+			documentBuilderFactory.setNamespaceAware(true);
+			documentBuilderFactory.setIgnoringComments(true);
+			documentBuilderFactory.setIgnoringElementContentWhitespace(true);
 		}catch(Exception e){
 			e.printStackTrace(System.err);
 		}
@@ -75,6 +64,23 @@ public class DOMUtil
 	/** Private constructor for utility class */
 	private DOMUtil() { }
 
+	public static List<Node> nodeListToList(NodeList list)
+	{
+		Objects.requireNonNull(list);
+		return new AbstractList<>()
+		{
+				public int size() {
+					return list.getLength();
+				}
+
+				public Node get(int index) {
+					Node item = list.item(index);
+					if (item == null)
+						throw new IndexOutOfBoundsException(index);
+					return item;
+				}
+			};
+	}
 	/**
 	 * Creates XPath expression for a given DOM node
 	 * @param n a DOM node
@@ -163,7 +169,7 @@ public class DOMUtil
 	 * Gets parent node of the given node
 	 *
 	 * @param node a DOM node
-	 * @return a parent node {@link Node} instance
+	 * @return a parent node {@link Node} defaultProvider
 	 */
 	private static Node getParent(Node node){
 		return (node.getNodeType() == Node.ATTRIBUTE_NODE)?
@@ -196,8 +202,8 @@ public class DOMUtil
 
 	/**
 	 * Safe cast of the given node to
-	 * {@link Element} instance
-	 * @param n an element or a document instance
+	 * {@link Element} defaultProvider
+	 * @param n an element or a document defaultProvider
 	 * @return {@link Element}
 	 * @exception IllegalArgumentException if a given node
 	 * neither element or document node
@@ -222,35 +228,51 @@ public class DOMUtil
 		serializeToXml(node, out, true, false);
 	}
 
-	public static Node stringToNode(String src) {
+	public static Optional<Node> stringToNode(String src) {
 		if(src == null){
-			return null;
+			return Optional.empty();
 		}
-		return parseXml(new InputSource(new StringReader(src)));
+		return parseXml(
+				new InputSource(
+						new StringReader(src)));
 	}
 
-	public static Node parseXml(InputStream src) {
+	public static Optional<Node> parseXml(InputStream src) {
 		if(src == null){
-			return null;
+			return Optional.empty();
 		}
-		return parseXml(new InputSource(src));
+		return parseXml(
+				new InputSource(src));
+
 	}
 
-	public static Node parseXml(InputSource src)
+	public static Optional<Node> parseXml(String src) {
+		if(src == null){
+			return Optional.empty();
+		}
+		return parseXml(
+				new InputSource(
+						new StringReader(src)));
+	}
+
+
+	public static Optional<Node> parseXml(InputSource src)
 	{
 		Preconditions.checkNotNull(src);
 		DocumentBuilder documentBuilder = null;
 		try {
-			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			documentBuilder = documentBuilderFactory
+					.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			throw new IllegalStateException(String.format("Failed to build %s",
-					DocumentBuilder.class.getName()), e);
+			throw new IllegalStateException(
+					e.getMessage(), e);
 		}
 		try {
-			return documentBuilder.parse(src);
+			return Optional.of(
+					documentBuilder.parse(src));
 		} catch (Exception e) {
-			throw new IllegalArgumentException(String.format(
-					"Failed to parse DOM from string: \"%s\"", src), e);
+			throw XacmlSyntaxException
+					.invalidXml(e.getMessage(), e);
 		}
 	}
 
@@ -263,16 +285,18 @@ public class DOMUtil
 		try {
 			transformer = transformerFactory.newTransformer();
 		} catch (TransformerConfigurationException e) {
-			throw new IllegalStateException(String.format("Failed to build %s",
-					Transformer.class.getName()), e);
+			throw new IllegalStateException(
+					e.getMessageAndLocation(), e);
 		}
-		DOMSource source = new DOMSource(node);
-		StreamResult result = new StreamResult(new StringWriter());
-		try {
+		try
+		{
+			DOMSource source = new DOMSource(node);
+			StreamResult result = new StreamResult(new StringWriter());
 			transformer.transform(source, result);
 			return result.getWriter().toString();
 		} catch (TransformerException e) {
-			throw new IllegalArgumentException("Failed to serialize Node to String.", e);
+			throw new IllegalArgumentException(
+					e.getMessageAndLocation(), e);
 		}
 	}
 
@@ -293,6 +317,23 @@ public class DOMUtil
 		DOMSource source = new DOMSource(node);
 		Result result = new StreamResult(out);
 		t.transform (source, result);
+	}
+
+	public static String serializeToXmlString(Node node, boolean omitXmlDecl)
+	{
+		try{
+			StringWriter w = new StringWriter();
+			StreamResult result = new StreamResult(w);
+			Transformer t = transformerFactory.newTransformer();
+			t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,  omitXmlDecl ?"yes":"no");
+			t.setOutputProperty(OutputKeys.METHOD, "xml");
+			DOMSource source = new DOMSource(node);
+			t.transform (source, result);
+			return w.toString();
+		}catch(TransformerException e){
+			throw new IllegalStateException(e.getCause());
+		}
+
 	}
 
 	/**

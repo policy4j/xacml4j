@@ -24,6 +24,7 @@ package org.xacml4j.v30.spi.function;
 
 import java.util.ListIterator;
 
+import com.google.common.base.MoreObjects;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.pdp.FunctionReference;
@@ -45,7 +46,7 @@ final class FunctionParamFuncReferenceSpec extends BaseFunctionParamSpec
 
 	@Override
 	public String toString(){
-		return Objects.
+		return MoreObjects.
 				toStringHelper(this)
 				.add("optional", isOptional())
 				.add("defaultValue", getDefaultValue())

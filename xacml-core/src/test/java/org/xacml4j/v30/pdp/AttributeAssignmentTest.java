@@ -26,8 +26,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Calendar;
 
 
 public class AttributeAssignmentTest
@@ -37,16 +39,16 @@ public class AttributeAssignmentTest
 	{
 		AttributeAssignment a0 =  AttributeAssignment.builder()
 				.id("testId")
-				.category(Categories.ACTION)
-				.value(IntegerExp.of(10))
+				.category(CategoryId.ACTION)
+				.value(XacmlTypes.INTEGER.of(10))
 				.build();
 		assertEquals("testId", a0.getAttributeId());
-		assertEquals(Categories.ACTION, a0.getCategory());
-		assertEquals(IntegerExp.of(10), a0.getAttribute());
+		assertEquals(CategoryId.ACTION, a0.getCategory());
+		assertEquals(XacmlTypes.INTEGER.of(10), a0.getAttribute());
 		AttributeAssignment a1 =  AttributeAssignment.builder()
 				.id("testId")
-				.category(Categories.ACTION)
-				.value(IntegerExp.of(10))
+				.category(CategoryId.ACTION)
+				.value(XacmlTypes.INTEGER.of(10))
 				.build();
 		assertEquals(a0, a1);
 	}

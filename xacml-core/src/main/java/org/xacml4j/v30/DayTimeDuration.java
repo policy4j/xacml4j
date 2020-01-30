@@ -27,6 +27,11 @@ import javax.xml.datatype.Duration;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * XACML DayTimeDuration abstraction
+ *
+ * @author Giedrius Trumpickas
+ */
 public final class DayTimeDuration
 	extends BaseDuration<DayTimeDuration>
 {
@@ -63,9 +68,9 @@ public final class DayTimeDuration
 	}
 
 	/**
-	 * Parses a given object to {@link DayTimeDuration} instance
+	 * Parses a given object to {@link DayTimeDuration} defaultProvider
 	 * @param any an object to be parsed
-	 * @return new instance
+	 * @return new defaultProvider
 	 */
 	public static DayTimeDuration parse(Object any){
 		if(any instanceof DayTimeDuration){

@@ -26,20 +26,55 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.CategoryId;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.xacml4j.v30.types.XacmlTypes.*;
+import static org.xacml4j.v30.types.XacmlTypes.DATETIME;
 
 public final class PolicyInformationPointBuilder
 {
+	private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
+	private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";
+	private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
+
+	private final static String SHORT_CURRENT_TIME = "current-time";
+	private final static String SHORT_CURRENT_DATE = "current-date";
+	private final static String SHORT_CURRENT_DATETIME = "current-dateTime";
+
+	private final static Resolver<AttributeSet> ENV_RESOLVER =
+			AttributeResolverDescriptor.of(AttributeResolverDescriptorBuilder.builder("XacmlEnvironmentResolver",
+					"XACML Environment Attributes Resolver",
+					CategoryId.ENVIRONMENT).noCache()
+					.attribute(CURRENT_TIME, TIME, SHORT_CURRENT_TIME)
+					.attribute(CURRENT_DATE, DATE, SHORT_CURRENT_DATE)
+					.attribute(CURRENT_DATETIME,DATETIME, SHORT_CURRENT_DATETIME)
+					.build(), resolverContext -> {
+				Calendar currentDateTime = GregorianCalendar.from(resolverContext.getCurrentDateTime());
+				Map<String, BagOfAttributeValues> v = new HashMap<String, BagOfAttributeValues>();
+				v.put(CURRENT_TIME, TIME.of(currentDateTime).toBag());
+				v.put(CURRENT_DATE, DATE.of(currentDateTime).toBag());
+				v.put(CURRENT_DATETIME, DATETIME.of(currentDateTime).toBag());
+				return v;});
+
+
 	private final static Logger log = LoggerFactory.getLogger(
 			PolicyInformationPointBuilder.class);
 
 	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistryBuilder registryBuilder;
+	private PolicyInformationPoint.ResolutionStrategy contentStrategy = PolicyInformationPoint.ResolutionStrategy.FIRST_NON_EMPTY_IGNORE_ERROR;
+	private PolicyInformationPoint.ResolutionStrategy attributeStrategy = PolicyInformationPoint.ResolutionStrategy.FIRST_NON_EMPTY_IGNORE_ERROR;
 
 	public PolicyInformationPointBuilder(String id){
 		Preconditions.checkNotNull(id);
 		this.id = id;
-		this.cache = new DefaultPolicyInformationPointCacheProvider();
 		this.registryBuilder = ResolverRegistryBuilder.builder();
 	}
 
@@ -60,7 +95,7 @@ public final class PolicyInformationPointBuilder
 	 * @return {@link PolicyInformationPointBuilder}
 	 */
 	public PolicyInformationPointBuilder defaultResolvers(){
-		return resolver(new DefaultEnvironmentAttributeResolver());
+		return resolver(ENV_RESOLVER);
 	}
 
 	/**
@@ -69,16 +104,12 @@ public final class PolicyInformationPointBuilder
 	 * @param resolver a resolver
 	 * @return {@link PolicyInformationPointBuilder}
 	 */
-	public PolicyInformationPointBuilder resolver(AttributeResolver resolver){
+	public PolicyInformationPointBuilder resolver(Resolver<?> resolver){
+		if(CON)
 		registryBuilder.withAttributeResolver(resolver);
 		return this;
 	}
 
-	public PolicyInformationPointBuilder resolver(ContentResolver resolver){
-		Preconditions.checkNotNull(resolver);
-		registryBuilder.withContentResolver(resolver);
-		return this;
-	}
 
 	public PolicyInformationPointBuilder resolverFromInstance(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
@@ -86,36 +117,11 @@ public final class PolicyInformationPointBuilder
 		return this;
 	}
 
-	public PolicyInformationPointBuilder policyScopedResolverFromInstance(
-			String policyId, Object annotatedResolver){
-		registryBuilder.withPolicyScopedResolver(policyId, annotatedResolver);
-		return this;
-	}
-
-	public PolicyInformationPointBuilder policyScopedResolver(
-			String policyId, AttributeResolver resolver){
-		registryBuilder.withPolicyScopedAttributeResolver(policyId, resolver);
-		return this;
-	}
-
-	public PolicyInformationPointBuilder policyScopedResolver(
-			String policyId, ContentResolver resolver){
-		Preconditions.checkNotNull(policyId);
-		Preconditions.checkNotNull(resolver);
-		registryBuilder.withPolicyScopedContentResolver(policyId, resolver);
-		return this;
-	}
-
 	public PolicyInformationPoint build(){
 		return new DefaultPolicyInformationPoint(id,
-				registryBuilder.build(), cache);
-	}
-
-	public PolicyInformationPoint build(ResolverRegistry registry){
-		if(log.isDebugEnabled()){
-			log.debug("Creating PIP id=\"{}\"", id);
-		}
-		return new DefaultPolicyInformationPoint(id,
-				registryBuilder.build(registry), cache);
+				registryBuilder.build(),
+				contentStrategy,
+				attributeStrategy,
+				cache);
 	}
 }

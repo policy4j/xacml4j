@@ -22,11 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.regex.Pattern;
-
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+
+import java.util.regex.Pattern;
 
 /**
  * A XACML version  is expressed as a sequence of decimal numbers,
@@ -80,7 +80,7 @@ public final class Version implements Comparable<Version>
 
     @Override
     public String toString(){
-    	return Objects.toStringHelper(this).
+    	return MoreObjects.toStringHelper(this).
     	add("version", value).toString();
     }
 
@@ -155,7 +155,7 @@ public final class Version implements Comparable<Version>
 	 * from a given string
 	 *
 	 * @param version a version
-	 * @return {@link Version} instance
+	 * @return {@link Version} defaultProvider
 	 */
     public static Version parse(String version){
         return Strings.isNullOrEmpty(version)?
@@ -168,7 +168,7 @@ public final class Version implements Comparable<Version>
 	 * from a given integer
 	 *
 	 * @param version a version
-	 * @return {@link Version} instance
+	 * @return {@link Version} defaultProvider
 	 */
     public static Version valueOf(int version)
     	throws XacmlSyntaxException

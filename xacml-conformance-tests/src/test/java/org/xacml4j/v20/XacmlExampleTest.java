@@ -27,11 +27,11 @@ import java.util.List;
 
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
@@ -64,12 +64,12 @@ public class XacmlExampleTest extends XacmlPolicyTestSupport
 	{
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"tes-repository",
-				FunctionProviderBuilder.builder()
+				FunctionProvider.Builder.builder()
 				.defaultFunctions()
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.create());
+				.build());
 
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>(policyResources.length);
 		for (String policyResource : policyResources) {

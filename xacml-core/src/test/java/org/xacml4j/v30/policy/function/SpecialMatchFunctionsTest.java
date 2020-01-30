@@ -28,11 +28,8 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.RFC822NameExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.X500NameExp;
+import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.types.*;
 
 
 public class SpecialMatchFunctionsTest
@@ -42,8 +39,7 @@ public class SpecialMatchFunctionsTest
 	@Before
 	public void init() throws Exception
 	{
-		this.p = new AnnotationBasedFunctionProvider(
-				SpecialMatchFunctions.class);
+		this.p = FunctionProvider.builder().withStandardFunctions().build();
 	}
 
 	@Test
@@ -56,32 +52,32 @@ public class SpecialMatchFunctionsTest
 	@Test
 	public void testRFC822NameMatch()
 	{
-		StringExp p = StringExp.of(".sun.com");
-		RFC822NameExp n = RFC822NameExp.of("test@east.sun.com");
-		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+		StringValue p = XacmlTypes.STRING.of(".sun.com");
+		RFC822NameValue n = XacmlTypes.RFC822NAME.of("test@east.sun.com");
+		assertEquals(XacmlTypes.BOOLEAN.of(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 
-		p = StringExp.of("sun.com");
-		n = RFC822NameExp.of("test@sun.com");
-		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
+		p = XacmlTypes.STRING.of("sun.com");
+		n = XacmlTypes.RFC822NAME.of("test@sun.com");
+		assertEquals(XacmlTypes.BOOLEAN.of(true), SpecialMatchFunctions.rfc822NameMatch(p, n));
 	}
 
 	@Test
 	public void testX500NameMatch()
 	{
-		X500NameExp a = X500NameExp.of("ou=org,o=com");
-		X500NameExp b = X500NameExp.of("cn=test, ou=org,o=com");
+		X500NameValue a = XacmlTypes.X500NAME.of("ou=org,o=com");
+		X500NameValue b = XacmlTypes.X500NAME.of("cn=test, ou=org,o=com");
 
-		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.x500NameMatch(a, b));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), SpecialMatchFunctions.x500NameMatch(a, b));
 
-		a = X500NameExp.of("ou=org,o=com");
-		b = X500NameExp.of("cn=test, ou=ORG,o=Com");
+		a = XacmlTypes.X500NAME.of("ou=org,o=com");
+		b = XacmlTypes.X500NAME.of("cn=test, ou=ORG,o=Com");
 
-		assertEquals(BooleanExp.valueOf(true), SpecialMatchFunctions.x500NameMatch(a, b));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), SpecialMatchFunctions.x500NameMatch(a, b));
 
-		a = X500NameExp.of("ou=org1,o=com");
-		b = X500NameExp.of("cn=test, ou=ORG,o=com");
+		a = XacmlTypes.X500NAME.of("ou=org1,o=com");
+		b = XacmlTypes.X500NAME.of("cn=test, ou=ORG,o=com");
 
-		assertEquals(BooleanExp.valueOf(false), SpecialMatchFunctions.x500NameMatch(a, b));
+		assertEquals(XacmlTypes.BOOLEAN.of(false), SpecialMatchFunctions.x500NameMatch(a, b));
 
 	}
 }

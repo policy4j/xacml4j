@@ -24,11 +24,10 @@ package org.xacml4j.v30.spi.function;
 
 import java.util.ListIterator;
 
-import org.xacml4j.v30.AttributeExpType;
+import com.google.common.base.MoreObjects;
+import org.xacml4j.v30.AttributeValueType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
-
-import com.google.common.base.Objects;
 
 
 final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
@@ -38,7 +37,7 @@ final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
 	}
 	@Override
 	public boolean isValidParamType(ValueType type) {
-		return (type instanceof AttributeExpType);
+		return (type instanceof AttributeValueType);
 	}
 	
 	@Override
@@ -51,7 +50,7 @@ final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
 	}
 
 	public String toString(){
-		return Objects.
+		return MoreObjects.
 				toStringHelper(this)
 				.add("optional", isOptional())
 				.add("defaultValue", getDefaultValue())

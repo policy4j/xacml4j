@@ -39,13 +39,13 @@ public enum ResourceAttributes
 
 	/**
 	 * This attribute identifies the namespace of the top element(s) of the
-	 * contents of the {@link org.xacml4j.v30.Entity#getContent()}.
+	 * contents of the {@link Entity#getContent()}.
 	 * In the case where the resource content is supplied in
 	 * the request context and the resource namespaces are defined in the resource,
 	 * the PEP MAY provide this attribute in the request to
 	 * indicate the namespaces of the resource content. In this case
 	 * there SHALL be one value of this attribute for each unique namespace
-	 * of the top level elements in the {@link org.xacml4j.v30.Entity#getContent()}.
+	 * of the top level elements in the {@link Entity#getContent()}.
 	 * The type of the corresponding attribute SHALL be {@link org.xacml4j.v30.types.XacmlTypes#ANYURI}
 	 */
 	TARGET_NAMESPACE("urn:oasis:names:tc:xacml:2.0:resource:target-namespace");
@@ -53,7 +53,7 @@ public enum ResourceAttributes
 
 	private final String id;
 
-	private ResourceAttributes(String id){
+	ResourceAttributes(String id){
 		this.id = id;
 	}
 

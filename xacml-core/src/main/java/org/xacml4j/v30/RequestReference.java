@@ -22,12 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.Collection;
-
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
 
 public class RequestReference
 {
@@ -57,7 +56,7 @@ public class RequestReference
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("references", references)
 				.toString();

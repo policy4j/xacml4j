@@ -23,31 +23,18 @@ package org.xacml4j.v30;
  */
 
 
-import java.util.Collection;
-import java.util.LinkedList;
-
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Comment;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.ProcessingInstruction;
-import org.w3c.dom.Text;
-import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.pdp.XPathEvaluationException;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * An entity represents a collection of related attributes
@@ -56,15 +43,13 @@ import com.google.common.collect.Collections2;
  */
 public final class Entity extends AttributeContainer
 {
-	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
-
 	private final static Logger log = LoggerFactory.getLogger(Entity.class);
 
-	private final Document content;
+	private final java.util.Optional<Content> content;
 
 	private Entity(Builder b) {
 		super(b);
-		this.content = DOMUtil.copyNode(b.content);
+		this.content = java.util.Optional.ofNullable(b.content);
 	}
 
 	public static Builder builder(){
@@ -79,21 +64,18 @@ public final class Entity extends AttributeContainer
 	public Entity getIncludeInResult(){
 		return Entity
 		.builder()
-		.copyOf(this, new Predicate<Attribute>() {
-			public boolean apply(Attribute a){
-				return a.isIncludeInResult();
-			}
-		}).build();
+		.copyOf(this, a -> a.isIncludeInResult())
+				.build();
 	}
 
 	/**
 	 * Gets content as {@link Node}
-	 * instance
+	 * defaultProvider
 	 *
-	 * @return a {@link Node} instance or {@code null}
+	 * @return a {@link Node} defaultProvider or {@code null}
 	 */
-	public Node getContent(){
-		return content;
+	public <C extends Content> java.util.Optional<C> getContent(){
+		return (Optional<C>) content;
 	}
 
 	/**
@@ -102,138 +84,34 @@ public final class Entity extends AttributeContainer
 	 * @return {@code true} if entity has content; returns {@code false} otherwise
 	 */
 	public boolean hasContent(){
-		return content != null;
-	}
-
-	public BagOfAttributeExp getAttributeValues(
-			String xpath,
-			XPathProvider xpathProvider,
-			AttributeExpType type,
-			String contextSelectorId)
-					throws XPathEvaluationException
-	{
-		try
-		{
-			Node contextNode = content;
-			Collection<AttributeExp> v = getAttributeValues(
-						(contextSelectorId == null?CONTENT_SELECTOR:contextSelectorId),
-								XacmlTypes.XPATH);
-			if(v.size() > 1){
-				throw new XPathEvaluationException(xpath,
-						Status.syntaxError().build(),
-						"Found more than one value of=\"%s\"",
-						contextSelectorId);
-			}
-			if(v.size() == 1){
-				XPathExp xpathAttr = (XPathExp)v.iterator().next();
-				if(log.isDebugEnabled()){
-					log.debug("Evaluating " +
-							"contextSelector xpath=\"{}\"", xpathAttr.getValue());
-				}
-				contextNode = xpathProvider.evaluateToNode(xpathAttr.getPath(), content);
-			}
-			NodeList nodeSet = xpathProvider.evaluateToNodeSet(xpath, contextNode);
-			if(nodeSet == null ||
-					nodeSet.getLength() == 0){
-				return type.bagType().createEmpty();
-			}
-			if(log.isDebugEnabled()){
-				log.debug("Found=\"{}\" nodes via xpath=\"{}\"",
-						new Object[]{nodeSet.getLength(), xpath});
-			}
-			return toBag(xpath, type, nodeSet);
-		}
-		catch(EvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw e;
-		}
-		catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw new XPathEvaluationException(xpath, e, e.getMessage());
-		}
-	}
-
-	/**
-	 * Converts a given node list to the {@link BagOfAttributeExp}
-	 *
-	 * @param xpath XPath for nodes
-	 * @param type attribute type
-	 * @param nodeSet a node set
-	 * @return {@link BagOfAttributeExp}
-	 * @throws EvaluationException
-	 */
-	private BagOfAttributeExp toBag(String xpath,
-			AttributeExpType type, NodeList nodeSet)
-		throws XPathEvaluationException
-	{
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
-		for(int i = 0; i< nodeSet.getLength(); i++)
-		{
-			Node n = nodeSet.item(i);
-			String v = null;
-			switch(n.getNodeType()){
-				case Node.TEXT_NODE:
-					v = ((Text)n).getData();
-					break;
-				case Node.PROCESSING_INSTRUCTION_NODE:
-					v = ((ProcessingInstruction)n).getData();
-					break;
-				case Node.ATTRIBUTE_NODE:
-					v = ((Attr)n).getValue();
-					break;
-				case Node.COMMENT_NODE:
-					v = ((Comment)n).getData();
-					break;
-				default:
-					throw new XPathEvaluationException(
-							xpath,
-							Status.syntaxError().build(),
-							"Unsupported DOM node type=\"%d\"",
-							n.getNodeType());
-			}
-			try
-			{
-				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(type);
-				if(!toString.isPresent()){
-					throw new XPathEvaluationException(
-							xpath,
-							Status.syntaxError().build(),
-							"Unsupported XACML type=\"%d\"",
-							type.getDataTypeId());
-				}
-				AttributeExp value = toString.get().fromString(v);
-				if(log.isDebugEnabled()){
-					log.debug("Node of type=\"{}\" converted attribute=\"{}\"",
-							n.getNodeType(), value);
-				}
-				values.add(value);
-			}catch(EvaluationException e){
-				throw e;
-			}catch(Exception e){
-				throw new XPathEvaluationException(xpath,
-						Status.processingError().build(),
-						e, e.getMessage());
-			}
-		}
-	  	return type.bagType().create(values);
+		return content.isPresent();
 	}
 
 
+	public java.util.Optional<BagOfAttributeValues> resolve(AttributeDesignatorKey designatorKey)
+    {
+		Collection<AttributeValue> v = getAttributeValues(designatorKey.getAttributeId(),
+				designatorKey.getIssuer(), designatorKey.getDataType());
+		if(v.isEmpty()){
+			return java.util.Optional.empty();
+		}
+		return java.util.Optional.of(designatorKey
+				.getDataType()
+				.bag()
+				.attributes(v)
+				.build());
+	}
 
-	public BagOfAttributeExp getAttributeValues(String attributeId, AttributeExpType type, String issuer){
-		Collection<AttributeExp> values = getAttributeValues(attributeId, issuer, type);
-		return type.bagOf(values);
+	public java.util.Optional<BagOfAttributeValues> resolve(AttributeSelectorKey selector){
+		return content.flatMap(
+				c -> c.resolve(selector, ()->this));
 	}
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("attributes", attributes)
-		.add("content", (content != null)?DOMUtil.toString(content.getDocumentElement()):content)
+		.add("content", content.toString())
 		.toString();
 	}
 
@@ -252,28 +130,58 @@ public final class Entity extends AttributeContainer
 		}
 		Entity a = (Entity) o;
 		return Objects.equal(attributes, a.attributes) &&
-				DOMUtil.isEqual(content, a.content);
+				content.equals(a.content);
 	}
 
 	public static class Builder
 		extends AttributeContainer.Builder<Builder>
 	{
-		private Node content;
+		private Content content;
 
-		public Builder content(Node node) {
-			this.content = DOMUtil.copyNode(node);
+		public Builder content(Content content) {
+			this.content = content;
+			return this;
+		}
+
+		public Builder content(Optional<Content> content) {
+			this.content = content.get();
+			return this;
+		}
+
+		public Builder content(String content) {
+			return content(Content.fromString(content));
+		}
+
+		public Builder content(InputStream inputStream)  {
+			return content(Content.fromStream(inputStream));
+		}
+
+		public Builder xmlContent(String xmlContent) {
+			return content(Content.fromString(xmlContent, Content.Type.XML_UTF8));
+		}
+
+		public Builder xmlContent(Node xmlContent) {
+			return content(Content.fromNode(xmlContent, Content.Type.XML_UTF8));
+		}
+
+
+		public Builder contentFrom(Entity entity) {
+			this.content = entity.getContent().orElse(null);
 			return this;
 		}
 
 		public Builder copyOf(Entity a){
-			return copyOf(a, Predicates.<Attribute>alwaysTrue());
+			return copyOf(a, (attribute)->true);
 		}
 
-		public Builder copyOf(Entity a,
+		public Builder copyOf(Entity e,
 				Predicate<Attribute> f){
-			Preconditions.checkNotNull(a);
-			content(a.getContent());
-			attributes(Collections2.filter(a.getAttributes(), f));
+			Preconditions.checkNotNull(e);
+			contentFrom(e);
+			attributes(e.getAttributes()
+					.stream()
+					.filter(f)
+					.collect(Collectors.toList()));
 			return this;
 		}
 

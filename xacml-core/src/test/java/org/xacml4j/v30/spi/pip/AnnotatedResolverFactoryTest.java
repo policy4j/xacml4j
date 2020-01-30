@@ -32,25 +32,19 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
+import java.time.Clock;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.types.XacmlTypes;
-
-import com.google.common.base.Ticker;
 
 
 public class AnnotatedResolverFactoryTest
@@ -87,9 +81,9 @@ public class AnnotatedResolverFactoryTest
 		Method m = getMethod(this.getClass(), "resolve1");
 		assertNotNull(m);
 
-		expect(context.resolve(eq(excpectedKey0))).andReturn(BooleanExp.valueOf(false).toBag());
-		expect(context.resolve(eq(excpectedKey1))).andReturn(IntegerExp.of(1).toBag());
-		expect(context.getTicker()).andReturn(Ticker.systemTicker());
+		expect(context.resolve(eq(excpectedKey0))).andReturn(Optional.of(XacmlTypes.BOOLEAN.of(false).toBag()));
+		expect(context.resolve(eq(excpectedKey1))).andReturn(Optional.of(XacmlTypes.INTEGER.of(1).toBag()));
+		expect(context.getClock()).andReturn(Clock.systemUTC());
 
 		control.replay();
 
@@ -101,7 +95,7 @@ public class AnnotatedResolverFactoryTest
 		r.resolve(pipContext);
 
 		assertEquals("Test", d.getName());
-		assertEquals(Categories.parse("subject"), d.getCategory());
+		assertEquals(CategoryId.parse("subject"), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(30, d.getPreferredCacheTTL());
 
@@ -141,7 +135,7 @@ public class AnnotatedResolverFactoryTest
 	{
 		Method m = getMethod(this.getClass(), "resolve2");
 		assertNotNull(m);
-		expect(context.getTicker()).andReturn(Ticker.systemTicker());
+		expect(context.getClock()).andReturn(Clock.systemUTC());
 		replay(context);
 		AttributeResolver r = p.parseAttributeResolver(this, m);
 		AttributeResolverDescriptor d = r.getDescriptor();
@@ -149,7 +143,7 @@ public class AnnotatedResolverFactoryTest
 		r.resolve(pipContext);
 
 		assertEquals("Test", d.getName());
-		assertEquals(Categories.parse("subject"), d.getCategory());
+		assertEquals(CategoryId.parse("subject"), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(30, d.getPreferredCacheTTL());
 		verify(context);
@@ -157,7 +151,7 @@ public class AnnotatedResolverFactoryTest
 	}
 
 	@Test
-	public void testParseAttributeResolverWithoutParameters() throws Exception
+	public void testParseAttributeResolverWithoutParameters()
 	{
 		Method m = getMethod(this.getClass(), "resolve3");
 		assertNotNull(m);
@@ -166,7 +160,7 @@ public class AnnotatedResolverFactoryTest
 	}
 
 	@Test(expected=XacmlSyntaxException.class)
-	public void testParseAttributeResolverWithKeyParametersFirst() throws Exception
+	public void testParseAttributeResolverWithKeyParametersFirst()
 	{
 		Method m = getMethod(this.getClass(), "resolve4");
 		assertNotNull(m);
@@ -174,7 +168,7 @@ public class AnnotatedResolverFactoryTest
 	}
 
 	@Test(expected=XacmlSyntaxException.class)
-	public void testParseAttributeResolverWrongReturnType() throws Exception
+	public void testParseAttributeResolverWrongReturnType()
 	{
 		Method m = getMethod(this.getClass(), "resolve5");
 		assertNotNull(m);
@@ -182,11 +176,11 @@ public class AnnotatedResolverFactoryTest
 	}
 
 	@Test
-	public void testParseContentResolver() throws Exception
+	public void testParseContentResolver()
 	{
 		Method m = getMethod(this.getClass(), "resolveContent1");
 		ContentResolver r = p.parseContentResolver(this, m);
-		assertTrue(r.getDescriptor().canResolve(Categories.parse("subject")));
+		assertTrue(r.getDescriptor().canResolve(CategoryId.parse("subject").get()));
 	}
 
 
@@ -197,11 +191,11 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#string", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#double", id="testId4")
 	})
-	public Map<String, BagOfAttributeExp> resolve1(
+	public Map<String, BagOfAttributeValues> resolve1(
 			@XacmlAttributeDesignator(category="test", attributeId="attr1",
-					dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1,
+					dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1,
 			@XacmlAttributeDesignator(category="test", attributeId="attr2",
-					dataType="http://www.w3.org/2001/XMLSchema#integer", issuer="test") BagOfAttributeExp k2)
+					dataType="http://www.w3.org/2001/XMLSchema#integer", issuer="test") BagOfAttributeValues k2)
 	{
 		return null;
 	}
@@ -213,7 +207,7 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
-	public Map<String, BagOfAttributeExp> resolve2(ResolverContext context)
+	public Map<String, BagOfAttributeValues> resolve2(ResolverContext context)
 	{
 		return null;
 	}
@@ -225,7 +219,7 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
-	public Map<String, BagOfAttributeExp> resolve3()
+	public Map<String, BagOfAttributeValues> resolve3()
 	{
 		return null;
 	}
@@ -237,8 +231,8 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId3"),
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
-	public Map<String, BagOfAttributeExp> resolve4(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr",
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1, ResolverContext context)
+	public Map<String, BagOfAttributeValues> resolve4(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr",
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, ResolverContext context)
 	{
 		return null;
 	}
@@ -251,14 +245,14 @@ public class AnnotatedResolverFactoryTest
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#integer", id="testId4")
 	})
 	public Collection<String> resolve5(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr",
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1, ResolverContext context)
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1, ResolverContext context)
 	{
 		return null;
 	}
 
 	@XacmlContentResolverDescriptor(id="testId", name="Test", category="subject", cacheTTL=30)
 	public Node resolveContent1(@XacmlAttributeDesignator(category="test", attributeId="aaaTTr",
-			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeExp k1)
+			dataType="http://www.w3.org/2001/XMLSchema#boolean") BagOfAttributeValues k1)
 	{
 		return null;
 	}

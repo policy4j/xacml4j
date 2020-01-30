@@ -22,15 +22,26 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.function.Predicate;
 
 
-public class Category
+/**
+ * Represents XACML attributes category
+ * represented via {@link CategoryId}
+ *
+ * @author Giedrius Trumpickas
+ */
+public final class Category
 {
-	private final String id;
+	private final static Logger LOG = LoggerFactory.getLogger(Category.class);
+
+	private final String refId;
 	private final CategoryId categoryId;
 	private final CategoryReference ref;
 	private final Entity entity;
@@ -41,22 +52,49 @@ public class Category
 	 * @param b a category builder
 	 */
 	private Category(Builder b) {
-		Preconditions.checkNotNull(b.category);
-		Preconditions.checkNotNull(b.entity);
-		this.id = b.id;
-		this.categoryId = b.category;
-		this.entity = b.entity;
+		this.refId = b.id;
+		this.categoryId = java.util.Objects.requireNonNull(b.category,
+				"Category identifier must be specified");
+		this.entity = java.util.Objects.requireNonNull(b.entity,
+				"Category entity must be specified");
 		this.ref = (b.id == null)
 				? null
 				: CategoryReference.builder().id(b.id).build();
 	}
 
 	/**
+	 * Tries to resolve given {@link org.xacml4j.v30.AttributeDesignatorKey} against this category
+	 *
+	 * @param key an attribute designator
+	 * @return {@link java.util.Optional} resolved
+	 */
+	public java.util.Optional<BagOfAttributeValues> resolve(AttributeDesignatorKey key){
+		if(!key.getCategory().equals(getCategoryId())){
+			return java.util.Optional.empty();
+		}
+		return entity.resolve(key);
+	}
+
+	/**
+	 * Tries to resolve given {@link org.xacml4j.v30.AttributeSelectorKey} against this category
+	 *
+	 * @param key an attribute designator
+	 * @return {@link java.util.Optional} resolved
+	 */
+	public java.util.Optional<BagOfAttributeValues> resolve(AttributeSelectorKey key){
+		if(!key.getCategory().equals(getCategoryId())){
+			return java.util.Optional.empty();
+		}
+		return entity.resolve(key);
+	}
+
+
+	/**
 	 * Constructs {@link Category.Builder} for given
 	 * attribute category
 	 *
 	 * @param category attribute category
-	 * @return {@link Category.Builder} instance
+	 * @return {@link Category.Builder} defaultProvider
 	 */
 	public static Builder builder(CategoryId category){
 		return new Builder(category);
@@ -73,8 +111,8 @@ public class Category
 	 * @return unique identifier of the
 	 * attribute in the request context
 	 */
-	public String getId(){
-		return id;
+	public String getRefId(){
+		return refId;
 	}
 
 	public CategoryReference getReference(){
@@ -96,16 +134,18 @@ public class Category
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("category", categoryId)
-		.add("id", id)
-		.add("entity", entity)
-		.toString();
+		return MoreObjects
+				.toStringHelper(this)
+				.add("category", categoryId.getAbbreviatedId())
+				.add("id", refId)
+				.add("entity", entity)
+				.add("reference", ref)
+				.toString();
 	}
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(categoryId, id, entity);
+		return Objects.hashCode(categoryId, refId, entity);
 	}
 
 	@Override
@@ -117,8 +157,10 @@ public class Category
 			return false;
 		}
 		Category a = (Category)o;
-		return Objects.equal(categoryId, a.categoryId) &&
-		Objects.equal(id, a.id) && entity.equals(a.entity);
+		return java.util.Objects.equals(categoryId, a.categoryId) &&
+				java.util.Objects.equals(refId, a.refId) &&
+				entity.equals(a.entity) &&
+				java.util.Objects.equals(ref, a.ref);
 	}
 
 	public static class Builder
@@ -141,13 +183,13 @@ public class Category
 		}
 
 		public Builder copyOf(Category a){
-			return copyOf(a, Predicates.<Attribute>alwaysTrue());
+			return copyOf(a, (attribute)->true);
 		}
 
 		public Builder copyOf(Category a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
-			id(a.getId());
+			id(a.getRefId());
 			category(a.getCategoryId());
 			entity(Entity.builder().copyOf(a.entity, f).build());
 			return this;

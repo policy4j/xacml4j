@@ -31,6 +31,19 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface XacmlFuncSpec
 {
+	/**
+	 * Human readable function identifier
+	 *
+	 * @return function identifier
+	 */
 	String id();
+
+	/**
+	 * Short "human" readable function identifier
+	 *
+	 * @return function identifier
+	 */
+	String shortId() default "";
+
 	boolean evaluateArguments() default true;
 }

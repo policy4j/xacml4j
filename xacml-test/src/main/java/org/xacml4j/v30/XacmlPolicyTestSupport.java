@@ -30,19 +30,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml30RequestContextUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml30ResponseContextUnmarshaller;
+import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
+import org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshaller;
+import org.xacml4j.v30.xml.Xacml30RequestContextUnmarshaller;
+import org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
@@ -65,6 +63,7 @@ public class XacmlPolicyTestSupport {
 		this.responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
 		this.xacml20ResponseUnmarshaller = new Xacml20ResponseContextUnmarshaller();
 		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		this.xacml20RequestUnmarshaller = new Xacm
 
 	}
 
@@ -222,7 +221,7 @@ public class XacmlPolicyTestSupport {
 		assertArrayEquals(a1, a2, new Matcher<Category>() {
 			@Override
 			public boolean matches(Category o1, Category o2) {
-				return o1.getId().equals(o2.getId()) && o1.getCategoryId().equals(o2.getCategoryId());
+				return o1.getRefId().equals(o2.getRefId()) && o1.getCategoryId().equals(o2.getCategoryId());
 			}
 		});
 	}
@@ -262,7 +261,7 @@ public class XacmlPolicyTestSupport {
 		private String rootPolicyVersion;
 		private String pdpId;
 		private String repositoryId;
-		private FunctionProviderBuilder functionProviderBuilder;
+		private FunctionProvider.Builder functionProviderBuilder;
 		private PolicyInformationPointBuilder pipBuilder;
 		private DecisionCombiningAlgorithmProviderBuilder decisionAlgoProviderBuilder;
 		private Collection<Supplier<InputStream>> policies;
@@ -271,7 +270,7 @@ public class XacmlPolicyTestSupport {
 			Preconditions.checkNotNull(pdpId);
 			Preconditions.checkNotNull(pipId);
 			Preconditions.checkNotNull(repositoryId);
-			this.functionProviderBuilder = FunctionProviderBuilder.builder();
+			this.functionProviderBuilder = FunctionProvider.Builder.builder();
 			this.decisionAlgoProviderBuilder = DecisionCombiningAlgorithmProviderBuilder.builder();
 			this.pipBuilder = PolicyInformationPointBuilder.builder(pipId);
 			this.policies = new ArrayList<Supplier<InputStream>>();
@@ -345,7 +344,7 @@ public class XacmlPolicyTestSupport {
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
 					functionProviderBuilder.build(),
-					decisionAlgoProviderBuilder.create());
+					decisionAlgoProviderBuilder.build(), un);
 			for (Supplier<InputStream> in : policies) {
 				repository.importPolicy(in);
 			}

@@ -40,17 +40,14 @@ package org.xacml4j.v30;
  */
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.Test;
+import org.xacml4j.v30.EUI48;
 
 import java.net.NetworkInterface;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * JUnit Test class for the com.fasterxml.uuid.EthernetAddress class.
@@ -1122,7 +1119,7 @@ public class EUI48Test {
 	}
 
 	/**
-	 * Ok; this test is bit non-kosher, as it assumes existence of a valid
+	 * ok; this test is bit non-kosher, as it assumes existence of a valid
 	 * interface
 	 *
 	 * @since 3.0

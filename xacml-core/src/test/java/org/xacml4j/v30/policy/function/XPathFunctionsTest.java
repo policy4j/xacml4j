@@ -26,33 +26,17 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
-import java.io.StringReader;
+import java.util.Optional;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.easymock.EasyMock;
-import org.easymock.IAnswer;
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.XPathExp;
-import org.xml.sax.InputSource;
+import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.types.*;
+
 
 
 public class XPathFunctionsTest
@@ -66,130 +50,106 @@ public class XPathFunctionsTest
 	"</md:record>";
 
 	private EvaluationContext context;
-	private Node content;
-	private XPathProvider xpathProvider;
+	private XmlContent content;
 	private FunctionProvider funcF;
 
-	private Node content1;
+	private XmlContent content1;
 
 	@Before
 	public void init() throws Exception
 	{
-		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-		f.setNamespaceAware(true);
-		DocumentBuilder builder = f.newDocumentBuilder();
+
 		this.context = createStrictMock(EvaluationContext.class);
-		this.content = builder.parse(new InputSource(new StringReader(testXml)));
-		this.content1 = builder.parse(new InputSource(
-				Thread.currentThread().getContextClassLoader().getResourceAsStream("./testContentXPathFunctions.xml")));
-		this.xpathProvider = new DefaultXPathProvider();
-		this.funcF = new AnnotationBasedFunctionProvider(
-				XPathFunctions.class);
+		this.content = XmlContent.of(XmlContent.fromString(testXml));
+		this.content1 = XmlContent.of(
+				XmlContent
+						.fromStream(
+								Thread.currentThread()
+										.getContextClassLoader()
+										.getResourceAsStream("./testContentXPathFunctions.xml")));
+
+		this.funcF = FunctionProvider
+				.emptyBuilder()
+				.fromClass(XPathFunctions.class)
+				.build();
 	}
 
 	@Test
 	public void testValidateFunctions()
 	{
-		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count"));
-		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match"));
-		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal"));
-		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count"));
-		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match"));
-		assertNotNull(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal"));
+		assertTrue(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count").isPresent());
+		assertTrue(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match").isPresent());
+		assertTrue(funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal").isPresent());
+		assertTrue(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count").isPresent());
+		assertTrue(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match").isPresent());
+		assertTrue(funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal").isPresent());
 	}
 
-	@Test
-	public void testXpathEvaluation() throws Exception
-	{
-		NodeList result = xpathProvider.evaluateToNodeSet("./md:record", content1);
-		NodeList result1 = xpathProvider.evaluateToNodeSet("./md:record//md:name", content1);
-		NodeList result2 = xpathProvider.evaluateToNodeSet("//*[local-name()='record'][namespace-uri()='urn:example:med:schemas:record']", content);
-		assertEquals(1, result.getLength());
-		assertEquals(2, result1.getLength());
-		assertEquals(1, result2.getLength());
-	}
 
 	@Test
 	public void testXPathCount() throws EvaluationException
 	{
-		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count");
-		XPathExp xpath  = XPathExp.of("/md:record/md:patient", Categories.SUBJECT_ACCESS);
+		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count").get();
+		PathValue xpath  = XacmlTypes.XPATH.of("/md:record/md:patient", CategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.evaluateToNodeSet(xpath))
-		.andAnswer(new XPathAnswer(content));
+		expect(context.resolve(xpath.getCategory(), xpath.getContentType())).andReturn(Optional.of(content));
 		replay(context);
-		assertEquals(IntegerExp.of(1), f.invoke(context, xpath));
+		assertEquals(XacmlTypes.INTEGER.of(1), f.invoke(context, xpath));
 		verify(context);
 	}
 
 	@Test
 	public void testXPathCountXacml20() throws EvaluationException
 	{
-		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count");
-		StringExp xpath  = StringExp.of("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
+		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count").get();
+		AttributeValue xpath  = XacmlTypes.STRING.of("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.evaluateToNodeSet(XPathExp.of("./md:record//md:name", Categories.RESOURCE)))
-		.andAnswer(new XPathAnswer(content1));
+		expect(context.resolve(Optional.of(CategoryId.RESOURCE), Content.Type.XML_UTF8))
+				.andReturn(Optional.of(content1));
 		replay(context);
-		assertEquals(IntegerExp.of(2), f.invoke(context, xpath));
+		assertEquals(XacmlTypes.INTEGER.of(2), f.invoke(context, xpath));
 		verify(context);
 	}
 
 	@Test
 	public void testXPathCountExpressionReturnsEmptyNodeSet() throws EvaluationException
 	{
-		XPathExp xpath  = XPathExp.of("/test",
-				Categories.SUBJECT_ACCESS);
-		expect(context.evaluateToNodeSet(XPathExp.of("/test", Categories.SUBJECT_ACCESS)))
-		.andAnswer(new XPathAnswer(content));
+		PathValue xpath  = XacmlTypes.XPATH.of("/test",
+				CategoryId.SUBJECT_ACCESS);
+		expect(context.resolve(xpath.getCategory(), xpath.getContentType())).andReturn(Optional.of(content));
 		replay(context);
-		assertEquals(IntegerExp.of(0), XPathFunctions.xpathCount(context, xpath));
+		assertEquals(XacmlTypes.INTEGER.of(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context);
 	}
 
 	@Test
 	public void testXPathNodeMatch() throws EvaluationException
 	{
-		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match");
-		XPathExp xpath0  = XPathExp.of("/md:record", Categories.SUBJECT_ACCESS);
-		XPathExp xpath1  = XPathExp.of("/md:record/md:patient/md:patientDoB", Categories.SUBJECT_ACCESS);
+		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match").get();
+		PathValue xpath0  = XacmlTypes.XPATH.of("/md:record", CategoryId.SUBJECT_ACCESS);
+		PathValue xpath1  = XacmlTypes.XPATH.of("/md:record/md:patient/md:patientDoB", CategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.evaluateToNodeSet(XPathExp.of("/md:record", Categories.SUBJECT_ACCESS))).andAnswer(new XPathAnswer(content));
-		expect(context.evaluateToNodeSet(XPathExp.of("/md:record/md:patient/md:patientDoB", Categories.SUBJECT_ACCESS))).andAnswer(new XPathAnswer(content));
+		expect(context.resolve(xpath0.getCategory(), xpath0.getContentType())).andReturn(Optional.of(content));
+		expect(context.resolve(xpath1.getCategory(), xpath1.getContentType())).andReturn(Optional.of(content));
 		replay(context);
-		assertEquals(BooleanExp.valueOf(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), f.invoke(context, xpath0, xpath1));
 		verify(context);
 	}
 
 	@Test
 	public void testXPathNodeMatchXacml20() throws EvaluationException
 	{
-		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match");
-		StringExp xpath0  = StringExp.of(".");
-		StringExp xpath1  = StringExp.of("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
+		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match").get();
+		AttributeValue xpath0  = XacmlTypes.STRING.of(".");
+		AttributeValue xpath1  = XacmlTypes.STRING.of("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.evaluateToNodeSet(XPathExp.of(".", Categories.RESOURCE))).andAnswer(new XPathAnswer(content1));
-		expect(context.evaluateToNodeSet(XPathExp.of("./md:record", Categories.RESOURCE))).andAnswer(new XPathAnswer(content1));
+		expect(context.resolve(Optional.of(CategoryId.RESOURCE), Content.Type.XML_UTF8))
+				.andReturn(Optional.of(content1));
+		expect(context.resolve(Optional.of(CategoryId.RESOURCE), Content.Type.XML_UTF8))
+				.andReturn(Optional.of(content1));
 		replay(context);
-		assertEquals(BooleanExp.valueOf(true), f.invoke(context, xpath0, xpath1));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), f.invoke(context, xpath0, xpath1));
 		verify(context);
 	}
 
-
-	public class XPathAnswer implements IAnswer<NodeList>
-	{
-		private Node xml;
-
-		public XPathAnswer(Node content){
-			this.xml = content;
-		}
-
-		@Override
-		public NodeList answer() throws Throwable {
-			Object[] args = EasyMock.getCurrentArguments();
-			return xpathProvider.evaluateToNodeSet(
-					((XPathExp)args[0]).getPath(),
-					xml);
-		}
-	}
 }

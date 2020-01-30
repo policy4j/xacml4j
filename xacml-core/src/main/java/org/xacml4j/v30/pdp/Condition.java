@@ -22,16 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.XacmlTypes;
-
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.BooleanValue;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * Condition represents a Boolean expression that refines the applicability
@@ -49,7 +44,7 @@ public class Condition implements PolicyElement
 	 * expression
 	 *
 	 * @param predicate an expression which always evaluates
-	 * to {@link BooleanExp}
+	 * to {@link BooleanValue}
 	 */
 	public Condition(Expression predicate)
 	{
@@ -74,7 +69,7 @@ public class Condition implements PolicyElement
 	}
 
 	/**
-	 * Evaluates this condition and returns instance of
+	 * Evaluates this condition and returns defaultProvider of
 	 * {@link ConditionResult}
 	 *
 	 * @param context an evaluation context
@@ -84,13 +79,15 @@ public class Condition implements PolicyElement
 	{
 		try
 		{
-			BooleanExp result = (BooleanExp)predicate.evaluate(context);
-			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
+			BooleanValue result = predicate.evaluate(context);
+			return result.value()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
-			context.setEvaluationStatus(e.getStatus());
+			context.setEvaluationStatus(
+					e.getStatus());
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
-			context.setEvaluationStatus(Status.processingError().build());
+			context.setEvaluationStatus(Status
+					.processingError(e).build());
 			return ConditionResult.INDETERMINATE;
 		}
 	}
@@ -108,7 +105,7 @@ public class Condition implements PolicyElement
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("predicate", predicate)
 				.toString();

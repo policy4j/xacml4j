@@ -22,9 +22,11 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
 import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 
 
@@ -46,18 +48,24 @@ public interface ResolverDescriptor
 	String getName();
 
 	/**
-	 * Gets resolver category
+	 * Tests if resolver is capable of resolving
+	 * given attribute
 	 *
-	 * @return {@link CategoryId}
+	 * @param referenceKey attribute designator or selector key
+	 * @return {@code true} if resolver
+	 * is capable of resolving given reference
 	 */
-	CategoryId getCategory();
+	boolean canResolve(AttributeReferenceKey referenceKey);
+
+
+	Map<AttributeReferenceKey, BagOfAttributeValues> resolveKeyRefs(ResolverContext context);
 
 	/**
-	 * Gets key references for a resolver
+	 * Gets supported categories
 	 *
-	 * @return list of {@link AttributeReferenceKey}
+	 * @return collection of supported categories
 	 */
-	List<AttributeReferenceKey> getKeyRefs();
+	Collection<CategoryId> getSupportedCategories();
 
 	/**
 	 * Test if attributes resolved by resolver can be cached by PIP
@@ -72,4 +80,5 @@ public interface ResolverDescriptor
 	 * @return a TTL in seconds or {@code 0}
 	 */
 	int getPreferredCacheTTL();
+
 }

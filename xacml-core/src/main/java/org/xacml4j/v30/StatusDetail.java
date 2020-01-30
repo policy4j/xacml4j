@@ -22,17 +22,54 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.LinkedList;
-import java.util.List;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Throwables;
+import jdk.jfr.Percentage;
 
-import com.google.common.collect.Iterables;
+import java.util.*;
 
-public class StatusDetail
+
+/**
+ * Represents XACML status details
+ *
+ * @author Giedrius Trumpickas
+ */
+public final class StatusDetail
 {
-	private final List<Object> content;
+	private List<Object> detailsMessage = new LinkedList<>();
 
-	public StatusDetail(Iterable<Object> detail){
-		this.content = new LinkedList<Object>();
-		Iterables.addAll(content, detail);
+	StatusDetail(){
 	}
+
+	public StatusDetail(Throwable t){
+		this(Throwables.getStackTraceAsString(t));
+	}
+
+	public StatusDetail(Object ...details){
+		this(Arrays.asList(details));
+	}
+
+	public StatusDetail(Collection<Object> details){
+		this.detailsMessage.add(Objects
+				.requireNonNull(details, "details"));
+		this.detailsMessage.addAll(details);
+		this.detailsMessage = Collections.unmodifiableList(detailsMessage);
+	}
+
+	public List<Object> getDetails(){
+		return detailsMessage;
+	}
+
+	@Override
+	public String toString(){
+		return MoreObjects.toStringHelper(this)
+				.add("details", detailsMessage)
+				.toString();
+	}
+
+	@Override
+	public int hashCode(){
+		return Objects.hash(detailsMessage);
+	}
+
 }

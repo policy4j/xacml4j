@@ -23,14 +23,15 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
-import org.xacml4j.v30.BagOfAttributeExp;
+import com.google.common.base.MoreObjects;
+import org.xacml4j.v30.BagOfAttributeValues;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
 
 /**
  * A key used to identify uniquely resolver
@@ -43,13 +44,12 @@ public final class ResolverCacheKey implements Serializable
 	private static final long serialVersionUID = -6895205924708410228L;
 
 	private final String resolverId;
-	private final List<BagOfAttributeExp> keys;
-	private final int hashCode;
+	private final BagOfAttributeValues[] keys;
 
 	public ResolverCacheKey(Builder b) {
 		this.resolverId = b.id;
-		this.keys = b.keysBuilder.build();
-		this.hashCode = Objects.hashCode(resolverId, keys);
+		this.keys = b.keysBuilder.toArray(
+				new BagOfAttributeValues[b.keysBuilder.size()]);
 	}
 
 	public static Builder builder(){
@@ -58,7 +58,7 @@ public final class ResolverCacheKey implements Serializable
 
 	@Override
 	public int hashCode(){
-		return hashCode;
+		return java.util.Objects.hash(resolverId, keys);
 	}
 
 	@Override
@@ -71,21 +71,22 @@ public final class ResolverCacheKey implements Serializable
 			return false;
 		}
 		ResolverCacheKey k = (ResolverCacheKey)o;
-		return resolverId.equals(k.resolverId) && keys.equals(k.keys);
+		return resolverId.equals(k.resolverId) &&
+				Arrays.equals(keys, k.keys);
 	}
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("id", resolverId)
-		.add("keys", keys.toString())
+		.add("keys", Arrays.toString(keys))
 		.toString();
 	}
 
 	public static class Builder
 	{
 		private String id;
-		private ImmutableList.Builder<BagOfAttributeExp> keysBuilder = ImmutableList.builder();
+		private List<BagOfAttributeValues> keysBuilder = new LinkedList<>();
 
 		public Builder id(String id){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
@@ -93,11 +94,7 @@ public final class ResolverCacheKey implements Serializable
 			return this;
 		}
 
-		public Builder id(AttributeResolver r){
-			return id(r.getDescriptor().getId());
-		}
-
-		public Builder id(ContentResolver r){
+		public Builder id(Resolver<?> r){
 			return id(r.getDescriptor().getId());
 		}
 
@@ -105,13 +102,15 @@ public final class ResolverCacheKey implements Serializable
 			return id(d.getId());
 		}
 
-		public Builder keys(BagOfAttributeExp ...keys){
-			keysBuilder.add(keys);
+		public Builder key(BagOfAttributeValues...keys){
+			keys(Arrays.asList(keys));
 			return this;
 		}
 
-		public Builder keys(Iterable<BagOfAttributeExp> keys){
-			keysBuilder.addAll(keys);
+		public Builder keys(Iterable<BagOfAttributeValues> keys){
+			for(BagOfAttributeValues bag : keys){
+				keysBuilder.add(bag);
+			}
 			return this;
 		}
 

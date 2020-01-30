@@ -22,24 +22,18 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.ValueType;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.*;
 
 public class Match implements PolicyElement, Matchable
 {
 	private final static Logger log = LoggerFactory.getLogger(Match.class);
 
-	private final AttributeExp value;
+	private final AttributeValue value;
 	private final AttributeReference attributeRef;
 	private final FunctionSpec predicate;
 
@@ -64,7 +58,7 @@ public class Match implements PolicyElement, Matchable
 						"compatible with a given attribute value type \"%s\"",
 				param0, evaluatesToType);
 		final FunctionParamSpec param1 = b.predicate.getParamSpecAt(1);
-		final AttributeExpType attrRefDataType = b.attrRef.getDataType();
+		final AttributeValueType attrRefDataType = b.attrRef.getDataType();
 		Preconditions.checkArgument(
 				param1.isValidParamType(attrRefDataType),
 				"Given function argument \"%s\" at index=\"1\" type is not " +
@@ -90,9 +84,9 @@ public class Match implements PolicyElement, Matchable
 	/**
 	 * Gets match attribute value.
 	 *
-	 * @return {@link AttributeExp} instance
+	 * @return {@link AttributeValue} defaultProvider
 	 */
-	public AttributeExp getAttributeValue(){
+	public AttributeValue getAttributeValue(){
 		return value;
 	}
 
@@ -110,14 +104,14 @@ public class Match implements PolicyElement, Matchable
 	{
 		try
 		{
-			BagOfAttributeExp attributes = attributeRef.evaluate(context);
+			BagOfAttributeValues attributes = attributeRef.evaluate(context);
 			if(log.isDebugEnabled()){
 				log.debug("Evaluated attribute reference=\"{}\" to " +
 						"bag=\"{}\"", attributeRef, attributes);
 			}
-			for(AttributeExp v : attributes.values()){
-				AttributeExp match = predicate.invoke(context, value, v);
-				if((Boolean)match.getValue()){
+			for(AttributeValue v : attributes.values()){
+				AttributeValue match = predicate.invoke(context, value, v);
+				if((Boolean)match.value()){
 					if(log.isDebugEnabled()){
 						log.debug("Attribute value=\"{}\" " +
 								"matches attribute value=\"{}\"", value, v);
@@ -151,7 +145,7 @@ public class Match implements PolicyElement, Matchable
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 				.add("MatchId", predicate.getId())
 				.add("Value", value)
 				.add("Reference", attributeRef)
@@ -174,11 +168,11 @@ public class Match implements PolicyElement, Matchable
 
 	public static class Builder
 	{
-		private AttributeExp attr;
+		private AttributeValue attr;
 		private FunctionSpec predicate;
 		private AttributeReference attrRef;
 
-		public Builder attribute(AttributeExp v){
+		public Builder attribute(AttributeValue v){
 			Preconditions.checkNotNull(v);
 			this.attr = v;
 			return this;

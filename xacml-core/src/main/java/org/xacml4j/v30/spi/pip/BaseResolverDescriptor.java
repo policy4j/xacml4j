@@ -22,9 +22,13 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 
 import com.google.common.base.Preconditions;
@@ -36,32 +40,24 @@ public abstract class BaseResolverDescriptor
 	private String id;
 	private String name;
 
-	private CategoryId category;
-	private List<AttributeReferenceKey> keyRefs;
+	private Collection<CategoryId> categoryIds;
+	private List<Function<ResolverContext, Optional<BagOfAttributeValues>>> contextKeysResolutionPlan;
 	private int cacheTTL;
-
-	protected BaseResolverDescriptor(String id,
-			String name,
-			CategoryId category,
-			List<AttributeReferenceKey> keys){
-		this(id, name, category, keys, 0);
-	}
 
 	protected BaseResolverDescriptor(
 			String id,
 			String name,
-			CategoryId category,
-			List<AttributeReferenceKey> keys,
-			int preferredCacheTTL) {
-		Preconditions.checkNotNull(id);
-		Preconditions.checkNotNull(name);
-		Preconditions.checkNotNull(category);
-		this.id = id;
-		this.name = name;
-		this.category = category;
-		this.keyRefs = ImmutableList.copyOf(keys);
+			Collection<CategoryId> categoryIds,
+			int preferredCacheTTL,
+			Collection<Function<ResolverContext, Optional<BagOfAttributeValues>>> contextKeysResolutionPlan) {
+		this.id = Objects.requireNonNull(id, "id");
+		this.name = Objects.requireNonNull(name, "name");
+		this.categoryIds = Objects.requireNonNull(Collections.unmodifiableSet(new HashSet<>(categoryIds)), "categoryIds");
 		this.cacheTTL = (preferredCacheTTL < 0)?0:preferredCacheTTL;
+		this.contextKeysResolutionPlan = Collections.unmodifiableList(new LinkedList<>(contextKeysResolutionPlan));
 	}
+
+
 
 	@Override
 	public final String getId(){
@@ -84,13 +80,15 @@ public abstract class BaseResolverDescriptor
 		return cacheTTL;
 	}
 
-	@Override
-	public final CategoryId getCategory() {
-		return category;
+	public final Collection<CategoryId> getCategoryIds() {
+		return categoryIds;
 	}
 
+
 	@Override
-	public List<AttributeReferenceKey> getKeyRefs() {
-		return keyRefs;
+	public Map<AttributeReferenceKey, BagOfAttributeValues> resolveKeyRefs(
+			ResolverContext context) {
+		contextKeysResolutionPlan.forEach(f->f.apply(context));
+		return context.getResolvedKeys();
 	}
 }

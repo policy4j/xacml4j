@@ -22,16 +22,10 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.PolicyResolutionException;
-
-import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
 
 public final class PolicyIDReference extends
 	BaseCompositeDecisionRuleIDReference implements PolicyElement

@@ -22,29 +22,17 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.*;
+import org.xacml4j.v30.*;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.XPathVersion;
-
-import com.google.common.base.Function;
-import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 public class Policy extends BaseCompositeDecisionRule
 		implements PolicyElement {
@@ -105,7 +93,7 @@ public class Policy extends BaseCompositeDecisionRule
 	/**
 	 * Gets policy rule combining algorithm
 	 *
-	 * @return {@link DecisionCombiningAlgorithm} instance
+	 * @return {@link DecisionCombiningAlgorithm} defaultProvider
 	 */
 	public DecisionCombiningAlgorithm<Rule> getRuleCombiningAlgorithm(){
 		return combiningAlgorithm;
@@ -177,7 +165,7 @@ public class Policy extends BaseCompositeDecisionRule
 
 	@Override
 	public String toString(){
-		ToStringHelper h = Objects.toStringHelper(this);
+		MoreObjects.ToStringHelper h = MoreObjects.toStringHelper(this);
 		return toStringBuilder(h)
 		.add("variableDefinitions", variableDefinitions)
 		.add("policyDefaults",policyDefaults)

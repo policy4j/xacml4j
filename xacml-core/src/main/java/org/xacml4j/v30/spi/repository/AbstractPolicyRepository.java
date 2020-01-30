@@ -24,10 +24,7 @@ package org.xacml4j.v30.spi.repository;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
@@ -37,13 +34,12 @@ import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.XacmlPolicyUnmarshaller;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.PolicyVisitorSupport;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.FunctionProvider;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
@@ -70,8 +66,8 @@ public abstract class AbstractPolicyRepository
 	protected AbstractPolicyRepository(
 			String id,
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionAlgorithms)
-		throws Exception
+			DecisionCombiningAlgorithmProvider decisionAlgorithms,
+			PolicyUnmarshaller unmarshaller)
 	{
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(functions);
@@ -79,8 +75,8 @@ public abstract class AbstractPolicyRepository
 		this.id = id;
 		this.functions = functions;
 		this.decisionAlgorithms = decisionAlgorithms;
-		this.listeners = new CopyOnWriteArrayList<PolicyRepositoryListener>();
-		this.unmarshaller = new XacmlPolicyUnmarshaller(functions, decisionAlgorithms);
+		this.listeners = new CopyOnWriteArrayList<>();
+		this.unmarshaller = Objects.requireNonNull(unmarshaller);
 	}
 
 	@Override

@@ -44,9 +44,9 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.Iterables;
+import org.xacml4j.v30.types.XacmlTypes;
 
 public class PolicySetTest
 {
@@ -251,8 +251,8 @@ public class PolicySetTest
 
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
 
-		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
-		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
+		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.INTEGER.of("testValue1"));
+		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.INTEGER.of("testValue1"));
 
 		c.replay();
 		assertEquals(Decision.DENY, policy.evaluate(policyContext));
@@ -276,8 +276,8 @@ public class PolicySetTest
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
 
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
-		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
-		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(StringExp.of("testValue1"));
+		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
+		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
 
 		c.replay();
 		assertEquals(Decision.PERMIT, policy.evaluate(policyContext));

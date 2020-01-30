@@ -24,38 +24,38 @@ package org.xacml4j.v30.spi.pip;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.BagOfAttributeValues;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
+
+import java.util.Optional;
+import static org.xacml4j.util.Preconditions.checkNotNull;
 
 /**
  * A default implementation of {@link PolicyInformationPoint}
  *
  * @author Giedrius Trumpickas
  */
-public class DefaultPolicyInformationPoint
+final class DefaultPolicyInformationPoint
 		implements PolicyInformationPoint {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 
 	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistry registry;
+	private ResolutionStrategy contentStrategy = ResolutionStrategy.FIRST_NON_EMPTY_IGNORE_ERROR;
+	private ResolutionStrategy attributeStrategy = ResolutionStrategy.FIRST_NON_EMPTY_IGNORE_ERROR;
 
-	public DefaultPolicyInformationPoint(String id,
-	                                     ResolverRegistry resolvers,
+	DefaultPolicyInformationPoint(String id,
+	                                     ResolverRegistry registry,
+	                                     ResolutionStrategy contentStrategy,
+								  		ResolutionStrategy attributeStrategy,
 	                                     PolicyInformationPointCacheProvider cache) {
-		Preconditions.checkNotNull(id);
-		Preconditions.checkNotNull(resolvers);
-		Preconditions.checkNotNull(cache);
-		this.id = id;
-		this.cache = cache;
-		this.registry = resolvers;
+		this.id = checkNotNull(id, "id");;
+		this.cache = checkNotNull(cache, "cache");;
+		this.registry = checkNotNull(registry, "registry");
+		this.contentStrategy = checkNotNull(contentStrategy, "contentStrategy");
+		this.attributeStrategy = checkNotNull(attributeStrategy, "attributeStrategy");
 	}
 
 	@Override
@@ -64,131 +64,51 @@ public class DefaultPolicyInformationPoint
 	}
 
 	@Override
-	public BagOfAttributeExp resolve(
+	public Optional<BagOfAttributeValues> resolve(
 			final EvaluationContext context,
-			AttributeDesignatorKey ref) throws Exception {
-		if (log.isDebugEnabled()) {
-			log.debug("Trying to resolve designator=\"{}\"", ref);
-		}
-		Iterable<AttributeResolver> resolvers = registry.getMatchingAttributeResolvers(context, ref);
-		if (Iterables.isEmpty(resolvers)) {
-			if (log.isDebugEnabled()) {
-				log.debug("No matching resolver found for designator=\"{}\"", ref);
-			}
-			return null;
-		}
-		for (AttributeResolver r : resolvers) {
-			AttributeResolverDescriptor d = r.getDescriptor();
-			Preconditions.checkState(d.canResolve(ref));
-			ResolverContext rContext = createContext(context, d);
-			AttributeSet attributes = null;
-			if (d.isCacheable()) {
-				if (log.isDebugEnabled()) {
-					log.debug("Trying to find resolver id=\"{}\" values in cache", d.getId());
-				}
-				attributes = cache.getAttributes(rContext);
-				if (attributes != null &&
-						!isExpired(attributes, context)) {
-					if (log.isDebugEnabled()) {
-						log.debug("Found cached resolver id=\"{}\" values=\"{}\"",
-								d.getId(), attributes);
-					}
-					return attributes.get(ref.getAttributeId());
-				}
-			}
-			try {
-				if (log.isDebugEnabled()) {
-					log.debug("Trying to resolve values with resolver id=\"{}\"",
-							d.getId());
-				}
-				attributes = r.resolve(rContext);
-				if (attributes.isEmpty()) {
-					if (log.isDebugEnabled()) {
-						log.debug("Resolver id=\"{}\" failed to resolve attributes",
-								d.getId());
-					}
-					continue;
-				}
-				if (log.isDebugEnabled()) {
-					log.debug("Resolved attributes=\"{}\"",
-							attributes);
-				}
-			} catch (Exception e) {
-				if (log.isDebugEnabled()) {
-					log.debug("Resolver id=\"{}\" failed to resolve attributes", d.getId(), e);
-				}
-				continue;
-			}
-			// check if resolver
-			// descriptor allows long term caching
-			if (d.isCacheable() &&
-					!attributes.isEmpty()) {
-				cache.putAttributes(rContext, attributes);
-			}
-			context.setDecisionCacheTTL(d.getPreferredCacheTTL());
-			return attributes.get(ref.getAttributeId());
-		}
-		return ref.getDataType().emptyBag();
-	}
-
-	private boolean isExpired(AttributeSet v, EvaluationContext context) {
-		return ((context.getTicker().read() - v.getCreatedTime()) /
-				1000000000L) >= v.getDescriptor().getPreferredCacheTTL();
-	}
-
-	private boolean isExpired(Content v, EvaluationContext context) {
-		long duration = context.getTicker().read() - v.getTimestamp() / 1000000000L;
-
-		if (log.isDebugEnabled()) {
-			log.debug("Attribute set=\"{}\" age=\"{}\" in cache", v, duration);
-		}
-		return duration >= v.getDescriptor().getPreferredCacheTTL();
+			AttributeDesignatorKey designatorKey) throws Exception
+	{
+		Iterable<Resolver<AttributeSet>> matched = registry.getMatchingAttributeResolver(context, designatorKey);
+		Optional<AttributeSet> v = attributeStrategy.resolve(
+				matched, (r) -> resolveAttributes(createContext(context, r)));
+		return v.flatMap(a->a.get(designatorKey.getAttributeId()));
 	}
 
 	@Override
-	public Node resolve(final EvaluationContext context,
-	                    CategoryId category)
-			throws Exception {
-		ContentResolver r = registry.getMatchingContentResolver(context, category);
-		if (r == null) {
-			return null;
-		}
-		ContentResolverDescriptor d = r.getDescriptor();
-		ResolverContext pipContext = createContext(context, d);
-		Content v = null;
-		if (d.isCacheable()) {
-			v = cache.getContent(pipContext);
-			if (v != null &&
-					!isExpired(v, context)) {
-				if (log.isDebugEnabled()) {
-					log.debug("Found cached content=\"{}\"", v);
-				}
-				return v.getContent();
-			}
-		}
-		try {
-			v = r.resolve(pipContext);
-		} catch (Exception e) {
-			if (log.isDebugEnabled()) {
-				log.debug("Received error while resolving content for category=\"{}\"",
-						category, e);
-			}
-			return null;
-		}
-		if (d.isCacheable()) {
-			cache.putContent(pipContext, v);
-		}
-		context.setDecisionCacheTTL(d.getPreferredCacheTTL());
-		return v.getContent();
+	public Optional<Content> resolve(EvaluationContext context,
+	                    AttributeSelectorKey selectorKey)
+	{
+		Iterable<Resolver<ContentRef>> matched = registry.getMatchingContentResolver(context, selectorKey);
+		Optional<ContentRef> v = contentStrategy.resolve(
+				matched, (r) -> resolveContent(createContext(context, r)));
+		return v.map(c->c.getContent());
 	}
 
-	@Override
-	public ResolverRegistry getRegistry() {
-		return registry;
+
+
+	private Optional<ContentRef> resolveContent(ResolverContext resolverContext){
+		Resolver<ContentRef> resolver = resolverContext.getResolver();
+		Optional<ContentRef> fromCache =
+				resolverContext.isCacheable()?
+						cache.getContent(resolverContext)
+						:Optional.empty();
+		return fromCache
+				.or(()->resolver.resolve(resolverContext));
+
 	}
 
-	private ResolverContext createContext(EvaluationContext context, ResolverDescriptor d)
-			throws EvaluationException {
-		return new DefaultResolverContext(context, d);
+	private Optional<AttributeSet> resolveAttributes(ResolverContext resolverContext){
+		Resolver<AttributeSet> resolver = resolverContext.getResolver();
+		Optional<AttributeSet> fromCache =
+				resolverContext.isCacheable()?
+						cache.getAttributes(resolverContext)
+						:Optional.empty();
+		return fromCache
+				.or(()->resolver.resolve(resolverContext));
+	}
+
+	private ResolverContext createContext(EvaluationContext context, Resolver<?> resolver)
+	{
+		return new DefaultResolverContext(resolver, context);
 	}
 }

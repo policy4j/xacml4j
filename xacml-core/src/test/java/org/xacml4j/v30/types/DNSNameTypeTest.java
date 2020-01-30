@@ -35,20 +35,20 @@ public class DNSNameTypeTest
 	@Test
 	public void testFromXacmlString()
 	{
-		DNSNameExp a = DNSNameExp.of("test.org:10-20");
-		DNSName v = a.getValue();
+		DNSNameValue a = XacmlTypes.DNSNAME.of("test.org:10-20");
+		DNSName v = a.value();
 		assertEquals("test.org", v.getDomainName());
 		assertEquals(10, v.getPortRange().getLowerBound());
 		assertEquals(20, v.getPortRange().getUpperBound());
 
-		a = DNSNameExp.of("test.org:-20");
-		v = a.getValue();
+		a = DNSNameValue.of("test.org:-20");
+		v = a.value();
 		assertEquals("test.org", v.getDomainName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertEquals(20, v.getPortRange().getUpperBound());
 
-		a = DNSNameExp.of("test.org");
-		v = a.getValue();
+		a = DNSNameValue.of("test.org");
+		v = a.value();
 		assertEquals("test.org", v.getDomainName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertFalse(v.getPortRange().isUpperBounded());
@@ -57,17 +57,17 @@ public class DNSNameTypeTest
 	@Test
 	public void testEquals()
 	{
-		DNSNameExp v1 = DNSNameExp.of("test.org:10-20");
-		DNSNameExp v2 = DNSNameExp.of("test.org:10-20");
+		DNSNameValue v1 = XacmlTypes.DNSNAME.of("test.org:10-20");
+		DNSNameValue v2 = XacmlTypes.DNSNAME.of("test.org:10-20");
 		assertEquals(v1, v2);
 	}
 
 	@Test
 	public void testToXacmlString()
 	{
-		DNSNameExp v1 = DNSNameExp.of("test.org:10-20");
-		assertEquals("test.org:10-20", v1.toStringExp().getValue());
-		DNSNameExp v2 = DNSNameExp.of("test.org");
-		assertEquals("test.org", v2.toStringExp().getValue());
+		DNSNameValue v1 = XacmlTypes.DNSNAME.of("test.org:10-20");
+		assertEquals("test.org:10-20", v1.toStringExp().value());
+		DNSNameValue v2 = XacmlTypes.DNSNAME.of("test.org");
+		assertEquals("test.org", v2.toStringExp().value());
 	}
 }

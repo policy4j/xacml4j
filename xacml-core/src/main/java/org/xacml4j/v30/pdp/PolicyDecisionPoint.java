@@ -26,8 +26,10 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 
+import java.io.Closeable;
 
-public interface PolicyDecisionPoint extends PolicyDecisionPointMBean
+
+public interface PolicyDecisionPoint extends Closeable
 {
 	/**
 	 * Gets policy decision point
@@ -45,6 +47,4 @@ public interface PolicyDecisionPoint extends PolicyDecisionPointMBean
 	 * @return {@link Result}
 	 */
 	ResponseContext decide(RequestContext request);
-
-	void close();
 }

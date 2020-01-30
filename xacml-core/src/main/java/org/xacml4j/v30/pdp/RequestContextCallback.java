@@ -22,9 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.*;
 
+import java.util.Optional;
+
+@FunctionalInterface
 public interface RequestContextCallback
 {
 	/***
@@ -33,5 +35,19 @@ public interface RequestContextCallback
 	 * @param category a request entity category
 	 * @return {@link Entity}
 	 */
-	Entity getEntity(CategoryId category);
+	Optional<Entity> getEntity(CategoryId category);
+
+	default Optional<Entity> getEntity(Optional<CategoryId> category){
+		return category.isPresent()?getEntity(category.get()):Optional.empty();
+	}
+
+	default Optional<BagOfAttributeValues> resolve(AttributeSelectorKey selectorKey){
+		return getEntity(selectorKey.getCategory())
+				.flatMap(e->e.resolve(selectorKey));
+	}
+
+	default Optional<BagOfAttributeValues> resolve(AttributeDesignatorKey designatorKey){
+		return getEntity(designatorKey.getCategory())
+				.flatMap(e->e.resolve(designatorKey));
+	}
 }

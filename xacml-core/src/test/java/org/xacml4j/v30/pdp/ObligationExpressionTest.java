@@ -33,16 +33,8 @@ import java.util.Iterator;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class ObligationExpressionTest
@@ -61,7 +53,7 @@ public class ObligationExpressionTest
 	{
 		AttributeAssignmentExpression attrExp = c.createMock(AttributeAssignmentExpression.class);
 
-		expect(attrExp.getAttributeId()).andReturn("attributeId");
+		expect(attrExp.getAttributeId()).andReturn("id");
 		c.replay();
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp).build();
 
@@ -78,13 +70,13 @@ public class ObligationExpressionTest
 		AttributeAssignmentExpression attrExp0 = c.createMock(AttributeAssignmentExpression.class);
 		AttributeAssignmentExpression attrExp1 = c.createMock(AttributeAssignmentExpression.class);
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
-		expect(attrExp0.getCategory()).andReturn(Categories.SUBJECT_ACCESS);
+		expect(attrExp0.getCategory()).andReturn(CategoryId.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(IntegerExp.of(1));
+		expect(attrExp0.evaluate(context)).andReturn(XacmlTypes.INTEGER.of(1));
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
-		expect(attrExp1.getCategory()).andReturn(Categories.RESOURCE);
+		expect(attrExp1.getCategory()).andReturn(CategoryId.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andReturn(BooleanExp.valueOf(false));
+		expect(attrExp1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
 
@@ -94,13 +86,13 @@ public class ObligationExpressionTest
 		assertEquals(Effect.DENY, obligation.getFulfillOn());
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
-		assertEquals(Categories.SUBJECT_ACCESS, a0.getCategory());
-		assertEquals(IntegerExp.of(1), a0.getAttribute());
+		assertEquals(CategoryId.SUBJECT_ACCESS, a0.getCategory());
+		assertEquals(XacmlTypes.INTEGER.of(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
-		assertEquals(Categories.RESOURCE, a1.getCategory());
-		assertEquals(BooleanExp.valueOf(false), a1.getAttribute());
+		assertEquals(CategoryId.RESOURCE, a1.getCategory());
+		assertEquals(XacmlTypes.BOOLEAN.of(false), a1.getAttribute());
 		c.verify();
 	}
 
@@ -110,11 +102,11 @@ public class ObligationExpressionTest
 		AttributeAssignmentExpression attrExp0 = c.createMock(AttributeAssignmentExpression.class);
 		AttributeAssignmentExpression attrExp1 = c.createMock(AttributeAssignmentExpression.class);
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
-		expect(attrExp0.getCategory()).andReturn(Categories.SUBJECT_ACCESS);
+		expect(attrExp0.getCategory()).andReturn(CategoryId.SUBJECT_ACCESS);
 		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(IntegerExp.of(1));
+		expect(attrExp0.evaluate(context)).andReturn(XacmlTypes.INTEGER.of(1));
 		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
-		expect(attrExp1.getCategory()).andReturn(Categories.RESOURCE);
+		expect(attrExp1.getCategory()).andReturn(CategoryId.RESOURCE);
 		expect(attrExp1.getIssuer()).andReturn("issuer1");
 		expect(attrExp1.evaluate(context)).andThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));
 		c.replay();

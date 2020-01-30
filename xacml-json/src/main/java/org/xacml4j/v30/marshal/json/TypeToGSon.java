@@ -23,15 +23,14 @@ package org.xacml4j.v30.marshal.json;
  */
 
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
+import com.google.auto.service.AutoService;
 import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.TypeCapability;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -45,198 +44,219 @@ import com.google.gson.reflect.TypeToken;
 
 public interface TypeToGSon extends TypeCapability
 {
-	AttributeExpType getType();
-	JsonElement toJson(AttributeExp v, JsonSerializationContext ctx);
-	AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx);
+	AttributeValueType getType();
+	JsonElement toJson(AttributeValue v, JsonSerializationContext ctx);
+	AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx);
 
 
-	public enum Types implements TypeToGSon
+	static java.util.Optional<TypeToGSon> forType(AttributeValueType type){
+		return Provider.INSTANCE.forType(type);
+	}
+
+	static java.util.Optional<TypeToGSon> forType(String dataTypeId){
+		return TypeCapability.forType(dataTypeId,
+				v->forType(v));
+	}
+
+	@AutoService(TypeCapabilityProvider.class)
+	final class Provider extends TypeCapabilityProvider.Provider<TypeToGSon> {
+		private final static TypeCapabilityProvider<TypeToGSon> INSTANCE = new TypeToGSon.Provider();
+
+		public Provider(){
+			super(Arrays.asList(
+					TypeToGSon.Types.values()),
+					Collections.emptyList(),
+					TypeToGSon.class);
+		}
+	}
+	enum Types implements TypeToGSon
 	{
 		ANYURI(XacmlTypes.ANYURI){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.ANYURI.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.ANYURI.fromString(v.getAsString());
 			}
 		},
 		BASE64BINARY(XacmlTypes.BASE64BINARY){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.BASE64BINARY.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.BASE64BINARY.fromString(v.getAsString());
 			}
 		},
 		BOOLEAN(XacmlTypes.BOOLEAN){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.BOOLEAN.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.BOOLEAN.fromString(v.getAsString());
 			}
 		},
 		DATE(XacmlTypes.DATE){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.DATE.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.DATE.fromString(v.getAsString());
 			}
 		},
 		DATETIME(XacmlTypes.DATETIME){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.DATETIME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.DATETIME.fromString(v.getAsString());
 			}
 		},
 		DAYTIMEDUARATION(XacmlTypes.DAYTIMEDURATION){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.DAYTIMEDURATION.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.DAYTIMEDURATION.fromString(v.getAsString());
 			}
 		},
 		DNSNAME(XacmlTypes.DNSNAME){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.DNSNAME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.DNSNAME.fromString(v.getAsString());
 			}
 		},
 		HEXBINARY(XacmlTypes.HEXBINARY){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.HEXBINARY.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.HEXBINARY.fromString(v.getAsString());
 			}
 		},
 		INTEGER(XacmlTypes.INTEGER){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.INTEGER.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.INTEGER.fromString(v.getAsString());
 			}
 		},
 		IPADDRESS(XacmlTypes.IPADDRESS){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.IPADDRESS.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.IPADDRESS.fromString(v.getAsString());
 			}
 		},
 		RFC822NAME(XacmlTypes.RFC822NAME){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.RFC822NAME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.RFC822NAME.fromString(v.getAsString());
 			}
 		},
 		STRING(XacmlTypes.STRING){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.STRING.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.STRING.fromString(v.getAsString());
 			}
 		},
 		TIME(XacmlTypes.TIME){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.TIME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.TIME.fromString(v.getAsString());
 			}
 		},
 		X500NAME(XacmlTypes.X500NAME){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.X500NAME.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.X500NAME.fromString(v.getAsString());
 			}
 		},
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
 				return new JsonPrimitive(TypeToString.Types.YEARMONTHDURATION.toString(v));
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v, JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v, JsonDeserializationContext ctx) {
 				return TypeToString.Types.YEARMONTHDURATION.fromString(v.getAsString());
 			}
 		},
 		ENTITY(XacmlTypes.ENTITY){
 			@Override
-			public JsonElement toJson(AttributeExp v, JsonSerializationContext ctx) {
-				Entity entity = ((EntityExp)v).getValue();
+			public JsonElement toJson(AttributeValue v, JsonSerializationContext ctx) {
+				Entity entity = ((EntityValue)v).value();
 				JsonObject o = new JsonObject();
 				if(entity.hasContent()){
-					o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(entity.getContent()));
+					o.addProperty(JsonProperties.CONTENT_PROPERTY,
+							entity.getContent().get().asString());
 				}
 				o.add(JsonProperties.ATTRIBUTE_PROPERTY, ctx.serialize(entity.getAttributes()));
 				return o;
 			}
 
 			@Override
-			public AttributeExp fromJson(JsonElement v,
-					JsonDeserializationContext ctx) {
+			public AttributeValue fromJson(JsonElement v,
+                                           JsonDeserializationContext ctx) {
 				Entity.Builder b = Entity.builder();
 				JsonObject o  = v.getAsJsonObject();
 				if(o.has(JsonProperties.CONTENT_PROPERTY)){
 					String content = o.get(JsonProperties.CONTENT_PROPERTY).getAsString();
-					b.content(DOMUtil.stringToNode(content));
+					b.content(XmlContent.of(content));
 				}
 				if(o.has(JsonProperties.ATTRIBUTE_PROPERTY)){
 					JsonArray array = o.get(JsonProperties.ATTRIBUTE_PROPERTY).getAsJsonArray();
@@ -245,24 +265,18 @@ public interface TypeToGSon extends TypeCapability
 							}.getType());
 					b.attributes(attr);
 				}
-				return EntityExp.of(b.build());
+				return EntityValue.of(b.build());
 			}
 		};
 
-		private final static Index<TypeToGSon> INDEX = Index.<TypeToGSon>build(values());
+		private AttributeValueType type;
 
-		private AttributeExpType type;
-
-		private Types(AttributeExpType type){
+		Types(AttributeValueType type){
 			this.type = type;
 		}
 
-		public AttributeExpType getType(){
+		public AttributeValueType getType(){
 			return type;
-		}
-
-		public static Index<TypeToGSon> getIndex(){
-			return INDEX;
 		}
 
 	}

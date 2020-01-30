@@ -40,11 +40,11 @@ public final class DecisionCombiningAlgorithms
 	/**
 	 * A helper method which invokes {@link DecisionRule#createContext(EvaluationContext)}
 	 * then sub-sequentially invokes {@link DecisionRule#evaluate(org.xacml4j.v30.EvaluationContext)}
-	 * with the just created {@link EvaluationContext} instance as an argument
+	 * with the just created {@link EvaluationContext} defaultProvider as an argument
 	 *
 	 * @param context a parent evaluation context
 	 * @param decision a decision rule to be evaluated
-	 * @return evaluation result as {@link Decision} instance
+	 * @return evaluation result as {@link Decision} defaultProvider
 	 */
 	public static <D extends DecisionRule> Decision evaluateIfMatch(EvaluationContext context, D decision) {
 		EvaluationContext decisionContext = decision.createContext(context);
@@ -54,11 +54,11 @@ public final class DecisionCombiningAlgorithms
 	/**
 	 * A helper method which invokes {@link DecisionRule#createContext(EvaluationContext)}
 	 * then sub-sequentially invokes {@link DecisionRule#evaluate(EvaluationContext)}
-	 * with the just created {@link EvaluationContext} instance as an argument
+	 * with the just created {@link EvaluationContext} defaultProvider as an argument
 	 *
 	 * @param context a parent evaluation context
 	 * @param decision a decision rule to be evaluated
-	 * @return evaluation result as {@link Decision} instance
+	 * @return evaluation result as {@link Decision} defaultProvider
 	 */
 	public static <D extends DecisionRule> Decision evaluate(EvaluationContext context, D decision) {
 		EvaluationContext decisionContext = decision.createContext(context);

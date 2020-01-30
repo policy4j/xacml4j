@@ -22,14 +22,21 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import java.net.URI;
 
+/**
+ * Base implementation of {@link CompositeDecisionRuleIDReference}
+ *
+ * @author Giedrius Trumpickas
+ */
 public abstract class BaseCompositeDecisionRuleIDReference
 	implements CompositeDecisionRuleIDReference
 {
@@ -54,6 +61,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 	public final String getId(){
 		return id;
 	}
+
 
 	/**
 	 * Gets earliest version match
@@ -102,7 +110,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 
 	@Override
 	public final String toString() {
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("id", id)
 		.add("version", version)
 		.add("earliest", earliest)

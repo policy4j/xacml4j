@@ -28,14 +28,10 @@ import java.io.InputStream;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.XacmlPolicyTestSupport;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointCacheProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
@@ -54,12 +50,12 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 	{
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
-				FunctionProviderBuilder.builder()
+				FunctionProvider.Builder.builder()
 				.defaultFunctions()
 				.build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				.withDefaultAlgorithms()
-				.create());
+				.build());
 
 		ImmutableList<Supplier<InputStream>> policyStreams = ImmutableList.of(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),
@@ -138,7 +134,7 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 		}
 		long t2 = System.currentTimeMillis();
 
-		System.err.println("Time taken: " + (t2-t1));
+		System.err.println("TimeValue taken: " + (t2-t1));
 	}
 
 	private void runTestCase(int caseId, int requestId) throws Exception {

@@ -22,10 +22,20 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import org.xacml4j.v30.types.AnyURIValue;
+import org.xacml4j.v30.types.StringValue;
 
+import java.util.Set;
+
+/**
+ * Represents XACML attribute designator
+ *
+ * @author Giedrius Trumpickas
+ */
 public final class AttributeDesignatorKey
 	extends AttributeReferenceKey
 {
@@ -63,18 +73,11 @@ public final class AttributeDesignatorKey
 	}
 
 	@Override
-	public BagOfAttributeExp resolve(EvaluationContext context)
-			throws EvaluationException
-	{
-		return context.resolve(this);
-	}
-
-	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("Category", getCategory())
+		return MoreObjects.toStringHelper(this)
+		.add("Category", getCategory().getAbbreviatedId())
 		.add("AttributeId", attributeId)
-		.add("DataType", getDataType())
+		.add("DataType", getDataType().getAbbrevDataTypeId())
 		.add("Issuer", issuer).toString();
 	}
 
@@ -104,8 +107,17 @@ public final class AttributeDesignatorKey
 		private String attributeId;
 
 		public Builder attributeId(String id){
-			Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
-			this.attributeId = id;
+			this.attributeId = java.util.Objects.requireNonNull(id);
+			return this;
+		}
+
+		public Builder attributeId(StringValue id){
+			this.attributeId = java.util.Objects.requireNonNull(id).toString();
+			return this;
+		}
+
+		public Builder attributeId(AnyURIValue id){
+			this.attributeId = java.util.Objects.requireNonNull(id).toString();
 			return this;
 		}
 
@@ -119,6 +131,11 @@ public final class AttributeDesignatorKey
 
 		public Builder issuer(String issuer){
 			this.issuer = Strings.emptyToNull(issuer);
+			return this;
+		}
+
+		public Builder issuer(StringValue issuer){
+			this.issuer = java.util.Objects.requireNonNull(issuer).toString();
 			return this;
 		}
 

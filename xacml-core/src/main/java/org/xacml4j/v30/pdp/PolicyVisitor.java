@@ -23,16 +23,36 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+/**
+ * A XACML policy tree visitor
+ *
+ * @author Giedrius Trumpickas
+ */
 public interface PolicyVisitor
 {
-	void visitEnter(VariableDefinition var);
-	void visitLeave(VariableDefinition var);
+	default void visitEnter(VariableDefinition var){
+		var.accept(this);
+	}
 
-	void visitEnter(Condition condition);
-	void visitLeave(Condition condition);
+	default void visitLeave(VariableDefinition var){
+		var.accept(this);
+	}
 
-	void visitEnter(Target target);
-	void visitLeave(Target target);
+	default void visitEnter(Condition var){
+		var.accept(this);
+	}
+
+	default void visitLeave(Condition var){
+		var.accept(this);
+	}
+
+	default void visitEnter(Target var){
+		var.accept(this);
+	}
+
+	default void visitLeave(Target var){
+		var.accept(this);
+	}
 
 	void visitEnter(Match match);
 	void visitLeave(Match match);

@@ -22,7 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.io.Serializable;
+import java.io.*;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -31,11 +31,11 @@ import javax.xml.datatype.Duration;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseDuration <T extends BaseDuration<?>>
-	implements Comparable<T>, Serializable
+	implements Comparable<T>, Externalizable
 {
 	private static final long serialVersionUID = 6573551346951236604L;
 
-	private final Duration value;
+	private Duration value;
 
 	protected static DatatypeFactory df = null;
 
@@ -121,6 +121,18 @@ public abstract class BaseDuration <T extends BaseDuration<?>>
 		return makeDuration(getDuration().negate());
 	}
 
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(value);
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		this.value = (Duration) in.readObject();
+	}
+
 	protected abstract T makeDuration(Duration d);
+
+
 
 }

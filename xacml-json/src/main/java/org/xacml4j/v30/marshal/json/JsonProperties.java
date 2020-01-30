@@ -32,6 +32,6 @@ public interface JsonProperties {
 	static final String CATEGORY_ARRAY_NAME = "Category";
 	static final String CATEGORY_ID_PROPERTY = "CategoryId";
 	static final String ID_PROPERTY = "Id";
-	static final String CONTENT_PROPERTY = "Content";
+	static final String CONTENT_PROPERTY = "ContentRef";
 	static final String ATTRIBUTE_PROPERTY = "Attribute";
 }

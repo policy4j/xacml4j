@@ -22,17 +22,19 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.AttributeValueType;
+import org.xacml4j.v30.BagOfAttributeValues;
 
 import com.google.common.base.Preconditions;
+
+import java.util.*;
 
 public final class AttributeDescriptor
 {
 	private String attributeId;
-	private AttributeExpType dataType;
-	private BagOfAttributeExp defaultValue;
-
+	private AttributeValueType dataType;
+	private Optional<BagOfAttributeValues> defaultValue = Optional.empty();
+	private Set<String> aliasSet;
 	/**
 	 * Constructs attribute descriptor
 	 *
@@ -40,12 +42,15 @@ public final class AttributeDescriptor
 	 * @param dataType an attribute data type
 	 */
 	public AttributeDescriptor(String attributeId,
-			AttributeExpType dataType)
+			AttributeValueType dataType, String ...aliases)
 	{
 		Preconditions.checkArgument(attributeId != null);
 		Preconditions.checkArgument(dataType != null);
 		this.attributeId = attributeId;
 		this.dataType = dataType;
+		this.aliasSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		this.aliasSet.addAll(Arrays.asList(aliases));
+		this.aliasSet = Collections.unmodifiableSet(aliasSet);
 	}
 
 	/**
@@ -57,21 +62,26 @@ public final class AttributeDescriptor
 		return attributeId;
 	}
 
+	public boolean isAlias(String id){
+		return aliasSet.contains(id);
+	}
+
 	/**
-	 * Gets attribute default value
-	 * @return attribute default value
+	 * Gets attribute id aliases, returned collection contains {@link #getAttributeId()}
+	 *
+	 * @return attribute id aliases, returned collection contains {@link #getAttributeId()}
 	 */
-	public BagOfAttributeExp getDefaultValue(){
-		return defaultValue;
+	public Collection<String> getAliases(){
+		return aliasSet;
 	}
 
 	/**
 	 * Gets expected attribute data type
 	 *
-	 * @return {@link AttributeExpType} an
+	 * @return {@link AttributeValueType} an
 	 * attribute data type
 	 */
-	public AttributeExpType getDataType(){
+	public AttributeValueType getDataType(){
 		return dataType;
 	}
 }

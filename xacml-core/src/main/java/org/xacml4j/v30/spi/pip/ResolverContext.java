@@ -22,31 +22,41 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.Calendar;
-import java.util.List;
+import java.time.Clock;
+import java.time.ZonedDateTime;
+import java.util.*;
 
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.Content;
 
 import com.google.common.base.Ticker;
+import org.xacml4j.v30.EvaluationContext;
 
 
 public interface ResolverContext
 {
 	/**
+	 * Gets optionally requested content type
+	 *
+	 * @return {@link Optional<Content.Type>/>}
+	 */
+	Optional<Content.Type> getContentType();
+
+	/**
 	 * Gets current evaluation context date/time
 	 *
-	 * @return {@link Calendar} instance
+	 * @return {@link Calendar} defaultProvider
 	 * representing current date/time
 	 */
-	Calendar getCurrentDateTime();
+	ZonedDateTime getCurrentDateTime();
 
 	/**
 	 * Gets ticker
 	 *
 	 * @return {@link Ticker}
 	 */
-	Ticker getTicker();
+	Clock getClock();
 
 	/**
 	 * Gets resolver descriptor
@@ -55,13 +65,22 @@ public interface ResolverContext
 	 */
 	ResolverDescriptor getDescriptor();
 
+	<T extends Resolver> T getResolver();
+
 	/**
-	 * Gets request context keys
-	 *
-	 * @return a list {@link List} of {@link BagOfAttributeExp}
-	 * instances
-	 * @throws EvaluationException if an error
-	 * occurs
+	 * Resolves context key
 	 */
-	List<BagOfAttributeExp> getKeys();
+	Optional<BagOfAttributeValues> resolve(AttributeReferenceKey key);
+
+
+	boolean isCacheable();
+
+	/**
+	 * Gets resolved keys, key resolution implies
+	 * that keys were used to look up attributes
+	 * from the back end sources
+	 */
+	Map<AttributeReferenceKey, BagOfAttributeValues> getResolvedKeys();
+
+	EvaluationContext getEvaluationContext();
 }

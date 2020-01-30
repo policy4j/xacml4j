@@ -30,11 +30,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.TimeExp;
-
-
+import org.xacml4j.v30.types.StringValue;
+import org.xacml4j.v30.types.TimeValue;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class NonNumericComparisionFunctionTest
@@ -49,36 +47,36 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testStringGreaterThan()
 	{
-		StringExp a = StringExp.of("ab");
-		StringExp b = StringExp.of("aa");
-		assertEquals(BooleanExp.valueOf(true),
+		StringValue a = XacmlTypes.STRING.of("ab");
+		StringValue b = XacmlTypes.STRING.of("aa");
+		assertEquals(XacmlTypes.BOOLEAN.of(true),
 				NonNumericComparisonFunctions.greaterThan(a, b));
-		a = StringExp.of("aaa");
-		b = StringExp.of("aa");
-		assertEquals(BooleanExp.valueOf(true),
+		a = XacmlTypes.STRING.of("aaa");
+		b = XacmlTypes.STRING.of("aa");
+		assertEquals(XacmlTypes.BOOLEAN.of(true),
 				NonNumericComparisonFunctions.greaterThan(a, b));
 	}
 
 	@Test
 	public void testTimeLessThan()
 	{
-		TimeExp t1 = TimeExp.of("08:23:47-05:00");
-		TimeExp t2 = TimeExp.of("08:23:48-05:00");
-		assertEquals(BooleanExp.valueOf(true), NonNumericComparisonFunctions.lessThan(t1, t2));
-		t2 = TimeExp.of("08:23:47-05:00");
-		assertEquals(BooleanExp.valueOf(false), NonNumericComparisonFunctions.lessThan(t1, t2));
-		t2 = TimeExp.of("08:23:46-05:00");
-		assertEquals(BooleanExp.valueOf(false), NonNumericComparisonFunctions.lessThan(t1, t2));
+		TimeValue t1 = XacmlTypes.TIME.of("08:23:47-05:00");
+		TimeValue t2 = XacmlTypes.TIME.of("08:23:48-05:00");
+		assertEquals(XacmlTypes.BOOLEAN.of(true), NonNumericComparisonFunctions.lessThan(t1, t2));
+		t2 = XacmlTypes.TIME.of("08:23:47-05:00");
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NonNumericComparisonFunctions.lessThan(t1, t2));
+		t2 = XacmlTypes.TIME.of("08:23:46-05:00");
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NonNumericComparisonFunctions.lessThan(t1, t2));
 	}
 
 	@Test
 	public void testTimeInRangeNoTimeZonesAndTimeIsInRange()
 	{
 		replay(context);
-		TimeExp a = TimeExp.of("09:30:10");
-		TimeExp b = TimeExp.of("08:30:10");
-		TimeExp c = TimeExp.of("09:30:11");
-		assertEquals(BooleanExp.valueOf(true),
+		TimeValue a = XacmlTypes.TIME.of("09:30:10");
+		TimeValue b = XacmlTypes.TIME.of("08:30:10");
+		TimeValue c = XacmlTypes.TIME.of("09:30:11");
+		assertEquals(XacmlTypes.BOOLEAN.of(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
@@ -86,10 +84,10 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testTimeInRangeWithTimeZonesAndTimeIsInRange()
 	{
-		TimeExp a = TimeExp.of("09:30:10Z");
-		TimeExp b = TimeExp.of("08:30:10Z");
-		TimeExp c = TimeExp.of("09:30:11Z");
-		assertEquals(BooleanExp.valueOf(true),
+		TimeValue a = XacmlTypes.TIME.of("09:30:10Z");
+		TimeValue b = XacmlTypes.TIME.of("08:30:10Z");
+		TimeValue c = XacmlTypes.TIME.of("09:30:11Z");
+		assertEquals(XacmlTypes.BOOLEAN.of(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 	}
 
@@ -97,10 +95,10 @@ public class NonNumericComparisionFunctionTest
 	public void testTimeInRangeNoTimeZonesAndTimeIsNotInRange()
 	{
 		replay(context);
-		TimeExp a = TimeExp.of("09:30:10");
-		TimeExp b = TimeExp.of("08:30:10");
-		TimeExp c = TimeExp.of("09:30:09");
-		assertEquals(BooleanExp.valueOf(false),
+		TimeValue a = XacmlTypes.TIME.of("09:30:10");
+		TimeValue b = XacmlTypes.TIME.of("08:30:10");
+		TimeValue c = XacmlTypes.TIME.of("09:30:09");
+		assertEquals(XacmlTypes.BOOLEAN.of(false),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
@@ -109,10 +107,10 @@ public class NonNumericComparisionFunctionTest
 	public void testTimeInRangeNoTimeZonesAndTimeIsEqualToUpperBound()
 	{
 		replay(context);
-		TimeExp a = TimeExp.of("09:30:10");
-		TimeExp b = TimeExp.of("08:30:10");
-		TimeExp c = TimeExp.of("09:30:10");
-		assertEquals(BooleanExp.valueOf(true),
+		TimeValue a = XacmlTypes.TIME.of("09:30:10");
+		TimeValue b = XacmlTypes.TIME.of("08:30:10");
+		TimeValue c = XacmlTypes.TIME.of("09:30:10");
+		assertEquals(XacmlTypes.BOOLEAN.of(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}

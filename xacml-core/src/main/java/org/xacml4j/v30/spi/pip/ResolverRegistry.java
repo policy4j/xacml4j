@@ -22,85 +22,33 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.*;
+
+
+
 
 public interface ResolverRegistry
 {
+    /**
+     * Gets a matching {@link AttributeResolver} for a given
+     * evaluation context and given {@link AttributeDesignatorKey}
+     *
+     * @param context an evaluation context
+     * @param key an attribute designator key
+     * @return iterable over found matching {@link Resolver<AttributeSet>} instances
+     */
+	Iterable<Resolver<AttributeSet>> getMatchingAttributeResolver(
+			EvaluationContext context, AttributeDesignatorKey key);
+
 	/**
-	 * Gets a matching {@link AttributeResolver} for a given
-	 * evaluation context and given {@link AttributeDesignatorKey}
+	 * Gets a matching {@link ContentResolver} for a given
+	 * evaluation context and given {@link AttributeSelectorKey}
 	 *
 	 * @param context an evaluation context
 	 * @param key an attribute designator key
-	 * @return instance of {@link AttributeResolver}
-	 * or <ii>null</ii> if not matching resolver is found
+	 * @return iterable over found matching {@link Resolver<ContentRef>} instances
 	 */
-	Iterable<AttributeResolver> getMatchingAttributeResolvers(
-			EvaluationContext context, AttributeDesignatorKey key);
+	Iterable<Resolver<ContentRef>> getMatchingContentResolver(
+			EvaluationContext context, AttributeSelectorKey selectorKey);
 
-
-	/**
-	 * Gets an {@link ContentResolver} for a given
-	 * evaluation context and given {@link CategoryId}
-	 *
-	 * @param context evaluation context
-	 * @param category attribute category
-	 * @return content resolver
-	 */
-	ContentResolver getMatchingContentResolver(
-			EvaluationContext context, CategoryId category);
-
-	/**
-	 * Adds top level attribute resolver
-	 *
-	 * @param r a top level attribute resolver
-	 */
-	void addAttributeResolver(AttributeResolver r);
-
-	void addAttributeResolvers(Iterable<AttributeResolver> resolvers);
-	void addAttributeResolvers(String policyId, Iterable<AttributeResolver> resolvers);
-
-	void addContentResolvers(Iterable<ContentResolver> resolvers);
-	void addContentResolvers(String policyId, Iterable<ContentResolver> resolvers);
-
-	/**
-	 * Adds top level content resolver
-	 *
-	 * @param r a top level content resolver
-	 */
-	void addContentResolver(ContentResolver r);
-
-	/**
-	 * Adds an attribute resolver bound to the specific
-	 * policy identifier and all child policies
-	 *
-	 * @param policyId a policy identifier
-	 * @param r an attribute resolver
-	 */
-	void addAttributeResolver(String policyId, AttributeResolver r);
-
-	/**
-	 * Adds a content resolver bound to the specific
-	 * policy identifier and all child policies
-	 *
-	 * @param policyId a policy identifier
-	 * @param r a content resolver
-	 */
-	void addContentResolver(String policyId, ContentResolver r);
-
-	/**
-	 * Gets attribute resolve by identifier
-	 * @param id a resolver identifier
-	 * @return {@link AttributeResolver} or {@code null} if not resolver found
-	 */
-	AttributeResolver getAttributeResolver(String id);
-
-	/**
-	 * Gets content resolver by identifier
-	 * @param id a resolver identifier
-	 * @return {@link ContentResolver} or {@code null} if not resolver found
-	 */
-	ContentResolver getContentResolver(String id);
 }

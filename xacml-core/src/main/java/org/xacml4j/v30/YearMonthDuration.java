@@ -53,7 +53,7 @@ public final class YearMonthDuration extends BaseDuration<YearMonthDuration>
 		return getDuration().getMonths();
 	}
 
-	public static YearMonthDuration create(Object any){
+	public static YearMonthDuration parse(Object any){
 		if(any instanceof YearMonthDuration){
 			return (YearMonthDuration)any;
 		}

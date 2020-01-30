@@ -39,11 +39,11 @@ public class Time extends BaseCalendar<Time>
 
 	/**
 	 * Creates {@link Time} from a given
-	 * object instance, supported types are:
+	 * object defaultProvider, supported types are:
 	 * {@link String}, {@link GregorianCalendar},
 	 * {@link XMLGregorianCalendar}
 	 *
-	 * @return {@link Time} instance
+	 * @return {@link Time} defaultProvider
 	 */
 	public static Time valueOf(Object v){
 		return new Time(parseTime(v));

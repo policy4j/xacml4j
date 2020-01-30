@@ -25,10 +25,9 @@ package org.xacml4j.v30.policy.function;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IntegerExp;
-
+import org.xacml4j.v30.types.DoubleValue;
+import org.xacml4j.v30.types.IntegerValue;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class NumericComparisonFunctionTest
@@ -36,56 +35,56 @@ public class NumericComparisonFunctionTest
 	@Test
 	public void testGreaterThanDouble()
 	{
-		DoubleExp a = DoubleExp.of(35.0);
-		DoubleExp b = DoubleExp.of(35.0);
-		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanDouble(a, b));
-		a = DoubleExp.of(35.1);
-		b = DoubleExp.of(35.0);
-		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanDouble(a, b));
-		a = DoubleExp.of(35.1);
-		b = DoubleExp.of(35.2);
-		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanDouble(a, b));
+		DoubleValue a = XacmlTypes.DOUBLE.of(35.0);
+		DoubleValue b = XacmlTypes.DOUBLE.of(35.0);
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NumericComparisonFunctions.greaterThanDouble(a, b));
+		a = XacmlTypes.DOUBLE.of(35.1);
+		b = XacmlTypes.DOUBLE.of(35.0);
+		assertEquals(XacmlTypes.BOOLEAN.of(true), NumericComparisonFunctions.greaterThanDouble(a, b));
+		a = XacmlTypes.DOUBLE.of(35.1);
+		b = XacmlTypes.DOUBLE.of(35.2);
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NumericComparisonFunctions.greaterThanDouble(a, b));
 	}
 
 	@Test
 	public void testGreaterThanOrEqualDouble()
 	{
-		DoubleExp a = DoubleExp.of(35.0);
-		DoubleExp b = DoubleExp.of(35.0);
-		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
-		a = DoubleExp.of(35.1);
-		b = DoubleExp.of(35.0);
-		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
-		a = DoubleExp.of(35.1);
-		b = DoubleExp.of(35.2);
-		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
+		DoubleValue a = XacmlTypes.DOUBLE.of(35.0);
+		DoubleValue b = XacmlTypes.DOUBLE.of(35.0);
+		assertEquals(XacmlTypes.BOOLEAN.of(true), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
+		a = XacmlTypes.DOUBLE.of(35.1);
+		b = XacmlTypes.DOUBLE.of(35.0);
+		assertEquals(XacmlTypes.BOOLEAN.of(true), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
+		a = XacmlTypes.DOUBLE.of(35.1);
+		b = XacmlTypes.DOUBLE.of(35.2);
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NumericComparisonFunctions.greaterThanOrEqualDouble(a, b));
 	}
 
 	@Test
 	public void testGreaterThanInteger()
 	{
-		IntegerExp a = IntegerExp.of(35);
-		IntegerExp b = IntegerExp.of(35);
-		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanInteger(a, b));
-		a = IntegerExp.of(36);
-		b = IntegerExp.of(35);
-		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanInteger(a, b));
-		a = IntegerExp.of(35);
-		b = IntegerExp.of(36);
-		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanInteger(a, b));
+		IntegerValue a = XacmlTypes.DOUBLE.of(35);
+		IntegerValue b = XacmlTypes.DOUBLE.of(35);
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NumericComparisonFunctions.greaterThanInteger(a, b));
+		a = XacmlTypes.INTEGER.of(36);
+		b = XacmlTypes.INTEGER.of(35);
+		assertEquals(XacmlTypes.BOOLEAN.of(true), NumericComparisonFunctions.greaterThanInteger(a, b));
+		a = XacmlTypes.INTEGER.of(35);
+		b = XacmlTypes.INTEGER.of(36);
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NumericComparisonFunctions.greaterThanInteger(a, b));
 	}
 
 	@Test
 	public void testGreaterThanOrEqualsInteger()
 	{
-		IntegerExp a = IntegerExp.of(35);
-		IntegerExp b = IntegerExp.of(35);
-		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
-		a = IntegerExp.of(36);
-		b = IntegerExp.of(35);
-		assertEquals(BooleanExp.valueOf(true), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
-		a = IntegerExp.of(35);
-		b = IntegerExp.of(36);
-		assertEquals(BooleanExp.valueOf(false), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
+		IntegerValue a = XacmlTypes.INTEGER.of(35);
+		IntegerValue b = XacmlTypes.INTEGER.of(35);
+		assertEquals(XacmlTypes.BOOLEAN.of(true), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
+		a = XacmlTypes.INTEGER.of(36);
+		b = XacmlTypes.INTEGER.of(35);
+		assertEquals(XacmlTypes.BOOLEAN.of(true), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
+		a = XacmlTypes.INTEGER.of(35);
+		b = XacmlTypes.INTEGER.of(36);
+		assertEquals(XacmlTypes.BOOLEAN.of(false), NumericComparisonFunctions.greaterThanOrEqualInteger(a, b));
 	}
 }

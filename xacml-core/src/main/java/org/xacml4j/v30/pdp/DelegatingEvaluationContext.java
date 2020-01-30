@@ -22,33 +22,14 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TimeZone;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.XPathVersion;
-import org.xacml4j.v30.types.XPathExp;
-
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Ticker;
+import org.xacml4j.v30.*;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -60,10 +41,13 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 {
 	private final EvaluationContext delegate;
 
+	private Optional<Status> status;
+
 	protected DelegatingEvaluationContext(
 			EvaluationContext context){
 		Preconditions.checkNotNull(context);
 		this.delegate = context;
+		this.status = Optional.empty();
 	}
 
 	protected EvaluationContext getDelegate(){
@@ -81,8 +65,8 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Ticker getTicker(){
-		return delegate.getTicker();
+	public Clock getClock(){
+		return delegate.getClock();
 	}
 
 	@Override
@@ -106,7 +90,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public CompositeDecisionRule getCurrentPolicy() {
@@ -120,13 +104,13 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Status getEvaluationStatus() {
-		return delegate.getEvaluationStatus();
+	public Optional<Status> getEvaluationStatus() {
+		return status;
 	}
 
 	@Override
-	public void setEvaluationStatus(Status code) {
-		delegate.setEvaluationStatus(code);
+	public void setEvaluationStatus(Status status) {
+		this.status = Optional.ofNullable(status);
 	}
 
 	@Override
@@ -135,7 +119,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public CompositeDecisionRule getCurrentPolicySet() {
@@ -143,7 +127,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public ValueExpression getVariableEvaluationResult(String variableId) {
@@ -151,7 +135,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public void setVariableEvaluationResult(String variableId, ValueExpression value) {
@@ -159,7 +143,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
@@ -170,7 +154,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public CompositeDecisionRuleIDReference getCurrentPolicyIDReference() {
@@ -178,7 +162,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public CompositeDecisionRuleIDReference getCurrentPolicySetIDReference() {
@@ -186,7 +170,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} instance
+	 * Delegates call to {@link EvaluationContext} defaultProvider
 	 */
 	@Override
 	public TimeZone getTimeZone() {
@@ -194,58 +178,20 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Calendar getCurrentDateTime() {
+	public ZonedDateTime getCurrentDateTime() {
 		return delegate.getCurrentDateTime();
 	}
 
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
 	@Override
-	public Node evaluateToNode(XPathExp xpath)
-			throws EvaluationException {
-		return delegate.evaluateToNode(xpath);
-	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
-	public NodeList evaluateToNodeSet(XPathExp xpath)
-			throws EvaluationException {
-		return delegate.evaluateToNodeSet(xpath);
-	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
-	public Number evaluateToNumber(XPathExp xpath)
-			throws EvaluationException {
-		return delegate.evaluateToNumber(xpath);
-	}
-
-	/**
-	 * Delegates call to {@link EvaluationContext} instance
-	 */
-	@Override
-	public String evaluateToString(XPathExp xpath)
-			throws EvaluationException {
-		return delegate.evaluateToString(xpath);
-	}
-
-	@Override
-	public BagOfAttributeExp resolve(
-			AttributeDesignatorKey ref)
+	public final Optional<BagOfAttributeValues> resolve(
+			AttributeReferenceKey ref)
 			throws EvaluationException {
 		return delegate.resolve(ref);
 	}
 
 	@Override
-	public BagOfAttributeExp resolve(
-			AttributeSelectorKey ref)
-			throws EvaluationException {
-		return delegate.resolve(ref);
+	public <C extends Content> Optional<C> resolve(Optional<CategoryId> categoryId, Content.Type type) {
+		return delegate.resolve(categoryId, type);
 	}
 
 	@Override
@@ -264,8 +210,13 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
+	public Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators() {
 		return delegate.getResolvedDesignators();
+	}
+
+	@Override
+	public Map<AttributeSelectorKey, BagOfAttributeValues> getResolvedSelectors() {
+		return delegate.getResolvedSelectors();
 	}
 
 	@Override
@@ -290,7 +241,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("delegate", delegate).toString();
+		return MoreObjects.toStringHelper(this).add("delegate", delegate).toString();
 	}
 
 	@Override

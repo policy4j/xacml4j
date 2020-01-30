@@ -22,81 +22,27 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExpType;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.CategoryId;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterables;
-
-public final class ContentResolverDescriptorBuilder
+public final class ContentResolverDescriptorBuilder extends ResolverDescriptorBuilder<ContentResolverDescriptorBuilder>
 {
-	private String id;
-	private String name;
-	private CategoryId category;
-	private List<AttributeReferenceKey> keys;
-	private int cacheTTL;
 
-	private ContentResolverDescriptorBuilder(String id, String name, CategoryId category)
+	private ContentResolverDescriptorBuilder(String id, String name, CategoryId ... category)
 	{
-		Preconditions.checkNotNull(id);
-		Preconditions.checkNotNull(name);
-		Preconditions.checkNotNull(category);
-		this.id = id.replace(":", ".");
-		this.name = name;
-		this.category = category;
-		this.keys = new LinkedList<AttributeReferenceKey>();
+		super(id, name, category);
 	}
 
 	public static ContentResolverDescriptorBuilder builder(String id, String name, CategoryId category){
 		return new ContentResolverDescriptorBuilder(id, name, category);
 	}
 
-	public ContentResolverDescriptorBuilder designatorRef(CategoryId category,
-			String attributeId, AttributeExpType dataType, String issuer)
-	{
-		this.keys.add(AttributeDesignatorKey
-				.builder()
-				.category(category)
-				.dataType(dataType)
-				.attributeId(attributeId)
-				.issuer(issuer)
-				.build());
-		return this;
-	}
 
-	public ContentResolverDescriptorBuilder selectorRef(
-			CategoryId category,
-			String xpath, AttributeExpType dataType,
-			String contextAttributeId)
-	{
-		this.keys.add(AttributeSelectorKey
-				.builder()
-				.category(category)
-				.xpath(xpath)
-				.dataType(dataType)
-				.contextSelectorId(contextAttributeId)
-				.build());
-		return this;
-	}
-
-	public ContentResolverDescriptorBuilder keys(Iterable<AttributeReferenceKey> keys){
-		Iterables.addAll(this.keys, keys);
-		return this;
-	}
-
-	public ContentResolverDescriptorBuilder noCache(){
-		this.cacheTTL = -1;
-		return this;
-	}
-
-	public ContentResolverDescriptorBuilder cache(int ttl){
-		this.cacheTTL = ttl;
+	@Override
+	protected ContentResolverDescriptorBuilder getThis() {
 		return this;
 	}
 
@@ -109,12 +55,18 @@ public final class ContentResolverDescriptorBuilder
 	{
 
 		public ContentResolverDescriptorImpl() {
-			super(id, name, category, keys, cacheTTL);
+			super(id, name, allCategories, cacheTTL, contextKeysResolutionPlan);
 		}
 
-		@Override
-		public boolean canResolve(CategoryId category) {
-			return getCategory().equals(category);
+		public Collection<CategoryId> getSupportedCategories(){
+			return allCategories;
+		}
+		public boolean canResolve(AttributeReferenceKey category) {
+			if(!(category instanceof AttributeSelectorKey)){
+				return false;
+			}
+			return allCategories
+					.contains(category.getCategory());
 		}
 	}
 }

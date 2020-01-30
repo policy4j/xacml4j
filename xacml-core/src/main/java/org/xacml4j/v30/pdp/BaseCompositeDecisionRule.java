@@ -22,22 +22,16 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.Version;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.*;
+
+import java.util.Collection;
 
 /**
  * A base class for composite decision rule. A composite decision
@@ -184,7 +178,7 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	protected abstract Decision combineDecisions(EvaluationContext context);
 
 	@Override
-	protected Objects.ToStringHelper toStringBuilder(Objects.ToStringHelper b){
+	protected MoreObjects.ToStringHelper toStringBuilder(MoreObjects.ToStringHelper b){
 		return super.toStringBuilder(b)
 			.add("version", version)
 			.add("issuer", policyIssuer)

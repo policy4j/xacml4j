@@ -22,125 +22,124 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Stack;
-
+import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Comment;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.ProcessingInstruction;
-import org.w3c.dom.Text;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.XPathExp;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.XPathProvider;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Preconditions;
+import java.util.*;
 
 class DefaultEvaluationContextHandler
 	implements EvaluationContextHandler
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
 
-	private final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
-
-	private XPathProvider xpathProvider;
 	private PolicyInformationPoint pip;
 
 	private RequestContextCallback requestCallback;
 
-	private Map<CategoryId, Node> contentCache;
+	private Map<AttributeSelectorKey, BagOfAttributeValues> selectorCache;
+	private Map<AttributeDesignatorKey, BagOfAttributeValues> designatorCache;
 
 	private Stack<AttributeDesignatorKey> designatorResolutionStack;
 	private Stack<AttributeSelectorKey> selectorResolutionStack;
-	private Stack<CategoryId> contentResolutionStack;
 
 	DefaultEvaluationContextHandler(
 			RequestContextCallback requestCallback,
-			XPathProvider xpathProvider,
-			PolicyInformationPoint pip)
+			PolicyInformationPoint pip,
+			Supplier<Map<AttributeDesignatorKey, BagOfAttributeValues>> designatorCacheSup,
+			Supplier<Map<AttributeSelectorKey, BagOfAttributeValues>> selectorCacheSup)
 	{
-		Preconditions.checkNotNull(xpathProvider);
 		Preconditions.checkNotNull(pip);
 		Preconditions.checkNotNull(requestCallback);
-
-		this.xpathProvider = xpathProvider;
 		this.pip = pip;
 		this.requestCallback = requestCallback;
-		this.contentCache = new HashMap<CategoryId, Node>();
-		this.selectorResolutionStack = new Stack<AttributeSelectorKey>();
-		this.designatorResolutionStack = new Stack<AttributeDesignatorKey>();
-		this.contentResolutionStack = new Stack<CategoryId>();
+		this.selectorResolutionStack = new Stack<>();
+		this.designatorResolutionStack = new Stack<>();
+		this.designatorCache = designatorCacheSup.get();
+		this.selectorCache = selectorCacheSup.get();
+	}
+
+	DefaultEvaluationContextHandler(
+			RequestContextCallback requestCallback,
+			PolicyInformationPoint pip)
+	{
+		this(requestCallback, pip,
+				()->new HashMap<>(),
+				()->new HashMap<>());
+	}
+
+	public Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators(){
+		return Collections.unmodifiableMap(designatorCache);
+	}
+
+	public Map<AttributeSelectorKey, BagOfAttributeValues> getResolvedSelectors(){
+		return Collections.unmodifiableMap(selectorCache);
 	}
 
 	@Override
-	public BagOfAttributeExp resolve(
+	public java.util.Optional<BagOfAttributeValues> resolve(
 			EvaluationContext context,
-			AttributeDesignatorKey key)
+			AttributeReferenceKey ref)
 		throws EvaluationException
 	{
-
 		Preconditions.checkNotNull(context);
-		Preconditions.checkNotNull(key);
-		Entity entity = requestCallback.getEntity(key.getCategory());
-		BagOfAttributeExp v = null;
-		if(entity != null){
-			v = entity.getAttributeValues(key.getAttributeId(),
-					key.getDataType(), key.getIssuer());
-			if(!v.isEmpty()){
-				if(log.isDebugEnabled()){
-					log.debug("Resolved designator=\"{}\" " +
-							"from request to value=\"{}\"", key, v);
-				}
-				return v;
-			}
+		Preconditions.checkNotNull(ref);
+		if(ref instanceof AttributeDesignatorKey){
+			return Optional.ofNullable(designatorCache.get(ref))
+					.or(()->doDesignatorResolve(context, ref));
 		}
+		if(ref instanceof AttributeSelectorKey){
+			return Optional.ofNullable(selectorCache.get(ref))
+					.or(()->doSelectorResolve(context, ref));
+		}
+		return Optional.empty();
+	}
 
+	private Optional<BagOfAttributeValues> doSelectorResolve(EvaluationContext context, AttributeReferenceKey ref)
+	{
+		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
+		return requestCallback.resolve((AttributeSelectorKey) ref)
+				.or(()->doPipResolve(context, (AttributeSelectorKey)ref));
+	}
+
+	private Optional<BagOfAttributeValues> doDesignatorResolve(EvaluationContext context, AttributeReferenceKey ref)
+	{
+		Preconditions.checkArgument(ref instanceof AttributeDesignatorKey);
+		return requestCallback.resolve((AttributeDesignatorKey) ref)
+				.or(()->doPipResolve(context, (AttributeDesignatorKey)ref));
+	}
+
+	private Optional<BagOfAttributeValues> doPipResolve(EvaluationContext context, AttributeDesignatorKey key)
+	{
 		Preconditions.checkState(
 				!designatorResolutionStack.contains(key),
 				"Cyclic designator=\"%s\" resolution detected", key);
 		try
 		{
 			designatorResolutionStack.push(key);
-			v = pip.resolve(context, key);
-			if(log.isDebugEnabled()){
-				log.debug("Resolved designator=\"{}\" " +
-						"from PIP to value=\"{}\"", key, v);
-			}
+			Optional<BagOfAttributeValues> v =  pip.resolve(context, key);
+			v.ifPresent(bag -> designatorCache.putIfAbsent(key, bag));
 			return v;
+
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new AttributeReferenceEvaluationException(key);
+			throw AttributeReferenceEvaluationException
+					.forDesignator(key, e);
 		}finally{
 			designatorResolutionStack.pop();
 		}
 	}
 
 
-	@Override
-	public BagOfAttributeExp resolve(
-			EvaluationContext context,
-			AttributeSelectorKey ref)
-			throws EvaluationException
+	private java.util.Optional<BagOfAttributeValues> doPipResolve(
+			final EvaluationContext context,
+			final AttributeSelectorKey ref) throws EvaluationException
 	{
 		Preconditions.checkState(
 				!selectorResolutionStack.contains(ref),
@@ -148,107 +147,7 @@ class DefaultEvaluationContextHandler
 		try
 		{
 			selectorResolutionStack.push(ref);
-			BagOfAttributeExp v =  doResolve(context, ref);
-			if(log.isDebugEnabled()){
-				log.debug("Resolved " +
-						"selector=\"{}\" to bag=\"{}\"", ref, v);
-			}
-			return v;
-		}finally{
-			selectorResolutionStack.pop();
-		}
-	}
-
-	/**
-	 * Resolves category content via {@link PolicyInformationPoint}
-	 *
-	 * @param context an evaluation context
-	 * @param category an attribute category
-	 * @return {@link BagOfAttributeExp}
-	 * @exception Exception
-	 */
-	private Node doGetContent(EvaluationContext context, CategoryId category)
-		throws Exception
-	{
-		Node content = null;
-		if(contentCache.containsKey(category)){
-			content = contentCache.get(category);
-			if(log.isDebugEnabled()){
-				log.debug("Resolved content=\"{}\" " +
-						"from cache", content);
-			}
-			return content;
-		}
-		Preconditions.checkState(
-				!contentResolutionStack.contains(category));
-		try
-		{
-			contentResolutionStack.push(category);
-			content = pip.resolve(context, category);
-			if(log.isDebugEnabled()){
-				log.debug("Resolved content=\"{}\" " +
-						"from PIP", content);
-			}
-			contentCache.put(category, content);
-			return content;
-		}finally{
-			contentResolutionStack.pop();
-		}
-	}
-
-	private BagOfAttributeExp doResolve(
-			EvaluationContext context,
-			AttributeSelectorKey ref) throws EvaluationException
-	{
-		try
-		{
-			Entity entity = requestCallback.getEntity(ref.getCategory());
-			Node content = (entity != null)?entity.getContent():null;
-			if(content == null){
-				content = doGetContent(context, ref.getCategory());
-			}
-			Node contextNode = content;
-			Collection<AttributeExp> v = entity.getAttributeValues(
-						(ref.getContextSelectorId() == null?CONTENT_SELECTOR:ref.getContextSelectorId()),
-								XacmlTypes.XPATH);
-			if(v.size() > 1){
-				throw new AttributeReferenceEvaluationException(ref,
-						"Found more than one value of=\"%s\"", ref.getContextSelectorId());
-			}
-			if(v.size() == 1){
-				XPathExp xpath = (XPathExp)v.iterator().next();
-				if(xpath.getCategory() != ref.getCategory()){
-					throw new AttributeReferenceEvaluationException(ref,
-							"AttributeSelector category=\"%s\" and " +
-							"ContextAttributeId XPathExpression " +
-							"category=\"%s\" do not match", ref.getCategory(),
-							xpath.getCategory());
-				}
-				if(log.isDebugEnabled()){
-					log.debug("Evaluating " +
-							"contextSelector xpath=\"{}\"", xpath.getValue());
-				}
-				contextNode = xpathProvider.evaluateToNode(xpath.getPath(), content);
-			}
-			NodeList nodeSet = xpathProvider.evaluateToNodeSet(ref.getPath(), contextNode);
-			if(nodeSet == null ||
-					nodeSet.getLength() == 0){
-				log.debug("Selected nodeset via xpath=\"{}\" and category=\"{}\" is empty",
-						ref.getPath(), ref.getCategory());
-				return ref.getDataType().bagType().createEmpty();
-			}
-			if(log.isDebugEnabled()){
-				log.debug("Found=\"{}\" nodes via xpath=\"{}\" and category=\"{}\"",
-						new Object[]{nodeSet.getLength(), ref.getPath(), ref.getCategory()});
-			}
-			return toBag(context, ref, nodeSet);
-		}
-		catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			context.setEvaluationStatus(Status.processingError().build());
-			throw new AttributeReferenceEvaluationException(Status.processingError().build(), ref, e.getMessage());
+			return Optional.empty();
 		}
 		catch(EvaluationException e){
 			if(log.isDebugEnabled()){
@@ -261,129 +160,19 @@ class DefaultEvaluationContextHandler
 			if(log.isDebugEnabled()){
 				log.debug(e.getMessage(), e);
 			}
-			throw new AttributeReferenceEvaluationException(ref);
+			throw AttributeReferenceEvaluationException
+					.forSelector(ref, e);
+		}
+		finally {
+			selectorResolutionStack.pop();
 		}
 	}
 
-	/**
-	 * Converts a given node list to the {@link BagOfAttributeExp}
-	 *
-	 * @param context an evaluation context
-	 * @param ref an attribute selector
-	 * @param nodeSet a node set
-	 * @return {@link BagOfAttributeExp}
-	 * @throws EvaluationException
-	 */
-	private BagOfAttributeExp toBag(
-			EvaluationContext context,
-			AttributeSelectorKey ref, NodeList nodeSet)
-		throws EvaluationException
-	{
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
-		for(int i = 0; i< nodeSet.getLength(); i++)
-		{
-			Node n = nodeSet.item(i);
-			String v = null;
-			switch(n.getNodeType()){
-				case Node.TEXT_NODE:
-					v = ((Text)n).getData();
-					break;
-				case Node.PROCESSING_INSTRUCTION_NODE:
-					v = ((ProcessingInstruction)n).getData();
-					break;
-				case Node.ATTRIBUTE_NODE:
-					v = ((Attr)n).getValue();
-					break;
-				case Node.COMMENT_NODE:
-					v = ((Comment)n).getData();
-					break;
-				default:
-					throw new AttributeReferenceEvaluationException(ref,
-							"Unsupported DOM node type=\"%d\"", n.getNodeType());
-			}
-			try
-			{
-				Optional<TypeToString> toString = TypeToString.Types.getIndex().get(ref.getDataType());
-				if(!toString.isPresent()){
-					throw new AttributeReferenceEvaluationException(ref,
-							"Unsupported XACML type=\"%d\"",
-							ref.getDataType().getDataTypeId());
-				}
-				AttributeExp value = toString.get().fromString(v);
-				if(log.isDebugEnabled()){
-					log.debug("Node of type=\"{}\" " +
-							"converted attribute=\"{}\"", n.getNodeType(), value);
-				}
-				values.add(value);
-			}catch(Exception e){
-				throw new AttributeReferenceEvaluationException(ref);
-			}
-		}
-	  	return ref.getDataType().bagType().create(values);
+	public <C extends Content> Optional<C> getContent(Optional<CategoryId> id){
+		return requestCallback
+				.getEntity(id)
+				.flatMap((
+						entity -> entity.getContent()));
 	}
-
-	@Override
-	public Node evaluateToNode(EvaluationContext context, XPathExp xpath)
-			throws XPathEvaluationException
-	{
-		try{
-
-			return xpathProvider.evaluateToNode(xpath.getPath(),
-					new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
-			throw new XPathEvaluationException(xpath.getPath(), e);
-		}
-	}
-
-	@Override
-	public NodeList evaluateToNodeSet(EvaluationContext context, XPathExp xpath)
-			throws EvaluationException {
-		try{
-			return xpathProvider.evaluateToNodeSet(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
-			throw new XPathEvaluationException(xpath.getPath(), e);
-		}
-	}
-
-	@Override
-	public Number evaluateToNumber(EvaluationContext context, XPathExp xpath) throws EvaluationException {
-		try{
-			return xpathProvider.evaluateToNumber(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
-			throw new XPathEvaluationException(xpath.getPath(), e);
-		}
-	}
-
-	@Override
-	public String evaluateToString(EvaluationContext context, XPathExp xpath)
-			throws XPathEvaluationException {
-		try{
-			return xpathProvider.evaluateToString(xpath.getPath(), new ContentSupplier().getContent(context, xpath));
-		}catch(org.xacml4j.v30.spi.xpath.XPathEvaluationException e){
-			throw new XPathEvaluationException(xpath.getPath(), e);
-		}
-	}
-
-	private class ContentSupplier
-	{
-		public Node getContent(EvaluationContext context, XPathExp xpath) throws XPathEvaluationException
-		{
-			Entity entity = requestCallback.getEntity(xpath.getCategory());
-			Node content = (entity != null)?entity.getContent():null;
-			try{
-				if(content == null){
-					content = doGetContent(context, xpath.getCategory());
-				}
-			}catch(Exception e){
-				throw new XPathEvaluationException(xpath.getPath(), e);
-			}
-			if(content == null){
-				throw new XPathEvaluationException(xpath.getPath(),
-							"Not content found for category=\"%s\"", xpath.getCategory());
-			}
-			return content;
-		}
-	}
-
 
 }

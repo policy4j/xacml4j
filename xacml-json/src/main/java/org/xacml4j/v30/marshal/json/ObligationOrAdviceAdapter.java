@@ -29,7 +29,7 @@ import java.util.Collection;
 
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.BaseDecisionRuleResponse;
+import org.xacml4j.v30.DecisionRuleResponse;
 import org.xacml4j.v30.Obligation;
 
 import com.google.gson.JsonDeserializationContext;
@@ -41,8 +41,8 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-public class ObligationOrAdviceAdapter implements JsonSerializer<BaseDecisionRuleResponse>,
-		JsonDeserializer<BaseDecisionRuleResponse> {
+public class ObligationOrAdviceAdapter implements JsonSerializer<DecisionRuleResponse>,
+		JsonDeserializer<DecisionRuleResponse> {
 
 	private static final String ID_PROPERTY = "Id";
 	private static final String ATTRIBUTE_ASSIGNMENTS_PROPERTY = "AttributeAssignment";
@@ -51,7 +51,7 @@ public class ObligationOrAdviceAdapter implements JsonSerializer<BaseDecisionRul
 	}.getType();
 
 	@Override
-	public BaseDecisionRuleResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+	public DecisionRuleResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
 		String id = checkNotNull(GsonUtil.getAsString(o, ID_PROPERTY, null));
@@ -71,7 +71,7 @@ public class ObligationOrAdviceAdapter implements JsonSerializer<BaseDecisionRul
 	}
 
 	@Override
-	public JsonElement serialize(BaseDecisionRuleResponse src, Type typeOfSrc, JsonSerializationContext context) {
+	public JsonElement serialize(DecisionRuleResponse src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		o.addProperty(ID_PROPERTY, src.getId());
 		Collection<AttributeAssignment> attributeAssignments = src.getAttributes();

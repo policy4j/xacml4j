@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.easymock.IMocksControl;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.AttributeValue;
 
 /**
  * @author Valdas Sevelis
@@ -38,8 +38,8 @@ public class CombinerParameterTest {
 	@Test
 	public void testObjectMethods() {
 		IMocksControl ctl = createStrictControl();
-		AttributeExp exp1 = ctl.createMock(AttributeExp.class);
-		AttributeExp exp2 = ctl.createMock(AttributeExp.class);
+		AttributeValue exp1 = ctl.createMock(AttributeValue.class);
+		AttributeValue exp2 = ctl.createMock(AttributeValue.class);
 
 		CombinerParameter p1 = new CombinerParameter("name1", exp1);
 		CombinerParameter p2 = new CombinerParameter("name1", exp1);

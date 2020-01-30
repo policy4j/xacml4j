@@ -22,6 +22,7 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 
@@ -74,7 +75,7 @@ public abstract class BaseDecisionCombiningAlgorithm <D extends DecisionRule>
 
 	@Override
 	public final String toString() {
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("algorithmId", algorithmId)
 				.toString();

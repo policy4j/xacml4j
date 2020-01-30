@@ -22,15 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
-
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
+
+import java.util.Objects;
 
 public class VariableReference implements Expression
 {
@@ -82,7 +78,8 @@ public class VariableReference implements Expression
 		return varDef.evaluate(context);
 	}
 
-	public void accept(ExpressionVisitor expv) {
+	public void accept(ExpressionVisitor expv)
+	{
 		VariableReferenceVisitor v = (VariableReferenceVisitor)expv;
 		v.visitEnter(this);
 		v.visitLeave(this);
@@ -95,7 +92,7 @@ public class VariableReference implements Expression
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("variableDef", varDef)
 				.toString();
@@ -115,7 +112,12 @@ public class VariableReference implements Expression
 
 	public interface VariableReferenceVisitor extends ExpressionVisitor
 	{
-		void visitEnter(VariableReference var);
-		void visitLeave(VariableReference var);
+		default void visitEnter(VariableReference var){
+			var.accept(this);
+		}
+
+		default void visitLeave(VariableReference var){
+			var.accept(this);
+		}
 	}
 }

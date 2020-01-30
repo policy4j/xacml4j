@@ -22,13 +22,9 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Status;
-
 import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
+import org.xacml4j.v30.*;
 
 
 public class AttributeReferenceEvaluationException extends EvaluationException
@@ -37,18 +33,12 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 
 	private AttributeReferenceKey ref;
 	
-	public AttributeReferenceEvaluationException(AttributeDesignatorKey ref, 
+	public AttributeReferenceEvaluationException(AttributeDesignatorKey ref,
 			String format, Object ... args){
-		this(Status.missingAttribute(ref).build(), ref, String.format(format, args));
-	}
-	
-	public AttributeReferenceEvaluationException(AttributeDesignatorKey ref){
-		this(ref, ref.getAttributeId());
-	}
-	
-	public AttributeReferenceEvaluationException(AttributeSelectorKey ref, 
-			String format, Object ... args){
-		this(Status.missingAttribute(ref).build(), ref, String.format(format, args));
+		this(Status
+				.missingAttribute(ref)
+				.build(), ref,
+				String.format(format, args));
 	}
 	
 	public AttributeReferenceEvaluationException(
@@ -60,12 +50,79 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 		this.ref = key;
 	}
 
-	public AttributeReferenceEvaluationException(
-			AttributeSelectorKey ref){
-		this(ref, ref.getPath());
-	}
 
 	public AttributeReferenceKey getReference(){
 		return ref;
 	}
+
+
+	public static AttributeReferenceEvaluationException forMissingRef(AttributeReferenceKey ref) {
+		if (ref instanceof AttributeSelectorKey) {
+			return forSelector((AttributeSelectorKey) ref);
+		}
+		if (ref instanceof AttributeDesignatorKey) {
+			return forDesignator((AttributeDesignatorKey) ref);
+		}
+		return new AttributeReferenceEvaluationException(Status
+				.processingError().build(),
+				ref,
+				"Unsupported attribute reference type=\"%s\"",
+				ref.getClass().getName());
+	}
+
+
+	public static AttributeReferenceEvaluationException forSelector(AttributeSelectorKey selectorKey, Throwable t){
+		return forSelector(selectorKey, ()->t.getMessage());
+	}
+
+	public static AttributeReferenceEvaluationException forDesignator(AttributeDesignatorKey selectorKey, Throwable t){
+		return forDesignator(selectorKey, ()->t.getMessage());
+	}
+
+	public static AttributeReferenceEvaluationException forDesignator(AttributeDesignatorKey selectorKey){
+		return forDesignator(selectorKey, ()->null);
+	}
+
+	public static AttributeReferenceEvaluationException forSelector(AttributeSelectorKey selectorKey){
+		return forSelector(selectorKey, ()->null);
+	}
+
+	public static AttributeReferenceEvaluationException forDesignator(AttributeDesignatorKey designatorKey, Supplier<String> message)
+	{
+		String messageText = message !=  null?message.get():null;
+		StringBuilder b = new StringBuilder(
+				"Designator.AttributeId=\"%s\", Designator.CategoryId=\"%s\", Designator.DataType=\"%s\"");
+		return new AttributeReferenceEvaluationException(
+				Status
+						.missingAttribute(designatorKey)
+						.build(),
+				designatorKey,
+				(messageText != null)?b .append("- %s").toString():b.toString(),
+				designatorKey.getAttributeId(),
+				designatorKey.getCategory(),
+				designatorKey.getDataType()
+						.getAbbrevDataTypeId(),
+				messageText);
+	}
+
+	public static AttributeReferenceEvaluationException forSelector(AttributeSelectorKey selectorKey, Supplier<String> message)
+	{
+		String messageText = message !=  null?message.get():null;
+		StringBuilder b = new StringBuilder(
+				"Selector.Path=\"%s\", Selector.CategoryId=\"%s\", Selector.ContextSelectorId=\"%s\", Selector.DataType=\"%s\"");
+		return new AttributeReferenceEvaluationException(
+				Status
+						.missingAttribute(selectorKey)
+						.build(),
+				selectorKey,
+				(messageText != null)?b .append("- %s").toString():b.toString(),
+				selectorKey.getPath(),
+				selectorKey.getCategory(),
+				selectorKey.getContextSelectorId(),
+				selectorKey.getDataType().getAbbrevDataTypeId(),
+				messageText);
+	}
+
+
+
 }

@@ -27,7 +27,6 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 import org.xacml4j.v30.StatusCodeId;
-import org.xacml4j.v30.StatusCodeIds;
 
 
 public class StatusCodeIdTest
@@ -35,14 +34,14 @@ public class StatusCodeIdTest
 	@Test
 	public void testParseStatusCodeId()
 	{
-		StatusCodeId c = StatusCodeIds.parse(StatusCodeIds.OK.getId());
-		assertSame(StatusCodeIds.OK, c);
-		c = StatusCodeIds.parse("AAAA");
+		StatusCodeId c = StatusCodeId.of(StatusCodeId.OK.getId()).get();
+		assertSame(StatusCodeId.OK, c);
+		c = StatusCodeId.of("AAAA").get();
 		assertEquals("AAAA", c.getId());
 		assertEquals("AAAA", c.toString());
 
-		StatusCodeId c1 = StatusCodeIds.parse("AAAA");
-		StatusCodeId c2 = StatusCodeIds.parse("AAAA");
+		StatusCodeId c1 = StatusCodeId.of("AAAA").get();
+		StatusCodeId c2 = StatusCodeId.of("AAAA").get();
 		assertEquals(c1, c2);
 	}
 }

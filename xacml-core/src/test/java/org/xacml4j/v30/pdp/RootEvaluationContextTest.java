@@ -33,12 +33,13 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Optional;
 
 
 public class RootEvaluationContextTest
@@ -94,14 +95,14 @@ public class RootEvaluationContextTest
 		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId")
 				.dataType(XacmlTypes.STRING)
 				.issuer("test")
 				.build();
-		BagOfAttributeExp expectedValue = StringExp.bag().value("aaa", "ccc").build();
+		BagOfAttributeValues expectedValue = XacmlTypes.STRING.bag().value("aaa", "ccc").build();
 
-		expect(handler.resolve(context, k)).andReturn(expectedValue);
+		expect(handler.resolve(context, k)).andReturn(Optional.of(expectedValue));
 
 		c.replay();
 		assertThat(context.resolve(k), is(expectedValue));

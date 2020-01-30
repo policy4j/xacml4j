@@ -30,14 +30,8 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 
 import java.lang.reflect.Type;
 
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.*;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.gson.JsonDeserializationContext;
@@ -57,9 +51,9 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 		String attrId = GsonUtil.getAsString(o, ATTRIBUTE_ID_PROPERTY, null);
 		checkArgument(attrId != null, "Property '%s' is mandatory.", ATTRIBUTE_ID_PROPERTY);
 
-		AttributeExp value = deserializeValue(context, o);
+		AttributeValue value = deserializeValue(context, o);
 		String categoryId = GsonUtil.getAsString(o, "Category", null);
-		CategoryId category = Strings.isNullOrEmpty(categoryId)?null:Categories.parse(categoryId);
+		CategoryId category = Strings.isNullOrEmpty(categoryId)?null: CategoryId.parse(categoryId).get();
 		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
 
 		return AttributeAssignment
@@ -71,24 +65,17 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 				.build();
 	}
 
-	private AttributeExp deserializeValue(JsonDeserializationContext context, JsonObject o) {
+	private AttributeValue deserializeValue(JsonDeserializationContext context, JsonObject o) {
 		String dataTypeId = GsonUtil.getAsString(o, DATA_TYPE_PROPERTY, null);
-		if (dataTypeId == null) {
-			// TODO: properly infer data type
-			dataTypeId = XacmlTypes.STRING.getDataTypeId();
-		}
-		Optional<AttributeExpType> type = XacmlTypes.getType(dataTypeId);
-		Preconditions.checkState(type.isPresent());
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		// TODO: do a proper type coercion
-		AttributeExp value = deserializeValue(type.get(), jsonValue, context);
-
+		AttributeValue value = deserializeValue(dataTypeId, jsonValue, context);
 		checkArgument(value != null, "Property '%s' is mandatory.", VALUE_PROPERTY);
 		return value;
 	}
 
-	private AttributeExp deserializeValue(AttributeExpType type, JsonElement jsonValue, JsonDeserializationContext ctx) {
-		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(type);
+	private AttributeValue deserializeValue(String dataTypeId, JsonElement jsonValue, JsonDeserializationContext ctx) {
+		java.util.Optional<TypeToGSon> toGson = TypeToGSon.forType(dataTypeId);
 		Preconditions.checkState(toGson.isPresent());
 		return toGson.get().fromJson(jsonValue, ctx);
 	}

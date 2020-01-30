@@ -26,14 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -61,12 +54,12 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							.build())
 							.includeInResultAttr(request.getIncludeInResultAttributes()).build());
 		}
-		Category resource = request.getOnlyAttributes(Categories.RESOURCE);
+		Category resource = request.getOnlyAttributes(CategoryId.RESOURCE);
 		if(resource == null){
 			return handleNext(request, context);
 		}
 		Entity entity = resource.getEntity();
-		Collection<AttributeExp> resourceId = entity.getAttributeValues(RESOURCE_ID_ATTRIBUTE,
+		Collection<AttributeValue> resourceId = entity.getAttributeValues(RESOURCE_ID_ATTRIBUTE,
 				XacmlTypes.XPATH);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);
@@ -85,7 +78,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 		Collection<Category> attributes = new LinkedList<Category>();
 		for(Category attrs : request.getAttributes())
 		{
-			if(attrs.getCategoryId().equals(Categories.RESOURCE)){
+			if(attrs.getCategoryId().equals(CategoryId.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
 				Entity en = attrs.getEntity();
 				for(Attribute attr : en.getAttributes()){
@@ -104,7 +97,11 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 				}
 				attributes.add(Category
 						.builder(attrs.getCategoryId())
-						.entity(Entity.builder().content(entity.getContent()).attributes(resourceAttr).build())
+						.entity(Entity
+								.builder()
+								.content(entity
+										.getContent()
+										.orElse(null)).attributes(resourceAttr).build())
 						.build());
 				continue;
 			}

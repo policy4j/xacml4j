@@ -22,19 +22,19 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.*;
+import com.google.common.collect.*;
+
 import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
-import com.google.common.base.Function;
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Iterables;
-
+/**
+ * A XACML Request Context Abstraction
+ *
+ * @author Giedrius Trumpickas
+ */
 public class RequestContext
 {
 	private final boolean returnPolicyIdList;
@@ -44,7 +44,7 @@ public class RequestContext
 	private final ImmutableList<RequestReference> requestReferences;
 	private final RequestDefaults requestDefaults;
 
-	private final transient int cachedHashCode;
+	private transient int cachedHashCode = 0;
 
 	private RequestContext(Builder b)
 	{
@@ -55,8 +55,8 @@ public class RequestContext
 		this.attributes = b.attrBuilder.build();
 		ImmutableMap.Builder<String, Category> attributesByXmlIdBuilder = ImmutableMap.builder();
 		for(Category attr : attributes.values()){
-			if(attr.getId() != null){
-				attributesByXmlIdBuilder.put(attr.getId(), attr);
+			if(attr.getRefId() != null){
+				attributesByXmlIdBuilder.put(attr.getRefId(), attr);
 			}
 		}
 		this.attributesByXmlId = attributesByXmlIdBuilder.build();
@@ -104,7 +104,7 @@ public class RequestContext
 	/**
 	 * Gets request defaults
 	 *
-	 * @return an instance of {@link RequestDefaults}
+	 * @return an defaultProvider of {@link RequestDefaults}
 	 */
 	public RequestDefaults getRequestDefaults(){
 		return requestDefaults;
@@ -162,7 +162,7 @@ public class RequestContext
 	 * @return a set of all attribute categories in
 	 * this request
 	 */
-	public Set<CategoryId> getCategories(){
+	public Set<CategoryId> getAttributes(){
 		return attributes.keySet();
 	}
 
@@ -203,6 +203,12 @@ public class RequestContext
 				});
 	}
 
+	public Stream<Category> stream(){
+		return attributes
+				.values()
+				.stream();
+	}
+
 	/**
 	 * Gets only one attribute of the given category
 	 *
@@ -210,7 +216,7 @@ public class RequestContext
 	 * @return {@link Category} or {@code null}
 	 * if request does not have attributes of given category
 	 * @exception IllegalArgumentException if a request
-	 * has more than one instance of {@link Category}
+	 * has more than one defaultProvider of {@link Category}
 	 * of the requested category
 	 */
 	public Category getOnlyAttributes(CategoryId category){
@@ -218,11 +224,27 @@ public class RequestContext
 		return Iterables.getOnlyElement(attributes, null);
 	}
 
-	public Entity getOnlyEntity(CategoryId category){
-		Collection<Entity> attributes = getEntities(category);
-		return Iterables.getOnlyElement(attributes, null);
+
+	public Optional<Entity> getEntity(CategoryId category){
+		return getEntities(category)
+				.stream()
+				.findFirst();
 	}
 
+	public Optional<Attribute> getAttribute(CategoryId id,
+											String attributeId){
+		return getAttribute(id, (a)->a.getAttributeId()
+				.equalsIgnoreCase(attributeId));
+	}
+
+	public Optional<Attribute> getAttribute(CategoryId id,
+											java.util.function.Predicate<Attribute> filter){
+		return getEntity(id)
+				.map(v->v.getAttributes())
+				.flatMap(v->v.stream()
+						.filter(filter)
+						.findFirst());
+	}
 
 	/**
 	 * Tests if this request has an multiple
@@ -242,11 +264,11 @@ public class RequestContext
 	}
 
 	public boolean containsAttributeValues(
-			String attributeId, String issuer, AttributeExpType type)
+			String attributeId, String issuer, AttributeValueType type)
 	{
-		for (Category a : getAttributes()) {
+		for (Category a : getCategories()) {
 			Entity e = a.getEntity();
-			Collection<AttributeExp> values = e.getAttributeValues(attributeId, issuer, type);
+			Collection<AttributeValue> values = e.getAttributeValues(attributeId, issuer, type);
 			if (!values.isEmpty()) {
 				return true;
 			}
@@ -264,7 +286,7 @@ public class RequestContext
 	 * one attribute with a given identifier and the given type
 	 */
 	public boolean containsAttributeValues(String attributeId,
-			AttributeExpType type)
+			AttributeValueType type)
 	{
 		return containsAttributeValues(attributeId, null, type);
 	}
@@ -276,12 +298,12 @@ public class RequestContext
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
 	 * @param issuer an attribute issuer
-	 * @return a collection of {@link AttributeExp} instances
+	 * @return a collection of {@link AttributeValue} instances
 	 */
-	public Collection<AttributeExp> getAttributeValues(CategoryId categoryId,
-			String attributeId, AttributeExpType dataType, String issuer)
+	public Collection<AttributeValue> getAttributeValues(CategoryId categoryId,
+														 String attributeId, AttributeValueType dataType, String issuer)
 	{
-		ImmutableList.Builder<AttributeExp> found = ImmutableList.builder();
+		ImmutableList.Builder<AttributeValue> found = ImmutableList.builder();
 		for(Category a : attributes.get(categoryId)){
 			Entity e = a.getEntity();
 			found.addAll(e.getAttributeValues(attributeId, issuer, dataType));
@@ -296,27 +318,27 @@ public class RequestContext
 	 * @param categoryId an attribute category
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
-	 * @return a collection of {@link AttributeExp} instances
+	 * @return a collection of {@link AttributeValue} instances
 	 */
-	public Collection<AttributeExp> getAttributeValues(
+	public Collection<AttributeValue> getAttributeValues(
 			CategoryId categoryId,
 			String attributeId,
-			AttributeExpType dataType)
+			AttributeValueType dataType)
 	{
 		return getAttributeValues(categoryId, attributeId, dataType, null);
 	}
 
 	/**
-	 * Gets a single {@link AttributeExp} from this request
+	 * Gets a single {@link AttributeValue} from this request
 	 *
 	 * @param categoryId an attribute category identifier
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
-	 * @return {@link AttributeExp} or {@code null}
+	 * @return {@link AttributeValue} or {@code null}
 	 */
-	public AttributeExp getAttributeValue(CategoryId categoryId,
-			String attributeId,
-			AttributeExpType dataType){
+	public AttributeValue getAttributeValue(CategoryId categoryId,
+                                            String attributeId,
+                                            AttributeValueType dataType){
 		return Iterables.getOnlyElement(
 				getAttributeValues(categoryId, attributeId, dataType), null);
 	}
@@ -348,7 +370,7 @@ public class RequestContext
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("ReturnPolicyIDList", returnPolicyIdList)
 		.add("CombineDecision", combinedDecision)
 		.addValue(attributes.values())
@@ -358,7 +380,15 @@ public class RequestContext
 
 	@Override
 	public int hashCode(){
-		return cachedHashCode;
+		 if(cachedHashCode == 0){
+		 	this.cachedHashCode = Objects.hashCode(
+					this.returnPolicyIdList,
+					this.combinedDecision,
+					this.attributes,
+					this.requestReferences,
+					this.requestDefaults);
+		 }
+		 return cachedHashCode;
 	}
 
 	@Override
@@ -427,7 +457,7 @@ public class RequestContext
 			combineDecision(req.isCombinedDecision());
 			returnPolicyIdList(req.isReturnPolicyIdList());
 			reqDefaults(req.getRequestDefaults());
-			attributes(req.getAttributes());
+			attributes(req.getCategories());
 			reference(req.getRequestReferences());
 			return this;
 		}

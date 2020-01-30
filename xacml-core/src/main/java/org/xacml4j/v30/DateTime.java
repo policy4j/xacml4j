@@ -44,13 +44,13 @@ public final class DateTime extends
 
 	/**
 	 * Creates {@link DateTime} from a given
-	 * object instance, supported types are:
+	 * object defaultProvider, supported types are:
 	 * {@link String}, {@link GregorianCalendar},
 	 * {@link XMLGregorianCalendar}
 	 *
-	 * @return {@link DateTime} instance
+	 * @return {@link DateTime} defaultProvider
 	 */
-	public static DateTime create(Object v){
+	public static DateTime of(Object v){
 		return new DateTime(parseDateTime(v));
 	}
 

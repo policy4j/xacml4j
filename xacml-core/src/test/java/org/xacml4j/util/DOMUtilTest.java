@@ -22,21 +22,6 @@ package org.xacml4j.util;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -44,6 +29,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class DOMUtilTest
 {
@@ -131,6 +127,17 @@ public class DOMUtilTest
 		assertEquals("//md:record/md:patient[2]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(1)));
 	}
 
+
+	@Test
+	public void testNodeListToList() throws Exception{
+		assertEquals("//md:record", DOMUtil.getXPath(content1));
+		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/text()", content1, XPathConstants.NODESET);
+		List<Node> list = DOMUtil.nodeListToList(nodes);
+		assertEquals(2, list.size());
+		assertEquals("//md:record/md:patient[1]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(0)));
+		assertEquals("//md:record/md:patient[2]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(1)));
+	}
+
 	@Test
 	public void testNodeXPathAttributeNodes() throws Exception{
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/@md:attrn1", content1, XPathConstants.NODESET);
@@ -172,6 +179,6 @@ public class DOMUtilTest
 		assertEquals("{urn:example:med:schemas:record}record", DOMUtil.toString(content1));
 		assertEquals("test", DOMUtil.toString(content4));
 		assertNull(DOMUtil.toString(null));
-
 	}
+
 }

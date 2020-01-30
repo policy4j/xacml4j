@@ -22,9 +22,9 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.regex.Pattern;
-
 import com.google.common.base.Strings;
+
+import java.util.regex.Pattern;
 
 public class VersionMatch
 {
@@ -111,7 +111,7 @@ public class VersionMatch
      * @see VersionMatch#VersionMatch(String)
      *
      * @param pattern a version match constraint
-     * @return {@link VersionMatch} instance
+     * @return {@link VersionMatch} defaultProvider
      * @exception IllegalArgumentException if a given version
      * match constraint can not be parsed
      */

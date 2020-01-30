@@ -37,12 +37,7 @@ import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.Version;
+import org.xacml4j.v30.*;
 
 
 public class PolicySetIDReferenceTest

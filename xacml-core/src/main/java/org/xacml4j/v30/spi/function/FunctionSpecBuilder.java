@@ -22,12 +22,9 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
+import com.google.common.base.MoreObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
@@ -40,15 +37,21 @@ import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 
+/**
+ * A builder for building {@link FunctionSpec} instances
+ * from various metadata sources
+ *
+ * @author Giedrius Trumpickas
+ */
 public final class FunctionSpecBuilder
 {
-	private final String functionId;
-	private final String legacyId;
-	private final List<FunctionParamSpec> paramSpec;
+	private String functionId;
+	private String shortId;
+	private String legacyId;
+	private List<FunctionParamSpec> paramSpec;
 	private boolean hadVarArg = false;
 	private boolean hadOptional = false;
 	private boolean lazyArgumentEvaluation;
@@ -58,10 +61,16 @@ public final class FunctionSpecBuilder
 	}
 
 	private FunctionSpecBuilder(String functionId, String legacyId){
+		this(functionId, functionId, legacyId);
+	}
+
+	private FunctionSpecBuilder(String functionId, String shortId,
+								String legacyId){
 		Preconditions.checkNotNull(functionId);
-		this.functionId = functionId;
+		this.functionId = Objects.requireNonNull(functionId, "functionId");
+		this.shortId = Objects.requireNonNull(shortId, "shortId");
 		this.legacyId = legacyId;
-		paramSpec = new LinkedList<FunctionParamSpec>();
+		paramSpec = new LinkedList<>();
 	}
 
 
@@ -76,6 +85,11 @@ public final class FunctionSpecBuilder
 	public FunctionSpecBuilder funcRefParam()
 	{
 		paramSpec.add(new FunctionParamFuncReferenceSpec());
+		return this;
+	}
+
+	public FunctionSpecBuilder shortId(String id){
+		this.shortId = id;
 		return this;
 	}
 
@@ -161,7 +175,9 @@ public final class FunctionSpecBuilder
 	public FunctionSpec build(FunctionReturnTypeResolver returnType,
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
-		return new FunctionSpecImpl(functionId,
+		return new FunctionSpecImpl(
+				functionId,
+				shortId,
 				legacyId,
 				paramSpec,
 				returnType,
@@ -193,14 +209,15 @@ public final class FunctionSpecBuilder
 	{
 		private final static Logger log = LoggerFactory.getLogger(FunctionSpecImpl.class);
 
-		private final String functionId;
-		private final String legacyId;
-		private final List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
-		private boolean evaluateParameters = false;
+		private String functionId;
+		private String shortId;
+		private Optional<String> legacyId;
+		private List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
+		private boolean evaluateParameters;
 
-		private final FunctionInvocation invocation;
-		private final FunctionReturnTypeResolver resolver;
-		private final FunctionParametersValidator validator;
+		private FunctionInvocation invocation;
+		private FunctionReturnTypeResolver resolver;
+		private FunctionParametersValidator validator;
 
 		/**
 		 * Constructs function spec with given function
@@ -215,8 +232,9 @@ public final class FunctionSpecBuilder
 		 * if function parameters needs to be evaluated
 		 * before passing them to the function
 		 */
-		public FunctionSpecImpl(
+		FunctionSpecImpl(
 				String functionId,
+				String shortId,
 				String legacyId,
 				List<FunctionParamSpec> params,
 				FunctionReturnTypeResolver resolver,
@@ -229,7 +247,8 @@ public final class FunctionSpecBuilder
 			this.validator = validator;
 			this.invocation = Preconditions.checkNotNull(invocation);
 			this.evaluateParameters = evaluateParameters;
-			this.legacyId = legacyId;
+			this.shortId = Objects.requireNonNull(shortId);
+			this.legacyId = Optional.ofNullable(legacyId);
 		}
 
 		public FunctionSpecImpl(
@@ -239,16 +258,8 @@ public final class FunctionSpecBuilder
 				FunctionReturnTypeResolver resolver,
 				FunctionInvocation invocation,
 				boolean evaluateParameters){
-			this(functionId, legacyId, params, resolver, invocation, null, evaluateParameters);
-		}
-
-		public FunctionSpecImpl(
-				String functionId,
-				List<FunctionParamSpec> params,
-				FunctionReturnTypeResolver resolver,
-				FunctionInvocation invocation,
-				boolean lazyParamEval){
-			this(functionId, null, params, resolver, invocation, null, lazyParamEval);
+			this(functionId, functionId,legacyId, params,
+					resolver, invocation, null, evaluateParameters);
 		}
 
 		@Override
@@ -257,7 +268,12 @@ public final class FunctionSpecBuilder
 		}
 
 		@Override
-		public String getLegacyId() {
+		public  String getShortId(){
+			return shortId;
+		}
+
+		@Override
+		public Optional<String> getLegacyId() {
 			return legacyId;
 		}
 
@@ -476,7 +492,8 @@ public final class FunctionSpecBuilder
 				}
 
 				if (optionalParamValue == null) {
-					optionalParamValue = formalParameterSpec.getDefaultValue();
+					optionalParamValue = formalParameterSpec
+							.getDefaultValue().get();
 				}
 
 				normalizedParamBuilder.add(optionalParamValue);
@@ -541,7 +558,7 @@ public final class FunctionSpecBuilder
 
 		@Override
 		public String toString(){
-			return Objects.toStringHelper(this)
+			return MoreObjects.toStringHelper(this)
 					.add("functionId", functionId)
 					.add("legacyId", legacyId)
 					.add("evaluateParams", evaluateParameters)
@@ -559,10 +576,12 @@ public final class FunctionSpecBuilder
 			if (this == obj) {
 				return true;
 			}
-			if(!(obj instanceof FunctionSpecImpl)) {
+			if(((obj == null) ||
+                    !(obj instanceof FunctionSpecImpl))) {
 				return false;
 			}
-			return functionId.equals(((FunctionSpecImpl) obj).functionId);
+			FunctionSpec functionSpec = (FunctionSpec)obj;
+			return functionId.equals(functionSpec.getId());
 		}
 	}
 

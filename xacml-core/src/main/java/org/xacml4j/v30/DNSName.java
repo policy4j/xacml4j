@@ -22,7 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.List;
 
 import com.google.common.base.Objects;
@@ -30,7 +30,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.net.InternetDomainName;
 
-public final class DNSName implements Serializable
+public final class DNSName implements Externalizable
 {
 	private static final long serialVersionUID = -1729624624549215684L;
 
@@ -53,7 +53,7 @@ public final class DNSName implements Serializable
 	 * @exception IllegalArgumentException if given string
 	 * does not represent valid XACML DNS name
 	 */
-	public static DNSName parse(String value){
+	public static DNSName of(String value){
 		Preconditions.checkArgument(
 				!Strings.isNullOrEmpty(value),
 				"XACML DNS name can not be null or empty");
@@ -67,7 +67,7 @@ public final class DNSName implements Serializable
 	}
 
 	public String getDomainName(){
-		return name.name();
+		return name.toString();
 	}
 
 	/**
@@ -101,7 +101,7 @@ public final class DNSName implements Serializable
 	}
 
 	public String getPublicSuffix(){
-		return name.publicSuffix().name();
+		return name.publicSuffix().toString();
 	}
 
 	public List<String> getDomainNameParts(){
@@ -113,7 +113,7 @@ public final class DNSName implements Serializable
 	}
 
 	public String getTopPrivateDomain(){
-		return name.topPrivateDomain().name();
+		return name.topPrivateDomain().toString();
 	}
 
 	@Override
@@ -142,10 +142,22 @@ public final class DNSName implements Serializable
 	}
 
 	public String toXacmlString() {
-		StringBuilder b = new StringBuilder(name.name());
+		StringBuilder b = new StringBuilder(name.toString());
 		if(!portRange.isUnbound()){
 			b.append(':').append(portRange.toString());
 		}
 		return b.toString();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeUTF(name.toString());
+		out.writeObject(portRange);
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		this.name = InternetDomainName.from(in.readUTF());
+		this.portRange = (PortRange)in.readObject();
 	}
 }

@@ -22,11 +22,8 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.management.NotCompliantMBeanException;
-
+import com.codahale.metrics.MetricRegistry;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -39,10 +36,10 @@ import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.XPathProvider;
 
-import com.google.common.base.Preconditions;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class PolicyDecisionPointBuilder
 {
@@ -56,7 +53,7 @@ public final class PolicyDecisionPointBuilder
 	private PolicyInformationPoint pip;
 	private CompositeDecisionRule rootPolicy;
 	private List<RequestContextHandler> handlers;
-	private int defaultDecisionCacheTTL;
+	private MetricRegistry metricRegistry;
 
 	private PolicyDecisionPointBuilder(String id){
 		this();
@@ -65,10 +62,11 @@ public final class PolicyDecisionPointBuilder
 	}
 
 	private PolicyDecisionPointBuilder(){
-		this.xpathProvider = new DefaultXPathProvider();
+		this.xpathProvider = XPathProvider.defaultProvider();
 		this.decisionAuditor = new NoAuditPolicyDecisionPointAuditor();
 		this.decisionCache = new NoCachePolicyDecisionCache();
-		this.handlers = new LinkedList<RequestContextHandler>();
+		this.metricRegistry = new MetricRegistry();
+		this.handlers = new LinkedList<>();
 	}
 
 	public static PolicyDecisionPointBuilder builder(String id){
@@ -86,16 +84,17 @@ public final class PolicyDecisionPointBuilder
 		return this;
 	}
 
-	public PolicyDecisionPointBuilder decisionCacheTTL(
-			int ttl){
-		this.defaultDecisionCacheTTL = ttl;
-		return this;
-	}
-
 	public PolicyDecisionPointBuilder rootPolicy(CompositeDecisionRule r)
 	{
 		Preconditions.checkNotNull(r);
 		this.rootPolicy = r;
+		return this;
+	}
+
+	public PolicyDecisionPointBuilder metrics(MetricRegistry r)
+	{
+		Preconditions.checkNotNull(r);
+		this.metricRegistry = r;
 		return this;
 	}
 
@@ -137,8 +136,8 @@ public final class PolicyDecisionPointBuilder
 		return this;
 	}
 
-	public PolicyDecisionPoint build(){
-		if(log.isDebugEnabled()){
+	public PolicyDecisionPoint build() {
+		if (log.isDebugEnabled()) {
 			log.debug("Creating PDP=\"{}\"", id);
 		}
 		Preconditions.checkState(id != null);
@@ -146,15 +145,15 @@ public final class PolicyDecisionPointBuilder
 		Preconditions.checkState(pip != null);
 		Preconditions.checkState(rootPolicy != null);
 		Preconditions.checkState(id != null);
-		RequestContextHandlerChain chain = new RequestContextHandlerChain(handlers);
-		DefaultPolicyDecisionPointContextFactory factory = new DefaultPolicyDecisionPointContextFactory(
-				rootPolicy, 
-				repository, decisionAuditor,  decisionCache, xpathProvider, pip, chain);
-		factory.setDefaultDecisionCacheTTL(defaultDecisionCacheTTL);
-		try{
-			return new DefaultPolicyDecisionPoint(id, factory);
-		}catch(NotCompliantMBeanException e){
-			throw new IllegalStateException(e);
-		}
+		Preconditions.checkState(metricRegistry != null);
+		return new DefaultPolicyDecisionPoint(id, metricRegistry,
+				new DefaultPolicyDecisionPointContextFactory(
+						rootPolicy,
+						repository,
+						decisionAuditor,
+						decisionCache,
+						xpathProvider,
+						pip,
+						new RequestContextHandlerChain(handlers)));
 	}
 }

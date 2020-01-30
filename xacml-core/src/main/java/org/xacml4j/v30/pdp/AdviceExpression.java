@@ -22,14 +22,9 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
+import org.xacml4j.v30.*;
 
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.XacmlSyntaxException;
+import java.util.Collection;
 
 
 
@@ -49,7 +44,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	 * all {@link AttributeAssignmentExpression}
 	 *
 	 * @param context an evaluation context
-	 * @return {@link Advice} instance
+	 * @return {@link Advice} defaultProvider
 	 * @throws EvaluationException if an evaluation error
 	 * occurs
 	 */

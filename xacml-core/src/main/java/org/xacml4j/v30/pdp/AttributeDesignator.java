@@ -22,16 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.ExpressionVisitor;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import org.xacml4j.v30.*;
+
+import java.util.Optional;
 
 /**
  * The {@link AttributeDesignator} retrieves a bag of values for a
@@ -52,13 +47,12 @@ import com.google.common.base.Objects;
  */
 public class AttributeDesignator extends AttributeReference
 {
-	private final static Logger log = LoggerFactory.getLogger(AttributeDesignator.class);
 
 	private final AttributeDesignatorKey designatorKey;
 
 	private AttributeDesignator(Builder b){
 		super(b);
-		this.designatorKey = b.keyBuilder.build();
+		this.designatorKey = java.util.Objects.requireNonNull(b.key);
 	}
 
 	public static Builder builder(){
@@ -70,51 +64,6 @@ public class AttributeDesignator extends AttributeReference
 		return designatorKey;
 	}
 
-	/**
-	 * Evaluates this attribute designator by resolving
-	 * attribute via {@link EvaluationContext#resolve(org.xacml4j.v30.AttributeDesignatorKey)}
-	 *
-	 * @return {@link BagOfAttributeExp} instance
-	 * @exception EvaluationException if attribute can't be resolved
-	 * and {@link AttributeDesignator#mustBePresent} is true
-	 */
-	@Override
-	public BagOfAttributeExp evaluate(EvaluationContext context)
-			throws EvaluationException
-	{
-		BagOfAttributeExp v = null;
-		try{
-			v = designatorKey.resolve(context);
-		}catch(AttributeReferenceEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Reference=\"{}\" evaluation " +
-						"failed with error=\"{}\"",
-						toString(), e.getMessage());
-			}
-			if(isMustBePresent()){
-				throw e;
-			}
-			return getDataType().bagType().createEmpty();
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Reference=\"{}\" evaluation " +
-						"failed with error=\"{}\"",
-						toString(), e.getMessage());
-			}
-			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(designatorKey);
-			}
-			return getDataType().bagType().createEmpty();
-		}
-		if((v == null || v.isEmpty()) && isMustBePresent()){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to resolve attributeId=\"{}\", category=\"{}\"",
-						designatorKey.getAttributeId(), designatorKey.getCategory());
-			}
-			throw new AttributeReferenceEvaluationException(designatorKey);
-		}
-		return (v == null) ? getDataType().bagType().createEmpty() : v;
-	}
 
 	@Override
 	public void accept(ExpressionVisitor visitor) {
@@ -125,10 +74,20 @@ public class AttributeDesignator extends AttributeReference
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("designatorKey", designatorKey)
 		.add("mustBePresent", isMustBePresent())
 		.toString();
+	}
+
+	@Override
+	protected Optional<BagOfAttributeValues> doContextResolve(EvaluationContext context) {
+		Optional<BagOfAttributeValues> v =  context.resolve(designatorKey);
+		if(!v.isPresent() &&
+				isMustBePresent()){
+			throw AttributeReferenceEvaluationException.forDesignator(designatorKey);
+		}
+		return v;
 	}
 
 	@Override
@@ -159,15 +118,10 @@ public class AttributeDesignator extends AttributeReference
 
 	public static class Builder extends AttributeReference.Builder<Builder>
 	{
-		private final AttributeDesignatorKey.Builder keyBuilder = AttributeDesignatorKey.builder();
+		private AttributeDesignatorKey key;
 
-		public Builder attributeId(String attributeId){
-			keyBuilder.attributeId(attributeId);
-			return this;
-		}
-
-		public Builder issuer(String issuer){
-			this.keyBuilder.issuer(issuer);
+		public Builder key(AttributeDesignatorKey key){
+			this.key = java.util.Objects.requireNonNull(key);
 			return this;
 		}
 
@@ -178,11 +132,6 @@ public class AttributeDesignator extends AttributeReference
 		@Override
 		protected Builder getThis() {
 			return this;
-		}
-
-		@Override
-		protected AttributeReferenceKey.Builder<?> getBuilder() {
-			return keyBuilder;
 		}
 	}
 }

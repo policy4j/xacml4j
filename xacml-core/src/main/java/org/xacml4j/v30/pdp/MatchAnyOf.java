@@ -22,16 +22,15 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
 
 public class MatchAnyOf
 	implements PolicyElement, Matchable
@@ -42,7 +41,7 @@ public class MatchAnyOf
 
 	private MatchAnyOf(Builder b){
 		this.allOfs = b.allMatchAllOfs.build();
-		Preconditions.checkArgument(allOfs.size() >= 1, "At least one MatchAllOf instance is required");
+		Preconditions.checkArgument(allOfs.size() >= 1, "At least one MatchAllOf defaultProvider is required");
 	}
 
 	public Collection<MatchAllOf> getAllOf(){
@@ -88,7 +87,7 @@ public class MatchAnyOf
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 				.add("AllOf", allOfs)
 				.toString();
 	}

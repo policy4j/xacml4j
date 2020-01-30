@@ -27,16 +27,16 @@ import static org.easymock.EasyMock.expect;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.time.Clock;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.types.DateExp;
-import org.xacml4j.v30.types.DateTimeExp;
-import org.xacml4j.v30.types.TimeExp;
 
 import com.google.common.base.Ticker;
+import org.xacml4j.v30.types.XacmlTypes;
 
 public class DefaultEnvironmentAttributesResolverTest
 {
@@ -55,15 +55,16 @@ public class DefaultEnvironmentAttributesResolverTest
 	public void testResolve() throws Exception
 	{
 		Calendar now = Calendar.getInstance();
+		Clock clock = Clock.systemUTC();
 		expect(context.getDescriptor()).andReturn(r.getDescriptor());
-		expect(context.getCurrentDateTime()).andReturn(now);
-		expect(context.getTicker()).andReturn(Ticker.systemTicker());
+		expect(context.getCurrentDateTime()).andReturn(ZonedDateTime.now(clock));
+		expect(context.getClock()).andReturn(clock);
 		c.replay();
 		AttributeSet a = r.resolve(context);
 		c.verify();
 
-		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"), is(DateTimeExp.of(now).toBag()));
-		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"), is(DateExp.of(now).toBag()));
-		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"), is(TimeExp.of(now).toBag()));
+		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime"), is(XacmlTypes.DATETIME.of(now).toBag()));
+		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-date"), is(XacmlTypes.DATE.of(now).toBag()));
+		assertThat(a.get("urn:oasis:names:tc:xacml:1.0:environment:current-time"), is(XacmlTypes.TIME.of(now).toBag()));
 	}
 }

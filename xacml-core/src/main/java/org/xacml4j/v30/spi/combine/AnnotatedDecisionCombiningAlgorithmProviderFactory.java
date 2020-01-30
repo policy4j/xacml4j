@@ -31,10 +31,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.util.CglibInvocationFactory;
-import org.xacml4j.util.Invocation;
-import org.xacml4j.util.InvocationFactory;
-import org.xacml4j.util.Reflections;
+import org.xacml4j.v30.FunctionInvocation;
+import org.xacml4j.v30.FunctionInvocationFactory;
+import org.xacml4j.util.*;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
@@ -48,16 +47,16 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 {
 	private final static Logger log = LoggerFactory.getLogger(AnnotatedDecisionCombiningAlgorithmProviderFactory.class);
 
-	private final InvocationFactory invocationFactory;
+	private final FunctionInvocationFactory invocationFactory;
 
 	public AnnotatedDecisionCombiningAlgorithmProviderFactory(
-			InvocationFactory invocationFactory){
+			FunctionInvocationFactory invocationFactory){
 		Preconditions.checkNotNull(invocationFactory);
 		this.invocationFactory = invocationFactory;
 	}
 
 	public AnnotatedDecisionCombiningAlgorithmProviderFactory(){
-		this(new CglibInvocationFactory());
+		this(FunctionInvocationFactory.defaultFactory());
 	}
 
 	/**
@@ -114,7 +113,7 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	}
 
 	private  <D extends DecisionRule> DecisionCombiningAlgorithm<D> createDecisionCombiningAlgorithm(
-			final String algorithmId, final Invocation<Decision> invocation)
+			final String algorithmId, final FunctionInvocation<Decision> invocation)
 	{
 		Preconditions.checkNotNull(algorithmId);
 		Preconditions.checkNotNull(invocation);

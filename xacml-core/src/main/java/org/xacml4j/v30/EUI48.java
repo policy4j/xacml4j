@@ -38,7 +38,7 @@ package org.xacml4j.v30;
  * limitations under the License.
  */
 
-import java.io.Serializable;
+import java.io.*;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.Random;
@@ -46,8 +46,10 @@ import java.util.Random;
 /**
  * EthernetAddress encapsulates the 6-byte MAC address defined in IEEE 802.1
  * standard.
+ *
+ * https://github.com/bmeurer/eui4j
  */
-public class EUI48 implements Serializable, Cloneable,
+public class EUI48 implements Externalizable, Cloneable,
 		Comparable<EUI48>
 {
 
@@ -66,7 +68,7 @@ public class EUI48 implements Serializable, Cloneable,
 	 * 48-bit MAC address, stored in 6 lowest-significant bytes (in big endian
 	 * notation)
 	 */
-	protected final long _address;
+	protected long _address;
 
 	/**
 	 * Lazily-constructed String serialization
@@ -81,7 +83,7 @@ public class EUI48 implements Serializable, Cloneable,
 
 	/**
 	 * String constructor; given a 'standard' ethernet MAC address string (like
-	 * '00:C0:F0:3D:5B:7C'), constructs an EthernetAddress instance.
+	 * '00:C0:F0:3D:5B:7C'), constructs an EthernetAddress defaultProvider.
 	 *
 	 * Note that string is case-insensitive, and also that leading zeroes may be
 	 * omitted. Thus '00:C0:F0:3D:5B:7C' and '0:c0:f0:3d:5b:7c' are equivalent,
@@ -91,7 +93,7 @@ public class EUI48 implements Serializable, Cloneable,
 	 * @param addrStr
 	 *            String representation of the ethernet address
 	 */
-	public EUI48(String addrStr) throws NumberFormatException {
+	EUI48(String addrStr) throws NumberFormatException {
 		int len = addrStr.length();
 		long addr = 0L;
 
@@ -170,11 +172,11 @@ public class EUI48 implements Serializable, Cloneable,
 	}
 
 	/**
-	 * Binary constructor that constructs an instance given the 6 byte (48-bit)
+	 * Binary constructor that constructs an defaultProvider given the 6 byte (48-bit)
 	 * address. Useful if an address is saved in binary format (for saving space
 	 * for example).
 	 */
-	public EUI48(byte[] addr) throws NumberFormatException {
+	EUI48(byte[] addr) throws NumberFormatException {
 		if (addr.length != 6) {
 			throw new NumberFormatException(
 					"Ethernet address has to consist of 6 bytes");
@@ -187,16 +189,17 @@ public class EUI48 implements Serializable, Cloneable,
 	}
 
 	/**
-	 * Another binary constructor; constructs an instance from the given long
+	 * Another binary constructor; constructs an defaultProvider from the given long
 	 * argument; the lowest 6 bytes contain the address.
 	 *
 	 * @param addr
 	 *            long that contains the MAC address in 6 least significant
 	 *            bytes.
 	 */
-	public EUI48(long addr) {
+	EUI48(long addr) {
 		_address = addr;
 	}
+
 
 	/**
 	 * Default cloning behaviour (bitwise copy) is just fine...
@@ -464,5 +467,15 @@ public class EUI48 implements Serializable, Cloneable,
 	private void _appendHex(StringBuilder sb, int hex) {
 		sb.append(HEX_CHARS[(hex >> 4) & 0xF]);
 		sb.append(HEX_CHARS[(hex & 0x0f)]);
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeLong(this._address);
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		this._address = in.readLong();
 	}
 }

@@ -56,5 +56,17 @@ public interface RequestContextHandler
 	 * @exception IllegalStateException if "next" handler
 	 * is already set for this handler
 	 */
-	void setNext(RequestContextHandler handler);
+	default void setNext(RequestContextHandler handler){
+		setNext(handler, true);
+	}
+
+	/**
+	 * Sets next handler in a chain
+	 *
+	 * @param handler a next in chain request handler
+	 * @param makeImmutable a flag indicating if this handler needs to be made immutable
+	 * @exception IllegalStateException if "next" handler
+	 * is already set for this handler
+	 */
+	void setNext(RequestContextHandler handler, boolean makeImmutable);
 }

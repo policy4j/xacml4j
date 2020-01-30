@@ -36,13 +36,13 @@ public final class Date extends BaseCalendar<Date>
 
 	/**
 	 * Creates {@link Date} from a given
-	 * object instance, supported types are:
+	 * object defaultProvider, supported types are:
 	 * {@link String}, {@link GregorianCalendar},
 	 * {@link XMLGregorianCalendar}
 	 *
-	 * @return {@link Date} instance
+	 * @return {@link Date} defaultProvider
 	 */
-	public static Date valueOf(Object v){
+	public static Date of(Object v){
 		return new Date(parseDate(v));
 	}
 

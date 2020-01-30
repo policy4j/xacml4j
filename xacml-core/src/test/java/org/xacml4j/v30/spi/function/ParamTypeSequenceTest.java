@@ -31,8 +31,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -56,21 +54,21 @@ public class ParamTypeSequenceTest
 		List<Expression> p = new LinkedList<Expression>();
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(DoubleExp.of(0.1));
+		p.add(XacmlTypes.DOUBLE.of(0.1));
 		assertFalse(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("1"));
+		p.add(XacmlTypes.STRING.of("1"));
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("2"));
-		p.add(StringExp.of("3"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("2"));
-		p.add(StringExp.of("3"));
-		p.add(StringExp.of("4"));
-		p.add(StringExp.of("5"));
-		p.add(StringExp.of("6"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of("3"));
+		p.add(XacmlTypes.STRING.of("4"));
+		p.add(XacmlTypes.STRING.of("5"));
+		p.add(XacmlTypes.STRING.of("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 
@@ -80,21 +78,21 @@ public class ParamTypeSequenceTest
 		List<Expression> p = new LinkedList<Expression>();
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(DoubleExp.of(0.1));
+		p.add(XacmlTypes.DOUBLE.of(0.1));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("1"));
+		p.add(XacmlTypes.STRING.of("1"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("2"));
-		p.add(StringExp.of("3"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("2"));
-		p.add(StringExp.of("3"));
-		p.add(StringExp.of("4"));
-		p.add(StringExp.of("5"));
-		p.add(StringExp.of("6"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of("3"));
+		p.add(XacmlTypes.STRING.of("4"));
+		p.add(XacmlTypes.STRING.of("5"));
+		p.add(XacmlTypes.STRING.of("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 
@@ -103,27 +101,27 @@ public class ParamTypeSequenceTest
 	{
 		List<Expression> p = new LinkedList<Expression>();
 		assertFalse(specAttrOneOrMore.validate(p.listIterator()));
-		p.add(StringExp.of("1"));
-		p.add(StringExp.of("2"));
-		p.add(StringExp.of("3"));
+		p.add(XacmlTypes.STRING.of("1"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("1"));
-		p.add(StringExp.of("2"));
-		p.add(DoubleExp.of(0.1));
+		p.add(XacmlTypes.STRING.of("1"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of(0.1));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("1"));
-		p.add(StringExp.of("2"));
-		p.add(StringExp.of("3"));
-		p.add(StringExp.of("4"));
+		p.add(XacmlTypes.STRING.of("1"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of("3"));
+		p.add(XacmlTypes.STRING.of("4"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(StringExp.of("1"));
-		p.add(StringExp.of("2"));
-		p.add(StringExp.of("3"));
-		p.add(StringExp.of("4"));
-		p.add(StringExp.of("5"));
+		p.add(XacmlTypes.STRING.of("1"));
+		p.add(XacmlTypes.STRING.of("2"));
+		p.add(XacmlTypes.STRING.of("3"));
+		p.add(XacmlTypes.STRING.of("4"));
+		p.add(XacmlTypes.STRING.of("5"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 }

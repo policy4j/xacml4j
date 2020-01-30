@@ -22,63 +22,87 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-import com.google.common.base.Preconditions;
 
-class BaseFunctionProvider implements FunctionProvider
+
+/**
+ * Base class for function providers
+ *
+ * @author Giedrius Trumpickas
+ */
+public class BaseFunctionProvider implements FunctionProvider
 {
-	private ConcurrentMap<String, FunctionSpec> functions;
+	private final static Logger LOG = LoggerFactory.getLogger(BaseFunctionProvider.class);
 
-	protected BaseFunctionProvider(){
-		this.functions = new ConcurrentHashMap<String, FunctionSpec>();
+	private Map<String, FunctionSpec> functionsById;
+	private Map<String, FunctionSpec> functionsByShortId;
+
+	protected BaseFunctionProvider(Collection<FunctionSpec> functions,
+								   Supplier<Map<String, FunctionSpec>> mapSupplier) {
+		this.functionsById = functions
+				.stream()
+				.collect(Collectors
+						.toMap(
+								v -> v.getId(),
+								v -> v,
+								(a, b) -> merge(a, b),
+								mapSupplier));
+		this.functionsByShortId = functions
+				.stream()
+				.collect(Collectors
+						.toMap(
+								v -> v.getShortId(),
+								v -> v,
+								(a, b) -> merge(a, b),
+								mapSupplier));
+
 	}
 
-	/**
-	 * Adds given {@link FunctionSpec} to this factory
-	 *
-	 * @param spec a function specification
-	 */
-	protected final void add(FunctionSpec spec)
-	{
-		Preconditions.checkNotNull(spec);
-		FunctionSpec other = functions.putIfAbsent(spec.getId(), spec);
-		Preconditions.checkState(other == null,
-					"This factory already contains " +
-					"function=\"%s\" with a given identifier=\"%s\"",
-					spec, spec.getId());
-		if(spec.getLegacyId() != null){
-			other = functions.putIfAbsent(spec.getLegacyId(), spec);
-			Preconditions.checkState(other == null,
-					"This factory already contains " +
-					"function=\"%s\" with a given identifier=\"%s\"",
-					spec, spec.getId());
+	protected BaseFunctionProvider(Collection<FunctionSpec> functions){
+		this(functions, ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER));
+
+	}
+
+	private static FunctionSpec merge(
+			FunctionSpec a, FunctionSpec b){
+		if(LOG.isWarnEnabled()){
+			LOG.warn("Function={} already exist={}",
+					b.getId(), a);
 		}
+		return a;
 	}
 
-
-
-	@Override
-	public FunctionSpec remove(String functionId) {
-		return functions.remove(functionId);
+	protected static Collection<FunctionSpec> toFunctionSpec(Collection<FunctionProvider> providers){
+		return providers.stream()
+				.map(p->p.getProvidedFunctions())
+				.reduce(new LinkedList<>(),
+						(a, b)-> accumulate(a, b));
 	}
-
-	@Override
-	public final FunctionSpec getFunction(String functionId) {
-		return functions.get(functionId);
-	}
-
-	@Override
-	public final Iterable<String> getProvidedFunctions() {
-		return functions.keySet();
+	protected static <T>  Collection<T> accumulate(
+			Collection<T> identity,  Collection<T> v){
+		identity.addAll(v);
+		return identity;
 	}
 
 	@Override
-	public final boolean isFunctionProvided(String functionId) {
-		return functions.containsKey(functionId);
+	public final Optional<FunctionSpec> getFunction(String functionId) {
+		return Optional.ofNullable(
+				functionsById.get(functionId))
+				.or(()->Optional.ofNullable(functionsByShortId.get(functionId)));
 	}
 
+	@Override
+	public final Collection<FunctionSpec> getProvidedFunctions() {
+		 return functionsById.values()
+				.stream()
+				 .collect(Collectors.toSet());
+	}
 }

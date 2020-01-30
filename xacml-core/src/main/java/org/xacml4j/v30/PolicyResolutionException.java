@@ -34,18 +34,6 @@ public class PolicyResolutionException extends EvaluationException
 		this.context = context;
 	}
 
-	public PolicyResolutionException(EvaluationContext context,
-			Throwable cause, String message,
-			Object... arguments) {
-		super(Status.processingError().build(), cause, message, arguments);
-		this.context = context;
-	}
-
-	public PolicyResolutionException(EvaluationContext context,
-			Throwable cause) {
-		super(Status.processingError().build(), cause);
-		this.context = context;
-	}
 
 	public CompositeDecisionRuleIDReference getPolicyIDReference(){
 		return context.getCurrentPolicyIDReference();

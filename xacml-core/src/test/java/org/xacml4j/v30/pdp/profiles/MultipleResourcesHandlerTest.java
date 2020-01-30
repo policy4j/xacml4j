@@ -38,7 +38,7 @@ import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Entity;
@@ -47,7 +47,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class MultipleResourcesHandlerTest
@@ -66,36 +66,36 @@ public class MultipleResourcesHandlerTest
 		this.context = createStrictMock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesHandler();
 
-		this.resource0 = Category.builder(Categories.RESOURCE)
+		this.resource0 = Category.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId1").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId2").value(StringExp.of("value1")).build()).build())
+								Attribute.builder("testId1").value(XacmlTypes.STRING.of("value0")).build(),
+								Attribute.builder("testId2").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
-		this.resource1 = Category.builder(Categories.RESOURCE)
+		this.resource1 = Category.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId4").value(StringExp.of("value1")).build()).build())
-				.build();
-
-		this.subject0 = Category.builder(Categories.SUBJECT_ACCESS)
-				.entity(
-						Entity.builder()
-						.attribute(
-								Attribute.builder("testId7").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId8").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
-
-		this.subject1 = Category.builder(Categories.SUBJECT_ACCESS)
+		this.subject0 = Category.builder(CategoryId.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId9").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId10").value(StringExp.of("value1")).build()).build())
+								Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
+								Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build()).build())
+				.build();
+
+
+		this.subject1 = Category.builder(CategoryId.SUBJECT_ACCESS)
+				.entity(
+						Entity.builder()
+						.attribute(
+						Attribute.builder("testId9").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId10").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 	}
 
@@ -277,8 +277,8 @@ public class MultipleResourcesHandlerTest
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
-		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject0));
-		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0));
+		assertTrue(r0.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0));
 		verify(context);
 	}
 

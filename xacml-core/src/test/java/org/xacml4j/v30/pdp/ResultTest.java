@@ -30,9 +30,9 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.types.StringExp;
 
 import com.google.common.collect.ImmutableList;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class ResultTest
@@ -45,15 +45,15 @@ public class ResultTest
 	public void init(){
 		this.denyObligationWithId1 = Obligation
 				.builder("id1", Effect.DENY)
-				.attribute("test1", StringExp.of("v1"))
+				.attribute("test1", XacmlTypes.STRING.of("v1"))
 				.build();
 		this.denyObligationWithId2 = Obligation
 				.builder("id2", Effect.DENY)
-				.attribute("test1", StringExp.of("v1"))
+				.attribute("test1", XacmlTypes.STRING.of("v1"))
 				.build();
 		this.denyObligationWithSameId1 = Obligation
 				.builder("id1", Effect.DENY)
-				.attribute("test1", StringExp.of("v2"))
+				.attribute("test1", XacmlTypes.STRING.of("v2"))
 				.build();
 	}
 
@@ -66,12 +66,12 @@ public class ResultTest
 		Result r = b.build();
 		assertEquals(Obligation
 				.builder("id1", Effect.DENY)
-				.attribute("test1", StringExp.of("v1"))
-				.attribute("test1", StringExp.of("v2"))
+				.attribute("test1", XacmlTypes.STRING.of("v1"))
+				.attribute("test1", XacmlTypes.STRING.of("v2"))
 				.build(), r.getObligation("id1"));
 		assertEquals(Obligation
 				.builder("id2", Effect.DENY)
-				.attribute("test1", StringExp.of("v1"))
+				.attribute("test1", XacmlTypes.STRING.of("v1"))
 				.build(), r.getObligation("id2"));
 
 	}

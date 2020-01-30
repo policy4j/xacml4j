@@ -22,15 +22,18 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.Collection;
-
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Iterables;
+import com.google.common.collect.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Base class for XACML attribute containers
@@ -39,22 +42,14 @@ import com.google.common.collect.Iterables;
  */
 public class AttributeContainer
 {
-	protected final ImmutableMultimap<String, Attribute> attributes;
+	private final static Logger LOG = LoggerFactory.getLogger(AttributeContainer.class);
+
+	protected final Multimap<String, Attribute> attributes;
 
 	protected AttributeContainer(Builder<?> b){
 		this.attributes = b.attrsBuilder.build();
 	}
 
-	/**
-	 * Tests if this instance contains an
-	 * attribute with a given identifier
-	 *
-	 * @param attributeId an attribute id
-	 * @return {@code true} if contains
-	 */
-	public boolean containsAttribute(String attributeId){
-		return attributes.containsKey(attributeId);
-	}
 
 	/**
 	 * Gets all attributes with a given identifier
@@ -69,15 +64,17 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Gets a single {@link Attribute} instance with
+	 * Gets a single {@link Attribute} defaultProvider with
 	 * a given attribute identifier
 	 *
 	 * @param attributeId an attribute identifier
-	 * @return {@link Attribute} instance or {@code null}
+	 * @return {@link Attribute} defaultProvider or {@code null}
 	 * if no attribute available with a given identifier
 	 */
-	public Attribute getOnlyAttribute(String attributeId){
-		return Iterables.getOnlyElement(attributes.get(attributeId), null);
+	public Optional<Attribute> getOnlyAttribute(String attributeId){
+		return attributes.get(attributeId)
+				.stream()
+				.findFirst();
 	}
 
 	/**
@@ -92,11 +89,17 @@ public class AttributeContainer
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
 		return Collections2.filter(
 				attributes.get(attributeId),
-				new Predicate<Attribute>() {
-					@Override
-					public boolean apply(Attribute attr) {
-						return issuer == null || issuer.equals(attr.getIssuer());
-					}});
+				a -> Objects.equals(issuer, a.getIssuer()));
+	}
+
+	public Map<String, Attribute> getAttributes(Predicate<Attribute> attributePredicate){
+		return stream().filter(attributePredicate)
+				.collect(Collectors.toMap(a->a.getAttributeId(), a->a));
+	}
+
+	public Stream<Attribute> stream(){
+		return attributes.values()
+				.stream();
 	}
 
 	/**
@@ -111,7 +114,7 @@ public class AttributeContainer
 	}
 
 	/**
-	 * Finds all instance of {@link Attribute} with
+	 * Finds all defaultProvider of {@link Attribute} with
 	 * {@link Attribute#isIncludeInResult()} returning
 	 * {@code true}
 	 *
@@ -127,44 +130,28 @@ public class AttributeContainer
 	}
 
 	/**
-	 * @see AttributeContainer#getAttributeValues(String, String, AttributeExpType)
+	 * @see AttributeContainer#getAttributeValues(String, String, AttributeValueType)
 	 */
-	public Collection<AttributeExp> getAttributeValues(
+	public Collection<AttributeValue> getAttributeValues(
 			String attributeId,
-			AttributeExpType dataType){
+			AttributeValueType dataType){
 		return getAttributeValues(attributeId, null, dataType);
 	}
 
 	/**
-	 * Gets only one {@link AttributeExp} instance of the given type
-	 * from an attribute with a given identifier
-	 *
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute value data type
-	 * @return {@link AttributeExp} of the given type or {@code null}
-	 * if value matching given criteria does not exist
-	 * @exception IllegalArgumentException if more than one value is found
-	 * matching given criteria
-	 */
-	public AttributeExp getOnlyAttributeValue(String attributeId,
-			AttributeExpType dataType){
-		return Iterables.getOnlyElement(getAttributeValues(attributeId, dataType), null);
-	}
-
-	/**
-	 * Gets all {@link AttributeExp} instances
-	 * contained in this attributes instance
+	 * Gets all {@link AttributeValue} instances
+	 * contained in this attributes defaultProvider
 	 *
 	 * @param attributeId an attribute id
 	 * @param issuer an attribute issuer
 	 * @param type an attribute value data type
-	 * @return a collection of {@link AttributeExp} instances
+	 * @return a collection of {@link AttributeValue} instances
 	 */
-	public Collection<AttributeExp> getAttributeValues(
-			String attributeId, String issuer, final AttributeExpType type){
+	public Collection<AttributeValue> getAttributeValues(
+			String attributeId, String issuer, final AttributeValueType type){
 		Preconditions.checkNotNull(type);
 		Collection<Attribute> found = getAttributes(attributeId, issuer);
-		ImmutableList.Builder<AttributeExp> b = ImmutableList.builder();
+		ImmutableList.Builder<AttributeValue> b = ImmutableList.builder();
 		for(Attribute a : found){
 			b.addAll(a.getValuesByType(type));
 		}
@@ -176,8 +163,11 @@ public class AttributeContainer
 		private ImmutableListMultimap.Builder<String, Attribute> attrsBuilder = ImmutableListMultimap.builder();
 
 		public T attribute(Attribute... attrs) {
-			for(Attribute attr : attrs){
-				attrsBuilder.put(attr.getAttributeId(), attr);
+			Objects.requireNonNull(attrs,
+					"At least one attribute must be specified");
+			for(Attribute a : attrs){
+				Objects.requireNonNull(a, "Attribute");
+				attrsBuilder.put(a.getAttributeId(), a);
 			}
 			return getThis();
 		}
@@ -190,6 +180,10 @@ public class AttributeContainer
 		public T attributes(Iterable<Attribute> attrs) {
 			if(attrs == null){
 				return getThis();
+			}
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Adding attributes=\"{}\"",
+						Iterables.toString(attrs));
 			}
 			for(Attribute attr : attrs){
 				attrsBuilder.put(attr.getAttributeId(), attr);

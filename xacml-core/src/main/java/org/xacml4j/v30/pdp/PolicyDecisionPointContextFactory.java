@@ -21,19 +21,15 @@ package org.xacml4j.v30.pdp;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
+@FunctionalInterface
 public interface PolicyDecisionPointContextFactory
 {
-	int getDefaultDecisionCacheTTL();
-
-	boolean isDecisionAuditEnabled();
-	boolean isDecisionCacheEnabled();
 
 	/**
 	 * Creates policy decision context
 	 *
 	 * @param pdp a PDP callback
-	 * @return {@link PolicyDecisionPointContext} instance
+	 * @return {@link PolicyDecisionPointContext} defaultProvider
 	 */
 	PolicyDecisionPointContext createContext(PolicyDecisionCallback pdp);
 }

@@ -26,86 +26,87 @@ import org.xacml4j.v30.spi.function.XacmlFuncParam;
 import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.types.BooleanValue;
+import org.xacml4j.v30.types.DoubleValue;
+import org.xacml4j.v30.types.IntegerValue;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 @XacmlFunctionProvider(description="XACML numeric comparison functions")
-public class NumericComparisonFunctions
+final class NumericComparisonFunctions
 {
 	/** Private constructor for utility class */
 	private NumericComparisonFunctions() {}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greaterThanInteger(
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp a,
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp b)
+	public static BooleanValue greaterThanInteger(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return BooleanExp.valueOf(a.getValue() > b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value() > b.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp lessThanInteger(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
+	public static BooleanValue lessThanInteger(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return BooleanExp.valueOf(a.getValue() < b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value() < b.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greaterThanOrEqualInteger(
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp a,
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerExp b)
+	public static BooleanValue greaterThanOrEqualInteger(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() > b.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp lessThanOrEqualBoolean(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer")IntegerExp b)
+	public static BooleanValue lessThanOrEqualBoolean(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() < b.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greaterThanDouble(
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp a,
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp b)
+	public static BooleanValue greaterThanDouble(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return BooleanExp.valueOf(a.getValue() > b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value() > b.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp lessThanDouble(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
+	public static BooleanValue lessThanDouble(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return BooleanExp.valueOf(a.getValue() < b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value() < b.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp greaterThanOrEqualDouble(
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp a,
-			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleExp b)
+	public static BooleanValue greaterThanOrEqualDouble(
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
+			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() > b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() > b.value());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanExp lessThanOrEqualDouble(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double")DoubleExp b)
+	public static BooleanValue lessThanOrEqualDouble(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return BooleanExp.valueOf(a.getValue().equals(b.getValue()) || a.getValue() < b.getValue());
+		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() < b.value());
 	}
 }

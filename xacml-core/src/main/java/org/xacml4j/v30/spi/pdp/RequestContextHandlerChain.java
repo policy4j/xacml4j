@@ -46,12 +46,13 @@ import com.google.common.collect.Sets;
 public class RequestContextHandlerChain
 	implements RequestContextHandler
 {
+	private boolean immutable;
 	private List<RequestContextHandler> handlers;
 
 	public RequestContextHandlerChain(
 			Iterable<RequestContextHandler> handlers)
 	{
-		this.handlers = new CopyOnWriteArrayList<RequestContextHandler>();
+		this.handlers = new CopyOnWriteArrayList<>();
 		Iterables.addAll(this.handlers, handlers);
 		RequestContextHandler prev = null;
 		for (RequestContextHandler h : handlers) {
@@ -95,9 +96,16 @@ public class RequestContextHandlerChain
 	 * was already set for last handler in the list
 	 */
 	@Override
-	public final void setNext(RequestContextHandler handler)
+	public final void setNext(RequestContextHandler handler, boolean makeImmutable)
 	{
+		if(immutable){
+			throw new IllegalStateException(
+					"Handler chain is immutable");
+		}
+		this.immutable = makeImmutable;
 		Preconditions.checkState(!handlers.isEmpty());
+		Preconditions.checkState(!handlers.contains(handler),
+				"Handler already exist in the chain");
 		handlers.get(handlers.size() - 1).setNext(handler);
 	}
 
@@ -113,4 +121,5 @@ public class RequestContextHandlerChain
 			Collection<Result> results){
 		return results;
 	}
+
 }

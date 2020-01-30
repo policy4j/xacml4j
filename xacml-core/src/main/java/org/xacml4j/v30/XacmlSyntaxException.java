@@ -22,9 +22,13 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import javax.xml.stream.Location;
+import org.xacml4j.v30.spi.function.XacmlFuncParam;
+import org.xacml4j.v30.spi.function.XacmlFuncParamOptional;
+import org.xacml4j.v30.spi.function.XacmlFuncParamVarArg;
+import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 
-import org.xacml4j.v30.pdp.XacmlException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 
 public class XacmlSyntaxException extends XacmlException
@@ -32,28 +36,91 @@ public class XacmlSyntaxException extends XacmlException
 	private static final long serialVersionUID = 5208193385563540743L;
 
 	public XacmlSyntaxException(String template, Object... arguments) {
-		super(template, arguments);
+		super(Status.syntaxError()
+						.detail(String.format(template, arguments)).build(),
+				String.format(template, arguments));
 	}
 
-	public XacmlSyntaxException(
-			Throwable t,
-			String message,
-			Object... arguments) {
-		super(t, message, arguments);
-	}
-
-	public XacmlSyntaxException(
-			Location location,
-			String message,
-			Object... arguments) {
-		super(String.format(
-				"XACML syntax error at line=\"%s\" column=\"%s\", error: %s",
-				location.getLineNumber(),
-				location.getColumnNumber(),
-				String.format(message, arguments)));
-	}
 
 	public XacmlSyntaxException(Throwable cause) {
-		super(cause);
+		super(Status.syntaxError().detail(cause).build(),
+				cause);
 	}
+
+	public static XacmlSyntaxException invalidAttributeValue(Object v, AttributeValueType expectedType){
+		return new XacmlSyntaxException(
+				"Invalid XACML type=\"%s\" attribute value=\"%s\"",
+				expectedType.getAbbrevDataTypeId(), v);
+	}
+
+	public static XacmlSyntaxException invalidDataTypeId(Object v){
+		return new XacmlSyntaxException(
+				"Invalid XACML type identifier=\"%s\"",
+				v);
+	}
+
+	public static XacmlSyntaxException invalidFunctionParameter(XacmlFuncSpec funcSpec, XacmlFuncParam param, Method functionMethod){
+		return new XacmlSyntaxException(
+				"Invalid XACML function=\"%s\", parameter=\"{%s}\" method=\"%s\"",
+				funcSpec.id(), param.typeId(), functionMethod.getName());
+	}
+
+	public static XacmlSyntaxException invalidFunctionParameter(XacmlFuncSpec funcSpec, XacmlFuncParamOptional param, Method functionMethod){
+		return new XacmlSyntaxException(
+				"Invalid XACML function=\"%s\", parameter=\"{%s}\" method=\"%s\"",
+				funcSpec.id(), param.typeId(), functionMethod.getName());
+	}
+
+	public static XacmlSyntaxException invalidFunctionParameter(XacmlFuncSpec funcSpec, XacmlFuncParamVarArg param, Method functionMethod){
+		return new XacmlSyntaxException(
+				"Invalid XACML function=\"%s\", parameter=\"{%s}\" method=\"%s\"",
+				funcSpec.id(), param.typeId(), functionMethod.getName());
+	}
+
+	public static XacmlSyntaxException invalidCategoryId(Object categoryId){
+		return new XacmlSyntaxException(
+				"Invalid XACML categoryId=\"%s\"",
+				categoryId);
+	}
+
+	public static XacmlSyntaxException invalidCategoryId(Object categoryId, String info, Object...params){
+		return new XacmlSyntaxException(
+				"Invalid XACML categoryId=\"%s\", - s%",
+				categoryId, String.format(info, params));
+	}
+
+	public static XacmlSyntaxException noContentFound(String message, Object ...p){
+		return new XacmlSyntaxException(message == null?
+				"No content found":message, p);
+	}
+
+	public static XacmlSyntaxException noContentFound(){
+		return noContentFound(null);
+	}
+
+	public static XacmlSyntaxException invalidXml(String message, Throwable t){
+		return new XacmlSyntaxException(
+				"Invalid XML file=\"{}\"", message, t);
+	}
+
+	public static XacmlSyntaxException syntaxError(String message, Object ...params){
+		return new XacmlSyntaxException(message, params);
+	}
+
+
+	public static XacmlSyntaxException invalidAttributeValue(Object v, AttributeValueType...excpectedTypes){
+		return new XacmlSyntaxException(
+				"Invalid XACML attribute value for type=\"%s\" attribute " +
+						"value=\"%s\"", Arrays.toString(excpectedTypes), v);
+	}
+
+	public static XacmlSyntaxException invalidFunction(String id){
+		return new XacmlSyntaxException("Invalid XACML functionId=\"{}\"",  id);
+	}
+
+	public static XacmlSyntaxException invalidResolverMethod(Method m, String message, Object ...params){
+		return new XacmlSyntaxException("Invalid XACML resolver method=\"%s\" class=\"%%s\", details - %s",
+				m.getName(), m.getDeclaringClass().getName(), String.format(message, params));
+	}
+
 }

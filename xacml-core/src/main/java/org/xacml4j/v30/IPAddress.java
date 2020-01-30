@@ -32,6 +32,11 @@ import org.xacml4j.util.IPAddressUtils;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
+/**
+ * XACML IP Address abstraction
+ *
+ * @author Giedrius Trumopickas
+ */
 public class IPAddress implements Serializable
 {
 	private static final long serialVersionUID = 8391410414891430400L;
@@ -160,7 +165,7 @@ public class IPAddress implements Serializable
 	/**
 	 * Gets XACML IP address port range
 	 *
-	 * @return {@link PortRange} instance
+	 * @return {@link PortRange} defaultProvider
 	 */
 	public PortRange getRange(){
 		return range;

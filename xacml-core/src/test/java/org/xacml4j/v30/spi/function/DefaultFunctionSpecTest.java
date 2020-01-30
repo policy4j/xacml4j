@@ -37,8 +37,6 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.IntegerExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
@@ -64,13 +62,13 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecWithListParamArguments() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BooleanExp.valueOf(false))
+		.add(XacmlTypes.BOOLEAN.of(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, params)).andReturn(BooleanExp.valueOf(true));
+		expect(invocation.invoke(spec, context, params)).andReturn(XacmlTypes.BOOLEAN.of(true));
 		c.replay();
-		assertEquals(BooleanExp.valueOf(true), spec.invoke(context, params));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), spec.invoke(context, params));
 		c.verify();
 	}
 
@@ -78,7 +76,7 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecFailsWithInvocationException() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BooleanExp.valueOf(false))
+		.add(XacmlTypes.BOOLEAN.of(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
@@ -92,7 +90,7 @@ public class DefaultFunctionSpecTest
 	public void testInvokeSpecFailsWithRuntimeException() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BooleanExp.valueOf(false))
+		.add(XacmlTypes.BOOLEAN.of(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
@@ -106,11 +104,11 @@ public class DefaultFunctionSpecTest
 	public void testOptionalParameterWithDefaultValue() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BooleanExp.valueOf(false))
+		.add(XacmlTypes.BOOLEAN.of(false))
 		.build();
-		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).optional(XacmlTypes.BOOLEAN, BooleanExp.valueOf(true)).build(XacmlTypes.BOOLEAN, invocation);
+		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.of(true)).build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, ImmutableList.<Expression>of(BooleanExp.FALSE, BooleanExp.TRUE))).andReturn(BooleanExp.valueOf(false));
+		expect(invocation.invoke(spec, context, ImmutableList.<Expression>of(XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(true)))).andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();
@@ -120,11 +118,11 @@ public class DefaultFunctionSpecTest
 	public void testOptionalParameterWithNoDefaultValue() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BooleanExp.valueOf(false))
+		.add(XacmlTypes.BOOLEAN.of(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).optional(XacmlTypes.BOOLEAN).build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, Arrays.<Expression>asList(BooleanExp.FALSE, null))).andReturn(BooleanExp.valueOf(false));
+		expect(invocation.invoke(spec, context, Arrays.<Expression>asList(XacmlTypes.BOOLEAN.of(false), null))).andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();
@@ -134,7 +132,7 @@ public class DefaultFunctionSpecTest
 	public void testOptionalParameterWithNoDefaultValueAndVarArg() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BooleanExp.valueOf(false))
+		.add(XacmlTypes.BOOLEAN.of(false))
 		.build();
 		FunctionSpec spec = b
 				.param(XacmlTypes.BOOLEAN)
@@ -143,7 +141,7 @@ public class DefaultFunctionSpecTest
 				.build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(BooleanExp.FALSE, null, null))).andReturn(BooleanExp.valueOf(false));
+				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.of(false), null, null))).andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();
@@ -153,16 +151,16 @@ public class DefaultFunctionSpecTest
 	public void testOptionalParameterWithDefaultValueAndVarArg() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(BooleanExp.valueOf(false))
+		.add(XacmlTypes.BOOLEAN.of(false))
 		.build();
 		FunctionSpec spec = b
 				.param(XacmlTypes.BOOLEAN)
-				.optional(XacmlTypes.BOOLEAN, BooleanExp.TRUE)
+				.optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.of(true))
 				.varArg(XacmlTypes.BOOLEAN, 1, 2)
 				.build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(BooleanExp.FALSE, BooleanExp.TRUE, null))).andReturn(BooleanExp.valueOf(false));
+				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(true), null))).andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();
@@ -176,12 +174,12 @@ public class DefaultFunctionSpecTest
 				.build();
 		FunctionSpec spec = b
 				.optional(XacmlTypes.INTEGER)
-				.optional(XacmlTypes.BOOLEAN, BooleanExp.TRUE)
+				.optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.of(true))
 				.build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(null, BooleanExp.TRUE)))
-				.andReturn(BooleanExp.valueOf(false));
+				Arrays.<Expression>asList(null, XacmlTypes.BOOLEAN.of(true))))
+				.andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();
@@ -192,17 +190,17 @@ public class DefaultFunctionSpecTest
 	{
 		List<Expression> params = ImmutableList
 				.<Expression>builder()
-				.add(IntegerExp.of(10))
-				.add(BooleanExp.FALSE)
+				.add(XacmlTypes.INTEGER.of(10))
+				.add(XacmlTypes.BOOLEAN.of(false))
 				.build();
 		FunctionSpec spec = b
 				.optional(XacmlTypes.INTEGER)
-				.optional(XacmlTypes.BOOLEAN, BooleanExp.TRUE)
+				.optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.of(true))
 				.build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(IntegerExp.of(10), BooleanExp.FALSE)))
-				.andReturn(BooleanExp.valueOf(false));
+				Arrays.<Expression>asList(XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false))))
+				.andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();
@@ -216,12 +214,12 @@ public class DefaultFunctionSpecTest
 				.build();
 		FunctionSpec spec = b
 				.optional(XacmlTypes.INTEGER)
-				.optional(XacmlTypes.INTEGER, IntegerExp.of(10))
+				.optional(XacmlTypes.INTEGER, XacmlTypes.INTEGER.of(10))
 				.build(XacmlTypes.BOOLEAN, invocation);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(null, IntegerExp.of(10))))
-				.andReturn(BooleanExp.valueOf(false));
+				Arrays.<Expression>asList(null, XacmlTypes.INTEGER.of(10))))
+				.andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 		spec.invoke(context, params);
 		c.verify();

@@ -22,9 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.net.URI;
+import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Preconditions;
+import java.net.URI;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A base class for attribute references
@@ -33,52 +35,53 @@ import com.google.common.base.Preconditions;
  */
 public abstract class AttributeReferenceKey
 {
-	protected final CategoryId category;
-	protected final AttributeExpType dataType;
+	protected final Optional<CategoryId> category;
+	protected final AttributeValueType dataType;
 
 	protected AttributeReferenceKey(
 			Builder<?> b){
-		Preconditions.checkNotNull(b.category);
-		Preconditions.checkNotNull(b.dataType);
-		this.category = b.category;
-		this.dataType = b.dataType;
+		this.category = Optional.ofNullable(b.category);
+		this.dataType = Objects.requireNonNull(b.dataType);
 	}
 
 	public final CategoryId getCategory(){
-		return category;
+		return category.get();
 	}
 
-	public final AttributeExpType getDataType(){
+	public final AttributeValueType getDataType(){
 		return dataType;
 	}
 
-	public abstract BagOfAttributeExp resolve(
-			EvaluationContext context) throws EvaluationException;
 
 	public static abstract class Builder<T>
 	{
 		private CategoryId category;
-		private AttributeExpType dataType;
+		private AttributeValueType dataType;
 
-		public T category(CategoryId category){
-			Preconditions.checkNotNull(category);
-			this.category = category;
+
+		public T category(String category) {
+			this.category = CategoryId.of(category);
 			return getThis();
 		}
 
-		public T category(URI category) 
-				throws XacmlSyntaxException{
-			return category(Categories.parse(category));
-		}
-		
-		public T category(String category) 
-				throws XacmlSyntaxException{
-			return category(Categories.parse(category));
+		public T category(AttributeValue category) {
+			this.category = CategoryId.of(category);
+			return getThis();
 		}
 
-		public T dataType(AttributeExpType type){
-			Preconditions.checkNotNull(type);
-			this.dataType = type;
+		public T category(CategoryId category) {
+			this.category = Objects.requireNonNull(category, "category");
+			return getThis();
+		}
+
+		public T category(URI category) {
+			this.category = CategoryId.of(category);
+			return getThis();
+		}
+
+		public T dataType(Object typeId){
+			this.dataType = XacmlTypes.getType(typeId)
+					.orElseThrow(()->XacmlSyntaxException.invalidDataTypeId(typeId));
 			return getThis();
 		}
 

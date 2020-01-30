@@ -22,13 +22,20 @@ package org.xacml4j.util;
  * #L%
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.reflect.Modifier;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Reflections
 {
+	private final static Logger LOG = LoggerFactory.getLogger(Reflections.class);
+
 	/** Private constructor for utility class */
 	private Reflections() {}
 
@@ -42,14 +49,29 @@ public class Reflections
 	public static List<Method> getAnnotatedMethods(
 			Class<?> clazz, Class<? extends Annotation> annotationClazz)
 	{
-		List<Method> methods = new LinkedList<Method>();
-		for(Method f : clazz.getDeclaredMethods()){
-			Annotation annotation = f.getAnnotation(annotationClazz);
-			if(annotation != null){
-				methods.add(f);
-			}
+		return Arrays.
+				stream(clazz.getDeclaredMethods())
+				.filter(m->m.isAnnotationPresent(annotationClazz))
+				.collect(Collectors.toList());
+	}
+
+	public static <ClassType, FieldType>  Set<FieldType> getDeclaredStaticFields(
+			Class<ClassType> targetClass, Class<FieldType> fieldType){
+
+		return Arrays.stream(targetClass.getFields())
+				.filter(f-> Modifier.isStatic(f.getModifiers()) && (
+						fieldType.isAssignableFrom(f.getDeclaringClass())))
+				.map(v->mapFieldValue(v)).map(v->fieldType.cast(v)).collect(Collectors.toSet());
+	}
+
+	private static <T>  T mapFieldValue(Field f)
+	{
+		try{
+			return (T) f.get(null);
+		}catch(IllegalAccessException e){
+			LOG.warn(e.getMessage(), e);
+			return null;
 		}
-		return methods;
 	}
 
 	/**
@@ -60,14 +82,12 @@ public class Reflections
 	 * @return {@link Method} or {@code null} if method
 	 * with a given name is note defined in a given class
 	 */
-	public static Method getMethod(Class<?> clazz, String name)
+	public static Optional<Method> getMethod(Class<?> clazz, String name)
 	{
-		for(Method m : clazz.getDeclaredMethods()){
-			if(m.getName().equals(name)){
-				return m;
-			}
-		}
-		return null;
+		return Arrays
+				.stream(clazz.getDeclaredMethods())
+				.filter(m->m.getName().equalsIgnoreCase(name))
+				.findFirst();
 	}
 }
 

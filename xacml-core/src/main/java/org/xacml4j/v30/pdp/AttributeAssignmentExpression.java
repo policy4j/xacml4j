@@ -22,16 +22,13 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import org.xacml4j.v30.*;
+
+import java.net.URI;
 
 public class AttributeAssignmentExpression implements PolicyElement
 {
@@ -102,8 +99,8 @@ public class AttributeAssignmentExpression implements PolicyElement
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("attributeId", attributeId)
+		return MoreObjects.toStringHelper(this)
+		.add("id", attributeId)
 		.add("category", category)
 		.add("issuer", issuer)
 		.add("expression", expression)
@@ -158,13 +155,23 @@ public class AttributeAssignmentExpression implements PolicyElement
 			return this;
 		}
 
-		public Builder category(CategoryId category){
-			this.category = category;
+		public Builder category(String category){
+			this.category = CategoryId.of(category);
 			return this;
 		}
-		
-		public Builder category(String category){
-			this.category = !Strings.isNullOrEmpty(category)?Categories.parse(category):null;
+
+		public Builder category(CategoryId category){
+			this.category = java.util.Objects.requireNonNull(category, "category");
+			return this;
+		}
+
+		public Builder category(AttributeValue category){
+			this.category = CategoryId.of(category);
+			return this;
+		}
+
+		public Builder category(URI category){
+			this.category = CategoryId.of(category);
 			return this;
 		}
 

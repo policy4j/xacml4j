@@ -22,7 +22,9 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.io.Serializable;
+import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -33,7 +35,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.google.common.base.Preconditions;
 
 public abstract class BaseCalendar <T extends BaseCalendar<?>>
-	implements Serializable, Comparable<T>
+	implements Externalizable, Comparable<T>
 {
 	private static final long serialVersionUID = -1896156800821765849L;
 
@@ -177,4 +179,14 @@ public abstract class BaseCalendar <T extends BaseCalendar<?>>
 	}
 
 	protected abstract T makeCalendar(XMLGregorianCalendar c);
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(calendar);
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		this.calendar =  (XMLGregorianCalendar) in.readObject();
+	}
 }

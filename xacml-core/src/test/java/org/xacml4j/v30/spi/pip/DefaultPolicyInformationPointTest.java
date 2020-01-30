@@ -34,13 +34,14 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
+
+import java.util.Optional;
 
 public class DefaultPolicyInformationPointTest
 {
@@ -82,48 +83,64 @@ public class DefaultPolicyInformationPointTest
 
 		this.attr0 = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testAttributeId1")
 				.dataType(XacmlTypes.STRING);
 
 		this.attr1 = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testAttributeId2")
 				.dataType(XacmlTypes.INTEGER);
 
 		this.key = AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("username")
 				.dataType(XacmlTypes.STRING);
 
 		this.descriptor1 = AttributeResolverDescriptorBuilder
 				.builder("testId1", "Test Resolver",
-						Categories.SUBJECT_ACCESS)
+						CategoryId.SUBJECT_ACCESS)
 				.cache(30)
 				.attribute("testAttributeId1", XacmlTypes.STRING)
 				.attribute("testAttributeId2", XacmlTypes.INTEGER)
-				.designatorKeyRef(Categories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
+				.contextRef(AttributeDesignatorKey
+						.builder()
+						.category(CategoryId.SUBJECT_ACCESS)
+						.attributeId("username")
+						.dataType(XacmlTypes.STRING)
+						.build())
 				.build();
 
 		this.descriptor1WithIssuer = AttributeResolverDescriptorBuilder
 				.builder("testId2", "Test Resolver", "Issuer",
-						Categories.SUBJECT_ACCESS)
+						CategoryId.SUBJECT_ACCESS)
 				.cache(40)
 				.attribute("testAttributeId1", XacmlTypes.STRING)
 				.attribute("testAttributeId2", XacmlTypes.INTEGER)
-				.designatorKeyRef(Categories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
+				.contextRef(AttributeDesignatorKey
+						.builder()
+						.category(CategoryId.SUBJECT_ACCESS)
+						.attributeId("username")
+						.dataType(XacmlTypes.STRING)
+						.build())
 				.build();
 
 
 		this.descriptor1WithNoCache = AttributeResolverDescriptorBuilder
 		.builder("testId3", "Test Resolver", "Issuer",
-				Categories.SUBJECT_ACCESS)
+				CategoryId.SUBJECT_ACCESS)
 		.noCache()
 		.attribute("testAttributeId1", XacmlTypes.STRING)
 		.attribute("testAttributeId2", XacmlTypes.INTEGER)
-		.designatorKeyRef(Categories.SUBJECT_ACCESS, "username", XacmlTypes.STRING, null)
+		.contextRef(
+				AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.SUBJECT_ACCESS)
+				.attributeId("username")
+				.dataType(XacmlTypes.STRING)
+				.build())
 		.build();
 	}
 
@@ -136,15 +153,14 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result = AttributeSet
 				.builder(descriptor1)
-				.attribute("testAttributeId1", StringExp.of("v1").toBag())
+				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
 				.build();
 
 		// attribute resolver found
-		expect(registry.getMatchingAttributeResolvers(context, a0))
-		.andReturn(ImmutableList.of(resolver1, resolver2));
+		expect(registry.getMatchingAttributeResolver(context, a0))
+		.andReturn(Optional.of(resolver1));
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
-
-		expect(context.resolve(eq(k))).andReturn(StringExp.of("testUser").toBag());
+		expect(context.resolve(eq(k))).andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
 
 		Capture<ResolverContext> resolverContext1 = new Capture<ResolverContext>();
 		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
@@ -160,8 +176,8 @@ public class DefaultPolicyInformationPointTest
 
 		control.replay();
 
-		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(XacmlTypes.STRING.bagOf(StringExp.of("v1")), v);
+		Optional<BagOfAttributeValues> v = pip.resolve(context, a0);
+		assertEquals(XacmlTypes.STRING.bag().attribute(XacmlTypes.STRING.of("v1")), v.get());
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
 
 		control.verify();
@@ -174,9 +190,8 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeDesignatorKey a0 = attr0.build();
 
-		// attribute resolver found
-		expect(registry.getMatchingAttributeResolvers(context, a0)).andReturn(
-				ImmutableList.of(resolver1, resolver2));
+		expect(registry.getMatchingAttributeResolver(context, a0))
+				.andReturn(Optional.of(resolver1));
 
 		AttributeSet result1 = AttributeSet
 				.builder(descriptor1)
@@ -184,12 +199,13 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result2 = AttributeSet
 				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", StringExp.of("v1").toBag())
+				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
 				.build();
 
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
 		expect(context.resolve(key.build()))
-		.andReturn(StringExp.of("testUser").toBag());
+		.andReturn(Optional.of(
+				XacmlTypes.STRING.of("testUser").toBag()));
 
 		Capture<ResolverContext> ctx1 = new Capture<ResolverContext>();
 		Capture<ResolverContext> ctx2 = new Capture<ResolverContext>();
@@ -202,7 +218,7 @@ public class DefaultPolicyInformationPointTest
 
 		expect(resolver2.getDescriptor()).andReturn(descriptor1WithIssuer);
 		expect(context.resolve(key.build()))
-		.andReturn(StringExp.of("testUser").toBag());
+		.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
 
 		expect(cache.getAttributes(capture(cacheCtx2))).andReturn(null);
 		expect(resolver2.resolve(capture(ctx2))).andReturn(result2);
@@ -214,8 +230,8 @@ public class DefaultPolicyInformationPointTest
 
 		control.replay();
 
-		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(StringExp.of("v1").toBag(), v);
+		Optional<BagOfAttributeValues> v = pip.resolve(context, a0);
+		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
 
 		control.verify();
 	}
@@ -239,12 +255,13 @@ public class DefaultPolicyInformationPointTest
 
 		AttributeSet result2 = AttributeSet
 				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", StringExp.of("v1").toBag())
+				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
 				.build();
 
 		expect(resolver1.getDescriptor()).andReturn(descriptor1);
 		expect(context.resolve(k))
-			.andReturn(StringExp.of("testUser").toBag());
+			.andReturn(Optional.of(
+					XacmlTypes.STRING.of("testUser").toBag()));
 		expect(cache.getAttributes(capture(cacheCtx1))).andReturn(null);
 		expect(resolver1.resolve(capture(ctx1))).andThrow(new NullPointerException());
 
@@ -252,7 +269,7 @@ public class DefaultPolicyInformationPointTest
 
 		expect(resolver2.getDescriptor()).andReturn(descriptor1WithIssuer);
 		expect(context.resolve(k))
-			.andReturn(StringExp.of("testUser").toBag());
+			.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
 		expect(cache.getAttributes(capture(cacheCtx2))).andReturn(null);
 
 
@@ -265,8 +282,8 @@ public class DefaultPolicyInformationPointTest
 
 		control.replay();
 
-		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(StringExp.of("v1").toBag(), v);
+		Optional<BagOfAttributeValues> v = pip.resolve(context, a0);
+		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
 		assertSame(ctx2.getValue(), ctx3.getValue());
 
 		control.verify();
@@ -280,18 +297,18 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignatorKey k = key.build();
 
 		// attribute resolver found
-		expect(registry.getMatchingAttributeResolvers(context, a0)).andReturn(ImmutableList.of(resolver1));
+		expect(registry.getMatchingAttributeResolver(context, a0)).andReturn(Optional.of(resolver1));
 		expect(resolver1.getDescriptor()).andReturn(descriptor1WithNoCache);
 
 		// key resolved
 		expect(context.resolve(k))
-				.andReturn(StringExp.of("testUser").toBag());
+				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
 
 		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
 
 		AttributeSet result = AttributeSet
 				.builder(descriptor1WithNoCache)
-				.attribute("testAttributeId1", StringExp.of("v1").toBag())
+				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
 				.build();
 
 		expect(resolver1.resolve(capture(ctx))).andReturn(result);
@@ -299,8 +316,8 @@ public class DefaultPolicyInformationPointTest
 		context.setDecisionCacheTTL(descriptor1WithNoCache.getPreferredCacheTTL());
 		control.replay();
 
-		BagOfAttributeExp v = pip.resolve(context, a0);
-		assertEquals(StringExp.of("v1").toBag(), v);
+		Optional<BagOfAttributeValues> v = pip.resolve(context, a0);
+		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
 
 		control.verify();
 	}

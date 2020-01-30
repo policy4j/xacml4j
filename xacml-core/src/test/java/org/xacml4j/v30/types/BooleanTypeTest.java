@@ -22,14 +22,13 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.TypeCapability;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
+
+import static org.junit.Assert.*;
 
 
 public class BooleanTypeTest
@@ -37,31 +36,31 @@ public class BooleanTypeTest
 	@Test
 	public void testValueOf()
 	{
-		BooleanExp a = BooleanExp.of("false");
-		assertFalse(a.getValue());
-		BooleanExp a1 = BooleanExp.of("true");
-		assertTrue(a1.getValue());
+		BooleanValue a = XacmlTypes.BOOLEAN.of("false");
+		assertFalse(a.value());
+		BooleanValue a1 = XacmlTypes.BOOLEAN.of("true");
+		assertTrue(a1.value());
 	}
 
 	@Test
 	public void fromToXacmlString()
 	{
-		BooleanExp v = BooleanExp.of("True");
-		assertEquals(Boolean.TRUE, v.getValue());
-		v = BooleanExp.of("TRUE");
-		assertEquals(Boolean.TRUE, v.getValue());
-		v = BooleanExp.of("FALSE");
-		assertEquals(Boolean.FALSE, v.getValue());
-		v = BooleanExp.of("False");
-		assertEquals(Boolean.FALSE, v.getValue());
+		BooleanValue v = XacmlTypes.BOOLEAN.of("True");
+		assertEquals(Boolean.TRUE, v.value());
+		v = XacmlTypes.BOOLEAN.of("TRUE");
+		assertEquals(Boolean.TRUE, v.value());
+		v = XacmlTypes.BOOLEAN.of("FALSE");
+		assertEquals(Boolean.FALSE, v.value());
+		v = XacmlTypes.BOOLEAN.of("False");
+		assertEquals(Boolean.FALSE, v.value());
 	}
 
 	@Test
 	public void toXacmlString()
 	{
-		Optional<TypeToString> c = TypeToString.Types.getIndex().get(XacmlTypes.BOOLEAN);
-		BooleanExp v1 = BooleanExp.valueOf(Boolean.TRUE);
-		BooleanExp v2 = BooleanExp.valueOf(Boolean.FALSE);
+		Optional<TypeToString> c = TypeToString.forType(XacmlTypes.BOOLEAN);
+		BooleanValue v1 = XacmlTypes.BOOLEAN.of(Boolean.TRUE);
+		BooleanValue v2 = XacmlTypes.BOOLEAN.of(Boolean.FALSE);
 		assertEquals("true", c.get().toString(v1));
 		assertEquals("false", c.get().toString(v2));
 	}
@@ -69,10 +68,10 @@ public class BooleanTypeTest
 	@Test
 	public void testEquals()
 	{
-		BooleanExp v1 = BooleanExp.valueOf(Boolean.TRUE);
-		BooleanExp v2 = BooleanExp.valueOf(Boolean.FALSE);
-		BooleanExp v3 = BooleanExp.valueOf(Boolean.TRUE);
-		BooleanExp v4 = BooleanExp.valueOf(Boolean.FALSE);
+		BooleanValue v1 = XacmlTypes.BOOLEAN.of(Boolean.TRUE);
+		BooleanValue v2 = XacmlTypes.BOOLEAN.of(Boolean.FALSE);
+		BooleanValue v3 = XacmlTypes.BOOLEAN.of(Boolean.TRUE);
+		BooleanValue v4 = XacmlTypes.BOOLEAN.of(Boolean.FALSE);
 		assertEquals(v1, v3);
 		assertEquals(v2, v4);
 	}
@@ -80,12 +79,13 @@ public class BooleanTypeTest
 	@Test
 	public void testBagOf()
 	{
-		BagOfAttributeExp b1 = BooleanExp.bag().value("true", "false").build();
-		BagOfAttributeExp b2 = BooleanExp.bag().value(true, false).build();
+		assertNotNull(XacmlTypes.BOOLEAN.bagType());
+		BagOfAttributeValues b1 = XacmlTypes.BOOLEAN.bag().value("true", "false").build();
+		BagOfAttributeValues b2 = XacmlTypes.BOOLEAN.bag().value(true, false).build();
 		assertEquals(2, b1.size());
 		assertEquals(b1, b2);
-		assertTrue(b1.contains(BooleanExp.valueOf(true)));
-		assertTrue(b1.contains(BooleanExp.valueOf(false)));
+		assertTrue(b1.contains(XacmlTypes.BOOLEAN.of(true)));
+		assertTrue(b1.contains(XacmlTypes.BOOLEAN.of(false)));
 
 	}
 }

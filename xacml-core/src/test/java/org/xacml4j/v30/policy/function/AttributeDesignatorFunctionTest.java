@@ -29,23 +29,14 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Node;
-import org.xacml4j.util.DOMUtil;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Optional;
 
 public class AttributeDesignatorFunctionTest
 {
@@ -60,61 +51,58 @@ public class AttributeDesignatorFunctionTest
 			"</md:record>";
 
 	private EvaluationContext context;
-	private XPathProvider xpathProvider;
 	private FunctionProvider provider;
 	private IMocksControl c;
-	private Node content;
-	private EntityExp entity;
+	private EntityValue entity;
 
 	@Before
 	public void init() throws Exception{
 		this.c = createControl();
 		this.context = c.createMock(EvaluationContext.class);
-		this.content = DOMUtil.stringToNode(TEST_XML);
-		this.provider = new AnnotationBasedFunctionProvider(AttributeDesignatorFunctions.class);
-		this.entity = EntityExp.of(
+		this.provider = FunctionProvider.builder().withStandardFunctions().build();
+		this.entity = XacmlTypes.ENTITY.of(
 				Entity.builder()
-				.content(content)
+				.content(XmlContent.of(XmlContent.fromString(TEST_XML)))
 				.attribute(Attribute
 						.builder("testId")
-						.value(StringExp.of("aaaa"))
+						.value(XacmlTypes.STRING.of("aaaa"))
 						.build())
 				.build());
 	}
 
 	@Test
 	public void testDesignatorFunctionWithCategoryId(){
-		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator");
+		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator").get();
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		expect(context.resolve(AttributeDesignatorKey
 				.builder()
-				.category(Categories.SUBJECT_ACCESS)
+				.category(CategoryId.SUBJECT_ACCESS)
 				.dataType(XacmlTypes.STRING)
 				.attributeId("testId")
-				.build())).andReturn(StringExp.of("aaaa").toBag());
+				.build())).andReturn(Optional.of(XacmlTypes.STRING.of("aaaa").toBag()));
 		c.replay();
-		BagOfAttributeExp v = func.invoke(context,
-				AnyURIExp.of(Categories.SUBJECT_ACCESS.getId()),
-				AnyURIExp.of("testId"),
-				AnyURIExp.of(XacmlTypes.STRING.getDataTypeId()),
-				BooleanExp.valueOf(false),
+		BagOfAttributeValues v = func.invoke(context,
+				XacmlTypes.ANYURI.of(CategoryId.SUBJECT_ACCESS.getId()),
+				XacmlTypes.ANYURI.of("testId"),
+				XacmlTypes.ANYURI.of(XacmlTypes.STRING.getDataTypeId()),
+				XacmlTypes.BOOLEAN.of(false),
 				null);
-		assertEquals(StringExp.of("aaaa").toBag(), v);
+		assertEquals(XacmlTypes.STRING.of("aaaa").toBag(), v);
 		c.verify();
 	}
 
 	@Test
 	public void testDesignatorFunctionWithEntity(){
-		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator");
+		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator").get();
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		c.replay();
-		BagOfAttributeExp v = func.invoke(context,
+		BagOfAttributeValues v = func.invoke(context,
 				entity,
-				AnyURIExp.of("testId"),
-				AnyURIExp.of(XacmlTypes.STRING.getDataTypeId()),
-				BooleanExp.valueOf(false),
+				XacmlTypes.ANYURI.of("testId"),
+				XacmlTypes.ANYURI.of(XacmlTypes.STRING.getDataTypeId()),
+				XacmlTypes.BOOLEAN.of(false),
 				null);
-		assertEquals(StringExp.of("aaaa").toBag(), v);
+		assertEquals(XacmlTypes.STRING.of("aaaa").toBag(), v);
 		c.verify();
 	}
 }

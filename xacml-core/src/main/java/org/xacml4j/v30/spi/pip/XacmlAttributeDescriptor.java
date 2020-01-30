@@ -45,6 +45,8 @@ public @interface XacmlAttributeDescriptor
 	 */
 	String dataType();
 
+	String[] aliases() default {};
+
 	/**
 	 * A default values for the attribute
 	 *

@@ -22,10 +22,10 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-
-import org.junit.Test;
 
 
 public class DNSNameTest
@@ -34,17 +34,17 @@ public class DNSNameTest
 	public void testCreateFromString()
 	{
 
-		DNSName v = DNSName.parse("test.org:10-20");
+		DNSName v = DNSName.of("test.org:10-20");
 		assertEquals("test.org", v.getDomainName());
 		assertEquals(10, v.getPortRange().getLowerBound());
 		assertEquals(20, v.getPortRange().getUpperBound());
 
-		v = DNSName.parse("test.org:-20");
+		v = DNSName.of("test.org:-20");
 		assertEquals("test.org", v.getDomainName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertEquals(20, v.getPortRange().getUpperBound());
 
-		v = DNSName.parse("test.org");
+		v = DNSName.of("test.org");
 		assertEquals("test.org", v.getDomainName());
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertFalse(v.getPortRange().isUpperBounded());
@@ -58,7 +58,7 @@ public class DNSNameTest
 	@Test
 	public void testEquals()
 	{
-		assertEquals(DNSName.parse("test.org:10-20"), DNSName.parse("test.org:10-20"));
-		assertEquals(DNSName.parse("test.org"), DNSName.parse("test.org"));
+		assertEquals(DNSName.of("test.org:10-20"), DNSName.of("test.org:10-20"));
+		assertEquals(DNSName.of("test.org"), DNSName.of("test.org"));
 	}
 }

@@ -24,26 +24,18 @@ package org.xacml4j.v30.spi.pip;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.util.Pair;
 import org.xacml4j.util.Reflections;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.reflect.TypeToken;
 
@@ -54,25 +46,25 @@ class AnnotatedResolverFactory
 	private final static TypeToken<?> ATTR_RESOLVER_RETURN_TYPE;
 
 	static{
-		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeExp>>(){};
+		ATTR_RESOLVER_RETURN_TYPE = new TypeToken<Map<String, BagOfAttributeValues>>(){};
 	}
 
 	/**
-	 * Gets all {@link ContentResolver} from given instance
+	 * Gets all {@link Resolver<ContentRef>} from given defaultProvider
 	 *
-	 * @param instance an instance containing annotated resolvers
-	 * @return a collection of found {@link ContentResolver}
+	 * @param instance an defaultProvider containing annotated resolvers
+	 * @return a collection of found {@link Resolver<ContentRef>}
 	 * @throws XacmlSyntaxException
 	 */
-	public Collection<ContentResolver> getContentResolvers(Object instance)
+	public Collection<Resolver<ContentRef>> getContentResolvers(Object instance)
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(instance);
-		Collection<ContentResolver> resolvers = new LinkedList<ContentResolver>();
+		Collection<Resolver<ContentRef>> resolvers = new LinkedList<>();
 		List<Method> methods = Reflections.getAnnotatedMethods(instance.getClass(),
 				XacmlContentResolverDescriptor.class);
 		for(Method m : methods){
-			ContentResolver r = parseContentResolver(instance, m);
+			Resolver<ContentRef> r = parseContentResolver(instance, m);
 			if(log.isDebugEnabled()){
 				log.debug("Parsing content resolver=\"{}\"",
 						r.getDescriptor().getId());
@@ -82,15 +74,15 @@ class AnnotatedResolverFactory
 		return resolvers;
 	}
 
-	public Collection<AttributeResolver> getAttributeResolvers(Object instance)
+	public Collection<Resolver<AttributeSet>> getAttributeResolvers(Object instance)
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(instance);
-		Collection<AttributeResolver> resolvers = new LinkedList<AttributeResolver>();
+		Collection<Resolver<AttributeSet>> resolvers = new LinkedList<>();
 		List<Method> methods =  Reflections.getAnnotatedMethods(instance.getClass(),
 				XacmlAttributeResolverDescriptor.class);
 		for(Method m : methods){
-			AttributeResolver r = parseAttributeResolver(instance, m);
+			Resolver<AttributeSet> r = parseAttributeResolver(instance, m);
 			if(log.isDebugEnabled()){
 				log.debug("Parsing attribute resolver=\"{}\"",
 						r.getDescriptor().getId());
@@ -100,51 +92,51 @@ class AnnotatedResolverFactory
 		return resolvers;
 	}
 
-	AttributeResolver parseAttributeResolver(Object instance, Method m)
+	Resolver<AttributeSet> parseAttributeResolver(Object instance, Method m)
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(instance);
 		Preconditions.checkNotNull(m);
 		Preconditions.checkArgument(m.getDeclaringClass().equals(instance.getClass()));
 		XacmlAttributeResolverDescriptor d = m.getAnnotation(XacmlAttributeResolverDescriptor.class);
-		AttributeResolverDescriptorBuilder b = AttributeResolverDescriptorBuilder.builder(
+		AttributeResolverDescriptorBuilder b =
+				AttributeResolverDescriptorBuilder.builder(
 				d.id(), d.name(),
 				d.issuer(),
-				Categories.parse(d.category()));
+				CategoryId.parse(d.category()).get());
 		b.cache(d.cacheTTL());
 		XacmlAttributeDescriptor[] attributes = d.attributes();
 		if(attributes == null ||
 				attributes.length == 0){
-			throw new XacmlSyntaxException("At least attribute " +
-					"must be specified by the descriptor on method=\"{}\"", m.getName());
+			throw XacmlSyntaxException.invalidResolverMethod(m,
+					"At least attribute " +
+							"must be specified by the descriptor");
 		}
 		for(XacmlAttributeDescriptor attr : attributes){
-			Optional<AttributeExpType> type = XacmlTypes.getType(attr.dataType());
-			if(!type.isPresent()){
-				throw new XacmlSyntaxException("Unknown XACML type=\"%s\"",
-						attr.dataType());
-			}
-			b.attribute(attr.id(), type.get());
-
+			XacmlTypes.getType(attr.dataType())
+							.map(t->b.attribute(attr.id(), t, attr.aliases()))
+					.orElseThrow(
+							()->XacmlSyntaxException
+									.invalidDataTypeId(attr.dataType()));
 		}
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
-		b.keys(info.getSecond());
+		info.second()
+				.forEach((r)->b.contextRef(r));
 		TypeToken<?> returnType = TypeToken.of(m.getGenericReturnType());
 		if(log.isDebugEnabled()){
 			log.debug("Attribute resolver id=\"{}\" return type=\"{}\"",
 					d.id(), returnType.toString());
 		}
 		if(!ATTR_RESOLVER_RETURN_TYPE.equals(returnType)){
-			throw new XacmlSyntaxException(
-					"Attribute resolver method=\"%s\"  must return=\"%s\"",
-					m.getName(), ATTR_RESOLVER_RETURN_TYPE.toString());
+			throw XacmlSyntaxException.invalidResolverMethod(m,
+					"Invalid method return type, correct return type=\"%s\"",
+					ATTR_RESOLVER_RETURN_TYPE.toString());
 		}
-		AttributeResolverDescriptor descriptor = b.build();
-		return new AnnotatedAttributeResolver(descriptor,
-				new Invocation(instance, m, info.getFirst()));
+		return AttributeResolverDescriptor.of(b.build(),
+				new Invocation(instance, m, info.first()));
 	}
 
-	ContentResolver parseContentResolver(Object instance, Method m)
+	Resolver<ContentRef> parseContentResolver(Object instance, Method m)
 		throws XacmlSyntaxException
 	{
 		Preconditions.checkNotNull(instance);
@@ -153,19 +145,18 @@ class AnnotatedResolverFactory
 		XacmlContentResolverDescriptor d = m.getAnnotation(XacmlContentResolverDescriptor.class);
 		ContentResolverDescriptorBuilder b = ContentResolverDescriptorBuilder.builder(
 				d.id(), d.name(),
-				Categories.parse(d.category()));
+				CategoryId.parse(d.category()).get());
 		b.cache(d.cacheTTL());
 		Pair<Boolean, List<AttributeReferenceKey>> info = parseResolverMethodParams(m);
-		b.keys(info.getSecond());
+		info.second().forEach(
+				referenceKey -> b.contextRef(referenceKey));
 		if(!m.getReturnType().isAssignableFrom(Node.class)){
-			throw new XacmlSyntaxException(
-					"Attribute resolver method=\"%s\" " +
-					"must return=\"%s\"", m.getName(),
-					Node.class.getName());
+			throw XacmlSyntaxException.invalidResolverMethod(m,
+					"Resolver must return=\"%s\"", Node.class.getName());
 		}
 		ContentResolverDescriptor descriptor = b.build();
-		return new AnnotatedContentResolver(descriptor,
-				new Invocation(instance, m, info.getFirst()));
+		return ContentResolverDescriptor.of(descriptor,
+				new Invocation(instance, m, info.first()));
 	}
 
 	private Pair<Boolean, List<AttributeReferenceKey>> parseResolverMethodParams(Method m)
@@ -178,13 +169,12 @@ class AnnotatedResolverFactory
 		for(Annotation[] p : m.getParameterAnnotations())
 		{
 			if(p.length == 0 && i != 0){
-				throw new XacmlSyntaxException(
-						"Only first parameter of the resolver method=\"%s\" " +
-						"can be without annotation", m.getName());
+				throw XacmlSyntaxException.invalidResolverMethod(m,
+						"Only first parameter of the resolver method can be without annotation");
 			}
 			if(p.length == 0 && i == 0) {
 				if(!types[i].equals(ResolverContext.class)){
-					throw new XacmlSyntaxException(
+					throw XacmlSyntaxException.invalidResolverMethod(m,
 							"Resolver parameter without annotation at index=\"%d\" must be of type=\"%s\"",
 							i, ResolverContext.class);
 				}
@@ -194,61 +184,59 @@ class AnnotatedResolverFactory
 			if(p.length > 0 &&
 					p[0] instanceof XacmlAttributeDesignator)
 			{
-				if(!(types[i].equals(BagOfAttributeExp.class))){
-					throw new XacmlSyntaxException(
-							"Resolver method=\"%s\" parameter at index=\"%d\" must be of type=\"%s\"",
-							m.getName(), i, BagOfAttributeExp.class.getName());
+				if(!(types[i].equals(BagOfAttributeValues.class))){
+					throw XacmlSyntaxException.invalidResolverMethod(m,
+							"Resolver method parameter at index=\"%d\" must be of type=\"%s\"",
+							i, BagOfAttributeValues.class.getName());
 				}
 				XacmlAttributeDesignator ref = (XacmlAttributeDesignator)p[0];
-				Optional<AttributeExpType> type = XacmlTypes.getType(ref.dataType());
-				if(!type.isPresent()){
-					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"",
-							ref.dataType());
-				}
-				keys.add(AttributeDesignatorKey
-						.builder()
-						.category(ref.category())
-						.attributeId(ref.attributeId())
-						.dataType(type.get())
-						.issuer(ref.issuer())
-						.build());
+				java.util.Optional<AttributeValueType> type = XacmlTypes.getType(ref.dataType());
+				keys.add(type.map(
+						t-> AttributeDesignatorKey
+								.builder()
+								.category(ref.category())
+								.attributeId(ref.attributeId())
+								.dataType(t)
+								.issuer(ref.issuer())
+								.build())
+						.orElseThrow(
+								()-> XacmlSyntaxException
+										.invalidDataTypeId(ref.dataType())));
 				continue;
 			}
 			if(p.length > 0 &&
 					p[0] instanceof XacmlAttributeSelector)
 			{
-				if(!(types[i].equals(BagOfAttributeExp.class))){
-					throw new XacmlSyntaxException(
-							"Resolver method=\"%s\" " +
-							"request key parameter " +
+				if(!(types[i].equals(BagOfAttributeValues.class))){
+					throw XacmlSyntaxException.invalidResolverMethod(m,
+							"Resolver method request context key parameter " +
 							"at index=\"%d\" must be of type=\"%s\"",
-							m.getName(), i, BagOfAttributeExp.class.getName());
+							m.getName(), i, BagOfAttributeValues.class.getName());
 				}
 				XacmlAttributeSelector ref = (XacmlAttributeSelector)p[0];
-				Optional<AttributeExpType> type = XacmlTypes.getType(ref.dataType());
-				if(!type.isPresent()){
-					throw new XacmlSyntaxException("Unknown XACML type=\"%s\"",
-							ref.dataType());
-				}
-				keys.add(AttributeSelectorKey
-						.builder()
-						.category(ref.category())
-						.xpath(ref.xpath())
-						.dataType(type.get())
-						.contextSelectorId(ref.contextAttributeId())
-						.build());
+				keys.add(XacmlTypes.getType(ref.dataType())
+						.map(t->AttributeSelectorKey
+								.builder()
+								.category(ref.category())
+								.xpath(ref.xpath())
+								.dataType(t)
+								.contextSelectorId(ref.contextAttributeId())
+								.build())
+						.orElseThrow(
+								()-> XacmlSyntaxException
+										.invalidDataTypeId(ref.dataType())));
+
 				continue;
 			}
 			i++;
-			throw new XacmlSyntaxException(
+			throw XacmlSyntaxException.invalidResolverMethod(m,
 						"Unknown annotation of type=\"%s\" found",
 						types[0].getClass());
 		}
-		return new Pair<Boolean, List<AttributeReferenceKey>>(needPipContext, keys);
+		return new Pair(needPipContext, keys);
 	}
 
-
-	public static final class Invocation <T>
+	public static final class Invocation <T> implements Function<ResolverContext, T>
 	{
 		private final Method m;
 		private final Object instance;
@@ -264,60 +252,26 @@ class AnnotatedResolverFactory
 		}
 
 		@SuppressWarnings("unchecked")
-		public T invoke(ResolverContext context) throws Exception
+		public T invoke(ResolverContext context)
 		{
-			List<BagOfAttributeExp> keys = context.getKeys();
-			if (requiresContext) {
-				Object[] params = new Object[keys.size() + 1];
-				params[0] = context;
-				System.arraycopy(keys.toArray(), 0, params, 1, keys.size());
-				return (T)m.invoke(instance, params);
+			try
+			{
+				Map<AttributeReferenceKey, BagOfAttributeValues> keys = context.getResolvedKeys();
+				if (requiresContext) {
+					Object[] params = new Object[keys.size() + 1];
+					params[0] = context;
+					System.arraycopy(keys.values().toArray(), 0, params, 1, keys.size());
+					return (T)m.invoke(instance, params);
+				}
+				return (T)m.invoke(instance, keys.values().toArray());
+			}catch (Exception e){
+				throw new RuntimeException(e);
 			}
-			return (T)m.invoke(instance, keys.toArray());
-		}
-	}
-
-	/**
-	 * An implementation {@link AttributeResolver} for
-	 * annotated resolver classes
-	 *
-	 * @author Giedrius Trumpickas
-	 */
-	private static final class AnnotatedAttributeResolver
-		extends BaseAttributeResolver
-	{
-		private Invocation<Map<String, BagOfAttributeExp>> invocation;
-
-		public AnnotatedAttributeResolver(
-				AttributeResolverDescriptor descriptor,
-				Invocation<Map<String, BagOfAttributeExp>> invocation) {
-			super(descriptor);
-			this.invocation = invocation;
 		}
 
 		@Override
-		protected Map<String, BagOfAttributeExp> doResolve(
-				ResolverContext context) throws Exception {
-			return invocation.invoke(context);
-		}
-	}
-
-	private static final class AnnotatedContentResolver
-		extends BaseContentResolver
-	{
-		private Invocation<Node> invocation;
-
-		public AnnotatedContentResolver(
-				ContentResolverDescriptor descriptor,
-				Invocation<Node> invocation) {
-			super(descriptor);
-			this.invocation = invocation;
-		}
-
-		@Override
-		protected Node doResolve(ResolverContext context)
-				throws Exception {
-			return invocation.invoke(context);
+		public T apply(ResolverContext context) {
+			return invoke(context);
 		}
 	}
 }

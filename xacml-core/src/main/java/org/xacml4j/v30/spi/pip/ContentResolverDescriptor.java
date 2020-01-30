@@ -22,15 +22,63 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.xacml4j.v30.CategoryId;
 
-public interface ContentResolverDescriptor extends ResolverDescriptor
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.Content;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+
+public interface ContentResolverDescriptor
+		extends ResolverDescriptor
 {
-	/**
-	 * Tests if given category content can be resolved via this resolver
-	 *
-	 * @param category an attribute category
-	 * @return {@code true} if content can be resolved
-	 */
-	boolean canResolve(CategoryId category);
+
+	static Resolver<ContentRef> of(ContentResolverDescriptor d,
+									 Function<ResolverContext, Content> function)
+
+	{
+		return new ContentResolver(d, function);
+	}
+
+	final class ContentResolver implements Resolver<ContentRef>
+	{
+		private final static Logger log = LoggerFactory.getLogger(ContentResolver.class);
+
+		private ContentResolverDescriptor descriptor;
+		private Function<ResolverContext, Content> function;
+
+		public ContentResolver(ContentResolverDescriptor descriptor,
+							   Function<ResolverContext, Content> function){
+			Preconditions.checkArgument(descriptor != null);
+			this.descriptor = Objects.requireNonNull(descriptor,
+					ContentResolverDescriptor.class.getSimpleName());
+			this.function = Objects.requireNonNull(function, "Content resolution function");
+		}
+
+		@Override
+		public final ContentResolverDescriptor getDescriptor() {
+			return descriptor;
+		}
+
+		@Override
+		public Optional<ContentRef> resolve(
+				ResolverContext context)
+		{
+			if(log.isDebugEnabled()){
+				log.debug("Retrieving content via resolver id=\"{}\" name=\"{}\"",
+						descriptor.getId(),
+						descriptor.getName());
+			}
+			return Optional.ofNullable(function.apply(context))
+					.map(c->ContentRef.builder()
+							.resolver(getDescriptor())
+							.content(c)
+							.clock(context.getClock())
+							.build());
+		}
+
+	}
 }

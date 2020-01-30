@@ -22,21 +22,21 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.AttributeExp;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.AttributeValue;
 
 /**
  * Conveys a single parameter for a policy- or rule-combining algorithm.
  *
  * @author Giedrius Trumpickas
  */
-public class CombinerParameter
+public final class CombinerParameter
 	implements PolicyElement
 {
 	private final String name;
-	private final AttributeExp value;
+	private final AttributeValue value;
 
 	/**
 	 * Constructs decision combining parameter
@@ -45,7 +45,7 @@ public class CombinerParameter
 	 * @param value a parameter value
 	 */
 	public CombinerParameter(String name,
-			AttributeExp value)
+			AttributeValue value)
 	{
 		Preconditions.checkNotNull(name);
 		Preconditions.checkNotNull(value);
@@ -57,7 +57,7 @@ public class CombinerParameter
 		return name;
 	}
 
-	public final AttributeExp getValue(){
+	public final AttributeValue getValue(){
 		return value;
 	}
 
@@ -68,7 +68,7 @@ public class CombinerParameter
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("name", name)
 		.add("value", value)
 		.toString();

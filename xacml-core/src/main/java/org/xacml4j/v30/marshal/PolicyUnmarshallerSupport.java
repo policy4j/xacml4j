@@ -22,15 +22,15 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
+import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
-
-import com.google.common.base.Preconditions;
+import org.xacml4j.v30.FunctionProvider;
 
 /**
  * A support class for dealing with XACML
@@ -55,23 +55,31 @@ public class PolicyUnmarshallerSupport
 		this.combiningAlgorithms = decisionCombiningAlgorithms;
 	}
 
+	protected PolicyUnmarshallerSupport(
+			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms) throws Exception
+	{
+		this(FunctionProvider.builder()
+				.withStandardFunctions()
+				.withDiscoveredFunctions()
+				.build(), decisionCombiningAlgorithms);
+	}
+
 	/**
 	 * Creates function from a given identifier
 	 *
 	 * @param functionId a function identifier
-	 * @return {@link FunctionSpec} instance
+	 * @return {@link FunctionSpec} defaultProvider
 	 * @throws XacmlSyntaxException if function with a given
 	 * identifier is not known to this factory
 	 */
-	protected final FunctionSpec createFunction(String functionId)
+	protected final FunctionSpec lookUpFunction(String functionId)
 			throws XacmlSyntaxException
 	{
-		FunctionSpec spec = functions.getFunction(functionId);
-		if (spec == null) {
-			throw new XacmlSyntaxException(
-					"Function with id=\"%s\" can not be resolved", functionId);
-		}
-		return spec;
+		return functions.getFunction(functionId)
+				.orElseThrow(
+						()->XacmlSyntaxException
+								.invalidFunction(functionId));
+
 	}
 
 	/**
@@ -79,7 +87,7 @@ public class PolicyUnmarshallerSupport
 	 * on a given algorithm identifier
 	 *
 	 * @param algorithmId an algorithm identifier
-	 * @return {@link DecisionCombiningAlgorithmProvider} instance
+	 * @return {@link DecisionCombiningAlgorithmProvider} defaultProvider
 	 * @throws XacmlSyntaxException if no algorithm can be found
 	 * for given identifier
 	 */
@@ -100,11 +108,11 @@ public class PolicyUnmarshallerSupport
 	 * on a given algorithm identifier
 	 *
 	 * @param algorithmId an algorithm identifier
-	 * @return {@link DecisionCombiningAlgorithmProvider} instance
+	 * @return {@link DecisionCombiningAlgorithmProvider} defaultProvider
 	 * @throws XacmlSyntaxException if no algorithm can be found
 	 * for given identifier
 	 */
-	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> createPolicyCombiningAlgorithm(
+	protected final DecisionCombiningAlgorithm<CompositeDecisionRule> lookUpPolicyCombiningAlgorithm(
 			String algorithmId) throws XacmlSyntaxException {
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combiningAlgorithms
 				.getPolicyAlgorithm(algorithmId);

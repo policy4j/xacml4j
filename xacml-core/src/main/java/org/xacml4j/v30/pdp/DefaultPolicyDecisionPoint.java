@@ -22,42 +22,22 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.xacml4j.v30.pdp.MetricsSupport.name;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.management.NotCompliantMBeanException;
-import javax.management.StandardMBean;
-
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.MetricRegistry;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
-import com.codahale.metrics.Counter;
-import com.codahale.metrics.Histogram;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Map;
+
+import static org.xacml4j.v30.pdp.MetricsSupport.name;
 
 /**
  * A default implementation of {@link PolicyDecisionPoint}
@@ -65,16 +45,13 @@ import com.google.common.collect.Multimap;
  * @author Giedrius Trumpickas
  */
 final class DefaultPolicyDecisionPoint
-	extends StandardMBean implements PolicyDecisionPoint, PolicyDecisionCallback
+	implements PolicyDecisionPoint
 {
 
 	private final String id;
 	private final PolicyDecisionPointContextFactory factory;
 
-	private final AtomicBoolean auditEnabled;
-	private final AtomicBoolean cacheEnabled;
 
-	private final Timer decisionTimer;
 	private final Histogram decisionHistogram;
 	private final Counter permitDecisions;
 	private final Counter denyDecisions;
@@ -82,18 +59,13 @@ final class DefaultPolicyDecisionPoint
 
 	DefaultPolicyDecisionPoint(
 			String id,
+			MetricRegistry registry,
 			PolicyDecisionPointContextFactory factory)
-		throws NotCompliantMBeanException
 	{
-		super(PolicyDecisionPointMBean.class);
 		Preconditions.checkNotNull(id);
 		Preconditions.checkNotNull(factory);
 		this.id = id;
 		this.factory = factory;
-		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
-		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
-		final MetricRegistry registry = MetricsSupport.getOrCreate();
-		this.decisionTimer = registry.timer(name("pdp", id, "timer"));
 		this.decisionHistogram = registry.histogram(name("pdp", id, "histogram"));
 		this.permitDecisions = registry.counter(name("pdp", id, "count-permit"));
 		this.denyDecisions = registry.counter(name("pdp", id, "count-deny"));
@@ -106,11 +78,15 @@ final class DefaultPolicyDecisionPoint
 		MDCSupport.setPdpContext(this);
 		try
 		{
-			PolicyDecisionPointContext context = factory.createContext(this);
-			RequestContextHandler chain = context.getRequestHandlers();
+			PolicyDecisionPointContext context = factory.createContext(
+					this::requestDecision);
+			RequestContextHandler chain =
+					context.getRequestHandlers();
 			return ResponseContext
 					.builder()
-					.results(chain.handle(request, context))
+					.results(
+							chain
+									.handle(request, context))
 					.build();
 		}finally{
 			MDCSupport.cleanPdpContext();
@@ -122,8 +98,7 @@ final class DefaultPolicyDecisionPoint
 		return id;
 	}
 
-	@Override
-	public Result requestDecision(
+	private Result requestDecision(
 			PolicyDecisionPointContext context,
 			RequestContext request)
 	{
@@ -131,18 +106,16 @@ final class DefaultPolicyDecisionPoint
 		try
 		{
 			PolicyDecisionCache decisionCache = context.getDecisionCache();
-			PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();
-			Timer.Context timerContext = decisionTimer.time();
+			PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();;
 			Result r =  null;
-			if(isDecisionCacheEnabled()){
+			if(context.isDecisionCacheEnabled()){
 				r = decisionCache.getDecision(request);
 			}
 			if(r != null){
-				if(isDecisionAuditEnabled()){
+				if(context.isDecisionAuditEnabled()){
 					decisionAuditor.audit(this, r, request);
 				}
 				incrementDecisionCounters(r.getDecision());
-				decisionHistogram.update(timerContext.stop());
 				return r;
 			}
 			EvaluationContext evalContext = context.createEvaluationContext(request);
@@ -154,15 +127,14 @@ final class DefaultPolicyDecisionPoint
 					request.getIncludeInResultAttributes(),
 					getResolvedAttributes(evalContext),
 					request.isReturnPolicyIdList());
-			if(isDecisionAuditEnabled()){
+			if(context.isDecisionAuditEnabled()){
 				decisionAuditor.audit(this, r, request);
 			}
-			if(isDecisionCacheEnabled()){
+			if(context.isDecisionCacheEnabled()){
 				decisionCache.putDecision(
 						request, r,
 						evalContext.getDecisionCacheTTL());
 			}
-			decisionHistogram.update(timerContext.stop());
 			return r;
 		}finally{
 			MDCSupport.cleanXacmlRequestId();
@@ -196,8 +168,8 @@ final class DefaultPolicyDecisionPoint
 					.build();
 		}
 		if(decision.isIndeterminate()){
-			Status status = (context.getEvaluationStatus() == null)?
-					Status.processingError().build():context.getEvaluationStatus();
+			Status status = context.getEvaluationStatus().orElse(
+					Status.processingError().build());
 			return Result
 					.builder(decision, status)
 					.includeInResultAttr(includeInResult)
@@ -226,10 +198,10 @@ final class DefaultPolicyDecisionPoint
 	 * @return a collection of {@link Attribute} instances
 	 */
 	private Collection<Category> getResolvedAttributes(EvaluationContext context){
-		Map<AttributeDesignatorKey, BagOfAttributeExp> desig = context.getResolvedDesignators();
+		Map<AttributeDesignatorKey, BagOfAttributeValues> desig = context.getResolvedDesignators();
 		Multimap<CategoryId, Attribute> attributes = HashMultimap.create();
 		for(AttributeDesignatorKey k : desig.keySet()){
-			BagOfAttributeExp v = desig.get(k);
+			BagOfAttributeValues v = desig.get(k);
 			Collection<Attribute> values = attributes.get(k.getCategory());
 			values.add(Attribute
 					.builder(k.getAttributeId())
@@ -245,26 +217,6 @@ final class DefaultPolicyDecisionPoint
 					.build());
 		}
 		return result;
-	}
-
-	@Override
-	public boolean isDecisionAuditEnabled() {
-		return auditEnabled.get();
-	}
-
-	@Override
-	public void setDecisionAuditEnabled(boolean enabled) {
-		this.auditEnabled.set(enabled);
-	}
-
-	@Override
-	public boolean isDecisionCacheEnabled() {
-		return cacheEnabled.get();
-	}
-
-	@Override
-	public void setDecisionCacheEnabled(boolean enabled) {
-		this.cacheEnabled.set(enabled);
 	}
 
 	@Override

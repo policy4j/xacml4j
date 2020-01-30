@@ -22,15 +22,16 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Result
 {
@@ -82,7 +83,7 @@ public class Result
 	}
 
 	public static Result.Builder indeterminate(Status status){
-		Preconditions.checkArgument(status.isFailure());
+		Preconditions.checkArgument(!status.isSuccess());
 		return new Result.Builder().decision(Decision.INDETERMINATE).status(status);
 	}
 
@@ -199,7 +200,7 @@ public class Result
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("status", status)
 				.add("decision", decision)
@@ -331,7 +332,7 @@ public class Result
 			Advice a = associatedAdvice.get(advice.getId());
 			if(a != null){
 				a = a.merge(advice);
-				associatedAdvice.put(a.getId(), a);
+				associatedAdvice.replace(a.getId(), a);
 				return this;
 			}
 			associatedAdvice.put(advice.getId(), advice);
@@ -343,7 +344,7 @@ public class Result
 			Obligation o = obligations.get(obligation.getId());
 			if(o != null){
 				o = o.merge(obligation);
-				obligations.put(o.getId(), o);
+				obligations.replace(o.getId(), o);
 				return this;
 			}
 			obligations.put(obligation.getId(), obligation);

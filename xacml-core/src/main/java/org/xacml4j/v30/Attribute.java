@@ -22,26 +22,29 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.Collection;
-
-import org.xacml4j.v30.types.EntityExp;
-
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableMultiset;
+import org.xacml4j.v30.types.EntityValue;
+import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * A XACML request context attribute
+ * A XACML request context attribute, a container for {@link AttributeValue} of the same type
  *
  * @author Giedrius Trumpickas
  */
 public class Attribute
 {
 	private final String attributeId;
-	private final ImmutableMultiset<AttributeExp> values;
+	private final ImmutableMultiset<AttributeValue> values;
 	private final boolean includeInResult;
 	private final String issuer;
 
@@ -90,33 +93,33 @@ public class Attribute
 
 	/**
 	 * Gets attribute values as collection of
-	 * {@link AttributeExp} instances
+	 * {@link AttributeValue} instances
 	 *
-	 * @return collection of {@link AttributeExp}
+	 * @return collection of {@link AttributeValue}
 	 * instances
 	 */
-	public Collection<AttributeExp> getValues(){
+	public Collection<AttributeValue> getValues(){
 		return values;
 	}
 
 	/**
-	 * Gets all instances of {@link AttributeExp} by type
+	 * Gets all instances of {@link AttributeValue} by type
 	 *
 	 * @param type an attribute type
-	 * @return a collection of {@link AttributeExp} of given type
+	 * @return a collection of {@link AttributeValue} of given type
 	 */
-	public Collection<AttributeExp> getValuesByType(final AttributeExpType type) {
-		return Collections2.filter(values, new Predicate<AttributeExp>() {
-			@Override
-			public boolean apply(AttributeExp a) {
-				return a.getType().equals(type);
-			}
-		});
+	public Collection<AttributeValue> getValuesByType(final AttributeValueType... type) {
+		if(type == null || type.length == 0){
+			return Collections.emptyList();
+		}
+		List<AttributeValueType> types = Arrays.asList(type);
+		return values.stream().filter(a->types.contains(a.getType()))
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public final String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("AttributeId", attributeId)
 		.add("Issuer", issuer)
 		.add("IncludeInResult", includeInResult)
@@ -150,7 +153,7 @@ public class Attribute
 		private String attributeId;
 		private String issuer;
 		private boolean includeInResult;
-		private ImmutableMultiset.Builder<AttributeExp> valueBuilder;
+		private ImmutableMultiset.Builder<AttributeValue> valueBuilder;
 
 		private Builder(String attributeId){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(attributeId));
@@ -173,16 +176,16 @@ public class Attribute
 			return this;
 		}
 
-		public Builder value(AttributeExp ...values){
+		public Builder value(AttributeValue...values){
 			Preconditions.checkNotNull(values);
-			for(AttributeExp v : values){
+			for(AttributeValue v : values){
 				valueBuilder.add(v);
 			}
 			return this;
 		}
 
 		/**
-		 * Wraps given entities to via {@link EntityExp#of(Entity)}
+		 * Wraps given entities to via {@link EntityValue#of(Entity)}
 		 * and adds them to this entity builder
 		 *
 		 * @param values an array of entities
@@ -191,13 +194,13 @@ public class Attribute
 		public Builder entity(Entity ...values){
 			Preconditions.checkNotNull(values);
 			for(Entity v : values){
-				valueBuilder.add(EntityExp.of(v));
+				valueBuilder.add(XacmlTypes.ENTITY.of(v));
 			}
 			return this;
 		}
 
 		/**
-		 * Wraps given entities to via {@link EntityExp#of(Entity)}
+		 * Wraps given entities to via {@link EntityValue#of(Entity)}
 		 * and adds them to this entity builder
 		 *
 		 * @param it an iterator over collection of {@link Entity}
@@ -206,14 +209,14 @@ public class Attribute
 		public Builder entities(Iterable<Entity> it){
 			Preconditions.checkNotNull(it);
 			for(Entity v : it){
-				valueBuilder.add(EntityExp.of(v));
+				valueBuilder.add(XacmlTypes.ENTITY.of(v));
 			}
 			return this;
 		}
 
-		public Builder values(Iterable<AttributeExp> values){
+		public Builder values(Iterable<AttributeValue> values){
 			Preconditions.checkNotNull(values);
-			for(AttributeExp v : values){
+			for(AttributeValue v : values){
 				valueBuilder.add(v);
 			}
 			return this;

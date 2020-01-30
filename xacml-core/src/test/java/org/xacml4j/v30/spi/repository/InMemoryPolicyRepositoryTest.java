@@ -41,11 +41,12 @@ import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
+import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.FunctionProvider;
 
 
 public class InMemoryPolicyRepositoryTest
@@ -63,6 +64,9 @@ public class InMemoryPolicyRepositoryTest
 	private PolicyRepositoryListener l;
 
 	private FunctionProvider functions;
+
+	private PolicyUnmarshaller unmarshaller;
+
 	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
 
 	@SuppressWarnings("unchecked")
@@ -72,6 +76,7 @@ public class InMemoryPolicyRepositoryTest
 		this.c = createControl();
 		this.algorithm = c.createMock(DecisionCombiningAlgorithm.class);
 		this.functions = c.createMock(FunctionProvider.class);
+		this.unmarshaller = c.createMock(PolicyUnmarshaller.class);
 		this.decisionAlgorithms = c.createMock(DecisionCombiningAlgorithmProvider.class);
 
 		this.p1v1 = Policy.builder("id1").version("1").combiningAlgorithm(algorithm).build();
@@ -79,7 +84,7 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v2DiffInstance =  Policy.builder("id1").version("1.1").combiningAlgorithm(algorithm).build();
 		this.p1v3 =  Policy.builder("id1").version("1.2.1").combiningAlgorithm(algorithm).build();
 		this.p1v4 =  Policy.builder("id1").version("2.0.1").combiningAlgorithm(algorithm).build();
-		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms);
+		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms, unmarshaller);
 		this.l = c.createMock(PolicyRepositoryListener.class);
 		this.r.addPolicyRepositoryListener(l);
 	}

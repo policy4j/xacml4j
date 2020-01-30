@@ -31,8 +31,6 @@ import java.util.List;
 import org.junit.Test;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.StringExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -43,8 +41,8 @@ public class ParamSingleTypeSpecTest
 	public void testValidateWithAttributeType() throws Exception
 	{
 		FunctionParamSpec spec = new FunctionParamValueTypeSpec(XacmlTypes.DOUBLE);
-		List<Expression> good = Collections.<Expression>singletonList(DoubleExp.of(0.1));
-		List<Expression> bad = Collections.<Expression>singletonList(StringExp.of("AAAA"));
+		List<Expression> good = Collections.<Expression>singletonList(XacmlTypes.INTEGER.of(0.1));
+		List<Expression> bad = Collections.<Expression>singletonList(XacmlTypes.STRING.of("AAAA"));
 		assertTrue(spec.validate(good.listIterator()));
 		assertFalse(spec.validate(bad.listIterator()));
 	}
@@ -53,8 +51,8 @@ public class ParamSingleTypeSpecTest
 	public void testValidateWithBagType() throws Exception
 	{
 		FunctionParamSpec spec = new FunctionParamValueTypeSpec(XacmlTypes.DOUBLE);
-		List<Expression> good = Collections.<Expression>singletonList(DoubleExp.of(0.1).toBag());
-		List<Expression> bad = Collections.<Expression>singletonList(StringExp.of("AAAA").toBag());
+		List<Expression> good = Collections.<Expression>singletonList(XacmlTypes.DOUBLE.of(0.1).toBag());
+		List<Expression> bad = Collections.<Expression>singletonList(XacmlTypes.STRING.of("AAAA").toBag());
 		assertFalse(spec.validate(good.listIterator()));
 		assertFalse(spec.validate(bad.listIterator()));
 	}

@@ -26,16 +26,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
-import org.xacml4j.v30.types.AnyURIExp;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.types.*;
+
+import static org.xacml4j.v30.types.XacmlTypes.*;
 
 
 public class BagFunctionsTest
@@ -44,8 +41,7 @@ public class BagFunctionsTest
 	@Test
 	public void testFunctionIfImplemented() throws Exception
 	{
-		FunctionProvider f = new AnnotationBasedFunctionProvider(
-				BagFunctions.class);
+		FunctionProvider f = FunctionProvider.builder().withStandardFunctions().build();
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-bag-size"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in"));
@@ -111,69 +107,69 @@ public class BagFunctionsTest
 	@Test
 	public void testStringBagFunctions() throws EvaluationException
 	{
-		StringExp v0 = StringExp.of("a");
-		StringExp v1 = StringExp.of("b");
-		BagOfAttributeExp bag = XacmlTypes.STRING.bagOf(v0);
+		StringValue v0 = XacmlTypes.STRING.of("a");
+		StringValue v1 = XacmlTypes.STRING.of("b");
+		BagOfAttributeValues bag = XacmlTypes.STRING.bagOf(v0);
 		assertEquals(v0, BagFunctions.stringOneAndOnly(bag));
-		assertEquals(IntegerExp.of(1), BagFunctions.stringBagSize(bag));
-		assertEquals(BooleanExp.valueOf(true), BagFunctions.stringIsIn(v0, bag));
-		assertEquals(BooleanExp.valueOf(false), BagFunctions.stringIsIn(v1, bag));
+		assertEquals(INTEGER.of(1), BagFunctions.stringBagSize(bag));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), BagFunctions.stringIsIn(v0, bag));
+		assertEquals(XacmlTypes.BOOLEAN.of(false), BagFunctions.stringIsIn(v1, bag));
 		assertEquals(XacmlTypes.STRING.bagOf(v0, v1), BagFunctions.stringBag(v0, v1));
 	}
 
 	@Test
 	public void testBooleanBagFunctions() throws EvaluationException
 	{
-		BooleanExp v0 = BooleanExp.valueOf(true);
-		BooleanExp v1 = BooleanExp.valueOf(false);
-		BagOfAttributeExp bag = XacmlTypes.BOOLEAN.bagOf(v0);
+		BooleanValue v0 = XacmlTypes.BOOLEAN.of(true);
+		BooleanValue v1 = XacmlTypes.BOOLEAN.of(false);
+		BagOfAttributeValues bag = XacmlTypes.BOOLEAN.bagOf(v0);
 		assertEquals(v0, BagFunctions.booleanOneAndOnly(bag));
-		assertEquals(IntegerExp.of(1), BagFunctions.booleanBagSize(bag));
-		assertEquals(BooleanExp.valueOf(true), BagFunctions.booleanIsIn(v0, bag));
-		assertEquals(BooleanExp.valueOf(false), BagFunctions.booleanIsIn(v1, bag));
+		assertEquals(INTEGER.of(1), BagFunctions.booleanBagSize(bag));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), BagFunctions.booleanIsIn(v0, bag));
+		assertEquals(XacmlTypes.BOOLEAN.of(false), BagFunctions.booleanIsIn(v1, bag));
 		assertEquals(XacmlTypes.BOOLEAN.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
 	}
 
 	@Test
 	public void testIntegerBagFunctions() throws EvaluationException
 	{
-		IntegerExp v0 = IntegerExp.of(1);
-		IntegerExp v1 = IntegerExp.of(2);
-		BagOfAttributeExp bag = v0.toBag();
+		IntegerValue v0 = XacmlTypes.INTEGER.of(1);
+		IntegerValue v1 = XacmlTypes.INTEGER.of(2);
+		BagOfAttributeValues bag = v0.toBag();
 		assertEquals(v0, BagFunctions.integerOneAndOnly(bag));
-		assertEquals(IntegerExp.of(1), BagFunctions.integerBagSize(bag));
-		assertEquals(BooleanExp.of(true), BagFunctions.integerIsIn(v0, bag));
-		assertEquals(BooleanExp.of(false), BagFunctions.integerIsIn(v1, bag));
+		assertEquals(INTEGER.of(1), BagFunctions.integerBagSize(bag));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), BagFunctions.integerIsIn(v0, bag));
+		assertEquals(XacmlTypes.BOOLEAN.of(false), BagFunctions.integerIsIn(v1, bag));
 		assertEquals(XacmlTypes.INTEGER.bagOf(v0, v1), BagFunctions.integerBag(v0, v1));
 	}
 
 	@Test
 	public void testDoubleBagFunctions() throws EvaluationException
 	{
-		DoubleExp v0 = DoubleExp.of(1);
-		DoubleExp v1 = DoubleExp.of(2);
-		BagOfAttributeExp bag = v0.toBag();
+		DoubleValue v0 = XacmlTypes.DOUBLE.of(1);
+		DoubleValue v1 = XacmlTypes.DOUBLE.of(2);
+		BagOfAttributeValues bag = v0.toBag();
 		assertEquals(v0, BagFunctions.doubleOneAndOnly(bag));
-		assertEquals(IntegerExp.of(1), BagFunctions.doubleBagSize(bag));
-		assertEquals(BooleanExp.of(true), BagFunctions.doubleIsIn(v0, bag));
-		assertEquals(BooleanExp.of(false), BagFunctions.doubleIsIn(v1, bag));
-		assertEquals(XacmlTypes.DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
+		assertEquals(INTEGER.of(1), BagFunctions.doubleBagSize(bag));
+		assertEquals(BOOLEAN.of(true), BagFunctions.doubleIsIn(v0, bag));
+		assertEquals(BOOLEAN.of(false), BagFunctions.doubleIsIn(v1, bag));
+		assertEquals(DOUBLE.bagOf(v0, v1), BagFunctions.doubleBag(v0, v1));
 	}
 
 	@Test
 	public void testAnyURIBagFunctions() throws EvaluationException
 	{
-		AnyURIExp v0 = AnyURIExp.of("http://www.test0.org");
-		AnyURIExp v1 = AnyURIExp.of("http://www.test1.org");
-		AnyURIExp v2 = AnyURIExp.of("http://www.test2.org");
-		BagOfAttributeExp bag = v0.toBag();
+		AnyURIValue v0 = ANYURI.of("http://www.test0.org");
+		AnyURIValue v1 = ANYURI.of("http://www.test1.org");
+		AnyURIValue v2 = ANYURI.of("http://www.test2.org");
+		BagOfAttributeValues bag = v0.toBag();
 		assertEquals(v0, BagFunctions.anyURIOneAndOnly(bag));
-		assertEquals(IntegerExp.of(1), BagFunctions.anyURIBagSize(bag));
-		assertEquals(BooleanExp.of(true), BagFunctions.anyURIIsIn(v0, bag));
-		assertEquals(BooleanExp.of(false), BagFunctions.anyURIIsIn(v1, bag));
-		assertEquals(XacmlTypes.ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
+		assertEquals(INTEGER.of(1), BagFunctions.anyURIBagSize(bag));
+		assertEquals(BOOLEAN.of(true), BagFunctions.anyURIIsIn(v0, bag));
+		assertEquals(BOOLEAN.of(false), BagFunctions.anyURIIsIn(v1, bag));
+		assertEquals(ANYURI.bagOf(v0, v1), BagFunctions.anyURIBag(v0, v1));
 
-		assertEquals(BooleanExp.of(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
-		assertEquals(BooleanExp.of(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
+		assertEquals(BOOLEAN.of(true), BagFunctions.anyURIIsIn(v0, BagFunctions.anyURIBag(v0, v1)));
+		assertEquals(BOOLEAN.of(false), BagFunctions.anyURIIsIn(v2, BagFunctions.anyURIBag(v0, v1)));
 	}
 }

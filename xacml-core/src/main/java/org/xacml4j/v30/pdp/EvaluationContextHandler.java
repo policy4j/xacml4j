@@ -22,31 +22,41 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.types.XPathExp;
+
+import org.xacml4j.v30.*;
+
+import java.util.Map;
+import java.util.Optional;
 
 public interface EvaluationContextHandler
 {
-	BagOfAttributeExp resolve(
+	/**
+	 * Resolves given {@link AttributeReferenceKey}
+	 *
+	 * @param context an evaluation context
+	 * @param key an attribute key
+	 * @return {@link Optional<BagOfAttributeValues>}
+	 * @throws EvaluationException if an error occurs while resolving attribute
+	 */
+	Optional<BagOfAttributeValues> resolve(
 			EvaluationContext context,
-			AttributeDesignatorKey key) throws EvaluationException;
+			AttributeReferenceKey key) throws EvaluationException;
 
-	BagOfAttributeExp resolve(
-			EvaluationContext context,
-			AttributeSelectorKey key) throws EvaluationException;
-	
-	Node evaluateToNode(EvaluationContext context, XPathExp xpath) 
-			throws XPathEvaluationException;
-	NodeList evaluateToNodeSet(EvaluationContext context, XPathExp xpath)
-			throws XPathEvaluationException;
-	Number evaluateToNumber(EvaluationContext context, XPathExp xpath)
-			throws XPathEvaluationException;
-	String evaluateToString(EvaluationContext context, XPathExp xpath)
-			throws XPathEvaluationException;
+	/**
+	 * Resolves content for the given {@link CategoryId}
+	 *
+	 * @param id a category id
+	 * @param <C>
+	 * @return optional with resolved content
+	 */
+	<C extends Content  >Optional<C> getContent(Optional<CategoryId> id);
+
+	Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators();
+	Map<AttributeSelectorKey, BagOfAttributeValues> getResolvedSelectors();
+
+
+
+	default <C extends Content  >Optional<C> getContent(CategoryId id){
+		return getContent(Optional.of(id));
+	}
 }

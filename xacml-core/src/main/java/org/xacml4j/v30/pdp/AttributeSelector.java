@@ -22,27 +22,32 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.ExpressionVisitor;
 
-import com.google.common.base.Objects;
+import java.util.Optional;
 
+/**
+ * XACML attribute selector expression
+ *
+ * @author Giedrius Trumpickas
+ */
 public class AttributeSelector extends
 	AttributeReference
 {
-	private final static Logger log = LoggerFactory.getLogger(AttributeSelector.class);
+	private final static Logger LOG = LoggerFactory.getLogger(AttributeSelector.class);
 
 	private final AttributeSelectorKey selectorKey;
 
 	private AttributeSelector(Builder b){
 		super(b);
-		this.selectorKey = b.keyBuilder.build();
+		this.selectorKey = java.util.Objects.requireNonNull(b.selectorKey);
 	}
 
 	public static Builder builder(){
@@ -56,10 +61,19 @@ public class AttributeSelector extends
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 		.add("selectorKey", selectorKey)
 		.add("mustBePresent", isMustBePresent())
 		.toString();
+	}
+
+	@Override
+	protected Optional<BagOfAttributeValues> doContextResolve(EvaluationContext context)
+	{
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Resolving SelectorKey=\"{}\"", selectorKey);
+		}
+		return context.resolve(selectorKey);
 	}
 
 	@Override
@@ -87,36 +101,6 @@ public class AttributeSelector extends
 		v.visitLeave(this);
 	}
 
-	@Override
-	public BagOfAttributeExp evaluate(EvaluationContext context)
-			throws EvaluationException
-	{
-		BagOfAttributeExp v = null;
-		try{
-			v =  selectorKey.resolve(context);
-		}catch(EvaluationException e){
-			if(isMustBePresent()){
-				throw e;
-			}
-			return getDataType().bagType().createEmpty();
-		}catch(Exception e){
-			if(isMustBePresent()){
-				throw new AttributeReferenceEvaluationException(selectorKey);
-			}
-			return getDataType().bagType().createEmpty();
-		}
-		if((v == null ||
-				v.isEmpty())
-				&& isMustBePresent()){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to resolve xpath=\"{}\", category=\"{}\"",
-						selectorKey.getPath(),
-						selectorKey.getCategory());
-			}
-			throw new AttributeReferenceEvaluationException(selectorKey);
-		}
-		return ((v == null)?getDataType().bagType().createEmpty():v);
-	}
 
 	public interface AttributeSelectorVisitor extends ExpressionVisitor
 	{
@@ -126,15 +110,10 @@ public class AttributeSelector extends
 
 	public static class Builder extends AttributeReference.Builder<Builder>
 	{
-		private final AttributeSelectorKey.Builder keyBuilder = AttributeSelectorKey.builder();
+		private AttributeSelectorKey selectorKey;
 
-		public Builder xpath(String xpath){
-			keyBuilder.xpath(xpath);
-			return this;
-		}
-
-		public Builder contextSelectorId(String id){
-			keyBuilder.contextSelectorId(id);
+		public Builder key(AttributeSelectorKey key){
+			this.selectorKey = java.util.Objects.requireNonNull(key);
 			return this;
 		}
 
@@ -145,11 +124,6 @@ public class AttributeSelector extends
 		@Override
 		protected Builder getThis() {
 			return this;
-		}
-
-		@Override
-		protected AttributeReferenceKey.Builder<?> getBuilder() {
-			return keyBuilder;
 		}
 	}
 }

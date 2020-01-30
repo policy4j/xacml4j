@@ -33,8 +33,7 @@ import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.types.BooleanExp;
-
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class VariableDefinitionTest
@@ -55,19 +54,19 @@ public class VariableDefinitionTest
 	public void testVariableEvaluationValueNotAvailableInContext() throws EvaluationException
 	{
 		expect(context.getVariableEvaluationResult("testId")).andReturn(null);
-		expect(expression.evaluate(context)).andReturn(BooleanExp.valueOf(true));
-		context.setVariableEvaluationResult("testId", BooleanExp.valueOf(true));
+		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
+		context.setVariableEvaluationResult("testId", XacmlTypes.BOOLEAN.of(true));
 		replay(context, expression);
-		assertEquals(BooleanExp.valueOf(true), varDef.evaluate(context));
+		assertEquals(XacmlTypes.BOOLEAN.of(true), varDef.evaluate(context));
 		verify(context, expression);
 	}
 
 	@Test
 	public void testVariableEvaluationValueAvailableInContext() throws EvaluationException
 	{
-		expect(context.getVariableEvaluationResult("testId")).andReturn(BooleanExp.valueOf(false));
+		expect(context.getVariableEvaluationResult("testId")).andReturn(XacmlTypes.BOOLEAN.of(false));
 		replay(context, expression);
-		assertEquals(BooleanExp.valueOf(false), varDef.evaluate(context));
+		assertEquals(XacmlTypes.BOOLEAN.of(false), varDef.evaluate(context));
 		verify(context, expression);
 	}
 }

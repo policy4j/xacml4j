@@ -37,19 +37,11 @@ import java.util.LinkedList;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
 
 public class MultipleResourcesViaRequestReferencesHandlerTest
 {
@@ -67,57 +59,57 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	public void testResolveRequestsWithValidReferences() throws RequestSyntaxException
 	{
 		Category attr0 = Category
-				.builder(Categories.RESOURCE)
+				.builder(CategoryId.RESOURCE)
 				.id("resourceAttr0")
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId1").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId2").value(StringExp.of("value1")).build())
+								Attribute.builder("testId1").value(XacmlTypes.STRING.of("value0")).build(),
+								Attribute.builder("testId2").value(XacmlTypes.STRING.of("value1")).build())
 						.build())
 				.build();
 
 		Category attr1 = Category
-				.builder(Categories.RESOURCE)
+				.builder(CategoryId.RESOURCE)
 				.id("resourceAttr1")
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId3").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId4").value(StringExp.of("value1")).build())
+								Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
+								Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build())
 						.build())
 				.build();
 
 		Category attr2 = Category
-				.builder(Categories.ACTION)
+				.builder(CategoryId.ACTION)
 				.id("actionAttr0")
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId3").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId4").value(StringExp.of("value1")).build())
+								Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
+								Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build())
 						.build())
 				.build();
 
 		Category attr3 = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.builder(CategoryId.SUBJECT_ACCESS)
 				.id("subjectAttr0")
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId5").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId6").value(StringExp.of("value1")).build())
+						Attribute.builder("testId5").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId6").value(XacmlTypes.STRING.of("value1")).build())
 						.build())
 				.build();
 
 		Category attr4 = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.builder(CategoryId.SUBJECT_ACCESS)
 				.id("subjectAttr1")
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId7").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId8").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
 		RequestReference reference0 = RequestReference.builder()
@@ -153,22 +145,22 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		RequestContext context0 = c0.getValue();
 		RequestContext context1 = c0.getValue();
 
-		assertNotNull(context0.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId5"));
-		assertNotNull(context0.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId6"));
-		assertNotNull(context0.getOnlyEntity(Categories.RESOURCE).getAttributes("testId1"));
-		assertNotNull(context0.getOnlyEntity(Categories.RESOURCE).getAttributes("testId2"));
+		assertNotNull(context0.getAttribute(CategoryId.SUBJECT_ACCESS, "testId5").orElse(null));
+		assertNotNull(context0.getAttribute(CategoryId.SUBJECT_ACCESS, "testId6").orElse(null));
+		assertNotNull(context0.getAttribute(CategoryId.RESOURCE, "testId1").orElse(null));
+		assertNotNull(context0.getAttribute(CategoryId.RESOURCE, "testId2").orElse(null));
 
-		assertEquals(2, context0.getAttributes().size());
-		assertEquals(1, context0.getAttributes(Categories.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getAttributes(Categories.RESOURCE).size());
+		assertEquals(2, context0.getCategories().size());
+		assertEquals(1, context0.getAttributes(CategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getAttributes(CategoryId.RESOURCE).size());
 
-		assertNotNull(context1.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId7"));
-		assertNotNull(context1.getOnlyEntity(Categories.SUBJECT_ACCESS).getAttributes("testId8"));
-		assertNotNull(context1.getOnlyEntity(Categories.RESOURCE).getAttributes("testId3"));
-		assertNotNull(context1.getOnlyEntity(Categories.RESOURCE).getAttributes("testId4"));
-		assertEquals(2, context1.getAttributes().size());
-		assertEquals(1, context1.getAttributes(Categories.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getAttributes(Categories.RESOURCE).size());
+		assertNotNull(context1.getAttribute(CategoryId.SUBJECT_ACCESS, "testId7").orElse(null));
+		assertNotNull(context1.getAttribute(CategoryId.SUBJECT_ACCESS, "testId8").orElse(null));
+		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId3").orElse(null));
+		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId4").orElse(null));
+		assertEquals(2, context1.getCategories().size());
+		assertEquals(1, context1.getAttributes(CategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getAttributes(CategoryId.RESOURCE).size());
 		verify(pdp);
 	}
 
@@ -177,23 +169,23 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	{
 
 		Category attr0 = Category
-				.builder(Categories.RESOURCE)
+				.builder(CategoryId.RESOURCE)
 				.id("resourceAttr0")
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId4").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
 		Category attr1 = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.builder(CategoryId.SUBJECT_ACCESS)
 				.id("subjectAttr0")
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId5").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId6").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId5").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId6").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
 		RequestContext request = RequestContext

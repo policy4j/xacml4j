@@ -36,16 +36,12 @@ import java.util.Collection;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.types.StringExp;
+
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class MultipleResourcesViaRepeatingAttributesHandlerTest
@@ -61,32 +57,33 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 
 	@Test
 	public void testRequestWithTwoAttributesOfTheCategory()
+
 	{
 		Category resource0 = Category
-				.builder(Categories.RESOURCE)
+				.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId1").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId2").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId1").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId2").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
 		Category resource1 = Category
-				.builder(Categories.RESOURCE)
+				.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId4").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
 		Category subject = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.builder(CategoryId.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId7").value(StringExp.of("value0")).build(),
-						Attribute.builder("testId8").value(StringExp.of("value1")).build()).build())
+						Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
+						Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
 		RequestContext context = RequestContext
@@ -108,14 +105,14 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
-		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
-		assertEquals(1, r0.getAttributes(Categories.RESOURCE).size());
+		assertTrue(r0.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject));
+		assertEquals(1, r0.getAttributes(CategoryId.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
-		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0) || r0.getAttributes(Categories.RESOURCE).contains(resource1));
-		assertTrue(r1.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0) || r0.getAttributes(CategoryId.RESOURCE).contains(resource1));
+		assertTrue(r1.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject));
 		// order is not known so check if has 1 and at least one is in the request
-		assertEquals(1, r1.getAttributes(Categories.RESOURCE).size());
-		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0) || r0.getAttributes(Categories.RESOURCE).contains(resource1));
+		assertEquals(1, r1.getAttributes(CategoryId.RESOURCE).size());
+		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0) || r0.getAttributes(CategoryId.RESOURCE).contains(resource1));
 		verify(pdp);
 	}
 
@@ -124,21 +121,21 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	public void testRequestWithNoAttributesOfTheSameCategory()
 	{
 		Category resource0 = Category
-				.builder(Categories.RESOURCE)
+				.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId1").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId2").value(StringExp.of("value1")).build()).build())
+								Attribute.builder("testId1").value(XacmlTypes.STRING.of("value0")).build(),
+								Attribute.builder("testId2").value(XacmlTypes.STRING.of("value1")).build()).build())
 				.build();
 
 
 		Category subject = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.builder(CategoryId.SUBJECT_ACCESS)
 				.entity(Entity.builder()
 						.attribute(
-								Attribute.builder("testId7").value(StringExp.of("value0")).build(),
-								Attribute.builder("testId8").value(StringExp.of("value1")).build())
+								Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
+								Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build())
 						.build())
 				.build();
 
@@ -158,8 +155,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
-		assertTrue(r0.getAttributes(Categories.SUBJECT_ACCESS).contains(subject));
-		assertTrue(r0.getAttributes(Categories.RESOURCE).contains(resource0));
+		assertTrue(r0.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0));
 		verify(pdp);
 	}
 

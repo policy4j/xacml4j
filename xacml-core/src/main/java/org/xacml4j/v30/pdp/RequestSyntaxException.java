@@ -33,16 +33,10 @@ public class RequestSyntaxException extends XacmlSyntaxException
 		super(template, arguments);
 	}
 
-	public RequestSyntaxException(Throwable cause, String message,
-			Object... arguments) {
-		super(cause, message, arguments);
-	}
+
 
 	public RequestSyntaxException(Throwable cause) {
 		super(cause);
 	}
 
-	public Status getStatus(){
-		return Status.syntaxError().build();
-	}
 }

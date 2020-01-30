@@ -34,6 +34,7 @@ import org.xacml4j.v30.spi.pdp.RequestContextHandler;
  *
  * @author Giedrius Trumpickas
  */
+@FunctionalInterface
 public interface PolicyDecisionCallback
 {
 	/**

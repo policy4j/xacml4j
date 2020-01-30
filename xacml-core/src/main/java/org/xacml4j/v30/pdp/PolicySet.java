@@ -22,27 +22,15 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.*;
+import org.xacml4j.v30.*;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.XPathVersion;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableListMultimap;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 public class PolicySet extends
 	BaseCompositeDecisionRule implements PolicyElement
@@ -157,7 +145,7 @@ public class PolicySet extends
 	 * or {@link PolicySet#evaluate(EvaluationContext)}
 	 *
 	 * @param context a parent evaluation context
-	 * @return {@code EvaluationContext} instance to evaluate
+	 * @return {@code XacmlEvaluationContextParam} defaultProvider to evaluate
 	 * this policy set
 	 */
 	@Override
@@ -238,7 +226,6 @@ public class PolicySet extends
 
 	class PolicySetDelegatingEvaluationContext
 			extends DelegatingEvaluationContext {
-		
 
 		/**
 		 * Constructs delegating evaluation context
@@ -262,15 +249,6 @@ public class PolicySet extends
 			return PolicySet.this;
 		}
 
-		@Override
-		public Status getEvaluationStatus() {
-			return getDelegate().getEvaluationStatus();
-		}
-
-		@Override
-		public void setEvaluationStatus(Status code) {
-			getDelegate().setEvaluationStatus(code);
-		}
 
 		@Override
 		public EvaluationContext getParentContext() {

@@ -32,10 +32,9 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.BooleanExp;
-import org.xacml4j.v30.types.IntegerExp;
-
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class AnnotationBasedFunctionFactoryTest
@@ -47,73 +46,73 @@ public class AnnotationBasedFunctionFactoryTest
 	@Before
 	public void init() throws Exception
 	{
-		this.f1 = new AnnotationBasedFunctionProvider(TestFunctions.class);
-		this.f2 = new AnnotationBasedFunctionProvider(new TestInstanceFunctions());
+		this.f1 = FunctionProvider.emptyBuilder().fromClass(TestFunctions.class).build();
+		this.f2 = FunctionProvider.emptyBuilder().fromClass(TestInstanceFunctions.class).build();
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 
 	@Test
-	public void testTest1And2FunctionsStaticProvider() throws Exception
+	public void testTest1And2FunctionsStaticProvider()
 	{
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
 		replay(context);
-		FunctionSpec spec1 = f1.getFunction("test1");
-		assertEquals(BooleanExp.valueOf(Boolean.FALSE),
-				spec1.invoke(context, IntegerExp.of(1), IntegerExp.of(2)));
+		FunctionSpec spec1 = f1.getFunction("test1").get();
+		assertEquals(XacmlTypes.BOOLEAN.of(Boolean.FALSE),
+				spec1.invoke(context, XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)));
 
-		FunctionSpec spec2 = f1.getFunction("test2");
-		assertEquals(IntegerExp.of(2),
-				spec2.invoke(context, IntegerExp.bag().value(1, 2).build()));
+		FunctionSpec spec2 = f1.getFunction("test2").get();
+		assertEquals(XacmlTypes.INTEGER.of(2),
+				spec2.invoke(context, XacmlTypes.INTEGER.bag().value(1, 2).build()));
 		verify(context);
 
 	}
 
 	@Test
-	public void testTest1And2FunctionsInstanceProvider() throws Exception
+	public void testTest1And2FunctionsInstanceProvider()
 	{
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
 		replay(context);
-		FunctionSpec spec1 = f2.getFunction("test1");
+		FunctionSpec spec1 = f2.getFunction("test1").get();
 		assertNotNull(spec1);
-		assertEquals(BooleanExp.valueOf(Boolean.FALSE),
-				spec1.invoke(context, IntegerExp.of(1), IntegerExp.of(2)));
+		assertEquals(XacmlTypes.BOOLEAN.of(Boolean.FALSE),
+				spec1.invoke(context, XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)));
 
-		FunctionSpec spec2 = f2.getFunction("test2");
-		assertEquals(IntegerExp.of(2),
-				spec2.invoke(context, IntegerExp.bag().value(1, 2).build()));
+		FunctionSpec spec2 = f2.getFunction("test2").get();
+		assertEquals(XacmlTypes.INTEGER.of(2),
+				spec2.invoke(context, XacmlTypes.INTEGER.bag().value(1, 2).build()));
 		verify(context);
 
 	}
 
 	@Test
-	public void testLazyParamEvaluationPassingEvaluationContext() throws Exception
+	public void testLazyParamEvaluationPassingEvaluationContext()
 	{
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		replay(context);
-		FunctionSpec spec3 = f1.getFunction("test3");
-		FunctionSpec spec4 = f1.getFunction("test4");
-		spec3.invoke(context, IntegerExp.of(10), IntegerExp.of(10));
-		spec3.invoke(context, IntegerExp.of(10));
-		spec4.invoke(context, IntegerExp.of(10));
+		FunctionSpec spec3 = f1.getFunction("test3").get();
+		FunctionSpec spec4 = f1.getFunction("test4").get();
+		spec3.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.INTEGER.of(10));
+		spec3.invoke(context, XacmlTypes.INTEGER.of(10));
+		spec4.invoke(context, XacmlTypes.INTEGER.of(10));
 		verify(context);
 
 	}
 
 	@Test
-	public void testVarArgFunctionInvocation() throws Exception
+	public void testVarArgFunctionInvocation()
 	{
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true).times(6);
 		replay(context);
-		FunctionSpec spec5 = f1.getFunction("test5VarArg");
-		FunctionSpec spec6 = f1.getFunction("test6VarArg");
+		FunctionSpec spec5 = f1.getFunction("test5VarArg").get();
+		FunctionSpec spec6 = f1.getFunction("test6VarArg").get();
 
-		spec5.invoke(context, IntegerExp.of(10));
-		spec5.invoke(context, IntegerExp.of(10), BooleanExp.valueOf(false));
-		spec5.invoke(context, IntegerExp.of(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
-		spec5.invoke(context, IntegerExp.of(10), BooleanExp.valueOf(false), BooleanExp.valueOf(false), BooleanExp.valueOf(false));
+		spec5.invoke(context, XacmlTypes.INTEGER.of(10));
+		spec5.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false));
+		spec5.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false));
+		spec5.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false));
 
-		spec6.invoke(context, IntegerExp.of(10), IntegerExp.of(10));
-		spec6.invoke(context, IntegerExp.of(10), IntegerExp.of(10), BooleanExp.valueOf(false));
+		spec6.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.INTEGER.of(10));
+		spec6.invoke(context, XacmlTypes.INTEGER.of(0), XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false));
 		verify(context);
 
 	}

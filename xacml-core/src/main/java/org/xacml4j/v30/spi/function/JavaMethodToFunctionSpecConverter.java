@@ -27,38 +27,36 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.util.InvocationFactory;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.FunctionInvocationFactory;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.TypeCapability;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter
 {
 	private final static Logger log = LoggerFactory.getLogger(JavaMethodToFunctionSpecConverter.class);
 
-	private final InvocationFactory invocationFactory;
-
-	private final static TypeCapability.Index<TypeToString> TYPE_TO_STRING_INDEX = TypeCapability.Index.<TypeToString>build(TypeToString.Types.values());
+	private final FunctionInvocationFactory invocationFactory;
 
 	public JavaMethodToFunctionSpecConverter(
-			InvocationFactory invocationFactory)
+			FunctionInvocationFactory invocationFactory)
 	{
 		Preconditions.checkNotNull(invocationFactory);
 		this.invocationFactory = invocationFactory;
+	}
+
+	@Nullable
+	public FunctionSpec apply(@Nullable Method method) {
+		return createFunctionSpec(method);
 	}
 
 	public FunctionSpec createFunctionSpec(Method m) throws XacmlSyntaxException
@@ -104,8 +102,8 @@ class JavaMethodToFunctionSpecConverter
 						"Method=\"%s\" contains parameter without annotation",
 						m.getName()));
 			}
-			if (params[i][0] instanceof XacmlFuncParamEvaluationContext) {
-				if (!types[i].isAssignableFrom(EvaluationContext.class)) {
+			if (params[i][0] instanceof XacmlEvaluationContextParam) {
+				if (!types[i].isAssignableFrom(org.xacml4j.v30.EvaluationContext.class)) {
 					throw new IllegalArgumentException("XACML evaluation context "
 											+ "annotation annotates wrong parameter type");
 				}
@@ -120,59 +118,51 @@ class JavaMethodToFunctionSpecConverter
 			}
 			if (params[i][0] instanceof XacmlFuncParam) {
 				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
-				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
+				java.util.Optional<AttributeValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
-					throw new XacmlSyntaxException(
-							"Unknown XACML type id=\"%s\"", param.typeId());
+					throw XacmlSyntaxException
+							.invalidDataTypeId(param.typeId());
 				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"",
-							i, types[i].getName());
-					throw new IllegalArgumentException(String.format(
-							"Parameter type annotates bag of=\"%s\" "
-									+ "but method=\"%s\" is of class=\"%s\"",
-							type, m.getName(), types[i]));
+					if(log.isDebugEnabled()){
+						log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"", i, types[i].getName());
+					}
+					throw XacmlSyntaxException
+							.invalidFunctionParameter(funcId, param, m);
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.debug("Expecting attribute value at index=\"{}\", "
-							+ "actual type type=\"{}\"", i, types[i].getName());
-					throw new IllegalArgumentException(
-							String.format(
-									"Parameter type annotates attribute value of "
-											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
-									type, m.getName(), types[i]));
+					if(log.isDebugEnabled()){
+						log.debug("Expecting attribute value at index=\"{}\", "
+								+ "actual type type=\"{}\"", i, types[i].getName());
+					}
+					throw XacmlSyntaxException
+							.invalidFunctionParameter(funcId, param, m);
 				}
-
 				b.param(param.isBag() ? type.get().bagType() : type.get(), null, false);
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamOptional) {
 				XacmlFuncParamOptional param = (XacmlFuncParamOptional) params[i][0];
-				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
+				java.util.Optional<AttributeValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
-					throw new XacmlSyntaxException(
-							"Unknown XACML type id=\"%s\"", param.typeId());
+					throw XacmlSyntaxException
+							.invalidDataTypeId(param.typeId());
 				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"",
 							i, types[i].getName());
-					throw new IllegalArgumentException(String.format(
-							"Parameter type annotates bag of=\"%s\" "
-									+ "but method=\"%s\" is of class=\"%s\"",
-							type, m.getName(), types[i]));
+					throw XacmlSyntaxException
+							.invalidFunctionParameter(funcId, param, m);
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log.debug("Expecting attribute value at index=\"{}\", "
 							+ "actual type type=\"{}\"", i, types[i].getName());
-					throw new IllegalArgumentException(
-							String.format(
-									"Parameter type annotates attribute value of "
-											+ "type=\"%s\" but method=\"%s\" parameter is type of=\"%s\"",
-									type, m.getName(), types[i]));
+					throw XacmlSyntaxException
+							.invalidFunctionParameter(funcId, param, m);
 				}
 
 				b.param(param.isBag() ? type.get().bagType() : type.get(),
@@ -193,7 +183,7 @@ class JavaMethodToFunctionSpecConverter
 									+ "varArg parameter must be a last parameter in the method");
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
-				Optional<AttributeExpType> type = XacmlTypes.getType(param.typeId());
+				java.util.Optional<AttributeValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
 					throw new XacmlSyntaxException(
 							"Unknown XACML type id=\"%s\"", param.typeId());
@@ -227,7 +217,7 @@ class JavaMethodToFunctionSpecConverter
 							.getName(), i, params[i][0]));
 		}
 		if (returnType != null) {
-			Optional<AttributeExpType> type = XacmlTypes.getType(returnType.typeId());
+			java.util.Optional<AttributeValueType> type = XacmlTypes.getType(returnType.typeId());
 			if(!type.isPresent()){
 				throw new XacmlSyntaxException(
 						"Unknown XACML type id=\"%s\"", returnType.typeId());
@@ -265,13 +255,13 @@ class JavaMethodToFunctionSpecConverter
 			return;
 		}
 		if (returnType.isBag() &&
-					!BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
+					!BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
 			throw new XacmlSyntaxException(
 					"Method=\"%s\" return type declared XACML " +
 					"bag of=\"%s\" but method returns type=\"%s\"",
 					m.getName(), returnType.typeId(), m.getReturnType());
 		}
-		if(!returnType.isBag() && BagOfAttributeExp.class.isAssignableFrom(m.getReturnType())) {
+		if(!returnType.isBag() && BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
 			throw new XacmlSyntaxException("Method=\"%s\" return type declared XACML attribute type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),
 					returnType.typeId(), m.getReturnType());
@@ -285,7 +275,7 @@ class JavaMethodToFunctionSpecConverter
 		} catch (Exception e) {
 			throw new IllegalArgumentException(
 					String.format(
-						"Failed to build instance of function return type resolver, class=\"%s\"",
+						"Failed to build defaultProvider of function return type resolver, class=\"%s\"",
 						clazz.getName()),
 					e);
 		}
@@ -298,27 +288,27 @@ class JavaMethodToFunctionSpecConverter
 		} catch (Exception e) {
 			throw new IllegalArgumentException(
 					String.format(
-							"Failed to build instance of function parameter validator, class=\"%s\"",
+							"Failed to build defaultProvider of function parameter validator, class=\"%s\"",
 							clazz.getName()),
 					e);
 		}
 	}
 
-	private ValueExpression createDefaultValue(AttributeExpType type,
-			boolean isBag, String[] values)
+	private ValueExpression createDefaultValue(AttributeValueType type,
+											   boolean isBag, String[] values)
 	{
 		if((values == null || values.length == 0)){
 			return null;
 		}
-		Optional<TypeToString> fromString = TYPE_TO_STRING_INDEX.get(type);
+		Optional<TypeToString> fromString = TypeToString.forType(type);
 		if(!fromString.isPresent()){
 			throw new XacmlSyntaxException("Xacml type=\"%s\" does support default values in annotation",
 					type.getDataTypeId());
 		}
-		List<AttributeExp> defaultValues = new ArrayList<AttributeExp>(values.length);
+		List<AttributeValue> defaultValues = new ArrayList<AttributeValue>(values.length);
 		for(String v : values){
 			defaultValues.add(fromString.get().fromString(v));
 		}
-		return isBag?type.bagOf(defaultValues):defaultValues.iterator().next();
+		return isBag?type.bag().attributes(defaultValues).build():defaultValues.iterator().next();
 	}
 }

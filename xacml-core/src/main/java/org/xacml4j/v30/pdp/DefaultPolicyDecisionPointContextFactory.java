@@ -22,13 +22,8 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Random;
-
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.XPathVersion;
+import com.google.common.base.Preconditions;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
@@ -36,9 +31,9 @@ import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.spi.xpath.XPathProvider;
+import org.xacml4j.v30.XPathProvider;
 
-import com.google.common.base.Preconditions;
+import java.util.Random;
 
 final class DefaultPolicyDecisionPointContextFactory
 	implements PolicyDecisionPointContextFactory
@@ -84,30 +79,6 @@ final class DefaultPolicyDecisionPointContextFactory
 	}
 
 	@Override
-	public int getDefaultDecisionCacheTTL(){
-		return decisionCacheTTL;
-	}
-
-	public void setDefaultDecisionCacheTTL(int ttl){
-		this.decisionCacheTTL = (ttl > 0)?ttl:0;
-	}
-
-	public void setValidaFunctionParametersAtRuntime(
-			boolean validate){
-		this.validateFuncParamsAtRuntime = validate;
-	}
-
-	@Override
-	public boolean isDecisionAuditEnabled() {
-		return decisionAuditEnabled;
-	}
-
-	@Override
-	public boolean isDecisionCacheEnabled() {
-		return decisionCacheEnabled;
-	}
-
-	@Override
 	public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp)
 	{
 		final String correlationId = Long.toHexString(RND.nextLong());
@@ -133,10 +104,13 @@ final class DefaultPolicyDecisionPointContextFactory
 				return xpathProvider;
 			}
 
+
 			@Override
 			public CompositeDecisionRule getDomainPolicy() {
 				return policyDomain;
 			}
+
+
 
 			@Override
 			public PolicyDecisionCache getDecisionCache() {
@@ -167,11 +141,16 @@ final class DefaultPolicyDecisionPointContextFactory
 			@Override
 			public EvaluationContext createEvaluationContext(RequestContext request)
 			{
-				Preconditions.checkArgument(!request.containsRepeatingCategories());
-				Preconditions.checkArgument(!request.containsRequestReferences());
-				RequestContextCallback callback = new DefaultRequestContextCallback(request);
+				Preconditions.checkNotNull(request);
+				Preconditions.checkArgument(
+						!request.containsRepeatingCategories(),
+						"RequestContext has repeating attributes categories");
+				Preconditions.checkArgument(
+						!request.containsRequestReferences(),
+						"RequestContext contains multiple request references");
+
 				EvaluationContextHandler handler = new DefaultEvaluationContextHandler(
-						callback, xpathProvider, pip);
+						request::getEntity, pip);
 				return new RootEvaluationContext(
 						validateFuncParamsAtRuntime,
 						decisionCacheTTL,

@@ -24,21 +24,11 @@ package org.xacml4j.v30.marshal.json;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Node;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xml.sax.InputSource;
+import org.xacml4j.v30.*;
+import static org.xacml4j.v30.types.XacmlTypes.STRING;
+import static org.xacml4j.v30.types.XacmlTypes.ENTITY;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,13 +36,6 @@ import com.google.gson.JsonElement;
 
 public class JsonEntityMarshallingTest 
 {
-	private  Node sampleContent1() throws Exception {
-		DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
-		return documentBuilder.parse(new InputSource(new StringReader(
-				"<security>\n<through obscurity=\"true\"></through></security>")));
-	}
-	
 	private Gson json;
 	
 	@Before
@@ -68,30 +51,31 @@ public class JsonEntityMarshallingTest
 	public void testEntityMarshall() throws Exception
 	{
 		Entity entity = Entity.builder()
-				.content(sampleContent1())
+				.xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
 				.attribute(Attribute
 						.builder("testId3")
-						.value(StringExp.of("aaa"))
-						.value(StringExp.of("bbbb"))
-						.value(StringExp.of("cccc"))
+						.value(STRING.of("aaa"))
+						.value(STRING.of("bbbb"))
+						.value(STRING.of("cccc"))
 						.build())
 				.attribute(Attribute
 						.builder("testId4")
-						.value(StringExp.of("zzzz"))
-						.value(StringExp.of("aaaa"))
-						.value(StringExp.of("cccc"))
+						.value(STRING.of("zzzz"))
+						.value(STRING.of("aaaa"))
+						.value(STRING.of("cccc"))
 						.build())
 				.build();
 		Category a = Category.builder()
-		.category(Categories.SUBJECT_ACCESS)
+		.category(CategoryId.SUBJECT_ACCESS)
 		.entity(Entity.builder()
 				.attribute(Attribute
 						.builder("testId1")
-						.value(EntityExp.of(entity))
+						.value(ENTITY.of(entity))
 						.build())
 			    .build())
 	    .build();
 		JsonElement o = json.toJsonTree(a);
+		System.out.println(o.toString());
 		Category b = json.fromJson(o, Category.class);
 		assertEquals(a,  b);
 	}

@@ -22,7 +22,32 @@ package org.xacml4j.v30;
  * #L%
  */
 
-public interface StatusCodeId
+import java.util.*;
+
+/**
+ * XACML response status identifier
+ *
+ * @author Giedrius Trumpickas
+ */
+public final class StatusCodeId extends ExtensibleIdentifier
 {
-	String getId();
+	public static final StatusCodeId OK = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:ok", "ok");
+	public static final StatusCodeId MISSING_ATTRIBUTE = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:missing-attribute", "missing-attribute");
+	public static final StatusCodeId SYNTAX_ERROR = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:syntax-error", "syntax-error");
+	public static final StatusCodeId STATUS_PROCESSING_ERROR = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:processing-error", "processing-error");
+	public static final StatusCodeId UNKNOWN = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:unknown", "unknown");
+
+
+	private final static Map<String, StatusCodeId> By_ID = ExtensibleIdentifier.getById(StatusCodeId.class);
+	private final static Map<String, StatusCodeId> By_ABBREVIATED_ID = ExtensibleIdentifier.getByAbbrId(StatusCodeId.class);
+
+
+	protected StatusCodeId(String id, String abbreviatedId) {
+		super(id, abbreviatedId);
+	}
+
+	public static Optional<StatusCodeId> of(String id) {
+		return of(id, By_ID, By_ABBREVIATED_ID,
+				()->Optional.of(new StatusCodeId(id, id)), false);
+	}
 }

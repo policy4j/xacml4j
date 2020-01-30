@@ -25,10 +25,12 @@ package org.xacml4j.v30.spi.pdp;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 
+import java.util.Optional;
+
 public interface PolicyDecisionCache extends PolicyDecisionCacheMBean
 {
 	/**
-	 * Gets a cached instance of {@link Result}
+	 * Gets a cached defaultProvider of {@link Result}
 	 * from this cache
 	 *
 	 * @param req a decision request

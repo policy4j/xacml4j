@@ -22,45 +22,21 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
+import com.google.common.base.*;
+import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
-import org.xacml4j.v30.types.XPathExp;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Ticker;
+import java.time.Clock;
+
+import java.util.*;
+import java.util.Optional;
 
 
-public final class RootEvaluationContext implements EvaluationContext {
-
+public final class RootEvaluationContext implements EvaluationContext
+{
 	protected final Logger log = LoggerFactory.getLogger(RootEvaluationContext.class);
 
 	private final XPathVersion defaultXPathVersion;
@@ -71,13 +47,10 @@ public final class RootEvaluationContext implements EvaluationContext {
 	private final Map<String, Advice> permitAdvices;
 	private final Map<String, Obligation> permitObligations;
 	private final List<CompositeDecisionRuleIDReference> evaluatedPolicies;
-	private final TimeZone timezone;
-	private final Calendar currentDateTime;
-	private final Map<AttributeDesignatorKey, BagOfAttributeExp> designatorCache;
-	private final Map<AttributeSelectorKey, BagOfAttributeExp> selectorCache;
-	private final Ticker ticker = Ticker.systemTicker();
-	private boolean validateFuncParamsAtRuntime = false;
-	private Status evaluationStatus;
+	private Clock clock;
+
+	private boolean validateFuncParamsAtRuntime;
+	private Optional<Status> evaluationStatus;
 	private Integer combinedDecisionCacheTTL = null;
 	private final boolean extendedIndeterminateEval = false;
 
@@ -87,21 +60,33 @@ public final class RootEvaluationContext implements EvaluationContext {
 			XPathVersion defaultXPathVersion,
 			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler contextHandler) {
+		this(Clock.systemUTC(), validateFuncParamsAtRuntime,
+				defaultDecisionCacheTTL,
+				defaultXPathVersion,
+				referenceResolver,
+				contextHandler);
+	}
+
+	public RootEvaluationContext(
+			Clock clock,
+			boolean validateFuncParamsAtRuntime,
+			int defaultDecisionCacheTTL,
+			XPathVersion defaultXPathVersion,
+			PolicyReferenceResolver referenceResolver,
+			EvaluationContextHandler contextHandler) {
 		Preconditions.checkNotNull(contextHandler);
 		Preconditions.checkNotNull(referenceResolver);
-		this.denyAdvices = new LinkedHashMap<String, Advice>();
-		this.denyObligations = new LinkedHashMap<String, Obligation>();
-		this.permitAdvices = new LinkedHashMap<String, Advice>();
-		this.permitObligations = new LinkedHashMap<String, Obligation>();
+		this.denyAdvices = new LinkedHashMap<>();
+		this.denyObligations = new LinkedHashMap<>();
+		this.permitAdvices = new LinkedHashMap<>();
+		this.permitObligations = new LinkedHashMap<>();
 		this.contextHandler = contextHandler;
 		this.resolver = referenceResolver;
-		this.timezone = TimeZone.getTimeZone("UTC");
-		this.currentDateTime = Calendar.getInstance(timezone);
-		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
-		this.designatorCache = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>(128);
-		this.selectorCache = new HashMap<AttributeSelectorKey, BagOfAttributeExp>(128);
+		this.clock = java.util.Objects.requireNonNull(clock);
+		this.evaluatedPolicies = new LinkedList<>();
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 		this.defaultXPathVersion = defaultXPathVersion;
+		this.validateFuncParamsAtRuntime = validateFuncParamsAtRuntime;
 	}
 
 	public RootEvaluationContext(
@@ -122,8 +107,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	@Override
-	public Ticker getTicker(){
-		return ticker;
+	public Clock getClock(){
+		return clock;
 	}
 
 	@Override
@@ -147,18 +132,18 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	@Override
-	public Status getEvaluationStatus() {
+	public Optional<Status> getEvaluationStatus() {
 		return evaluationStatus;
 	}
 
 	@Override
 	public void setEvaluationStatus(Status status){
-		this.evaluationStatus = status;
+		this.evaluationStatus = Optional.ofNullable(status);
 	}
 
 	@Override
 	public int getDecisionCacheTTL() {
-		return Objects.firstNonNull(combinedDecisionCacheTTL, 0);
+		return (combinedDecisionCacheTTL != null && combinedDecisionCacheTTL >= 0 )? combinedDecisionCacheTTL:0;
 	}
 
 	@Override
@@ -168,17 +153,6 @@ public final class RootEvaluationContext implements EvaluationContext {
 			return;
 		}
 		this.combinedDecisionCacheTTL = (ttl > 0)?Math.min(this.combinedDecisionCacheTTL, ttl):0;
-	}
-
-	@Override
-	public TimeZone getTimeZone(){
-		Preconditions.checkState(timezone != null);
-		return timezone;
-	}
-
-	@Override
-	public final Calendar getCurrentDateTime() {
-		return currentDateTime;
 	}
 
 	@Override
@@ -199,51 +173,50 @@ public final class RootEvaluationContext implements EvaluationContext {
 	@Override
 	public void addAdvices(Decision d, Iterable<Advice> advices)
 	{
-		Preconditions.checkNotNull(d);
+		java.util.Objects.requireNonNull(d, "decision");
 		if(d.isIndeterminate() ||
 				d == Decision.NOT_APPLICABLE){
 			return;
 		}
 		for(Advice a : advices){
-			addAndMergeAdvice(d, a);
+			addAndMege(a, ()-> (Decision.PERMIT.equals(d)?permitAdvices:
+					((Decision.DENY.equals(d))?denyAdvices:Collections.emptyMap())));
 		}
 	}
 
 	@Override
 	public void addObligations(Decision d, Iterable<Obligation> obligations)
 	{
-		Preconditions.checkNotNull(d);
+		java.util.Objects.requireNonNull(d, "decision");
 		if(d.isIndeterminate() ||
 				d == Decision.NOT_APPLICABLE){
 			return;
 		}
 		for(Obligation a : obligations){
-			addAndMergeObligation(d, a);
+			addAndMege(a, ()-> (Decision.PERMIT.equals(d)?permitObligations:
+					((Decision.DENY.equals(d))?denyObligations:Collections.emptyMap())));
 		}
 	}
 
-	private void addAndMergeAdvice(Decision d, Advice a)
+	private <T extends DecisionRuleResponse> void addAndMege(T response, Supplier<Map<String, T>> mapSupplier)
 	{
-		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
-		Map<String, Advice> advices = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
-		Advice other = advices.get(a.getId());
-		if(other != null){
-			advices.put(a.getId(), other.merge(a));
-		}else{
-			advices.put(a.getId(), a);
-		}
+		Optional.ofNullable(mapSupplier.get())
+				.map(v->Optional.ofNullable(v.get(
+						response.getId())).map(r->r.merge(response)));
 	}
 
-	private void addAndMergeObligation(Decision d, Obligation a)
-	{
-		Preconditions.checkArgument(d == Decision.PERMIT || d == Decision.DENY);
-		Map<String, Obligation> obligations = (d == Decision.PERMIT)?permitObligations:denyObligations;
-		Obligation other = obligations.get(a.getId());
-		if(other != null){
-			obligations.put(a.getId(), other.merge(a));
-		}else{
-			obligations.put(a.getId(), a);
-		}
+	@Override
+	public Optional<BagOfAttributeValues> resolve(AttributeReferenceKey ref)
+			throws EvaluationException {
+		return contextHandler.resolve(this, ref);
+	}
+
+	@Override
+	public <C extends Content> Optional<C> resolve(Optional<CategoryId> categoryId, Content.Type type) {
+		return contextHandler.<C>getContent(
+				categoryId)
+				.filter(
+						c -> c.getType().equals(type));
 	}
 
 	/**
@@ -344,83 +317,18 @@ public final class RootEvaluationContext implements EvaluationContext {
 	}
 
 	@Override
-	public final Node evaluateToNode(XPathExp xpath)
-			throws EvaluationException{
-		return contextHandler.evaluateToNode(this, xpath);
-	}
-
-	@Override
-	public final NodeList evaluateToNodeSet(XPathExp path)
-			throws EvaluationException{
-		return contextHandler.evaluateToNodeSet(this, path);
-	}
-
-	@Override
-	public final Number evaluateToNumber(XPathExp path)
-			throws EvaluationException {
-		return contextHandler.evaluateToNumber(this, path);
-	}
-
-	@Override
-	public final String evaluateToString(XPathExp xpath)
-			throws EvaluationException{
-		return contextHandler.evaluateToString(this, xpath);
-	}
-
-	@Override
-	public final BagOfAttributeExp resolve(
-			AttributeDesignatorKey ref)
-		throws EvaluationException
-	{
-		BagOfAttributeExp v = designatorCache.get(ref);
-		if (v != null) {
-			if (log.isDebugEnabled()) {
-				log.debug("Found designator=\"{}\" value=\"{}\" in cache",
-						ref, v);
-			}
-			return v;
-		}
-		v = contextHandler.resolve(this, ref);
-		v = (v == null)?ref.getDataType().emptyBag():v;
-		if (log.isDebugEnabled()) {
-			log.debug("Resolved designator=\"{}\" to value=\"{}\"",
-					ref, v);
-		}
-		this.designatorCache.put(ref, v);
-		return v;
-	}
-
-	@Override
-	public final BagOfAttributeExp resolve(
-			AttributeSelectorKey ref)
-			throws EvaluationException
-	{
-		BagOfAttributeExp v = selectorCache.get(ref);
-		if(v != null){
-			if(log.isDebugEnabled()){
-				log.debug("Found selector=\"{}\" " +
-						"value=\"{}\" in cache", ref, v);
-			}
-			return v;
-		}
-		v = contextHandler.resolve(this, ref);
-		v = (v == null)?ref.getDataType().emptyBag():v;
-		if(log.isDebugEnabled()){
-			log.debug("Resolved " +
-					"selector=\"{}\" to value=\"{}\"", ref, v);
-		}
-		this.selectorCache.put(ref, v);
-		return v;
-	}
-
-	@Override
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
 		return Collections.unmodifiableList(evaluatedPolicies);
 	}
 
 	@Override
-	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
-		return Collections.unmodifiableMap(designatorCache);
+	public Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators() {
+		return contextHandler.getResolvedDesignators();
+	}
+
+	@Override
+	public Map<AttributeSelectorKey, BagOfAttributeValues> getResolvedSelectors() {
+		return contextHandler.getResolvedSelectors();
 	}
 
 	@Override
@@ -435,7 +343,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 
 	@Override
 	public String toString() {
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("defaultXPathVersion", defaultXPathVersion)
 				.add("contextHandler", contextHandler)
@@ -445,11 +353,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 				.add("permitAdvices", permitAdvices)
 				.add("permitObligations", permitObligations)
 				.add("evaluatedPolicies", evaluatedPolicies)
-				.add("timezone", timezone)
-				.add("currentDateTime", currentDateTime)
-				.add("designatorCache", designatorCache)
-				.add("selectorCache", selectorCache)
-				.add("ticker", ticker)
+				.add("clock", clock)
 				.add("validateFuncParamsAtRuntime", validateFuncParamsAtRuntime)
 				.add("evaluationStatus", evaluationStatus)
 				.add("combinedDecisionCacheTTL", combinedDecisionCacheTTL)
@@ -467,10 +371,6 @@ public final class RootEvaluationContext implements EvaluationContext {
 				permitAdvices,
 				permitObligations,
 				evaluatedPolicies,
-				timezone,
-				currentDateTime,
-				designatorCache,
-				selectorCache,
 				validateFuncParamsAtRuntime,
 				evaluationStatus,
 				combinedDecisionCacheTTL,
@@ -494,10 +394,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 			&& Objects.equal(permitAdvices, c.permitAdvices)
 			&& Objects.equal(permitObligations, c.permitObligations)
 			&& Objects.equal(evaluatedPolicies, c.evaluatedPolicies)
-			&& Objects.equal(timezone, c.timezone)
-			&& Objects.equal(currentDateTime, c.currentDateTime)
-			&& Objects.equal(designatorCache, c.designatorCache)
-			&& Objects.equal(selectorCache, c.selectorCache)
+			&& Objects.equal(clock, c.clock)
 			&& Objects.equal(validateFuncParamsAtRuntime, c.validateFuncParamsAtRuntime)
 			&& Objects.equal(evaluationStatus, c.evaluationStatus)
 			&& Objects.equal(combinedDecisionCacheTTL, c.combinedDecisionCacheTTL)
@@ -509,8 +406,6 @@ public final class RootEvaluationContext implements EvaluationContext {
 	 */
 	public void clear() {
 		this.combinedDecisionCacheTTL = null;
-		this.designatorCache.clear();
-		this.selectorCache.clear();
 		this.evaluatedPolicies.clear();
 	}
 }

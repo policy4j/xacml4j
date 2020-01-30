@@ -24,6 +24,7 @@ package org.xacml4j.v30.spi.function;
 
 import java.util.ListIterator;
 
+import com.google.common.base.MoreObjects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
@@ -129,7 +130,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("min", min)
 				.add("max", max)

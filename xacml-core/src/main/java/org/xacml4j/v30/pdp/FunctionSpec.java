@@ -22,16 +22,18 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import org.xacml4j.v30.*;
+
 import java.util.List;
-
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.XacmlSyntaxException;
+import java.util.Optional;
 
 
+/**
+ * A XACML function specification.
+ * Provides function signature metadata
+ *
+ * @author Giedrius Trumpickas
+ */
 public interface FunctionSpec
 {
 	/**
@@ -42,12 +44,20 @@ public interface FunctionSpec
 	String getId();
 
 	/**
+	 * Gets short function identifier
+	 * @return
+	 */
+	default String getShortId(){
+		return getId();
+	}
+
+	/**
 	 * Gets function legacy identifier
 	 * if any available
 	 *
 	 * @return legacy identifier
 	 */
-	String getLegacyId();
+	Optional<String> getLegacyId();
 	
 	/**
 	 * Gets parameter specification
@@ -117,7 +127,7 @@ public interface FunctionSpec
 	/**
 	 * Invokes this function with a given arguments
 	 *
-	 * @return {@link ValueExpression} instance representing
+	 * @return {@link ValueExpression} defaultProvider representing
 	 * function invocation result
 	 */
 	<T extends ValueExpression> T invoke(EvaluationContext context, List<Expression> arguments)
@@ -126,7 +136,7 @@ public interface FunctionSpec
 	/**
 	 * Invokes this function with a given arguments
 	 *
-	 * @return {@link ValueExpression} instance representing
+	 * @return {@link ValueExpression} defaultProvider representing
 	 * function invocation result
 	 */
 	<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...arguments)

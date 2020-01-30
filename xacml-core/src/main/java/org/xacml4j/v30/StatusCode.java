@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -39,20 +40,20 @@ public class StatusCode
 		return new Builder(code);
 	}
 
-	public static StatusCode createProcessingError(){
-		return builder(StatusCodeIds.STATUS_PROCESSING_ERROR).build();
+	public static StatusCode processingError(){
+		return builder(StatusCodeId.STATUS_PROCESSING_ERROR).build();
 	}
 
-	public static StatusCode createMissingAttributeError(){
-		return builder(StatusCodeIds.MISSING_ATTRIBUTE).build();
+	public static StatusCode missingAttributeError(){
+		return builder(StatusCodeId.MISSING_ATTRIBUTE).build();
 	}
 
-	public static StatusCode createSyntaxError(){
-		return builder(StatusCodeIds.SYNTAX_ERROR).build();
+	public static StatusCode syntaxError(){
+		return builder(StatusCodeId.SYNTAX_ERROR).build();
 	}
 
-	public static StatusCode createOk(){
-		return builder(StatusCodeIds.OK).build();
+	public static StatusCode ok(){
+		return builder(StatusCodeId.OK).build();
 	}
 
 	/**
@@ -76,7 +77,7 @@ public class StatusCode
 	}
 
 	public boolean isOk(){
-		return value.equals(StatusCodeIds.OK);
+		return value.equals(StatusCodeId.OK);
 	}
 
 	public boolean isFailure(){
@@ -84,20 +85,20 @@ public class StatusCode
 	}
 
 	public boolean isProcessingError(){
-		return value.equals(StatusCodeIds.STATUS_PROCESSING_ERROR);
+		return value.equals(StatusCodeId.STATUS_PROCESSING_ERROR);
 	}
 
 	public boolean isMissingAttributeError(){
-		return value.equals(StatusCodeIds.MISSING_ATTRIBUTE);
+		return value.equals(StatusCodeId.MISSING_ATTRIBUTE);
 	}
 
 	public boolean isSyntaxError(){
-		return value.equals(StatusCodeIds.SYNTAX_ERROR);
+		return value.equals(StatusCodeId.SYNTAX_ERROR);
 	}
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
+		return MoreObjects.toStringHelper(this)
 				.add("code", value)
 				.add("minorStatus", minorStatus)
 				.toString();

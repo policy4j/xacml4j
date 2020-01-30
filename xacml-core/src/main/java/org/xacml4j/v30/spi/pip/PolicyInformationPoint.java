@@ -24,11 +24,10 @@ package org.xacml4j.v30.spi.pip;
 
 
 import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeExp;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.*;
 
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * A XACML Policy Information Point
@@ -50,32 +49,62 @@ public interface PolicyInformationPoint
 	 *
 	 * @param context an evaluation context
 	 * @param ref an attribute designator
-	 * @return {@link BagOfAttributeExp}
+	 * @return {@link BagOfAttributeValues}
 	 * @throws Exception if an error occurs
 	 */
-	BagOfAttributeExp resolve(
+	Optional<BagOfAttributeValues> resolve(
 			EvaluationContext context,
 			AttributeDesignatorKey ref)
 		throws Exception;
-
 
 	/**
 	 * Resolves a content for a given attribute category
 	 *
 	 * @param context an evaluation context
-	 * @param category an attribute category
+	 * @param selectorKey content selector
 	 * @return {@link Node} or {@code null}
 	 * @throws Exception if an error occurs
 	 */
-	Node resolve(
+	Optional<Content> resolve(
 			EvaluationContext context,
-			CategoryId category)
+			AttributeSelectorKey selectorKey)
 		throws Exception;
 
-	/**
-	 * Gets resolver registry used by this PIP
-	 *
-	 * @return {@link ResolverRegistry}
-	 */
-	ResolverRegistry getRegistry();
+
+	enum ResolutionStrategy {
+		FIRST_NON_EMPTY {
+			public <V> Optional<V> resolve(Iterable<Resolver<V>> resolvers,
+										   Function<Resolver<V>, Optional<V>> resolveFunction) {
+				Optional<V> value = Optional.empty();
+				for (Resolver<V> r : resolvers) {
+
+					value = resolveFunction.apply(r);
+					if (value.isPresent()) {
+						return value;
+					}
+				}
+				return value;
+			}
+		},
+		FIRST_NON_EMPTY_IGNORE_ERROR {
+			public <V> Optional<V> resolve(Iterable<Resolver<V>> resolvers,
+										   Function<Resolver<V>, Optional<V>> resolveFunction) {
+				Optional<V> value = Optional.empty();
+				for (Resolver<V> r : resolvers) {
+					try {
+						value = resolveFunction.apply(r);
+						if (value.isPresent()) {
+							return value;
+						}
+					} catch (Exception e) {
+						continue;
+					}
+				}
+				return value;
+			}
+		};
+
+		abstract <V> Optional<V> resolve(Iterable<Resolver<V>> resolvers,
+										 Function<Resolver<V>, Optional<V>> resolveFunction);
+	}
 }

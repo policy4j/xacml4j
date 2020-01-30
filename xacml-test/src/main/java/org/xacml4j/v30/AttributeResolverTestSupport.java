@@ -30,15 +30,15 @@ import java.util.Map;
 
 public class AttributeResolverTestSupport {
 
-	protected <T extends AttributeExpType> void checkHasAttribute(
-			Map<String, BagOfAttributeExp> v, String attributeName,
-			T type, Object ...values) {
-		BagOfAttributeExp bag = v.get(attributeName);
+	protected <T extends AttributeValueType> void checkHasAttribute(
+            Map<String, BagOfAttributeValues> v, String attributeName,
+            T type, Object ...values) {
+		BagOfAttributeValues bag = v.get(attributeName);
 		checkHasValues(bag, type, values);
 	}
 
-	protected <T extends AttributeExpType> void checkHasValues(BagOfAttributeExp bag,
-			T type, Object ...values) {
+	protected <T extends AttributeValueType> void checkHasValues(BagOfAttributeValues bag,
+                                                                 T type, Object ...values) {
 		assertNotNull(bag);
 		assertEquals(values.length, bag.size());
 		for(Object value: values) {

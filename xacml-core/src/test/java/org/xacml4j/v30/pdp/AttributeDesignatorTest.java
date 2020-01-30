@@ -27,30 +27,33 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+import com.google.common.truth.Truth;
+import com.google.common.truth.Truth8;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.Categories;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.types.IntegerExp;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Optional;
 
 
 public class AttributeDesignatorTest
 {
 	private EvaluationContext context;
+	private AttributeDesignatorKey.Builder builder;
 
 	@Before
 	public void init(){
 		this.context = createStrictMock(EvaluationContext.class);
+		this.builder = AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.attributeId("testId")
+				.issuer("testIssuer")
+				.dataType(XacmlTypes.INTEGER);
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
@@ -58,45 +61,41 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
-		expect(context.resolve(capture(c))).andReturn(XacmlTypes.INTEGER.emptyBag());
+		expect(context
+				.resolve(capture(c)))
+				.andReturn(Optional.empty());
 		replay(context);
 		try{
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
-			assertSame(c.getValue(), e.getReference());
-			assertTrue(e.getStatus().isFailure());
+			Truth.assertThat(c.getValue()).isSameInstanceAs(e.getReference());
+			Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
 			throw e;
 		}
 		verify(context);
 	}
 
 	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsNull() throws EvaluationException
+	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional() throws EvaluationException
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
+				.key(builder.build())
 				.mustBePresent(true)
-				.dataType(XacmlTypes.INTEGER)
 				.build();
 
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
-		expect(context.resolve(capture(c))).andReturn(null);
+		expect(context.resolve(capture(c))).andReturn(Optional.empty());
 		replay(context);
 		try{
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
-			assertSame(c.getValue(), e.getReference());
-			assertTrue(e.getStatus().isFailure());
+			Truth.assertThat(c.getValue()).isSameInstanceAs(e.getReference());
+			Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
 			throw e;
 		}
 		verify(context);
@@ -108,22 +107,19 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
-		expect(context.resolve(capture(c))).andReturn(
-				XacmlTypes.INTEGER.bagOf(
-						IntegerExp.of(1), IntegerExp.of(2)));
+		expect(context.resolve(capture(c))).andReturn(Optional.of(
+				XacmlTypes.INTEGER.bag().attribute(
+						XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()));
 
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.bagOf(
-				IntegerExp.of(1), IntegerExp.of(2)), v);
+		assertEquals(XacmlTypes.INTEGER.bag().attribute(
+				XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build(), v);
 	}
 
 	@Test
@@ -131,19 +127,16 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
-		expect(context.resolve(capture(c))).andReturn(XacmlTypes.INTEGER.emptyBag());
+		Capture<AttributeDesignatorKey> c = new Capture<>();
+		expect(context.resolve(capture(c))).andReturn(Optional.of(XacmlTypes.INTEGER.emptyBag()));
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.emptyBag(), v);
+		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
 		verify(context);
 	}
 
@@ -152,10 +145,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
@@ -164,7 +154,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.emptyBag(), v);
+		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
 		verify(context);
 	}
 
@@ -173,10 +163,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
@@ -191,20 +178,17 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
-		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(
-				desig.getReferenceKey(), "Errror"));
+		expect(context.resolve(capture(c))).andThrow(
+				AttributeReferenceEvaluationException.forDesignator(builder.build()));
 		replay(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.emptyBag(), v);
+		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
 		verify(context);
 	}
 
@@ -213,10 +197,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(true)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
@@ -231,10 +212,7 @@ public class AttributeDesignatorTest
 	{
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
-				.category(Categories.SUBJECT_RECIPIENT)
-				.attributeId("testId")
-				.issuer("testIssuer")
-				.dataType(XacmlTypes.INTEGER)
+				.key(builder.build())
 				.mustBePresent(false)
 				.build();
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
@@ -243,7 +221,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.emptyBag(), v);
+		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
 		verify(context);
 	}
 }
