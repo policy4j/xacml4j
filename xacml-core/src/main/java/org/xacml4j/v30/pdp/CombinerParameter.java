@@ -24,6 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.AttributeExp;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -68,10 +69,10 @@ public class CombinerParameter
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("name", name)
-		.add("value", value)
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("name", name)
+		                  .add("value", value)
+		                  .toString();
 	}
 
 	@Override

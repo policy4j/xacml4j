@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -97,10 +98,10 @@ public class StatusCode
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("code", value)
-				.add("minorStatus", minorStatus)
-				.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("code", value)
+		                  .add("minorStatus", minorStatus)
+		                  .toString();
 	}
 
 	@Override

@@ -29,7 +29,7 @@ import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueType;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 
 public class VariableReference implements Expression
@@ -95,7 +95,7 @@ public class VariableReference implements Expression
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("variableDef", varDef)
 				.toString();

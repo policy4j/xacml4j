@@ -30,6 +30,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.ValueType;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -74,7 +75,7 @@ public abstract class BaseAttributeExp<T>
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).
+		return MoreObjects.toStringHelper(this).
 		add("Value", value).
 		add("Type", type).toString();
 	}

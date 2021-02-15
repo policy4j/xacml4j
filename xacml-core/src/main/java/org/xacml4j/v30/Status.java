@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -109,11 +110,11 @@ public final class Status
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("code", code)
-				.add("message", message)
-				.add("detail", detail)
-				.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("code", code)
+		                  .add("message", message)
+		                  .add("detail", detail)
+		                  .toString();
 	}
 
 	@Override

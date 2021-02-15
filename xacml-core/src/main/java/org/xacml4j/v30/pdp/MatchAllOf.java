@@ -30,6 +30,7 @@ import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -88,9 +89,9 @@ public class MatchAllOf implements PolicyElement, Matchable
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("Matches", matches)
-				.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("Matches", matches)
+		                  .toString();
 	}
 
 	@Override

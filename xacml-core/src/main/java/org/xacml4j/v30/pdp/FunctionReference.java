@@ -31,6 +31,7 @@ import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueType;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -128,9 +129,9 @@ public class FunctionReference implements Expression
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("function", spec)
-				.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("function", spec)
+		                  .toString();
 	}
 
 	@Override

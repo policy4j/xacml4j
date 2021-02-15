@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeExp;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Ticker;
@@ -141,11 +142,11 @@ public final class AttributeSet
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("id", d.getId())
-		.add("issuer", d.getIssuer())
-		.add("values", values)
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("id", d.getId())
+		                  .add("issuer", d.getIssuer())
+		                  .add("values", values)
+		                  .toString();
 	}
 
 	@Override

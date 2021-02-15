@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultiset;
@@ -242,7 +243,7 @@ public final class BagOfAttributeExp
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).
+		return MoreObjects.toStringHelper(this).
 		add("DataType", type.getDataType()).
 		add("Values", values).toString();
 	}

@@ -32,6 +32,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.ValueType;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -151,11 +152,11 @@ public class Match implements PolicyElement, Matchable
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("MatchId", predicate.getId())
-				.add("Value", value)
-				.add("Reference", attributeRef)
-				.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("MatchId", predicate.getId())
+		                  .add("Value", value)
+		                  .add("Reference", attributeRef)
+		                  .toString();
 	}
 
 	@Override

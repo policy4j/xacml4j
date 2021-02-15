@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
@@ -348,12 +349,12 @@ public class RequestContext
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("ReturnPolicyIDList", returnPolicyIdList)
-		.add("CombineDecision", combinedDecision)
-		.addValue(attributes.values())
-		.add("RequestReferences", requestReferences)
-		.add("RequestDefaults", requestDefaults).toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("ReturnPolicyIDList", returnPolicyIdList)
+		                  .add("CombineDecision", combinedDecision)
+		                  .addValue(attributes.values())
+		                  .add("RequestReferences", requestReferences)
+		                  .add("RequestDefaults", requestDefaults).toString();
 	}
 
 	@Override

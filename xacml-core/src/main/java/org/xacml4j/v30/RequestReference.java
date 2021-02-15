@@ -26,6 +26,7 @@ import java.util.Collection;
 
 import org.xacml4j.v30.pdp.RequestSyntaxException;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
@@ -57,7 +58,7 @@ public class RequestReference
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("references", references)
 				.toString();

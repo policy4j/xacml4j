@@ -26,6 +26,7 @@ import java.util.Collection;
 
 import org.xacml4j.v30.types.EntityExp;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -116,12 +117,12 @@ public class Attribute
 
 	@Override
 	public final String toString(){
-		return Objects.toStringHelper(this)
-		.add("AttributeId", attributeId)
-		.add("Issuer", issuer)
-		.add("IncludeInResult", includeInResult)
-		.add("Values", values)
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("AttributeId", attributeId)
+		                  .add("Issuer", issuer)
+		                  .add("IncludeInResult", includeInResult)
+		                  .add("Values", values)
+		                  .toString();
 	}
 
 	@Override

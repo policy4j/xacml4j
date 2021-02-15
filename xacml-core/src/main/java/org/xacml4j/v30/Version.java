@@ -24,7 +24,7 @@ package org.xacml4j.v30;
 
 import java.util.regex.Pattern;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
@@ -80,7 +80,7 @@ public final class Version implements Comparable<Version>
 
     @Override
     public String toString(){
-    	return Objects.toStringHelper(this).
+    	return MoreObjects.toStringHelper(this).
     	add("version", value).toString();
     }
 

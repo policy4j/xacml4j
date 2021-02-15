@@ -26,6 +26,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Ticker;
@@ -61,10 +62,10 @@ public final class Content
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("id", d.getId())
-		.add("content", DOMUtil.toString((Element)content))
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("id", d.getId())
+		                  .add("content", DOMUtil.toString((Element)content))
+		                  .toString();
 	}
 
 	public static class Builder

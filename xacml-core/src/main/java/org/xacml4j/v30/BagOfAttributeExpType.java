@@ -25,6 +25,7 @@ package org.xacml4j.v30;
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -121,8 +122,8 @@ public final class BagOfAttributeExpType implements ValueType
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("TypeId", type.getDataTypeId())
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("TypeId", type.getDataTypeId())
+		                  .toString();
 	}
 }
