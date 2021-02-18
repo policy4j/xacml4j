@@ -22,6 +22,8 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -42,6 +44,8 @@ import com.google.common.base.Preconditions;
  */
 public class Condition implements PolicyElement
 {
+	private final static Logger log = LoggerFactory.getLogger(Condition.class);
+
 	private final Expression predicate;
 
 	/**
@@ -88,9 +92,11 @@ public class Condition implements PolicyElement
 			return result.getValue()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
 			context.setEvaluationStatus(e.getStatus());
+			log.debug("Evaluation FAILED.", e);
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
 			context.setEvaluationStatus(Status.processingError().build());
+			log.debug("Evaluation FAILED", e);
 			return ConditionResult.INDETERMINATE;
 		}
 	}
