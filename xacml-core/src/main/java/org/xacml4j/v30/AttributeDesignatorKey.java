@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -71,11 +72,11 @@ public final class AttributeDesignatorKey
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("Category", getCategory())
-		.add("AttributeId", attributeId)
-		.add("DataType", getDataType())
-		.add("Issuer", issuer).toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("Category", getCategory())
+		                  .add("AttributeId", attributeId)
+		                  .add("DataType", getDataType())
+		                  .add("Issuer", issuer).toString();
 	}
 
 	@Override

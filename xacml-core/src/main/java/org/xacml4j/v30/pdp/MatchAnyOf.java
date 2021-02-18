@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -88,9 +89,9 @@ public class MatchAnyOf
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("AllOf", allOfs)
-				.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("AllOf", allOfs)
+		                  .toString();
 	}
 
 	@Override

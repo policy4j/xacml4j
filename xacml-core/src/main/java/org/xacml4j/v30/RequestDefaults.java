@@ -22,9 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
-
-
+import com.google.common.base.MoreObjects;
 
 public class RequestDefaults
 {
@@ -44,9 +42,9 @@ public class RequestDefaults
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("xpathVersion", xpathVersion)
-				.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("xpathVersion", xpathVersion)
+		                  .toString();
 	}
 
 	@Override

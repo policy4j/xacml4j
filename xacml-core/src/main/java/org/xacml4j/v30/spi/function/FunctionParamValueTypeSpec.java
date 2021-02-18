@@ -30,6 +30,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueType;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -87,7 +88,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("type", type)
 				.add("optional", isOptional())

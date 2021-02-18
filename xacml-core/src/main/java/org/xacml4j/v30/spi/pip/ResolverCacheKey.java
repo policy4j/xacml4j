@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.xacml4j.v30.BagOfAttributeExp;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -76,10 +77,10 @@ public final class ResolverCacheKey implements Serializable
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("id", resolverId)
-		.add("keys", keys.toString())
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("id", resolverId)
+		                  .add("keys", keys.toString())
+		                  .toString();
 	}
 
 	public static class Builder

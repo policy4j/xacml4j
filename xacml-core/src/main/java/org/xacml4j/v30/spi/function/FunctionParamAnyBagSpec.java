@@ -28,6 +28,7 @@ import org.xacml4j.v30.BagOfAttributeExpType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
@@ -52,12 +53,12 @@ final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
 
 	@Override
 	public String toString(){
-		return Objects.
+		return MoreObjects.
 				toStringHelper(this)
-				.add("optional", isOptional())
-				.add("defaultValue", getDefaultValue())
-				.add("variadic", isVariadic())
-				.toString();
+		                  .add("optional", isOptional())
+		                  .add("defaultValue", getDefaultValue())
+		                  .add("variadic", isVariadic())
+		                  .toString();
 	}
 	
 	@Override

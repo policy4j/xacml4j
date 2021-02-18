@@ -24,6 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.XPathVersion;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -52,7 +53,7 @@ abstract class BaseCompositeDecisionRuleDefaults
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("values", values)
 				.toString();

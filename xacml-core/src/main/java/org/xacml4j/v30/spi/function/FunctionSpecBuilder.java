@@ -40,7 +40,7 @@ import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterators;
 
@@ -541,12 +541,12 @@ public final class FunctionSpecBuilder
 
 		@Override
 		public String toString(){
-			return Objects.toStringHelper(this)
-					.add("functionId", functionId)
-					.add("legacyId", legacyId)
-					.add("evaluateParams", evaluateParameters)
-					.add("params", parameters)
-					.toString();
+			return MoreObjects.toStringHelper(this)
+			                  .add("functionId", functionId)
+			                  .add("legacyId", legacyId)
+			                  .add("evaluateParams", evaluateParameters)
+			                  .add("params", parameters)
+			                  .toString();
 		}
 
 		@Override

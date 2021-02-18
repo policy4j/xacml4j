@@ -22,7 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 
 public final class XPathExpression
@@ -64,8 +64,8 @@ public final class XPathExpression
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-				.add("category", categoryId.toString())
-				.add("path", path).toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("category", categoryId.toString())
+		                  .add("path", path).toString();
 	}
 }

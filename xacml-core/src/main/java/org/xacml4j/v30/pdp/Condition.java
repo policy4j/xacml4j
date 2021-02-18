@@ -32,6 +32,7 @@ import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.types.BooleanExp;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
@@ -114,7 +115,7 @@ public class Condition implements PolicyElement
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("predicate", predicate)
 				.toString();

@@ -35,6 +35,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -138,11 +139,11 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("id", id)
-		.add("effect", effect)
-		.add("expressions", attributeExpressions)
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("id", id)
+		                  .add("effect", effect)
+		                  .add("expressions", attributeExpressions)
+		                  .toString();
 	}
 
 	public static abstract class Builder<T extends Builder<?>>

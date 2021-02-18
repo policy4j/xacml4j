@@ -24,6 +24,7 @@ package org.xacml4j.v30;
 
 import java.util.Collection;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -51,7 +52,7 @@ public class ResponseContext
 
 	@Override
 	public String toString(){
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("results", results)
 				.toString();

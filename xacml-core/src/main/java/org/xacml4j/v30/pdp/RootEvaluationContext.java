@@ -54,6 +54,7 @@ import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.XPathExp;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Ticker;
@@ -158,7 +159,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 
 	@Override
 	public int getDecisionCacheTTL() {
-		return Objects.firstNonNull(combinedDecisionCacheTTL, 0);
+		return MoreObjects.firstNonNull(combinedDecisionCacheTTL, 0);
 	}
 
 	@Override
@@ -435,7 +436,7 @@ public final class RootEvaluationContext implements EvaluationContext {
 
 	@Override
 	public String toString() {
-		return Objects
+		return MoreObjects
 				.toStringHelper(this)
 				.add("defaultXPathVersion", defaultXPathVersion)
 				.add("contextHandler", contextHandler)

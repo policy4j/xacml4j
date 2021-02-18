@@ -31,6 +31,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.ExpressionVisitor;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 /**
@@ -125,10 +126,10 @@ public class AttributeDesignator extends AttributeReference
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("designatorKey", designatorKey)
-		.add("mustBePresent", isMustBePresent())
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("designatorKey", designatorKey)
+		                  .add("mustBePresent", isMustBePresent())
+		                  .toString();
 	}
 
 	@Override

@@ -37,6 +37,7 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Status;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -269,7 +270,7 @@ abstract class BaseDecisionRule implements DecisionRule
 		}
 	}
 
-	protected Objects.ToStringHelper toStringBuilder(Objects.ToStringHelper b){
+	protected MoreObjects.ToStringHelper toStringBuilder(MoreObjects.ToStringHelper b){
 		return b.add("id", id)
 				.add("description", description)
 				.add("target", target)

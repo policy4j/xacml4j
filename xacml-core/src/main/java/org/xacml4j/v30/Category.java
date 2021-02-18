@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -96,11 +97,11 @@ public class Category
 
 	@Override
 	public String toString(){
-		return Objects.toStringHelper(this)
-		.add("category", categoryId)
-		.add("id", id)
-		.add("entity", entity)
-		.toString();
+		return MoreObjects.toStringHelper(this)
+		                  .add("category", categoryId)
+		                  .add("id", id)
+		                  .add("entity", entity)
+		                  .toString();
 	}
 
 	@Override
