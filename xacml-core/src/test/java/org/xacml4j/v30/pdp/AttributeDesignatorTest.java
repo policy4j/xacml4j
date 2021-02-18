@@ -53,9 +53,8 @@ public class AttributeDesignatorTest
 		this.context = createStrictMock(EvaluationContext.class);
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
-	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
-	{
+	@Test
+	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException {
 		AttributeDesignator desig = AttributeDesignator
 				.builder()
 				.category(Categories.SUBJECT_RECIPIENT)
@@ -67,13 +66,9 @@ public class AttributeDesignatorTest
 		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
 		expect(context.resolve(capture(c))).andReturn(XacmlTypes.INTEGER.emptyBag());
 		replay(context);
-		try{
-			desig.evaluate(context);
-		}catch(AttributeReferenceEvaluationException e){
-			assertSame(c.getValue(), e.getReference());
-			assertTrue(e.getStatus().isFailure());
-			throw e;
-		}
+		Expression v = desig.evaluate(context);
+		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
+		assertEquals(XacmlTypes.INTEGER.emptyBag(), v);
 		verify(context);
 	}
 
@@ -101,7 +96,6 @@ public class AttributeDesignatorTest
 		}
 		verify(context);
 	}
-
 
 	@Test
 	public void testMustBePresentTrueAttributeDoesExist() throws EvaluationException

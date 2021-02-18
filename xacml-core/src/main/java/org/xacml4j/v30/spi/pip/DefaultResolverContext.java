@@ -80,7 +80,12 @@ final class DefaultResolverContext implements
 		}
 		ImmutableList.Builder<BagOfAttributeExp> b = ImmutableList.builder();
 		for(AttributeReferenceKey ref : keyRefs){
-			b.add(ref.resolve(context));
+			BagOfAttributeExp v = ref.resolve(context);
+			if (v != null) {
+				b.add(v);
+			} else {
+				b.add(ref.getDataType().emptyBag());
+			}
 		}
 		return b.build();
 	}

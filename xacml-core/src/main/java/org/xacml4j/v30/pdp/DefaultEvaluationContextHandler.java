@@ -10,12 +10,12 @@ package org.xacml4j.v30.pdp;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
 import org.w3c.dom.Text;
+import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeExp;
 import org.xacml4j.v30.AttributeSelectorKey;
@@ -53,6 +54,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 class DefaultEvaluationContextHandler
 	implements EvaluationContextHandler
@@ -99,15 +101,19 @@ class DefaultEvaluationContextHandler
 
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(key);
-		Entity entity = requestCallback.getEntity(key.getCategory());
-		BagOfAttributeExp v = null;
-		if(entity != null){
-			v = entity.getAttributeValues(key.getAttributeId(),
-					key.getDataType(), key.getIssuer());
-			if(!v.isEmpty()){
-				if(log.isDebugEnabled()){
-					log.debug("Resolved designator=\"{}\" " +
-							"from request to value=\"{}\"", key, v);
+		final Entity entity = requestCallback.getEntity(key.getCategory());
+		if (entity != null) {
+			Collection<Attribute> attrs = entity.getAttributes(
+					key.getAttributeId(), key.getIssuer());
+			if (!attrs.isEmpty()) {
+				final ImmutableList.Builder<AttributeExp> b = ImmutableList.builder();
+				for (Attribute a : attrs) {
+					b.addAll(a.getValuesByType(key.getDataType()));
+				}
+				final BagOfAttributeExp v = key.getDataType().bagOf(b.build());
+				if (log.isDebugEnabled()) {
+					log.debug("Resolved designator=\"{}\" from request to value=\"{}\"",
+					          key, v);
 				}
 				return v;
 			}
@@ -116,25 +122,23 @@ class DefaultEvaluationContextHandler
 		Preconditions.checkState(
 				!designatorResolutionStack.contains(key),
 				"Cyclic designator=\"%s\" resolution detected", key);
-		try
-		{
+		try {
 			designatorResolutionStack.push(key);
-			v = pip.resolve(context, key);
-			if(log.isDebugEnabled()){
-				log.debug("Resolved designator=\"{}\" " +
-						"from PIP to value=\"{}\"", key, v);
+			final BagOfAttributeExp v = pip.resolve(context, key);
+			if (log.isDebugEnabled()) {
+				log.debug("Resolved designator=\"{}\" from PIP to value=\"{}\"",
+				          key, v);
 			}
 			return v;
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
+		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
 				log.debug(e.getMessage(), e);
 			}
 			throw new AttributeReferenceEvaluationException(key);
-		}finally{
+		} finally {
 			designatorResolutionStack.pop();
 		}
 	}
-
 
 	@Override
 	public BagOfAttributeExp resolve(
@@ -165,12 +169,12 @@ class DefaultEvaluationContextHandler
 	 * @param context an evaluation context
 	 * @param category an attribute category
 	 * @return {@link BagOfAttributeExp}
-	 * @exception Exception
+	 * @exception Exception if content can not be retrieved
 	 */
 	private Node doGetContent(EvaluationContext context, CategoryId category)
 		throws Exception
 	{
-		Node content = null;
+		Node content;
 		if(contentCache.containsKey(category)){
 			content = contentCache.get(category);
 			if(log.isDebugEnabled()){
@@ -272,7 +276,7 @@ class DefaultEvaluationContextHandler
 	 * @param ref an attribute selector
 	 * @param nodeSet a node set
 	 * @return {@link BagOfAttributeExp}
-	 * @throws EvaluationException
+	 * @throws EvaluationException if node list conversion fails
 	 */
 	private BagOfAttributeExp toBag(
 			EvaluationContext context,
@@ -384,6 +388,4 @@ class DefaultEvaluationContextHandler
 			return content;
 		}
 	}
-
-
 }

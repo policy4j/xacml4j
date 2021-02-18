@@ -54,9 +54,13 @@ import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.XPathExp;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Predicates;
 import com.google.common.base.Ticker;
+import com.google.common.collect.Maps;
 
 
 public final class RootEvaluationContext implements EvaluationContext {
@@ -73,8 +77,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 	private final List<CompositeDecisionRuleIDReference> evaluatedPolicies;
 	private final TimeZone timezone;
 	private final Calendar currentDateTime;
-	private final Map<AttributeDesignatorKey, BagOfAttributeExp> designatorCache;
-	private final Map<AttributeSelectorKey, BagOfAttributeExp> selectorCache;
+	private final Map<AttributeDesignatorKey, Optional<BagOfAttributeExp>> designatorCache;
+	private final Map<AttributeSelectorKey, Optional<BagOfAttributeExp>> selectorCache;
 	private final Ticker ticker = Ticker.systemTicker();
 	private boolean validateFuncParamsAtRuntime = false;
 	private Status evaluationStatus;
@@ -98,8 +102,8 @@ public final class RootEvaluationContext implements EvaluationContext {
 		this.timezone = TimeZone.getTimeZone("UTC");
 		this.currentDateTime = Calendar.getInstance(timezone);
 		this.evaluatedPolicies = new LinkedList<CompositeDecisionRuleIDReference>();
-		this.designatorCache = new HashMap<AttributeDesignatorKey, BagOfAttributeExp>(128);
-		this.selectorCache = new HashMap<AttributeSelectorKey, BagOfAttributeExp>(128);
+		this.designatorCache = new HashMap<AttributeDesignatorKey, Optional<BagOfAttributeExp>>(128);
+		this.selectorCache = new HashMap<AttributeSelectorKey, Optional<BagOfAttributeExp>>(128);
 		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
 		this.defaultXPathVersion = defaultXPathVersion;
 	}
@@ -372,21 +376,20 @@ public final class RootEvaluationContext implements EvaluationContext {
 			AttributeDesignatorKey ref)
 		throws EvaluationException
 	{
-		BagOfAttributeExp v = designatorCache.get(ref);
-		if (v != null) {
+		final Optional<BagOfAttributeExp> cachedValue = designatorCache.get(ref);
+		if (cachedValue != null) {
 			if (log.isDebugEnabled()) {
 				log.debug("Found designator=\"{}\" value=\"{}\" in cache",
-						ref, v);
+						ref, cachedValue.orNull());
 			}
-			return v;
+			return cachedValue.orNull();
 		}
-		v = contextHandler.resolve(this, ref);
-		v = (v == null)?ref.getDataType().emptyBag():v;
+		final BagOfAttributeExp v = contextHandler.resolve(this, ref);
 		if (log.isDebugEnabled()) {
 			log.debug("Resolved designator=\"{}\" to value=\"{}\"",
 					ref, v);
 		}
-		this.designatorCache.put(ref, v);
+		this.designatorCache.put(ref, Optional.fromNullable(v));
 		return v;
 	}
 
@@ -395,21 +398,21 @@ public final class RootEvaluationContext implements EvaluationContext {
 			AttributeSelectorKey ref)
 			throws EvaluationException
 	{
-		BagOfAttributeExp v = selectorCache.get(ref);
-		if(v != null){
+		final Optional<BagOfAttributeExp> cachedValue = selectorCache.get(ref);
+		if(cachedValue != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found selector=\"{}\" " +
-						"value=\"{}\" in cache", ref, v);
+						"value=\"{}\" in cache", ref, cachedValue.orNull());
 			}
-			return v;
+			return cachedValue.orNull();
 		}
-		v = contextHandler.resolve(this, ref);
+		BagOfAttributeExp v = contextHandler.resolve(this, ref);
 		v = (v == null)?ref.getDataType().emptyBag():v;
 		if(log.isDebugEnabled()){
 			log.debug("Resolved " +
 					"selector=\"{}\" to value=\"{}\"", ref, v);
 		}
-		this.selectorCache.put(ref, v);
+		this.selectorCache.put(ref, Optional.fromNullable(v));
 		return v;
 	}
 
@@ -420,7 +423,18 @@ public final class RootEvaluationContext implements EvaluationContext {
 
 	@Override
 	public Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators() {
-		return Collections.unmodifiableMap(designatorCache);
+		return Collections.unmodifiableMap(
+				Maps.filterValues(
+					Maps.transformValues(
+							designatorCache,
+							new Function<Optional<BagOfAttributeExp>, BagOfAttributeExp>() {
+								@Override
+								public BagOfAttributeExp apply(Optional<BagOfAttributeExp> input) {
+									return input == null ? null : input.orNull();
+								}
+							}),
+					Predicates.<BagOfAttributeExp>notNull())
+		);
 	}
 
 	@Override
