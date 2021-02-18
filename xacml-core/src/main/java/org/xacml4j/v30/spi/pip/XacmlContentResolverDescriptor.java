@@ -35,5 +35,6 @@ public @interface XacmlContentResolverDescriptor
 	String id();
 	String name();
 	String category();
+	boolean requiresContext() default false;
 	int cacheTTL() default 0;
 }

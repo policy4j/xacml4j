@@ -25,7 +25,6 @@ package org.xacml4j.util;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.math.PairedStats;
 
 /**
  * Represents pair of objects

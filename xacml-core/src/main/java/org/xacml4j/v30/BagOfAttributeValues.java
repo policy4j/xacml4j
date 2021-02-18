@@ -25,12 +25,14 @@ package org.xacml4j.v30;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -100,6 +102,10 @@ public final class BagOfAttributeValues
 	 */
 	public <T extends AttributeValue> T value(){
 		return this.<T>values().iterator().next();
+	}
+
+	public final <T extends AttributeValue> Optional<T> single() {
+		return Optional.ofNullable(Iterables.getFirst(this.<T>values(), null));
 	}
 
 	/**

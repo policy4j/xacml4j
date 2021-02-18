@@ -22,11 +22,11 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import java.util.Calendar;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 public class TimeValueTypeTest
 {

@@ -22,11 +22,9 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.*;
-import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
-
-import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML non-numeric comparison functions")
 final class NonNumericComparisonFunctions

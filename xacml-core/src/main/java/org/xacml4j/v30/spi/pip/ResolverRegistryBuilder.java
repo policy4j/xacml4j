@@ -22,25 +22,52 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.*;
-import java.util.function.Function;
-
-import com.google.common.reflect.TypeToken;
-import org.xacml4j.v30.*;
 import com.google.common.base.Preconditions;
+import com.google.common.reflect.TypeToken;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.SyntaxException;
+
+import java.time.ZonedDateTime;
+import java.util.*;
 
 import static org.xacml4j.v30.types.XacmlTypes.*;
-import static org.xacml4j.v30.types.XacmlTypes.DATETIME;
 
 public final class ResolverRegistryBuilder
 {
-	private Collection<Resolver<AttributeSet>> attributeResolvers;
-	private Collection<Resolver<ContentRef>> contentResolvers;
-	private AnnotatedResolverFactory annotatedResolverFactory;
+	private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
+	private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";
+	private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
 
+	private final static String SHORT_CURRENT_TIME = "current-time";
+	private final static String SHORT_CURRENT_DATE = "current-date";
+	private final static String SHORT_CURRENT_DATETIME = "current-dateTime";
+
+	private Collection<AttributeResolverDescriptor> attributeResolvers;
+	private Collection<ContentResolverDescriptor> contentResolvers;
+	private AnnotatedResolverFactory annotatedResolverFactory;
 
 	private final static TypeToken<Resolver<AttributeSet>> ATTRIBUTE_RESOLVER_TYPE = new TypeToken<>(){};
 	private final static TypeToken<Resolver<ContentRef>> CONTENT_RESOLVER_TYPE = new TypeToken<>(){};
+
+	private final static AttributeResolverDescriptor ENVIRONMENT_RESOLVER = AttributeResolverDescriptor
+			.builder("XacmlEnvironmentResolver",
+					"XACML Environment Attributes Resolver", CategoryId.ENVIRONMENT)
+			.noCache()
+			.attribute(CURRENT_TIME, TIME, SHORT_CURRENT_TIME)
+			.attribute(CURRENT_DATE, DATE, SHORT_CURRENT_DATE)
+			.attribute(CURRENT_DATETIME,DATETIME, SHORT_CURRENT_DATETIME)
+			.build((context)->{
+						ZonedDateTime currentDateTime = context.getCurrentDateTime();
+						Map<String, BagOfAttributeValues> v = new HashMap<String, BagOfAttributeValues>();
+						v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time",
+								TIME.of(currentDateTime).toBag());
+						v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date",
+								DATE.of(currentDateTime).toBag());
+						v.put("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",
+								DATETIME.of(currentDateTime).toBag());
+						return v;
+			});
 
 
 	private ResolverRegistryBuilder(){
@@ -65,36 +92,36 @@ public final class ResolverRegistryBuilder
 	 * @return {@link ResolverRegistryBuilder}
 	 */
 	public ResolverRegistryBuilder withDefaultResolvers(){
-		return withAttributeResolver(new DefaultEnvironmentAttributeResolver());
+		return withAttributeResolver(ENVIRONMENT_RESOLVER);
 	}
 
 	/**
-	 * Adds a given {@link AttributeResolver}
+	 * Adds a given {@link AttributeResolverDescriptor}
 	 *
 	 * @param resolver an attribute resolver
 	 * @return {@link ResolverRegistryBuilder}
 	 */
-	public ResolverRegistryBuilder withAttributeResolver(Resolver<AttributeSet> resolver){
+	public ResolverRegistryBuilder withAttributeResolver(AttributeResolverDescriptor resolver){
 		Preconditions.checkNotNull(resolver);
 		this.attributeResolvers.add(resolver);
 		return this;
 	}
 
-	public ResolverRegistryBuilder withAttributeResolvers(Iterable<Resolver<AttributeSet>> resolvers){
-		for(Resolver<AttributeSet> r : resolvers){
+	public ResolverRegistryBuilder withAttributeResolvers(Iterable<AttributeResolverDescriptor> resolvers){
+		for(AttributeResolverDescriptor r : resolvers){
 			withAttributeResolver(r);
 		}
 		return this;
 	}
 
-	public ResolverRegistryBuilder withContentResolvers(Iterable<Resolver<ContentRef>> resolvers){
-		for(Resolver<ContentRef> r : resolvers){
+	public ResolverRegistryBuilder withContentResolvers(Iterable<ContentResolverDescriptor> resolvers){
+		for(ContentResolverDescriptor r : resolvers){
 			withContentResolver(r);
 		}
 		return this;
 	}
 
-	public ResolverRegistryBuilder withContentResolver(Resolver<ContentRef> resolver){
+	public ResolverRegistryBuilder withContentResolver(ContentResolverDescriptor resolver){
 		Preconditions.checkNotNull(resolver);
 		this.contentResolvers.add(resolver);
 		return this;
@@ -102,53 +129,17 @@ public final class ResolverRegistryBuilder
 
 	public ResolverRegistryBuilder withResolver(Object annotatedResolver){
 		Preconditions.checkNotNull(annotatedResolver);
-		if(CONTENT_RESOLVER_TYPE.method())
 		try
 		{
 			withAttributeResolvers(annotatedResolverFactory.getAttributeResolvers(annotatedResolver));
 			withContentResolvers(annotatedResolverFactory.getContentResolvers(annotatedResolver));
 			return this;
-		}catch(XacmlSyntaxException e){
+		}catch(SyntaxException e){
 			throw new IllegalArgumentException(e);
 		}
 	}
 
 	public ResolverRegistry build(){
-		return new DefaultResolverRegistry(
-				attributeResolvers, contentResolvers);
+		return new DefaultResolverRegistry(attributeResolvers, contentResolvers);
 	}
-
-
-	public class DefaultEnvironmentAttributeResolver implements Resolver<AttributeSet>
-	{
-		private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
-		private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";
-		private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
-
-		private final static String SHORT_CURRENT_TIME = "current-time";
-		private final static String SHORT_CURRENT_DATE = "current-date";
-		private final static String SHORT_CURRENT_DATETIME = "current-dateTime";
-
-		private Function<ResolverContext, Optional<AttributeSet>> = ( v ) -> { return Optional.empty()};
-
-		private final static AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
-				.builder("XacmlEnvironmentResolver",
-						"XACML Environment Attributes Resolver", CategoryId.ENVIRONMENT)
-				.noCache()
-						.attribute(CURRENT_TIME, TIME, SHORT_CURRENT_TIME)
-						.attribute(CURRENT_DATE, DATE, SHORT_CURRENT_DATE)
-						.attribute(CURRENT_DATETIME,DATETIME, SHORT_CURRENT_DATETIME)
-						.build();
-
-		private final static Resolver<AttributeSet> ENV_RESOLVER =
-
-					);
-
-
-		public DefaultEnvironmentAttributeResolver(){
-
-		}
-	}
-
-
 }

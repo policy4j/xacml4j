@@ -23,21 +23,20 @@ package org.xacml4j.v30.spi.function;
  */
 
 
-import static org.easymock.EasyMock.createControl;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+
+import static org.easymock.EasyMock.createControl;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class FunctionSpecBuilderTest
 {
@@ -62,7 +61,7 @@ public class FunctionSpecBuilderTest
 		b.varArg(XacmlTypes.STRING, 0, 100);
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testAddMultipleVarArg(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
@@ -79,7 +78,7 @@ public class FunctionSpecBuilderTest
 		assertTrue(f.isVariadic());
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testAddVarArgAfterDefaultValue(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
@@ -87,7 +86,7 @@ public class FunctionSpecBuilderTest
 		b.varArg(XacmlTypes.STRING, 0, 5);
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testAddOptionalAfterVarArg1(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
@@ -96,7 +95,7 @@ public class FunctionSpecBuilderTest
 		
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testAddOptionalAfterVarArg2(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
@@ -105,7 +104,7 @@ public class FunctionSpecBuilderTest
 		
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testAddParamWithDefaultValueAndOptionalFalse(){
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.param(XacmlTypes.STRING, XacmlTypes.STRING.of("aaa"), false);
@@ -144,7 +143,7 @@ public class FunctionSpecBuilderTest
 		c.verify();
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testParameterAfterVaragParam()
 	{
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");

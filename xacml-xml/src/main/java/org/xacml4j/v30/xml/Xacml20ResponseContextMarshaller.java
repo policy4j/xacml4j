@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.checkerframework.checker.nullness.Opt;
 import org.oasis.xacml.v20.jaxb.context.DecisionType;
 import org.oasis.xacml.v20.jaxb.context.ObjectFactory;
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
@@ -144,7 +143,7 @@ public class Xacml20ResponseContextMarshaller
 			if(log.isDebugEnabled()){
 				log.debug("Mapping result=\"{}\" to resourceId", result);
 			}
-			Category resource = result.getAttribute(CategoryId.RESOURCE);
+			Category resource = result.getCategory(CategoryId.RESOURCE);
 			if(resource == null){
 				return null;
 			}

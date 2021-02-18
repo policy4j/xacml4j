@@ -22,8 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Throwables;
-
 import java.lang.reflect.Method;
 import java.util.Objects;
 

@@ -57,7 +57,7 @@ implements ResponseUnmarshaller
 
 	@Override
 	protected ResponseContext create(JAXBElement<?> jaxbInstance)
-			throws XacmlSyntaxException {
+			throws SyntaxException {
 		return mapper.create(
 				(ResponseType)jaxbInstance.getValue());
 	}
@@ -78,7 +78,7 @@ implements ResponseUnmarshaller
 				EffectType.DENY, Effect.DENY,
 				EffectType.PERMIT, Effect.PERMIT);
 
-		public ResponseContext create(ResponseType response) throws XacmlSyntaxException
+		public ResponseContext create(ResponseType response) throws SyntaxException
 		{
 			Preconditions.checkNotNull(response);
 			ResponseContext.Builder b = ResponseContext.builder();
@@ -88,7 +88,7 @@ implements ResponseUnmarshaller
 			return b.build();
 		}
 
-		private Result create(ResultType result) throws XacmlSyntaxException
+		private Result create(ResultType result) throws SyntaxException
 		{
 			Preconditions.checkArgument(result.getDecision() != null);
 			Decision d = V20_TO_V30_DECISION_MAPPING.get(result.getDecision());
@@ -114,7 +114,7 @@ implements ResponseUnmarshaller
 			return b.build();
 		}
 
-		private Collection<Obligation> getObligations(ResultType r) throws XacmlSyntaxException
+		private Collection<Obligation> getObligations(ResultType r) throws SyntaxException
 		{
 			if(r.getObligations() == null){
 				return Collections.emptyList();
@@ -129,7 +129,7 @@ implements ResponseUnmarshaller
 			return obligations;
 		}
 
-		private Obligation create(ObligationType o) throws XacmlSyntaxException
+		private Obligation create(ObligationType o) throws SyntaxException
 		{
 			Collection<AttributeAssignment> attrs = new LinkedList<AttributeAssignment>();
 			for(AttributeAssignmentType a : o.getAttributeAssignment()){
@@ -144,7 +144,7 @@ implements ResponseUnmarshaller
 					.build();
 		}
 
-		private Status create(StatusType status) throws XacmlSyntaxException
+		private Status create(StatusType status) throws SyntaxException
 		{
 			Status.Builder b = Status
 					.builder(create(status.getStatusCode()))
@@ -155,7 +155,7 @@ implements ResponseUnmarshaller
 			return b.build();
 		}
 
-		private StatusCode create(StatusCodeType code) throws XacmlSyntaxException
+		private StatusCode create(StatusCodeType code) throws SyntaxException
 		{
 			if(code == null){
 				return null;

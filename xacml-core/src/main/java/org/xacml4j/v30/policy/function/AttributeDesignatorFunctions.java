@@ -22,23 +22,15 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import java.util.List;
-import java.util.Optional;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamAnyAttribute;
-import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamOptional;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
+import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.*;
 
-import com.google.common.base.Preconditions;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * XACML 3.0 regular attribute resolution functions
@@ -136,7 +128,7 @@ final class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 		AttributeValueType typeId = typeUri.getEvaluatesTo();
 		Optional<AttributeValueType> resolvedType = XacmlTypes.getType(typeUri.value().toString());
 		if(!resolvedType.isPresent()){
-			throw new XacmlSyntaxException("Unknown XACML typeId=\"%s\"",
+			throw new SyntaxException("Unknown XACML typeId=\"%s\"",
 						typeId);
 		}
 		return resolvedType.get();

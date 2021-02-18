@@ -22,7 +22,7 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 import java.io.IOException;
 
@@ -30,5 +30,5 @@ import java.io.IOException;
 public interface Unmarshaller<T>
 {
 	T unmarshal(Object source)
-		throws XacmlSyntaxException, IOException;
+		throws SyntaxException, IOException;
 }

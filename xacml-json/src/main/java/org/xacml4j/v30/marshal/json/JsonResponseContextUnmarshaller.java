@@ -34,7 +34,7 @@ import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
@@ -61,7 +61,7 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 	}
 
 	@Override
-	public ResponseContext unmarshal(Object source) throws XacmlSyntaxException, IOException {
+	public ResponseContext unmarshal(Object source) throws SyntaxException, IOException {
 		if (source instanceof Reader) {
 			return json.fromJson((Reader) source, ResponseContext.class);
 		}

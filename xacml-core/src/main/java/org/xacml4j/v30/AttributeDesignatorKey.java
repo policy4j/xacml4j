@@ -29,8 +29,6 @@ import com.google.common.base.Strings;
 import org.xacml4j.v30.types.AnyURIValue;
 import org.xacml4j.v30.types.StringValue;
 
-import java.util.Set;
-
 /**
  * Represents XACML attribute designator
  *
@@ -41,15 +39,13 @@ public final class AttributeDesignatorKey
 {
 	private final String attributeId;
 	private final String issuer;
-	private final int hashCode;
+	private transient int hashCode = -1;
 
 	public AttributeDesignatorKey(Builder b){
 		super(b);
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(b.attributeId));
 		this.attributeId = b.attributeId;
 		this.issuer = b.issuer;
-		this.hashCode = Objects.hashCode(
-				category, attributeId, dataType, issuer);
 	}
 
 	public static Builder builder(){
@@ -83,6 +79,9 @@ public final class AttributeDesignatorKey
 
 	@Override
 	public int hashCode(){
+		if(hashCode == -1){
+			this.hashCode = java.util.Objects.hash(attributeId, issuer);
+		}
 		return hashCode;
 	}
 

@@ -22,35 +22,35 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.w3c.dom.Attr;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.Iterables;
+import static org.easymock.EasyMock.createStrictControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.*;
+
+import java.util.Map;
+import java.util.function.Function;
 
 public class DefaultResolverRegistryTest
 {
-	private ResolverRegistry r;
+	private DefaultResolverRegistry r;
 	private IMocksControl control;
 	private EvaluationContext context;
 
-	private AttributeResolver r1;
-	private AttributeResolver r2;
 
 	private AttributeResolverDescriptor d1;
 
@@ -62,35 +62,29 @@ public class DefaultResolverRegistryTest
 		this.r = new DefaultResolverRegistry();
 		this.control = createStrictControl();
 		this.context = control.createMock(EvaluationContext.class);
-		this.r1 = control.createMock(AttributeResolver.class);
-		this.r2 = control.createMock(AttributeResolver.class);
-
-		this.d1 = AttributeResolverDescriptorBuilder.
-		builder("testId1", "Test1", CategoryId.SUBJECT_ACCESS)
-		.attribute("testAttr1", XacmlTypes.INTEGER).build();
-
-
+		this.d1 = AttributeResolverDescriptor.builder(
+				"testId1", "Test1", CategoryId.SUBJECT_ACCESS)
+		                                     .attribute("testAttr1", XacmlTypes.INTEGER)
+		                                     .build((c)-> ImmutableMap.of());
 	}
 
-	@Test()
+	@Test
 	public void testAddDifferentResolversWithTheSameAttributesNoIssuer()
 	{
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
 				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
-		expect(r1.getDescriptor()).andReturn(d);
+				.build((c)-> ImmutableMap.of());
 
-		expect(r2.getDescriptor()).andReturn(
-				AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d2 = AttributeResolverDescriptor
 				.builder("test2", "Test2", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build());
+				.build((c)-> ImmutableMap.of());
 
 		control.replay();
 
-		r.addAttributeResolver(r1);
-		r.addAttributeResolver(r2);
+		r.addResolver(d1);
+		r.addResolver(d2);
 
 		control.verify();
 	}
@@ -101,22 +95,21 @@ public class DefaultResolverRegistryTest
 		expectedException.expect(IllegalArgumentException.class);
 		expectedException.expectMessage("Attribute resolver with id=\"test1\" is already registered with this registry");
 
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
 				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
-		expect(r1.getDescriptor()).andReturn(d);
+				.build(c->ImmutableMap.of());
 
-		expect(r2.getDescriptor()).andReturn(
-				AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d2 =
+				AttributeResolverDescriptor
 				.builder("test1", "Test2", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build());
+				.build(c->ImmutableMap.of());
 
 		control.replay();
 
-		r.addAttributeResolver(r1);
-		r.addAttributeResolver(r2);
+		r.addResolver(d1);
+		r.addResolver(d2);
 
 		control.verify();
 	}
@@ -124,61 +117,52 @@ public class DefaultResolverRegistryTest
 	@Test
 	public void testAddResolverWithTheSameAttributesWithDifferentIssuers()
 	{
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
 				.builder("test1", "Test1", "Issuer1", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
-		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder
+				.build(c->ImmutableMap.of());
+		AttributeResolverDescriptor d2 = AttributeResolverDescriptor
 				.builder("test2", "Test2", "Issuer2", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
-
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
+				.build(c->ImmutableMap.of());
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		control.replay();
 
-		r.addAttributeResolver(r1);
-		r.addAttributeResolver(r2);
+		r.addResolver(d1);
+		r.addResolver(d2);
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
-		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, keyB.build());
+		Iterable<AttributeResolverDescriptor> matchNoIssuer = r.getMatchingAttributeResolver(context, keyB.build());
 
 		assertEquals(2, Iterables.size(matchNoIssuer));
-		assertSame(r1, Iterables.get(matchNoIssuer, 0));
-		assertSame(r2, Iterables.get(matchNoIssuer, 1));
+		assertSame(d1, Iterables.get(matchNoIssuer, 0));
+		assertSame(d2, Iterables.get(matchNoIssuer, 1));
 
-		Iterable<AttributeResolver> matchWithMatchingIssuer1 = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer1").build());
+		Iterable<AttributeResolverDescriptor> matchWithMatchingIssuer1 = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer1").build());
 
 		assertEquals(1, Iterables.size(matchWithMatchingIssuer1));
-		assertSame(r1, Iterables.get(matchWithMatchingIssuer1, 0));
+		assertSame(d1, Iterables.get(matchWithMatchingIssuer1, 0));
 
-		Iterable<AttributeResolver> matchWithtMatchingIssuer2 = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer2").build());
+		Iterable<AttributeResolverDescriptor> matchWithtMatchingIssuer2 = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer2").build());
 
 		assertEquals(1, Iterables.size(matchWithtMatchingIssuer2));
-		assertSame(r2, Iterables.get(matchWithtMatchingIssuer2, 0));
+		assertSame(d2, Iterables.get(matchWithtMatchingIssuer2, 0));
 
 		control.verify();
 	}
@@ -186,35 +170,27 @@ public class DefaultResolverRegistryTest
 	@Test
 	public void testAddResolverWithTheSameAttributesFirstWithNullIssuerSecondWithIssuer()
 	{
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
 				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
-		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder
+				.build(c->ImmutableMap.of());
+		AttributeResolverDescriptor d2 = AttributeResolverDescriptor
 				.builder("test2", "Test2", "Issuer", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
+				.build(c->ImmutableMap.of());
 
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		control.replay();
 
@@ -223,20 +199,20 @@ public class DefaultResolverRegistryTest
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
-		r.addAttributeResolver(r1);
-		r.addAttributeResolver(r2);
-		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, keyB.build());
+		r.addResolver(d1);
+		r.addResolver(d2);
+		Iterable<AttributeResolverDescriptor> matchNoIssuer = r.getMatchingAttributeResolver(context, keyB.build());
 
 		assertEquals(2, Iterables.size(matchNoIssuer));
-		assertSame(r1, Iterables.get(matchNoIssuer, 0));
-		assertSame(r2, Iterables.get(matchNoIssuer, 1));
+		assertSame(d1, Iterables.get(matchNoIssuer, 0));
+		assertSame(d2, Iterables.get(matchNoIssuer, 1));
 
-		Iterable<AttributeResolver> matchWithMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer").build());
+		Iterable<AttributeResolverDescriptor> matchWithMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer").build());
 
 		assertEquals(1, Iterables.size(matchWithMatchingIssuer));
-		assertSame(r2, Iterables.get(matchWithMatchingIssuer, 0));
+		assertSame(d2, Iterables.get(matchWithMatchingIssuer, 0));
 
-		Iterable<AttributeResolver> matchWithNotMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer1").build());
+		Iterable<AttributeResolverDescriptor> matchWithNotMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer1").build());
 
 		assertEquals(0, Iterables.size(matchWithNotMatchingIssuer));
 
@@ -246,19 +222,16 @@ public class DefaultResolverRegistryTest
 	@Test
 	public void testAddResolverSameGloballyAndScoped()
 	{
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d = AttributeResolverDescriptor
 				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
+				.build(c->ImmutableMap.of());
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
-		// add
-		expect(r1.getDescriptor()).andReturn(d);
-		expect(r2.getDescriptor()).andReturn(d);
 
 		// get matching
 		Policy p = control.createMock(Policy.class);
@@ -266,21 +239,19 @@ public class DefaultResolverRegistryTest
 		expect(context.getCurrentPolicy()).andReturn(p);
 		expect(p.getId()).andReturn("testId");
 
-		expect(r2.getDescriptor()).andReturn(d);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d);
 
 
 		control.replay();
 
-		r.addAttributeResolver(r1);
-		r.addAttributeResolver("testId", r2);
+		r.addResolver(d1);
+		r.addResolver(d);
 
-		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, keyB.build());
+		Iterable<AttributeResolverDescriptor> resolvers = r.getMatchingAttributeResolver(context, keyB.build());
 
 		assertFalse(Iterables.isEmpty(resolvers));
-		assertSame(r2, Iterables.get(resolvers, 0));
-		assertSame(r1, Iterables.get(resolvers, 1));
+		assertSame(d, Iterables.get(resolvers, 0));
+		assertSame(d1, Iterables.get(resolvers, 1));
 
 		control.verify();
 	}
@@ -288,18 +259,16 @@ public class DefaultResolverRegistryTest
 	@Test
 	public void testAddResolverMatchingResolverGloballyAndScoped()
 	{
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
 				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
+				.build(c->ImmutableMap.of());
 
-		AttributeResolverDescriptor d2 = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d2 = AttributeResolverDescriptor
 				.builder("test2", "Test2", "Issuer", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
+				.build(c->ImmutableMap.of());
 
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		// get matching
 		Policy p = control.createMock(Policy.class);
@@ -308,20 +277,14 @@ public class DefaultResolverRegistryTest
 		expect(p.getId()).andReturn("testId");
 
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicySet()).andReturn(null);
 		expect(context.getParentContext()).andReturn(null);
-		expect(r1.getDescriptor()).andReturn(d1);
-		expect(r2.getDescriptor()).andReturn(d2);
 
 		control.replay();
 
@@ -330,21 +293,20 @@ public class DefaultResolverRegistryTest
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
-
-		r.addAttributeResolver(r1);
-		r.addAttributeResolver(r2);
-		Iterable<AttributeResolver> matchNoIssuer = r.getMatchingAttributeResolvers(context, keyB.build());
+		r.addResolver(d1);
+		r.addResolver(d2);
+		Iterable<AttributeResolverDescriptor> matchNoIssuer = r.getMatchingAttributeResolver(context, keyB.build());
 
 		assertEquals(2, Iterables.size(matchNoIssuer));
-		assertSame(r1, Iterables.get(matchNoIssuer, 0));
-		assertSame(r2, Iterables.get(matchNoIssuer, 1));
+		assertSame(d1, Iterables.get(matchNoIssuer, 0));
+		assertSame(d2, Iterables.get(matchNoIssuer, 1));
 
-		Iterable<AttributeResolver> matchWithMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer").build());
+		Iterable<AttributeResolverDescriptor> matchWithMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer").build());
 
 		assertEquals(1, Iterables.size(matchWithMatchingIssuer));
-		assertSame(r2, Iterables.get(matchWithMatchingIssuer, 0));
+		assertSame(d2, Iterables.get(matchWithMatchingIssuer, 0));
 
-		Iterable<AttributeResolver> matchWithNotMatchingIssuer = r.getMatchingAttributeResolvers(context, keyB.issuer("Issuer1").build());
+		Iterable<AttributeResolverDescriptor> matchWithNotMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer1").build());
 
 		assertEquals(0, Iterables.size(matchWithNotMatchingIssuer));
 
@@ -360,29 +322,25 @@ public class DefaultResolverRegistryTest
 				.dataType(XacmlTypes.INTEGER);
 
 		assertTrue(d1.canResolve(keyB.build()));
-		expect(r1.getDescriptor()).andReturn(d1);
 		Policy p = control.createMock(Policy.class);
 		expect(context.getCurrentPolicy()).andReturn(p);
 		expect(p.getId()).andReturn("testId");
-		expect(r1.getDescriptor()).andReturn(d1);
 		expect(context.getParentContext()).andReturn(null);
 		control.replay();
-		r.addAttributeResolver("testId", r1);
-		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, keyB.build());
+		r.addResolver(d1);
+		Iterable<AttributeResolverDescriptor> resolvers = r.getMatchingAttributeResolver(context, keyB.build());
 		assertFalse(Iterables.isEmpty(resolvers));
-		assertSame(r1, Iterables.getOnlyElement(resolvers));
+		assertSame(d1, Iterables.getOnlyElement(resolvers));
 		control.verify();
 	}
 
 	@Test
 	public void testResolverResolutionWith2LevelPolicyHierarchy()
 	{
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
 				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build();
-
-		AttributeResolver resolver = control.createMock(AttributeResolver.class);
+				.build((c)->ImmutableMap.of());
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
@@ -392,7 +350,6 @@ public class DefaultResolverRegistryTest
 
 		assertTrue(d1.canResolve(keyB.build()));
 
-		expect(resolver.getDescriptor()).andReturn(d1);
 		Policy p1 = control.createMock(Policy.class);
 		expect(context.getCurrentPolicy()).andReturn(p1);
 		expect(p1.getId()).andReturn("testIdP1");
@@ -405,18 +362,17 @@ public class DefaultResolverRegistryTest
 		expect(context1.getCurrentPolicy()).andReturn(null);
 		expect(context1.getCurrentPolicySet()).andReturn(p2);
 		expect(p2.getId()).andReturn("testIdP2");
-		expect(resolver.getDescriptor()).andReturn(d1);
 
 		expect(context1.getParentContext()).andReturn(null);
 
 
 		control.replay();
-		r.addAttributeResolver("testIdP2", resolver);
+		r.addResolver("testIdP2", d1);
 
-		Iterable<AttributeResolver> resolvers = r.getMatchingAttributeResolvers(context, keyB.build());
+		Iterable<AttributeResolverDescriptor> resolvers = r.getMatchingAttributeResolver(context, keyB.build());
 
 		assertFalse(Iterables.isEmpty(resolvers));
-		assertSame(resolver, Iterables.getOnlyElement(resolvers));
+		assertSame(resolvers, Iterables.getOnlyElement(resolvers));
 		control.verify();
 	}
 }

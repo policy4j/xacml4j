@@ -23,10 +23,14 @@ package org.xacml4j.v30.types;
  */
 
 import com.google.auto.service.AutoService;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.AttributeValueType;
+import org.xacml4j.v30.TypeCapability;
+import org.xacml4j.v30.TypeCapabilityProvider;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
 
 /**

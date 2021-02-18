@@ -22,17 +22,14 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 
 public class RequestTest
@@ -113,9 +110,9 @@ public class RequestTest
 				.build();
 		assertFalse(request1.isReturnPolicyIdList());
 		assertEquals(3, request1.getCategories().size());
-		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getCategory(CategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getCategory(CategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject0));
 
 		RequestContext request2 = RequestContext
 				.builder()
@@ -124,9 +121,9 @@ public class RequestTest
 				.build();
 
 		assertTrue(request2.isReturnPolicyIdList());
-		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource0));
-		assertTrue(request1.getAttributes(CategoryId.RESOURCE).contains(resource1));
-		assertTrue(request1.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(request1.getCategory(CategoryId.RESOURCE).contains(resource0));
+		assertTrue(request1.getCategory(CategoryId.RESOURCE).contains(resource1));
+		assertTrue(request1.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject0));
 	}
 
 	@Test
@@ -138,11 +135,11 @@ public class RequestTest
 				.returnPolicyIdList(false)
 				.attributes(subject0, resource0, resource1)
 				.build();
-		Collection<Category> attr = request.getAttributes(CategoryId.RESOURCE);
+		Collection<Category> attr = request.getCategory(CategoryId.RESOURCE);
 		assertEquals(2, attr.size());
 		assertTrue(attr.contains(resource0));
 		assertTrue(attr.contains(resource1));
-		attr = request.getAttributes(CategoryId.ENVIRONMENT);
+		attr = request.getCategory(CategoryId.ENVIRONMENT);
 		assertEquals(0, attr.size());
 	}
 
@@ -155,7 +152,7 @@ public class RequestTest
 				.returnPolicyIdList(false)
 				.attributes(subject0, resource0)
 				.build();
-		Collection<Category> attr = request.getAttributes(CategoryId.ACTION);
+		Collection<Category> attr = request.getCategory(CategoryId.ACTION);
 		assertNotNull(attr);
 	}
 

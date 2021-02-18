@@ -22,10 +22,9 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import org.xacml4j.v30.Status;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
-public class RequestSyntaxException extends XacmlSyntaxException
+public class RequestSyntaxException extends SyntaxException
 {
 	private static final long serialVersionUID = -3531176199910284289L;
 

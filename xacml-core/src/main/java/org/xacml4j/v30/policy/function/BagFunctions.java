@@ -22,16 +22,11 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.BagOfAttributeValues;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamVarArg;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
+import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.*;
-
-import com.google.common.base.Preconditions;
 
 /**
  *

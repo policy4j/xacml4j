@@ -22,13 +22,12 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
 
 public final class RFC822Name implements Serializable
 {

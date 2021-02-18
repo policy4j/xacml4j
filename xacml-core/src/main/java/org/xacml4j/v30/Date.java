@@ -22,9 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.GregorianCalendar;
-
 import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.GregorianCalendar;
 
 public final class Date extends BaseCalendar<Date>
 {

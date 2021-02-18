@@ -81,7 +81,7 @@ public abstract class AttributeReferenceKey
 
 		public T dataType(Object typeId){
 			this.dataType = XacmlTypes.getType(typeId)
-					.orElseThrow(()->XacmlSyntaxException.invalidDataTypeId(typeId));
+					.orElseThrow(()-> SyntaxException.invalidDataTypeId(typeId));
 			return getThis();
 		}
 

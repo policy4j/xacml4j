@@ -22,18 +22,29 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
+import com.google.common.base.Charsets;
+import com.google.common.base.Supplier;
+import com.google.common.io.CharStreams;
+import com.google.common.io.Closeables;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 
-import com.google.common.base.Supplier;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Objects;
 
 
 /**
@@ -173,20 +184,6 @@ public interface PolicyRepository
 	 */
 	boolean remove(CompositeDecisionRule r);
 
-	/**
-	 * Imports a given XACML policy from a given
-	 * {@link InputStream} supplier. Policy repository will close
-	 * input stream after importing the policy.
-	 *
-	 * @param source a policy source
-	 * @return {@link CompositeDecisionRule} an imported
-	 * {@link Policy} or {@link PolicySet}
-	 * @exception XacmlSyntaxException if an syntax error
-	 * occurs while parsing XACML policy or policy set
-	 * @exception IOException if an IO error occurs
-	 */
-	CompositeDecisionRule importPolicy(Supplier<InputStream> source)
-		throws XacmlSyntaxException, IOException;
 
 	/**
 	 * Adds {@link PolicyRepositoryListener} to this repository
@@ -201,4 +198,64 @@ public interface PolicyRepository
 	 * @param l a listener
 	 */
 	void removePolicyRepositoryListener(PolicyRepositoryListener l);
+
+	/**
+	 * Creates policy import tool with a given policy unmarshaller
+	 * @param unmarshaller a policy unmarshaller
+	 * @return {@Link ImportTool}
+	 */
+	default ImportTool newImportTool(Unmarshaller<CompositeDecisionRule> unmarshaller){
+		return new ImportTool(unmarshaller, this);
+	}
+
+	final class ImportTool
+	{
+		private Unmarshaller<CompositeDecisionRule> unmarshal;
+		private PolicyRepository repository;
+
+		private ImportTool(Unmarshaller<CompositeDecisionRule> unmarshal,
+		                   PolicyRepository repository){
+			this.unmarshal = Objects.requireNonNull(unmarshal, "unmarshal");
+			this.repository = Objects.requireNonNull(repository, "repository");
+
+		}
+
+		/**
+		 * Imports a given XACML policy from a given
+		 * {@link InputStream} supplier. Policy repository will close
+		 * input stream after importing the policy.
+		 *
+		 * @param source a policy source
+		 * @return {@link CompositeDecisionRule} an imported
+		 * {@link Policy} or {@link PolicySet}
+		 * @exception SyntaxException if an syntax error
+		 * occurs while parsing XACML policy or policy set
+		 * @exception IOException if an IO error occurs
+		 */
+		public final CompositeDecisionRule importPolicy(Supplier<InputStream> policySource)
+				throws SyntaxException, IOException {
+			InputStream is = null;
+			try {
+				is = policySource.get();
+				CompositeDecisionRule r = unmarshal.unmarshal(is);
+				repository.add(r);
+				return r;
+			} finally {
+				Closeables.closeQuietly(is);
+			}
+		}
+
+		public final void importPolicy(Path path)
+				throws SyntaxException, IOException {
+			Iterator<Path> it = path.normalize().iterator();
+			if(it.hasNext()){
+				BufferedReader reader = Files.newBufferedReader(path);
+				byte[] bytes = CharStreams.toString(reader).getBytes(Charsets.UTF_8);
+				importPolicy(()-> new ByteArrayInputStream(bytes));
+			}
+			while (it.hasNext()){
+				importPolicy(it.next());
+			}
+		}
+	}
 }

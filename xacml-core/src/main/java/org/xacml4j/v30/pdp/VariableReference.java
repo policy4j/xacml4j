@@ -26,8 +26,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.*;
 
-import java.util.Objects;
-
 public class VariableReference implements Expression
 {
 	private final VariableDefinition varDef;

@@ -42,9 +42,10 @@ import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.marshal.Marshaller;
+import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
@@ -56,7 +57,7 @@ import com.google.common.io.Closeables;
 public class Xacml20ResponseContextMarshallerTest {
 
 	private static Marshaller<ResponseContext> responseMarshaller;
-	private static Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+	private static Unmarshaller<RequestContext> requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 	private static PolicyRepository repository;
 
 	private PolicyDecisionPointBuilder pdpBuilder;
@@ -66,12 +67,12 @@ public class Xacml20ResponseContextMarshallerTest {
 	{
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
-				FunctionProvider.Builder.builder()
-				.defaultFunctions()
+				FunctionProvider.builder()
+				.withStandardFunctions()
 				.build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.build());
+				DecisionCombiningAlgorithmProvider.builder()
+				                                          .withDefaultAlgorithms()
+				                                          .build());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 	}

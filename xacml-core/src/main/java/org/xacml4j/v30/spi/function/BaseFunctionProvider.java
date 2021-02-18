@@ -22,14 +22,14 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.pdp.FunctionSpec;
+
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 

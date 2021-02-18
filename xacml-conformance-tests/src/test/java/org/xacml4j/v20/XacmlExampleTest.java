@@ -31,7 +31,7 @@ import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
@@ -67,9 +67,9 @@ public class XacmlExampleTest extends XacmlPolicyTestSupport
 				FunctionProvider.Builder.builder()
 				.defaultFunctions()
 				.build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.build());
+				DecisionCombiningAlgorithmProvider.Builder.builder()
+				                                          .withDefaultAlgorithms()
+				                                          .build());
 
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>(policyResources.length);
 		for (String policyResource : policyResources) {

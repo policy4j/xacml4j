@@ -22,12 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-
-import java.util.function.ObjLongConsumer;
-
-
 /**
  * In many applications, policies specify actions that MUST be performed,
  * either instead of, or in addition to, actions that MAY be performed.

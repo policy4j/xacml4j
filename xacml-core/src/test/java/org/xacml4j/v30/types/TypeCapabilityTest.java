@@ -23,11 +23,10 @@ package org.xacml4j.v30.types;
  */
 
 import org.junit.Test;
-import org.xacml4j.v30.TypeCapability;
-
-import static  org.junit.Assert.*;
 
 import java.util.Optional;
+
+import static org.junit.Assert.assertTrue;
 
 public class TypeCapabilityTest
 {

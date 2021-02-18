@@ -141,14 +141,14 @@ public interface AttributeValueType extends ValueType, Function<Object, Attribut
 	@Override
 	default AttributeValue apply(Object o){
 		if(o == null){
-			throw XacmlSyntaxException
+			throw SyntaxException
 					.invalidAttributeValue(
 							null, this);
 		}
 		if(o instanceof Object[]){
 			Object[] array = (Object[])o;
 			if(array.length == 0){
-				throw XacmlSyntaxException
+				throw SyntaxException
 						.invalidAttributeValue(
 								Arrays.toString(
 										(Object[])o), this);

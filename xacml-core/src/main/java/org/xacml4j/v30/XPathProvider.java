@@ -31,10 +31,7 @@ import org.w3c.dom.NodeList;
 import org.xacml4j.util.NodeNamespaceContext;
 
 import javax.xml.xpath.*;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.WeakHashMap;
 
 /**
  * An XPath provider for executing XPath expressions
@@ -43,6 +40,8 @@ import java.util.WeakHashMap;
  */
 public interface XPathProvider
 {
+	Logger log = LoggerFactory.getLogger(XPathProvider.class);
+
 	/**
 	 * Gets provider XPATH version
 	 *
@@ -52,24 +51,103 @@ public interface XPathProvider
 		return XPathVersion.XPATH1;
 	}
 
-	NodeList evaluateToNodeSet(String path, Node context)
-		throws XPathEvaluationException;
+	XPathExpression newXPath(String xpath, Node node);
 
-	String evaluateToString(String path, Node context)
-		throws XPathEvaluationException;
+	default Node evaluateToNode(String path, Node context)
+			throws XPathEvaluationException
+	{
+		Objects.requireNonNull(path, "path");
+		Objects.requireNonNull(context, "context");
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("EvaluateToNode XPath=\"{}\"", path);
+			}
+			XPathExpression xpath = newXPath(path, context);
+			Node result = (Node)xpath.evaluate(context, XPathConstants.NODE);
+			if(log.isDebugEnabled() &&
+					result != null){
+				log.debug("Evaluation result=\"{}:{}\" node",
+						result.getNamespaceURI(), result.getLocalName());
 
-	Node evaluateToNode(String path, Node context)
-		throws XPathEvaluationException;
+			}
+			return result;
+		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
+			throw XPathEvaluationException
+					.wrap(path, context, e);
+		}
+	}
 
-	Number evaluateToNumber(String path, Node context)
-		throws XPathEvaluationException;
+	default NodeList evaluateToNodeSet(String path, Node context)
+			throws XPathEvaluationException {
+		Objects.requireNonNull(path, "path");
+		Objects.requireNonNull(context, "context");
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("EvaluateToNodeSet XPath=\"{}\"", path);
+			}
+			XPathExpression xpath = newXPath(path, context);
+			NodeList result = (NodeList)xpath.evaluate(context, XPathConstants.NODESET);
+			if(log.isDebugEnabled() && result != null){
+				log.debug("Evaluation result has=\"{}\" nodes",
+						result.getLength());
+			}
+			return result;
+		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
+			throw XPathEvaluationException
+					.wrap(path, context, e);
+		}
+	}
+
+	default String evaluateToString(String path, Node context)
+			throws XPathEvaluationException {
+		Objects.requireNonNull(path, "path");
+		Objects.requireNonNull(context, "context");
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("EvaluateToString XPath=\"{}\"", path);
+			}
+			XPathExpression xpath = newXPath(path, context);
+			return (String)xpath.evaluate(context, XPathConstants.STRING);
+		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
+			throw XPathEvaluationException
+					.wrap(path, context, e);
+		}
+	}
+
+	default Number evaluateToNumber(String path, Node context)
+			throws XPathEvaluationException {
+		Objects.requireNonNull(path, "path");
+		Objects.requireNonNull(context, "context");
+		try
+		{
+			if(log.isDebugEnabled()){
+				log.debug("EvaluateToNumber XPath=\"{}\"", path);
+			}
+			XPathExpression xpath = newXPath(path, context);
+			return (Number)xpath.evaluate(context, XPathConstants.NUMBER);
+		}catch(XPathExpressionException e){
+			if(log.isDebugEnabled()){
+				log.debug(path, e);
+			}
+			throw XPathEvaluationException
+					.wrap(path, context, e);
+		}
+	}
 
 	static XPathProvider defaultProvider(){
 		return DefaultJDK.INSTANCE;
-	}
-
-	static XPathProvider defaultProvider(Supplier<XPathFactory> xPathFactory){
-		return new DefaultJDK(xPathFactory);
 	}
 
 	/**
@@ -77,8 +155,6 @@ public interface XPathProvider
 	 */
 	final class DefaultJDK implements XPathProvider
 	{
-		private final static Logger log = LoggerFactory.getLogger(DefaultJDK.class);
-
 		private final static XPathProvider INSTANCE = new DefaultJDK();
 
 		/**
@@ -86,7 +162,6 @@ public interface XPathProvider
 		 */
 		private static final String DTM_MANAGER_NAME = "com.sun.org.apache.xml.internal.dtm.DTMManager";
 		private static final String DTM_MANAGER_VALUE = "com.sun.org.apache.xml.internal.dtm.ref.DTMManagerDefault";
-
 
 		static {
 			System.setProperty(DTM_MANAGER_NAME, DTM_MANAGER_VALUE);
@@ -112,9 +187,8 @@ public interface XPathProvider
 					"xpathFactorySupplier");
 		}
 
-
-		private XPathExpression newXPath(String xpath, Node node){
-			XPath xp = xpathFactory.get().newXPath();
+		public XPathExpression newXPath(String xpath, Node node){
+			XPath xp = DefaultJDK.XPATH_FACTORY.get().newXPath();
 			xp.setNamespaceContext(new NodeNamespaceContext(node));
 			try{
 				return xp.compile(xpath);
@@ -123,103 +197,5 @@ public interface XPathProvider
 						.wrap(e);
 			}
 		}
-
-		@Override
-		public Node evaluateToNode(String path, Node context)
-				throws XPathEvaluationException
-		{
-			Preconditions.checkArgument(path != null);
-			Preconditions.checkArgument(context != null);
-			try
-			{
-				if(log.isDebugEnabled()){
-					log.debug("EvaluateToNode XPath=\"{}\"", path);
-				}
-				XPathExpression xpath = newXPath(path, context);
-				Node result = (Node)xpath.evaluate(context, XPathConstants.NODE);
-				if(log.isDebugEnabled() &&
-						result != null){
-					log.debug("Evaluation result=\"{}:{}\" node",
-							result.getNamespaceURI(), result.getLocalName());
-
-				}
-				return result;
-			}catch(XPathExpressionException e){
-				if(log.isDebugEnabled()){
-					log.debug(path, e);
-				}
-				throw XPathEvaluationException
-						.wrap(path, context, e);
-			}
-		}
-
-		@Override
-		public NodeList evaluateToNodeSet(String path, Node context)
-				throws XPathEvaluationException {
-			Preconditions.checkArgument(path != null);
-			Preconditions.checkArgument(context != null);
-			try
-			{
-				if(log.isDebugEnabled()){
-					log.debug("EvaluateToNodeSet XPath=\"{}\"", path);
-				}
-				XPathExpression xpath = newXPath(path, context);
-				NodeList result = (NodeList)xpath.evaluate(context, XPathConstants.NODESET);
-				if(log.isDebugEnabled() && result != null){
-					log.debug("Evaluation result has=\"{}\" nodes",
-							result.getLength());
-				}
-				return result;
-			}catch(XPathExpressionException e){
-				if(log.isDebugEnabled()){
-					log.debug(path, e);
-				}
-				throw XPathEvaluationException
-						.wrap(path, context, e);
-			}
-		}
-
-		@Override
-		public String evaluateToString(String path, Node context)
-				throws XPathEvaluationException {
-			Preconditions.checkArgument(path != null);
-			Preconditions.checkArgument(context != null);
-			try
-			{
-				if(log.isDebugEnabled()){
-					log.debug("EvaluateToString XPath=\"{}\"", path);
-				}
-				XPathExpression xpath = newXPath(path, context);
-				return (String)xpath.evaluate(context, XPathConstants.STRING);
-			}catch(XPathExpressionException e){
-				if(log.isDebugEnabled()){
-					log.debug(path, e);
-				}
-				throw XPathEvaluationException
-						.wrap(path, context, e);
-			}
-		}
-
-		@Override
-		public Number evaluateToNumber(String path, Node context)
-				throws XPathEvaluationException {
-			Preconditions.checkArgument(path != null);
-			Preconditions.checkArgument(context != null);
-			try
-			{
-				if(log.isDebugEnabled()){
-					log.debug("EvaluateToNumber XPath=\"{}\"", path);
-				}
-				XPathExpression xpath = newXPath(path, context);
-				return (Number)xpath.evaluate(context, XPathConstants.NUMBER);
-			}catch(XPathExpressionException e){
-				if(log.isDebugEnabled()){
-					log.debug(path, e);
-				}
-				throw XPathEvaluationException
-						.wrap(path, context, e);
-			}
-		}
-
 	}
 }

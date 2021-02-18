@@ -22,10 +22,9 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Preconditions;
 import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 
@@ -35,33 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.xacml4j.v30.types.XacmlTypes.*;
-import static org.xacml4j.v30.types.XacmlTypes.DATETIME;
 
 public final class PolicyInformationPointBuilder
 {
-	private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
-	private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";
-	private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
-
-	private final static String SHORT_CURRENT_TIME = "current-time";
-	private final static String SHORT_CURRENT_DATE = "current-date";
-	private final static String SHORT_CURRENT_DATETIME = "current-dateTime";
-
-	private final static Resolver<AttributeSet> ENV_RESOLVER =
-			AttributeResolverDescriptor.of(AttributeResolverDescriptorBuilder.builder("XacmlEnvironmentResolver",
-					"XACML Environment Attributes Resolver",
-					CategoryId.ENVIRONMENT).noCache()
-					.attribute(CURRENT_TIME, TIME, SHORT_CURRENT_TIME)
-					.attribute(CURRENT_DATE, DATE, SHORT_CURRENT_DATE)
-					.attribute(CURRENT_DATETIME,DATETIME, SHORT_CURRENT_DATETIME)
-					.build(), resolverContext -> {
-				Calendar currentDateTime = GregorianCalendar.from(resolverContext.getCurrentDateTime());
-				Map<String, BagOfAttributeValues> v = new HashMap<String, BagOfAttributeValues>();
-				v.put(CURRENT_TIME, TIME.of(currentDateTime).toBag());
-				v.put(CURRENT_DATE, DATE.of(currentDateTime).toBag());
-				v.put(CURRENT_DATETIME, DATETIME.of(currentDateTime).toBag());
-				return v;});
-
 
 	private final static Logger log = LoggerFactory.getLogger(
 			PolicyInformationPointBuilder.class);
@@ -95,7 +70,8 @@ public final class PolicyInformationPointBuilder
 	 * @return {@link PolicyInformationPointBuilder}
 	 */
 	public PolicyInformationPointBuilder defaultResolvers(){
-		return resolver(ENV_RESOLVER);
+		registryBuilder.withDefaultResolvers();
+		return this;
 	}
 
 	/**
@@ -104,8 +80,7 @@ public final class PolicyInformationPointBuilder
 	 * @param resolver a resolver
 	 * @return {@link PolicyInformationPointBuilder}
 	 */
-	public PolicyInformationPointBuilder resolver(Resolver<?> resolver){
-		if(CON)
+	public PolicyInformationPointBuilder resolver(AttributeResolverDescriptor resolver){
 		registryBuilder.withAttributeResolver(resolver);
 		return this;
 	}

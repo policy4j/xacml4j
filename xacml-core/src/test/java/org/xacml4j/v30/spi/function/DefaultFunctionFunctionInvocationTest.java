@@ -22,25 +22,24 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xacml4j.v30.FunctionInvocation;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.FunctionInvocation;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
-
-import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.List;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 public class DefaultFunctionFunctionInvocationTest
 {

@@ -22,20 +22,15 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 
-import com.google.common.collect.Sets;
+import java.util.*;
 
 final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
@@ -53,12 +48,13 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 			return handleNext(request, context);
 		}
 		List<Set<Category>> byCategory = new LinkedList<Set<Category>>();
-		for(CategoryId categoryId : request.getCategories()){
-			Collection<Category> attributes = request.getAttributes(categoryId);
-			if(attributes == null || attributes.isEmpty()) {
+		for(Category category : request.getCategories()){
+			Collection<Category> attributes = request.getCategory(category.getCategoryId());
+			if(attributes == null ||
+					attributes.isEmpty()) {
 				continue;
 			}
-			byCategory.add(new LinkedHashSet<Category>(attributes));
+			byCategory.add(ImmutableSet.copyOf(attributes));
 		}
 		Collection<Result> results = new LinkedList<Result>();
 		Set<List<Category>> cartesian = Sets.cartesianProduct(byCategory);

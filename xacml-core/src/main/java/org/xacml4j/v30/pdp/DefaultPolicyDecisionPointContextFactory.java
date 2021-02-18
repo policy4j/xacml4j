@@ -31,8 +31,8 @@ import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.XPathProvider;
 
+import java.time.Duration;
 import java.util.Random;
 
 final class DefaultPolicyDecisionPointContextFactory
@@ -153,7 +153,7 @@ final class DefaultPolicyDecisionPointContextFactory
 						request::getEntity, pip);
 				return new RootEvaluationContext(
 						validateFuncParamsAtRuntime,
-						decisionCacheTTL,
+						Duration.ofSeconds(decisionCacheTTL),
 						defaultXPathVersion,
 						policyReferenceResolver,
 						handler);

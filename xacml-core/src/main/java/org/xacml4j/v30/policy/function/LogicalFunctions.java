@@ -26,7 +26,6 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.spi.function.*;
-import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -160,7 +159,7 @@ final class LogicalFunctions
 		int count = 0;
 		int num = n.value().intValue();
 		for (Expression value : values) {
-			ValueExpression v = (ValueExpression) value.evaluate(context);
+			ValueExpression v = value.evaluate(context);
 			if (v.equals(TRUE)) {
 				count++;
 				if (num == count) {

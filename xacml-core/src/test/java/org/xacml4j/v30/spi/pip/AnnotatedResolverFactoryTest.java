@@ -22,14 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.easymock.IMocksControl;
+import org.junit.Before;
+import org.junit.Test;
+import org.w3c.dom.Node;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import java.lang.reflect.Method;
 import java.time.Clock;
@@ -38,13 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.BagOfAttributeValues;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 
 public class AnnotatedResolverFactoryTest
@@ -87,39 +80,38 @@ public class AnnotatedResolverFactoryTest
 
 		control.replay();
 
-		AttributeResolver r = p.parseAttributeResolver(this, m);
-		AttributeResolverDescriptor d = r.getDescriptor();
+		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
 
-		ResolverContext pipContext = new DefaultResolverContext(context, d);
+		ResolverContext pipContext = ResolverContext.createContext(context, d);
 
-		r.resolve(pipContext);
+		d.getResolver().apply(pipContext);
 
 		assertEquals("Test", d.getName());
 		assertEquals(CategoryId.parse("subject"), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(30, d.getPreferredCacheTTL());
 
-		AttributeDescriptor a1 = d.getAttribute("testId1");
+		AttributeDescriptor a1 = d.getAttribute("testId1").get();
 		assertNotNull(a1);
 		assertEquals("testId1", a1.getAttributeId());
 		assertEquals(XacmlTypes.INTEGER, a1.getDataType());
 
-		AttributeDescriptor a2 = d.getAttribute("testId2");
+		AttributeDescriptor a2 = d.getAttribute("testId2").get();
 		assertNotNull(a2);
 		assertEquals("testId2", a2.getAttributeId());
 		assertEquals(XacmlTypes.BOOLEAN, a2.getDataType());
 
-		AttributeDescriptor a3 = d.getAttribute("testId3");
+		AttributeDescriptor a3 = d.getAttribute("testId3").get();
 		assertNotNull(a3);
 		assertEquals("testId3", a3.getAttributeId());
 		assertEquals(XacmlTypes.STRING, a3.getDataType());
 
-		AttributeDescriptor a4 = d.getAttribute("testId4");
+		AttributeDescriptor a4 = d.getAttribute("testId4").get();
 		assertNotNull(a4);
 		assertEquals("testId4", a4.getAttributeId());
 		assertEquals(XacmlTypes.DOUBLE, a4.getDataType());
 
-		List<AttributeReferenceKey> keys = d.getKeyRefs();
+		List<AttributeReferenceKey> keys = d.getAllContextKeyRefs();
 		assertEquals(2, keys.size());
 
 		assertEquals(excpectedKey0, keys.get(0));
@@ -137,10 +129,9 @@ public class AnnotatedResolverFactoryTest
 		assertNotNull(m);
 		expect(context.getClock()).andReturn(Clock.systemUTC());
 		replay(context);
-		AttributeResolver r = p.parseAttributeResolver(this, m);
-		AttributeResolverDescriptor d = r.getDescriptor();
-		ResolverContext pipContext = new DefaultResolverContext(context, d);
-		r.resolve(pipContext);
+		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
+		ResolverContext pipContext = ResolverContext.createContext(context, d);
+		d.getResolver().apply(pipContext);
 
 		assertEquals("Test", d.getName());
 		assertEquals(CategoryId.parse("subject"), d.getCategory());
@@ -155,11 +146,11 @@ public class AnnotatedResolverFactoryTest
 	{
 		Method m = getMethod(this.getClass(), "resolve3");
 		assertNotNull(m);
-		AttributeResolver r = p.parseAttributeResolver(this, m);
-		assertTrue(r.getDescriptor().getKeyRefs().isEmpty());
+		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
+		assertTrue(d.getAllContextKeyRefs().isEmpty());
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testParseAttributeResolverWithKeyParametersFirst()
 	{
 		Method m = getMethod(this.getClass(), "resolve4");
@@ -167,7 +158,7 @@ public class AnnotatedResolverFactoryTest
 		p.parseAttributeResolver(this, m);
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void testParseAttributeResolverWrongReturnType()
 	{
 		Method m = getMethod(this.getClass(), "resolve5");
@@ -179,8 +170,10 @@ public class AnnotatedResolverFactoryTest
 	public void testParseContentResolver()
 	{
 		Method m = getMethod(this.getClass(), "resolveContent1");
-		ContentResolver r = p.parseContentResolver(this, m);
-		assertTrue(r.getDescriptor().canResolve(CategoryId.parse("subject").get()));
+		ContentResolverDescriptor r = p.parseContentResolver(this, m);
+		assertTrue(r.canResolve(AttributeSelectorKey.builder()
+		                                            .category("subject")
+		                                            .jpath("aaaa").build()));
 	}
 
 

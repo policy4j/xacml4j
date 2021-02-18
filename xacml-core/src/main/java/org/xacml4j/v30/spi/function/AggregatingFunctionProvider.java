@@ -22,11 +22,9 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.FunctionProvider;
+
+import java.util.Collection;
 
 /**
  * An implementation of {@link FunctionProvider} which

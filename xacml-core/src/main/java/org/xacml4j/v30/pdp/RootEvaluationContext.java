@@ -22,17 +22,25 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import com.google.common.base.*;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 
 import java.time.Clock;
-
-import java.util.*;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 
 public final class RootEvaluationContext implements EvaluationContext
@@ -46,17 +54,17 @@ public final class RootEvaluationContext implements EvaluationContext
 	private final Map<String, Obligation> denyObligations;
 	private final Map<String, Advice> permitAdvices;
 	private final Map<String, Obligation> permitObligations;
-	private final List<CompositeDecisionRuleIDReference> evaluatedPolicies;
+	private final Map<String, CompositeDecisionRule> evaluatedPolicies;
 	private Clock clock;
 
 	private boolean validateFuncParamsAtRuntime;
 	private Optional<Status> evaluationStatus;
-	private Integer combinedDecisionCacheTTL = null;
+	private AtomicReference<Duration> combinedDecisionCacheTTL;
 	private final boolean extendedIndeterminateEval = false;
 
 	public RootEvaluationContext(
 			boolean validateFuncParamsAtRuntime,
-			int defaultDecisionCacheTTL,
+			Duration defaultDecisionCacheTTL,
 			XPathVersion defaultXPathVersion,
 			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler contextHandler) {
@@ -70,28 +78,28 @@ public final class RootEvaluationContext implements EvaluationContext
 	public RootEvaluationContext(
 			Clock clock,
 			boolean validateFuncParamsAtRuntime,
-			int defaultDecisionCacheTTL,
+			Duration defaultDecisionCacheTTL,
 			XPathVersion defaultXPathVersion,
 			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler contextHandler) {
 		Preconditions.checkNotNull(contextHandler);
 		Preconditions.checkNotNull(referenceResolver);
-		this.denyAdvices = new LinkedHashMap<>();
-		this.denyObligations = new LinkedHashMap<>();
-		this.permitAdvices = new LinkedHashMap<>();
-		this.permitObligations = new LinkedHashMap<>();
+		this.denyAdvices = new ConcurrentHashMap<>();
+		this.denyObligations = new ConcurrentHashMap<>();
+		this.permitAdvices = new ConcurrentHashMap<>();
+		this.permitObligations = new ConcurrentHashMap<>();
 		this.contextHandler = contextHandler;
 		this.resolver = referenceResolver;
 		this.clock = java.util.Objects.requireNonNull(clock);
-		this.evaluatedPolicies = new LinkedList<>();
-		this.combinedDecisionCacheTTL = (defaultDecisionCacheTTL > 0)?defaultDecisionCacheTTL:null;
+		this.evaluatedPolicies = new ConcurrentSkipListMap<>();
+		this.combinedDecisionCacheTTL = new AtomicReference<>(defaultDecisionCacheTTL);
 		this.defaultXPathVersion = defaultXPathVersion;
 		this.validateFuncParamsAtRuntime = validateFuncParamsAtRuntime;
 	}
 
 	public RootEvaluationContext(
 			boolean validateFuncParamsAtRuntime,
-			int defaultDecisionCacheTTL,
+			Duration defaultDecisionCacheTTL,
 			PolicyReferenceResolver referenceResolver,
 			EvaluationContextHandler handler){
 		this(validateFuncParamsAtRuntime,
@@ -142,22 +150,20 @@ public final class RootEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public int getDecisionCacheTTL() {
-		return (combinedDecisionCacheTTL != null && combinedDecisionCacheTTL >= 0 )? combinedDecisionCacheTTL:0;
+	public Duration getDecisionCacheTTL() {
+		Duration v  = combinedDecisionCacheTTL != null?combinedDecisionCacheTTL.get():null;
+		return v != null?v:Duration.ZERO;
 	}
 
 	@Override
-	public void setDecisionCacheTTL(int ttl) {
-		if(combinedDecisionCacheTTL == null){
-			this.combinedDecisionCacheTTL = ttl;
-			return;
-		}
-		this.combinedDecisionCacheTTL = (ttl > 0)?Math.min(this.combinedDecisionCacheTTL, ttl):0;
+	public void setDecisionCacheTTL(Duration ttl) {
+		combinedDecisionCacheTTL.accumulateAndGet(ttl,
+		                                          (a, b)-> a.compareTo(b) > 0?a:b);
 	}
 
 	@Override
 	public final void addEvaluationResult(CompositeDecisionRule policy, Decision result) {
-		this.evaluatedPolicies.add(policy.getReference());
+		this.evaluatedPolicies.put(policy.getId(), policy);
 	}
 
 	@Override
@@ -179,8 +185,8 @@ public final class RootEvaluationContext implements EvaluationContext
 			return;
 		}
 		for(Advice a : advices){
-			addAndMege(a, ()-> (Decision.PERMIT.equals(d)?permitAdvices:
-					((Decision.DENY.equals(d))?denyAdvices:Collections.emptyMap())));
+			addAndMerge(a, ()-> (Decision.PERMIT.equals(d) ? permitAdvices :
+			                     ((Decision.DENY.equals(d))?denyAdvices:Collections.emptyMap())));
 		}
 	}
 
@@ -193,12 +199,12 @@ public final class RootEvaluationContext implements EvaluationContext
 			return;
 		}
 		for(Obligation a : obligations){
-			addAndMege(a, ()-> (Decision.PERMIT.equals(d)?permitObligations:
-					((Decision.DENY.equals(d))?denyObligations:Collections.emptyMap())));
+			addAndMerge(a, ()-> (Decision.PERMIT.equals(d) ? permitObligations :
+			                     ((Decision.DENY.equals(d))?denyObligations:Collections.emptyMap())));
 		}
 	}
 
-	private <T extends DecisionRuleResponse> void addAndMege(T response, Supplier<Map<String, T>> mapSupplier)
+	private <T extends DecisionRuleResponse> void addAndMerge(T response, Supplier<Map<String, T>> mapSupplier)
 	{
 		Optional.ofNullable(mapSupplier.get())
 				.map(v->Optional.ofNullable(v.get(
@@ -318,7 +324,10 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
-		return Collections.unmodifiableList(evaluatedPolicies);
+		return evaluatedPolicies.values()
+		                        .stream()
+		                        .map(v->v.getReference())
+		                        .collect(Collectors.toList());
 	}
 
 	@Override

@@ -29,10 +29,8 @@ import com.google.auto.service.AutoService;
 import org.oasis.xacml.v30.jaxb.AttributeType;
 import org.oasis.xacml.v30.jaxb.ContentType;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
-import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.types.*;
@@ -41,7 +39,6 @@ import com.google.common.base.Preconditions;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -107,7 +104,7 @@ public interface TypeToXacml30 extends TypeCapability
 			@Override
 			public AttributeValue fromXacml30(org.oasis.xacml.v30.jaxb.AttributeValueType v) {
 				if(v.getContent().size() == 0){
-					throw XacmlSyntaxException.noContentFound();
+					throw SyntaxException.noContentFound();
 
 				}
 				String s = (String)(v.getContent().get(0));
@@ -127,7 +124,7 @@ public interface TypeToXacml30 extends TypeCapability
 			@Override
 			public AttributeValue fromXacml30(org.oasis.xacml.v30.jaxb.AttributeValueType v) {
 				if(v.getContent().size() == 0){
-					throw XacmlSyntaxException.noContentFound();
+					throw SyntaxException.noContentFound();
 				}
 				return asTypeToString(TypeToString.Types.BOOLEAN)
 						.fromString((String) v.getContent().get(0));
@@ -151,7 +148,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.BASE64BINARY)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -172,7 +169,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.DATE)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -193,7 +190,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.DATETIME)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -214,7 +211,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.DAYTIMEDURATION)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -235,7 +232,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.DNSNAME)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException("No content found for the attribute value");
+				throw new SyntaxException("No content found for the attribute value");
 			}
 		},
 		DOUBLE(XacmlTypes.DOUBLE){
@@ -255,7 +252,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.DOUBLE)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -327,7 +324,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.HEXBINARY)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -348,7 +345,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.INTEGER)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -369,7 +366,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.IPADDRESS)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -390,7 +387,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.RFC822NAME)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -410,7 +407,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.STRING)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -431,7 +428,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.TIME)
 							.fromString((String)v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -452,7 +449,7 @@ public interface TypeToXacml30 extends TypeCapability
 					return asTypeToString(TypeToString.Types.X500NAME)
 							.fromString((String) v.getContent().get(0));
 				}
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"No content found for the attribute value");
 			}
 		},
@@ -475,7 +472,7 @@ public interface TypeToXacml30 extends TypeCapability
 			@Override
 			public AttributeValue fromXacml30(org.oasis.xacml.v30.jaxb.AttributeValueType a) {
 				if(a.getContent().size() == 0){
-					throw XacmlSyntaxException
+					throw SyntaxException
 							.noContentFound();
 				}
 				String categoryValue = a.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME);
@@ -483,7 +480,7 @@ public interface TypeToXacml30 extends TypeCapability
 				Optional<AttributeValue> xpath = CategoryId
 						.parse(categoryValue)
 						.map(v->XacmlTypes.XPATH.of(xpathValue, v));
-				return xpath.orElseThrow(()->XacmlSyntaxException
+				return xpath.orElseThrow(()-> SyntaxException
 						.invalidCategoryId(categoryValue));
 			}
 		},
@@ -501,7 +498,7 @@ public interface TypeToXacml30 extends TypeCapability
 			@Override
 			public AttributeValue fromXacml30(org.oasis.xacml.v30.jaxb.AttributeValueType v) {
 				if(v.getContent().size() == 0){
-					throw XacmlSyntaxException.noContentFound();
+					throw SyntaxException.noContentFound();
 
 				}
 				final Object firstContent = v.getContent().get(0);

@@ -73,12 +73,17 @@ public interface PolicyInformationPoint
 
 	enum ResolutionStrategy {
 		FIRST_NON_EMPTY {
-			public <V> Optional<V> resolve(Iterable<Resolver<V>> resolvers,
-										   Function<Resolver<V>, Optional<V>> resolveFunction) {
+			public <V> Optional<V> resolve(EvaluationContext context, Iterable<? extends ResolverDescriptor<?>> resolvers,
+										   Function<ResolverContext, Optional<V>> cacheCallback) {
 				Optional<V> value = Optional.empty();
-				for (Resolver<V> r : resolvers) {
-
-					value = resolveFunction.apply(r);
+				for (ResolverDescriptor d : resolvers) {
+					ResolverContext resolverContext = ResolverContext.createContext(context, d);
+					if(resolverContext.isCacheable()){
+						value = cacheCallback.apply(resolverContext);
+					}
+					value = value
+							.or(()->Optional
+									.ofNullable((V)(d.getResolver().apply(resolverContext))));
 					if (value.isPresent()) {
 						return value;
 					}
@@ -87,12 +92,18 @@ public interface PolicyInformationPoint
 			}
 		},
 		FIRST_NON_EMPTY_IGNORE_ERROR {
-			public <V> Optional<V> resolve(Iterable<Resolver<V>> resolvers,
-										   Function<Resolver<V>, Optional<V>> resolveFunction) {
+			public <V> Optional<V> resolve(EvaluationContext context, Iterable<? extends ResolverDescriptor<?>> resolvers,
+										   Function<ResolverContext, Optional<V>> cacheCallback) {
 				Optional<V> value = Optional.empty();
-				for (Resolver<V> r : resolvers) {
+				for (ResolverDescriptor d : resolvers) {
 					try {
-						value = resolveFunction.apply(r);
+						ResolverContext resolverContext = ResolverContext.createContext(context, d);
+						if(resolverContext.isCacheable()){
+							value = cacheCallback.apply(resolverContext);
+						}
+						value = value
+								.or(()->Optional
+										.ofNullable((V)(d.getResolver().apply(resolverContext))));
 						if (value.isPresent()) {
 							return value;
 						}
@@ -104,7 +115,6 @@ public interface PolicyInformationPoint
 			}
 		};
 
-		abstract <V> Optional<V> resolve(Iterable<Resolver<V>> resolvers,
-										 Function<Resolver<V>, Optional<V>> resolveFunction);
+		abstract <V> Optional<V> resolve(EvaluationContext context, Iterable<? extends ResolverDescriptor<?>> resolvers, Function<ResolverContext, Optional<V>> cacheCallback);
 	}
 }

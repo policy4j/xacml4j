@@ -23,29 +23,22 @@ package org.xacml4j.v30.spi.repository;
  */
 
 
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.marshal.PolicyUnmarshaller;
+import org.xacml4j.v30.pdp.Policy;
+import org.xacml4j.v30.pdp.PolicySet;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.marshal.PolicyUnmarshaller;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.Versionable;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.FunctionProvider;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
+import java.util.stream.Collectors;
 
 /**
  * An implementation of {@link AbstractPolicyRepository} which keeps
@@ -58,8 +51,8 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 {
 	private final static Logger log = LoggerFactory.getLogger(InMemoryPolicyRepository.class);
 
-	private final static int INITIAL_POLICYSET_MAP_SIZE = 128;
-	private final static int INITIAL_POLICY_MAP_SIZE = 128;
+	private final static int INITIAL_POLICYSET_MAP_SIZE = 2048;
+	private final static int INITIAL_POLICY_MAP_SIZE = 2048;
 
 	private final ConcurrentMap<String, ConcurrentNavigableMap<Version, Policy>> policies;
 	private final ConcurrentMap<String, ConcurrentNavigableMap<Version, PolicySet>> policySets;
@@ -67,11 +60,10 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 	public InMemoryPolicyRepository(
 			String id,
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionAlgorithms,
-			PolicyUnmarshaller unmarshaller)
+			DecisionCombiningAlgorithmProvider decisionAlgorithms)
 		throws Exception
 	{
-		super(id, functions, decisionAlgorithms, unmarshaller);
+		super(id, functions, decisionAlgorithms);
 		this.policies = new ConcurrentHashMap<>(INITIAL_POLICY_MAP_SIZE);
 		this.policySets = new ConcurrentHashMap<>(INITIAL_POLICYSET_MAP_SIZE);
 	}
@@ -200,18 +192,12 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			final VersionMatch earliest,
 			final VersionMatch latest)
 	{
-		if(c == null){
-			return ImmutableList.of();
-		}
-		return Collections2.filter(c, new Predicate<T>() {
-			@Override
-			public boolean apply(T p) {
-				return (version == null || version.match(p.getVersion())) &&
-						(earliest == null || earliest.match(p.getVersion())) &&
-						(latest == null || latest.match(p.getVersion()));
-			}
-
-		});
+		org.xacml4j.util.Preconditions.checkNotNull(c, "policies");
+		return c.stream()
+				.filter(p->((version == null || version.match(p.getVersion())) &&
+				(earliest == null || earliest.match(p.getVersion())) &&
+				(latest == null || latest.match(p.getVersion()))))
+				.collect(Collectors.toList());
 	}
 
 }

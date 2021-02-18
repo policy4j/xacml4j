@@ -22,10 +22,8 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import com.google.auto.service.AutoService;
-import org.xacml4j.v30.spi.function.*;
-
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.DoubleValue;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;

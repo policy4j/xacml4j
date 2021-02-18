@@ -28,7 +28,6 @@ import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.DoubleValue;
 import org.xacml4j.v30.types.IntegerValue;
-import org.xacml4j.v30.types.XacmlTypes;
 
 
 /**

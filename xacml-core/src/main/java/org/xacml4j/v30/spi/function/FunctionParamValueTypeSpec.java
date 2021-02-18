@@ -22,17 +22,15 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.ListIterator;
-
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueType;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
+import java.util.ListIterator;
 
 final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 {

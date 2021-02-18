@@ -23,28 +23,23 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import com.google.common.base.MoreObjects;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xacml4j.util.DOMUtil;
-
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.Content;
 
-import java.security.Timestamp;
 import java.time.Clock;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 public final class ContentRef
 {
 	private Content content;
 	private ContentResolverDescriptor d;
-	private long timestamp;
+	private Instant timestamp;
 
 	private ContentRef(Builder b)
 	{
 		this.content = b.content;
 		this.d = b.d;
-		this.timestamp = b.ticker.millis();
+		this.timestamp = Instant.now(b.ticker);
 	}
 
 	public static Builder builder(){
@@ -55,7 +50,7 @@ public final class ContentRef
 		return content;
 	}
 
-	public long getTimestamp(){
+	public Instant getTimestamp(){
 		return timestamp;
 	}
 
@@ -91,15 +86,9 @@ public final class ContentRef
 			return this;
 		}
 
-		public Builder resolver(ContentResolverDescriptor d){
-			Preconditions.checkNotNull(d);
-			this.d = d;
-			return this;
-		}
-
-		public Builder resolver(Resolver<ContentRef> r){
+		public Builder resolver(ContentResolverDescriptor r){
 			Preconditions.checkNotNull(r);
-			this.d = r.getDescriptor();
+			this.d = r;
 			return this;
 		}
 

@@ -23,7 +23,7 @@ package org.xacml4j.v30.marshal;
  */
 
 import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 import java.io.IOException;
 
@@ -31,5 +31,5 @@ import java.io.IOException;
 public interface ResponseUnmarshaller
 {
 	ResponseContext unmarshal(Object source)
-		throws XacmlSyntaxException, IOException;
+		throws SyntaxException, IOException;
 }

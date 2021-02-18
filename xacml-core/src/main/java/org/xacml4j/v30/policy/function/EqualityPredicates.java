@@ -23,11 +23,7 @@ package org.xacml4j.v30.policy.function;
  */
 
 
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
-import org.xacml4j.v30.spi.function.XacmlLegacyFunc;
+import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.*;
 
 

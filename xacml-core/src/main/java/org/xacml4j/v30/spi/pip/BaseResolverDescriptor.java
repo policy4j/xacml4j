@@ -22,42 +22,35 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.*;
-import java.util.function.Function;
-
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.time.Duration;
+import java.util.*;
+import java.util.function.Function;
 
-public abstract class BaseResolverDescriptor
-	implements ResolverDescriptor
+abstract class BaseResolverDescriptor<R>
+	implements ResolverDescriptor<R>
 {
 	private String id;
 	private String name;
 
-	private Collection<CategoryId> categoryIds;
+	private CategoryId categoryId;
 	private List<Function<ResolverContext, Optional<BagOfAttributeValues>>> contextKeysResolutionPlan;
-	private int cacheTTL;
+	private List<AttributeReferenceKey> allContextKeys;
+	private Duration cacheTTL;
 
 	protected BaseResolverDescriptor(
-			String id,
-			String name,
-			Collection<CategoryId> categoryIds,
-			int preferredCacheTTL,
-			Collection<Function<ResolverContext, Optional<BagOfAttributeValues>>> contextKeysResolutionPlan) {
-		this.id = Objects.requireNonNull(id, "id");
-		this.name = Objects.requireNonNull(name, "name");
-		this.categoryIds = Objects.requireNonNull(Collections.unmodifiableSet(new HashSet<>(categoryIds)), "categoryIds");
-		this.cacheTTL = (preferredCacheTTL < 0)?0:preferredCacheTTL;
-		this.contextKeysResolutionPlan = Collections.unmodifiableList(new LinkedList<>(contextKeysResolutionPlan));
+			BaseBuilder builder) {
+		this.id = Objects.requireNonNull(builder.id, "id");
+		this.name = Objects.requireNonNull(builder.name, "name");
+		this.categoryId = Objects.requireNonNull(builder.categoryId, "categoryIds");
+		this.cacheTTL = builder.cacheTTL;
+		this.contextKeysResolutionPlan = ImmutableList.copyOf(builder.contextKeysResolutionPlan);
+		this.allContextKeys = ImmutableList.copyOf(builder.contextReferenceKeys);
 	}
-
-
 
 	@Override
 	public final String getId(){
@@ -72,23 +65,28 @@ public abstract class BaseResolverDescriptor
 
 	@Override
 	public boolean isCacheable() {
-		return cacheTTL > 0;
+		return !(cacheTTL.isNegative() || cacheTTL.isZero());
 	}
 
 	@Override
-	public int getPreferredCacheTTL() {
+	public Duration getPreferredCacheTTL() {
 		return cacheTTL;
 	}
 
-	public final Collection<CategoryId> getCategoryIds() {
-		return categoryIds;
+	public final CategoryId getCategory() {
+		return categoryId;
 	}
-
 
 	@Override
 	public Map<AttributeReferenceKey, BagOfAttributeValues> resolveKeyRefs(
 			ResolverContext context) {
-		contextKeysResolutionPlan.forEach(f->f.apply(context));
+		if(context.getResolvedKeys().isEmpty()){
+			contextKeysResolutionPlan.forEach(f->f.apply(context));
+		}
 		return context.getResolvedKeys();
+	}
+
+	public List<AttributeReferenceKey> getAllContextKeyRefs(){
+		return allContextKeys;
 	}
 }

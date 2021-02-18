@@ -22,18 +22,6 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-
-import java.util.Collection;
-import java.util.LinkedList;
-
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,6 +30,12 @@ import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 public class MultipleResourcesViaRequestReferencesHandlerTest
 {
@@ -151,16 +145,16 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		assertNotNull(context0.getAttribute(CategoryId.RESOURCE, "testId2").orElse(null));
 
 		assertEquals(2, context0.getCategories().size());
-		assertEquals(1, context0.getAttributes(CategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getAttributes(CategoryId.RESOURCE).size());
+		assertEquals(1, context0.getCategory(CategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getCategory(CategoryId.RESOURCE).size());
 
 		assertNotNull(context1.getAttribute(CategoryId.SUBJECT_ACCESS, "testId7").orElse(null));
 		assertNotNull(context1.getAttribute(CategoryId.SUBJECT_ACCESS, "testId8").orElse(null));
 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId3").orElse(null));
 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId4").orElse(null));
 		assertEquals(2, context1.getCategories().size());
-		assertEquals(1, context1.getAttributes(CategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getAttributes(CategoryId.RESOURCE).size());
+		assertEquals(1, context1.getCategory(CategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getCategory(CategoryId.RESOURCE).size());
 		verify(pdp);
 	}
 

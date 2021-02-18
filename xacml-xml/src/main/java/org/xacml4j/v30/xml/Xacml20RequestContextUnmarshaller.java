@@ -91,7 +91,7 @@ implements Unmarshaller<RequestContext> {
 
 	@Override
 	protected RequestContext create(JAXBElement<?> jaxbInstance)
-			throws XacmlSyntaxException {
+			throws SyntaxException {
 		Preconditions.checkArgument((jaxbInstance.getValue()
 				instanceof org.oasis.xacml.v20.jaxb.context.RequestType));
 		return mapper20.create((org.oasis.xacml.v20.jaxb.context.RequestType)jaxbInstance.getValue());
@@ -101,7 +101,7 @@ implements Unmarshaller<RequestContext> {
 	{
 		private static final Logger log = LoggerFactory.getLogger(Mapper.class);
 
-		public RequestContext create(RequestType req) throws XacmlSyntaxException
+		public RequestContext create(RequestType req) throws SyntaxException
 		{
 			Collection<Category> attributes = new LinkedList<Category>();
 			if(!req.getResource().isEmpty()){
@@ -146,7 +146,7 @@ implements Unmarshaller<RequestContext> {
 		}
 
 		private Category createSubject(SubjectType subject)
-			throws XacmlSyntaxException
+			throws SyntaxException
 		{
 			CategoryId category = getCategoryId(subject.getSubjectCategory());
 			if(log.isDebugEnabled()){
@@ -161,13 +161,13 @@ implements Unmarshaller<RequestContext> {
 		}
 
 		private CategoryId getCategoryId(String id)
-			throws XacmlSyntaxException
+			throws SyntaxException
 		{
 			return CategoryId.parse(id).get();
 		}
 
 		private Category createEnvironment(EnvironmentType env)
-			throws XacmlSyntaxException
+			throws SyntaxException
 		{
 			return Category
 					.builder(CategoryId.ENVIRONMENT)
@@ -178,7 +178,7 @@ implements Unmarshaller<RequestContext> {
 					.build();
 		}
 
-		private Category createAction(ActionType subject) throws XacmlSyntaxException
+		private Category createAction(ActionType subject) throws SyntaxException
 		{
 			return Category
 					.builder(CategoryId.ACTION)
@@ -190,7 +190,7 @@ implements Unmarshaller<RequestContext> {
 		}
 
 		private Category createResource(ResourceType resource,
-				boolean multipleResources) throws XacmlSyntaxException
+				boolean multipleResources) throws SyntaxException
 		{
 			Entity.Builder b = Entity
 					.builder()
@@ -225,7 +225,7 @@ implements Unmarshaller<RequestContext> {
 		private Collection<Attribute> create(
 				Collection<AttributeType> contextAttributes,
 				CategoryId category, boolean includeInResult)
-			throws XacmlSyntaxException
+			throws SyntaxException
 		{
 			Collection<Attribute> attributes = new LinkedList<Attribute>();
 			for(AttributeType a : contextAttributes){
@@ -236,7 +236,7 @@ implements Unmarshaller<RequestContext> {
 
 		private Attribute createAttribute(AttributeType a, CategoryId category,
 					boolean includeInResultResourceId)
-			throws XacmlSyntaxException
+			throws SyntaxException
 		{
 			Collection<AttributeValue> values = new LinkedList<AttributeValue>();
 			for(org.oasis.xacml.v20.jaxb.context.AttributeValueType v : a.getAttributeValue()){
@@ -264,7 +264,7 @@ implements Unmarshaller<RequestContext> {
 						if(v.getType().equals(XacmlTypes.XPATH))
 						{
 							if(av.getContent().isEmpty()){
-								throw XacmlSyntaxException
+								throw SyntaxException
 										.noContentFound();
 							}
 
@@ -278,7 +278,7 @@ implements Unmarshaller<RequestContext> {
 						v30.getContent().addAll(av.getContent());
 						return v.fromXacml30(v30);
 					}).orElseThrow(
-							()->XacmlSyntaxException.invalidDataTypeId(a.getDataType()));
+							()-> SyntaxException.invalidDataTypeId(a.getDataType()));
 
 		}
 	}

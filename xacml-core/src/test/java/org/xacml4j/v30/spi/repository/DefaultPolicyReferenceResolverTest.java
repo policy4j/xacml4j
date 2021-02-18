@@ -22,21 +22,15 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertSame;
-
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.pdp.*;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertSame;
 
 
 public class DefaultPolicyReferenceResolverTest

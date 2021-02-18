@@ -23,9 +23,15 @@ package org.xacml4j.v30;
  */
 
 import java.time.Clock;
-import java.time.LocalDateTime;
+import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TimeZone;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Evaluation context for {@link CompositeDecisionRule} evaluations
@@ -71,9 +77,9 @@ public interface EvaluationContext
 	 * the attributes used in the authorization
 	 * decision caching TTLs
 	 *
-	 * @return a decision cache TTL in seconds
+	 * @return a decision cache TTL as {@link Duration}
 	 */
-	int getDecisionCacheTTL();
+	Duration getDecisionCacheTTL();
 
 	/**
 	 * Sets a decision cache TTL
@@ -81,7 +87,17 @@ public interface EvaluationContext
 	 * @param ttl a new time to cache
 	 * time for a decision
 	 */
-	void setDecisionCacheTTL(int ttl);
+	default void setDecisionCacheTTL(int ttl){
+		setDecisionCacheTTL(Duration.ofSeconds(ttl));
+	}
+
+	/**
+	 * Sets a decision cache TTL
+	 *
+	 * @param ttl a new time to cache
+	 * time for a decision
+	 */
+	void setDecisionCacheTTL(Duration ttl);
 
 	/**
 	 * Gets time zone used in PDP time
@@ -265,6 +281,19 @@ public interface EvaluationContext
 	 */
 	void setVariableEvaluationResult(String variableId, ValueExpression value);
 
+	/**
+	 * Gets all resolved designators in this context
+	 *
+	 * @return a map of all resolved designators
+	 */
+	Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators();
+
+	/**
+	 * Gets all resolved selectors in this context
+	 *
+	 * @return a map of all resolved designators
+	 */
+	Map<AttributeSelectorKey, BagOfAttributeValues> getResolvedSelectors();
 
 	/**
 	 * Resolves a given {@link AttributeSelectorKey} or {@link AttributeDesignatorKey}
@@ -289,20 +318,19 @@ public interface EvaluationContext
 	 */
 	<C extends Content> Optional<C> resolve(Optional<CategoryId> categoryId, Content.Type type);
 
-	/**
-	 * Gets all resolved designators in this context
-	 *
-	 * @return a map of all resolved designators
-	 */
-	Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators();
 
-	/**
-	 * Gets all resolved selectors in this context
-	 *
-	 * @return a map of all resolved designators
-	 */
-	Map<AttributeSelectorKey, BagOfAttributeValues> getResolvedSelectors();
+	default Collection<CompositeDecisionRuleIDReference> getReferencedCompositeDecisionRules(){
+		return getReferencedCompositeDecisionRules(this, new LinkedList<>());
+	}
 
+	default Collection<CompositeDecisionRuleIDReference> getReferencedCompositeDecisionRules(EvaluationContext context,
+			Collection<CompositeDecisionRuleIDReference> rules){
+		if(context == null){
+			return rules;
+		}
+		rules.add(context.getCurrentPolicy().getReference());
+		return getReferencedCompositeDecisionRules(context.getParentContext(), rules);
+	}
 
 	/**
 	 * Resolves given {@link CompositeDecisionRuleIDReference}
@@ -315,5 +343,50 @@ public interface EvaluationContext
 	 */
 	CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
 		throws PolicyResolutionException;
+
+	/**
+	 * Resolves a given {@link AttributeSelectorKey} or {@link AttributeDesignatorKey}
+	 * asynchronously to a an {@kink Optional} with {@link BagOfAttributeValues}
+	 *
+	 * @param ref an attribute selector
+	 * @return {@link CompletableFuture}
+	 * @throws EvaluationException if an error
+	 * occurs while resolving given selector
+	 */
+	default CompletableFuture<Optional<BagOfAttributeValues>> resolveAsync(AttributeReferenceKey ref)
+			throws EvaluationException
+	{
+		return CompletableFuture.completedFuture(resolve(ref));
+	}
+
+	/**
+	 * Resolves {@link CategoryId} and {@link Content.Type} asynchronously
+	 * to an optional with ontent of the given category and type
+	 *
+	 * @param categoryId an optional category identifier
+	 * @param type a content type
+	 * @param <C>
+	 * @return optional content {@link Content} of the given category and type
+	 */
+	default <C extends Content> CompletableFuture<Optional<C>> resolveAsync(Optional<CategoryId> categoryId, Content.Type type)
+			throws EvaluationException
+	{
+		return CompletableFuture.completedFuture(resolve(categoryId, type));
+	}
+
+	/**
+	 * Resolves given {@link CompositeDecisionRuleIDReference}
+	 * reference
+	 *
+	 * @param ref a policy reference
+	 * @return resolved {@link CompositeDecisionRule} defaultProvider
+	 * @throws PolicyResolutionException if
+	 * policy reference can not be resolved
+	 */
+	default CompletableFuture<CompositeDecisionRule> resolveAsync(CompositeDecisionRuleIDReference ref)
+			throws PolicyResolutionException
+	{
+		return CompletableFuture.completedFuture(resolve(ref));
+	}
 
 }

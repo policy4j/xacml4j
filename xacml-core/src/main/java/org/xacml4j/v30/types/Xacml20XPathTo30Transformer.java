@@ -24,7 +24,7 @@ package org.xacml4j.v30.types;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 
 public class Xacml20XPathTo30Transformer
@@ -74,7 +74,7 @@ public class Xacml20XPathTo30Transformer
 		}
 		int lastIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
 		if(lastIndex == -1){
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					String.format(
 							"Invalid XACML 2.0 xpath=\"%s\" expression, \"ResourceContent\" is missing in the path",
 							xpath));

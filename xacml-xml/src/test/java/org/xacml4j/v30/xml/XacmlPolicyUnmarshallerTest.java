@@ -42,7 +42,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.oasis.xacml.v30.jaxb.PolicyType;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.marshal.PolicyMarshaller;
+import org.xacml4j.v30.marshal.Marshaller;
+import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.pdp.Apply;
 import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
 import org.xacml4j.v30.pdp.AttributeDesignator;
@@ -55,7 +56,7 @@ import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.pdp.VariableDefinition;
 import org.xacml4j.v30.pdp.VariableReference;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.types.StringValue;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -68,20 +69,20 @@ public class XacmlPolicyUnmarshallerTest
 	@org.junit.Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private static PolicyMarshaller reader;
-	private static PolicyMarshaller writer;
+	private static Marshaller<CompositeDecisionRule> reader;
+	private static Unmarshaller<CompositeDecisionRule> writer;
 	private static FunctionProvider functionProvider;
 
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		functionProvider = FunctionProvider.Builder
+		functionProvider = FunctionProvider
 				.builder()
-				.defaultFunctions()
+				.withStandardFunctions()
 				.build();
 		reader = new XacmlPolicyUnmarshaller(
 				functionProvider,
-				DecisionCombiningAlgorithmProviderBuilder
+				DecisionCombiningAlgorithmProvider.Builder
 						.builder()
 						.withDefaultAlgorithms().build());
 		writer = new Xacml30PolicyMarshaller();
@@ -166,7 +167,7 @@ public class XacmlPolicyUnmarshallerTest
 
 	@Test
 	public void testFeatures002Policy() throws Exception {
-		expectedException.expect(XacmlSyntaxException.class);
+		expectedException.expect(SyntaxException.class);
 		getPolicy("002B-Policy.xml");
 	}
 
@@ -303,7 +304,7 @@ public class XacmlPolicyUnmarshallerTest
 
 	@Test
 	public void testPolicyWithVariables3_CyclicError() throws Exception {
-		expectedException.expect(XacmlSyntaxException.class);
+		expectedException.expect(SyntaxException.class);
 		getPolicy("v30-policy-with-variables-3.xml");
 	}
 

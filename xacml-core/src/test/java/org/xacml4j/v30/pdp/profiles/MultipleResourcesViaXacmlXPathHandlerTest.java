@@ -22,28 +22,20 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-
-import java.util.Collection;
-import java.util.Iterator;
-
+import com.google.common.collect.Iterables;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.XPathProvider;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.Iterables;
+import java.util.Collection;
+import java.util.Iterator;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 public class MultipleResourcesViaXacmlXPathHandlerTest
 {

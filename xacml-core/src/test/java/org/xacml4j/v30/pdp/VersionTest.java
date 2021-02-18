@@ -22,16 +22,14 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.xacml4j.v30.Version;
+import org.xacml4j.v30.SyntaxException;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.Test;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.XacmlSyntaxException;
+import static org.junit.Assert.*;
 
 
 public class VersionTest
@@ -72,7 +70,7 @@ public class VersionTest
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testNegativeComponent() throws XacmlSyntaxException
+	public void testNegativeComponent() throws SyntaxException
 	{
 		Version.parse("-1.0");
 	}

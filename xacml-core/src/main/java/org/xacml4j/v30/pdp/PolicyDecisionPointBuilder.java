@@ -27,6 +27,7 @@ import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.XPathProvider;
 import org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler;
 import org.xacml4j.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
@@ -36,7 +37,6 @@ import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
-import org.xacml4j.v30.XPathProvider;
 
 import java.util.LinkedList;
 import java.util.List;

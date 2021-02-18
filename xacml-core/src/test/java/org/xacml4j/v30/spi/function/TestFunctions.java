@@ -22,16 +22,18 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 import org.junit.Ignore;
-import org.xacml4j.v30.*;
 import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 
 @XacmlFunctionProvider(description="TestFunctions")

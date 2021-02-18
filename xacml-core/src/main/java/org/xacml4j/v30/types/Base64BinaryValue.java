@@ -24,7 +24,7 @@ package org.xacml4j.v30.types;
 
 import org.xacml4j.v30.Binary;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 /**
  * Implementation an XACML {@link Expression}
@@ -51,7 +51,7 @@ public final class Base64BinaryValue extends BaseAttributeValue<Binary>
         if(v instanceof Binary){
             return new Base64BinaryValue((Binary) v);
         }
-        throw XacmlSyntaxException
+        throw SyntaxException
                         .invalidAttributeValue(v,
                                 XacmlTypes.BASE64BINARY);
     }

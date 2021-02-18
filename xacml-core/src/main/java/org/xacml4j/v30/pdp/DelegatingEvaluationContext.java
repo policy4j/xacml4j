@@ -27,9 +27,12 @@ import com.google.common.base.Preconditions;
 import org.xacml4j.v30.*;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
+import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TimeZone;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -200,7 +203,7 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public int getDecisionCacheTTL() {
+	public Duration getDecisionCacheTTL() {
 		return delegate.getDecisionCacheTTL();
 	}
 
@@ -222,6 +225,11 @@ abstract class DelegatingEvaluationContext implements EvaluationContext
 	@Override
 	public Collection<Obligation> getMatchingObligations(Decision decision) {
 		return delegate.getMatchingObligations(decision);
+	}
+
+	@Override
+	public void setDecisionCacheTTL(Duration ttl) {
+		delegate.setDecisionCacheTTL(ttl);
 	}
 
 	@Override

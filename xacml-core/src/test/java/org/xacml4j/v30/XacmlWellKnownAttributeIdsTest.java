@@ -4,7 +4,7 @@ package org.xacml4j.v30;
  * #%L
  * Xacml4J Core Engine Implementation
  * %%
- * Copyright (C) 2009 - 2014 Xacml4J.org
+ * Copyright (C) 2009 - 2019 Xacml4J.org
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -22,15 +22,17 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.Collection;
 
-/**
- * A callback used by {@link org.xacml4j.v30.pdp.PolicyDecisionPoint} to retrieve environment
- * related attributes
- *
- * @author Giedrius Trumpickas
- */
-public interface EnvironmentAttributeCallback
+import org.junit.Test;
+
+import static org.junit.Assert.assertSame;
+
+public class XacmlWellKnownAttributeIdsTest
 {
-	Collection<Attribute> getEnvironmentAttributes();
+    @Test
+    public void testCreateWellKnownAttributeId(){
+        assertSame(WellKnownAttributeIds.RESOURCE_ID, WellKnownAttributeIds.of(WellKnownAttributeIds.RESOURCE_ID.getId()).get());
+
+        assertSame(WellKnownAttributeIds.RESOURCE_ID, WellKnownAttributeIds.of(WellKnownAttributeIds.RESOURCE_ID.getId().toUpperCase()).get());
+    }
 }

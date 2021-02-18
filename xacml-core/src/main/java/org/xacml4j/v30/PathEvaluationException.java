@@ -22,9 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Supplier;
-
-
 public final class PathEvaluationException extends EvaluationException
 {
 	private static final long serialVersionUID = 1511624494955246280L;

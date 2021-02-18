@@ -31,7 +31,7 @@ import org.junit.Test;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointCacheProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
@@ -53,9 +53,9 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 				FunctionProvider.Builder.builder()
 				.defaultFunctions()
 				.build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.build());
+				DecisionCombiningAlgorithmProvider.Builder.builder()
+				                                          .withDefaultAlgorithms()
+				                                          .build());
 
 		ImmutableList<Supplier<InputStream>> policyStreams = ImmutableList.of(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),

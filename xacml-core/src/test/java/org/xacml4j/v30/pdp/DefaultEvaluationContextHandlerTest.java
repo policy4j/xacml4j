@@ -22,12 +22,6 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-
-import java.util.Optional;
-
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
 import org.junit.Before;
@@ -35,8 +29,13 @@ import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.XPathProvider;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Optional;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
 
 
 public class DefaultEvaluationContextHandlerTest

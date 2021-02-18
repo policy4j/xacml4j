@@ -42,8 +42,8 @@ public final class Category
 	private final static Logger LOG = LoggerFactory.getLogger(Category.class);
 
 	private final String refId;
-	private final CategoryId categoryId;
 	private final CategoryReference ref;
+	private final CategoryId categoryId;
 	private final Entity entity;
 
 	/**
@@ -105,13 +105,12 @@ public final class Category
 	}
 
 	/**
-	 * An unique identifier of the attribute in
-	 * the request context
+	 * An unique identifier of the attribute category
 	 *
-	 * @return unique identifier of the
-	 * attribute in the request context
+	 * @return unique identifier of the attribute
+	 * category in the request context
 	 */
-	public String getRefId(){
+	public String getReferenceId(){
 		return refId;
 	}
 
@@ -119,6 +118,11 @@ public final class Category
 		return ref;
 	}
 
+	/**
+	 * Gets category entity
+	 *
+	 * @return {@link Entity}
+	 */
 	public Entity getEntity(){
 		return entity;
 	}
@@ -163,7 +167,7 @@ public final class Category
 				java.util.Objects.equals(ref, a.ref);
 	}
 
-	public static class Builder
+	public final static class Builder
 	{
 		private String id;
 		private CategoryId category;
@@ -189,7 +193,7 @@ public final class Category
 		public Builder copyOf(Category a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
-			id(a.getRefId());
+			id(a.getReferenceId());
 			category(a.getCategoryId());
 			entity(Entity.builder().copyOf(a.entity, f).build());
 			return this;
@@ -201,8 +205,7 @@ public final class Category
 		}
 
 		public Builder category(CategoryId category){
-			Preconditions.checkNotNull(category);
-			this.category = category;
+			this.category = java.util.Objects.requireNonNull(category, "category");
 			return this;
 		}
 

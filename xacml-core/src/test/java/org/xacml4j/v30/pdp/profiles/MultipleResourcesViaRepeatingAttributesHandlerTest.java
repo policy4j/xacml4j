@@ -22,26 +22,18 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 
 public class MultipleResourcesViaRepeatingAttributesHandlerTest
@@ -105,14 +97,14 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		RequestContext r0 = c0.getValue();
 		RequestContext r1 = c1.getValue();
-		assertTrue(r0.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject));
-		assertEquals(1, r0.getAttributes(CategoryId.RESOURCE).size());
+		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject));
+		assertEquals(1, r0.getCategory(CategoryId.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
-		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0) || r0.getAttributes(CategoryId.RESOURCE).contains(resource1));
-		assertTrue(r1.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0) || r0.getCategory(CategoryId.RESOURCE).contains(resource1));
+		assertTrue(r1.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject));
 		// order is not known so check if has 1 and at least one is in the request
-		assertEquals(1, r1.getAttributes(CategoryId.RESOURCE).size());
-		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0) || r0.getAttributes(CategoryId.RESOURCE).contains(resource1));
+		assertEquals(1, r1.getCategory(CategoryId.RESOURCE).size());
+		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0) || r0.getCategory(CategoryId.RESOURCE).contains(resource1));
 		verify(pdp);
 	}
 
@@ -155,8 +147,8 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
-		assertTrue(r0.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject));
-		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0));
+		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject));
+		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0));
 		verify(pdp);
 	}
 

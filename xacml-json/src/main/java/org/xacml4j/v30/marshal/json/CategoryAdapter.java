@@ -59,12 +59,11 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			if(content != null){
 				entityBuilder.content(content);
 			}
-
 			return Category.builder(category)
 					.id(id)
 					.entity(entityBuilder.build())
 					.build();
-		} catch (XacmlSyntaxException e) {
+		} catch (SyntaxException e) {
 			throw new JsonParseException(e);
 		}
 	}
@@ -73,8 +72,8 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 	public JsonElement serialize(Category src, Type typeOfSrc,
 			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		if (src.getRefId() != null) {
-			o.addProperty(JsonProperties.ID_PROPERTY, src.getRefId());
+		if (src.getReferenceId() != null) {
+			o.addProperty(JsonProperties.ID_PROPERTY, src.getReferenceId());
 		}
 		Entity e = src.getEntity();
 		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getAbbreviatedId());

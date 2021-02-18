@@ -22,21 +22,19 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import java.net.URI;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableSet;
+import org.xacml4j.v30.*;
 
 import javax.security.auth.x500.X500Principal;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.xpath.XPathExpression;
-
-import org.xacml4j.v30.*;
-
-import com.google.common.collect.ImmutableSet;
+import java.net.URI;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
- * Enumeration of XACML 3.0 data types
+ * Enumeration of the standard system XACML 3.0 data types
  *
  * @author Giedrius Trumpickas
  */
@@ -77,7 +75,7 @@ public enum XacmlTypes implements AttributeValueType
 		public DayTimeDurationValue of(Object v, Object... params) {
 			return Optional.of(DayTimeDurationValue.of(
 					DayTimeDuration.parse(v)))
-					.orElseThrow(() -> XacmlSyntaxException
+					.orElseThrow(() -> SyntaxException
 							.invalidAttributeValue(v, this));
 		}
 	},
@@ -98,7 +96,7 @@ public enum XacmlTypes implements AttributeValueType
 				a = Optional.of((DNSNameValue) v);
 			}
 			return a.orElseThrow(() ->
-					XacmlSyntaxException
+					SyntaxException
 							.invalidAttributeValue(
 									v, this));
 		}
@@ -181,7 +179,7 @@ public enum XacmlTypes implements AttributeValueType
 								(RFC822Name) v));
 			}
 			return a.orElseThrow(
-					() -> XacmlSyntaxException.invalidAttributeValue(
+					() -> SyntaxException.invalidAttributeValue(
 							v, this));
 		}
 	},
@@ -210,7 +208,7 @@ public enum XacmlTypes implements AttributeValueType
 						TimeValue.of((org.xacml4j.v30.Time) v));
 			}
 			return a.orElseThrow(
-					() -> XacmlSyntaxException
+					() -> SyntaxException
 							.invalidAttributeValue(
 									v, this));
 		}
@@ -238,7 +236,7 @@ public enum XacmlTypes implements AttributeValueType
 								(X500Principal) v));
 			}
 			return a.orElseThrow(
-					() -> XacmlSyntaxException
+					() -> SyntaxException
 							.invalidAttributeValue(
 									v, this));
 		}
@@ -272,7 +270,7 @@ public enum XacmlTypes implements AttributeValueType
 								(Path) v));
 			}
 			return a.orElseThrow(
-					() -> XacmlSyntaxException
+					() -> SyntaxException
 							.invalidAttributeValue(v, this));
 		}
 	},
@@ -297,7 +295,7 @@ public enum XacmlTypes implements AttributeValueType
 								(Path) v));
 			}
 			return a.orElseThrow(
-					() -> XacmlSyntaxException
+					() -> SyntaxException
 							.invalidAttributeValue(
 									v, this));
 		}
@@ -442,6 +440,4 @@ public enum XacmlTypes implements AttributeValueType
 				CategoryId.parse(params[0])
 				: Optional.empty();
     }
-
-
 }

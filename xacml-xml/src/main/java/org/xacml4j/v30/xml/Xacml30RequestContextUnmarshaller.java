@@ -25,7 +25,7 @@ package org.xacml4j.v30.xml;
 import javax.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.marshal.Unmarshaller;
@@ -42,7 +42,7 @@ implements Unmarshaller<RequestContext> {
 
 	@Override
 	protected RequestContext create(JAXBElement<?> jaxbInstance)
-			throws XacmlSyntaxException {
+			throws SyntaxException {
 		Preconditions.checkArgument((jaxbInstance.getValue()
 				instanceof org.oasis.xacml.v30.jaxb.RequestType));
 		return mapper.create((org.oasis.xacml.v30.jaxb.RequestType)jaxbInstance.getValue());

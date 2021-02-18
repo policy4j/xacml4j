@@ -22,13 +22,6 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +32,14 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import java.time.Duration;
 import java.util.Optional;
+
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 
 public class RootEvaluationContextTest
@@ -58,7 +58,7 @@ public class RootEvaluationContextTest
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTLZero()
 	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(false, Duration.ZERO, resolver, handler);
 		c.replay();
 		assertThat(context.getDecisionCacheTTL(), is(0));
 		context.setDecisionCacheTTL(20);
@@ -75,24 +75,24 @@ public class RootEvaluationContextTest
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTL()
 	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 10, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(false, Duration.ofSeconds(10), resolver, handler);
 		c.replay();
-		assertThat(context.getDecisionCacheTTL(), is(10));
-		context.setDecisionCacheTTL(20);
-		assertThat(context.getDecisionCacheTTL(), is(10));
-		context.setDecisionCacheTTL(5);
-		assertThat(context.getDecisionCacheTTL(), is(5));
+		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(10)));
+		context.setDecisionCacheTTL(Duration.ofSeconds(20));
+		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(20)));
+		context.setDecisionCacheTTL(Duration.ofSeconds(5));
+		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(5)));
 		context.setDecisionCacheTTL(-1);
-		assertThat(context.getDecisionCacheTTL(), is(0));
+		assertThat(context.getDecisionCacheTTL(), is(Duration.ZERO));
 		context.setDecisionCacheTTL(10);
-		assertThat(context.getDecisionCacheTTL(), is(0));
+		assertThat(context.getDecisionCacheTTL(), is(Duration.ZERO));
 		c.verify();
 	}
 
 	@Test
 	public void testResolveDesignatorValueValueIsNotInContext() throws EvaluationException
 	{
-		RootEvaluationContext context = new RootEvaluationContext(false, 0, resolver, handler);
+		RootEvaluationContext context = new RootEvaluationContext(false, Duration.ZERO, resolver, handler);
 		AttributeDesignatorKey k = AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_ACCESS)

@@ -22,10 +22,8 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
@@ -33,7 +31,7 @@ import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.Iterables;
+import static org.junit.Assert.*;
 
 public class AttributeSetTest
 {
@@ -42,16 +40,16 @@ public class AttributeSetTest
 
 	@Before
 	public void init(){
-		this.noIssuer = AttributeResolverDescriptorBuilder.builder(
+		this.noIssuer = AttributeResolverDescriptor.builder(
 				"id", "name", null, CategoryId.SUBJECT_ACCESS)
 				.attribute("testId1", XacmlTypes.INTEGER)
 				.attribute("testId2", XacmlTypes.STRING)
-				.build();
-		this.withIssuer = AttributeResolverDescriptorBuilder.builder(
+				.build((c)-> ImmutableMap.of());
+		this.withIssuer = AttributeResolverDescriptor.builder(
 				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
 				.attribute("testId1", XacmlTypes.INTEGER)
 				.attribute("testId2", XacmlTypes.STRING)
-				.build();
+				.build((c)-> ImmutableMap.of());
 		assertEquals("issuer", withIssuer.getIssuer());
 	}
 
@@ -79,12 +77,12 @@ public class AttributeSetTest
 				.build();
 		assertNotNull(v.get("testId1"));
 		assertNotNull(v.get("testId2"));
-		BagOfAttributeValues v1 = v.get(key.build());
+		BagOfAttributeValues v1 = v.get(key.build()).get();
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
 		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
 
-		BagOfAttributeValues v2 = v.get(key.build());
+		BagOfAttributeValues v2 = v.get(key.build()).get();
 		assertNotNull(v2);
 		assertTrue(v1.isEmpty());
 		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
@@ -109,7 +107,7 @@ public class AttributeSetTest
 				.build();
 		assertNotNull(v.get("testId1"));
 		assertNotNull(v.get("testId2"));
-		BagOfAttributeValues v1 = v.get(key.build());
+		BagOfAttributeValues v1 = v.get(key.build()).get();
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
 		assertEquals(XacmlTypes.INTEGER, v1.getDataType());

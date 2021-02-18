@@ -22,17 +22,15 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-import java.util.LinkedList;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
+import static org.junit.Assert.*;
 
 
 public class AttributesTest
@@ -95,7 +93,7 @@ public class AttributesTest
 				.build();
 		Entity e = test.getEntity();
 		assertTrue(e.getAttributes().containsAll(attributes));
-		assertNull(test.getRefId());
+		assertNull(test.getReferenceId());
 		assertTrue(content1.equals(e.getContent().get()));
 		assertEquals(CategoryId.RESOURCE, test.getCategoryId());
 	}

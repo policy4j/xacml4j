@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.pdp.VariableDefinition;
 
 import com.google.common.base.Preconditions;
@@ -58,7 +58,7 @@ class VariableManager<VExpression>
 
 	public void pushVariableDefinition(String variableId) {
 		if (resolutionStack.contains(variableId)) {
-			throw new XacmlSyntaxException("Cyclic variable reference=\"%s\" detected", variableId);
+			throw new SyntaxException("Cyclic variable reference=\"%s\" detected", variableId);
 		}
 		this.resolutionStack.push(variableId);
 	}

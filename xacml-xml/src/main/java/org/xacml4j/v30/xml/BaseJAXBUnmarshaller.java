@@ -37,7 +37,7 @@ import javax.xml.transform.Source;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xml.sax.InputSource;
 
@@ -57,7 +57,7 @@ public abstract class BaseJAXBUnmarshaller <T>
 	}
 
 	@Override
-	public final T unmarshal(Object source) throws XacmlSyntaxException, IOException
+	public final T unmarshal(Object source) throws SyntaxException, IOException
 	{
 		Preconditions.checkNotNull(source);
 		try{
@@ -93,9 +93,9 @@ public abstract class BaseJAXBUnmarshaller <T>
 					String.format("Unsupported source=\"%s\"",
 							source.getClass().getName()));
 		}catch(JAXBException e){
-			throw new XacmlSyntaxException(e);
+			throw new SyntaxException(e);
 		}
 	}
 
-	protected abstract T create(JAXBElement<?> jaxbInstance) throws XacmlSyntaxException;
+	protected abstract T create(JAXBElement<?> jaxbInstance) throws SyntaxException;
 }

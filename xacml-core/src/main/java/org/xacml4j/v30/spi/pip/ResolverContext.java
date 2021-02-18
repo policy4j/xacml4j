@@ -22,16 +22,15 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Ticker;
+import org.xacml4j.v30.*;
+
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.*;
-
-import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.BagOfAttributeValues;
-import org.xacml4j.v30.Content;
-
-import com.google.common.base.Ticker;
-import org.xacml4j.v30.EvaluationContext;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 
 public interface ResolverContext
@@ -65,7 +64,7 @@ public interface ResolverContext
 	 */
 	ResolverDescriptor getDescriptor();
 
-	<T extends Resolver> T getResolver();
+	<V> Function<ResolverContext, V> getResolver();
 
 	/**
 	 * Resolves context key
@@ -83,4 +82,105 @@ public interface ResolverContext
 	Map<AttributeReferenceKey, BagOfAttributeValues> getResolvedKeys();
 
 	EvaluationContext getEvaluationContext();
+
+	static ResolverContext createContext(EvaluationContext context, ResolverDescriptor resolver){
+		return new Default(context, resolver);
+	}
+
+	final class Default implements
+			ResolverContext
+	{
+		private Optional<Content.Type> contentType;
+		private EvaluationContext context;
+		private Map<AttributeReferenceKey, BagOfAttributeValues> resolvedKeys;
+		private ResolverDescriptor resolver;
+
+		public Default(
+				EvaluationContext context,
+				ResolverDescriptor resolver,
+				Supplier<Optional<Content.Type>> supplier) throws EvaluationException {
+			this.resolver = Objects.requireNonNull(resolver, "resolver");
+			this.context = Objects.requireNonNull(context, "context");
+			this.contentType = Objects.requireNonNull(supplier, "contentType").get();
+
+		}
+
+		public Default(EvaluationContext context, ResolverDescriptor resolver){
+			this(context, resolver, ()->Optional.empty());
+		}
+
+		public EvaluationContext getEvaluationContext(){
+			return context;
+		}
+
+		@Override
+		public Optional<Content.Type> getContentType() {
+			return  contentType;
+		}
+
+		@Override
+		public ZonedDateTime getCurrentDateTime() {
+			return context.getCurrentDateTime();
+		}
+
+		@Override
+		public Clock getClock(){
+			return context.getClock();
+		}
+
+		@Override
+		public ResolverDescriptor getDescriptor(){
+			return resolver;
+		}
+
+		public Map<AttributeReferenceKey, BagOfAttributeValues> getResolvedKeys(){
+			if(resolvedKeys == null){
+				this.resolvedKeys = resolver.resolveKeyRefs(this);
+			}
+			return resolvedKeys;
+		}
+
+		@Override
+		public Optional<BagOfAttributeValues> resolve(AttributeReferenceKey key)
+		{
+			BagOfAttributeValues cachedValue =  resolvedKeys != null?resolvedKeys.get(key):null;
+			if(cachedValue != null){
+				return Optional.ofNullable(cachedValue);
+			}
+			Optional<BagOfAttributeValues> resolvedValue = context.resolve(key);
+			resolvedValue.ifPresent((v)->{
+				if(resolvedKeys == null){
+					this.resolvedKeys = new HashMap<>();
+				}
+				resolvedKeys.putIfAbsent(key, v);
+			});
+			return resolvedValue;
+		}
+
+		public Supplier<Optional<BagOfAttributeValues>> resolveRef(AttributeReferenceKey referenceKey){
+			Optional<BagOfAttributeValues> v = resolve(referenceKey);
+			v.ifPresent(bagOfAttributeValues -> resolvedKeys.put(referenceKey, bagOfAttributeValues));
+			return ()->v;
+		}
+
+		public boolean isCacheable(){
+			return resolver
+					.isCacheable();
+		}
+
+
+		public Function<ResolverContext, Optional<?>> getResolver() {
+			return resolver.getResolver();
+		}
+
+		@Override
+		public String toString(){
+			return MoreObjects.toStringHelper(this)
+					.add("context", context)
+					.add("resolver", resolver)
+					.add("resolvedKeys", resolvedKeys)
+					.toString();
+		}
+	}
+
 }

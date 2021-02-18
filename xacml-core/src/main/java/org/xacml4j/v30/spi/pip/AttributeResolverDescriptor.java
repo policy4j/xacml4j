@@ -22,39 +22,69 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import org.xacml4j.v30.*;
+
 import java.util.*;
 import java.util.function.Function;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
-
-public interface AttributeResolverDescriptor
-	extends ResolverDescriptor
+public final class AttributeResolverDescriptor
+	extends BaseResolverDescriptor<AttributeSet>
 {
+	private String issuer;
+	private Map<String, AttributeDescriptor> attributesById;
+	private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
+	private Function<ResolverContext, Map<String, BagOfAttributeValues>> resolver;
+
+	private AttributeResolverDescriptor(Builder b, Function<ResolverContext,
+			Map<String, BagOfAttributeValues>> resolverFunction){
+		super(b);
+		this.issuer = b.issuer;
+		this.attributesByKey = b.attributesByKey.build();
+		this.attributesById = b.attributesById.build();
+		this.resolver = Objects.requireNonNull(resolverFunction, "resolverFunction");
+	}
+
 	/**
 	 * Gets an issuer identifier
 	 * for this resolver attributes
 	 *
 	 * @return an issuer identifier
 	 */
-	String getIssuer();
+	public String getIssuer(){
+		return issuer;
+	}
+
+	public boolean canResolve(AttributeReferenceKey category) {
+		if(!(category instanceof AttributeDesignatorKey)){
+			return false;
+		}
+		return attributesByKey.containsKey(category);
+	}
+	@Override
+	public Function<ResolverContext, Optional<AttributeSet>> getResolver() {
+		return (context)->{
+			Map<String, BagOfAttributeValues> v = resolver.apply(context);
+			return Optional.ofNullable(v)
+					.map(values->AttributeSet.builder(this)
+							.clock(context.getClock())
+							.attributes(values).build());
+		};
+	}
 
 	/**
 	 * Gets attribute of the given category
 	 * with a given identifier descriptor
 	 *
 	 * @param attributeId an attribute identifier
-	 * @return {@link AttributeDescriptor}
+	 * @return {@link Optional<AttributeDescriptor>}
 	 */
-	AttributeDescriptor getAttribute(String attributeId);
+	public Optional<AttributeDescriptor> getAttribute(String attributeId){
+		return Optional.ofNullable(attributesById.get(attributeId));
+	}
 
 	/**
 	 * Gets number of attributes
@@ -63,21 +93,27 @@ public interface AttributeResolverDescriptor
 	 * @return a number of attributes
 	 * provided by this resolver
 	 */
-	int getAttributesCount();
+	public int getAttributesCount(){
+		return attributesById.size();
+	}
 
 	/**
 	 * Gets a set of provided attribute identifiers
 	 *
 	 * @return an immutable {@link Set} of attribute identifiers
 	 */
-	Set<String> getProvidedAttributeIds();
+	public Set<String> getProvidedAttributeIds(){
+		return attributesById.keySet();
+	}
 
 	/**
 	 * Gets supported attributes
 	 *
 	 * @return a map by the attribute id
 	 */
-	Map<String, AttributeDescriptor> getAttributesById();
+	public Map<String, AttributeDescriptor> getAttributesById(){
+		return attributesById;
+	}
 
 	/**
 	 * Gets map of attribute descriptors {@link AttributeDescriptor}
@@ -86,8 +122,9 @@ public interface AttributeResolverDescriptor
 	 * @return map of {@link AttributeDescriptor} instances mapped
 	 * by the {@link AttributeDesignatorKey}
 	 */
-	Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey();
-
+	public Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey(){
+		return attributesByKey;
+	}
 
 	/**
 	 * Tests if an attribute resolver can resolve
@@ -96,60 +133,65 @@ public interface AttributeResolverDescriptor
 	 * @param attributeId attribute identifier
 	 * @return {@code true} if the attribute can be resolved
 	 */
-	boolean canResolve(String attributeId);
+	public boolean canResolve(String attributeId){
+		return attributesById.containsKey(attributeId);
+	}
 
-	static Builder builder(String id, String name, CategoryId  ... category){
+	static Builder builder(String id, String name, CategoryId category){
 		return builder(id, name, null, category);
 	}
 
-	static Builder builder(String id, String name, String issuer, CategoryId ... category){
+	static Builder builder(String id, String name, String issuer, CategoryId category){
 		return new Builder(id, name, issuer, category);
 	}
 
-
-
-	final class Builder
-			extends ResolverDescriptorBuilder<Builder>
+	final static class Builder
+			extends BaseBuilder<AttributeSet, Builder>
 	{
-
-		private Map<String, AttributeDescriptor> attributesById;
-		private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
+		private ImmutableMap.Builder<String, AttributeDescriptor> attributesById;
+		private ImmutableMap.Builder<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
 		private String issuer;
 
 		private Builder(
 				String id,
 				String name,
 				String issuer,
-				CategoryId... category){
-			super(id, name, category);
+				CategoryId categoryId){
+			super(id, name, categoryId);
 			this.issuer = Strings.emptyToNull(issuer);
-			this.attributesById = new LinkedHashMap<>();
-			this.attributesByKey = new LinkedHashMap<>();
+			this.attributesById = ImmutableMap.builder();
+			this.attributesByKey = ImmutableMap.builder();
 		}
-
-
 
 		public Builder  attribute(
 				String attributeId,
-				AttributeValueType dataType, String ...aliases){
-			AttributeDescriptor d = new AttributeDescriptor(attributeId, dataType, aliases);
-			Collection<String> attributeIds = Arrays.asList(aliases);
-			attributeIds.add(attributeId);
-			for(CategoryId categoryId : allCategories){
-				for(String id : attributeIds){
-					AttributeDesignatorKey k = AttributeDesignatorKey.builder()
-							.category(categoryId)
-							.attributeId(attributeId)
-							.dataType(dataType)
-							.issuer(issuer)
-							.build();
-					Preconditions.checkState(attributesById.put(id, d) == null,
-							"Builder already has an attribute with id=\"%s\"", id);
-					Preconditions.checkState( this.attributesByKey.put(k, d) == null,
-							"Builder already has an attribute with id=\"%s\"", id);
+				AttributeValueType dataType,
+				Collection<String> aliases){
+			AttributeDescriptor d = AttributeDescriptor.of(attributeId, dataType, aliases);
+			for(String id : d.getAliases() ){
+				AttributeDesignatorKey k = AttributeDesignatorKey.builder()
+						.category(categoryId)
+						.attributeId(attributeId)
+						.dataType(dataType)
+						.issuer(issuer)
+						.build();
+				if(attributesById.put(id, d) != null){
+					throw new IllegalArgumentException(String.format(
+							"Builder already has an attribute with id=\"%s\"", id));
+				}
+				if(this.attributesByKey.put(k, d) != null){
+					throw new IllegalArgumentException(String.format(
+							"Builder already has an attribute with id=\"%s\"", id));
 				}
 			}
 			return this;
+		}
+
+		public Builder  attribute(
+				String attributeId,
+				AttributeValueType dataType, String ... aliases){
+			return attribute(attributeId, dataType,
+					(aliases == null)?Collections.emptyList(): ImmutableList.copyOf(aliases));
 		}
 
 		@Override
@@ -157,128 +199,8 @@ public interface AttributeResolverDescriptor
 			return this;
 		}
 
-		private AttributeResolverDescriptor build(){
-			return new AttributeResolverDescriptorImpl();
-		}
-
-		public Resolver<AttributeSet> build(Function<ResolverContext, Map<String, BagOfAttributeValues>> resolverFunction){
-			return new AttributeResolver(build(), resolverFunction);
-		}
-
-		private class AttributeResolverDescriptorImpl extends BaseResolverDescriptor
-				implements AttributeResolverDescriptor
-		{
-			private Map<String, AttributeDescriptor> attributesById;
-			private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
-
-			AttributeResolverDescriptorImpl() {
-				super(id, name, allCategories, cacheTTL, contextKeysResolutionPlan);
-				this.attributesById = ImmutableMap.copyOf(
-						Builder.this.attributesById);
-				this.attributesByKey = ImmutableMap.copyOf(
-						Builder.this.attributesByKey);
-			}
-
-			@Override
-			public String getIssuer() {
-				return issuer;
-			}
-
-			@Override
-			public int getAttributesCount(){
-				return attributesById.size();
-			}
-
-			@Override
-			public Set<String> getProvidedAttributeIds(){
-				return attributesById.keySet();
-			}
-
-			@Override
-			public Map<String, AttributeDescriptor> getAttributesById() {
-				return attributesById;
-			}
-
-			@Override
-			public AttributeDescriptor getAttribute(String attributeId) {
-				return attributesById.get(attributeId);
-			}
-
-			@Override
-			public Map<AttributeDesignatorKey, AttributeDescriptor> getAttributesByKey(){
-				return attributesByKey;
-			}
-
-			@Override
-			public boolean canResolve(String attributeId) {
-				return attributesById.containsKey(attributeId);
-			}
-
-
-			@Override
-			public boolean canResolve(AttributeReferenceKey referenceKey)
-			{
-				if(!(referenceKey instanceof AttributeDesignatorKey)){
-					return false;
-				}
-				AttributeDesignatorKey ref  = (AttributeDesignatorKey)referenceKey;
-				if(getCategoryIds().contains(referenceKey.getCategory()) &&
-						((ref.getIssuer() == null) || ref.getIssuer().equals(getIssuer()))){
-					AttributeDescriptor d = getAttribute(ref.getAttributeId());
-					return (d != null) && d.getDataType().equals(ref.getDataType());
-				}
-				return false;
-			}
-
-			@Override
-			public Collection<CategoryId> getSupportedCategories() {
-				return allCategories;
-			}
+		public AttributeResolverDescriptor build(Function<ResolverContext, Map<String, BagOfAttributeValues>> resolverFunction){
+			return new AttributeResolverDescriptor(this, resolverFunction);
 		}
 	}
-
-	final class AttributeResolver implements Resolver<AttributeSet>
-	{
-		protected final Logger log = LoggerFactory.getLogger(getClass());
-
-		private final AttributeResolverDescriptor descriptor;
-
-		private Function<ResolverContext, Map<String, BagOfAttributeValues>> function;
-
-		private AttributeResolver(
-				AttributeResolverDescriptor descriptor,
-				java.util.function.Function<ResolverContext, Map<String, BagOfAttributeValues>> function){
-			checkNotNull(descriptor);
-			this.descriptor = Objects.requireNonNull(descriptor, AttributeResolverDescriptor.class.getSimpleName());
-			this.function = Objects.requireNonNull(function, AttributeResolverDescriptor.class.getSimpleName());
-
-		}
-
-		@Override
-		public final AttributeResolverDescriptor getDescriptor(){
-			return descriptor;
-		}
-
-		@Override
-		public final Optional<AttributeSet> resolve(
-				ResolverContext context)
-		{
-			checkArgument(context.getDescriptor().getId().equals(descriptor.getId()));
-			if(log.isDebugEnabled()){
-				log.debug("Retrieving attributes via resolver id=\"{}\" name=\"{}\"",
-						descriptor.getId(), descriptor.getName());
-			}
-			Map<String, BagOfAttributeValues> attributeValuesMap = function.apply(context);
-			if(attributeValuesMap == null ||
-					attributeValuesMap.isEmpty()){
-				return Optional.empty();
-			}
-			return Optional.of(attributeValuesMap)
-					.map(v->AttributeSet.builder(this)
-							.attributes(v)
-							.ticker(context.getClock())
-							.build());
-		}
-	}
-
 }

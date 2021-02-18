@@ -25,7 +25,7 @@ package org.xacml4j.v30.types;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -60,7 +60,7 @@ public final class AnyURIValue extends BaseAttributeValue<URI>
         if (v instanceof StringValue) {
             return of(v.toString());
         }
-        throw XacmlSyntaxException
+        throw SyntaxException
                 .invalidAttributeValue(v,
                         XacmlTypes.ANYURI);
     }
@@ -85,7 +85,7 @@ public final class AnyURIValue extends BaseAttributeValue<URI>
         try {
             return new AnyURIValue(v.toURI());
         } catch (URISyntaxException e) {
-            throw XacmlSyntaxException.invalidAttributeValue(v,
+            throw SyntaxException.invalidAttributeValue(v,
                     XacmlTypes.ANYURI);
         }
     }

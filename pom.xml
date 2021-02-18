@@ -28,11 +28,11 @@
 
 	<properties>
 		<junit.version>4.11</junit.version>
-		<slf4j.version>1.7.26</slf4j.version>
+		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<easymock.version>3.1</easymock.version>
-		<google.guava.version>27.0.1-jre</google.guava.version>
-		<google.auto.version>1.0-rc5</google.auto.version>
+		<google.guava.version>29.0-jre</google.guava.version>
+		<google.auto.version>1.0-rc7</google.auto.version>
 		<google.truth.version>0.45</google.truth.version>
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -106,6 +106,7 @@
 			<groupId>com.google.truth.extensions</groupId>
 			<artifactId>truth-java8-extension</artifactId>
 		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -165,13 +166,7 @@
 			<dependency>
 				<groupId>com.jayway.jsonpath</groupId>
 				<artifactId>json-path</artifactId>
-				<version>2.4.0</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.auto.service</groupId>
-				<artifactId>auto-service</artifactId>
-				<version>${google.auto.version}</version>
-				<optional>true</optional>
+				<version>2.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.truth</groupId>
@@ -185,6 +180,11 @@
 				<version>${google.truth.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>com.google.auto.service</groupId>
+				<artifactId>auto-service</artifactId>
+				<version>${google.auto.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -197,6 +197,13 @@
 				<configuration>
 					<source>1.9</source>
 					<target>1.9</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.google.auto.service</groupId>
+							<artifactId>auto-service</artifactId>
+							<version>${google.auto.version}</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -226,8 +233,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 	<scm>
 		<connection>scm:git:git@github.com:xacml4j/xacml4j.git</connection>
 		<developerConnection>scm:git:git@github.com:xacml4j/xacml4j.git</developerConnection>

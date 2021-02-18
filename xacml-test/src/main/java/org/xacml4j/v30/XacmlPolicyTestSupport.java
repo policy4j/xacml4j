@@ -34,13 +34,13 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml30RequestContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
@@ -63,8 +63,6 @@ public class XacmlPolicyTestSupport {
 		this.responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
 		this.xacml20ResponseUnmarshaller = new Xacml20ResponseContextUnmarshaller();
 		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
-		this.xacml20RequestUnmarshaller = new Xacm
-
 	}
 
 	protected Builder builder(String rootPolicyId, String rootPolicyVersion)
@@ -221,7 +219,7 @@ public class XacmlPolicyTestSupport {
 		assertArrayEquals(a1, a2, new Matcher<Category>() {
 			@Override
 			public boolean matches(Category o1, Category o2) {
-				return o1.getRefId().equals(o2.getRefId()) && o1.getCategoryId().equals(o2.getCategoryId());
+				return o1.getReferenceId().equals(o2.getReferenceId()) && o1.getCategoryId().equals(o2.getCategoryId());
 			}
 		});
 	}
@@ -263,7 +261,7 @@ public class XacmlPolicyTestSupport {
 		private String repositoryId;
 		private FunctionProvider.Builder functionProviderBuilder;
 		private PolicyInformationPointBuilder pipBuilder;
-		private DecisionCombiningAlgorithmProviderBuilder decisionAlgoProviderBuilder;
+		private DecisionCombiningAlgorithmProvider.Builder decisionAlgoProviderBuilder;
 		private Collection<Supplier<InputStream>> policies;
 
 		public Builder(String pdpId, String pipId, String repositoryId){
@@ -271,7 +269,7 @@ public class XacmlPolicyTestSupport {
 			Preconditions.checkNotNull(pipId);
 			Preconditions.checkNotNull(repositoryId);
 			this.functionProviderBuilder = FunctionProvider.Builder.builder();
-			this.decisionAlgoProviderBuilder = DecisionCombiningAlgorithmProviderBuilder.builder();
+			this.decisionAlgoProviderBuilder = DecisionCombiningAlgorithmProvider.Builder.builder();
 			this.pipBuilder = PolicyInformationPointBuilder.builder(pipId);
 			this.policies = new ArrayList<Supplier<InputStream>>();
 			this.repositoryId = repositoryId;

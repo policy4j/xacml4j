@@ -25,7 +25,7 @@ package org.xacml4j.v30;
 import javax.xml.stream.Location;
 
 
-public class PolicySyntaxException extends XacmlSyntaxException
+public class PolicySyntaxException extends SyntaxException
 {
 	private static final long serialVersionUID = 345591401946746019L;
 

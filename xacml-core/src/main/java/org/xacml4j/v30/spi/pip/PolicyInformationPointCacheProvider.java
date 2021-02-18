@@ -23,7 +23,6 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import org.w3c.dom.Node;
-import org.xacml4j.v30.EvaluationContext;
 
 import java.util.Optional;
 

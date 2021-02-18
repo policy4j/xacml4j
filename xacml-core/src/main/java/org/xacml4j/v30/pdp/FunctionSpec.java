@@ -110,10 +110,10 @@ public interface FunctionSpec
 	 * as potential function invocation arguments
 	 *
 	 * @param arguments an array of expressions
-	 * @exception XacmlSyntaxException
+	 * @exception SyntaxException
 	 */
 	void validateParametersAndThrow(List<Expression> arguments)
-		throws XacmlSyntaxException;
+		throws SyntaxException;
 
 	/**
 	 * Resolves function return type based on function

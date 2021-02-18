@@ -25,7 +25,6 @@ package org.xacml4j.v30;
 import java.util.Map;
 
 import org.xacml4j.v30.spi.pip.AttributeResolver;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptorBuilder;
 import org.xacml4j.v30.spi.pip.BaseAttributeResolver;
 import org.xacml4j.v30.spi.pip.ResolverContext;
 

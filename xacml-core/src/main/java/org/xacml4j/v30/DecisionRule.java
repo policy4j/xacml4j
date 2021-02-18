@@ -24,6 +24,8 @@ package org.xacml4j.v30;
 
 import org.xacml4j.v30.pdp.PolicyElement;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * A XACML decision rule, core interface
  * for all rules in the XACML specification
@@ -73,4 +75,19 @@ public interface DecisionRule extends PolicyElement
 	 * @return {@link Decision}
 	 */
 	Decision evaluate(EvaluationContext context);
+
+	/**
+	 * Evaluates this decision in the given evaluation context
+	 * asynchronously. An evaluation context must be created by invoking
+	 * {@link DecisionRule#createContext(EvaluationContext)} first.
+	 * Evaluation should be performed if prior call
+	 * to {@link DecisionRule#isMatch(EvaluationContext)} returns
+	 * {@link MatchResult#MATCH}
+	 *
+	 * @param context an evaluation context
+	 * @return {@link Decision}
+	 */
+	default CompletableFuture<Decision>  evaluateAsync(EvaluationContext context){
+		return CompletableFuture.completedFuture(evaluate(context));
+	}
 }

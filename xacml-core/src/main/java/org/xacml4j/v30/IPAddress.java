@@ -22,15 +22,14 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import org.xacml4j.util.IPAddressUtils;
+
 import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
-
-import org.xacml4j.util.IPAddressUtils;
-
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
 
 /**
  * XACML IP Address abstraction

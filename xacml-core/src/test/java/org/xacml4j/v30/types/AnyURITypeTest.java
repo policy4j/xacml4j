@@ -22,17 +22,16 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
-import java.net.URI;
-import java.util.Optional;
-
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.AttributeValueType;
 import org.xacml4j.v30.BagOfAttributeValues;
 
-import com.google.common.collect.ImmutableList;
+import java.net.URI;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class AnyURITypeTest

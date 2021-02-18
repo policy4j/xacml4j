@@ -24,7 +24,7 @@ package org.xacml4j.v30.types;
 
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 /**
 * Implementation an XACML {@link Expression}
@@ -53,7 +53,7 @@ public final class BooleanValue extends BaseAttributeValue<Boolean>
         if (v instanceof Boolean) {
             return (Boolean)v? BooleanValue.TRUE: BooleanValue.FALSE;
         }
-        throw XacmlSyntaxException.invalidAttributeValue(
+        throw SyntaxException.invalidAttributeValue(
                 v, XacmlTypes.BOOLEAN);
     }
 

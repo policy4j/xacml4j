@@ -22,15 +22,21 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 
+import java.time.Duration;
+import java.util.*;
+import java.util.function.Function;
 
-public interface ResolverDescriptor
+/**
+ * XACML resolver descriptor
+ *
+ * @param <R>
+ * @author Giedrius Trumpickas
+ */
+public interface ResolverDescriptor<R>
 {
 	/**
 	 * An unique identifier for
@@ -48,29 +54,42 @@ public interface ResolverDescriptor
 	String getName();
 
 	/**
-	 * Tests if resolver is capable of resolving
-	 * given attribute
+	 * Gets resolver function
 	 *
-	 * @param referenceKey attribute designator or selector key
-	 * @return {@code true} if resolver
-	 * is capable of resolving given reference
+	 * @return resolver function
 	 */
-	boolean canResolve(AttributeReferenceKey referenceKey);
+	Function<ResolverContext, Optional<R>> getResolver();
 
 
+	/**
+	 * Tests if this attribute reference key can be resolved
+	 *
+	 * @param ref an attribute reference
+	 * @return true if it can be resolved
+	 */
+	boolean canResolve(AttributeReferenceKey ref);
+
+	/**
+	 * Resolved key references from the context
+	 *
+	 * @param context a context
+	 * @return a map with resolved key references
+	 */
 	Map<AttributeReferenceKey, BagOfAttributeValues> resolveKeyRefs(ResolverContext context);
+
+	List<AttributeReferenceKey> getAllContextKeyRefs();
 
 	/**
 	 * Gets supported categories
 	 *
 	 * @return collection of supported categories
 	 */
-	Collection<CategoryId> getSupportedCategories();
-
+	CategoryId getCategory();
+	
 	/**
-	 * Test if attributes resolved by resolver can be cached by PIP
+	 * Test if values resolved by resolver can be cached by PIP
 	 *
-	 * @return {@code true} if attributes can be cached
+	 * @return {@code true} if value can be cached
 	 */
 	boolean isCacheable();
 
@@ -79,6 +98,60 @@ public interface ResolverDescriptor
 	 *
 	 * @return a TTL in seconds or {@code 0}
 	 */
-	int getPreferredCacheTTL();
+	Duration getPreferredCacheTTL();
 
+	abstract class BaseBuilder<R, T extends BaseBuilder<R, ?>>
+	{
+		protected String id;
+		protected String name;
+		protected CategoryId categoryId;
+		protected Duration cacheTTL;
+		protected List<Function<ResolverContext, Optional<BagOfAttributeValues>>> contextKeysResolutionPlan;
+		protected List<AttributeReferenceKey> contextReferenceKeys;
+
+
+		protected BaseBuilder(String id, String name,
+							  CategoryId categoryId)
+		{
+			this.id = Objects.requireNonNull(id, "id");
+			this.name = Objects.requireNonNull(name, "name");
+			this.categoryId = Objects.requireNonNull(categoryId, "categoryId");
+			this.contextKeysResolutionPlan = new LinkedList<>();
+			this.contextReferenceKeys = new LinkedList<>();
+		}
+
+		public T cache(int ttl){
+			this.cacheTTL = Duration.ofSeconds(ttl);
+			return getThis();
+		}
+
+		protected T contextRefOrElse(
+				AttributeReferenceKey a,
+						   AttributeReferenceKey b){
+			this.contextReferenceKeys.add(a);
+			this.contextReferenceKeys.add(b);
+			return orElse((context -> context.resolve(a)),
+					(context -> context.resolve(b)));
+		}
+
+		public T contextRef(AttributeReferenceKey a){
+			this.contextReferenceKeys.add(a);
+			this.contextKeysResolutionPlan.add((context -> context.resolve(a)));
+			return getThis();
+		}
+
+		protected T orElse(Function<ResolverContext, Optional<BagOfAttributeValues>> a,
+						   Function<ResolverContext, Optional<BagOfAttributeValues>> b){
+			this.contextKeysResolutionPlan.add(
+					(context)-> a.apply(context).or(()->b.apply(context)));
+			return getThis();
+		}
+
+		public T noCache(){
+			this.cacheTTL = Duration.ZERO;
+			return getThis();
+		}
+
+		protected abstract T getThis();
+	}
 }

@@ -22,14 +22,14 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
 
 
 final class MultipleResourcesViaXPathExpressionLegacyHandler
@@ -76,7 +76,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							.build());
 		}
 		Collection<Category> attributes = new LinkedList<Category>();
-		for(Category attrs : request.getAttributes())
+		for(Category attrs : request.getCategory())
 		{
 			if(attrs.getCategoryId().equals(CategoryId.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();

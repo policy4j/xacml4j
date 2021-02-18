@@ -22,29 +22,24 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Map;
-
-
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.Iterables;
+import java.util.Map;
 
-public class AttributeResolverDescriptorBuilderTest
+import static org.junit.Assert.*;
+
+public class AttributeResolverDescriptorTest
 {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testBuildDescriptorWithContextKeyReferringToThisDescriptor()
 	{
-		AttributeResolverDescriptorBuilder.builder(
+		AttributeResolverDescriptor.builder(
 				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
 		.attribute("testId2", XacmlTypes.STRING)
@@ -54,21 +49,21 @@ public class AttributeResolverDescriptorBuilderTest
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER)
 				.build())
-		.build();
+		.build((c)-> ImmutableMap.of());
 	}
 
 	@Test
 	public void testBuildDescriptorWithIssuer()
 	{
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d = AttributeResolverDescriptor
 				.builder(
 				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
-		.attribute("testId2", XacmlTypes.STRING).build();
+		.attribute("testId2", XacmlTypes.STRING).build((c)-> ImmutableMap.of());
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());
-		assertTrue(d.getSupportedCategories().contains(CategoryId.SUBJECT_ACCESS));
+		assertTrue(d.getCategory().equals(CategoryId.SUBJECT_ACCESS));
 
 		AttributeDesignatorKey.Builder key = AttributeDesignatorKey
 				.builder()
@@ -110,14 +105,14 @@ public class AttributeResolverDescriptorBuilderTest
 	@Test
 	public void testBuildDescriptorWithIssuerNull()
 	{
-		AttributeResolverDescriptor d = AttributeResolverDescriptorBuilder
+		AttributeResolverDescriptor d = AttributeResolverDescriptor
 				.builder("id", "name", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER)
-		.attribute("testId2", XacmlTypes.STRING).build();
+		.attribute("testId2", XacmlTypes.STRING).build((c)->ImmutableMap.of());
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertNull(d.getIssuer());
-		assertTrue(d.getSupportedCategories().contains(CategoryId.SUBJECT_ACCESS));
+		assertTrue(d.getCategory().equals(CategoryId.SUBJECT_ACCESS));
 
 		AttributeDesignatorKey.Builder key = AttributeDesignatorKey
 				.builder()

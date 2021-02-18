@@ -22,13 +22,15 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.io.*;
-import java.util.Arrays;
-
+import com.google.common.base.Preconditions;
 import org.xacml4j.util.Base64;
 import org.xacml4j.util.Base64DecoderException;
 
-import com.google.common.base.Preconditions;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.util.Arrays;
 
 /**
  * A base class for XACML binary values

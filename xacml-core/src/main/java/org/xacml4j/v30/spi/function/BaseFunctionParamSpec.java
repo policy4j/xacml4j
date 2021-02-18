@@ -23,7 +23,7 @@ package org.xacml4j.v30.spi.function;
  */
 
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 
 import java.util.Optional;
@@ -43,7 +43,7 @@ abstract class BaseFunctionParamSpec implements FunctionParamSpec
 			boolean variadic,
 			Expression defaultValue){
 		if (!optional && defaultValue != null) {
-			throw new XacmlSyntaxException("Function parameter can't be required " +
+			throw new SyntaxException("Function parameter can't be required " +
 					"and have default value at the same time");
 		}
 		this.optional = optional;

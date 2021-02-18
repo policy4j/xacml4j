@@ -22,9 +22,8 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
@@ -34,8 +33,8 @@ import org.xacml4j.v30.pdp.RequestSyntaxException;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
+import java.util.*;
+import java.util.stream.Collectors;
 
 final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestContextHandler
 {
@@ -70,7 +69,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		try
 		{
 			List<Set<Category>> all = new LinkedList<Set<Category>>();
-			for(Category c : request.getAttributes()){
+			for(Category c : request.getCategory()){
 				Set<Category> categories = getCategories(c);
 				if(LOG.isDebugEnabled()){
 					LOG.debug("Categories=\"{}\"", categories);
@@ -173,7 +172,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 		Category category = Category
 				.builder(attributes.getCategoryId())
-				.id(attributes.getRefId())
+				.id(attributes.getReferenceId())
 				.entity(categoryEntity)
 				.build();
 		if(LOG.isDebugEnabled()){

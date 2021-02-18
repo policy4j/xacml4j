@@ -22,35 +22,50 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.xacml4j.v30.AttributeValueType;
-import org.xacml4j.v30.BagOfAttributeValues;
-
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableSortedSet;
+import org.xacml4j.v30.AttributeValueType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
+/**
+ * A XACML attribute descriptor
+ *
+ * @author Giedrius Trumpickas
+ */
 public final class AttributeDescriptor
 {
 	private String attributeId;
 	private AttributeValueType dataType;
-	private Optional<BagOfAttributeValues> defaultValue = Optional.empty();
 	private Set<String> aliasSet;
-	/**
-	 * Constructs attribute descriptor
-	 *
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
-	 */
-	public AttributeDescriptor(String attributeId,
-			AttributeValueType dataType, String ...aliases)
+
+	private AttributeDescriptor(String attributeId,
+			AttributeValueType dataType, Collection<String> aliases)
 	{
-		Preconditions.checkArgument(attributeId != null);
-		Preconditions.checkArgument(dataType != null);
+		Preconditions.checkNotNull(attributeId, "attributeId");
+		Preconditions.checkNotNull(dataType, "dataType");
+		Preconditions.checkNotNull(aliases, "aliases");
 		this.attributeId = attributeId;
 		this.dataType = dataType;
-		this.aliasSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-		this.aliasSet.addAll(Arrays.asList(aliases));
-		this.aliasSet = Collections.unmodifiableSet(aliasSet);
+		this.aliasSet = ImmutableSortedSet
+				.orderedBy(String.CASE_INSENSITIVE_ORDER)
+				.add(attributeId)
+				.addAll(aliases)
+				.build();
+	}
+
+	public static AttributeDescriptor of(String attributeId,
+										 AttributeValueType type, Collection<String> alias){
+		return new AttributeDescriptor(attributeId, type, alias);
+	}
+
+	public static AttributeDescriptor of(String attributeId,
+										 AttributeValueType type, String ...alias){
+		return new AttributeDescriptor(attributeId, type,
+				alias != null?Arrays.asList(alias):Collections.emptySet());
 	}
 
 	/**
@@ -62,6 +77,13 @@ public final class AttributeDescriptor
 		return attributeId;
 	}
 
+	/**
+	 * Tests if given identifier is this attribute alias
+	 *
+	 * @param id an identifier
+	 * @return true if given identifier is an alias
+	 * for this attribute
+	 */
 	public boolean isAlias(String id){
 		return aliasSet.contains(id);
 	}
@@ -71,7 +93,7 @@ public final class AttributeDescriptor
 	 *
 	 * @return attribute id aliases, returned collection contains {@link #getAttributeId()}
 	 */
-	public Collection<String> getAliases(){
+	public Set<String> getAliases(){
 		return aliasSet;
 	}
 

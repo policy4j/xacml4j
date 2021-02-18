@@ -22,23 +22,17 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.*;
-
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.FunctionInvocationException;
 import org.xacml4j.v30.pdp.FunctionParamSpec;
 import org.xacml4j.v30.pdp.FunctionSpec;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Iterators;
+import java.util.*;
 
 /**
  * A builder for building {@link FunctionSpec} instances
@@ -108,11 +102,11 @@ public final class FunctionSpecBuilder
  	public FunctionSpecBuilder param(ValueType type, ValueExpression defaultValue, boolean optional){
 		Preconditions.checkNotNull(type);
 		if(defaultValue != null && !optional){
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"Parameter can't have default value and be mandatory");
 		}
 		if(hadVarArg){
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"Can't add parameter after variadic parameter");
 		}
 		if(defaultValue != null){
@@ -120,14 +114,14 @@ public final class FunctionSpecBuilder
 		}
 		hadOptional = defaultValue != null || optional;
 		if(defaultValue != null && !optional){
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"Function=\"%s\" can not have default " +
 					"value and be required at the same time",
 					functionId);
 		}
 		if(paramSpec.size() == 0 &&
 				defaultValue != null){
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"First parameter function=\"%s\" can not have default value",
 					functionId);
 		}
@@ -146,7 +140,7 @@ public final class FunctionSpecBuilder
 		Preconditions.checkArgument(max > min);
 		Preconditions.checkArgument(max - min >= 1, "Max and min should be different at least by 1");
 		if(hadVarArg){
-			throw new XacmlSyntaxException("Can't add vararg " +
+			throw new SyntaxException("Can't add vararg " +
 					"parameter after vararg parameter");
 		}
 		hadVarArg = true;
@@ -352,7 +346,7 @@ public final class FunctionSpecBuilder
 		}
 
 		@Override
-		public void validateParametersAndThrow(List<Expression> arguments) throws XacmlSyntaxException
+		public void validateParametersAndThrow(List<Expression> arguments) throws SyntaxException
 		{
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
 			List<Expression> normalizedParameters = normalize(arguments);
@@ -365,14 +359,14 @@ public final class FunctionSpecBuilder
 			{
 				FunctionParamSpec p = it.next();
 				if(!p.validate(expIt)){
-					throw new XacmlSyntaxException(
+					throw new SyntaxException(
 							"Expression at index=\"%d\", " +
 							"can't be used as function=\"%s\" parameter",
 							expIt.nextIndex() - 1, functionId);
 				}
 				if((!it.hasNext() &&
 						expIt.hasNext())){
-					throw new XacmlSyntaxException(
+					throw new SyntaxException(
 							"Expression at index=\"%d\", " +
 							"can't be used as function=\"%s\" parameter, too many arguments",
 							expIt.nextIndex() - 1, functionId);
@@ -380,12 +374,12 @@ public final class FunctionSpecBuilder
 
 				if((it.hasNext() &&
 						!expIt.hasNext())){
-					throw new XacmlSyntaxException(
+					throw new SyntaxException(
 							"More arguments expected for function=\"%s\"", functionId);
 				}
 			}
 			if(!validateAdditional(arguments)){
-				throw new XacmlSyntaxException("Failed addition validation");
+				throw new SyntaxException("Failed addition validation");
 			}
 		}
 

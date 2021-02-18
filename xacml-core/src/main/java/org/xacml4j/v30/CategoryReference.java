@@ -88,7 +88,7 @@ public class CategoryReference
 		}
 
 		public Builder from(Category a){
-			return id(a.getRefId());
+			return id(a.getReferenceId());
 		}
 
 		public CategoryReference build(){

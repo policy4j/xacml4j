@@ -22,26 +22,20 @@ package org.xacml4j.v30.spi.combine;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.util.Reflections;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.pdp.Rule;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.FunctionInvocation;
-import org.xacml4j.v30.FunctionInvocationFactory;
-import org.xacml4j.util.*;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.pdp.Rule;
-
-import com.google.common.base.Preconditions;
 
 class AnnotatedDecisionCombiningAlgorithmProviderFactory
 {

@@ -26,7 +26,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.FunctionProvider;
@@ -61,7 +61,7 @@ public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecis
 
 	@Override
 	protected CompositeDecisionRule create(JAXBElement<?> jaxbInstance)
-			throws XacmlSyntaxException {
+			throws SyntaxException {
 		if(supportsXacml20Policies &&
 				jaxbInstance.getValue()
 				instanceof org.oasis.xacml.v20.jaxb.policy.PolicySetType){

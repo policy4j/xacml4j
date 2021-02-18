@@ -23,19 +23,19 @@ package org.xacml4j.v30.pdp;
  */
 
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import org.junit.Test;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 
 public class VersionMatchTest
 {
 	@Test
-	public void testMatchAnySubsequentialVersions() throws XacmlSyntaxException
+	public void testMatchAnySubsequentialVersions() throws SyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.+");
 		assertThat(m.getPattern(), is("1.+"));
@@ -47,7 +47,7 @@ public class VersionMatchTest
 	}
 
 	@Test
-	public void testMatchAnySingleNumber() throws XacmlSyntaxException
+	public void testMatchAnySingleNumber() throws SyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.*.1");
 		assertThat(m.getPattern(), is("1.*.1"));
@@ -56,14 +56,14 @@ public class VersionMatchTest
 		assertThat(m.match(Version.parse("2.1.1")), is(false));
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
-	public void testCreateWithSubsquentialTwoTimes() throws XacmlSyntaxException
+	@Test(expected= SyntaxException.class)
+	public void testCreateWithSubsquentialTwoTimes() throws SyntaxException
 	{
 		new VersionMatch("1.+.+");
 	}
 
 	@Test
-	public void testMatchAnySingleNumberTwoTimesInTheRow() throws XacmlSyntaxException
+	public void testMatchAnySingleNumberTwoTimesInTheRow() throws SyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.*.*.1");
 		assertThat(m.getPattern(), is("1.*.*.1"));
@@ -74,7 +74,7 @@ public class VersionMatchTest
 	}
 
 	@Test
-	public void testCreateWithAnySingleDigitAndSubseq() throws XacmlSyntaxException
+	public void testCreateWithAnySingleDigitAndSubseq() throws SyntaxException
 	{
 		VersionMatch m = new VersionMatch("1.*.+");
 		assertThat(m.match(Version.parse("1.2.1")), is(true));

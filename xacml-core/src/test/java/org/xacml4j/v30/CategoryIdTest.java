@@ -69,7 +69,7 @@ public class CategoryIdTest
 
     @Test
     public void testSystemCategories() throws Exception
-    {c
+    {
 
     }
 

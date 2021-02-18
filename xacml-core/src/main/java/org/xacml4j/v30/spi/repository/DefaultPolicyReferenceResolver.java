@@ -22,6 +22,9 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.PolicyResolutionException;
@@ -29,10 +32,6 @@ import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicyIDReference;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.PolicySetIDReference;
-
-import com.google.common.base.Preconditions;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 /**
  * A default implementation of {@link PolicyReferenceResolver}.

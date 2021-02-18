@@ -22,22 +22,18 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-
-import java.util.List;
-
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-
-import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.XacmlException;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.List;
+
+import static org.easymock.EasyMock.*;
 
 public class ApplyTest
 {

@@ -24,7 +24,6 @@ package org.xacml4j.v30.types;
 
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeValues;
-import org.xacml4j.v30.TypeCapability;
 
 import java.util.Optional;
 

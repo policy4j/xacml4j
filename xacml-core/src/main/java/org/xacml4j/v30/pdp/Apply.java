@@ -153,8 +153,8 @@ public final class Apply implements Expression
 	public interface ApplyVisitor
 		extends ExpressionVisitor
 	{
-		void visitEnter(Apply v);
-		void visitLeave(Apply v);
+		default void visitEnter(Apply v) {v.accept(this);}
+		default void visitLeave(Apply v) {v.accept(this);}
 	}
 
 	public final static class Builder

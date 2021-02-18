@@ -22,18 +22,17 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.xacml4j.util.Reflections;
+import org.xacml4j.v30.FunctionInvocationFactory;
+import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.pdp.FunctionSpec;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.xacml4j.v30.FunctionInvocationFactory;
-import org.xacml4j.util.Reflections;
-import org.xacml4j.v30.FunctionProvider;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.pdp.FunctionSpec;
-
-import com.google.common.base.Preconditions;
 
 
 public final class AnnotationBasedFunctionProvider extends BaseFunctionProvider
@@ -53,7 +52,7 @@ public final class AnnotationBasedFunctionProvider extends BaseFunctionProvider
 	}
 
 	private static Stream<FunctionSpec> findFunctions(Class<?> clazz, Object instance, FunctionInvocationFactory factory)
-		throws XacmlSyntaxException
+		throws SyntaxException
 	{
 		Preconditions.checkArgument(clazz.getAnnotation(XacmlFunctionProvider.class) != null,
 				"Function provider=\"%s\" must have provider annotation", clazz.getName());

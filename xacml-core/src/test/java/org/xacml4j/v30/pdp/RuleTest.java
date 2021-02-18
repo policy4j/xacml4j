@@ -22,27 +22,18 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.Obligation;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.repository.PolicyReferenceResolver;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.easymock.EasyMock.createStrictControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.*;
+
+import java.time.Duration;
 
 
 public class RuleTest
@@ -117,7 +108,7 @@ public class RuleTest
 				.withEffect(Effect.DENY)
 				.build();
 		this.enclosingPolicy =  b.rule(rulePermit, ruleDeny).combiningAlgorithm(combiner).build();
-		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(false, 0, resolver, handler));
+		this.context =  enclosingPolicy.createContext(new RootEvaluationContext(false, Duration.ZERO, resolver, handler));
 
 	}
 

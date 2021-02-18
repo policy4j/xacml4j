@@ -25,10 +25,11 @@ package org.xacml4j.v30.spi.pip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.BagOfAttributeValues;
-
 
 import java.util.Optional;
+import java.util.function.Function;
+
+import static org.xacml4j.util.Preconditions.checkElementIndex;
 import static org.xacml4j.util.Preconditions.checkNotNull;
 
 /**
@@ -68,47 +69,17 @@ final class DefaultPolicyInformationPoint
 			final EvaluationContext context,
 			AttributeDesignatorKey designatorKey) throws Exception
 	{
-		Iterable<Resolver<AttributeSet>> matched = registry.getMatchingAttributeResolver(context, designatorKey);
-		Optional<AttributeSet> v = attributeStrategy.resolve(
-				matched, (r) -> resolveAttributes(createContext(context, r)));
-		return v.flatMap(a->a.get(designatorKey.getAttributeId()));
+		Iterable<AttributeResolverDescriptor> matched = registry.getMatchingAttributeResolver(context, designatorKey);
+		return attributeStrategy.resolve(context, matched, (resolverContext)->cache.getAttributes(resolverContext))
+				.flatMap(a->a.get(designatorKey.getAttributeId()));
 	}
 
 	@Override
 	public Optional<Content> resolve(EvaluationContext context,
 	                    AttributeSelectorKey selectorKey)
 	{
-		Iterable<Resolver<ContentRef>> matched = registry.getMatchingContentResolver(context, selectorKey);
-		Optional<ContentRef> v = contentStrategy.resolve(
-				matched, (r) -> resolveContent(createContext(context, r)));
-		return v.map(c->c.getContent());
-	}
-
-
-
-	private Optional<ContentRef> resolveContent(ResolverContext resolverContext){
-		Resolver<ContentRef> resolver = resolverContext.getResolver();
-		Optional<ContentRef> fromCache =
-				resolverContext.isCacheable()?
-						cache.getContent(resolverContext)
-						:Optional.empty();
-		return fromCache
-				.or(()->resolver.resolve(resolverContext));
-
-	}
-
-	private Optional<AttributeSet> resolveAttributes(ResolverContext resolverContext){
-		Resolver<AttributeSet> resolver = resolverContext.getResolver();
-		Optional<AttributeSet> fromCache =
-				resolverContext.isCacheable()?
-						cache.getAttributes(resolverContext)
-						:Optional.empty();
-		return fromCache
-				.or(()->resolver.resolve(resolverContext));
-	}
-
-	private ResolverContext createContext(EvaluationContext context, Resolver<?> resolver)
-	{
-		return new DefaultResolverContext(resolver, context);
+		Iterable<ContentResolverDescriptor> matched = registry.getMatchingContentResolver(context, selectorKey);
+		return contentStrategy.resolve(context, matched, (resolverContext)->cache.getContent(resolverContext))
+				.map(v->v.getContent());
 	}
 }

@@ -22,22 +22,19 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.pdp.FunctionReference;
+import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.XacmlTypes;
-import org.xacml4j.v30.pdp.FunctionReference;
-import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
 
-import com.google.common.base.Preconditions;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * XACML higher order functions

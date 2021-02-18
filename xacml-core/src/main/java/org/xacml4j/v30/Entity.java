@@ -26,8 +26,6 @@ package org.xacml4j.v30;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import java.io.InputStream;
@@ -43,13 +41,15 @@ import java.util.stream.Collectors;
  */
 public final class Entity extends AttributeContainer
 {
-	private final static Logger log = LoggerFactory.getLogger(Entity.class);
 
-	private final java.util.Optional<Content> content;
+
+	private final Content content;
+	private transient int hashCode = -1;
 
 	private Entity(Builder b) {
 		super(b);
-		this.content = java.util.Optional.ofNullable(b.content);
+		this.content = b.content;
+
 	}
 
 	public static Builder builder(){
@@ -75,7 +75,7 @@ public final class Entity extends AttributeContainer
 	 * @return a {@link Node} defaultProvider or {@code null}
 	 */
 	public <C extends Content> java.util.Optional<C> getContent(){
-		return (Optional<C>) content;
+		return Optional.<C>ofNullable((C)content);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public final class Entity extends AttributeContainer
 	 * @return {@code true} if entity has content; returns {@code false} otherwise
 	 */
 	public boolean hasContent(){
-		return content.isPresent();
+		return content != null;
 	}
 
 
@@ -103,8 +103,8 @@ public final class Entity extends AttributeContainer
 	}
 
 	public java.util.Optional<BagOfAttributeValues> resolve(AttributeSelectorKey selector){
-		return content.flatMap(
-				c -> c.resolve(selector, ()->this));
+		return content != null? content.resolve(selector, ()->this)
+		                      :Optional.empty();
 	}
 
 	@Override
@@ -117,7 +117,10 @@ public final class Entity extends AttributeContainer
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(attributes, content);
+		if(hashCode == -1){
+			this.hashCode = Objects.hashCode(attributes, content);
+		}
+		return hashCode;
 	}
 
 	@Override

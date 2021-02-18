@@ -38,7 +38,10 @@ package org.xacml4j.v30;
  * limitations under the License.
  */
 
-import java.io.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.Random;

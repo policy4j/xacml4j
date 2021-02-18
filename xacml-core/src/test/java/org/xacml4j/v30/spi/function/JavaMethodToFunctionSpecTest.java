@@ -22,16 +22,16 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
-import java.lang.reflect.Method;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.FunctionInvocationFactory;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.pdp.FunctionSpec;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class JavaMethodToFunctionSpecTest
@@ -43,37 +43,37 @@ public class JavaMethodToFunctionSpecTest
 		this.builder = new JavaMethodToFunctionSpecConverter(FunctionInvocationFactory.defaultFactory());
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void missingXacmlFuncAnnotation() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("missingXacmlFuncAnnotation"));
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void missingReturnTypeDeclaration1() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("missingReturnTypeDeclaration1"));
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void returnsVoid() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnsVoid"));
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void returnsNonXacmlExpression() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnsNonXacmlExpression"));
 	}
 
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void returnTypeDeclarationExistButWrongMethodReturnType1() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType1"));
 	}
 	
-	@Test(expected=XacmlSyntaxException.class)
+	@Test(expected= SyntaxException.class)
 	public void returnTypeDeclarationExistButWrongMethodReturnType2() throws Exception
 	{
 		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType2"));

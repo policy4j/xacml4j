@@ -22,29 +22,22 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
-import org.xacml4j.v30.XPathProvider;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import java.time.Duration;
 
 
 public class DefaultPolicyDecisionPointTest
@@ -102,7 +95,7 @@ public class DefaultPolicyDecisionPointTest
 		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
-		decisionCache.putDecision(eq(req), capture(result1), eq(10));
+		decisionCache.putDecision(eq(req), capture(result1), eq(Duration.ofSeconds(10)));
 
 		control.replay();
 
@@ -137,7 +130,7 @@ public class DefaultPolicyDecisionPointTest
 
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
 		Capture<Result> result1 = new Capture<Result>();
-		decisionCache.putDecision(eq(req), capture(result1), eq(10));
+		decisionCache.putDecision(eq(req), capture(result1), eq(Duration.ofSeconds(10)));
 
 		control.replay();
 		this.pdp = pdpBuilder.build();

@@ -25,24 +25,25 @@ package org.xacml4j.v30;
 
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.util.Pair;
 import org.xacml4j.util.Reflections;
 
+import java.io.Serializable;
 import java.util.*;
-import static  java.util.Optional.ofNullable;
-
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * Represents an extensible XACML identifier
  *
  * @author Giedrius Trumpickas
  */
-public class ExtensibleIdentifier
+public class ExtensibleIdentifier implements Serializable
 {
-    private final static Logger LOG = LoggerFactory.getLogger(ExtensibleIdentifier.class);
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(ExtensibleIdentifier.class);
 
     protected String id;
     protected String abbreviatedId;
@@ -104,9 +105,9 @@ public class ExtensibleIdentifier
 
     /**
      * Discovers all available instances of extensible identifier of the given type
-     * @param type
-     * @param <T>
-     * @return
+     * @param type an extensible identifier class
+     * @param <T> an extensible identifier type template param
+     * @return map of identifier instances mapped by abbriavated identifier
      */
     protected static <T extends ExtensibleIdentifier> Map<String, T> getByAbbrId(Class<T> type){
         return geById(type, v->v.getAbbreviatedId());
@@ -124,16 +125,18 @@ public class ExtensibleIdentifier
                 .stream()
                 .map(v->map(v))
                 .collect(Collectors.toMap(
-                        v->v.getKey(),
-                        v->v.getValue(),
+                        v->v.first(),
+                        v->v.second(),
                         (a,b)->a, ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER)
                 ));
     }
 
-    private static <T extends ExtensibleIdentifier> Map.Entry<String, T> map(Map.Entry<String, List<T>> e)
+    private static <T extends ExtensibleIdentifier> Pair<String, T> map(
+            Map.Entry<String, List<T>> e)
     {
-        return Map.entry(e.getKey(),
-                e.getValue().stream().findFirst().get());
+        return Pair.of(e.getKey(),
+                e.getValue().stream()
+                        .findFirst().orElse(null));
     }
 
 
@@ -157,10 +160,6 @@ public class ExtensibleIdentifier
     }
 
     private static <T>  Optional<T> get(String key, Map<String, T> map){
-        Optional<T> id = ofNullable(map).flatMap(v->ofNullable(v.get(key)));
-        if(LOG.isDebugEnabled()){
-            LOG.debug("Found identifier by id=\"{}\", from map=\"{}\"", key, map);
-        }
-        return id;
+        return ofNullable(map).flatMap(v->ofNullable(v.get(key)));
     }
 }

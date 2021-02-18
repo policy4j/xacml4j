@@ -26,7 +26,10 @@ package org.xacml4j.v30;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Streams;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 

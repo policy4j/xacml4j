@@ -24,7 +24,7 @@ package org.xacml4j.v30.types;
 
 import org.xacml4j.v30.DateTime;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Calendar;
@@ -56,7 +56,7 @@ public final class DateTimeValue
                 v instanceof XMLGregorianCalendar) {
             return new DateTimeValue(DateTime.of(v));
         }
-        throw XacmlSyntaxException
+        throw SyntaxException
                 .invalidAttributeValue(v,
                         XacmlTypes.ANYURI);
     }

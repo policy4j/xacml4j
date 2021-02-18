@@ -70,7 +70,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		this.factory = new ObjectFactory();
 	}
 
-	public RequestContext create(RequestType req) throws XacmlSyntaxException
+	public RequestContext create(RequestType req) throws SyntaxException
 	{
 		RequestContext.Builder b = RequestContext.builder();
 		b.attributes(create(req.getAttributes()));
@@ -89,7 +89,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	 *
 	 * @param req
 	 * @return
-	 * @throws XacmlSyntaxException
+	 * @throws SyntaxException
 	 */
 	public RequestType create(RequestContext req)
 	{
@@ -131,7 +131,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return jaxbRef;
 	}
 
-	public ResponseType create(ResponseContext res) throws XacmlSyntaxException
+	public ResponseType create(ResponseContext res) throws SyntaxException
 	{
 		ResponseType response = new ResponseType();
 		for(Result r : res.getResults()){
@@ -140,7 +140,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return response;
 	}
 
-	public ResponseContext create(ResponseType response) throws XacmlSyntaxException {
+	public ResponseContext create(ResponseType response) throws SyntaxException {
 		Preconditions.checkNotNull(response);
 		ResponseContext.Builder b = ResponseContext.builder();
 		for(ResultType result : response.getResult()){
@@ -149,7 +149,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return b.build();
 	}
 
-	private Result create(ResultType result) throws XacmlSyntaxException {
+	private Result create(ResultType result) throws SyntaxException {
 		return Result
 				.builder(create(result.getDecision()), create(result.getStatus()))
 				.advice(createAdvices(result.getAssociatedAdvice()))
@@ -160,7 +160,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private Collection<CompositeDecisionRuleIDReference> create(
-			PolicyIdentifierListType policyIdentifierList) throws XacmlSyntaxException {
+			PolicyIdentifierListType policyIdentifierList) throws SyntaxException {
 		if (policyIdentifierList == null) {
 			return ImmutableList.of();
 		}
@@ -229,7 +229,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private AttributesType create(Category a)
 	{
 		AttributesType attributes = new AttributesType();
-		attributes.setId(a.getRefId());
+		attributes.setId(a.getReferenceId());
 		attributes.setCategory(a.getCategoryId().toString());
 		for(Attribute attr : a.getEntity().getAttributes()){
 			attributes.getAttribute().add(create(attr));
@@ -246,7 +246,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 			TypeToXacml30 m = TypeToXacml30
 					.forType(v.getType())
 					.orElseThrow(
-							()->XacmlSyntaxException.invalidDataTypeId(v.getType()));
+							()-> SyntaxException.invalidDataTypeId(v.getType()));
 			attr.getAttributeValue().add(m.toXacml30(v));
 		}
 		return attr;
@@ -278,7 +278,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return Decision.NOT_APPLICABLE;
 	}
 
-	private Collection<Advice> createAdvices(AssociatedAdviceType associatedAdviceType) throws XacmlSyntaxException {
+	private Collection<Advice> createAdvices(AssociatedAdviceType associatedAdviceType) throws SyntaxException {
 		if (associatedAdviceType == null) {
 			return Collections.emptyList();
 		}
@@ -299,13 +299,13 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return advice;
 	}
 
-	private Advice create(AdviceType a) throws XacmlSyntaxException {
+	private Advice create(AdviceType a) throws SyntaxException {
 		return Advice.builder(a.getAdviceId(), null)
 				.attributes(create(a.getAttributeAssignment()))
 				.build();
 	}
 
-	private Collection<Obligation> createObligations(ObligationsType obligationsType) throws XacmlSyntaxException {
+	private Collection<Obligation> createObligations(ObligationsType obligationsType) throws SyntaxException {
 		if (obligationsType == null) {
 			return Collections.emptyList();
 		}
@@ -326,7 +326,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return obligation;
 	}
 
-	private Obligation create(ObligationType o) throws XacmlSyntaxException {
+	private Obligation create(ObligationType o) throws SyntaxException {
 
 		return Obligation
 				.builder(o.getObligationId())
@@ -378,6 +378,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		}
 		StatusDetailType detailType = new StatusDetailType();
 		detailType.getAny().addAll(d.getDetails());
+		return detailType;
 	}
 
 	private StatusDetail create(StatusDetailType statusDetail) {
@@ -388,7 +389,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private Collection<AttributeAssignment> create(
-			Collection<AttributeAssignmentType> attributeAssignment) throws XacmlSyntaxException {
+			Collection<AttributeAssignmentType> attributeAssignment) throws SyntaxException {
 		Collection<AttributeAssignment> attrs = new LinkedList<AttributeAssignment>();
 		for(AttributeAssignmentType a: attributeAssignment) {
 			attrs.add(create(a));
@@ -410,7 +411,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return attr;
 	}
 
-	private AttributeAssignment create(AttributeAssignmentType a) throws XacmlSyntaxException
+	private AttributeAssignment create(AttributeAssignmentType a) throws SyntaxException
 	{
 		AttributeValue value = create((AttributeValueType)a);
 		return AttributeAssignment
@@ -422,7 +423,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 				.build();
 	}
 
-	private Collection<Category> create(List<AttributesType> input) throws XacmlSyntaxException {
+	private Collection<Category> create(List<AttributesType> input) throws SyntaxException {
 		Collection<Category> attributes = new LinkedList<Category>();
 		for(AttributesType a : input){
 			attributes.add(create(a));
@@ -430,7 +431,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return attributes;
 	}
 
-	private Category create(AttributesType attributes) throws XacmlSyntaxException
+	private Category create(AttributesType attributes) throws SyntaxException
 	{
 		Collection<Attribute> attr = new LinkedList<Attribute>();
 		for(AttributeType a : attributes.getAttribute()){
@@ -444,7 +445,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 						.content(getContent(attributes.getContent()))
 						.attributes(attr).build())
 				.build()).orElseThrow(
-						()->XacmlSyntaxException.invalidCategoryId(attributes.getCategory()));
+						()-> SyntaxException.invalidCategoryId(attributes.getCategory()));
 	}
 
 	private java.util.Optional<Content> getContent(ContentType content)
@@ -489,16 +490,17 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	{
 		Preconditions.checkNotNull(a);
 		return TypeToXacml30.forType(a.getType()).map(v->v.toXacml30(a))
-				.orElseThrow(XacmlSyntaxException.invalidAttributeValue());
+				.orElseThrow(()->SyntaxException.invalidAttributeValue(a.getType()));
 	}
 	
 	private AttributeValue create(
 			AttributeValueType value)
-		throws XacmlSyntaxException
+		throws SyntaxException
 	{
-		
-		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.Types.getIndex().get(value.getDataType());
-		Preconditions.checkArgument(toXacml30.isPresent());
-		return toXacml30.get().fromXacml30(value);
+		TypeToXacml30 toXacml30 = TypeToXacml30.forType(value.getDataType())
+		                                        .orElseThrow(
+		                                        		()->SyntaxException
+						                                        .invalidDataTypeId(value.getDataType()));
+		return toXacml30.fromXacml30(value);
 	}
 }

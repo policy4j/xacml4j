@@ -33,7 +33,6 @@ public interface PolicyVisitor
 	default void visitEnter(VariableDefinition var){
 		var.accept(this);
 	}
-
 	default void visitLeave(VariableDefinition var){
 		var.accept(this);
 	}
@@ -41,7 +40,6 @@ public interface PolicyVisitor
 	default void visitEnter(Condition var){
 		var.accept(this);
 	}
-
 	default void visitLeave(Condition var){
 		var.accept(this);
 	}
@@ -49,16 +47,23 @@ public interface PolicyVisitor
 	default void visitEnter(Target var){
 		var.accept(this);
 	}
-
 	default void visitLeave(Target var){
 		var.accept(this);
 	}
+	default void visitEnter(Match var) {
+		var.accept(this);
+	}
+	default void visitLeave(Match var){
+		var.accept(this);
+	}
 
-	void visitEnter(Match match);
-	void visitLeave(Match match);
+	default void visitEnter(MatchAllOf match){
+		match.accept(this);
+	}
 
-	void visitEnter(MatchAllOf match);
-	void visitLeave(MatchAllOf match);
+	default void visitLeave(MatchAllOf match){
+		match.accept(this);
+	}
 
 	void visitEnter(MatchAnyOf match);
 	void visitLeave(MatchAnyOf match);

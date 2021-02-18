@@ -55,8 +55,10 @@ public final class QuantifiedMap
             throws EvaluationException
     {
         BagOfAttributeValues bag = getDomain(context);
-        BagOfAttributeValuesType bagType = getIterant()
-                .getEvaluatesTo().toBag();
+        BagOfAttributeValuesType bagType = getIterant().getEvaluatesTo().toBag();
+        if(LOG.isDebugEnabled()){
+            LOG.debug("Domain=\"{}\" iterant evaluates to=\"{}\"", bag, bagType);
+        }
         BagOfAttributeValues.Builder bagBuilder = bagType.builder();
         for(AttributeValue v : bag.values()){
             bagBuilder.attribute(evaluateIterant(v, context));

@@ -33,7 +33,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	/**
 	 * Constructs advice expression with a given identifier
 	 * @param b an advice expression builder
-	 * @exception XacmlSyntaxException
+	 * @exception SyntaxException
 	 */
 	private AdviceExpression(Builder b){
 		super(b);

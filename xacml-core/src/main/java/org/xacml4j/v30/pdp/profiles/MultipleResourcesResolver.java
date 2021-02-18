@@ -22,11 +22,11 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.Set;
-
 import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.pdp.RequestContextCallback;
+
+import java.util.Collection;
+import java.util.Set;
 
 
 public interface MultipleResourcesResolver

@@ -25,10 +25,10 @@ package org.xacml4j.v30.policy.function;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.XmlContent;
 import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.*;
-import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
 
 import java.util.List;
 import java.util.Optional;

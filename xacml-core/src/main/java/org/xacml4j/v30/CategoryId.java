@@ -51,9 +51,6 @@ public final class CategoryId extends ExtensibleIdentifier
 	public static final CategoryId DELEGATE  = new CategoryId("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate", "delegate");
 	public static final CategoryId DELEGATE_INFO = new CategoryId("urn:oasis:names:tc:xacml:3.0:attribute-category:delegate-info", "delegate-info");
 
-	private final static boolean alwaysUseSupplier = Optional.ofNullable(System
-			.getProperty(CategoryId.class.getName() + ".alwaysUseSupplier"))
-			.map(v->Boolean.parseBoolean(v)).orElse(false);
 
 	private final static Map<String, CategoryId> BY_ID = getById(CategoryId.class);
 	private final static Map<String, CategoryId> BY_ABBREVIATED_ID = getByAbbrId(CategoryId.class);
@@ -67,7 +64,7 @@ public final class CategoryId extends ExtensibleIdentifier
 
 	private CategoryId(String categoryId, String abbreviatedId){
 		super(normalizeId(categoryId), normalizeId(abbreviatedId));
-		this.delegated = toDelegateCategoryInternal(categoryId, abbreviatedId);
+		this.delegated = toDelegateCategory(categoryId, abbreviatedId);
 	}
 
 	private static String normalizeId(String id){
@@ -109,7 +106,7 @@ public final class CategoryId extends ExtensibleIdentifier
 	 * Supported value types: {@link AttributeValue},{@link String}
 	 * {@link URI} {@link CategoryId} and {@link Optional<CategoryId>}
 	 *
-	 * @param v a value
+	 * @param v a value, supported value types {@link String} {@link URI} {@link AttributeValue}
 	 * @return {@link CategoryId}
 	 */
 	public static Optional<CategoryId> parse(Object v)
@@ -136,7 +133,7 @@ public final class CategoryId extends ExtensibleIdentifier
 				return getById(a.value().toString());
 			}
 		}
-		throw XacmlSyntaxException
+		throw SyntaxException
 				.invalidCategoryId(v);
 	}
 
@@ -151,21 +148,21 @@ public final class CategoryId extends ExtensibleIdentifier
 
 
 	public static CategoryId of(AttributeValue v)
-			throws XacmlSyntaxException {
+			throws SyntaxException {
 		return parse(v).orElseThrow(
-				()->XacmlSyntaxException.invalidCategoryId(v));
+				()-> SyntaxException.invalidCategoryId(v));
 	}
 
 	public static CategoryId of(String v)
-			throws XacmlSyntaxException {
+			throws SyntaxException {
 		return parse(v).orElseThrow(
-				()->XacmlSyntaxException.invalidCategoryId(v));
+				()-> SyntaxException.invalidCategoryId(v));
 	}
 
 	public static CategoryId of(URI v)
-			throws XacmlSyntaxException {
+			throws SyntaxException {
 		return parse(v).orElseThrow(
-				()->XacmlSyntaxException.invalidCategoryId(v));
+				()-> SyntaxException.invalidCategoryId(v));
 	}
 
 	/**
@@ -176,7 +173,7 @@ public final class CategoryId extends ExtensibleIdentifier
 	 * @return {@code true} if a given category
 	 * URI represents a delegated category
 	 */
-	private static boolean isDelegate(String categoryURI){
+	public static boolean isDelegate(String categoryURI){
 		if(StringUtils.isNullOrEmpty(categoryURI)){
 			return false;
 		}
@@ -184,7 +181,7 @@ public final class CategoryId extends ExtensibleIdentifier
 				StringUtils.startsWithIgnoreCase(categoryURI, DELEGATED_ABBREVIATED_CATEGORY_PREFIX);
 	}
 
-	private static Optional<CategoryId> toDelegateCategoryInternal(
+	public static Optional<CategoryId> toDelegateCategory(
 			String categoryId, String abbreviatedId){
 		if(isDelegate(categoryId) || isDelegate(abbreviatedId)){
 			return Optional.empty();

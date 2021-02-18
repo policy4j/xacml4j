@@ -22,33 +22,38 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.xacml4j.v30.*;
-
-
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.EvaluationContext;
 
 
 public interface ResolverRegistry
 {
     /**
-     * Gets a matching {@link AttributeResolver} for a given
+     * Gets a matching {@link ResolverDescriptor} for a given
      * evaluation context and given {@link AttributeDesignatorKey}
      *
      * @param context an evaluation context
      * @param key an attribute designator key
-     * @return iterable over found matching {@link Resolver<AttributeSet>} instances
+     * @return iterable over found matching {@link ResolverDescriptor>} instances
      */
-	Iterable<Resolver<AttributeSet>> getMatchingAttributeResolver(
+	Iterable<AttributeResolverDescriptor> getMatchingAttributeResolver(
 			EvaluationContext context, AttributeDesignatorKey key);
 
 	/**
-	 * Gets a matching {@link ContentResolver} for a given
+	 * Gets a matching {@link ResolverDescriptor} for a given
 	 * evaluation context and given {@link AttributeSelectorKey}
 	 *
 	 * @param context an evaluation context
 	 * @param key an attribute designator key
-	 * @return iterable over found matching {@link Resolver<ContentRef>} instances
+	 * @return iterable over found matching {@link ResolverDescriptor} instances
 	 */
-	Iterable<Resolver<ContentRef>> getMatchingContentResolver(
+	Iterable<ContentResolverDescriptor> getMatchingContentResolver(
 			EvaluationContext context, AttributeSelectorKey selectorKey);
+
+	void addResolver(AttributeResolverDescriptor r);
+	void addResolver(ContentResolverDescriptor r);
+	void addResolver(String policyOrSetId, ContentResolverDescriptor r);
+	void addResolver(String policyOrSetId, AttributeResolverDescriptor r);
 
 }

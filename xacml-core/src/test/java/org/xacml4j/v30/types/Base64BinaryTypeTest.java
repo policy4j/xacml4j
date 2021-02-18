@@ -23,11 +23,11 @@ package org.xacml4j.v30.types;
  */
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 import org.xacml4j.v30.BagOfAttributeValues;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class Base64BinaryTypeTest

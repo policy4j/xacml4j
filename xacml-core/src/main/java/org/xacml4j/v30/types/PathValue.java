@@ -51,7 +51,7 @@ public final class PathValue extends BaseAttributeValue<Path>
                         new PathValue(XacmlTypes.JPATH, p));
                 break;
         }
-        return a.orElseThrow(()-> XacmlSyntaxException
+        return a.orElseThrow(()-> SyntaxException
                 .invalidAttributeValue(p));
     }
 

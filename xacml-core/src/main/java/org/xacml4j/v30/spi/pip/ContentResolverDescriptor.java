@@ -23,62 +23,64 @@ package org.xacml4j.v30.spi.pip;
  */
 
 
-import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.Content;
+
+import org.xacml4j.v30.*;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public interface ContentResolverDescriptor
-		extends ResolverDescriptor
+public class ContentResolverDescriptor
+		extends BaseResolverDescriptor<ContentRef>
 {
+	private Function<ResolverContext, Content> contentFunction;
 
-	static Resolver<ContentRef> of(ContentResolverDescriptor d,
-									 Function<ResolverContext, Content> function)
-
-	{
-		return new ContentResolver(d, function);
+	private ContentResolverDescriptor(ContentResolverDescriptor.Builder b,
+									  Function<ResolverContext, Content> contentFunction) {
+		super(b);
+		this.contentFunction = Objects.requireNonNull(contentFunction, "contentFunction");
+	}
+	public static Builder builder(String id, String name, CategoryId categoryId){
+		return new Builder(id, name, categoryId);
 	}
 
-	final class ContentResolver implements Resolver<ContentRef>
+	@Override
+	public boolean canResolve(AttributeReferenceKey key) {
+		if(!(key instanceof AttributeSelectorKey)){
+			return false;
+		}
+		return getCategory()
+				.equals(key.getCategory());
+	}
+
+	@Override
+	public Function<ResolverContext, Optional<ContentRef>> getResolver() {
+		return (context)->Optional.ofNullable(contentFunction.apply(context))
+				.map(c->ContentRef.builder()
+						.resolver(this)
+						.content(c)
+						.clock(context.getClock())
+						.build());
+	}
+
+	final static class Builder
+			extends BaseBuilder<ContentRef, ContentResolverDescriptor.Builder>
 	{
-		private final static Logger log = LoggerFactory.getLogger(ContentResolver.class);
-
-		private ContentResolverDescriptor descriptor;
-		private Function<ResolverContext, Content> function;
-
-		public ContentResolver(ContentResolverDescriptor descriptor,
-							   Function<ResolverContext, Content> function){
-			Preconditions.checkArgument(descriptor != null);
-			this.descriptor = Objects.requireNonNull(descriptor,
-					ContentResolverDescriptor.class.getSimpleName());
-			this.function = Objects.requireNonNull(function, "Content resolution function");
+		private Builder(
+				String id,
+				String name,
+				CategoryId categoryId){
+			super(id, name, categoryId);
 		}
 
 		@Override
-		public final ContentResolverDescriptor getDescriptor() {
-			return descriptor;
+		protected Builder getThis() {
+			return ContentResolverDescriptor.Builder.this;
 		}
 
-		@Override
-		public Optional<ContentRef> resolve(
-				ResolverContext context)
-		{
-			if(log.isDebugEnabled()){
-				log.debug("Retrieving content via resolver id=\"{}\" name=\"{}\"",
-						descriptor.getId(),
-						descriptor.getName());
-			}
-			return Optional.ofNullable(function.apply(context))
-					.map(c->ContentRef.builder()
-							.resolver(getDescriptor())
-							.content(c)
-							.clock(context.getClock())
-							.build());
+		public ContentResolverDescriptor build(Function<ResolverContext, Content> resolverFunction){
+			return new ContentResolverDescriptor(this, resolverFunction);
 		}
-
 	}
+
 }

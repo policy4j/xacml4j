@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Provider ineterface for XACML functions
+ * Provider interface for XACML functions
  *
  * @author Giedrius Trumpickas
  */
@@ -179,9 +179,9 @@ public interface FunctionProvider
 		}
 
 		/**
-		 * Adds function provider from a given annotated class
+		 * Adds function providers from a given collection
 		 *
-		 * @param provider an annotated function provider
+		 * @param providers a collection of function providers
 		 * @return {@link Builder} reference it itself
 		 */
 		public Builder providers(Collection<FunctionProvider> providers){

@@ -22,22 +22,24 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import org.xacml4j.util.Pair;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.BagOfAttributeValues;
+
 import java.time.Clock;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-
-import com.google.common.base.MoreObjects;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.BagOfAttributeValues;
-
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
+import java.util.stream.Stream;
 
 public final class AttributeSet
 {
-	private final long timestamp;
+	private final Instant timestamp;
 	private final Map<String, BagOfAttributeValues> values;
 	private final AttributeResolverDescriptor d;
 	private transient int hashCode;
@@ -45,15 +47,11 @@ public final class AttributeSet
 	private AttributeSet(Builder b){
 		this.d = b.d;
 		this.values = b.mapBuilder.build();
-		this.timestamp = b.ticker.millis();
+		this.timestamp = b.ticker.instant();
 	}
 
 	public static Builder builder(AttributeResolverDescriptor d){
 		return new Builder(d);
-	}
-
-	public static Builder builder(Resolver<AttributeSet> r){
-		return new Builder(r.getDescriptor());
 	}
 
 	/**
@@ -65,13 +63,18 @@ public final class AttributeSet
 		return d;
 	}
 
+	public Stream<Pair<String, BagOfAttributeValues>> stream(){
+		return values.entrySet()
+				.stream()
+				.map(v->Pair.of(v.getKey(), v.getValue()));
+	}
+
 	/**
-	 * Gets a time when this
-	 * attribute set was created
+	 * Gets a time when this attribute set was created
 	 *
 	 * @return a time stamp in nanoseconds
 	 */
-	public long getCreatedTime(){
+	public Instant getCreatedTime(){
 		return timestamp;
 	}
 
@@ -93,11 +96,10 @@ public final class AttributeSet
 	 *
 	 * @param key an attribute designator
 	 * @return {@link BagOfAttributeValues}
-	 * @exception IllegalArgumentException
 	 */
 	public Optional<BagOfAttributeValues> get(AttributeDesignatorKey key)
 	{
-		AttributeDescriptor ad = d.getAttribute(key.getAttributeId());
+		AttributeDescriptor ad = d.getAttributesByKey().get(key);
 		return Optional.ofNullable(values.get(ad.getAttributeId()));
 	}
 
@@ -110,8 +112,8 @@ public final class AttributeSet
 	 */
 	public Optional<BagOfAttributeValues> get(String attributeId)
 	{
-		AttributeDescriptor ad = d.getAttribute(attributeId);
-		return Optional.ofNullable(values.get(ad.getAttributeId()));
+		return d.getAttribute(attributeId)
+				.map(v->values.get(attributeId));
 
 	}
 
@@ -128,7 +130,7 @@ public final class AttributeSet
 		return true;
 	}
 
-	public long getTimestamp(){
+	public Instant getTimestamp(){
 		return timestamp;
 	}
 
@@ -171,27 +173,23 @@ public final class AttributeSet
 			return this;
 		}
 
-		public Builder ticker(Clock t){
+		public Builder clock(Clock t){
 			this.ticker = t;
 			return this;
-		}
-
-		public Builder resolver(Resolver<AttributeSet> r){
-			AttributeResolverDescriptor d = r.getDescriptor();
-			return resolver(d);
 		}
 
 		public Builder attribute(String id, BagOfAttributeValues value){
 			Preconditions.checkNotNull(id);
 			Preconditions.checkNotNull(value);
-			AttributeDescriptor attrDesc = d.getAttribute(id);
-
-			Preconditions.checkArgument(!(attrDesc == null),
-					"Attribute=\"%s\" is not defined by resolver=\"%s\"",
-					id, d.getId());
-			Preconditions.checkArgument(attrDesc.getDataType().equals(value.getDataType()),
-					"Given attribute=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",
-					id, value.getDataType(), attrDesc.getDataType());
+			AttributeDescriptor attrDesc = d.getAttribute(id)
+					.orElseThrow(()-> new IllegalArgumentException(String.format(
+							"Attribute=\"%s\" is not defined by resolver=\"%s\"",
+							id, d.getId())));
+			if(attrDesc.getDataType().equals(value.getDataType())){
+				throw new IllegalArgumentException(String.format(
+						"Given attribute=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",
+						id, value.getDataType(), attrDesc.getDataType()));
+			}
 			this.mapBuilder.put(id, value);
 			return this;
 		}

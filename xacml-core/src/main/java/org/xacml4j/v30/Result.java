@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class Result
 {
@@ -142,8 +143,14 @@ public class Result
 		return resolvedAttributes.values();
 	}
 
-	public Category getAttribute(CategoryId categoryId){
+	public Category getCategory(CategoryId categoryId){
 		return includeInResultAttributes.get(categoryId);
+	}
+
+	public Optional<Entity> getEntity(CategoryId categoryId){
+		return Optional.ofNullable(
+				includeInResultAttributes.get(categoryId))
+		               .map(v->v.getEntity());
 	}
 
 	/**

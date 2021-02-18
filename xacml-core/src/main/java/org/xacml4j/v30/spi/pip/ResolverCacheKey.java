@@ -22,16 +22,15 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import org.xacml4j.v30.BagOfAttributeValues;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.google.common.base.MoreObjects;
-import org.xacml4j.v30.BagOfAttributeValues;
-
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
 
 /**
  * A key used to identify uniquely resolver

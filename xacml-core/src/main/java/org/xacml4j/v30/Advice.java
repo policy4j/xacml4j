@@ -22,9 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-
 /**
  * In some applications it is helpful to specify supplemental
  * information about a decision. XACML provides facilities

@@ -22,12 +22,12 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
-import java.util.ListIterator;
-
 import com.google.common.base.MoreObjects;
 import org.xacml4j.v30.AttributeValueType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
+
+import java.util.ListIterator;
 
 
 final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec

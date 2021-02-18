@@ -22,24 +22,21 @@ package org.xacml4j.v30.spi.function;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.*;
+import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.types.TypeToString;
+import org.xacml4j.v30.types.XacmlTypes;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.FunctionInvocationFactory;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.AttributeValue;
-import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.XacmlTypes;
-
-import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter
 {
@@ -59,29 +56,29 @@ class JavaMethodToFunctionSpecConverter
 		return createFunctionSpec(method);
 	}
 
-	public FunctionSpec createFunctionSpec(Method m) throws XacmlSyntaxException
+	public FunctionSpec createFunctionSpec(Method m) throws SyntaxException
 	{
 		return createFunctionSpec(m, null);
 	}
 
-	public FunctionSpec createFunctionSpec(Method m, Object instance) throws XacmlSyntaxException
+	public FunctionSpec createFunctionSpec(Method m, Object instance) throws SyntaxException
 	{
 		Preconditions.checkArgument(m != null, "Method can not be null");
 		if(m.getReturnType().equals(Void.TYPE)){
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"Method=\"%s\" must have other then void return type", m.getName());
 		}
 		if(!Expression.class.isAssignableFrom(m.getReturnType())){
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"Method=\"%s\" must return XACML expression", m.getName());
 		}
 		XacmlFuncSpec funcId = m.getAnnotation(XacmlFuncSpec.class);
 		if(funcId == null){
-			throw new XacmlSyntaxException("Method=\"%s\" must be " +
+			throw new SyntaxException("Method=\"%s\" must be " +
 					"annotated via XacmlFunc annotation", m.getName());
 		}
 		if(!(instance != null ^ Modifier.isStatic(m.getModifiers()))){
-			throw new XacmlSyntaxException("Only static method can be annotated " +
+			throw new SyntaxException("Only static method can be annotated " +
 					"via XacmlFunc annotation, method=\"%s\" "
 					+ "in the stateless function provider, " +
 					"declaring class=\"%s\" is not static", m.getName(), m.getDeclaringClass());
@@ -120,7 +117,7 @@ class JavaMethodToFunctionSpecConverter
 				XacmlFuncParam param = (XacmlFuncParam) params[i][0];
 				java.util.Optional<AttributeValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
-					throw XacmlSyntaxException
+					throw SyntaxException
 							.invalidDataTypeId(param.typeId());
 				}
 				if (param.isBag()
@@ -128,7 +125,7 @@ class JavaMethodToFunctionSpecConverter
 					if(log.isDebugEnabled()){
 						log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"", i, types[i].getName());
 					}
-					throw XacmlSyntaxException
+					throw SyntaxException
 							.invalidFunctionParameter(funcId, param, m);
 				}
 				if (!param.isBag()
@@ -137,7 +134,7 @@ class JavaMethodToFunctionSpecConverter
 						log.debug("Expecting attribute value at index=\"{}\", "
 								+ "actual type type=\"{}\"", i, types[i].getName());
 					}
-					throw XacmlSyntaxException
+					throw SyntaxException
 							.invalidFunctionParameter(funcId, param, m);
 				}
 				b.param(param.isBag() ? type.get().bagType() : type.get(), null, false);
@@ -147,21 +144,21 @@ class JavaMethodToFunctionSpecConverter
 				XacmlFuncParamOptional param = (XacmlFuncParamOptional) params[i][0];
 				java.util.Optional<AttributeValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
-					throw XacmlSyntaxException
+					throw SyntaxException
 							.invalidDataTypeId(param.typeId());
 				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log.debug("Expecting bag at index=\"{}\", actual type type=\"{}\"",
 							i, types[i].getName());
-					throw XacmlSyntaxException
+					throw SyntaxException
 							.invalidFunctionParameter(funcId, param, m);
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
 					log.debug("Expecting attribute value at index=\"{}\", "
 							+ "actual type type=\"{}\"", i, types[i].getName());
-					throw XacmlSyntaxException
+					throw SyntaxException
 							.invalidFunctionParameter(funcId, param, m);
 				}
 
@@ -185,7 +182,7 @@ class JavaMethodToFunctionSpecConverter
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
 				java.util.Optional<AttributeValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
-					throw new XacmlSyntaxException(
+					throw new SyntaxException(
 							"Unknown XACML type id=\"%s\"", param.typeId());
 				}
 				b.varArg(param.isBag() ? type.get().bagType() : type.get(), param.min(),
@@ -219,7 +216,7 @@ class JavaMethodToFunctionSpecConverter
 		if (returnType != null) {
 			java.util.Optional<AttributeValueType> type = XacmlTypes.getType(returnType.typeId());
 			if(!type.isPresent()){
-				throw new XacmlSyntaxException(
+				throw new SyntaxException(
 						"Unknown XACML type id=\"%s\"", returnType.typeId());
 			}
 			return b.build(returnType.isBag() ? type.get().bagType() : type.get(),
@@ -247,7 +244,7 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncReturnTypeResolver returnTypeResolver = m
 				.getAnnotation(XacmlFuncReturnTypeResolver.class);
 		if (!(returnType == null ^ returnTypeResolver == null)) {
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"Either \"XacmlFuncReturnTypeResolver\" or "
 							+ "\"XacmlFuncReturnType\" annotation must be specified, not both");
 		}
@@ -256,13 +253,13 @@ class JavaMethodToFunctionSpecConverter
 		}
 		if (returnType.isBag() &&
 					!BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
-			throw new XacmlSyntaxException(
+			throw new SyntaxException(
 					"Method=\"%s\" return type declared XACML " +
 					"bag of=\"%s\" but method returns type=\"%s\"",
 					m.getName(), returnType.typeId(), m.getReturnType());
 		}
 		if(!returnType.isBag() && BagOfAttributeValues.class.isAssignableFrom(m.getReturnType())) {
-			throw new XacmlSyntaxException("Method=\"%s\" return type declared XACML attribute type=\"%s\" "
+			throw new SyntaxException("Method=\"%s\" return type declared XACML attribute type=\"%s\" "
 							+ "but method returns=\"%s\"", m.getName(),
 					returnType.typeId(), m.getReturnType());
 		}
@@ -302,7 +299,7 @@ class JavaMethodToFunctionSpecConverter
 		}
 		Optional<TypeToString> fromString = TypeToString.forType(type);
 		if(!fromString.isPresent()){
-			throw new XacmlSyntaxException("Xacml type=\"%s\" does support default values in annotation",
+			throw new SyntaxException("Xacml type=\"%s\" does support default values in annotation",
 					type.getDataTypeId());
 		}
 		List<AttributeValue> defaultValues = new ArrayList<AttributeValue>(values.length);

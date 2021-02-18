@@ -22,15 +22,7 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.*;
-
 import com.google.common.truth.Truth;
-import com.google.common.truth.Truth8;
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +30,10 @@ import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.Optional;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 public class AttributeDesignatorTest

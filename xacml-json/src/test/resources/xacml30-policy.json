@@ -1,0 +1,17 @@
+"Policy":
+{
+"id": "policy-0",
+"version": "1.1."
+"target":
+{
+  "resource":
+  {
+      "resource-id": "/test/apps"
+  }
+}
+
+  "rule": {
+  "id ": " rule-0",
+  "effect ": "permit"
+  }
+}

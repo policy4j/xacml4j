@@ -23,10 +23,8 @@ package org.xacml4j.v30.pdp;
  */
 
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Status;
 
-import java.util.List;
 import java.util.Optional;
 
 

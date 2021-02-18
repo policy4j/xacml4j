@@ -30,8 +30,6 @@ import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 
-import java.net.URI;
-
 /**
  * Base implementation of {@link CompositeDecisionRuleIDReference}
  *

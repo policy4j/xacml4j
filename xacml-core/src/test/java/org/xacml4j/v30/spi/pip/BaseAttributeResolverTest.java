@@ -22,38 +22,37 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.createMockBuilder;
-import static org.easymock.EasyMock.expect;
-
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.easymock.EasyMock.*;
+
+import java.util.Map;
+import java.util.function.Function;
 
 
 public class BaseAttributeResolverTest
 {
-	private AttributeResolver r;
-	private ResolverContext context;
 	private AttributeResolverDescriptor d;
+	private ResolverContext context;
 	private IMocksControl c;
+	private Function<ResolverContext, Map<String, BagOfAttributeValues>> r;
 
 	@Before
 	public void init(){
 		this.c = createControl();
 		this.context = c.createMock(ResolverContext.class);
-		this.d = AttributeResolverDescriptorBuilder
-		.builder("test", "Test", CategoryId.SUBJECT_ACCESS)
-		.attribute("testId1", XacmlTypes.STRING)
-		.attribute("testId2", XacmlTypes.INTEGER)
-		.build();
-		this.r =  createMockBuilder( BaseAttributeResolver.class)
-		.addMockedMethod("doResolve")
-		.withConstructor(d)
-		.createMock();
+		this.r =  c.createMock(Function.class);
+		this.d = AttributeResolverDescriptor
+				.builder("test", "Test", CategoryId.SUBJECT_ACCESS)
+				.attribute("testId1", XacmlTypes.STRING)
+				.attribute("testId2", XacmlTypes.INTEGER)
+				.build(r);
 	}
 
 	@Test
@@ -62,7 +61,7 @@ public class BaseAttributeResolverTest
 	{
 		expect(context.getDescriptor()).andReturn(d);
 		c.replay();
-		r.resolve(context);
+		r.apply(context);
 		c.verify();
 	}
 }

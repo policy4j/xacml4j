@@ -22,28 +22,25 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
+import com.google.common.io.Closeables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.pdp.Policy;
 import org.xacml4j.v30.pdp.PolicySet;
 import org.xacml4j.v30.pdp.PolicyVisitorSupport;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.FunctionProvider;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Supplier;
-import com.google.common.io.Closeables;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * A base class for {@link PolicyRepository} implementations.
@@ -58,25 +55,28 @@ public abstract class AbstractPolicyRepository
 	private final String id;
 	private final List<PolicyRepositoryListener> listeners;
 
-	private final PolicyUnmarshaller unmarshaller;
-
 	private final FunctionProvider functions;
 	private final DecisionCombiningAlgorithmProvider decisionAlgorithms;
+	private Executor notificationExecutor;
 
 	protected AbstractPolicyRepository(
 			String id,
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionAlgorithms,
-			PolicyUnmarshaller unmarshaller)
+			DecisionCombiningAlgorithmProvider decisionAlgorithms)
 	{
-		Preconditions.checkNotNull(id);
-		Preconditions.checkNotNull(functions);
-		Preconditions.checkNotNull(decisionAlgorithms);
-		this.id = id;
-		this.functions = functions;
-		this.decisionAlgorithms = decisionAlgorithms;
+		this(id, functions, decisionAlgorithms, Executors.newSingleThreadExecutor());
+	}
+
+	protected AbstractPolicyRepository(
+			String id,
+			FunctionProvider functions,
+			DecisionCombiningAlgorithmProvider decisionAlgorithms, Executor executor)
+	{
+		this.id = Objects.requireNonNull(id, "id");;
+		this.functions = Objects.requireNonNull(functions, "functions");
+		this.decisionAlgorithms = Objects.requireNonNull(decisionAlgorithms, "decisionAlgorithms");;
 		this.listeners = new CopyOnWriteArrayList<>();
-		this.unmarshaller = Objects.requireNonNull(unmarshaller);
+		this.notificationExecutor = Objects.requireNonNull(executor, "executor");
 	}
 
 	@Override
@@ -96,12 +96,8 @@ public abstract class AbstractPolicyRepository
 		if(found.isEmpty()){
 			return null;
 		}
-		return Collections.max(found, new Comparator<Policy>() {
-			@Override
-			public int compare(Policy a, Policy b) {
-				return a.getVersion().compareTo(b.getVersion());
-			}
-		});
+		return Collections.max(found, Comparator
+				.comparing((a)->a.getVersion()));
 	}
 
 	/**
@@ -117,13 +113,8 @@ public abstract class AbstractPolicyRepository
 		if(found.isEmpty()){
 			return null;
 		}
-		return Collections.max(found, new Comparator<PolicySet>() {
-			@Override
-			public int compare(PolicySet a, PolicySet b) {
-				return a.getVersion().compareTo(b.getVersion());
-			}
-
-		});
+		return Collections.max(found, Comparator
+				.comparing(a -> a.getVersion()));
 	}
 
 	/**
@@ -171,25 +162,29 @@ public abstract class AbstractPolicyRepository
 
 	private void notifyPolicyAdded(Policy p){
 		for(PolicyRepositoryListener l : listeners){
-			l.policyAdded(p);
+			notificationExecutor.execute(
+					()->l.policyAdded(p));
 		}
 	}
 
 	private void notifyPolicySetAdded(PolicySet p){
 		for(PolicyRepositoryListener l : listeners){
-			l.policySetAdded(p);
+			notificationExecutor.execute(
+					()->l.policySetAdded(p));
 		}
 	}
 
 	private void notifyPolicyRemoved(Policy p){
 		for(PolicyRepositoryListener l : listeners){
-			l.policyRemoved(p);
+			notificationExecutor.execute(
+					()->l.policyRemoved(p));
 		}
 	}
 
 	private void notifyPolicySetRemoved(PolicySet p){
 		for(PolicyRepositoryListener l : listeners){
-			l.policySetAdded(p);
+			notificationExecutor.execute(
+					()->l.policySetAdded(p));
 		}
 	}
 
@@ -283,20 +278,6 @@ public abstract class AbstractPolicyRepository
 
 	protected abstract  boolean removePolicy(Policy p);
 	protected abstract boolean removePolicySet(PolicySet p);
-
-	@Override
-	public final CompositeDecisionRule importPolicy(Supplier<InputStream> source)
-			throws XacmlSyntaxException, IOException {
-		InputStream is = null;
-		try {
-			is = source.get();
-			CompositeDecisionRule r = unmarshaller.unmarshal(is);
-			add(r);
-			return r;
-		} finally {
-			Closeables.closeQuietly(is);
-		}
-	}
 
 	/**
 	 * A {@link org.xacml4j.v30.pdp.PolicyVisitor} implementation

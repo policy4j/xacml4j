@@ -22,19 +22,18 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.spi.function.*;
-
 import org.xacml4j.v30.types.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
 final class RegExpFunctions
@@ -114,7 +113,7 @@ final class RegExpFunctions
 				toString.map(v->v.toString(value))
 				.map(v->matches(regexp.value(), v))
 				.orElseThrow(
-						()->XacmlSyntaxException
+						()-> SyntaxException
 								.invalidDataTypeId(value.getType())));
 
 	}

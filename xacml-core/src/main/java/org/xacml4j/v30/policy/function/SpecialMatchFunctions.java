@@ -22,13 +22,13 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import javax.security.auth.x500.X500Principal;
-
 import org.xacml4j.v30.spi.function.XacmlFuncParam;
 import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
 import org.xacml4j.v30.spi.function.XacmlFuncSpec;
 import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.*;
+
+import javax.security.auth.x500.X500Principal;
 
 
 @XacmlFunctionProvider(description="XACML special match functions")

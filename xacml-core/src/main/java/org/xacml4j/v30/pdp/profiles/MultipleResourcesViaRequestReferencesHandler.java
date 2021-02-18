@@ -22,17 +22,13 @@ package org.xacml4j.v30.pdp.profiles;
  * #L%
  */
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.Result;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AbstractRequestContextHandler;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.pdp.RequestSyntaxException;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler

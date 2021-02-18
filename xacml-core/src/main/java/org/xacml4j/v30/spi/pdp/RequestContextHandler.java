@@ -22,11 +22,11 @@ package org.xacml4j.v30.spi.pdp;
  * #L%
  */
 
-import java.util.Collection;
-
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
+
+import java.util.Collection;
 
 
 public interface RequestContextHandler

@@ -22,14 +22,15 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * XACML response status identifier
  *
  * @author Giedrius Trumpickas
  */
-public final class StatusCodeId extends ExtensibleIdentifier
+public class StatusCodeId extends ExtensibleIdentifier
 {
 	public static final StatusCodeId OK = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:ok", "ok");
 	public static final StatusCodeId MISSING_ATTRIBUTE = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:missing-attribute", "missing-attribute");

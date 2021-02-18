@@ -23,7 +23,6 @@ package org.xacml4j.v30.policy.function;
  */
 
 import org.xacml4j.v30.spi.function.*;
-import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
 import org.xacml4j.v30.types.*;
 
 

@@ -23,31 +23,18 @@ package org.xacml4j.v30.pdp.profiles;
  */
 
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collection;
-
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.Collection;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 
 public class MultipleResourcesHandlerTest
@@ -277,8 +264,8 @@ public class MultipleResourcesHandlerTest
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
-		assertTrue(r0.getAttributes(CategoryId.SUBJECT_ACCESS).contains(subject0));
-		assertTrue(r0.getAttributes(CategoryId.RESOURCE).contains(resource0));
+		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject0));
+		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0));
 		verify(context);
 	}
 

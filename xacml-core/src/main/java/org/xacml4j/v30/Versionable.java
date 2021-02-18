@@ -22,9 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.Version;
-
-
 /**
  * An interface for versionable XACML entities
  *

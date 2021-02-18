@@ -22,17 +22,16 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Result;
-
-import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class ResultTest

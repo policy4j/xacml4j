@@ -27,7 +27,7 @@ import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.*;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 import org.xml.sax.InputSource;
 
 import javax.xml.XMLConstants;
@@ -38,8 +38,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.*;
+import java.util.Collections;
 
 
 public class DOMUtil
@@ -271,7 +275,7 @@ public class DOMUtil
 			return Optional.of(
 					documentBuilder.parse(src));
 		} catch (Exception e) {
-			throw XacmlSyntaxException
+			throw SyntaxException
 					.invalidXml(e.getMessage(), e);
 		}
 	}
@@ -426,7 +430,7 @@ public class DOMUtil
 		public Iterator<String> getPrefixes(String namespaceURI) {
 			String prefix = getPrefix(namespaceURI);
 			return (prefix == null)?
-					Collections.<String>emptyList().iterator():
+					java.util.Collections.<String>emptyList().iterator():
 						Collections.singleton(prefix).iterator();
 		}
 	}

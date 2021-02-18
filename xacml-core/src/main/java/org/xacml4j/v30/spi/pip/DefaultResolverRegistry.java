@@ -22,22 +22,20 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-
-
-import com.google.common.collect.Iterables;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
- * TODO: Implement support for resolver with the same attributes but different issuer
+ *
  *
  * @author Giedrius Trumpickas
  */
@@ -48,94 +46,106 @@ class DefaultResolverRegistry implements ResolverRegistry
 	/**
 	 * Resolvers index by category and attribute identifier
 	 */
-	private final Map<CategoryId, Multimap<String, Resolver<AttributeSet>>> attributeResolvers;
-	private final Map<String, Resolver<AttributeSet>> attributeResolversById;
-	private final Map<CategoryId, Resolver<ContentRef>> contentResolvers;
-	private final Map<String, Resolver<ContentRef>> contentResolversById;
+	private final Map<CategoryId, Multimap<String, AttributeResolverDescriptor>> attributeResolvers;
+	private final Map<String, AttributeResolverDescriptor> attributeResolversById;
+	private final Map<CategoryId, ContentResolverDescriptor> contentResolvers;
+	private final Map<String, ContentResolverDescriptor> contentResolversById;
+	private final Map<String, Map<String, AttributeResolverDescriptor>> policyOrSetScopedAttributeResolvers;
+	private final Map<String, Map<String, AttributeResolverDescriptor>> policyOrSetScopedContentResolvers;
 
-	public DefaultResolverRegistry(Collection<Resolver<AttributeSet>> attributeResolvers,
-								   Collection<Resolver<ContentRef>> contentResolvers)
+	public DefaultResolverRegistry(Collection<AttributeResolverDescriptor> attributeResolvers,
+								   Collection<ContentResolverDescriptor> contentResolvers)
 	{
-		this.attributeResolvers = new LinkedHashMap<>();
+		this.attributeResolvers = new ConcurrentHashMap<>();
 		this.contentResolvers = new ConcurrentHashMap<>();
-		this.attributeResolversById = new HashMap<>();
-		this.contentResolversById = new HashMap<>();
-		attributeResolvers.forEach(r->addAttributeResolver(r));
-		contentResolvers.forEach(c->addContentResolver(c));
+		this.attributeResolversById = new ConcurrentHashMap<>();
+		this.contentResolversById = new ConcurrentHashMap<>();
+		this.policyOrSetScopedAttributeResolvers = new ConcurrentHashMap<>();
+		this.policyOrSetScopedContentResolvers = new ConcurrentHashMap<>();
+		attributeResolvers.forEach(r->addResolver(r));
+		contentResolvers.forEach(c->addResolver(c));
+	}
+
+	public DefaultResolverRegistry()
+	{
+		this(Collections.emptyList(),Collections.emptyList());
 	}
 
 	@Override
-	public Iterable<Resolver<AttributeSet>> getMatchingAttributeResolver(
+	public Iterable<AttributeResolverDescriptor> getMatchingAttributeResolver(
 			EvaluationContext context, AttributeDesignatorKey key) {
-		Multimap<String, Resolver<AttributeSet>> r = attributeResolvers.get(key.getCategory());
+		Multimap<String, AttributeResolverDescriptor> r = attributeResolvers.get(key.getCategory());
 		return Optional.ofNullable(r)
 				.map(v->v.get(key.getAttributeId()))
 				.orElse(Collections.emptyList());
 	}
 
 	@Override
-	public Iterable<Resolver<ContentRef>> getMatchingContentResolver(EvaluationContext context,
+	public Iterable<ContentResolverDescriptor> getMatchingContentResolver(EvaluationContext context,
 																AttributeSelectorKey selectorKey)
 	{
-		return Optional.ofNullable(contentResolvers.get(selectorKey.getCategory()))
-				.filter(r->r.canResolve(selectorKey))
-				.map(v->Arrays.asList(v))
-				.orElse(Collections.emptyList());
+		ContentResolverDescriptor descriptor = contentResolvers.get(selectorKey.getCategory());
+		return ImmutableList.of(descriptor);
 
-	}
-
-	private void addAttributeResolver(Resolver<AttributeSet> resolver)
-	{
-		ResolverDescriptor d = resolver.getDescriptor();
-		Preconditions.checkArgument(!attributeResolversById.containsKey(d.getId()),
-				"Attribute resolver with id=\"%s\" is already registered with this registry", d.getId());
-		for (CategoryId id : resolver.getDescriptor().getSupportedCategories()){
-				addResolverForCategory(id, resolver);
-		}
 	}
 
 	private void addResolverForCategory(CategoryId categoryId,
-										Resolver<AttributeSet> resolver)
+										AttributeResolverDescriptor d)
 	{
-		AttributeResolverDescriptor d = resolver.getDescriptor();
-		if(!resolver.isCategorySupported(categoryId)){
-			throw XacmlSyntaxException.invalidCategoryId(categoryId, "is not " +
+		if(!d.getCategory().equals(categoryId)){
+			throw SyntaxException.invalidCategoryId(categoryId, "is not " +
 							"contained in the resolverId=\"%s\", descriptor categories",
-					resolver.getId());
+					d.getId());
 		}
-		Multimap<String, Resolver<AttributeSet>> byCategoryId = attributeResolvers.get(categoryId);
+		Multimap<String, AttributeResolverDescriptor> byCategoryId = attributeResolvers.get(categoryId);
 		if(byCategoryId == null){
 			byCategoryId = LinkedHashMultimap.create();
 		}
 		for(String attributeId : d.getProvidedAttributeIds()){
 			if(log.isDebugEnabled()){
-				log.debug("Indexing resolver id=\"{}\" category=\"{}\", issuer=\"{}\" id=\"{}\"",
-						new Object[]{d.getId(), categoryId, d.getIssuer(), attributeId});
+				log.debug("Indexing resolver id=\"{}\" categoryId=\"{}\", id=\"{}\"",
+						new Object[]{d.getId(), categoryId, attributeId});
 			}
-			byCategoryId.put(attributeId, resolver);
+			byCategoryId.put(attributeId, d);
 		}
-		attributeResolversById.put(d.getId(), resolver);
+		attributeResolversById.put(d.getId(), d);
+	}
+
+	public void addResolver(String id, AttributeResolverDescriptor resolver){
+		if(!policyOrSetScopedAttributeResolvers.containsKey(id)){
+			Map<String, AttributeResolverDescriptor> resolverMap = resolver.getProvidedAttributeIds()
+			                                                               .stream()
+			                                                               .collect(Collectors.toMap(v->v, v->resolver));
+			policyOrSetScopedAttributeResolvers.putIfAbsent(id, resolverMap);
+		}
+	}
+
+	public void addResolver(String id, ContentResolverDescriptor resolver){
 
 	}
 
+	public void addResolver(AttributeResolverDescriptor resolver)
+	{
+		Preconditions.checkArgument(!attributeResolversById.containsKey(resolver.getId()),
+		                            "Attribute resolver with id=\"%s\" is already registered with this registry",
+		                            resolver.getId());
+		addResolverForCategory(resolver.getCategory(), resolver);
+	}
 
-	private void addContentResolver(Resolver<ContentRef> r)
+	public void addResolver(ContentResolverDescriptor r)
 	{
 		Preconditions.checkArgument(r != null);
-		Resolver<ContentRef> contentResolverOther = contentResolversById.putIfAbsent(r.getId(), r);
+		ContentResolverDescriptor contentResolverOther = contentResolversById.putIfAbsent(r.getId(), r);
 		if(contentResolverOther != null){
 			throw new IllegalArgumentException(String.format(
-					"ContentResolverId=\"%s\" already registered - %s",
-					r.getDescriptor().getId(),
+					"contentResolverId=\"%s\" already registered - %s",
+					r.getId(),
 					contentResolverOther.getClass()));
 		}
-		ResolverDescriptor d = r.getDescriptor();
-		for (CategoryId categoryId : r.getDescriptor().getSupportedCategories()){
-			contentResolvers.putIfAbsent(categoryId, r);
-			if(log.isDebugEnabled()){
-				log.debug("Adding content ContentResolverId=\"{}\" for category=\"{}\"",
-						d.getId(), categoryId);
-			}
+		contentResolvers.putIfAbsent(r.getCategory(), r);
+		if(log.isDebugEnabled()){
+			log.debug("Adding content contentResolverId=\"{}\" for categoryId=\"{}\"",
+					r.getId(), r.getCategory());
 		}
 	}
 }

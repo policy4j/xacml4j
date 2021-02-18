@@ -24,7 +24,6 @@ package org.xacml4j.v30;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Throwables;
-import jdk.jfr.Percentage;
 
 import java.util.*;
 

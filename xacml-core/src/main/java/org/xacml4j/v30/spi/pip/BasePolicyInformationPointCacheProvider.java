@@ -22,12 +22,15 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.xacml4j.util.Preconditions.*;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import static org.xacml4j.util.Preconditions.checkArgument;
 
 /**
  * Base class for {@link PolicyInformationPointCacheProvider} implementations
@@ -85,18 +88,24 @@ public abstract class BasePolicyInformationPointCacheProvider
 	protected abstract void doPutAttributes(ResolverContext context, AttributeSet v);
 
 	private static boolean isExpired(AttributeSet v, ResolverContext context) {
-		long duration = context.getClock().millis() - v.getTimestamp() / 1000000000L;
+		Duration expiresIn = Duration.between(context.getClock().instant(), v.getTimestamp());
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("AttributeSet=\"{}\" age=\"{}\" in cache", v, duration);
+			LOG.debug("AttributeSet=\"{}\" expiresIn=\"{}\" in cache", v, expiresIn);
 		}
-		return duration >= v.getDescriptor().getPreferredCacheTTL();
+		return expiresIn
+				.compareTo(
+						v.getDescriptor().getPreferredCacheTTL()) > 0;
 	}
 
 	private static boolean isExpired(ContentRef v, ResolverContext context) {
-		long duration = context.getClock().millis() - v.getTimestamp() / 1000000000L;
+
+		Duration expiresIn = Duration.between(context.getClock().instant(),
+		                                      v.getTimestamp());
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("ContentRef=\"{}\" age=\"{}\" in cache", v, duration);
+			LOG.debug("ContentRef=\"{}\" expiresIn=\"{}\" in cache", v, expiresIn);
 		}
-		return duration >= v.getDescriptor().getPreferredCacheTTL();
+		return expiresIn
+				.compareTo(
+						v.getDescriptor().getPreferredCacheTTL()) > 0;
 	}
 }

@@ -36,7 +36,7 @@ import org.oasis.xacml.v30.jaxb.ResponseType;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.XacmlCategories;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
@@ -87,7 +87,7 @@ public class Xacml30ResponseContextUnmarshallerTest {
 
 		// test attributes
 		assertEquals(1, r1.getIncludeInResultAttributes().size());
-		Entity attrs = r1.getAttribute(XacmlCategories.SUBJECT_ACCESS).getEntity();
+		Entity attrs = r1.getEntity(CategoryId.SUBJECT_ACCESS).get();
 		assertEquals(1, attrs.getAttributes().size());
 		Collection<Attribute> attr1 = attrs.getAttributes("urn:test:attribute1");
 		assertEquals(1, attr1.size());
