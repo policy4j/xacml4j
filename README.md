@@ -23,6 +23,6 @@ From the directory you downloaded the source to, just type 'mvn clean install'.
 
 
 
-Continuous Integration status on Travis CI: [![Build Status](https://travis-ci.org/xacml4j/xacml4j.svg?branch=master)](https://travis-ci.org/xacml4j/xacml4j)
+Continuous Integration status on Travis CI: [![Build Status](https://travis-ci.org/xacml4j-opensource/xacml4j.svg?branch=master)](https://travis-ci.org/xacml4j-opensource/xacml4j)
 
 [![Analytics](https://ga-beacon.appspot.com/UA-56280504-2/xacml4j/readme?pixel)](https://github.com/igrigorik/ga-beacon)
