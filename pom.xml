@@ -261,8 +261,8 @@
 	</reporting>
 
 	<scm>
-		<connection>scm:git:git@github.com:xacml4j/xacml4j.git</connection>
-		<developerConnection>scm:git:git@github.com:xacml4j/xacml4j.git</developerConnection>
-		<url>scm:git:git@github.com:xacml4j/xacml4j.git</url>
+		<connection>scm:git:git@github.com:xacml4j-opensource/xacml4j.git</connection>
+		<developerConnection>scm:git:git@github.com:xacml4j-opensource/xacml4j.git</developerConnection>
+		<url>scm:git:git@github.com:xacml4j-opensource/xacml4j.git</url>
 	</scm>
 </project>
