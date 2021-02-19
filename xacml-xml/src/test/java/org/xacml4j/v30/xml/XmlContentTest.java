@@ -29,7 +29,7 @@ public class XmlContentTest
 
     @Before
     public void init(){
-        this.content = XmlContent.of(DOMUtil.parseXml(testXml));
+        this.content = XmlContent.of(testXml);
     }
 
     @Test

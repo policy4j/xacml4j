@@ -56,7 +56,6 @@ import org.xacml4j.v30.pdp.Rule;
 import org.xacml4j.v30.pdp.Target;
 import org.xacml4j.v30.pdp.VariableDefinition;
 import org.xacml4j.v30.pdp.VariableReference;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.types.StringValue;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -69,23 +68,18 @@ public class XacmlPolicyUnmarshallerTest
 	@org.junit.Rule
 	public ExpectedException expectedException = ExpectedException.none();
 
-	private static Marshaller<CompositeDecisionRule> reader;
-	private static Unmarshaller<CompositeDecisionRule> writer;
+	private static Unmarshaller<CompositeDecisionRule> reader;
+	private static Marshaller<CompositeDecisionRule> writer;
 	private static FunctionProvider functionProvider;
 
 	@BeforeClass
 	public static void init_static() throws Exception
 	{
-		functionProvider = FunctionProvider
-				.builder()
-				.withStandardFunctions()
-				.build();
-		reader = new XacmlPolicyUnmarshaller(
-				functionProvider,
-				DecisionCombiningAlgorithmProvider.Builder
-						.builder()
-						.withDefaultAlgorithms().build());
-		writer = new Xacml30PolicyMarshaller();
+		functionProvider = FunctionProvider.builder()
+		                                   .withStandardFunctions()
+		                                   .build();
+		reader = new XacmlPolicyUnmarshaller(true);
+		writer = new XacmlPolicyMarshaller();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -95,7 +89,6 @@ public class XacmlPolicyUnmarshallerTest
 		assertThat(stream, notNullValue());
 		return  (T)reader.unmarshal(stream);
 	}
-
 
 	@Test
 	public void testPolicyIIIF005Mapping() throws Exception
@@ -225,36 +218,38 @@ public class XacmlPolicyUnmarshallerTest
 	{
 		final VariableDefinition expectedVar01 = new VariableDefinition(
 				"VAR01",
-				AttributeDesignator.builder()
+				AttributeDesignator.builder().key(
+						AttributeDesignatorKey.builder()
 				                   .attributeId("urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number")
 				                   .category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
-				                   .mustBePresent(true)
 				                   .dataType(XacmlTypes.STRING)
-				                   .build());
+				                   .build()).mustBePresent(true).build());
 		final VariableDefinition expectedVar02 = new VariableDefinition(
 				"VAR02",
-				AttributeSelector.builder()
+				AttributeSelector.builder().key(
+						AttributeSelectorKey.builder()
 						.xpath("//md:record/md:patient/md:patient-number/text()")
 						.category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
-						.mustBePresent(true)
 						.dataType(XacmlTypes.STRING)
-						.build());
+						.build())
+				                 .mustBePresent(true)
+				                 .build());
 
 		final VariableDefinition expectedVar03 = new VariableDefinition(
 				"VAR03",
-				Apply.builder(functionProvider.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"))
+				Apply.builder("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only", (id)->functionProvider.getFunction(id))
 						.param(new VariableReference(expectedVar01))
 						.build());
 
 		final VariableDefinition expectedVar04 = new VariableDefinition(
 				"VAR04",
-				Apply.builder(functionProvider.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"))
+				Apply.builder("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only", (id)->functionProvider.getFunction(id))
 				     .param(new VariableReference(expectedVar02))
 				     .build());
 
 		final VariableDefinition expectedVar05 = new VariableDefinition(
 				"VAR05",
-				Apply.builder(functionProvider.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-equal"))
+				Apply.builder("urn:oasis:names:tc:xacml:1.0:function:string-equal", (id)->functionProvider.getFunction(id))
 				     .param(new VariableReference(expectedVar03))
 				     .param(new VariableReference(expectedVar04))
 				     .build());
@@ -280,12 +275,13 @@ public class XacmlPolicyUnmarshallerTest
 	{
 		final VariableDefinition expectedVar05 = new VariableDefinition(
 				"VAR05",
-				AttributeDesignator.builder()
+				AttributeDesignatorKey.builder()
 				                   .attributeId("urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number")
 				                   .category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
-				                   .mustBePresent(true)
 				                   .dataType(XacmlTypes.STRING)
-				                   .build());
+				                   .toDesignatorBuilder()
+				                      .mustBePresent(true)
+				                      .build());
 
 		Policy p = getPolicy("v30-policy-with-variables-2.xml");
 		assertThat(p.getVersion().getValue(), is("1.0"));
@@ -358,7 +354,7 @@ public class XacmlPolicyUnmarshallerTest
 		assertThat(o1AttrExp3.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));
 		assertThat(o1AttrExp3.getExpression(), instanceOf(AttributeDesignator.class));
 		AttributeDesignator attributeDesignator = (AttributeDesignator) o1AttrExp3.getExpression();
-		assertThat(attributeDesignator.getReferenceKey().getCategory().getId(), is(XacmlCategories.SUBJECT_ACCESS.getId()));
+		assertThat(attributeDesignator.getReferenceKey().getCategory().getId(), is(CategoryId.SUBJECT_ACCESS.getId()));
 		assertThat(attributeDesignator.getReferenceKey().getAttributeId(), is("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
 		assertThat(attributeDesignator.getReferenceKey().getDataType(), is(XacmlTypes.STRING.getDataType()));
 	}

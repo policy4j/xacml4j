@@ -75,7 +75,6 @@ public final class XmlContent implements Content
         return DOMUtil.parseXml(xml).get();
     }
 
-
     /**
      * Creates {@link XmlContent} from a given {@link Node}
      *

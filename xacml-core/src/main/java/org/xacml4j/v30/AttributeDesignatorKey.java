@@ -26,6 +26,8 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+
+import org.xacml4j.v30.pdp.AttributeDesignator;
 import org.xacml4j.v30.types.AnyURIValue;
 import org.xacml4j.v30.types.StringValue;
 
@@ -145,6 +147,11 @@ public final class AttributeDesignatorKey
 
 		public AttributeDesignatorKey build(){
 			return new AttributeDesignatorKey(this);
+		}
+
+		public AttributeDesignator.Builder toDesignatorBuilder(){
+			return AttributeDesignator.builder()
+			                          .key(new AttributeDesignatorKey(this));
 		}
 
 	}

@@ -58,8 +58,9 @@ public class AttributeResolverDescriptorTest
 		AttributeResolverDescriptor d = AttributeResolverDescriptor
 				.builder(
 				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
-		.attribute("testId1", XacmlTypes.INTEGER)
-		.attribute("testId2", XacmlTypes.STRING).build((c)-> ImmutableMap.of());
+		.attribute("testId1", XacmlTypes.INTEGER, "testAlias1")
+		.attribute("testId2", XacmlTypes.STRING, "testAlias2")
+				.build((c)-> ImmutableMap.of());
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());

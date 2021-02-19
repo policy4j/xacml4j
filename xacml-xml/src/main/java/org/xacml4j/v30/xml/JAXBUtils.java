@@ -27,6 +27,8 @@ import javax.xml.bind.JAXBException;
 
 import com.google.common.base.Preconditions;
 import org.oasis.xacml.v30.jaxb.ContentType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Content;
 
@@ -34,6 +36,7 @@ import java.util.Optional;
 
 public class JAXBUtils
 {
+	private static final Logger LOG = LoggerFactory.getLogger(JAXBUtils.class);
 	private static final JAXBContext INSTANCE;
 	private static final char SEP = ':';
 	static{
@@ -45,6 +48,7 @@ public class JAXBUtils
 					SEP +
 					org.oasis.xacml.v20.jaxb.context.ObjectFactory.class.getPackage().getName());
 		}catch(JAXBException e){
+				LOG.error(e.getMessage(), e);
 			throw new IllegalStateException("Failed to initialize JAXB context", e);
 		}
 	}

@@ -52,7 +52,6 @@ public final class AttributeDescriptor
 		this.dataType = dataType;
 		this.aliasSet = ImmutableSortedSet
 				.orderedBy(String.CASE_INSENSITIVE_ORDER)
-				.add(attributeId)
 				.addAll(aliases)
 				.build();
 	}

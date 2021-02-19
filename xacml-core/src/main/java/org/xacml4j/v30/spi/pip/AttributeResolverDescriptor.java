@@ -25,6 +25,9 @@ package org.xacml4j.v30.spi.pip;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 
 import java.util.*;
@@ -59,7 +62,7 @@ public final class AttributeResolverDescriptor
 	}
 
 	public boolean canResolve(AttributeReferenceKey category) {
-		if(!(category instanceof AttributeDesignatorKey)){
+		if(!(category instanceof AttributeSelectorKey)){
 			return false;
 		}
 		return attributesByKey.containsKey(category);
@@ -148,6 +151,8 @@ public final class AttributeResolverDescriptor
 	final static class Builder
 			extends BaseBuilder<AttributeSet, Builder>
 	{
+		private static Logger LOG = LoggerFactory.getLogger(Builder.class);
+
 		private ImmutableMap.Builder<String, AttributeDescriptor> attributesById;
 		private ImmutableMap.Builder<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
 		private String issuer;
@@ -168,20 +173,21 @@ public final class AttributeResolverDescriptor
 				AttributeValueType dataType,
 				Collection<String> aliases){
 			AttributeDescriptor d = AttributeDescriptor.of(attributeId, dataType, aliases);
-			for(String id : d.getAliases() ){
+			LOG.debug("Adding attributeId=\"{}\" aliases=\"{}\"", attributeId, aliases);
+			for(String alias : d.getAliases() ){
 				AttributeDesignatorKey k = AttributeDesignatorKey.builder()
 						.category(categoryId)
-						.attributeId(attributeId)
+						.attributeId(alias)
 						.dataType(dataType)
 						.issuer(issuer)
 						.build();
-				if(attributesById.put(id, d) != null){
+				if(attributesById.put(alias, d) != null){
 					throw new IllegalArgumentException(String.format(
-							"Builder already has an attribute with id=\"%s\"", id));
+							"Builder already has an attribute with id=\"%s\"", alias));
 				}
 				if(this.attributesByKey.put(k, d) != null){
 					throw new IllegalArgumentException(String.format(
-							"Builder already has an attribute with id=\"%s\"", id));
+							"Builder already has an attribute with id=\"%s\"", alias));
 				}
 			}
 			return this;

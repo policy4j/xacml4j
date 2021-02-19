@@ -30,6 +30,8 @@ import org.xacml4j.v30.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * The class denotes application of a function to its arguments,
@@ -65,6 +67,11 @@ public final class Apply implements Expression
 	 */
 	public static Builder builder(FunctionSpec func){
 		return new Builder(func);
+	}
+
+	public static Builder builder(String id, Function<String, Optional<FunctionSpec>> provider){
+		return new Builder(provider.apply(id)
+		                           .orElseThrow(()->SyntaxException.invalidFunction(id)));
 	}
 
 	/**

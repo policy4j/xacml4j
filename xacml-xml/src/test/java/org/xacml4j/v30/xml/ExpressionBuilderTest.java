@@ -34,7 +34,7 @@ public class ExpressionBuilderTest
 	@Test
 	public void testExpressionBuilder()
 	{
-		AttributeValue v = XacmlTypes.INTEGER.of("aa");
+		AttributeValue v = XacmlTypes.STRING.of("aa");
 		ExpressionTypeBuilder b = ExpressionTypeBuilder.Expressions.getBuilder(v);
 		assertNotNull(b);
 	}

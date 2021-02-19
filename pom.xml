@@ -37,6 +37,7 @@
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.licenseName>lgpl_v3</license.licenseName>
+		<metrics.version>4.1.17</metrics.version>
 	</properties>
 
 	<inceptionYear>2009</inceptionYear>
@@ -106,6 +107,7 @@
 			<groupId>com.google.truth.extensions</groupId>
 			<artifactId>truth-java8-extension</artifactId>
 		</dependency>
+		</dependencies>
 
 	</dependencies>
 	<dependencyManagement>
@@ -115,18 +117,6 @@
 			    <artifactId>metrics-core</artifactId>
 			    <version>${yammer.metrics.version}</version>
    			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.easymock</groupId>
-				<artifactId>easymock</artifactId>
-				<version>${easymock.version}</version>
-				<scope>test</scope>
-			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
@@ -164,9 +154,31 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>io.dropwizard.metrics</groupId>
+				<artifactId>metrics-core</artifactId>
+				<version>${metrics.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.jayway.jsonpath</groupId>
 				<artifactId>json-path</artifactId>
 				<version>2.5.0</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.auto.service</groupId>
+				<artifactId>auto-service</artifactId>
+				<version>${google.auto.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<version>${easymock.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.truth</groupId>
@@ -180,11 +192,7 @@
 				<version>${google.truth.version}</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>com.google.auto.service</groupId>
-				<artifactId>auto-service</artifactId>
-				<version>${google.auto.version}</version>
-			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<build>

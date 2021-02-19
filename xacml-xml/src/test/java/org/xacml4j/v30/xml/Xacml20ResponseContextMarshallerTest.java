@@ -38,6 +38,7 @@ import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.oasis.xacml.v20.jaxb.context.ResultType;
 import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
+import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
@@ -57,7 +58,8 @@ import com.google.common.io.Closeables;
 public class Xacml20ResponseContextMarshallerTest {
 
 	private static Marshaller<ResponseContext> responseMarshaller;
-	private static Unmarshaller<RequestContext> requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+	private static Unmarshaller<RequestContext> requestUnmarshaller;
+	private static Unmarshaller<CompositeDecisionRule> policyUnmarshaller;
 	private static PolicyRepository repository;
 
 	private PolicyDecisionPointBuilder pdpBuilder;
@@ -75,6 +77,7 @@ public class Xacml20ResponseContextMarshallerTest {
 				                                          .build());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 		requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
+		policyUnmarshaller = new Xacml30PolicyUnmarshaller();
 	}
 
 	@Before
@@ -93,8 +96,8 @@ public class Xacml20ResponseContextMarshallerTest {
 		RequestContext request = getRequest("MarshallerTestRequest.xml");
 		final PolicyDecisionPoint pdp = pdpBuilder
 				.rootPolicy(
-						repository.importPolicy(
-								getPolicy()))
+						repository.newImportTool(policyUnmarshaller)
+						          .importPolicy(getPolicy()))
 				.build();
 		ResponseContext response = pdp.decide(request);
 		ResponseType actual = ((JAXBElement<ResponseType>)responseMarshaller.marshal(response)).getValue();
