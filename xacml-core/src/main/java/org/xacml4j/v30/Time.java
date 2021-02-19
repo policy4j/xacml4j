@@ -43,6 +43,7 @@ public class Time extends BaseCalendar<Time>
 	 * {@link String}, {@link GregorianCalendar},
 	 * {@link XMLGregorianCalendar}
 	 *
+	 * @param v source time object
 	 * @return {@link Time} instance
 	 */
 	public static Time valueOf(Object v){

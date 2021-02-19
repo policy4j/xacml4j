@@ -44,10 +44,10 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
+				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<!-- Exclude generated packages from JavaDoc -->
+					<excludePackageNames>org.oasis.xacml.v20.jaxb.*:org.oasis.xacml.v30.jaxb:org.oasis.xacml.v30.jaxb.*</excludePackageNames>
 				</configuration>
 			</plugin>
 		</plugins>

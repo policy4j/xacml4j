@@ -272,6 +272,7 @@ public abstract class AbstractPolicyRepository
 	 * policy to this repository
 	 *
 	 * @param p a policy
+	 * @return {@code true } if policy has been added; returns {@code false} otherwise
 	 */
 	protected abstract boolean addPolicy(Policy p);
 
@@ -280,6 +281,7 @@ public abstract class AbstractPolicyRepository
 	 * to this repository
 	 *
 	 * @param p a policy set
+	 * @return {@code true } if policy has been added; returns {@code false} otherwise
 	 */
 	protected abstract boolean addPolicySet(PolicySet p);
 

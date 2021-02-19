@@ -142,6 +142,7 @@ public class Target implements PolicyElement
 		 * Adds {@link MatchAnyOf} created from a given
 		 * array of {@link MatchAnyOf} instances
 		 * @param anyOfs an array of {@code MatchAnyOf} matches
+		 * @return current builder instance
 		 */
 		public Builder anyOf(Iterable<MatchAnyOf> anyOfs){
 			allAnyOf.addAll(anyOfs);

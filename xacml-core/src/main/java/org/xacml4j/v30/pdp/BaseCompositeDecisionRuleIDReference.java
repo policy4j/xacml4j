@@ -164,6 +164,7 @@ public abstract class BaseCompositeDecisionRuleIDReference
 		 * latest version is set to {@code null}
 		 *
 		 * @param version a latest version textual representation
+		 * @return latest version reference
 		 */
 		public T latest(String version){
 			if(Strings.isNullOrEmpty(version)){

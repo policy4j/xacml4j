@@ -49,7 +49,7 @@ public final class StringExp extends BaseAttributeExp<String>
 	}
 
 	/**
-	 * Delegates to {@link XacmlTypes#STRING#emptyBag()}
+	 * Returns an empty string bag.
 	 *
 	 * @return {@link BagOfAttributeExp} empty bag
 	 */
@@ -58,7 +58,7 @@ public final class StringExp extends BaseAttributeExp<String>
 	}
 
 	/**
-	 * Delegates to {@link XacmlTypes#STRING#bag()}
+	 * Returns a string bag.
 	 *
 	 * @return {@link BagOfAttributeExp} empty bag
 	 */

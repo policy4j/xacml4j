@@ -98,13 +98,10 @@ public final class PortRange implements Serializable
 	/**
 	 * Creates an instance of {@code PortRange} based on the given value.
 	 *
-	 * @param value
-	 *            a {@code String} representing the range
-	 *
+	 * @param index starting index
+	 * @param value a {@code String} representing the range
 	 * @return a new {@code PortRange}
-	 *
-	 * @throws NumberFormatException
-	 *             if a port value isn't an integer
+	 * @throws NumberFormatException if a port value isn't an integer
 	 */
 	public static PortRange valueOf(int index, String value)
 	{
