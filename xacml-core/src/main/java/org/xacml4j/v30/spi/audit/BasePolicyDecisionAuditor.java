@@ -78,6 +78,7 @@ public class BasePolicyDecisionAuditor
 	/**
 	 * Tests if a given {@link RequestContext} need to be audited
 	 *
+	 * @param pdp policy decision point reference
 	 * @param req a decision request
 	 * @return {@code true} if request needs to be audited
 	 */
@@ -89,6 +90,7 @@ public class BasePolicyDecisionAuditor
 	 * Invokes in case {@link Result#getDecision()} returns
 	 * {@link Decision#PERMIT}
 	 *
+	 * @param pdp policy decision point reference
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
@@ -100,6 +102,7 @@ public class BasePolicyDecisionAuditor
 	 * Invokes in case {@link Result#getDecision()} returns
 	 * {@link Decision#DENY}
 	 *
+	 * @param pdp policy decision point reference
 	 * @param req a decision request
 	 * @param result a decision result
 	 */
@@ -111,6 +114,7 @@ public class BasePolicyDecisionAuditor
 	 * Invokes in case {@link Result#getDecision()} returns
 	 * {@link Decision#DENY}
 	 *
+	 * @param pdp policy decision point reference
 	 * @param req a decision request
 	 * @param result a decision result
 	 */

@@ -53,8 +53,8 @@ public final class RFC822Name implements Serializable
 	/**
 	 * This constant states that domain literals are allowed in the email address, e.g.:
 	 *
-	 * <p><tt>someone@[192.168.1.100]</tt> or <br/>
-	 * <tt>john.doe@[23:33:A2:22:16:1F]</tt> or <br/>
+	 * <p><tt>someone@[192.168.1.100]</tt> or <br>
+	 * <tt>john.doe@[23:33:A2:22:16:1F]</tt> or <br>
 	 * <tt>me@[my computer]</tt></p>
 	 *
 	 * <p>The RFC says these are valid email addresses, but most people don't like allowing them.

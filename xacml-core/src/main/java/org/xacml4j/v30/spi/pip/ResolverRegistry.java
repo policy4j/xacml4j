@@ -35,7 +35,7 @@ public interface ResolverRegistry
 	 * @param context an evaluation context
 	 * @param key an attribute designator key
 	 * @return instance of {@link AttributeResolver}
-	 * or <ii>null</ii> if not matching resolver is found
+	 * or {@code null} if not matching resolver is found
 	 */
 	Iterable<AttributeResolver> getMatchingAttributeResolvers(
 			EvaluationContext context, AttributeDesignatorKey key);

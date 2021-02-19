@@ -438,6 +438,7 @@ public class RequestContext
 		 * a given request context except attributes
 		 *
 		 * @param req a request context
+		 * @param attributes  attributes
 		 * @return {@link Builder}
 		 */
 		public Builder copyOf(RequestContext req, Iterable<Category> attributes)

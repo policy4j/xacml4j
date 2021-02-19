@@ -92,6 +92,7 @@ public interface FunctionSpec
 	 * as potential function invocation arguments
 	 *
 	 * @param arguments an array of expressions
+	 * @return {@code true} if the arguments are valid; returns {@code false} otherwise
 	 */
 	boolean validateParameters(List<Expression> arguments);
 
@@ -100,7 +101,7 @@ public interface FunctionSpec
 	 * as potential function invocation arguments
 	 *
 	 * @param arguments an array of expressions
-	 * @exception XacmlSyntaxException
+	 * @exception XacmlSyntaxException if the arguments are not valid
 	 */
 	void validateParametersAndThrow(List<Expression> arguments)
 		throws XacmlSyntaxException;
@@ -117,6 +118,9 @@ public interface FunctionSpec
 	/**
 	 * Invokes this function with a given arguments
 	 *
+	 * @param <T> Value Expression subtype
+	 * @param context  evaluation context
+	 * @param arguments an array of expressions
 	 * @return {@link ValueExpression} instance representing
 	 * function invocation result
 	 */
@@ -126,6 +130,9 @@ public interface FunctionSpec
 	/**
 	 * Invokes this function with a given arguments
 	 *
+	 * @param <T>  Value Expression subteype
+	 * @param context  evaluation context
+	 * @param arguments an array of expressions
 	 * @return {@link ValueExpression} instance representing
 	 * function invocation result
 	 */

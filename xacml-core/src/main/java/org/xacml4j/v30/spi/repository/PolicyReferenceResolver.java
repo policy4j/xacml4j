@@ -42,7 +42,7 @@ public interface PolicyReferenceResolver
 	 *
 	 * @param ref a policy reference
 	 * @return {@link Policy} instance
-	 * @throws PolicyResolutionException
+	 * @throws PolicyResolutionException if policy cannot be resolved
 	 */
 	Policy resolve(PolicyIDReference ref)
 		throws PolicyResolutionException;
@@ -53,7 +53,7 @@ public interface PolicyReferenceResolver
 	 *
 	 * @param ref a policy reference
 	 * @return {@link PolicySet} instance
-	 * @throws PolicyResolutionException
+	 * @throws PolicyResolutionException if policy cannot be resolved
 	 */
 	PolicySet resolve(PolicySetIDReference ref)
 		throws PolicyResolutionException;

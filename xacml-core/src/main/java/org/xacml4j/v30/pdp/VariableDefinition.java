@@ -107,9 +107,11 @@ public class VariableDefinition implements PolicyElement
 	}
 
 	/**
-	 * Evaluates  variable definition and caches
+	 * Evaluates variable definition and caches
 	 * evaluation result in the current
-	 * {@link EvaluationContext} evaluation context
+	 * {@link EvaluationContext}
+	 * @param context evaluation context
+	 * @return evaluated expression
 	 */
 	public ValueExpression evaluate(EvaluationContext context) throws EvaluationException
 	{

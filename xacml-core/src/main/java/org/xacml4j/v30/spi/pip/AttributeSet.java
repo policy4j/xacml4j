@@ -93,7 +93,7 @@ public final class AttributeSet
 	 *
 	 * @param key an attribute designator
 	 * @return {@link BagOfAttributeExp}
-	 * @exception IllegalArgumentException
+	 * @exception IllegalArgumentException if the attribute designator cannot be resolved
 	 */
 	public BagOfAttributeExp get(AttributeDesignatorKey key)
 	{

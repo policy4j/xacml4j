@@ -33,9 +33,9 @@ import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
 /**
- * The deny overrides combining algorithm is intended for those cases where a deny
- * decision should have priority over a permit decision.<p>
- * This algorithm has the following behavior:<p>
+ * <p>The deny overrides combining algorithm is intended for those cases where a deny
+ * decision should have priority over a permit decision.</p>
+ * <p>This algorithm has the following behavior:</p>
  * <ol>
  * <li>If any decision is "Deny", the result is "Deny"</li>
  * <li>Otherwise, if any decision is "Indeterminate{DP}", the result is "Indeterminate{DP}"</li>
@@ -43,9 +43,9 @@ import org.xacml4j.v30.spi.combine.XacmlRuleDecisionCombiningAlgorithm;
  * "Indeterminate{P} or Permit, the result is "Indeterminate{DP}"</li>
  * <li>Otherwise, if any decision is "Indeterminate{D}", the result is "Indeterminate{D}"</li>
  * <li>Otherwise, if any decision is "Permit", the result is "Permit"</li>
- * <li>Otherwise, if any decision is "Indeterminate{P}", the result is "Indeterminate{P}"<li>
- * <li>Otherwise, the result is "NotApplicable"<li>
- * <ol>
+ * <li>Otherwise, if any decision is "Indeterminate{P}", the result is "Indeterminate{P}"</li>
+ * <li>Otherwise, the result is "NotApplicable"</li>
+ * </ol>
  *
  * @author Giedrius Trumpickas
  *
