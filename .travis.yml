@@ -3,3 +3,8 @@ dist: trusty
 jdk:
   - oraclejdk8
   - openjdk8
+
+# branches to build
+branches:
+  only:
+  - master
