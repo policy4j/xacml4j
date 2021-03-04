@@ -204,6 +204,20 @@ public class DOMUtil
 		return prev_siblings;
 	}
 
+	public static void printNodeInfo(Node node, Logger logger){
+		if(logger.isDebugEnabled()){
+			logger.debug("Node name=\"{}:{}\" type=\"{}\"", node.getLocalName(), node.getNamespaceURI(), node.getNodeType());
+		}
+	}
+
+	public static void printNodeListInfo(NodeList list, Logger logger){
+		if(logger.isDebugEnabled()){
+			logger.debug("NodeList size=\"{}\" nodes", list.getLength());
+			for(int i = 0; i < list.getLength(); i++){
+				printNodeInfo(list.item(i), logger);
+			}
+		}
+	}
 	/**
 	 * Safe cast of the given node to
 	 * {@link Element} defaultProvider

@@ -25,6 +25,7 @@ package org.xacml4j.v30;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +121,29 @@ public class XmlContentTest
         assertEquals(1, result.size());
         assertEquals(2, result1.size());
         assertEquals(1, result2.size());
+    }
+
+    @Test
+    public void testEntityXPathCorrectType(){
+        Optional<BagOfAttributeValues> values = xml1.resolve(
+                AttributeSelectorKey
+                        .builder()
+                        .xpath("/md:record/md:patient/md:patient-number/text()")
+                        .dataType(XacmlTypes.INTEGER)
+                        .build());
+        assertTrue(values.get().contains(XacmlTypes.INTEGER.of(555555)));
+    }
+
+    @Test(expected = PathEvaluationException.class)
+    public void testXPathReturnUnsupportedNodeType()
+    {
+        Optional<BagOfAttributeValues> values = xml1.resolve(
+                AttributeSelectorKey
+                        .builder()
+                        .xpath("/md:record/")
+                        .dataType(XacmlTypes.INTEGER)
+                        .build());
+        assertFalse(values.isPresent());
     }
 
 }

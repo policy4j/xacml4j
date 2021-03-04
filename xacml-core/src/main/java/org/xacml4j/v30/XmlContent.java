@@ -160,7 +160,9 @@ public final class XmlContent implements Content
 
     @Override
     public Optional<BagOfAttributeValues> resolve(AttributeSelectorKey selectorKey) {
-        return Optional.empty();
+        return getAttributeValues(
+                selectorKey,
+                null);
     }
 
     @Override

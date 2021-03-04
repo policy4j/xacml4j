@@ -22,6 +22,8 @@ package org.xacml4j.v30.marshal.json;
  * #L%
  */
 
+import java.util.function.Supplier;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,12 +38,18 @@ class GsonUtil
 	public static boolean getAsBoolean(JsonObject o, String memberName, boolean defaultValue)
 	{
 		JsonPrimitive v = o.getAsJsonPrimitive(memberName);
+		if(v == null){
+			v = o.getAsJsonPrimitive(memberName.toLowerCase());
+		}
 		return (v != null)?v.getAsBoolean():defaultValue;
 	}
 
 	public static String getAsString(JsonObject o, String memberName, String defaultValue)
 	{
 		JsonPrimitive v = o.getAsJsonPrimitive(memberName);
+		if(v == null){
+			v = o.getAsJsonPrimitive(memberName.toLowerCase());
+		}
 		return (v != null)?v.getAsString():defaultValue;
 	}
 

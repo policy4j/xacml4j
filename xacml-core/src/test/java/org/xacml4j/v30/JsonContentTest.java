@@ -24,9 +24,11 @@ package org.xacml4j.v30;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.truth.Truth8;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
 
 import java.util.List;
@@ -104,13 +106,10 @@ public class JsonContentTest
         Optional<String> path = content.evaluateToNodePath("$.store.book[0]");
         Truth8.assertThat(path).hasValue("$['store']['book'][0]");
         Optional<Object> node = content.evaluateToNode("$.store.book[0]");
-        Truth8.assertThat(node).hasValue(
-                Map.of(
-                "category",
-                "reference",
-                "author", "Nigel Rees",
-                "title", "Sayings of the Century",
-                "price", 8.95));
+        Truth8.assertThat(node)
+              .hasValue(
+                      Map.of("category", "reference", "author", "Nigel Rees",
+                                      "title", "Sayings of the Century", "price", 8.95));
     }
 
     @Test
@@ -123,6 +122,8 @@ public class JsonContentTest
     public void testGetNode() {
         Optional<Content> content = Content.fromString(JSON_DATA);
         Truth8.assertThat(content).isPresent();
-        System.out.println(content.map(v->v.toNode()).orElse(null).getClass());
+        LoggerFactory.getLogger(JsonContentTest.class)
+                     .debug(
+                content.map(v->v.toNode()).orElse(null).getClass().toString());
     }
 }

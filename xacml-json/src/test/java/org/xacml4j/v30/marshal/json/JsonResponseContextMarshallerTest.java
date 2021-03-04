@@ -93,7 +93,7 @@ public class JsonResponseContextMarshallerTest {
 								AttributeAssignment
 										.builder()
 										.id("custom:attribute1")
-										.category(CategoryId.parse("totaly:made:up:attribute-category1"))
+										.category("totaly:made:up:attribute-category1")
 										.value(XacmlTypes.STRING.of("same old apelsinas"))
 						                .build()))
 				.build());

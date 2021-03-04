@@ -35,9 +35,25 @@
 /xacml-json/.settings
 /xacml-json/xacml-json.iml
 
+# /xacml-xml/
+/xacml-xml/.classpath
+/xacml-xml/.project
+/xacml-xml/target
+/xacml-xml/.settings
+/xacml-xml/xacml-json.iml
+
+# /xacml-xml-jaxb/
+/xacml-xml-jaxb/.classpath
+/xacml-xml-jaxb/.project
+/xacml-xml-jaxb/target
+/xacml-xml-jaxb/.settings
+/xacml-xml-jaxb/xacml-json.iml
+
 # /xacml-conformance-tests/
 /xacml-conformance-tests/.classpath
 /xacml-conformance-tests/.project
 /xacml-conformance-tests/target
 /xacml-conformance-tests/.settings
 /xacml-conformance-tests/xacml-conformance-tests.iml
+
+.java-version

@@ -27,6 +27,7 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.ATTRIBUTE_ID_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.DATA_TYPE_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.ISSUER_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
+import static org.xacml4j.v30.marshal.json.JsonProperties.CATEGORY_PROPERTY;
 
 import java.lang.reflect.Type;
 
@@ -47,19 +48,16 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 	public AttributeAssignment deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-
 		String attrId = GsonUtil.getAsString(o, ATTRIBUTE_ID_PROPERTY, null);
 		checkArgument(attrId != null, "Property '%s' is mandatory.", ATTRIBUTE_ID_PROPERTY);
-
 		AttributeValue value = deserializeValue(context, o);
-		String categoryId = GsonUtil.getAsString(o, "Category", null);
-		CategoryId category = Strings.isNullOrEmpty(categoryId)?null: CategoryId.parse(categoryId).get();
+		String categoryId = GsonUtil.getAsString(o, CATEGORY_PROPERTY, null);
+		CategoryId parsedCategoryId = Strings.isNullOrEmpty(categoryId)?null: CategoryId.parse(categoryId).get();
 		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
-
 		return AttributeAssignment
 				.builder()
 				.id(attrId)
-				.category(category)
+				.category(parsedCategoryId)
 				.issuer(issuer)
 				.value(value)
 				.build();

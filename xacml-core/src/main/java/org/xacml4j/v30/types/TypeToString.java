@@ -22,15 +22,18 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.auto.service.AutoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeValue;
 import org.xacml4j.v30.AttributeValueType;
 import org.xacml4j.v30.TypeCapability;
-import org.xacml4j.v30.TypeCapabilityProvider;
+import org.xacml4j.v30.TypeCapabilityFactory;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ServiceLoader;
 
 
 /**
@@ -58,26 +61,30 @@ public interface TypeToString extends TypeCapability
 	 */
 	AttributeValue fromString(String v);
 
-	@AutoService(TypeCapabilityProvider.class)
-	final class Provider extends TypeCapabilityProvider.Provider<TypeToString>{
-
-		private final static TypeCapabilityProvider<TypeToString> INSTANCE = new TypeToString.Provider();
-
-		public Provider(){
-			super(Arrays.asList(
-					TypeToString.Types.values()),
-					TypeCapabilityProvider.discover(TypeToString.class),
-					TypeToString.class);
-		}
-	}
-
-	static Optional<TypeToString> forType(AttributeValueType typeId){
-		return Provider.INSTANCE.forType(typeId);
-	}
-
 	static Optional<TypeToString> forType(String typeId){
-		return TypeCapability.forType(typeId,
-				(v)->TypeToString.forType(v));
+		return XacmlTypes.getType(typeId)
+		                 .flatMap(v->forType(v));
+	}
+
+	static Optional<TypeToString> forType(AttributeValueType type)
+	{
+		return TypeCapability.forType(type,
+		                              t->Factory.SYSTEM_TYPES.forType(t),
+		                              ()->Factory.EXTENSIONS.get());
+	}
+
+	/**
+	 * Factory for {@code TypeToString} extensions
+	 */
+	class Factory extends AbstractCapabilityFactory<TypeToString>
+	{
+		private static final Factory SYSTEM_TYPES = new Factory(Arrays.asList(Types.values()));
+		private static ThreadLocal<ServiceLoader<Factory>> EXTENSIONS = ThreadLocal
+				.withInitial(()->ServiceLoader.load(Factory.class));
+
+		protected Factory(Collection<TypeToString> providedCapabilities) {
+			super(providedCapabilities, TypeToString.class);
+		}
 	}
 
 	enum Types implements TypeToString

@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xacml4j.util.DOMUtil;
 import org.xacml4j.util.NodeNamespaceContext;
 
 import javax.xml.xpath.*;
@@ -67,8 +68,9 @@ public interface XPathProvider
 			Node result = (Node)xpath.evaluate(context, XPathConstants.NODE);
 			if(log.isDebugEnabled() &&
 					result != null){
-				log.debug("Evaluation result=\"{}:{}\" node",
-						result.getNamespaceURI(), result.getLocalName());
+				log.debug("Result node name=\"{}:{}\" node type=\"{}\"",
+				          result.getLocalName(), result.getNamespaceURI(),
+				          result.getNodeType());
 
 			}
 			return result;
@@ -95,6 +97,12 @@ public interface XPathProvider
 			if(log.isDebugEnabled() && result != null){
 				log.debug("Evaluation result has=\"{}\" nodes",
 						result.getLength());
+				for(int i = 0; i < result.getLength(); i++){
+					Node n = result.item(i);
+					log.debug("Result at index=\"{}\" name=\"{}:{}\" type=\"{}\"", i,
+					          n.getLocalName(), n.getNamespaceURI(),
+					          n.getNodeType());
+				}
 			}
 			return result;
 		}catch(XPathExpressionException e){
@@ -116,7 +124,11 @@ public interface XPathProvider
 				log.debug("EvaluateToString XPath=\"{}\"", path);
 			}
 			XPathExpression xpath = newXPath(path, context);
-			return (String)xpath.evaluate(context, XPathConstants.STRING);
+			String result = (String)xpath.evaluate(context, XPathConstants.STRING);
+			if(log.isDebugEnabled()){
+				log.debug("EvaluateToString XPath=\"{}\" result=\"{}\"", path, result);
+			}
+			return result;
 		}catch(XPathExpressionException e){
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
@@ -136,7 +148,11 @@ public interface XPathProvider
 				log.debug("EvaluateToNumber XPath=\"{}\"", path);
 			}
 			XPathExpression xpath = newXPath(path, context);
-			return (Number)xpath.evaluate(context, XPathConstants.NUMBER);
+			Number result = (Number)xpath.evaluate(context, XPathConstants.NUMBER);
+			if(log.isDebugEnabled()){
+				log.debug("EvaluateToNumber XPath=\"{}\" result=\"{}\"", path, result);
+			}
+			return result;
 		}catch(XPathExpressionException e){
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
@@ -172,7 +188,10 @@ public interface XPathProvider
 		 * and {@link XPathFactory} is not threads safe
 		 */
 		private static final ThreadLocal<XPathFactory> XPATH_FACTORY =
-				ThreadLocal.withInitial(()->XPathFactory.newInstance());
+				ThreadLocal.withInitial(()->{
+					log.debug("Creating new XPath instance for thread id=\"{}\" name=\"{}\"", Thread.currentThread().getId(),
+					          Thread.currentThread().getName());
+					return XPathFactory.newInstance();});
 
 		private Supplier<XPathFactory> xpathFactory;
 

@@ -66,12 +66,8 @@ public class Xacml20ConformanceTest
 	{
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
-				FunctionProvider.Builder.builder()
-				.defaultFunctions()
-				.build(),
-				DecisionCombiningAlgorithmProvider.Builder.builder()
-				                                          .withDefaultAlgorithms()
-				                                          .build());
+				FunctionProvider.builder().withStandardFunctions().build(),
+				DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build());
 		responseMarshaller = new Xacml20ResponseContextMarshaller();
 
 		addAllPolicies(repository, "IIA", 22);

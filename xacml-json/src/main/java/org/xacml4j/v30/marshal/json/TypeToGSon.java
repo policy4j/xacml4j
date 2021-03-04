@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.google.auto.service.AutoService;
-import org.xacml4j.util.DOMUtil;
+
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.TypeToString;

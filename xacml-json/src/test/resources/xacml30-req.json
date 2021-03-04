@@ -27,41 +27,41 @@ Request:{
 	    },
 	    "Attributes": [
 	      {
-	      	"id":"attr1",
-	        "category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
-	        "attributes": [
+	      	"Id":"attr1",
+	        "Category": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
+	        "Attributes": [
 	          {
-	            "inclInRes" : "false",
-	            "issuer":"testIssuer",
-	            "attrId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
-	            "values": [{"type":"string","value":"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"}]
+	            "IncludeInResult" : "false",
+	            "Issuer":"testIssuer",
+	            "AttributeId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+	            "Values": [{"type":"string","value":"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"}]
 	          }
 	        ]
 	      },
 	      {
-	      	"id":"attr2",
-	        "category": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
-	        "attributes": [
+	      	"Id":"attr2",
+	        "Category": "urn:oasis:names:tc:xacml:3.0:attribute-category:resource",
+	        "Attributes": [
 	          {
-	            "inclInRes" : "false",
-	            "attrId":"urn:oasis:names:tc:xacml:1.0:resource:resource-id",
-	            "values": [ { "type":"http://www.w3.org/2001/XMLSchema#string", "value":"testResourceId"}]
+	            "IncludeInResult" : "false",
+	            "AttributeId":"urn:oasis:names:tc:xacml:1.0:resource:resource-id",
+	            "Values": [ { "type":"http://www.w3.org/2001/XMLSchema#string", "value":"testResourceId"}]
 	          }
 	        ]
 	      },
 	      {
-	      	"id":"attr3",
-	        "category": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
-	        "attributes": [
+	      	"Id":"attr3",
+	        "Category": "urn:oasis:names:tc:xacml:3.0:attribute-category:action",
+	        "Attributes": [
 	          {
-	            "inclInRes" : "false",
-	            "attrId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
-	            "values": [{ "type":"http://www.w3.org/2001/XMLSchema#string","value":"VIEW"}]
+	            "InclInRes" : "false",
+	            "AttributeId":"urn:oasis:names:tc:xacml:1.0:subject:subject-id",
+	            "Values": [{ "type":"http://www.w3.org/2001/XMLSchema#string","value":"VIEW"}]
 	          }
 	        ]
 	      }
 	    ],
-	    "multipleRequests" : [
+	    "MultipleRequests" : [
 	    	[{"$ref":"attr1"}, {"$ref":"attr2"}],
 	    	[{"$ref":"attr1"}, {"$ref":"attr3"}]
 	    ]

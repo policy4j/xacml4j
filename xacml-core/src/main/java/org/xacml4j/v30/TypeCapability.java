@@ -23,10 +23,21 @@ package org.xacml4j.v30;
  */
 
 
-import org.xacml4j.v30.types.XacmlTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.types.TypeToString;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.ServiceLoader;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Streams;
 
 /**
  * A marker interface for XACML type specific capability/strategy.
@@ -45,9 +56,54 @@ public interface TypeCapability
 	 */
 	AttributeValueType getType();
 
-	static <T extends TypeCapability> java.util.Optional<T> forType(final String dataTypeId,
-																				 final Function<AttributeValueType, Optional<T>> forType){
-		return XacmlTypes.getType(dataTypeId)
-				.flatMap(v->forType.apply(v));
+	static <T extends TypeCapability> Optional<T> forType(AttributeValueType type,
+	                                                      Function<AttributeValueType, Optional<T>> systemCapabilities,
+	                           Supplier<ServiceLoader<? extends TypeCapabilityFactory<T>>> extensionCapabilities)
+	{
+		Optional<T> cap = systemCapabilities.apply(type);
+		if(cap.isPresent()){
+			return cap;
+		}
+		ServiceLoader<? extends TypeCapabilityFactory<T>> extensions = extensionCapabilities.get();
+		if(extensions == null){
+			return Optional.empty();
+		}
+		return extensions.stream()
+		                 .filter(v->v.get().forType(type).isPresent())
+		                 .findFirst()
+		                 .flatMap(v->v.get().forType(type));
+	}
+
+	abstract class AbstractCapabilityFactory<T extends TypeCapability>
+			implements org.xacml4j.v30.TypeCapabilityFactory<T>
+	{
+		private static final Logger LOG = LoggerFactory.getLogger(AbstractCapabilityFactory.class);
+
+		private Map<AttributeValueType, T> capabilitiesByType;
+		private Class<T> capabilityType;
+
+		/**
+		 *
+		 * @param providedCapabilities a standard system capabilities for standard types
+		 * @param capabilityType a capability type
+		 */
+		protected AbstractCapabilityFactory(Collection<T> providedCapabilities,
+		                                    Class<T> capabilityType){
+			this.capabilityType = Objects.requireNonNull(capabilityType, "capabilityType");
+			this.capabilitiesByType = providedCapabilities.stream()
+			                                            .collect(ImmutableMap.toImmutableMap(e->e.getType(), e->e));
+		}
+
+		public final Class<T> getCapabilityType(){
+			return capabilityType;
+		}
+
+		public final Collection<T> getCapabilities(){
+			return capabilitiesByType.values();
+		}
+
+		public final Optional<T> forType(AttributeValueType type){
+			return Optional.ofNullable(capabilitiesByType.get(type));
+		}
 	}
 }
