@@ -19,7 +19,6 @@
 
 	<modules>
 		<module>xacml-core</module>
-		<module>xacml-spring</module>
 		<module>xacml-json</module>
 		<module>xacml-test</module>
 		<module>xacml-conformance-tests</module>
