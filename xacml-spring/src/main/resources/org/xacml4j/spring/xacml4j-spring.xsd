@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns="http://xacml4j.org/schema/xacml/spring"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	targetNamespace="http://xacml4j.org/schema/xacml/spring"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+	<xsd:import namespace="http://www.springframework.org/schema/beans"
+		schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
+
+	<xsd:element name="FunctionProvider" type="FunctionProviderType"/>
+	<xsd:complexType name="FunctionProviderType">
+		<xsd:attribute name="class" type="xsd:string" use="optional" />
+		<xsd:attribute name="ref" type="xsd:string" use="optional" />
+	</xsd:complexType>
+
+	<xsd:element name="FunctionProviders" type="FunctionProvidersType"/>
+	<xsd:complexType name="FunctionProvidersType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:element ref="FunctionProvider"
+						minOccurs="1" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="DecisionCombingingAlgorithmProvider" type="FunctionProviderType"/>
+	<xsd:complexType name="DecisionCombingingAlgorithmProviderType">
+		<xsd:attribute name="class" type="xsd:string" use="optional" />
+		<xsd:attribute name="ref" type="xsd:string" use="optional" />
+	</xsd:complexType>
+
+	<xsd:element name="DecisionCombingingAlgorithmProviders" type="DecisionCombingingAlgorithmProvidersType"/>
+	<xsd:complexType name="DecisionCombingingAlgorithmProvidersType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:element ref="DecisionCombingingAlgorithmProviders" minOccurs="0" maxOccurs="unbounded" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+
+	<!-- Attribute resolvers -->
+	<xsd:element name="Resolver" type="ResolverType"/>
+	<xsd:complexType name="ResolverType">
+		<xsd:attribute name="ref" type="xsd:string" use="required" />
+		<xsd:attribute name="policyId" type="xsd:string" use="optional"/>
+	</xsd:complexType>
+
+
+	<xsd:element name="ResolverRegistry">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+							<xsd:element ref="Resolver"/>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="PolicyInformationPoint">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:attribute name="resolvers" type="xsd:string" use="required" />
+				    <xsd:attribute name="cache" type="xsd:string" use="optional"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="IdReferenceType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:anyURI">
+				<xsd:attribute name="Version" type="VersionMatchType" use="optional"/>
+				<xsd:attribute name="EarliestVersion" type="VersionMatchType" use="optional"/>
+				<xsd:attribute name="LatestVersion" type="VersionMatchType" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="VersionMatchType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="((\d+|\*)\.)*(\d+|\*|\+)"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+	<xsd:element name="PolicyIdReference" type="IdReferenceType"/>
+	<xsd:element name="PolicySetIdReference" type="IdReferenceType"/>
+
+	<xsd:complexType name="PolicyRepositoryBaseType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:attribute name="extensionFunctions" type="xsd:string"/>
+				<xsd:attribute name="extensionCombiningAlgorithms" type="xsd:string"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="InMemoryPolicyRepository">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="PolicyRepositoryBaseType">
+					<xsd:attribute name="policies" type="xsd:string"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="RequestContextHandler" type="RequestContextHandlerType"/>
+
+	<xsd:complexType name="RequestContextHandlerType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:attribute name="ref" type="xsd:string" use="required" />
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="RequestContextHandlerChain">
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="beans:identifiedType">
+					<xsd:sequence minOccurs="0" maxOccurs="unbounded">
+						<xsd:element ref="RequestContextHandler"/>
+					</xsd:sequence>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	<xsd:element name="PolicyDecisionPoint" type="PolicyDecisionPointType"/>
+	<xsd:complexType name="PolicyDecisionPointType">
+		<xsd:complexContent>
+			<xsd:extension base="beans:identifiedType">
+				<xsd:sequence>
+					<xsd:choice minOccurs="1" maxOccurs="1">
+						<xsd:element ref="PolicyIdReference"/>
+						<xsd:element ref="PolicySetIdReference"/>
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:attribute name="repository" type="xsd:string" use="required"/>
+				<xsd:attribute name="pip" type="xsd:string" use="required"/>
+				<xsd:attribute name="handlers" type="xsd:string" use="optional"/>
+				<xsd:attribute name="auditor" type="xsd:string" use="optional"/>
+				<xsd:attribute name="decisionCache" type="xsd:string" use="optional"/>
+				<xsd:attribute name="decisionCacheTTL" type="xsd:positiveInteger" use="optional"/>
+				<xsd:attribute name="xpathProvider" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+</xsd:schema>

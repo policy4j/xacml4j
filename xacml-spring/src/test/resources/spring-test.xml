@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Xacml4J Spring 3.x Support Module
+  %%
+  Copyright (C) 2009 - 2014 Xacml4J.org
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Lesser Public License for more details.
+  
+  You should have received a copy of the GNU General Lesser Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/lgpl-3.0.html>.
+  #L%
+  -->
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xacml-spring="http://xacml4j.org/schema/xacml/spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+						http://xacml4j.org/schema/xacml/spring http://xacml4j.org/schema/xacml/spring/xacmlj-spring.xsd">
+
+ 	<beans:bean id="testInstance" class="org.xacml4j.spring.TestInstanceFunctions"/>
+
+	<xacml-spring:FunctionProviders id="extensionFunctions">
+		<xacml-spring:FunctionProvider class="org.xacml4j.spring.TestStaticFunctions"/>
+		<xacml-spring:FunctionProvider ref="testInstance"/>
+	</xacml-spring:FunctionProviders>
+
+	<util:list id="resources">
+		<value>classpath:/Policy1.xml</value>
+	</util:list>
+
+	<xacml-spring:InMemoryPolicyRepository
+	id="repository" extensionFunctions="extensionFunctions" policies="resources"/>
+
+	<beans:bean id="testResolver" class="org.xacml4j.spring.pip.TestResolver"/>
+
+	<xacml-spring:ResolverRegistry id="resolvers">
+		<xacml-spring:Resolver ref="testResolver"/>
+		<xacml-spring:Resolver ref="testResolver" policyId="testId"/>
+	</xacml-spring:ResolverRegistry>
+
+	<xacml-spring:PolicyInformationPoint id="pip" resolvers="resolvers"/>
+
+	<bean id="multipleResourcesHandler" class="org.xacml4j.v30.pdp.profiles.MultipleResourcesHandler"/>
+
+	<xacml-spring:RequestContextHandlerChain id="handlers">
+		<xacml-spring:RequestContextHandler ref="multipleResourcesHandler"/>
+	</xacml-spring:RequestContextHandlerChain>
+
+	<bean id="testAuditor" class="org.xacml4j.spring.MockAuditor">
+	</bean>
+
+	<xacml-spring:PolicyDecisionPoint id="pdp"
+	repository="repository" pip="pip" handlers="handlers" auditor="testAuditor" decisionCacheTTL="30">
+		<xacml-spring:PolicySetIdReference>testId</xacml-spring:PolicySetIdReference>
+	</xacml-spring:PolicyDecisionPoint>
+</beans>

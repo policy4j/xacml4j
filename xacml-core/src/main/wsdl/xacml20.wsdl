@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+        targetNamespace="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+        xmlns:tns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+        xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata">
+
+  <wsdl:types>
+    <xs:schema>
+      <xs:import namespace="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+      schemaLocation="http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"/>
+      <xs:import namespace="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+      schemaLocation="http://docs.oasis-open.org/xacml/access_control-xacml-2.0-context-schema-os.xsd"/>
+    </xs:schema>
+  </wsdl:types>
+
+  <wsdl:message name="XACML20Request">
+    <wsdl:part name="request" element="xacml-context:Request" />
+  </wsdl:message>
+  <wsdl:message name="XACML20Response">
+    <wsdl:part name="response" element="xacml-context:Response" />
+  </wsdl:message>
+
+  <wsdl:portType name="Xacml20PdpService">
+    <wsdl:operation name="Authorize">
+      <wsdl:input message="tns:XACML20Request"/>
+      <wsdl:output message="tns:XACML20Request"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="Xacml20SoapHttpBinding" type="tns:Xacml20PdpService">
+      <soap:binding style="document"
+         transport="http://schemas.xmlsoap.org/soap/http"/>
+      <wsdl:operation name="Authorize">
+         <wsdl:input>
+            <soap:body use="literal"/>
+         </wsdl:input>
+         <wsdl:output>
+            <soap:body use="literal"/>
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+
+   <wsdl:service name="Xacml20SoapHttpService">
+      <wsdl:port name="Xacml20SoapPrivateEndpoint" binding="tns:Xacml20SoapHttpBinding">
+         <soap:address location="https://login.comcast.net/xacml/20/private/soap"/>
+      </wsdl:port>
+      <wsdl:port name="Xacml20SoapPublicEndpoint" binding="tns:Xacml20SoapHttpBinding">
+         <soap:address location="https://login.comcast.net/xacml/20/public/soap"/>
+      </wsdl:port>
+   </wsdl:service>
+
+</wsdl:definitions>
