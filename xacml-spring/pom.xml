@@ -11,7 +11,7 @@
 	<name>Xacml4J Spring 3.x Support Module</name>
 
 	<properties>
-		<spring.version>3.0.4.RELEASE</spring.version>
+		<spring.version>4.3.21.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
