@@ -9,12 +9,12 @@
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation, either version 3 of the
   License, or (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Lesser Public License for more details.
-  
+
   You should have received a copy of the GNU General Lesser Public
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -23,10 +23,8 @@
 
 <Policy
 	xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
-	xmlns:xacml="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
-	xmlns:md="http://www.med.example.com/schemas/record.xsd"
 	PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:1"
 	Version="1.0"
 	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
@@ -34,14 +32,14 @@
 		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
 	</PolicyDefaults>
 	<Target />
-	<VariableDefinition VariableId="VAR01">
+	<VariableDefinition VariableId="VAR05">
 			<AttributeDesignator
 				AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number"
 				Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
 				MustBePresent="true"
 				DataType="http://www.w3.org/2001/XMLSchema#string" />
 	</VariableDefinition>
-	<VariableDefinition VariableId="VAR02">
+	<VariableDefinition VariableId="VAR04">
 			<AttributeSelector
 				Path="//md:record/md:patient/md:patient-number/text()"
 				MustBePresent="true"
@@ -50,24 +48,24 @@
 	</VariableDefinition>
 	<VariableDefinition VariableId="VAR03">
 		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-			<VariableReference VariableId="VAR01"/>
+			<VariableReference VariableId="VAR05"/>
 		</Apply>
 	</VariableDefinition>
-	<VariableDefinition VariableId="VAR04">
+	<VariableDefinition VariableId="VAR02">
 		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
-			<VariableReference VariableId="VAR02"/>
+			<VariableReference VariableId="VAR04"/>
 		</Apply>
 	</VariableDefinition>
-	<VariableDefinition VariableId="VAR05">
+	<VariableDefinition VariableId="VAR01">
 		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
 			<VariableReference VariableId="VAR03"/>
-			<VariableReference VariableId="VAR04"/>
+			<VariableReference VariableId="VAR02"/>
 		</Apply>
 	</VariableDefinition>
 	<Rule RuleId="urn:oasis:names:tc:xacml:2.0:example:ruleid:1"
 		Effect="Permit">
 		<Condition>
-			<VariableReference VariableId="VAR05" />
+			<VariableReference VariableId="VAR01" />
 		</Condition>
 	</Rule>
 </Policy>

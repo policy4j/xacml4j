@@ -79,6 +79,7 @@ final class DefaultPolicyDecisionPoint
 	private final Counter permitDecisions;
 	private final Counter denyDecisions;
 	private final Counter indeterminateDecisions;
+	private final Counter notApplicableDecisions;
 
 	DefaultPolicyDecisionPoint(
 			String id,
@@ -86,10 +87,8 @@ final class DefaultPolicyDecisionPoint
 		throws NotCompliantMBeanException
 	{
 		super(PolicyDecisionPointMBean.class);
-		Preconditions.checkNotNull(id);
-		Preconditions.checkNotNull(factory);
-		this.id = id;
-		this.factory = factory;
+		this.id = Preconditions.checkNotNull(id);
+		this.factory = Preconditions.checkNotNull(factory);
 		this.auditEnabled = new AtomicBoolean(factory.isDecisionAuditEnabled());
 		this.cacheEnabled = new AtomicBoolean(factory.isDecisionCacheEnabled());
 		final MetricRegistry registry = MetricsSupport.getOrCreate();
@@ -98,6 +97,7 @@ final class DefaultPolicyDecisionPoint
 		this.permitDecisions = registry.counter(name("pdp", id, "count-permit"));
 		this.denyDecisions = registry.counter(name("pdp", id, "count-deny"));
 		this.indeterminateDecisions = registry.counter(name("pdp", id, "count-indeterminate"));
+		this.notApplicableDecisions = registry.counter(name("pdp", id, "count-not-applicable"));
 	}
 
 	@Override
@@ -112,7 +112,7 @@ final class DefaultPolicyDecisionPoint
 					.builder()
 					.results(chain.handle(request, context))
 					.build();
-		}finally{
+		} finally {
 			MDCSupport.cleanPdpContext();
 		}
 	}
@@ -128,57 +128,56 @@ final class DefaultPolicyDecisionPoint
 			RequestContext request)
 	{
 		MDCSupport.setXacmlRequestId(context.getCorrelationId(), request);
+		Timer.Context timerContext = decisionTimer.time();
 		try
 		{
 			PolicyDecisionCache decisionCache = context.getDecisionCache();
 			PolicyDecisionAuditor decisionAuditor = context.getDecisionAuditor();
-			Timer.Context timerContext = decisionTimer.time();
-			Result r =  null;
-			if(isDecisionCacheEnabled()){
+			Result r = null;
+			if (isDecisionCacheEnabled()) {
 				r = decisionCache.getDecision(request);
 			}
-			if(r != null){
-				if(isDecisionAuditEnabled()){
-					decisionAuditor.audit(this, r, request);
+			if (r == null) {
+				EvaluationContext evalContext = context.createEvaluationContext(request);
+				CompositeDecisionRule rootPolicy = context.getDomainPolicy();
+				Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
+				r = createResult(
+						evalContext,
+						decision,
+						request.getIncludeInResultAttributes(),
+						getResolvedAttributes(evalContext),
+						request.isReturnPolicyIdList());
+				if (isDecisionCacheEnabled()) {
+					decisionCache.putDecision(
+							request, r,
+							evalContext.getDecisionCacheTTL());
 				}
-				incrementDecisionCounters(r.getDecision());
-				decisionHistogram.update(timerContext.stop());
-				return r;
 			}
-			EvaluationContext evalContext = context.createEvaluationContext(request);
-			CompositeDecisionRule rootPolicy = context.getDomainPolicy();
-			Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
-			incrementDecisionCounters(decision);
-			r = createResult(evalContext,
-					decision,
-					request.getIncludeInResultAttributes(),
-					getResolvedAttributes(evalContext),
-					request.isReturnPolicyIdList());
 			if(isDecisionAuditEnabled()){
 				decisionAuditor.audit(this, r, request);
 			}
-			if(isDecisionCacheEnabled()){
-				decisionCache.putDecision(
-						request, r,
-						evalContext.getDecisionCacheTTL());
-			}
-			decisionHistogram.update(timerContext.stop());
+			incrementDecisionCounters(r.getDecision());
 			return r;
-		}finally{
+		} finally {
 			MDCSupport.cleanXacmlRequestId();
+			decisionHistogram.update(timerContext.stop());
 		}
 	}
 
-	private void incrementDecisionCounters(Decision d){
-		if(d == Decision.PERMIT){
-			permitDecisions.inc();
-			return;
+	private void incrementDecisionCounters(Decision d) {
+		switch (d) {
+			case PERMIT:
+				permitDecisions.inc();
+				break;
+			case DENY:
+				denyDecisions.inc();
+				break;
+			case NOT_APPLICABLE:
+				notApplicableDecisions.inc();
+				break;
+			default:
+				indeterminateDecisions.inc();
 		}
-		if(d == Decision.DENY){
-			denyDecisions.inc();
-			return;
-		}
-		indeterminateDecisions.inc();
 	}
 
 	private Result createResult(
@@ -228,12 +227,12 @@ final class DefaultPolicyDecisionPoint
 	private Collection<Category> getResolvedAttributes(EvaluationContext context){
 		Map<AttributeDesignatorKey, BagOfAttributeExp> desig = context.getResolvedDesignators();
 		Multimap<CategoryId, Attribute> attributes = HashMultimap.create();
-		for(AttributeDesignatorKey k : desig.keySet()){
-			BagOfAttributeExp v = desig.get(k);
-			Collection<Attribute> values = attributes.get(k.getCategory());
+		for(Map.Entry<AttributeDesignatorKey, BagOfAttributeExp> entry : desig.entrySet()){
+			BagOfAttributeExp v = entry.getValue();
+			Collection<Attribute> values = attributes.get(entry.getKey().getCategory());
 			values.add(Attribute
-					.builder(k.getAttributeId())
-					.issuer(k.getIssuer())
+					.builder(entry.getKey().getAttributeId())
+					.issuer(entry.getKey().getIssuer())
 					.values(v.values())
 					.build());
 		}

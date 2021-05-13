@@ -368,11 +368,13 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 
 	private void parseVariables(VariableManager<JAXBElement<?>> m) throws XacmlSyntaxException
 	{
-		for(String varId : m.getVariableDefinitionExpressions()){
-			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varId);
-			m.pushVariableDefinition(varId);
-			Expression expression = parseExpression(varDefExp, m);
-			m.resolveVariableDefinition(new VariableDefinition(varId, expression));
+		for (String varId : m.getVariableDefinitionExpressions()) {
+			if (m.getVariableDefinition(varId) == null) {
+				JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varId);
+				m.pushVariableDefinition(varId);
+				Expression expression = parseExpression(varDefExp, m);
+				m.resolveVariableDefinition(new VariableDefinition(varId, expression));
+			}
 		}
 	}
 
@@ -400,16 +402,15 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 			return createSelector(categoryId, (AttributeSelectorType) exp);
 		}
 		if (exp instanceof VariableReferenceType) {
-			VariableReferenceType varRef = (VariableReferenceType) exp;
-			VariableDefinition varDef = m.getVariableDefinition(varRef.getVariableId());
-			if(varDef != null){
-				return new VariableReference(varDef);
+			final VariableReferenceType varRef = (VariableReferenceType) exp;
+			final VariableDefinition existingVarDef = m.getVariableDefinition(varRef.getVariableId());
+			if (existingVarDef != null) {
+				return new VariableReference(existingVarDef);
 			}
-			JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
+			final JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
 			m.pushVariableDefinition(varRef.getVariableId());
-			parseExpression(varDefExp, m);
-			varDef = m.getVariableDefinition(varRef.getVariableId());
-			Preconditions.checkState(varDef != null);
+			final Expression parsedExpression = parseExpression(varDefExp, m);
+			VariableDefinition varDef = new VariableDefinition(varRef.getVariableId(), parsedExpression);
 			m.resolveVariableDefinition(varDef);
 			return new VariableReference(varDef);
 		}

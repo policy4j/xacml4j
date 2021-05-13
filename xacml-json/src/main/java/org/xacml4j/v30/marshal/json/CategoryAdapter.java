@@ -35,7 +35,7 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.XacmlSyntaxException;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableBiMap;
+import com.google.common.base.Supplier;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -45,62 +45,80 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category>
+
+public class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category>
 {
-	/**
-	 * Short well know category aliases
-	 */
-	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
-			ImmutableBiMap.<String, CategoryId>builder()
-			.put("action", Categories.ACTION)
-			.put("environment", Categories.ENVIRONMENT)
-			.put("resource", Categories.RESOURCE)
-			.put("subject", Categories.SUBJECT_ACCESS)
-			.put("codebase", Categories.SUBJECT_CODEBASE)
-			.put("intermediary-subject", Categories.SUBJECT_INTERMEDIARY)
-			.put("recipient-subject", Categories.SUBJECT_RECIPIENT)
-			.put("requesting-machine", Categories.SUBJECT_REQUESTING_MACHINE)
-			.build();
 
-	@Override
-	public Category deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-			throws JsonParseException {
-		try {
-			JsonObject o = json.getAsJsonObject();
-			String categoryId = GsonUtil.getAsString(o, JsonProperties.CATEGORY_ID_PROPERTY, null);
-			Preconditions.checkState(categoryId != null);
-			CategoryId category = SHORT_NAMES.get(categoryId);
-			category =  (category == null)?Categories.parse(categoryId):category;
-			String id = GsonUtil.getAsString(o, JsonProperties.ID_PROPERTY, null);
-			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(JsonProperties.ATTRIBUTE_PROPERTY),
-					new TypeToken<Collection<Attribute>>() {
-					}.getType());
-			Node content = DOMUtil.stringToNode(GsonUtil.getAsString(o, JsonProperties.CONTENT_PROPERTY, null));
-			return Category.builder(category)
-					.id(id)
-					.entity(Entity
-							.builder()
-							.attributes(attr)
-							.content(content)
-							.build())
-					.build();
-		} catch (XacmlSyntaxException e) {
-			throw new JsonParseException(e);
-		}
-	}
+    @Override
+    public Category deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+            throws JsonParseException {
+        return deserializeCategory(getCategoryId(json), json, context);
+    }
 
-	@Override
-	public JsonElement serialize(Category src, Type typeOfSrc,
-			JsonSerializationContext context) {
-		JsonObject o = new JsonObject();
-		if (src.getId() != null) {
-			o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
-		}
-		Entity e = src.getEntity();
-		String categoryId = SHORT_NAMES.inverse().get(src.getCategoryId());
-		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, (categoryId == null)?src.getCategoryId().getId():categoryId);
-		o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));
-		o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
-		return o;
-	}
+    @Override
+    public JsonElement serialize(Category src, Type typeOfSrc, JsonSerializationContext context) {
+        return serialize(src, context);
+    }
+
+    public static JsonObject serialize(Category src,
+                                 JsonSerializationContext context) {
+        JsonObject o = new JsonObject();
+        if (src.getId() != null) {
+            o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
+        }
+        Entity e = src.getEntity();
+        o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getShortName());
+        o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));
+        o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
+        return o;
+    }
+
+    public static JsonObject serializeDefaultCategory(Category src,
+                                       JsonSerializationContext context) {
+        JsonObject o = new JsonObject();
+        if (src.getId() != null) {
+            o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
+        }
+        Entity e = src.getEntity();
+        o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));
+        o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
+        return o;
+    }
+
+    public static Category deserializeCategory(CategoryId category,
+                                        JsonElement json, JsonDeserializationContext context)
+            throws JsonParseException {
+        try {
+            Preconditions.checkNotNull(category);
+            JsonObject o = json.getAsJsonObject();
+            String id = GsonUtil.getAsString(o, JsonProperties.ID_PROPERTY, null);
+            Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(JsonProperties.ATTRIBUTE_PROPERTY),
+                    new TypeToken<Collection<Attribute>>() {
+                    }.getType());
+            Node content = DOMUtil.stringToNode(GsonUtil.getAsString(o, JsonProperties.CONTENT_PROPERTY, null));
+            return Category.builder(category)
+                    .id(id)
+                    .entity(Entity
+                            .builder()
+                            .attributes(attr)
+                            .content(content)
+                            .build())
+                    .build();
+        } catch (XacmlSyntaxException e) {
+            throw new JsonParseException(e);
+        }
+    }
+
+    public static CategoryId getCategoryId(final JsonElement e){
+        JsonObject o = e.getAsJsonObject();
+        return Categories.parse(new Supplier<String>() {
+            @Override
+            public String get() {
+                JsonObject o = e.getAsJsonObject();
+                Preconditions.checkState(o != null);
+                return GsonUtil.getAsString(o,
+                        JsonProperties.CATEGORY_ID_PROPERTY, null);
+            }
+        });
+    }
 }

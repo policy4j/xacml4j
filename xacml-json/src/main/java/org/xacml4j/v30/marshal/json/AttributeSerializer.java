@@ -44,10 +44,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
-class AttributeSerializer implements JsonSerializer<Attribute> 
+class AttributeSerializer implements JsonSerializer<Attribute>
 {
 	@Override
-	public JsonElement serialize(Attribute src, Type typeOfSrc, 
+	public JsonElement serialize(Attribute src, Type typeOfSrc,
 			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
@@ -63,10 +63,12 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 		return o;
 	}
 
-	private void serializeValue(JsonSerializationContext context, JsonObject o, 
+	private void serializeValue(JsonSerializationContext context, JsonObject o,
 			Collection<AttributeExp> values) {
-		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
 		AttributeExp firstValue = Iterables.getFirst(values, null);
+        if(firstValue  == null){
+            return;
+        }
 		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getShortDataTypeId());
 		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(firstValue.getType());
 		checkState(toGson.isPresent());

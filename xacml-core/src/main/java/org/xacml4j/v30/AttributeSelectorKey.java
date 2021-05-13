@@ -100,15 +100,13 @@ public final class AttributeSelectorKey
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof AttributeSelectorKey)){
 			return false;
 		}
 		AttributeSelectorKey s = (AttributeSelectorKey)o;
 		return category.equals(s.category) &&
-		dataType.equals(s.dataType) && xpath.equals(s.xpath) &&
+		dataType.equals(s.dataType) &&
+		xpath.equals(s.xpath) &&
 		Objects.equal(contextSelectorId, s.contextSelectorId);
 	}
 

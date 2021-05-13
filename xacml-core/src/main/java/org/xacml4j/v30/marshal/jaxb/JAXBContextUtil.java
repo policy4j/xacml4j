@@ -29,17 +29,18 @@ import com.google.common.base.Preconditions;
 
 public class JAXBContextUtil
 {
-	private static JAXBContext INSTANCE;
-
+	private static final JAXBContext INSTANCE;
+	private static final char SEP = ':';
 	static{
-		StringBuilder b = new StringBuilder();
-		b.append(org.oasis.xacml.v30.jaxb.ObjectFactory.class.getPackage().getName()).append(":");
-		b.append(org.oasis.xacml.v20.jaxb.policy.ObjectFactory.class.getPackage().getName()).append(":");
-		b.append(org.oasis.xacml.v20.jaxb.context.ObjectFactory.class.getPackage().getName());
-		try{
-			INSTANCE = JAXBContext.newInstance(b.toString());
+			try{
+			INSTANCE = JAXBContext.newInstance(
+					org.oasis.xacml.v30.jaxb.ObjectFactory.class.getPackage().getName() +
+					SEP +
+					org.oasis.xacml.v20.jaxb.policy.ObjectFactory.class.getPackage().getName() +
+					SEP +
+					org.oasis.xacml.v20.jaxb.context.ObjectFactory.class.getPackage().getName());
 		}catch(JAXBException e){
-			e.printStackTrace(System.err);
+			throw new IllegalStateException("Failed to initialize JAXB context", e);
 		}
 	}
 

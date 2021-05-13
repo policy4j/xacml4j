@@ -10,12 +10,12 @@ package org.xacml4j.v30.policy.combine;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -34,23 +34,19 @@ import org.xacml4j.v30.spi.combine.BaseDecisionCombiningAlgorithm;
 
 
 /**
- * XACML 3.0 does not allow Condition elements at the policy or policy set levels.
- * In some cases it may be useful to have a Condition at the policy or policy set level since a
- * Condition allows for more expressive matching than a Target, which can only match against constant values.
- * For instance, someone may want to write a policy which applies to the cases where the subject is
- * the owner of the resource. In this case the policy should apply if the subject-id of the request
- * equals the owner attribute of the resource in the request. This matching cannot be done with
- * a <Target> since it is not a match expression against a constant value.
- * Such a policy would require a Condition at the Policy level
+ * Implementation of the {@code urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:on-permit-apply-second}
+ * combining algorithm as per <a href="http://docs.oasis-open.org/xacml/xacml-3.0-combalgs/v1.0/xacml-3.0-combalgs-v1.0.html">XACML 3.0 Additional Combining Algorithms Profile Version 1.0</a>
+ * {@code [xacml-3.0-combalgs]}.
  *
  * @author Giedrius Trumpickas
+ * @author Valdas Sevelis
  */
-public class OnPermitApplySecondPolicyCombiningAlgorithm extends
-	BaseDecisionCombiningAlgorithm<CompositeDecisionRule>
-{
-	private final static String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:on-permit-apply-second";
+public class OnPermitApplySecondPolicyCombiningAlgorithm
+		extends BaseDecisionCombiningAlgorithm<CompositeDecisionRule> {
 
-	private final static Status PROCESSING_ERROR = Status.processingError().build();
+	private static final String ID = "urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:on-permit-apply-second";
+
+	private static final Status PROCESSING_ERROR = Status.processingError().build();
 
 	public OnPermitApplySecondPolicyCombiningAlgorithm() {
 		super(ID);
@@ -58,40 +54,29 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 
 	@Override
 	public Decision combine(EvaluationContext context,
-			List<CompositeDecisionRule> policies) {
-		if(policies.size() != 2){
+	                        List<CompositeDecisionRule> policies) {
+		final int numberOfPolicies = policies.size();
+		if (numberOfPolicies < 2 || numberOfPolicies > 3) {
 			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_DP;
 		}
-		Decision d0 =  evaluateIfMatch(context, policies.get(0));
-		if(d0 == Decision.NOT_APPLICABLE){
-			return Decision.NOT_APPLICABLE;
+		final Decision decision0 = evaluateIfMatch(context, policies.get(0));
+		if (decision0 == Decision.NOT_APPLICABLE ||
+				decision0 == Decision.DENY ||
+				decision0 == Decision.INDETERMINATE_D) {
+			if (numberOfPolicies == 2) {
+				return Decision.NOT_APPLICABLE;
+			} else {
+				return evaluateIfMatch(context, policies.get(2));
+			}
 		}
-		Decision d1 = evaluateIfMatch(context, policies.get(1));
-		if(d0 == Decision.PERMIT){
-			return d1;
+		if (decision0 == Decision.PERMIT) {
+			return evaluateIfMatch(context, policies.get(1));
 		}
-		if(d1 == Decision.PERMIT){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_P;
-		}
-		if(d1 == Decision.DENY){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_D;
-		}
-		if(d1 == Decision.INDETERMINATE_P){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_P;
-		}
-		if(d1 == Decision.INDETERMINATE_D){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_D;
-		}
-		if(d1 == Decision.INDETERMINATE_DP){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_DP;
-		}
-		return Decision.NOT_APPLICABLE;
-	}
 
+		// decision0 is Indeterminate{P} or Indeterminate{DP}
+		// Use status code of decision0
+		context.setEvaluationStatus(PROCESSING_ERROR);
+		return Decision.INDETERMINATE_DP;
+	}
 }

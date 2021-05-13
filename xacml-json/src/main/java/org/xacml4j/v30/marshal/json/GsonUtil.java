@@ -33,14 +33,20 @@ class GsonUtil
 	/** Private constructor for utility class */
 	private GsonUtil() {}
 
-	public static boolean getAsBoolean(JsonObject o, String memberName, boolean defaultValue)
+	public static Boolean getAsBoolean(JsonObject o, String memberName, Boolean defaultValue)
 	{
-		JsonPrimitive v = o.getAsJsonPrimitive(memberName);
+        if(o == null){
+            return null;
+        }
+        JsonPrimitive v = o.getAsJsonPrimitive(memberName);
 		return (v != null)?v.getAsBoolean():defaultValue;
 	}
 
 	public static String getAsString(JsonObject o, String memberName, String defaultValue)
 	{
+        if(o == null){
+            return null;
+        }
 		JsonPrimitive v = o.getAsJsonPrimitive(memberName);
 		return (v != null)?v.getAsString():defaultValue;
 	}

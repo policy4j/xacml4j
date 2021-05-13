@@ -10,12 +10,12 @@ package org.xacml4j.v30.pdp;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -82,39 +82,48 @@ public class AttributeDesignator extends AttributeReference
 	public BagOfAttributeExp evaluate(EvaluationContext context)
 			throws EvaluationException
 	{
-		BagOfAttributeExp v = null;
-		try{
+		BagOfAttributeExp v;
+		try {
 			v = designatorKey.resolve(context);
-		}catch(AttributeReferenceEvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Reference=\"{}\" evaluation " +
-						"failed with error=\"{}\"",
-						toString(), e.getMessage());
+		} catch (AttributeReferenceEvaluationException e) {
+			if (log.isDebugEnabled()) {
+				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"",
+				          this, e.getMessage());
 			}
-			if(isMustBePresent()){
+			if (isMustBePresent()) {
 				throw e;
 			}
 			return getDataType().bagType().createEmpty();
-		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Reference=\"{}\" evaluation " +
-						"failed with error=\"{}\"",
-						toString(), e.getMessage());
+		} catch (Exception e) {
+			if (log.isDebugEnabled()) {
+				log.debug("Reference=\"{}\" evaluation failed with error=\"{}\"",
+				          this, e.getMessage());
 			}
-			if(isMustBePresent()){
+			if (isMustBePresent()) {
 				throw new AttributeReferenceEvaluationException(designatorKey);
+			}
+			if (log.isDebugEnabled()) {
+				log.debug("Returning an empty bag for attributeId=\"{}\", category=\"{}\"",
+				          designatorKey.getAttributeId(), designatorKey.getCategory());
 			}
 			return getDataType().bagType().createEmpty();
 		}
-		if((v == null || v.isEmpty()) &&
-				isMustBePresent()){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to resolve attributeId=\"{}\", category=\"{}\"",
-						designatorKey.getAttributeId(), designatorKey.getCategory());
-			}
-			throw new AttributeReferenceEvaluationException(designatorKey);
+		if (v == null) {
+			 if (isMustBePresent()) {
+				 if (log.isDebugEnabled()) {
+					 log.debug("Failed to resolve attributeId=\"{}\", category=\"{}\"",
+					           designatorKey.getAttributeId(), designatorKey.getCategory());
+				 }
+				 throw new AttributeReferenceEvaluationException(designatorKey);
+			 } else {
+			 	if (log.isDebugEnabled()) {
+				    log.debug("Returning an empty bag for attributeId=\"{}\", category=\"{}\"",
+				              designatorKey.getAttributeId(), designatorKey.getCategory());
+			    }
+			 	return getDataType().bagType().createEmpty();
+			 }
 		}
-		return ((v == null)?getDataType().bagType().createEmpty():v);
+		return v;
 	}
 
 	@Override
@@ -137,15 +146,12 @@ public class AttributeDesignator extends AttributeReference
 		if(o == this){
 			return true;
 		}
-		if(o == null){
-			return false;
-		}
 		if(!(o instanceof AttributeDesignator)){
 			return false;
 		}
 		AttributeDesignator d = (AttributeDesignator)o;
 		return designatorKey.equals(d.designatorKey) &&
-		(isMustBePresent() ^ d.isMustBePresent());
+		isMustBePresent() == d.isMustBePresent();
 	}
 
 	@Override

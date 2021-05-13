@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.xacml4j</groupId>
 		<artifactId>xacml</artifactId>
-		<version>1.3.0-SNAPSHOT</version>
+		<version>1.3.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>xacml-json</artifactId>
 	<packaging>jar</packaging>

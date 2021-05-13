@@ -223,15 +223,11 @@ public final class FunctionSpecBuilder
 				FunctionInvocation invocation,
 				FunctionParametersValidator validator,
 				boolean evaluateParameters){
-			Preconditions.checkNotNull(functionId);
-			Preconditions.checkNotNull(params);
-			Preconditions.checkNotNull(invocation);
-			Preconditions.checkNotNull(resolver);
-			this.functionId = functionId;
-			parameters.addAll(params);
-			this.resolver = resolver;
+			this.functionId = Preconditions.checkNotNull(functionId);
+			parameters.addAll(Preconditions.checkNotNull(params));
+			this.resolver = Preconditions.checkNotNull(resolver);
 			this.validator = validator;
-			this.invocation = invocation;
+			this.invocation = Preconditions.checkNotNull(invocation);
 			this.evaluateParameters = evaluateParameters;
 			this.legacyId = legacyId;
 		}
@@ -320,10 +316,10 @@ public final class FunctionSpecBuilder
 							functionId, normalizedArgs);
 				}
 				T result = (T)invocation.invoke(this, context,
-						isRequiresLazyParamEval()?normalizedArgs:evaluate(context, normalizedArgs));
+						evaluateParameters ?normalizedArgs:evaluate(context, normalizedArgs));
 				if(log.isDebugEnabled()){
 					log.debug("Function=\"{}\" " +
-							"invocation result=\"{}\"", getId(), result);
+							"invocation result=\"{}\"", functionId, result);
 				}
 				return result;
 			}
@@ -335,7 +331,7 @@ public final class FunctionSpecBuilder
 					log.debug("Failed to invoke function", e);
 				}
 				throw new FunctionInvocationException(this, e,
-						"Failed to invoke function=\"%s\"", getId());
+						"Failed to invoke function=\"%s\"", functionId);
 			}
 		}
 
@@ -551,6 +547,22 @@ public final class FunctionSpecBuilder
 					.add("evaluateParams", evaluateParameters)
 					.add("params", parameters)
 					.toString();
+		}
+
+		@Override
+		public int hashCode() {
+			return functionId.hashCode();
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+			if(!(obj instanceof FunctionSpecImpl)) {
+				return false;
+			}
+			return functionId.equals(((FunctionSpecImpl) obj).functionId);
 		}
 	}
 

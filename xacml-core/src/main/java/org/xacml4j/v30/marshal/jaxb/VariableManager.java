@@ -27,50 +27,46 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import org.xacml4j.v30.XacmlSyntaxException;
 import org.xacml4j.v30.pdp.VariableDefinition;
 
 import com.google.common.base.Preconditions;
 
-class VariableManager <VExpression>
-{
-	private Map<String, VExpression> variableDefinitionExpressions;
-	private Map<String, VariableDefinition> variableDefinitions;
-	private Stack<String> resolutionStack;
+class VariableManager<VExpression> {
+	private final Map<String, VExpression> variableDefinitionExpressions;
+	private final Map<String, VariableDefinition> variableDefinitions;
+	private final Stack<String> resolutionStack;
 
-	public VariableManager(Map<String, VExpression> variableDefinitionExpressions)
-	{
+	public VariableManager(Map<String, VExpression> variableDefinitionExpressions) {
 		this.variableDefinitionExpressions = new HashMap<String, VExpression>(variableDefinitionExpressions);
-		this.variableDefinitions = new HashMap<String, VariableDefinition>();
+		this.variableDefinitions = new HashMap<String, VariableDefinition>(variableDefinitionExpressions.size());
 		this.resolutionStack = new Stack<String>();
 	}
 
-	public VariableDefinition getVariableDefinition(String variableId){
+	public VariableDefinition getVariableDefinition(String variableId) {
 		return variableDefinitions.get(variableId);
 	}
 
-	public VExpression getVariableDefinitionExpression(String variableId){
+	public VExpression getVariableDefinitionExpression(String variableId) {
 		return this.variableDefinitionExpressions.get(variableId);
 	}
 
-	public Iterable<String> getVariableDefinitionExpressions(){
+	public Iterable<String> getVariableDefinitionExpressions() {
 		return variableDefinitionExpressions.keySet();
 	}
 
-	public void pushVariableDefinition(String variableId)
-	{
-		if(resolutionStack.contains(variableId)){
-			throw new IllegalArgumentException(String.format("Cyclic " +
-					"variable reference=\"%s\" detected", variableId));
+	public void pushVariableDefinition(String variableId) {
+		if (resolutionStack.contains(variableId)) {
+			throw new XacmlSyntaxException("Cyclic variable reference=\"%s\" detected", variableId);
 		}
 		this.resolutionStack.push(variableId);
 	}
 
-	public Map<String, VariableDefinition> getVariableDefinitions(){
+	public Map<String, VariableDefinition> getVariableDefinitions() {
 		return Collections.unmodifiableMap(variableDefinitions);
 	}
 
-	public String resolveVariableDefinition(VariableDefinition variableDef)
-	{
+	public String resolveVariableDefinition(VariableDefinition variableDef) {
 		Preconditions.checkArgument(resolutionStack.peek().equals(variableDef.getVariableId()));
 		this.variableDefinitions.put(variableDef.getVariableId(), variableDef);
 		return resolutionStack.pop();

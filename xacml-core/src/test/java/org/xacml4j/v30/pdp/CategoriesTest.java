@@ -28,12 +28,18 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Collection;
+
 import org.junit.Test;
 import org.xacml4j.v30.Categories;
+import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Entity;
+
+import com.google.common.collect.ImmutableList;
 
 
-public class AttributeCategoriesTest
+public class CategoriesTest
 {
 	@Test
 	public void testCategoryParse() throws Exception
@@ -66,5 +72,28 @@ public class AttributeCategoriesTest
 		assertTrue(c.isDelegated());
 		assertNull(c.toDelegatedCategory());
 
+	}
+
+	@Test
+	public void testShortCategoryNames(){
+		assertEquals(Categories.ACTION, Categories.parse("Action"));
+		assertEquals(Categories.SUBJECT_ACCESS, Categories.parse("AccessSubject"));
+		assertEquals(Categories.RESOURCE, Categories.parse("Resource"));
+		assertEquals(Categories.ENVIRONMENT, Categories.parse("Environment"));
+	}
+
+	@Test
+	public void testFilterCategoriesMethods()
+	{
+		ImmutableList<Category> all = ImmutableList
+				.<Category>builder()
+				.add(Category.builder(Categories.ACTION).entity(Entity.builder().build()).build())
+				.add(Category.builder(Categories.ENVIRONMENT).entity(Entity.builder().build()).build())
+				.add(Category.builder().category(Categories.parse("Test")).entity(Entity.builder().build()).build())
+				.build();
+		Collection<Category> defaultCategories = Categories.getDefaultCategories(all);
+		assertEquals(2, defaultCategories.size());
+		Collection<Category> customCategories = Categories.getCustomCategories(all);
+		assertEquals(1, customCategories.size());
 	}
 }
