@@ -28,7 +28,7 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - uses: actions/setup-java@v2
+    - uses: ouzi-dev/commit-status-updater@v1.1.0
       if: always()
       with:
         status: "${{ job.status }}"
