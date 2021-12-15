@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   #%L
-  Xacml4J Spring 3.x Support Module
+  Xacml4J Gson Integration
   %%
   Copyright (C) 2009 - 2014 Xacml4J.org
   %%
@@ -21,28 +21,15 @@
   #L%
   -->
 
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<configuration>
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
-	debug="false">
-
-	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<!-- The default pattern: Date Priority [Category] Message\n -->
-			<param name="ConversionPattern"
-				value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
-		</layout>
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d %-5level [%logger{1}] PDP[%X{pdpId}] %msg%n</pattern>
+		</encoder>
 	</appender>
 
-	<category name="org.xacml4j">
-		<priority value="DEBUG" />
-	</category>
-
-	<root>
-		<priority value="INFO" />
+	<root level="debug">
 		<appender-ref ref="Console" />
 	</root>
-
-</log4j:configuration>
-
+</configuration>
