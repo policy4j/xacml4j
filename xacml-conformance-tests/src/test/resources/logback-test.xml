@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   #%L
-  Xacml4J Core Engine Implementation
+  Xacml4J Conformance Tests
   %%
   Copyright (C) 2009 - 2014 Xacml4J.org
   %%
@@ -9,36 +9,25 @@
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation, either version 3 of the
   License, or (at your option) any later version.
-  
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Lesser Public License for more details.
-  
   You should have received a copy of the GNU General Lesser Public
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/lgpl-3.0.html>.
   #L%
   -->
 
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<configuration>
 
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
-	debug="false">
-
-	<appender name="Console" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<!-- The default pattern: Date Priority [Category] Message\n -->
-			<param name="ConversionPattern"
-				value="%d{ABSOLUTE} %-5p [%c{1}] PDP[%X{pdpId}] %m%n" />
-		</layout>
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d [%X{requestId}][%t] %-5level [%logger{1}] %msg%n</pattern>
+		</encoder>
 	</appender>
 
-	<root>
-		<priority value="DEBUG" />
+	<root level="info">
 		<appender-ref ref="Console" />
 	</root>
-
-</log4j:configuration>
-
+</configuration>
