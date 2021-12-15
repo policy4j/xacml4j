@@ -1,4 +1,4 @@
-# Xacml4j XACML Implementation
+# Xacml4j XACML Access Control Policy Engine Implementation
 
 XACML4j's reference implementation of the OASIS XACML 3.0 Standard. The framework represents the entire XACML 3.0 object set as a collection of Java interfaces and standard implementations of those interfaces.  The PDP engine is built on top of this framework and represents a complete implementation of a XACML 3.0 PDP, including all of the multi-decision profiles. In addition, the framework also contains an implementation of the OASIS XACML 3.0 RESTful API v1.0 and XACML JSON Profile v1.0 WD 14. The PEP API includes annotation functionality, allowing application developers to simply annotate a Java class to provide attributes for a request. The annotation support removes the need for application developers to learn much of the API.
 
