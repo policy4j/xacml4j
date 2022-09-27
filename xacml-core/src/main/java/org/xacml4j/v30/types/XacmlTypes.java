@@ -30,6 +30,7 @@ import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.xpath.XPathExpression;
 import java.net.URI;
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -207,6 +208,11 @@ public enum XacmlTypes implements AttributeValueType
 				a = Optional.of(
 						TimeValue.of((org.xacml4j.v30.Time) v));
 			}
+
+			if (v instanceof Instant) {
+				a = Optional.of(
+						TimeValue.of((org.xacml4j.v30.Time) v));
+			}
 			return a.orElseThrow(
 					() -> SyntaxException
 							.invalidAttributeValue(
@@ -375,31 +381,53 @@ public enum XacmlTypes implements AttributeValueType
 			return Optional.of((AttributeValueType)typeId);
 		}
 		if(typeId instanceof String){
-			return getType(typeId.toString(), refresh);
+			return _getTypeById(typeId.toString(), refresh);
 		}
 		if(typeId instanceof URI){
-			return getType(typeId.toString(), refresh);
+			return _getTypeById(typeId.toString(), refresh);
 		}
 		if(typeId instanceof AttributeValue){
 			AttributeValue a = (AttributeValue)typeId;
 			if(a.getType().equals(XacmlTypes.STRING) || a.getType().equals(ANYURI)){
-				return getType(a.value().toString(), refresh);
+				return _getTypeById(a.value().toString(), refresh);
 			}
 		}
 		return Optional.empty();
 	}
 
 	/**
+	 * A factory for the extension types
+	 */
+	public interface Factory {
+		Optional<AttributeValueType> getExtensionType(String typeId);
+	}
+
+	private static final ThreadLocal<ServiceLoader<Factory>> EXTENSIONS = ThreadLocal
+			.withInitial(()->ServiceLoader.load(Factory.class));
+
+	/**
 	 * Gets type via type identifier or alias
 	 *
 	 * @param typeId a type identifier
+	 * @param refresh refresh extension types
 	 * @return {@link Optional} with resolved type
 	 */
-	public static Optional<AttributeValueType> getType(final String typeId, boolean refresh){
-		return Optional
+	private static Optional<AttributeValueType> _getTypeById(final String typeId, boolean refresh){
+		Optional<AttributeValueType> type = Optional
 				.ofNullable(SYSTEM_TYPES_BY_ID.get(typeId))
-				.or(()->Optional
-						.ofNullable(SYSTEM_TYPES_BY_SHORT_ID.get(typeId)));
+				.or(()->Optional.ofNullable(SYSTEM_TYPES_BY_SHORT_ID.get(typeId)));
+		if(type.isPresent()){
+			return type;
+		}
+		ServiceLoader<Factory> typeFactory = EXTENSIONS.get();
+		if(typeFactory == null){
+			return Optional.empty();
+		}
+		return typeFactory.stream()
+		                  .filter(v->v.get().getExtensionType(typeId).isPresent())
+		                  .map(v->v.get())
+		                  .findFirst().
+				                  flatMap(v->v.getExtensionType(typeId));
 	}
 
 	/**

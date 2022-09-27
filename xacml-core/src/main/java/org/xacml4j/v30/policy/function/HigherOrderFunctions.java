@@ -42,7 +42,7 @@ import java.util.List;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML higher order functions")
-final class HigherOrderFunctions
+public final class HigherOrderFunctions
 {
 	/** Private constructor for utility class */
 	private HigherOrderFunctions() {}

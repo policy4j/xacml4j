@@ -83,7 +83,7 @@ public final class BagOfAttributeValues
 	 *
 	 * @return {@link AttributeValueType}
 	 */
-	public AttributeValueType getDataType(){
+	public AttributeValueType getBagValueType(){
 		return type.getDataType();
 	}
 

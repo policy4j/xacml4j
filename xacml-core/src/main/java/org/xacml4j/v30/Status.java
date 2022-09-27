@@ -231,7 +231,10 @@ public final class Status
 		}
 
 		public Builder detail(Throwable t){
-			return detail(Throwables.getStackTraceAsString(t));
+			if(t != null){
+				return detail(Throwables.getStackTraceAsString(t));
+			}
+			return this;
 		}
 
 		public Status build(){

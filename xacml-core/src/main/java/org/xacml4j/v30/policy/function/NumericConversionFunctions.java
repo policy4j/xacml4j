@@ -36,7 +36,7 @@ import org.xacml4j.v30.types.IntegerValue;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML numeric conversion functions")
-final class NumericConversionFunctions
+public final class NumericConversionFunctions
 {
 	/** Private constructor for utility class */
 	private NumericConversionFunctions() {}

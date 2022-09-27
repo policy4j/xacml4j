@@ -13,14 +13,6 @@
 /xacml-core/target
 /xacml-core/xacml-core.iml
 
-# /xacml-spring/
-/xacml-spring/target
-/xacml-spring/.classpath
-/xacml-spring/.project
-/xacml-spring/.settings
-/xacml-spring/.springBeans
-/xacml-spring/xacml-spring.iml
-
 # /xacml-test/
 /xacml-test/.project
 /xacml-test/.classpath
@@ -57,3 +49,4 @@
 /xacml-conformance-tests/xacml-conformance-tests.iml
 
 .java-version
+/target/

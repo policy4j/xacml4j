@@ -38,7 +38,7 @@ import org.xacml4j.v30.types.XacmlTypes;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML logical functions")
-final class LogicalFunctions
+public final class LogicalFunctions
 {
 
 	/** Private constructor for utility class */

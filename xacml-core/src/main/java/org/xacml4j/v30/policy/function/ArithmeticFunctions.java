@@ -42,7 +42,7 @@ import org.xacml4j.v30.types.XacmlTypes;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML arithmetic functions")
-final class ArithmeticFunctions
+public final class ArithmeticFunctions
 {
 	/** Private constructor for utility class */
 	private ArithmeticFunctions(){}

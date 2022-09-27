@@ -28,7 +28,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import static org.junit.Assert.*;
 
-public class EntityTest 
+public class   EntityTest
 {
 	
 	private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
@@ -80,9 +80,13 @@ public class EntityTest
 		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(XacmlTypes.STRING.of("aa")));
 		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(XacmlTypes.STRING.of("bbb")));
 	}
-	
 
-	
+
+
+	@Test
+	public void testEntityType(){
+		assertNotNull(XacmlTypes.getType(XacmlTypes.ENTITY.getDataTypeId(), false).orElse(null));
+	}
 	@Test
 	public void testEntityEquals(){
 		Entity e0 = Entity

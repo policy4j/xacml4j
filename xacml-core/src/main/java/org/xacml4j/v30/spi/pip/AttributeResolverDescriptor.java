@@ -22,6 +22,7 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -49,6 +50,11 @@ public final class AttributeResolverDescriptor
 		this.attributesByKey = b.attributesByKey.build();
 		this.attributesById = b.attributesById.build();
 		this.resolver = Objects.requireNonNull(resolverFunction, "resolverFunction");
+		for(AttributeReferenceKey k : attributesByKey.keySet()){
+			if(getAllContextKeyRefs().contains(k)){
+				throw SyntaxException.invalidResolverReferenceSelfRef(getId(), "key={}", k);
+			}
+		}
 	}
 
 	/**
@@ -129,6 +135,14 @@ public final class AttributeResolverDescriptor
 		return attributesByKey;
 	}
 
+	public String toString(){
+		return MoreObjects.toStringHelper(this)
+		                  .add("issuer", issuer)
+		                  .add("attributesById", attributesById)
+		                  .add("resolver", resolver)
+		                  .toString();
+	}
+
 	/**
 	 * Tests if an attribute resolver can resolve
 	 * an attribute with a given identifier
@@ -174,20 +188,24 @@ public final class AttributeResolverDescriptor
 				Collection<String> aliases){
 			AttributeDescriptor d = AttributeDescriptor.of(attributeId, dataType, aliases);
 			LOG.debug("Adding attributeId=\"{}\" aliases=\"{}\"", attributeId, aliases);
+			attributesById.put(attributeId, d);
 			for(String alias : d.getAliases() ){
-				AttributeDesignatorKey k = AttributeDesignatorKey.builder()
-						.category(categoryId)
-						.attributeId(alias)
-						.dataType(dataType)
-						.issuer(issuer)
-						.build();
 				if(attributesById.put(alias, d) != null){
-					throw new IllegalArgumentException(String.format(
-							"Builder already has an attribute with id=\"%s\"", alias));
+					throw SyntaxException.invalidResolverAttributeId(id,
+							"Builder already has an attribute with id=\"%s\" alias",
+							                                         alias);
 				}
+				AttributeDesignatorKey k = AttributeDesignatorKey.builder()
+				                                                 .category(categoryId)
+				                                                 .attributeId(alias)
+				                                                 .dataType(dataType)
+				                                                 .issuer(issuer)
+				                                                 .build();
 				if(this.attributesByKey.put(k, d) != null){
-					throw new IllegalArgumentException(String.format(
-							"Builder already has an attribute with id=\"%s\"", alias));
+					throw SyntaxException
+							.invalidResolverAttributeId(id,
+							                            "Builder already has an attribute with key=\"%s\" alias={}",
+							                            k, k);
 				}
 			}
 			return this;

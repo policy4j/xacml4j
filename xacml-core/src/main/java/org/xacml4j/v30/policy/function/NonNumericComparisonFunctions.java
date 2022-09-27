@@ -27,7 +27,7 @@ import org.xacml4j.v30.spi.function.*;
 import org.xacml4j.v30.types.*;
 
 @XacmlFunctionProvider(description="XACML non-numeric comparison functions")
-final class NonNumericComparisonFunctions
+public final class NonNumericComparisonFunctions
 {
 	/** Private constructor for utility class */
 	private NonNumericComparisonFunctions() {}

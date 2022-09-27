@@ -25,6 +25,9 @@ package org.xacml4j.v30.spi.pip;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.util.Pair;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfAttributeValues;
@@ -39,6 +42,7 @@ import java.util.stream.Stream;
 
 public final class AttributeSet
 {
+	private static final Logger LOG = LoggerFactory.getLogger(AttributeSet.class);
 	private final Instant timestamp;
 	private final Map<String, BagOfAttributeValues> values;
 	private final AttributeResolverDescriptor d;
@@ -100,7 +104,7 @@ public final class AttributeSet
 	public Optional<BagOfAttributeValues> get(AttributeDesignatorKey key)
 	{
 		AttributeDescriptor ad = d.getAttributesByKey().get(key);
-		return Optional.ofNullable(values.get(ad.getAttributeId()));
+		return Optional.ofNullable(ad).map(v->values.get(v.getAttributeId()));
 	}
 
 	/**
@@ -185,10 +189,12 @@ public final class AttributeSet
 					.orElseThrow(()-> new IllegalArgumentException(String.format(
 							"Attribute=\"%s\" is not defined by resolver=\"%s\"",
 							id, d.getId())));
-			if(attrDesc.getDataType().equals(value.getDataType())){
+			LOG.debug("attributeId=\"{}\" descriptor type=\"{}\" value type=\"{}\"",
+			          id, attrDesc.getDataType(), value.getBagValueType());
+			if(!attrDesc.getDataType().equals(value.getBagValueType())){
 				throw new IllegalArgumentException(String.format(
 						"Given attribute=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",
-						id, value.getDataType(), attrDesc.getDataType()));
+						id, value.getBagValueType(), attrDesc.getDataType()));
 			}
 			this.mapBuilder.put(id, value);
 			return this;

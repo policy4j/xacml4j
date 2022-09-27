@@ -22,7 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-public class ProcessingErrorException extends XacmlException
+public class ProcessingErrorException extends CoreException
 {
     public ProcessingErrorException(String template, Object... arguments) {
         super(Status.processingError()

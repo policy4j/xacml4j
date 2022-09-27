@@ -33,7 +33,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 
 @XacmlFunctionProvider(description="XACML numeric comparison functions")
-final class NumericComparisonFunctions
+public final class NumericComparisonFunctions
 {
 	/** Private constructor for utility class */
 	private NumericComparisonFunctions() {}

@@ -51,7 +51,8 @@ public class FunctionInvocationException extends EvaluationException
 			Throwable cause,
 			String message, Object...params) {
 		super(Status.processingError()
-				.message(Optional.ofNullable(message).map(v-> String.format(v, params)).orElse(null))
+				.message(Optional.ofNullable(message)
+				                 .map(v-> String.format(v, params)).orElse(null))
 				.detail(cause).build(), cause);
 		this.spec = spec;
 	}

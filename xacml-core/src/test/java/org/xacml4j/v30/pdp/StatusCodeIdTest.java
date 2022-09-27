@@ -38,7 +38,7 @@ public class StatusCodeIdTest
 		assertSame(StatusCodeId.OK, c);
 		c = StatusCodeId.of("AAAA").get();
 		assertEquals("AAAA", c.getId());
-		assertEquals("AAAA", c.toString());
+		assertEquals("AAAA", c.getAbbreviatedId());
 
 		StatusCodeId c1 = StatusCodeId.of("AAAA").get();
 		StatusCodeId c2 = StatusCodeId.of("AAAA").get();

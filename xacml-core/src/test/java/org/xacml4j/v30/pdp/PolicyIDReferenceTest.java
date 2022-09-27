@@ -48,7 +48,7 @@ public class PolicyIDReferenceTest
 	}
 
 	@Test
-	public void testEvaluateFailedToResolveReference() throws XacmlException
+	public void testEvaluateFailedToResolveReference() throws CoreException
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 
@@ -84,7 +84,7 @@ public class PolicyIDReferenceTest
 
 
 	@Test
-	public void testEvaluateFailedToResolveReferenceAndReturnNull() throws XacmlException
+	public void testEvaluateFailedToResolveReferenceAndReturnNull() throws CoreException
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 
@@ -117,7 +117,7 @@ public class PolicyIDReferenceTest
 	}
 
 	@Test
-	public void testEvaluateIfApplicableFailedToResolveReferenceViaException() throws XacmlException
+	public void testEvaluateIfApplicableFailedToResolveReferenceViaException() throws CoreException
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 
@@ -138,7 +138,7 @@ public class PolicyIDReferenceTest
 	}
 
 	@Test
-	public void testEvaluateIfApplicableFailedToResolveReferenceReturnsNull() throws XacmlException
+	public void testEvaluateIfApplicableFailedToResolveReferenceReturnsNull() throws CoreException
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 
@@ -161,7 +161,7 @@ public class PolicyIDReferenceTest
 	}
 
 	@Test
-	public void testIsApplicableFailedToResolveReference() throws XacmlException
+	public void testIsApplicableFailedToResolveReference() throws CoreException
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 
@@ -215,7 +215,7 @@ public class PolicyIDReferenceTest
 	}
 
 	@Test
-	public void testEvaluateIfApplicablePolicyCanBeResolved() throws XacmlException
+	public void testEvaluateIfApplicablePolicyCanBeResolved() throws CoreException
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
@@ -242,7 +242,7 @@ public class PolicyIDReferenceTest
 	}
 
 	@Test
-	public void testIsApplicablePolicyCanBeResolved() throws XacmlException
+	public void testIsApplicablePolicyCanBeResolved() throws CoreException
 	{
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);

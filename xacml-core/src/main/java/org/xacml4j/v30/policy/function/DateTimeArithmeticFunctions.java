@@ -35,7 +35,7 @@ import org.xacml4j.v30.types.YearMonthDurationValue;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML date time arithmetic functions")
-final class DateTimeArithmeticFunctions
+public final class DateTimeArithmeticFunctions
 {
 	/** Private constructor for utility class */
 	private DateTimeArithmeticFunctions() {}

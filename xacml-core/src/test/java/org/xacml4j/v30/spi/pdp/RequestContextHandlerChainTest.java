@@ -70,7 +70,7 @@ public class RequestContextHandlerChainTest
 		c.verify();
 		c.reset();
 		RequestContextHandler m4 = createStrictMock(RequestContextHandler.class);
-		h.setNext(m4);
+		h.setNext(m4, false);
 		c.replay();
 		h.setNext(m4);
 		c.verify();

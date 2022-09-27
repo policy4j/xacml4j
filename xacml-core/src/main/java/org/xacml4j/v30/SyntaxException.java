@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.pdp.FunctionParamSpec;
 import org.xacml4j.v30.spi.function.XacmlFuncParam;
 import org.xacml4j.v30.spi.function.XacmlFuncParamOptional;
 import org.xacml4j.v30.spi.function.XacmlFuncParamVarArg;
@@ -31,14 +32,15 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 
-public class SyntaxException extends XacmlException
+public class SyntaxException extends CoreException
 {
 	private static final long serialVersionUID = 5208193385563540743L;
 
 	public SyntaxException(String template, Object... arguments) {
 		super(Status.syntaxError()
-						.detail(String.format(template, arguments)).build(),
-				String.format(template, arguments));
+						.detail(format(template,
+						                      arguments)).build(),
+				format(template, arguments));
 	}
 
 
@@ -63,6 +65,12 @@ public class SyntaxException extends XacmlException
 		return new SyntaxException(
 				"Invalid XACML function=\"%s\", parameter=\"{%s}\" method=\"%s\"",
 				funcSpec.id(), param.typeId(), functionMethod.getName());
+	}
+
+	public static SyntaxException invalidFunctionParameter(String funcId, FunctionParamSpec paramSpec){
+		return new SyntaxException(
+				"Invalid XACML function=\"%s\", parameter=\"{%s}\"",
+				funcId, paramSpec);
 	}
 
 	public static SyntaxException invalidFunctionParameter(XacmlFuncSpec funcSpec, XacmlFuncParamOptional param, Method functionMethod){
@@ -107,20 +115,29 @@ public class SyntaxException extends XacmlException
 		return new SyntaxException(message, params);
 	}
 
-
-	public static SyntaxException invalidAttributeValue(Object v, AttributeValueType...excpectedTypes){
+	public static SyntaxException invalidAttributeValue(Object v, AttributeValueType...expectedTypes){
 		return new SyntaxException(
 				"Invalid XACML attribute value for type=\"%s\" attribute " +
-						"value=\"%s\"", Arrays.toString(excpectedTypes), v);
+						"value=\"%s\"", Arrays.toString(expectedTypes), v);
 	}
 
 	public static SyntaxException invalidFunction(String id){
-		return new SyntaxException("Invalid XACML functionId=\"{}\"",  id);
+		return new SyntaxException("Invalid XACML functionId=\"%s\"",  id);
 	}
 
-	public static SyntaxException invalidResolverMethod(Method m, String message, Object ...params){
-		return new SyntaxException("Invalid XACML resolver method=\"%s\" class=\"%%s\", details - %s",
-				m.getName(), m.getDeclaringClass().getName(), String.format(message, params));
+	public static SyntaxException invalidResolverMethod(Method m, String message){
+		return new SyntaxException("Invalid XACML resolver method=\"%s\" class=\"%s\", details=\"%s\"",
+				m.getName(), m.getDeclaringClass().getName(), message);
+	}
+
+	public static SyntaxException invalidResolverAttributeId(String resolverId, String message, Object ...p){
+		return new SyntaxException("Invalid resolver id=\"%s\" details=\"%s\"",
+		                          resolverId, format(message, p));
+	}
+
+	public static SyntaxException invalidResolverReferenceSelfRef(String resolverId, String message, Object ...p){
+		return new SyntaxException("Invalid resolver id=\"%s\" details=\"%s\"",
+		                           resolverId, format(message, p));
 	}
 
 }

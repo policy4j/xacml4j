@@ -23,6 +23,8 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfAttributeValues;
 import org.xacml4j.v30.CategoryId;
@@ -38,7 +40,6 @@ abstract class BaseResolverDescriptor<R>
 	private String name;
 
 	private CategoryId categoryId;
-	private List<Function<ResolverContext, Optional<BagOfAttributeValues>>> contextKeysResolutionPlan;
 	private List<AttributeReferenceKey> allContextKeys;
 	private Duration cacheTTL;
 
@@ -46,9 +47,8 @@ abstract class BaseResolverDescriptor<R>
 			BaseBuilder builder) {
 		this.id = Objects.requireNonNull(builder.id, "id");
 		this.name = Objects.requireNonNull(builder.name, "name");
-		this.categoryId = Objects.requireNonNull(builder.categoryId, "categoryIds");
+		this.categoryId = Objects.requireNonNull(builder.categoryId, "category");
 		this.cacheTTL = builder.cacheTTL;
-		this.contextKeysResolutionPlan = ImmutableList.copyOf(builder.contextKeysResolutionPlan);
 		this.allContextKeys = ImmutableList.copyOf(builder.contextReferenceKeys);
 	}
 
@@ -80,10 +80,10 @@ abstract class BaseResolverDescriptor<R>
 	@Override
 	public Map<AttributeReferenceKey, BagOfAttributeValues> resolveKeyRefs(
 			ResolverContext context) {
-		if(context.getResolvedKeys().isEmpty()){
-			contextKeysResolutionPlan.forEach(f->f.apply(context));
-		}
-		return context.getResolvedKeys();
+		ImmutableMap.Builder<AttributeReferenceKey, BagOfAttributeValues> contextKeys = ImmutableMap.builder();
+		allContextKeys.forEach((k)->context.resolve(k)
+		                                   .ifPresent((v)->contextKeys.put(k, v)));
+		return contextKeys.build();
 	}
 
 	public List<AttributeReferenceKey> getAllContextKeyRefs(){

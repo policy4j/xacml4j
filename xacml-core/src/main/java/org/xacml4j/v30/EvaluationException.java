@@ -31,7 +31,7 @@ import java.util.Optional;
  *
  * @author Giedrius Trumpickas
  */
-public class EvaluationException extends XacmlException
+public class EvaluationException extends CoreException
 {
 	private Optional<EvaluationContext> context;
 

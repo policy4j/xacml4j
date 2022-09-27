@@ -29,7 +29,7 @@ package org.xacml4j.v30;
  *
  * @author Giedrius Trumpickas
  */
-public class XacmlException extends RuntimeException
+public class CoreException extends RuntimeException
 {
 	private static final long serialVersionUID = -546790992581476011L;
 
@@ -41,8 +41,8 @@ public class XacmlException extends RuntimeException
 	 *
 	 * @param status a XACML status
 	 */
-	protected XacmlException(Status status,
-							 String message){
+	protected CoreException(Status status,
+	                        String message){
 		super(message);
 		this.status = Status
 				.from(status)
@@ -50,8 +50,8 @@ public class XacmlException extends RuntimeException
 				.build();
 	}
 
-	protected XacmlException(Status status,
-							 Throwable t){
+	protected CoreException(Status status,
+	                        Throwable t){
 		super(t);
 		this.status = Status.from(status).detail(t).build();
 	}
@@ -63,6 +63,10 @@ public class XacmlException extends RuntimeException
 	 */
 	public final Status getStatus(){
 		return status;
+	}
+
+	public static String format(String template, Object ...p){
+		return (template == null)?null:String.format(template, p);
 	}
 }
 

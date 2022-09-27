@@ -36,12 +36,16 @@ import java.util.*;
 
 /**
  * A builder for building {@link FunctionSpec} instances
- * from various metadata sources
+ * from various metadata sources, the assumption is made that parameter types
+ * follow in mandatory, optional, variadic order and parameter type groups
+ * do not interleave.
  *
  * @author Giedrius Trumpickas
  */
 public final class FunctionSpecBuilder
 {
+	private static final Logger LOG = LoggerFactory.getLogger(FunctionSpecBuilder.class);
+
 	private String functionId;
 	private String shortId;
 	private String legacyId;
@@ -149,7 +153,12 @@ public final class FunctionSpecBuilder
 	}
 
 	public FunctionSpecBuilder anyBag() {
-		paramSpec.add(new FunctionParamAnyBagSpec());
+		FunctionParamSpec spec = new FunctionParamAnyBagSpec();
+		if(hadVarArg){
+			throw SyntaxException
+					.invalidFunctionParameter(functionId, spec);
+		}
+		paramSpec.add(spec);
 		return this;
 	}
 
@@ -316,6 +325,7 @@ public final class FunctionSpecBuilder
 								"function=\"{}\" parameters", functionId);
 					}
 					if(!doValidateNormalizedParameters(normalizedArgs)){
+						log.debug("Failed to validate function=\"{}\" params=\"{}\"", functionId, normalizedArgs);
 						throw new FunctionInvocationException(this,
 								"Failed to validate function=\"%s\" parameters=\"%s\"",
 								functionId, normalizedArgs);
@@ -334,6 +344,9 @@ public final class FunctionSpecBuilder
 				return result;
 			}
 			catch(EvaluationException e){
+				if(log.isDebugEnabled()){
+					log.debug("Failed to invoke function", e);
+				}
 				throw e;
 			}
 			catch(Exception e){
@@ -400,16 +413,21 @@ public final class FunctionSpecBuilder
 			while(it.hasNext())
 			{
 				FunctionParamSpec p = it.next();
+				log.debug("Validating param=\"{}\"", p);
 				if(!p.validate(expIt)){
 					return false;
 				}
+
 				if((it.hasNext() &&
 						!expIt.hasNext())){
-					if(log.isDebugEnabled()){
-						log.debug("Additional arguments are " +
-								"expected for function=\"{}\"",  functionId);
+					FunctionParamSpec spec = it.next();
+					if(!(spec.isOptional() || spec.isVariadic())){
+						if(log.isDebugEnabled()){
+							log.debug("Additional arguments are " +
+									          "expected for function=\"{}\"",  functionId);
+						}
+						return false;
 					}
-					return false;
 				}
 				if(!it.hasNext() &&
 						expIt.hasNext()){
@@ -487,10 +505,11 @@ public final class FunctionSpecBuilder
 
 				if (optionalParamValue == null) {
 					optionalParamValue = formalParameterSpec
-							.getDefaultValue().get();
+							.getDefaultValue().orElse(null);
 				}
-
-				normalizedParamBuilder.add(optionalParamValue);
+				if(optionalParamValue != null){
+					normalizedParamBuilder.add(optionalParamValue);
+				}
 			}
 
 			return normalizedParamBuilder;
@@ -513,7 +532,6 @@ public final class FunctionSpecBuilder
 				if (variadicParamValue == null) {
 					variadicParamValue = null;
 				}
-
 				normalizedParamBuilder.add(variadicParamValue);
 			}
 			return normalizedParamBuilder;

@@ -43,9 +43,11 @@ public class IntegerTypeTest
 		assertEquals(v3, v2);
 	}
 
+
 	@Test
 	public void testEquals()
 	{
+		assertEquals(XacmlTypes.INTEGER, XacmlTypes.INTEGER);
 		AttributeValue v0 = XacmlTypes.INTEGER.of(3l);
 		AttributeValue v1 = XacmlTypes.INTEGER.of(2l);
 		AttributeValue v2 = XacmlTypes.INTEGER.of(3l);

@@ -47,7 +47,7 @@ public class ObligationExpressionTest
 	}
 
 	@Test
-	public void testCreateObligationExpression() throws XacmlException
+	public void testCreateObligationExpression() throws CoreException
 	{
 		AttributeAssignmentExpression attrExp = c.createMock(AttributeAssignmentExpression.class);
 
@@ -63,7 +63,7 @@ public class ObligationExpressionTest
 	}
 
 	@Test
-	public void testEvaluateObligationExpression() throws XacmlException
+	public void testEvaluateObligationExpression() throws CoreException
 	{
 		AttributeAssignmentExpression attrExp0 = c.createMock(AttributeAssignmentExpression.class);
 		AttributeAssignmentExpression attrExp1 = c.createMock(AttributeAssignmentExpression.class);
@@ -95,7 +95,7 @@ public class ObligationExpressionTest
 	}
 
 	@Test(expected=EvaluationException.class)
-	public void testAttributeAssignmentThrowsEvaluationException() throws XacmlException
+	public void testAttributeAssignmentThrowsEvaluationException() throws CoreException
 	{
 		AttributeAssignmentExpression attrExp0 = c.createMock(AttributeAssignmentExpression.class);
 		AttributeAssignmentExpression attrExp1 = c.createMock(AttributeAssignmentExpression.class);

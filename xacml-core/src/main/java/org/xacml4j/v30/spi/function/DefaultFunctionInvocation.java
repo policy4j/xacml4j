@@ -131,7 +131,7 @@ final class DefaultFunctionInvocation implements org.xacml4j.v30.spi.function.Fu
 			List<?> src,
 			int srcPos, Object[] dst, int dstPos, int size)
 	{
-		for(int i = srcPos, j = 0; i < (srcPos + size) ; i++ ){
+		for(int i = srcPos, j = 0; i < src.size() ; i++ ){
 			dst[dstPos + j] = src.get(i);
 			j++;
 		}

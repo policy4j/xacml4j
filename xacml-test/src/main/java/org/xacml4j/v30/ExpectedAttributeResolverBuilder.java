@@ -63,7 +63,7 @@ public class ExpectedAttributeResolverBuilder
 	}
 
 	public ExpectedAttributeResolverBuilder value(String id, BagOfAttributeValues value){
-		b.attribute(id, value.getDataType());
+		b.attribute(id, value.getBagValueType());
 		this.values.put(id, value);
 		return this;
 	}

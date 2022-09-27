@@ -51,7 +51,7 @@ public class AdviceExpressionTest
 	}
 
 	@Test
-	public void testCreateAdviceExpression() throws XacmlException
+	public void testCreateAdviceExpression() throws CoreException
 	{
 		expect(attrExp0.getAttributeId()).andReturn("testId0");
 		c.replay();
@@ -64,7 +64,7 @@ public class AdviceExpressionTest
 	}
 
 	@Test
-	public void testEvaluateAdviceExpression() throws XacmlException
+	public void testEvaluateAdviceExpression() throws CoreException
 	{
 
 		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);

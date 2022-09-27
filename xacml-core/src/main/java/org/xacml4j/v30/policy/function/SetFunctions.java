@@ -36,7 +36,7 @@ import org.xacml4j.v30.types.XacmlTypes;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML Set Functions")
-final class SetFunctions
+public final class SetFunctions
 {
 	/** Private constructor for utility class */
 	private SetFunctions() {}

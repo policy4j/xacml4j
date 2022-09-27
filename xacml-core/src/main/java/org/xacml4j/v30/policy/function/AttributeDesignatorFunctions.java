@@ -23,6 +23,9 @@ package org.xacml4j.v30.policy.function;
  */
 
 import com.google.common.base.Preconditions;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.pdp.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.pdp.FunctionSpec;
@@ -38,8 +41,9 @@ import java.util.Optional;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="Attribute designator functions for XACML Entity type")
-final class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
+public final class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 {
+	private static final Logger LOG = LoggerFactory.getLogger(AttributeDesignatorFunctions.class);
 	
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:attribute-designator")
 	@XacmlFuncReturnTypeResolver(resolverClass=AttributeDesignatorFunctions.class)
@@ -53,12 +57,17 @@ final class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 	{
 		Preconditions.checkArgument(categoryOrEntity.getType().equals(XacmlTypes.ENTITY) ||
 				categoryOrEntity.getType().equals(XacmlTypes.ANYURI));
+		LOG.debug("CategoryOrEntity=\"{}\" attributeId=\"{}\" " +
+				          "dataType=\"{}\" mustBePresent=\"{}\" issuer=\"{}\"", categoryOrEntity, attributeId, dataType, mustBePresent, issuer);
+
 		AttributeDesignatorKey.Builder designatorKeyBuilder =
 				AttributeDesignatorKey
 						.builder()
-						.issuer(issuer)
 						.dataType(dataType)
 						.attributeId(attributeId);
+		if(issuer != null){
+			designatorKeyBuilder.issuer(issuer);
+		}
 		if(categoryOrEntity.getType().equals(XacmlTypes.ANYURI)){
 			designatorKeyBuilder.category(categoryOrEntity).build();
 		}
@@ -66,7 +75,6 @@ final class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 		Optional<BagOfAttributeValues> v = Optional.empty();
 		if(categoryOrEntity.getType().equals(XacmlTypes.ENTITY)){
 			v = ((EntityValue)categoryOrEntity).resolve(designatorKey);
-
 		}
 		if(categoryOrEntity.getType().equals(XacmlTypes.ANYURI)){
 			v = context.resolve(designatorKey);
@@ -78,8 +86,7 @@ final class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 								()->"Designator.MustBePresent=\"true\", but value is absent");
 			}
 		}
-		return v.orElse(
-				designatorKey
+		return v.orElse(designatorKey
 						.getDataType()
 						.emptyBag());
 	}
@@ -125,13 +132,8 @@ final class AttributeDesignatorFunctions implements FunctionReturnTypeResolver
 	}
 
 	private static AttributeValueType getType(AnyURIValue typeUri){
-		AttributeValueType typeId = typeUri.getEvaluatesTo();
-		Optional<AttributeValueType> resolvedType = XacmlTypes.getType(typeUri.value().toString());
-		if(!resolvedType.isPresent()){
-			throw new SyntaxException("Unknown XACML typeId=\"%s\"",
-						typeId);
-		}
-		return resolvedType.get();
+		return XacmlTypes.getType(typeUri.value().toString())
+		                 .orElseThrow(()->SyntaxException.invalidDataTypeId(typeUri.getType().getDataTypeId()));
 	}
 	
 	@Override

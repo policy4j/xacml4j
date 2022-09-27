@@ -27,6 +27,7 @@ import com.google.common.collect.Iterables;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.Map;
@@ -36,7 +37,7 @@ import static org.junit.Assert.*;
 public class AttributeResolverDescriptorTest
 {
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected= SyntaxException.class)
 	public void testBuildDescriptorWithContextKeyReferringToThisDescriptor()
 	{
 		AttributeResolverDescriptor.builder(
@@ -46,6 +47,7 @@ public class AttributeResolverDescriptorTest
 		.contextRef(AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
+				.issuer("issuer")
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER)
 				.build())

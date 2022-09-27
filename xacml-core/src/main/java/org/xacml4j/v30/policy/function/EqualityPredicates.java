@@ -33,7 +33,7 @@ import org.xacml4j.v30.types.*;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML equality predicates")
-final class EqualityPredicates
+public final class EqualityPredicates
 {
 	/** Private constructor for utility class */
 	private EqualityPredicates() {}

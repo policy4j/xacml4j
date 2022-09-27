@@ -36,7 +36,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
-final class RegExpFunctions
+public final class RegExpFunctions
 {
 	private final static Logger log = LoggerFactory.getLogger(RegExpFunctions.class);
 

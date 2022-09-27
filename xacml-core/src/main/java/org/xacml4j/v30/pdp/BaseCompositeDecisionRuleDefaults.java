@@ -22,6 +22,8 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import java.util.Map;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -32,7 +34,7 @@ abstract class BaseCompositeDecisionRuleDefaults
 {
 	public static final String XPATH_VERSION = "XPathVersion";
 
-	protected final ImmutableMap<String, Object> values;
+	protected final Map<String, Object> values;
 
 	protected BaseCompositeDecisionRuleDefaults(
 			Builder<?> b){

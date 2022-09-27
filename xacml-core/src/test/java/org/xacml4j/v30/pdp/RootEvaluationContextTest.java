@@ -105,8 +105,8 @@ public class RootEvaluationContextTest
 		expect(handler.resolve(context, k)).andReturn(Optional.of(expectedValue));
 
 		c.replay();
-		assertThat(context.resolve(k), is(expectedValue));
-		assertThat(context.resolve(k), is(expectedValue));
+		assertThat(context.resolve(k).get(), is(expectedValue));
+		assertThat(context.resolve(k).get(), is(expectedValue));
 		c.verify();
 
 		assertThat(context.getResolvedDesignators().keySet(), hasItem(k));

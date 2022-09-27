@@ -60,7 +60,7 @@ import org.xacml4j.v30.types.*;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML 3.0 bag functions")
-final class BagFunctions
+public final class BagFunctions
 {
 	/** Private constructor for utility class */
 	private BagFunctions() {}
@@ -733,7 +733,7 @@ final class BagFunctions
 	@XacmlFuncSpec(id="urn:xacml4j:names:tc:xacml:1.0:function:entity-bag-is-empty")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue entityBagIsEmpty(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:entity", isBag=true)
 					BagOfAttributeValues bag)
 	{
 		return isEmpty(bag);
@@ -742,7 +742,7 @@ final class BagFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue entityOneAndOnly(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:entity", isBag=true)
 					BagOfAttributeValues bag)
 	{
 		return oneAndOnlyImpl(bag);
@@ -751,15 +751,15 @@ final class BagFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue entityBagSize(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true) BagOfAttributeValues bag)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:entity", isBag=true) BagOfAttributeValues bag)
 	{
 		return typeBagSizeImpl(bag);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-bag")
-	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:3.0:data type:entity", isBag=true)
+	@XacmlFuncReturnType(typeId="urn:oasis:names:tc:xacml:3.0:data-type:entity", isBag=true)
 	public static BagOfAttributeValues entityBag(
-			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:3.0:data type:entity")
+			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:3.0:data-type:entity")
 			EntityValue...values){
 		return XacmlTypes.ENTITY
 				.bag()

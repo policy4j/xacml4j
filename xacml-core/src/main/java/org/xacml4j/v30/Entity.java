@@ -133,7 +133,7 @@ public final class Entity extends AttributeContainer
 		}
 		Entity a = (Entity) o;
 		return Objects.equal(attributes, a.attributes) &&
-				content.equals(a.content);
+				Objects.equal(content, a.content);
 	}
 
 	public static class Builder

@@ -23,6 +23,8 @@ package org.xacml4j.v30.pdp;
  */
 
 import com.google.common.collect.ImmutableList;
+
+import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +33,7 @@ import org.xacml4j.v30.spi.function.FunctionInvocation;
 import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
@@ -89,8 +92,8 @@ public class MatchTest
 				.build();
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(key, "Failed"));
-		
-		context.setEvaluationStatus(Status.missingAttribute(key).build());
+		Capture<Status> statusCapture = new Capture<>();
+		context.setEvaluationStatus(capture(statusCapture));
 		c.replay();
 		Match m = Match
 				.builder()
@@ -99,6 +102,8 @@ public class MatchTest
 				.attrRef(ref)
 				.build();
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));
+		assertEquals(StatusCode.missingAttributeError(), statusCapture.getValue().getStatusCode());
+		assertEquals("Failed", statusCapture.getValue().getMessage().orElse(null));
 		c.verify();
 	}
 }

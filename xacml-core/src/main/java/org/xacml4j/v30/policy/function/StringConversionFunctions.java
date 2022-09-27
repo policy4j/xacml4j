@@ -30,7 +30,7 @@ import org.xacml4j.v30.types.StringValue;
 
 
 @XacmlFunctionProvider(description="XACML string conversion functions")
-final class StringConversionFunctions
+public final class StringConversionFunctions
 {
 	/** Private constructor for utility class */
 	private StringConversionFunctions() {}

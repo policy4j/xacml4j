@@ -80,12 +80,12 @@ public class AttributeSetTest
 		BagOfAttributeValues v1 = v.get(key.build()).get();
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
-		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
+		assertEquals(XacmlTypes.INTEGER, v1.getBagValueType());
 
 		BagOfAttributeValues v2 = v.get(key.build()).get();
 		assertNotNull(v2);
 		assertTrue(v1.isEmpty());
-		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
+		assertEquals(XacmlTypes.INTEGER, v1.getBagValueType());
 
 		Iterable<AttributeDesignatorKey> keys = v.getAttributeKeys();
 		assertEquals(key.build(), Iterables.get(keys, 0));
@@ -110,7 +110,7 @@ public class AttributeSetTest
 		BagOfAttributeValues v1 = v.get(key.build()).get();
 		assertNotNull(v1);
 		assertTrue(v1.isEmpty());
-		assertEquals(XacmlTypes.INTEGER, v1.getDataType());
+		assertEquals(XacmlTypes.INTEGER, v1.getBagValueType());
 	}
 
 	@Test

@@ -27,7 +27,7 @@ import org.xacml4j.v30.types.*;
 
 
 @XacmlFunctionProvider(description="XACML string functions")
-final class StringFunctions
+public final class StringFunctions
 {
 	/** Private constructor for utility class */
 	private StringFunctions() {}

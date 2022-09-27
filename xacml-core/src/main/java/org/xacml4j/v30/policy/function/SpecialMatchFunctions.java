@@ -32,7 +32,7 @@ import javax.security.auth.x500.X500Principal;
 
 
 @XacmlFunctionProvider(description="XACML special match functions")
-final class SpecialMatchFunctions
+public final class SpecialMatchFunctions
 {
 	/** Private constructor for utility class */
 	private SpecialMatchFunctions() {}

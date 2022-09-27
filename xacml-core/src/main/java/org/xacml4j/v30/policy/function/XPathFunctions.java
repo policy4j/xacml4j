@@ -45,7 +45,7 @@ import java.util.Optional;
  * @author Giedrius Trumpickas
  */
 @XacmlFunctionProvider(description="XACML XPath functions")
-public class XPathFunctions
+public final class XPathFunctions
 {
 	/** Private constructor for utility class */
 	private XPathFunctions() {}

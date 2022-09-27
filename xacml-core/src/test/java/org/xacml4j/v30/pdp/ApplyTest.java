@@ -28,7 +28,7 @@ import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.XacmlException;
+import org.xacml4j.v30.CoreException;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class ApplyTest
 	}
 
 	@Test(expected=EvaluationException.class)
-	public void testApplyEvaluationFunctionThrowsRuntimeException() throws XacmlException
+	public void testApplyEvaluationFunctionThrowsRuntimeException() throws CoreException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
 		.add(XacmlTypes.INTEGER.of(10L))
@@ -61,7 +61,7 @@ public class ApplyTest
 	}
 
 	@Test(expected=FunctionInvocationException.class)
-	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws XacmlException
+	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws CoreException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
 		.add(XacmlTypes.INTEGER.of(10L))

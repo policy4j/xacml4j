@@ -22,10 +22,12 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 
+import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,13 +75,17 @@ public class AttributeDesignatorFunctionTest
 	@Test
 	public void testDesignatorFunctionWithCategoryId(){
 		FunctionSpec func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator").get();
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolve(AttributeDesignatorKey
+		AttributeDesignatorKey key = AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
 				.dataType(XacmlTypes.STRING)
 				.attributeId("testId")
-				.build())).andReturn(Optional.of(XacmlTypes.STRING.of("aaaa").toBag()));
+				.build();
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
+		Capture<AttributeDesignatorKey> keyCapture = new Capture<>();
+		expect(context.resolve(capture(keyCapture)))
+				.andReturn(Optional.of(XacmlTypes.STRING.of("aaaa")
+				                                        .toBag()));
 		c.replay();
 		BagOfAttributeValues v = func.invoke(context,
 				XacmlTypes.ANYURI.of(CategoryId.SUBJECT_ACCESS.getId()),
@@ -88,6 +94,7 @@ public class AttributeDesignatorFunctionTest
 				XacmlTypes.BOOLEAN.of(false),
 				null);
 		assertEquals(XacmlTypes.STRING.of("aaaa").toBag(), v);
+		assertEquals(key, keyCapture.getValue());
 		c.verify();
 	}
 

@@ -40,6 +40,8 @@
 		<metrics.version>4.1.17</metrics.version>
 		<json.path.version>2.5.0</json.path.version>
 		<jaxb.api.version>2.3.1</jaxb.api.version>
+		<hamcrest.version>1.3</hamcrest.version>
+		<euij4j.version>0.0.3</euij4j.version>
 	</properties>
 
 	<inceptionYear>2009</inceptionYear>
@@ -107,6 +109,10 @@
 			<groupId>com.google.truth.extensions</groupId>
 			<artifactId>truth-java8-extension</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -164,6 +170,11 @@
 				<version>${google.auto.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>de.benediktmeurer.eui4j</groupId>
+				<artifactId>eui4j-core</artifactId>
+				<version>${euij4j.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
@@ -173,6 +184,12 @@
 				<groupId>org.easymock</groupId>
 				<artifactId>easymock</artifactId>
 				<version>${easymock.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-all</artifactId>
+				<version>${hamcrest.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>

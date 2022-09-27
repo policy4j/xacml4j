@@ -30,6 +30,7 @@ import org.xacml4j.v30.spi.pip.XacmlAttributeDescriptor;
 import org.xacml4j.v30.spi.pip.XacmlAttributeDesignator;
 import org.xacml4j.v30.spi.pip.XacmlAttributeResolverDescriptor;
 import org.xacml4j.v30.types.StringValue;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class Xacml20ConformanceAttributeResolver
@@ -52,7 +53,7 @@ public class Xacml20ConformanceAttributeResolver
 		Map<String, BagOfAttributeValues> attributes = new HashMap<String, BagOfAttributeValues>();
 		if(name.value().equalsIgnoreCase("Julius Hibbert")){
 			attributes.put("urn:oasis:names:tc:xacml:1.0:example:attribute:role",
-					StringValue.of("Physician").toBag());
+			               XacmlTypes.STRING.of("Physician").toBag());
 		}
 		return attributes;
 	}
