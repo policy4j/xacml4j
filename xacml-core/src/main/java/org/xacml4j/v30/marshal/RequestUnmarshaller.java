@@ -22,7 +22,7 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
-import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.request.RequestContext;
 
 public interface RequestUnmarshaller extends Unmarshaller<RequestContext>
 {

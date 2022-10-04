@@ -40,7 +40,7 @@ import org.oasis.xacml.v20.jaxb.context.StatusType;
 import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
-import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.xml.JAXBUtils;
 import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
 

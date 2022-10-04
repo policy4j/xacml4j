@@ -30,7 +30,7 @@ import org.xacml4j.v30.Expression;
 * for {@link XacmlTypes#INTEGER} type.
 */
 public final class IntegerValue
-    extends BaseAttributeValue<Long>
+		extends BaseValue<Long>
 {
     private static final long serialVersionUID = 6654857010399020496L;
 

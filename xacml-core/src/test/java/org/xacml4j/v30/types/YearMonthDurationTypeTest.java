@@ -29,7 +29,6 @@ import javax.xml.datatype.Duration;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.YearMonthDuration;
 
 
 public class YearMonthDurationTypeTest

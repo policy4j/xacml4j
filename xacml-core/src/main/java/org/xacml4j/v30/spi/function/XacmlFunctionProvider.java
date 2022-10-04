@@ -32,4 +32,5 @@ import java.lang.annotation.Target;
 public @interface XacmlFunctionProvider
 {
 	String description();
+	boolean nonStaticFunctions() default false;
 }

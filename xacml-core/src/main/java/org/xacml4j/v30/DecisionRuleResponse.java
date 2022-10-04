@@ -137,7 +137,7 @@ public abstract class DecisionRuleResponse
 		}
 
 		public final T attribute(
-				String id, AttributeValue... values)
+				String id, Value... values)
 		{
 			return attribute(id, null, null, values);
 		}
@@ -146,16 +146,16 @@ public abstract class DecisionRuleResponse
 				String id,
 				CategoryId category,
 				String issuer,
-				AttributeValue... values)
+				Value... values)
 		{
 			if(values == null ||
 					values.length == 0){
 				return getThis();
 			}
-			for(AttributeValue v : values){
+			for(Value v : values){
 				attribute(AttributeAssignment
 						.builder()
-						.id(id)
+						.attributeId(id)
 						.category(category)
 						.issuer(issuer)
 						.value(v)

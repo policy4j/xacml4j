@@ -22,15 +22,13 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.Date;
-
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Calendar;
 
 /**
  *
  */
-public final class DateValue extends BaseAttributeValue<Date>
+public final class DateValue extends BaseValue<Date>
     implements Comparable<DateValue>
 {
     private static final long serialVersionUID = -4744947303379182831L;

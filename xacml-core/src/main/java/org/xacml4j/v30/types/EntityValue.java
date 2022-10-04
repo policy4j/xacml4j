@@ -23,6 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.Content;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -31,7 +32,7 @@ import java.util.stream.Stream;
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#ENTITY} type.
 */
-public class EntityValue extends BaseAttributeValue<Entity>
+public class EntityValue extends BaseValue<Entity>
 {
     private static final long serialVersionUID = 6188174758603655643L;
 
@@ -43,11 +44,11 @@ public class EntityValue extends BaseAttributeValue<Entity>
         return value().stream();
     }
 
-    public Optional<BagOfAttributeValues> resolve(AttributeDesignatorKey designatorKey){
+    public Optional<BagOfValues> resolve(AttributeDesignatorKey designatorKey){
         return value().resolve(designatorKey);
     }
 
-    public Optional<BagOfAttributeValues> resolve(AttributeSelectorKey selectorKey){
+    public Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
         return value().resolve(selectorKey);
     }
 

@@ -26,6 +26,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.Entity;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;

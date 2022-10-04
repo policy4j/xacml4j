@@ -34,8 +34,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeValue;
-import org.xacml4j.v30.AttributeValueType;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
@@ -66,15 +66,15 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 				.build();
 	}
 
-	private Collection<AttributeValue> deserializeValue(JsonDeserializationContext context, JsonObject o) {
-		AttributeValueType type = getDataType(o);
+	private Collection<Value> deserializeValue(JsonDeserializationContext context, JsonObject o) {
+		ValueType type = getDataType(o);
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		checkArgument(jsonValue != null, "Property '%s' is mandatory.", 
 				VALUE_PROPERTY);
-		Collection<AttributeValue> values = null;
+		Collection<Value> values = null;
 		if (jsonValue.isJsonArray()) {
 			JsonArray jsonArray = jsonValue.getAsJsonArray();
-			ImmutableList.Builder<AttributeValue> valuesBuilder = ImmutableList.builder();
+			ImmutableList.Builder<Value> valuesBuilder = ImmutableList.builder();
 			for (int i = 0; i < jsonArray.size(); i++) {
 				valuesBuilder.add(deserializeValue(type, jsonArray.get(i), context));
 			}
@@ -87,20 +87,21 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 		return values;
 	}
 
-	private AttributeValue deserializeValue(AttributeValueType type, JsonElement jsonValue,
-											JsonDeserializationContext ctx) {
+	private Value deserializeValue(
+			ValueType type, JsonElement jsonValue,
+			JsonDeserializationContext ctx) {
 		java.util.Optional<TypeToGSon> toGson = TypeToGSon.forType(type);
 		Preconditions.checkState(toGson.isPresent());
 		return toGson.get().fromJson(jsonValue, ctx);
 	}
 	
-	private AttributeValueType getDataType(JsonObject o){
+	private ValueType getDataType(JsonObject o){
 		String dataTypeId = GsonUtil.getAsString(o, DATA_TYPE_PROPERTY, null);
 		if (dataTypeId == null) {
 			// TODO: properly infer data type
 			dataTypeId = XacmlTypes.STRING.getDataTypeId();
 		}
-		Optional<AttributeValueType> type = XacmlTypes.getType(dataTypeId);
+		Optional<ValueType> type = XacmlTypes.getType(dataTypeId);
 		Preconditions.checkState(type.isPresent());
 		return type.get();
 	}

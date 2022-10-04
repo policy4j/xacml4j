@@ -24,7 +24,7 @@ package org.xacml4j.v30.spi.function;
 
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.pdp.FunctionParamSpec;
+import org.xacml4j.v30.policy.FunctionParamSpec;
 
 import java.util.Optional;
 

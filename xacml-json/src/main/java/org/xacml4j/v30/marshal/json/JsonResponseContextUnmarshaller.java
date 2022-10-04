@@ -36,8 +36,8 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.Unmarshaller;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySetIDReference;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

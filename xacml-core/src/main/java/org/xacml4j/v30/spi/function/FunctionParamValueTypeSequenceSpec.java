@@ -27,7 +27,7 @@ import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.ValueTypeInfo;
 
 import java.util.ListIterator;
 
@@ -39,7 +39,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	private Integer min = 0;
 	private Integer max = Integer.MAX_VALUE;
 
-	private ValueType paramType;
+	private ValueTypeInfo paramType;
 
 	/**
 	 * Constructs parameter specification 
@@ -53,7 +53,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	public FunctionParamValueTypeSequenceSpec(
 			Integer min, 
 			Integer max,
-			ValueType paramType){
+			ValueTypeInfo paramType){
 		super((min != null && min == 0), true, null);
 		this.min = min;
 		this.max = max;
@@ -61,7 +61,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	}
 
 	public FunctionParamValueTypeSequenceSpec(int min,
-			ValueType paramType){
+			ValueTypeInfo paramType){
 		this(min, null, paramType);
 	}
 	
@@ -70,7 +70,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	 *
 	 * @return parameter XACML type
 	 */
-	public ValueType getParamType(){
+	public ValueTypeInfo getParamType(){
 		return paramType;
 	}
 
@@ -89,7 +89,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	}
 
 	@Override
-	public boolean isValidParamType(ValueType type){
+	public boolean isValidParamType(ValueTypeInfo type){
 		return this.paramType.equals(type);
 	}
 
@@ -106,7 +106,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 			if(exp == null && min >= 1){
 				return false;
 			}
-			ValueType expType = exp.getEvaluatesTo();
+			ValueTypeInfo expType = exp.getEvaluatesTo();
 			if(!expType.equals(paramType)){
 				if(log.isDebugEnabled()){
 					log.debug("Expecting parameter of type=\"{}\" " +

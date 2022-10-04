@@ -25,8 +25,8 @@ package org.xacml4j.v30.spi.function;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.pdp.FunctionInvocationException;
-import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.policy.FunctionInvocationException;
+import org.xacml4j.v30.policy.FunctionSpec;
 
 import java.util.List;
 

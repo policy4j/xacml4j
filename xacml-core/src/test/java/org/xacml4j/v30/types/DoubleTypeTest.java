@@ -23,7 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 
 import static org.junit.Assert.*;
 
@@ -43,9 +43,9 @@ public class DoubleTypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeValue v0 = XacmlTypes.DOUBLE.of(1.0d);
-		AttributeValue v1 = XacmlTypes.DOUBLE.of(2.0d);
-		AttributeValue v2 = XacmlTypes.DOUBLE.of(1.0d);
+		Value v0 = XacmlTypes.DOUBLE.of(1.0d);
+		Value v1 = XacmlTypes.DOUBLE.of(2.0d);
+		Value v2 = XacmlTypes.DOUBLE.of(1.0d);
 		assertFalse(v0.equals(v1));
 		assertTrue(v0.equals(v2));
 		DoubleValue v0Nan = XacmlTypes.DOUBLE.of(Double.NaN);

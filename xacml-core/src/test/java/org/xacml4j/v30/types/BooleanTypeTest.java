@@ -23,7 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import org.junit.Test;
-import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.BagOfValues;
 
 import java.util.Optional;
 
@@ -79,8 +79,8 @@ public class BooleanTypeTest
 	public void testBagOf()
 	{
 		assertNotNull(XacmlTypes.BOOLEAN.bagType());
-		BagOfAttributeValues b1 = XacmlTypes.BOOLEAN.bag().value("true", "false").build();
-		BagOfAttributeValues b2 = XacmlTypes.BOOLEAN.bag().value(true, false).build();
+		BagOfValues b1 = XacmlTypes.BOOLEAN.bag().value("true", "false").build();
+		BagOfValues b2 = XacmlTypes.BOOLEAN.bag().value(true, false).build();
 		assertEquals(2, b1.size());
 		assertEquals(b1, b2);
 		assertTrue(b1.contains(XacmlTypes.BOOLEAN.of(true)));

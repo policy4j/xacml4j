@@ -42,10 +42,13 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.Unmarshaller;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.Xacml20XPathTo30Transformer;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
@@ -238,9 +241,9 @@ implements Unmarshaller<RequestContext> {
 					boolean includeInResultResourceId)
 			throws SyntaxException
 		{
-			Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+			Collection<Value> values = new LinkedList<Value>();
 			for(org.oasis.xacml.v20.jaxb.context.AttributeValueType v : a.getAttributeValue()){
-				AttributeValue value = createValue(a, v);
+				Value value = createValue(a, v);
 				if(log.isDebugEnabled()){
 					log.debug("Found attribute value=\"{}\" in request", value);
 				}
@@ -253,7 +256,7 @@ implements Unmarshaller<RequestContext> {
 					.build();
 		}
 
-		private AttributeValue createValue(AttributeType a, org.oasis.xacml.v20.jaxb.context.AttributeValueType av)
+		private Value createValue(AttributeType a, org.oasis.xacml.v20.jaxb.context.AttributeValueType av)
 		{
 			org.oasis.xacml.v30.jaxb.AttributeValueType v30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
 			v30.getOtherAttributes().putAll(av.getOtherAttributes());

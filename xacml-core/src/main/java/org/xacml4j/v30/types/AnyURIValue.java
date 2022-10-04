@@ -35,7 +35,7 @@ import java.net.URL;
  * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#ANYURI} type.
  */
-public final class AnyURIValue extends BaseAttributeValue<URI>
+public final class AnyURIValue extends BaseValue<URI>
 {
     private static final long serialVersionUID = -1279561638068756670L;
 

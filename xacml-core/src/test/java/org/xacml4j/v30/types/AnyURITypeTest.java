@@ -24,9 +24,9 @@ package org.xacml4j.v30.types;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
-import org.xacml4j.v30.AttributeValue;
-import org.xacml4j.v30.AttributeValueType;
-import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.BagOfValues;
 
 import java.net.URI;
 import java.util.Optional;
@@ -40,8 +40,8 @@ public class AnyURITypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeValue v0 = XacmlTypes.ANYURI.of("http://www.test.org");
-		AttributeValue v1 = XacmlTypes.ANYURI.of("http://www.test.org");
+		Value v0 = XacmlTypes.ANYURI.of("http://www.test.org");
+		Value v1 = XacmlTypes.ANYURI.of("http://www.test.org");
 		assertEquals(v0, v1);
 		assertEquals(XacmlTypes.ANYURI, v0.getType());
 		assertEquals(XacmlTypes.ANYURI, v1.getType());
@@ -50,15 +50,15 @@ public class AnyURITypeTest
 	
 	@Test
 	public void testBagOf(){
-		AttributeValue v0 = XacmlTypes.ANYURI.of("http://www.test.org");
-		AttributeValue v1 = XacmlTypes.ANYURI.of("http://www.test1.org");
-		BagOfAttributeValues b0 = XacmlTypes.ANYURI.bag().attribute(v0, v1).build();
-		BagOfAttributeValues b1 = XacmlTypes.ANYURI.bag().attributes(ImmutableList.of(v0, v1)).build();
-		BagOfAttributeValues b2 = XacmlTypes.ANYURI.bag().value("http://www.test.org", "http://www.test1.org").build();
-		BagOfAttributeValues b3 = XacmlTypes.ANYURI.bag().value(URI.create("http://www.test.org"),
-				URI.create("http://www.test1.org")).build();
-		BagOfAttributeValues b4 = XacmlTypes.ANYURI.bag().value(URI.create("http://www.test.org"),
-				"http://www.test1.org").build();
+		Value v0 = XacmlTypes.ANYURI.of("http://www.test.org");
+		Value v1 = XacmlTypes.ANYURI.of("http://www.test1.org");
+		BagOfValues b0 = XacmlTypes.ANYURI.bag().attribute(v0, v1).build();
+		BagOfValues b1 = XacmlTypes.ANYURI.bag().attributes(ImmutableList.of(v0, v1)).build();
+		BagOfValues b2 = XacmlTypes.ANYURI.bag().value("http://www.test.org", "http://www.test1.org").build();
+		BagOfValues b3 = XacmlTypes.ANYURI.bag().value(URI.create("http://www.test.org"),
+		                                               URI.create("http://www.test1.org")).build();
+		BagOfValues b4 = XacmlTypes.ANYURI.bag().value(URI.create("http://www.test.org"),
+		                                               "http://www.test1.org").build();
 		assertEquals(b0, b1);
 		assertEquals(b1, b2);
 		assertEquals(b2, b3);
@@ -68,7 +68,7 @@ public class AnyURITypeTest
 	
 	@Test
 	public void testTypeAlias(){
-		Optional<AttributeValueType> t0 = XacmlTypes.getType("anyURI");
+		Optional<ValueType> t0 = XacmlTypes.getType("anyURI");
 		assertEquals(XacmlTypes.ANYURI, t0.get());
 	}
 }

@@ -50,29 +50,29 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 		JsonObject o = json.getAsJsonObject();
 		String attrId = GsonUtil.getAsString(o, ATTRIBUTE_ID_PROPERTY, null);
 		checkArgument(attrId != null, "Property '%s' is mandatory.", ATTRIBUTE_ID_PROPERTY);
-		AttributeValue value = deserializeValue(context, o);
+		Value value = deserializeValue(context, o);
 		String categoryId = GsonUtil.getAsString(o, CATEGORY_PROPERTY, null);
 		CategoryId parsedCategoryId = Strings.isNullOrEmpty(categoryId)?null: CategoryId.parse(categoryId).get();
 		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
 		return AttributeAssignment
 				.builder()
-				.id(attrId)
+				.attributeId(attrId)
 				.category(parsedCategoryId)
 				.issuer(issuer)
 				.value(value)
 				.build();
 	}
 
-	private AttributeValue deserializeValue(JsonDeserializationContext context, JsonObject o) {
+	private Value deserializeValue(JsonDeserializationContext context, JsonObject o) {
 		String dataTypeId = GsonUtil.getAsString(o, DATA_TYPE_PROPERTY, null);
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		// TODO: do a proper type coercion
-		AttributeValue value = deserializeValue(dataTypeId, jsonValue, context);
+		Value value = deserializeValue(dataTypeId, jsonValue, context);
 		checkArgument(value != null, "Property '%s' is mandatory.", VALUE_PROPERTY);
 		return value;
 	}
 
-	private AttributeValue deserializeValue(String dataTypeId, JsonElement jsonValue, JsonDeserializationContext ctx) {
+	private Value deserializeValue(String dataTypeId, JsonElement jsonValue, JsonDeserializationContext ctx) {
 		java.util.Optional<TypeToGSon> toGson = TypeToGSon.forType(dataTypeId);
 		Preconditions.checkState(toGson.isPresent());
 		return toGson.get().fromJson(jsonValue, ctx);

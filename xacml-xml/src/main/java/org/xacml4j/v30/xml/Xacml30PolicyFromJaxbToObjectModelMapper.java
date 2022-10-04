@@ -56,30 +56,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
-import org.xacml4j.v30.pdp.AdviceExpression;
-import org.xacml4j.v30.pdp.Apply;
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
-import org.xacml4j.v30.pdp.AttributeDesignator;
-import org.xacml4j.v30.pdp.AttributeReference;
-import org.xacml4j.v30.pdp.AttributeSelector;
-import org.xacml4j.v30.pdp.Condition;
-import org.xacml4j.v30.pdp.FunctionReference;
-import org.xacml4j.v30.pdp.Match;
-import org.xacml4j.v30.pdp.MatchAllOf;
-import org.xacml4j.v30.pdp.MatchAnyOf;
-import org.xacml4j.v30.pdp.ObligationExpression;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.PolicyDefaults;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.pdp.PolicySetDefaults;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.pdp.Rule;
-import org.xacml4j.v30.pdp.Target;
-import org.xacml4j.v30.pdp.VariableDefinition;
-import org.xacml4j.v30.pdp.VariableReference;
+import org.xacml4j.v30.policy.AdviceExpression;
+import org.xacml4j.v30.policy.Apply;
+import org.xacml4j.v30.policy.AttributeAssignmentExpression;
+import org.xacml4j.v30.policy.AttributeDesignator;
+import org.xacml4j.v30.policy.AttributeReference;
+import org.xacml4j.v30.policy.AttributeSelector;
+import org.xacml4j.v30.policy.Condition;
+import org.xacml4j.v30.policy.FunctionReference;
+import org.xacml4j.v30.policy.Match;
+import org.xacml4j.v30.policy.MatchAllOf;
+import org.xacml4j.v30.policy.MatchAnyOf;
+import org.xacml4j.v30.policy.ObligationExpression;
+import org.xacml4j.v30.policy.Policy;
+import org.xacml4j.v30.policy.PolicyDefaults;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySet;
+import org.xacml4j.v30.policy.PolicySetDefaults;
+import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.policy.Rule;
+import org.xacml4j.v30.policy.Target;
+import org.xacml4j.v30.policy.VariableDefinition;
+import org.xacml4j.v30.policy.VariableReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
@@ -364,7 +367,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		return b.build();
 	}
 
-	private AttributeValue create(
+	private Value create(
 			org.oasis.xacml.v30.jaxb.AttributeValueType value)
 		throws SyntaxException
 	{
@@ -539,7 +542,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 			if(log.isDebugEnabled()){
 				log.debug(selector.getPath());
 			}
-			java.util.Optional<AttributeValueType> type = XacmlTypes.getType(selector.getDataType());
+			java.util.Optional<ValueType> type = XacmlTypes.getType(selector.getDataType());
 			Preconditions.checkState(type.isPresent());
 			return AttributeSelector
 					.builder().
@@ -555,7 +558,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 		}
 		if (ref instanceof AttributeDesignatorType) {
 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
-			java.util.Optional<AttributeValueType> type = XacmlTypes.getType(desig.getDataType());
+			java.util.Optional<ValueType> type = XacmlTypes.getType(desig.getDataType());
 			Preconditions.checkState(type.isPresent());
 			return AttributeDesignator.builder().
 					key(AttributeDesignatorKey

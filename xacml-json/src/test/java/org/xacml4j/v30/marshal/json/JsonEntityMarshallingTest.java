@@ -27,6 +27,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.types.Entity;
+
 import static org.xacml4j.v30.types.XacmlTypes.STRING;
 import static org.xacml4j.v30.types.XacmlTypes.ENTITY;
 
@@ -51,20 +53,20 @@ public class JsonEntityMarshallingTest
 	public void testEntityMarshall() throws Exception
 	{
 		Entity entity = Entity.builder()
-				.xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
-				.attribute(Attribute
+		                      .xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
+		                      .attribute(Attribute
 						.builder("testId3")
 						.value(STRING.of("aaa"))
 						.value(STRING.of("bbbb"))
 						.value(STRING.of("cccc"))
 						.build())
-				.attribute(Attribute
+		                      .attribute(Attribute
 						.builder("testId4")
 						.value(STRING.of("zzzz"))
 						.value(STRING.of("aaaa"))
 						.value(STRING.of("cccc"))
 						.build())
-				.build();
+		                      .build();
 		Category a = Category.builder()
 		.category(CategoryId.SUBJECT_ACCESS)
 		.entity(Entity.builder()

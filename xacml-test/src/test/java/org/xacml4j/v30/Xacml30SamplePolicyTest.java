@@ -25,7 +25,6 @@ package org.xacml4j.v30;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 
 
 public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport

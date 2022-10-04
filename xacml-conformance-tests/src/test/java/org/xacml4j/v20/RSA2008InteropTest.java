@@ -33,12 +33,12 @@ import java.util.concurrent.TimeUnit;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.pdp.MetricsSupport;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
@@ -62,12 +62,12 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
-				FunctionProvider.Builder.builder()
-				.defaultFunctions()
-				.build(),
-				DecisionCombiningAlgorithmProvider.Builder.builder()
-				                                          .withDefaultAlgorithms()
-				                                          .build());
+				FunctionProviderBuilder.builder()
+				                       .defaultFunctions()
+				                       .build(),
+				DecisionCombiningAlgorithmProviderBuilder.builder()
+				                                         .withDefaultAlgorithms()
+				                                         .build());
 
 		List<Supplier<InputStream>> policyStreams = Arrays.asList(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),

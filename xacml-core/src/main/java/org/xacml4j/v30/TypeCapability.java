@@ -25,7 +25,6 @@ package org.xacml4j.v30;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.types.TypeToString;
 
 import java.util.Collection;
 import java.util.Map;
@@ -34,10 +33,8 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Streams;
 
 /**
  * A marker interface for XACML type specific capability/strategy.
@@ -52,13 +49,14 @@ public interface TypeCapability
 	 * Gets XACML type associated
 	 * with this capability
 	 *
-	 * @return {@link AttributeValueType}
+	 * @return {@link ValueType}
 	 */
-	AttributeValueType getType();
+	ValueType getType();
 
-	static <T extends TypeCapability> Optional<T> forType(AttributeValueType type,
-	                                                      Function<AttributeValueType, Optional<T>> systemCapabilities,
-	                           Supplier<ServiceLoader<? extends TypeCapabilityFactory<T>>> extensionCapabilities)
+	static <T extends TypeCapability> Optional<T> forType(
+			ValueType type,
+			Function<ValueType, Optional<T>> systemCapabilities,
+			Supplier<ServiceLoader<? extends TypeCapabilityFactory<T>>> extensionCapabilities)
 	{
 		Optional<T> cap = systemCapabilities.apply(type);
 		if(cap.isPresent()){
@@ -79,7 +77,7 @@ public interface TypeCapability
 	{
 		private static final Logger LOG = LoggerFactory.getLogger(AbstractCapabilityFactory.class);
 
-		private Map<AttributeValueType, T> capabilitiesByType;
+		private Map<ValueType, T> capabilitiesByType;
 		private Class<T> capabilityType;
 
 		/**
@@ -102,7 +100,7 @@ public interface TypeCapability
 			return capabilitiesByType.values();
 		}
 
-		public final Optional<T> forType(AttributeValueType type){
+		public final Optional<T> forType(ValueType type){
 			return Optional.ofNullable(capabilitiesByType.get(type));
 		}
 	}

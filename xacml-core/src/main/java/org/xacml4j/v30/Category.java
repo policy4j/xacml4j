@@ -27,6 +27,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.types.Entity;
 
 import java.util.function.Predicate;
 
@@ -68,7 +69,7 @@ public final class Category
 	 * @param key an attribute designator
 	 * @return {@link java.util.Optional} resolved
 	 */
-	public java.util.Optional<BagOfAttributeValues> resolve(AttributeDesignatorKey key){
+	public java.util.Optional<BagOfValues> resolve(AttributeDesignatorKey key){
 		if(!key.getCategory().equals(getCategoryId())){
 			return java.util.Optional.empty();
 		}
@@ -81,7 +82,7 @@ public final class Category
 	 * @param key an attribute designator
 	 * @return {@link java.util.Optional} resolved
 	 */
-	public java.util.Optional<BagOfAttributeValues> resolve(AttributeSelectorKey key){
+	public java.util.Optional<BagOfValues> resolve(AttributeSelectorKey key){
 		if(!key.getCategory().equals(getCategoryId())){
 			return java.util.Optional.empty();
 		}

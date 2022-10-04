@@ -22,12 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeValue;
-import org.xacml4j.v30.AttributeValueType;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.TypeCapability;
-import org.xacml4j.v30.TypeCapabilityFactory;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,23 +47,23 @@ public interface TypeToString extends TypeCapability
 	 * @param v an attribute value
 	 * @return string representation of the given value
 	 */
-	String toString(AttributeValue v);
+	String toString(Value v);
 
 	/**
-	 * Converts given string value to a {@link AttributeValue}
+	 * Converts given string value to a {@link Value}
 	 * of given {@link #getType()}
 	 *
 	 * @param v an attribute string value
 	 * @return {@linl AttributeValue}
 	 */
-	AttributeValue fromString(String v);
+	Value fromString(String v);
 
 	static Optional<TypeToString> forType(String typeId){
 		return XacmlTypes.getType(typeId)
 		                 .flatMap(v->forType(v));
 	}
 
-	static Optional<TypeToString> forType(AttributeValueType type)
+	static Optional<TypeToString> forType(ValueType type)
 	{
 		return TypeCapability.forType(type,
 		                              t->Factory.SYSTEM_TYPES.forType(t),
@@ -97,7 +94,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				AnyURIValue anyUri = (AnyURIValue)v;
 				return anyUri.value().toString();
 			}
@@ -110,7 +107,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				BooleanValue boolVal = (BooleanValue)v;
 				return boolVal.value().toString();
@@ -124,7 +121,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				Base64BinaryValue base64Value = (Base64BinaryValue)v;
 				return base64Value.value().toBase64Encoded();
@@ -138,7 +135,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DateValue d = (DateValue)v;
 				return d.value().toXacmlString();
@@ -152,7 +149,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DateTimeValue d = (DateTimeValue)v;
 				return d.value().toXacmlString();
@@ -166,7 +163,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DayTimeDurationValue d = (DayTimeDurationValue)v;
 				return d.value().toXacmlString();
@@ -180,7 +177,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DNSNameValue d = (DNSNameValue)v;
 				return d.value().toXacmlString();
@@ -194,7 +191,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DoubleValue d = (DoubleValue)v;
 				return d.value().toString();
@@ -208,7 +205,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				HexBinaryValue d = (HexBinaryValue)v;
 				return d.value().toHexEncoded();
@@ -222,7 +219,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				IntegerValue d = (IntegerValue)v;
 				return d.value().toString();
@@ -236,7 +233,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				IPAddressValue d = (IPAddressValue)v;
 				return d.value().toXacmlString();
@@ -250,7 +247,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				RFC822NameValue d = (RFC822NameValue)v;
 				return d.value().toXacmlString();
@@ -264,7 +261,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				StringValue d = (StringValue)v;
 				return d.value();
@@ -278,7 +275,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				TimeValue d = (TimeValue)v;
 				return d.value().toXacmlString();
@@ -292,7 +289,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				X500NameValue d = (X500NameValue)v;
 				return d.value().toString();
@@ -305,7 +302,7 @@ public interface TypeToString extends TypeCapability
 			}
 			
 			@Override
-			public String toString(AttributeValue v) {
+			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				YearMonthDurationValue d = (YearMonthDurationValue)v;
 				return d.value().toXacmlString();
@@ -313,13 +310,13 @@ public interface TypeToString extends TypeCapability
 		};
 
 		
-		private AttributeValueType type;
+		private ValueType type;
 		
-		Types(AttributeValueType type){
+		Types(ValueType type){
 			this.type = type;	
 		}
 
-		public AttributeValueType getType(){
+		public ValueType getType(){
 			return type;
 		}
 

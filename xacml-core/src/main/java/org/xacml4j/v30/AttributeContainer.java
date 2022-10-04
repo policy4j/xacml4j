@@ -130,28 +130,28 @@ public class AttributeContainer
 	}
 
 	/**
-	 * @see AttributeContainer#getAttributeValues(String, String, AttributeValueType)
+	 * @see AttributeContainer#getAttributeValues(String, String, ValueType)
 	 */
-	public Collection<AttributeValue> getAttributeValues(
+	public Collection<Value> getAttributeValues(
 			String attributeId,
-			AttributeValueType dataType){
+			ValueType dataType){
 		return getAttributeValues(attributeId, null, dataType);
 	}
 
 	/**
-	 * Gets all {@link AttributeValue} instances
+	 * Gets all {@link Value} instances
 	 * contained in this attributes defaultProvider
 	 *
 	 * @param attributeId an attribute id
 	 * @param issuer an attribute issuer
 	 * @param type an attribute value data type
-	 * @return a collection of {@link AttributeValue} instances
+	 * @return a collection of {@link Value} instances
 	 */
-	public Collection<AttributeValue> getAttributeValues(
-			String attributeId, String issuer, final AttributeValueType type){
+	public Collection<Value> getAttributeValues(
+			String attributeId, String issuer, final ValueType type){
 		Preconditions.checkNotNull(type);
 		Collection<Attribute> found = getAttributes(attributeId, issuer);
-		ImmutableList.Builder<AttributeValue> b = ImmutableList.builder();
+		ImmutableList.Builder<Value> b = ImmutableList.builder();
 		for(Attribute a : found){
 			b.addAll(a.getValuesByType(type));
 		}

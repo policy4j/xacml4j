@@ -22,7 +22,6 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.DateTime;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 
@@ -34,7 +33,7 @@ import java.util.Calendar;
 * for {@link XacmlTypes#DATETIME} type.
 */
 public final class DateTimeValue
-    extends BaseAttributeValue<DateTime>
+		extends BaseValue<DateTime>
     implements Comparable<DateTimeValue>
 {
     private static final long serialVersionUID = 1085808268199675887L;

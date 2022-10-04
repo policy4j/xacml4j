@@ -32,14 +32,14 @@ import org.oasis.xacml.v30.jaxb.FunctionType;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.VariableReferenceType;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.pdp.Apply;
-import org.xacml4j.v30.pdp.AttributeDesignator;
-import org.xacml4j.v30.pdp.AttributeSelector;
-import org.xacml4j.v30.pdp.FunctionReference;
-import org.xacml4j.v30.pdp.VariableReference;
+import org.xacml4j.v30.policy.Apply;
+import org.xacml4j.v30.policy.AttributeDesignator;
+import org.xacml4j.v30.policy.AttributeSelector;
+import org.xacml4j.v30.policy.FunctionReference;
+import org.xacml4j.v30.policy.VariableReference;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -87,11 +87,11 @@ interface ExpressionTypeBuilder
  				return factory.createFunction(exp);
  	 		}
  		},
- 		ATTRIBUTE(AttributeValue.class){
+ 		ATTRIBUTE(Value.class){
  			@Override
  			public JAXBElement<?> from(Expression e){
- 	 			Preconditions.checkArgument(e instanceof AttributeValue);
- 	 			AttributeValue v = (AttributeValue)e;
+ 	 			Preconditions.checkArgument(e instanceof Value);
+ 	 			Value v = (Value)e;
  	 			AttributeValueType exp = factory.createAttributeValueType();
  	 			exp.setDataType(v.getType().getDataTypeId());
  				exp.getContent().add(v.value());
@@ -154,7 +154,7 @@ interface ExpressionTypeBuilder
  		public static ExpressionTypeBuilder getBuilder(Expression exp)
  	 	{
  	 		Preconditions.checkNotNull(exp);
- 	 		if(exp instanceof AttributeValue){
+ 	 		if(exp instanceof Value){
  	 			return Expressions.ATTRIBUTE;
  	 		}
  	 		ExpressionTypeBuilder b = EXPRESSIONS.get(exp.getClass());

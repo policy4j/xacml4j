@@ -7,7 +7,7 @@
 	</parent>
 	<artifactId>xacml-json</artifactId>
 	<packaging>jar</packaging>
-	<name>Xacml4J Gson Integration</name>
+	<name>Xacml4J Json based request/response and policy format support</name>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>

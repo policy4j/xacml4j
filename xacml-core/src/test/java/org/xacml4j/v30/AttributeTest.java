@@ -36,12 +36,12 @@ import static org.junit.Assert.*;
 
 public class AttributeTest
 {
-	private Collection<AttributeValue> values;
+	private Collection<Value> values;
 
 	@Before
 	public void init()
 	{
-		this.values = new LinkedList<AttributeValue>();
+		this.values = new LinkedList<Value>();
 		values.add(XacmlTypes.INTEGER.of(1));
 		values.add(XacmlTypes.INTEGER.of(1));
 		values.add(XacmlTypes.INTEGER.of(3));
@@ -83,7 +83,7 @@ public class AttributeTest
 	@Test
 	public void testCreateWithTheSameValues()
 	{
-		Collection<AttributeValue> values = new LinkedList<AttributeValue>();
+		Collection<Value> values = new LinkedList<Value>();
 		values.add(XacmlTypes.INTEGER.of(1));
 		values.add(XacmlTypes.INTEGER.of(1));
 		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
@@ -124,7 +124,7 @@ public class AttributeTest
 	@Test
 	public void testBuilder()
 	{
-		Iterable<AttributeValue> a = ImmutableSet.of(XacmlTypes.STRING.of("test1"), XacmlTypes.STRING.of("test2"));
+		Iterable<Value> a = ImmutableSet.of(XacmlTypes.STRING.of("test1"), XacmlTypes.STRING.of("test2"));
 		Attribute.builder("testId")
 		.values(a)
 		.value(XacmlTypes.STRING.of("test2"), XacmlTypes.STRING.of("test3"))

@@ -32,28 +32,28 @@ import java.util.Calendar;
  * for {@link XacmlTypes#TIME} type.
  */
 public final class TimeValue
-        extends BaseAttributeValue<org.xacml4j.v30.Time>
+		extends BaseValue<Time>
         implements Comparable<TimeValue>
 {
     private static final long serialVersionUID = -8244143626423796791L;
 
-    private TimeValue(org.xacml4j.v30.Time time) {
+    private TimeValue(Time time) {
         super(XacmlTypes.TIME, time);
     }
 
     static TimeValue of(String v){
-        return new TimeValue(org.xacml4j.v30.Time.valueOf(v));
+        return new TimeValue(Time.valueOf(v));
     }
 
     static TimeValue of(XMLGregorianCalendar v){
-        return new TimeValue(org.xacml4j.v30.Time.valueOf(v));
+        return new TimeValue(Time.valueOf(v));
     }
 
     static TimeValue of(Calendar v){
-        return new TimeValue(org.xacml4j.v30.Time.valueOf(v));
+        return new TimeValue(Time.valueOf(v));
     }
 
-    static TimeValue of(org.xacml4j.v30.Time v){
+    static TimeValue of(Time v){
         return new TimeValue(v);
     }
 

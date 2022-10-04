@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.ValueTypeInfo;
 
 import java.util.ListIterator;
 
@@ -36,10 +36,10 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 {
 	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSpec.class);
 
-	private ValueType type;
+	private ValueTypeInfo type;
 
 	public FunctionParamValueTypeSpec(
-			ValueType paramType, 
+			ValueTypeInfo paramType,
 			ValueExpression defaultValue, 
 			boolean optional){
 		super(optional, false, defaultValue);
@@ -50,11 +50,11 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 		this.type = paramType;
 	}
 	
-	public FunctionParamValueTypeSpec(ValueType type){
+	public FunctionParamValueTypeSpec(ValueTypeInfo type){
 		this(type, null, false);
 	}
 
-	public ValueType getParamType(){
+	public ValueTypeInfo getParamType(){
 		return type;
 	}
 
@@ -69,7 +69,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 		if(exp == null){
 			return isOptional();
 		}
-		ValueType expType = exp.getEvaluatesTo();
+		ValueTypeInfo expType = exp.getEvaluatesTo();
 		boolean valid = type.equals(expType);
 		if(log.isDebugEnabled()){
 			log.debug("Expecting parameter of type=\"{}\" " +
@@ -80,7 +80,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 	}
 	
 	@Override
-	public boolean isValidParamType(ValueType type) {
+	public boolean isValidParamType(ValueTypeInfo type) {
 		return this.type.equals(type);
 	}
 

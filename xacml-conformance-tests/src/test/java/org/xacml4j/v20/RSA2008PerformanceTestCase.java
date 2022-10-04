@@ -29,9 +29,11 @@ import java.io.InputStream;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointCacheProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
@@ -50,12 +52,12 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 	{
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
-				FunctionProvider.Builder.builder()
-				.defaultFunctions()
-				.build(),
-				DecisionCombiningAlgorithmProvider.Builder.builder()
-				                                          .withDefaultAlgorithms()
-				                                          .build());
+				FunctionProviderBuilder.builder()
+				                       .defaultFunctions()
+				                       .build(),
+				DecisionCombiningAlgorithmProviderBuilder.builder()
+				                                         .withDefaultAlgorithms()
+				                                         .build());
 
 		ImmutableList<Supplier<InputStream>> policyStreams = ImmutableList.of(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),

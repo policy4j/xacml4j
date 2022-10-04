@@ -27,6 +27,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xacml4j.v30.content.JsonContent;
+import org.xacml4j.v30.content.XmlContent;
+import org.xacml4j.v30.types.Entity;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -52,25 +55,25 @@ public interface Content
     Type getType();
 
     /**
-     * Tries to resolve given {@Link AttributeSelectorKey} to a {@link BagOfAttributeValues}
+     * Tries to resolve given {@Link AttributeSelectorKey} to a {@link BagOfValues}
      *
      * @param selectorKey an attribute selector
      * @return {@link Optional}
      */
-    default Optional<BagOfAttributeValues> resolve(
+    default Optional<BagOfValues> resolve(
             AttributeSelectorKey selectorKey){
         return resolve(selectorKey, null);
     }
 
     /**
-     * Tries to resolve given {@Link AttributeSelectorKey} to a {@link BagOfAttributeValues}
+     * Tries to resolve given {@Link AttributeSelectorKey} to a {@link BagOfValues}
      *
      * @param selectorKey an attribute selector for this content
      * @param attributeCallback an attribute callback
      * @return {@link Optional}
      */
-    Optional<BagOfAttributeValues> resolve(AttributeSelectorKey selectorKey,
-                                           Supplier<Entity> entitySupplier);
+    Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey,
+                                  Supplier<Entity> entitySupplier);
 
 
     /**

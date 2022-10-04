@@ -24,7 +24,7 @@ package org.xacml4j.v30.xml;
 
 import javax.xml.bind.JAXBElement;
 
-import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.SyntaxException;
 
 import com.google.common.base.Preconditions;

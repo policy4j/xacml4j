@@ -35,7 +35,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonArray;
@@ -54,7 +54,7 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 		if (src.getIssuer() != null) {
 			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		}
-		Collection<AttributeValue> values = src.getValues();
+		Collection<Value> values = src.getValues();
 		serializeValue(context, o, values);
 		// OMIT property if value is "false"
 		if(src.isIncludeInResult()){
@@ -64,9 +64,9 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 	}
 
 	private void serializeValue(JsonSerializationContext context, JsonObject o, 
-			Collection<AttributeValue> values) {
+			Collection<Value> values) {
 		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
-		AttributeValue firstValue = Iterables.getFirst(values, null);
+		Value firstValue = Iterables.getFirst(values, null);
 		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getAbbrevDataTypeId());
 		Optional<TypeToGSon> toGson = TypeToGSon.forType(firstValue.getType());
 		checkState(toGson.isPresent());
@@ -75,7 +75,7 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 			return;
 		}
 		JsonArray array = new JsonArray();
-		for(AttributeValue a : values){
+		for(Value a : values){
 			checkArgument(firstValue.getType().equals(a.getType()));
 			array.add(toGson.get().toJson(a, context));
 		}

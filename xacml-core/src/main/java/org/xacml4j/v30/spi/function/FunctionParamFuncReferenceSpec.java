@@ -24,15 +24,15 @@ package org.xacml4j.v30.spi.function;
 
 import com.google.common.base.MoreObjects;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.pdp.FunctionReference;
+import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.FunctionReference;
 
 import java.util.ListIterator;
 
 final class FunctionParamFuncReferenceSpec extends BaseFunctionParamSpec
 {
 	@Override
-	public boolean isValidParamType(ValueType type) {
+	public boolean isValidParamType(ValueTypeInfo type) {
 		return false;
 	}
 

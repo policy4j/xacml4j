@@ -31,7 +31,7 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
@@ -47,7 +47,7 @@ public class AttributeAssignmentSerializer implements JsonSerializer<AttributeAs
 	{
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
-		AttributeValue value = src.getAttribute();
+		Value value = src.getAttribute();
 		Optional<TypeToGSon> toGson = TypeToGSon.forType(value.getType());
 		Preconditions.checkState(toGson.isPresent());
 		o.add(VALUE_PROPERTY, toGson.get().toJson(value, context));

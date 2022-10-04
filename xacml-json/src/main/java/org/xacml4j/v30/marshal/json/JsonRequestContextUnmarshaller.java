@@ -28,8 +28,8 @@ import java.io.Reader;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.RequestReference;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.request.RequestReference;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
 

@@ -26,7 +26,7 @@ package org.xacml4j.v30.xml;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 public class ExpressionBuilderTest
@@ -34,7 +34,7 @@ public class ExpressionBuilderTest
 	@Test
 	public void testExpressionBuilder()
 	{
-		AttributeValue v = XacmlTypes.STRING.of("aa");
+		Value v = XacmlTypes.STRING.of("aa");
 		ExpressionTypeBuilder b = ExpressionTypeBuilder.Expressions.getBuilder(v);
 		assertNotNull(b);
 	}

@@ -12,7 +12,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>xacml-core</artifactId>
+			<artifactId>xacml-pdp</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

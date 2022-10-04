@@ -29,7 +29,7 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProvider;
 
 public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule>
 	implements PolicyUnmarshaller

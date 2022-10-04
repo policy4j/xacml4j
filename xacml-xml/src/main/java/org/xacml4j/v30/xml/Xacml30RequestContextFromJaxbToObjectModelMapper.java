@@ -53,10 +53,14 @@ import org.oasis.xacml.v30.jaxb.StatusDetailType;
 import org.oasis.xacml.v30.jaxb.StatusType;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.Content;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.request.RequestDefaults;
+import org.xacml4j.v30.request.RequestReference;
+import org.xacml4j.v30.types.Entity;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
@@ -242,7 +246,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		attr.setAttributeId(a.getAttributeId());
 		attr.setIssuer(a.getIssuer());
 		attr.setIncludeInResult(a.isIncludeInResult());
-		for(AttributeValue v : a.getValues()){
+		for(Value v : a.getValues()){
 			TypeToXacml30 m = TypeToXacml30
 					.forType(v.getType())
 					.orElseThrow(
@@ -413,10 +417,10 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 
 	private AttributeAssignment create(AttributeAssignmentType a) throws SyntaxException
 	{
-		AttributeValue value = create((AttributeValueType)a);
+		Value value = create((AttributeValueType)a);
 		return AttributeAssignment
 				.builder()
-				.id(a.getAttributeId())
+				.attributeId(a.getAttributeId())
 				.category(a.getCategory())
 				.issuer(a.getIssuer())
 				.value(value)
@@ -486,14 +490,14 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return b.build();
 	}
 
-	private AttributeValueType toJaxb(AttributeValue a)
+	private AttributeValueType toJaxb(Value a)
 	{
 		Preconditions.checkNotNull(a);
 		return TypeToXacml30.forType(a.getType()).map(v->v.toXacml30(a))
 				.orElseThrow(()->SyntaxException.invalidAttributeValue(a.getType()));
 	}
 	
-	private AttributeValue create(
+	private Value create(
 			AttributeValueType value)
 		throws SyntaxException
 	{

@@ -30,7 +30,7 @@ import org.xacml4j.v30.SyntaxException;
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#BOOLEAN} type.
 */
-public final class BooleanValue extends BaseAttributeValue<Boolean>
+public final class BooleanValue extends BaseValue<Boolean>
 {
     private static final long serialVersionUID = -421397689674188254L;
 

@@ -42,19 +42,19 @@ public class ObligationTest {
 		AttributeAssignment attr1 = AttributeAssignment
 				.builder()
 				.category(CategoryId.ACTION)
-				.id("actionId1")
+				.attributeId("actionId1")
 				.value(XacmlTypes.INTEGER.of(1))
 				.build();
 		AttributeAssignment attr2 = AttributeAssignment
 				.builder()
 				.category(CategoryId.ACTION)
-				.id("actionId1")
+				.attributeId("actionId1")
 				.value(XacmlTypes.INTEGER.of(2))
 				.build();
 		AttributeAssignment attr3 = AttributeAssignment
 				.builder()
 				.category(CategoryId.ACTION)
-				.id("actionId1")
+				.attributeId("actionId1")
 				.value(XacmlTypes.INTEGER.of(3))
 				.build();
 

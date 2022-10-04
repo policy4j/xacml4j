@@ -37,8 +37,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.request.RequestDefaults;
+import org.xacml4j.v30.request.RequestReference;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 
@@ -127,7 +132,7 @@ public class JsonRequestUnmarshallerTest {
 				.build();
 
 		RequestReference requestRef1 = RequestReference.builder().reference(subjectAttributes, resourceAttributes)
-				.build();
+		                                               .build();
 		RequestReference requestRef2 = RequestReference.builder()
 				.reference(subjectAttributes, environmentAttributes, subjectIntermAttributes).build();
 

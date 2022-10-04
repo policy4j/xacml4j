@@ -30,7 +30,7 @@ import javax.security.auth.x500.X500Principal;
  * Implementation an XACML {@link Expression}
  * for {@link XacmlTypes#X500NAME} type.
  */
-public final class X500NameValue extends BaseAttributeValue<X500Principal>
+public final class X500NameValue extends BaseValue<X500Principal>
 {
     private static final long serialVersionUID = -609417077475809404L;
 

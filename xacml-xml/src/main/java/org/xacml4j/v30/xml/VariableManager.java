@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.pdp.VariableDefinition;
+import org.xacml4j.v30.policy.VariableDefinition;
 
 import com.google.common.base.Preconditions;
 

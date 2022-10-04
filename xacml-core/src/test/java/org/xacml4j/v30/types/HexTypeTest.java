@@ -23,7 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import org.junit.Test;
-import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.BagOfValues;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,7 +48,7 @@ public class HexTypeTest
 		HexBinaryValue value1 = XacmlTypes.HEXBINARY.of("00010305");
 		HexBinaryValue value2 = XacmlTypes.HEXBINARY.of(data);
 		assertEquals(value1, value2);
-		BagOfAttributeValues bag = XacmlTypes.HEXBINARY.bag().value(data, "00010305").build();
+		BagOfValues bag = XacmlTypes.HEXBINARY.bag().value(data, "00010305").build();
 		assertEquals(XacmlTypes.HEXBINARY, bag.getBagValueType());
 	}
 }

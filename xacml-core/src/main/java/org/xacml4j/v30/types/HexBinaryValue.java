@@ -22,7 +22,6 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.Binary;
 import org.xacml4j.v30.Expression;
 
 /**
@@ -30,7 +29,7 @@ import org.xacml4j.v30.Expression;
 * for {@link XacmlTypes#HEXBINARY} type.
 */
 public final class HexBinaryValue extends
-        BaseAttributeValue<Binary>
+                                  BaseValue<Binary>
 {
     private static final long serialVersionUID = 8087916652227967791L;
 

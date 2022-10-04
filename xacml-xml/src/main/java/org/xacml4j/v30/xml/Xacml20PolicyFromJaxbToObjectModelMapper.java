@@ -61,28 +61,28 @@ import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
 import org.xacml4j.v30.types.*;
-import org.xacml4j.v30.pdp.Apply;
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
-import org.xacml4j.v30.pdp.AttributeDesignator;
-import org.xacml4j.v30.pdp.AttributeSelector;
-import org.xacml4j.v30.pdp.Condition;
-import org.xacml4j.v30.pdp.FunctionReference;
-import org.xacml4j.v30.pdp.Match;
-import org.xacml4j.v30.pdp.MatchAllOf;
-import org.xacml4j.v30.pdp.MatchAnyOf;
-import org.xacml4j.v30.pdp.ObligationExpression;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.PolicyDefaults;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.pdp.PolicySetDefaults;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.pdp.Rule;
-import org.xacml4j.v30.pdp.Target;
-import org.xacml4j.v30.pdp.VariableDefinition;
-import org.xacml4j.v30.pdp.VariableReference;
+import org.xacml4j.v30.policy.Apply;
+import org.xacml4j.v30.policy.AttributeAssignmentExpression;
+import org.xacml4j.v30.policy.AttributeDesignator;
+import org.xacml4j.v30.policy.AttributeSelector;
+import org.xacml4j.v30.policy.Condition;
+import org.xacml4j.v30.policy.FunctionReference;
+import org.xacml4j.v30.policy.Match;
+import org.xacml4j.v30.policy.MatchAllOf;
+import org.xacml4j.v30.policy.MatchAnyOf;
+import org.xacml4j.v30.policy.ObligationExpression;
+import org.xacml4j.v30.policy.Policy;
+import org.xacml4j.v30.policy.PolicyDefaults;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySet;
+import org.xacml4j.v30.policy.PolicySetDefaults;
+import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.policy.Rule;
+import org.xacml4j.v30.policy.Target;
+import org.xacml4j.v30.policy.VariableDefinition;
+import org.xacml4j.v30.policy.VariableReference;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProvider;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -644,14 +644,14 @@ public class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshaller
 	}
 
 	/**
-	 * Creates {@link AttributeValue} from a given {@link JAXBElement}
+	 * Creates {@link Value} from a given {@link JAXBElement}
 	 *
 	 * @param value
 	 *            a JAXB element
-	 * @return {@link AttributeValue}
+	 * @return {@link Value}
 	 * @throws SyntaxException
 	 */
-	private AttributeValue createValue(
+	private Value createValue(
 			org.oasis.xacml.v20.jaxb.policy.AttributeValueType value)
 			throws SyntaxException {
 		AttributeValueType v = new AttributeValueType();

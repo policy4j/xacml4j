@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>xacml-core</module>
+		<module>xacml-pdp</module>
 		<module>xacml-json</module>
 		<module>xacml-xml</module>
 		<module>xacml-xml-jaxb</module>
@@ -31,7 +32,7 @@
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.14.0</log4j.version>
 		<easymock.version>3.1</easymock.version>
-		<google.guava.version>29.0-jre</google.guava.version>
+		<google.guava.version>31.1-jre</google.guava.version>
 		<google.auto.version>1.0-rc7</google.auto.version>
 		<google.truth.version>0.45</google.truth.version>
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>

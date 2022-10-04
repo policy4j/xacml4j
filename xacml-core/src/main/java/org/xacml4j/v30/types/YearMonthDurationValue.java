@@ -24,7 +24,6 @@ package org.xacml4j.v30.types;
 
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.YearMonthDuration;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
@@ -34,7 +33,7 @@ import javax.xml.datatype.Duration;
  * for {@link XacmlTypes#YEARMONTHDURATION} type.
  */
 public final class YearMonthDurationValue
-    extends BaseAttributeValue<YearMonthDuration>
+		extends BaseValue<YearMonthDuration>
     implements Comparable<YearMonthDurationValue>
 {
     private static final long serialVersionUID = 6510264772808336009L;

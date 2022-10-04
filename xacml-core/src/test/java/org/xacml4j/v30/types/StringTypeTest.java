@@ -23,7 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,10 +35,10 @@ public class StringTypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeValue v0 = XacmlTypes.STRING.of("v0");
-		AttributeValue v1 = XacmlTypes.STRING.of("v1");
+		Value v0 = XacmlTypes.STRING.of("v0");
+		Value v1 = XacmlTypes.STRING.of("v1");
 		assertFalse(v0.equals(v1));
-		AttributeValue v2 = XacmlTypes.STRING.of("v0");
+		Value v2 = XacmlTypes.STRING.of("v0");
 		assertFalse(v1.equals(v2));
 		assertTrue(v0.equals(v2));
 	}

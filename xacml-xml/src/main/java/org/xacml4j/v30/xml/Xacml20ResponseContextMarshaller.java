@@ -40,7 +40,7 @@ import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.AttributeValue;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -150,18 +150,18 @@ public class Xacml20ResponseContextMarshaller
 			Collection<Attribute> attrs = resource.getEntity().getAttributes(RESOURCE_ID);
 			if(attrs.size() == 1){
 				Attribute resourceId = Iterables.getOnlyElement(attrs);
-				AttributeValue v =  Iterables.getOnlyElement(resourceId.getValues());
+				Value v =  Iterables.getOnlyElement(resourceId.getValues());
 				java.util.Optional<TypeToString> toString = TypeToString.forType(v.getType());
 				Preconditions.checkState(toString.isPresent());
 				return toString.get().toString(v);
 			}
-			Collection<AttributeValue> values =  resource.getEntity().getAttributeValues(
+			Collection<Value> values =  resource.getEntity().getAttributeValues(
 					CONTENT_SELECTOR, XacmlTypes.XPATH);
 			if(values.isEmpty() ||
 					values.size() > 1){
 				return null;
 			}
-			AttributeValue v =  Iterables.getOnlyElement(values);
+			Value v =  Iterables.getOnlyElement(values);
 			Optional<TypeToString> toString = TypeToString.forType(v.getType());
 			Preconditions.checkState(toString.isPresent());
 			return toString.get().toString(v);

@@ -22,15 +22,29 @@ package org.xacml4j.v30;
  * #L%
  */
 
-public final class PathEvaluationException extends EvaluationException
+public class PathEvaluationException extends EvaluationException
 {
 	private static final long serialVersionUID = 1511624494955246280L;
 
-	private PathEvaluationException(Throwable t){
+	protected PathEvaluationException(String message){
+		super(Status.processingError().build(), message);
+	}
+
+	protected PathEvaluationException(String message, Throwable t){
+		super(Status.processingError().build(), message, t);
+	}
+
+
+
+	protected PathEvaluationException(Throwable t){
 		super(Status.processingError().build(), t);
 	}
 
-	PathEvaluationException(Status status, String m, Object...p){
+	protected PathEvaluationException(String m, Object...p){
+		super(Status.processingError().build(), m, p);
+	}
+
+	protected PathEvaluationException(Status status, String m, Object...p){
 		super(status, m, p);
 	}
 

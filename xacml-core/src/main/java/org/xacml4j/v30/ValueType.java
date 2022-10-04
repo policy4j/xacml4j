@@ -22,33 +22,145 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.function.Function;
 
 /**
- * A marker interface for XACML value types
+ * Represents XACML value type class
  *
  * @author Giedrius Trumpickas
  */
-public interface ValueType extends Serializable
+public interface ValueType extends ValueTypeInfo, Function<Object, Value>
 {
 	/**
-	 * Test if given type represents a XACML bag type
+	 * Gets fully qualified data type identifier
 	 *
-	 * @return {@code true} if this type represents XACML bag type
+	 * @return data type identifier
 	 */
-	boolean isBag();
+	String getDataTypeId();
+	
+	/**
+	 * Gets "short" version of
+	 * the data type identifier
+	 * 
+	 * @return short version of the data type
+	 * identifier
+	 */
+	String getAbbrevDataTypeId();
 
 	/**
-	 * Gets XACML data type
+	 * Gets all aliases for this data type
 	 *
+	 * @return {@link Set} of aliases for this type
 	 */
-	ValueType getDataType();
+	Set<String> getDataTypeIdAliases();
+
+	@Override
+	default ValueTypeInfo getDataType(){
+		return this;
+	}
+
+	default ValueTypeInfo toBag(){
+		return bagType();
+	}
 
 	/**
-	 * Converts this value type to bag type
+	 * A factory method to of an
+	 * {@link Value} of this type
+	 * from a given object
 	 *
-	 * @param <T>
-	 * @return bag type
+	 * @param v a value
+	 * @return {@link Value} value
+	 * @exception IllegalArgumentException
 	 */
-	<T extends ValueType> T toBag();
+	default <T extends Value> T of(Object v){
+		return of(v, (Object[]) null);
+	}
+
+	/**
+	 * A factory method to parse
+	 * instances of {@Link AttributeValue}
+	 *
+	 * @param v a value
+	 * @param params additional parameters
+	 * @param <T> defaultProvider of {@link Value}
+	 * @return
+	 */
+	<T extends Value> T of(Object v, Object ...params);
+
+	default boolean isBag() {
+		return false;
+	}
+
+	/**
+	 * Creates type representing collection of
+	 * attribute values of this
+	 * data type
+	 *
+	 * @return {@link BagOfValuesType} defaultProvider
+	 */
+	default BagOfValuesType bagType(){
+		return new BagOfValuesType(this);
+    }
+
+	/**
+	 * Creates a new bag builder {@link BagOfValues.Builder}
+	 * for this type
+	 *
+	 * @return {@link BagOfValues.Builder}
+	 */
+	default BagOfValues.Builder bag(){
+	    return new BagOfValues.Builder(bagType());
+    }
+
+	/**
+	 * Shortcut for {}
+	 *
+	 * @return
+	 */
+	default BagOfValues emptyBag(){
+		return bag().build();
+	}
+
+	/**
+	 * Builds bag from given
+	 * {@link Value} instances
+	 *
+	 * @param attributeExps
+	 * @return {@link BagOfValues}s
+	 */
+	default BagOfValues bagOf(
+			Value...attributeExps){
+		return bag()
+				.attribute(
+						attributeExps)
+				.build();
+	}
+
+	@Override
+	default Value apply(Object o){
+		if(o == null){
+			throw SyntaxException
+					.invalidAttributeValue(
+							null, this);
+		}
+		if(o instanceof Object[]){
+			Object[] array = (Object[])o;
+			if(array.length == 0){
+				throw SyntaxException
+						.invalidAttributeValue(
+								Arrays.toString(
+										(Object[])o), this);
+			}
+			if(array.length == 1){
+				return of(o);
+			}
+			return of(array[0],
+					Arrays.copyOfRange(array,
+							1, array.length));
+		}
+		return of(o);
+	}
+
 }

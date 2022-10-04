@@ -89,8 +89,7 @@ public class ExtensibleIdentifier implements Serializable
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("abbreviatedId", abbreviatedId)
+                .add("id", abbreviatedId)
                 .toString();
     }
 

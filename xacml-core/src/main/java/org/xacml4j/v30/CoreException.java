@@ -35,7 +35,6 @@ public class CoreException extends RuntimeException
 
 	private Status status;
 
-
 	/**
 	 * Constructs exception with a given status and {@link Throwable}
 	 *

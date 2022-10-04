@@ -34,6 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.xacml4j.v30.types.Entity;
+
 public class Result
 {
 	private final Status status;

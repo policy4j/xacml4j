@@ -24,12 +24,13 @@ package org.xacml4j.v30.marshal;
 
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.FunctionProvider;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.pdp.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.pdp.FunctionSpec;
-import org.xacml4j.v30.pdp.Rule;
+import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
+import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.PolicySyntaxException;
+import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.spi.function.FunctionProvider;
 
 /**
  * A support class for dealing with XACML
@@ -54,15 +55,6 @@ public class PolicyUnmarshallerSupport
 		this.combiningAlgorithms = decisionCombiningAlgorithms;
 	}
 
-	protected PolicyUnmarshallerSupport(
-			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms) throws Exception
-	{
-		this(FunctionProvider.builder()
-				.withStandardFunctions()
-				.withDiscoveredFunctions()
-				.build(), decisionCombiningAlgorithms);
-	}
-
 	/**
 	 * Creates function from a given identifier
 	 *
@@ -76,7 +68,7 @@ public class PolicyUnmarshallerSupport
 	{
 		return functions.getFunction(functionId)
 				.orElseThrow(
-						()-> SyntaxException
+						()-> PolicySyntaxException
 								.invalidFunction(functionId));
 
 	}
@@ -116,7 +108,7 @@ public class PolicyUnmarshallerSupport
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combiningAlgorithms
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
-			throw new SyntaxException(
+			throw new PolicySyntaxException(
 					"Policy combining algorithm=\"%s\" can not be resolved",
 					algorithmId);
 		}

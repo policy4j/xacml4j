@@ -28,9 +28,10 @@ import com.google.common.collect.Iterators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.pdp.FunctionInvocationException;
-import org.xacml4j.v30.pdp.FunctionParamSpec;
-import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.policy.FunctionInvocationException;
+import org.xacml4j.v30.policy.FunctionParamSpec;
+import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import java.util.*;
 
@@ -91,19 +92,19 @@ public final class FunctionSpecBuilder
 		return this;
 	}
 
-	public FunctionSpecBuilder param(ValueType type){
+	public FunctionSpecBuilder param(ValueTypeInfo type){
 		return param(type, null, false);
 	}
 
-	public FunctionSpecBuilder optional(ValueType type){
+	public FunctionSpecBuilder optional(ValueTypeInfo type){
 		return param(type, null, true);
 	}
 
-	public FunctionSpecBuilder optional(ValueType type, ValueExpression defaultValue){
+	public FunctionSpecBuilder optional(ValueTypeInfo type, ValueExpression defaultValue){
 		return param(type, defaultValue, true);
 	}
 
- 	public FunctionSpecBuilder param(ValueType type, ValueExpression defaultValue, boolean optional){
+ 	public FunctionSpecBuilder param(ValueTypeInfo type, ValueExpression defaultValue, boolean optional){
 		Preconditions.checkNotNull(type);
 		if(defaultValue != null && !optional){
 			throw new SyntaxException(
@@ -138,7 +139,7 @@ public final class FunctionSpecBuilder
 		return this;
 	}
 
-	public FunctionSpecBuilder varArg(ValueType type, int min, int max){
+	public FunctionSpecBuilder varArg(ValueTypeInfo type, int min, int max){
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
 		Preconditions.checkArgument(max > min);
@@ -155,7 +156,7 @@ public final class FunctionSpecBuilder
 	public FunctionSpecBuilder anyBag() {
 		FunctionParamSpec spec = new FunctionParamAnyBagSpec();
 		if(hadVarArg){
-			throw SyntaxException
+			throw PolicySyntaxException
 					.invalidFunctionParameter(functionId, spec);
 		}
 		paramSpec.add(spec);
@@ -189,14 +190,16 @@ public final class FunctionSpecBuilder
 				lazyArgumentEvaluation);
 	}
 
-	public FunctionSpec build(ValueType returnType,
+	public FunctionSpec build(
+			ValueTypeInfo returnType,
 			FunctionInvocation invocation) {
 		return build(
 				new StaticFunctionReturnTypeResolver(returnType),
 				invocation);
 	}
 
-	public FunctionSpec build(ValueType returnType,
+	public FunctionSpec build(
+			ValueTypeInfo returnType,
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
 		return build(
@@ -210,7 +213,7 @@ public final class FunctionSpecBuilder
 	 */
 	static final class FunctionSpecImpl implements FunctionSpec
 	{
-		private final static Logger log = LoggerFactory.getLogger(FunctionSpecImpl.class);
+		private final static Logger LOG = LoggerFactory.getLogger(FunctionSpecImpl.class);
 
 		private String functionId;
 		private String shortId;
@@ -301,7 +304,7 @@ public final class FunctionSpecBuilder
 		}
 
 		@Override
-		public ValueType resolveReturnType(List<Expression> arguments) {
+		public ValueTypeInfo resolveReturnType(List<Expression> arguments) {
 			return resolver.resolve(this, arguments);
 		}
 
@@ -320,38 +323,39 @@ public final class FunctionSpecBuilder
 			{
 				List<Expression> normalizedArgs = normalize(arguments);
 				if(context.isValidateFuncParamsAtRuntime()){
-					if(log.isDebugEnabled()){
-						log.debug("Validating " +
+					if(LOG.isDebugEnabled()){
+						LOG.debug("Validating " +
 								"function=\"{}\" parameters", functionId);
 					}
 					if(!doValidateNormalizedParameters(normalizedArgs)){
-						log.debug("Failed to validate function=\"{}\" params=\"{}\"", functionId, normalizedArgs);
+						LOG.debug("Failed to validate function=\"{}\" params=\"{}\"", functionId, normalizedArgs);
 						throw new FunctionInvocationException(this,
 								"Failed to validate function=\"%s\" parameters=\"%s\"",
 								functionId, normalizedArgs);
 					}
 				}
-				if(log.isDebugEnabled()){
-					log.debug("Invoking function=\"{}\" with params=\"{}\"",
-							functionId, normalizedArgs);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Invoking function=\"{}\" with length={} params=\"{}\"",
+					          functionId, normalizedArgs.size(), normalizedArgs);
 				}
-				T result = (T)invocation.invoke(this, context,
-						evaluateParameters ?normalizedArgs:evaluate(context, normalizedArgs));
-				if(log.isDebugEnabled()){
-					log.debug("Function=\"{}\" " +
+				List<Expression> params = evaluateParameters ?normalizedArgs:evaluate(context, normalizedArgs);
+				LOG.debug("Function=\"{}\" params=\"{}\"", functionId, params);
+				T result = (T)invocation.invoke(this, context, params);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Function=\"{}\" " +
 							"invocation result=\"{}\"", functionId, result);
 				}
 				return result;
 			}
 			catch(EvaluationException e){
-				if(log.isDebugEnabled()){
-					log.debug("Failed to invoke function", e);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Failed to invoke function", e);
 				}
 				throw e;
 			}
 			catch(Exception e){
-				if(log.isDebugEnabled()){
-					log.debug("Failed to invoke function", e);
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Failed to invoke function", e);
 				}
 				throw new FunctionInvocationException(this, e,
 						"Failed to invoke function=\"%s\"", functionId);
@@ -364,9 +368,9 @@ public final class FunctionSpecBuilder
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
 			List<Expression> normalizedParameters = normalize(arguments);
 			ListIterator<Expression> expIt = normalizedParameters.listIterator();
-			if(log.isDebugEnabled()){
-				log.debug("Function=\"{}\" normalized parameters=\"{}\"",
-						functionId, normalizedParameters);
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Function=\"{}\" normalized parameters=\"{}\"",
+				          functionId, normalizedParameters);
 			}
 			while(it.hasNext())
 			{
@@ -406,14 +410,14 @@ public final class FunctionSpecBuilder
 		private boolean doValidateNormalizedParameters(List<Expression> normalizedParameters) {
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
 			ListIterator<Expression> expIt = normalizedParameters.listIterator();
-			if(log.isDebugEnabled()){
-				log.debug("Function=\"{}\" normalized parameters=\"{}\"",
-						functionId, normalizedParameters);
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Function=\"{}\" normalized parameters=\"{}\"",
+				          functionId, normalizedParameters);
 			}
 			while(it.hasNext())
 			{
 				FunctionParamSpec p = it.next();
-				log.debug("Validating param=\"{}\"", p);
+				LOG.debug("Validating param=\"{}\"", p);
 				if(!p.validate(expIt)){
 					return false;
 				}
@@ -422,19 +426,19 @@ public final class FunctionSpecBuilder
 						!expIt.hasNext())){
 					FunctionParamSpec spec = it.next();
 					if(!(spec.isOptional() || spec.isVariadic())){
-						if(log.isDebugEnabled()){
-							log.debug("Additional arguments are " +
-									          "expected for function=\"{}\"",  functionId);
+						if(LOG.isDebugEnabled()){
+							LOG.debug("Additional arguments are " +
+									          "expected for function=\"{}\"", functionId);
 						}
 						return false;
 					}
 				}
 				if(!it.hasNext() &&
 						expIt.hasNext()){
-					if(log.isDebugEnabled()){
-						log.debug("To many arguments=\"{}\", " +
+					if(LOG.isDebugEnabled()){
+						LOG.debug("To many arguments=\"{}\", " +
 								"found for function=\"{}\"",
-								normalizedParameters,  functionId);
+						          normalizedParameters, functionId);
 					}
 					return false;
 				}
@@ -488,7 +492,9 @@ public final class FunctionSpecBuilder
 		}
 
 		private List<Expression> normalizeOptionalParameters(
+				// Iterator over actual params
 				ListIterator<Expression> actualParameterIterator,
+				// Iterator over formal params
 				ListIterator<FunctionParamSpec> formalParameterIterator,
 				List<Expression> normalizedParamBuilder) {
 			while (formalParameterIterator.hasNext()) {
@@ -497,7 +503,6 @@ public final class FunctionSpecBuilder
 					formalParameterIterator.previous();
 					return normalizedParamBuilder;
 				}
-
 				Expression optionalParamValue = null;
 				if (actualParameterIterator.hasNext()) {
 					optionalParamValue = actualParameterIterator.next();
@@ -507,9 +512,8 @@ public final class FunctionSpecBuilder
 					optionalParamValue = formalParameterSpec
 							.getDefaultValue().orElse(null);
 				}
-				if(optionalParamValue != null){
-					normalizedParamBuilder.add(optionalParamValue);
-				}
+				FunctionSpecBuilder.LOG.debug("Formal optional param=\"{}\" actual param value={}", formalParameterSpec, optionalParamValue);
+				normalizedParamBuilder.add(optionalParamValue);
 			}
 
 			return normalizedParamBuilder;
@@ -518,9 +522,11 @@ public final class FunctionSpecBuilder
 		private List<Expression> normalizeVariadicParameters(
 				ListIterator<Expression> actualParameterIterator,
 				ListIterator<FunctionParamSpec> formalParameterIterator,
-				List<Expression> normalizedParamBuilder) {
+				List<Expression> normalizedParamBuilder)
+		{
 			while (formalParameterIterator.hasNext()) {
 				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
+
 				if (!formalParameterSpec.isVariadic()) {
 					formalParameterIterator.previous();
 					return normalizedParamBuilder;
@@ -529,6 +535,7 @@ public final class FunctionSpecBuilder
 				if (actualParameterIterator.hasNext()) {
 					variadicParamValue = actualParameterIterator.next();
 				}
+				FunctionSpecBuilder.LOG.debug("Formal variadic param=\"{}\" actual param value={}", formalParameterSpec, variadicParamValue);
 				if (variadicParamValue == null) {
 					variadicParamValue = null;
 				}

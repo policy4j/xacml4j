@@ -23,9 +23,9 @@ package org.xacml4j.v30.spi.function;
  */
 
 import com.google.common.base.MoreObjects;
-import org.xacml4j.v30.BagOfAttributeValuesType;
+import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.ValueTypeInfo;
 
 import java.util.ListIterator;
 
@@ -36,8 +36,8 @@ final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
 	}
 	
 	@Override
-	public boolean isValidParamType(ValueType type) {
-		return (type instanceof BagOfAttributeValuesType);
+	public boolean isValidParamType(ValueTypeInfo type) {
+		return (type instanceof BagOfValuesType);
 	}
 
 	@Override

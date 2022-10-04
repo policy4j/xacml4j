@@ -34,12 +34,13 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml30RequestContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshaller;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
@@ -259,17 +260,17 @@ public class XacmlPolicyTestSupport {
 		private String rootPolicyVersion;
 		private String pdpId;
 		private String repositoryId;
-		private FunctionProvider.Builder functionProviderBuilder;
+		private FunctionProviderBuilder functionProviderBuilder;
 		private PolicyInformationPointBuilder pipBuilder;
-		private DecisionCombiningAlgorithmProvider.Builder decisionAlgoProviderBuilder;
+		private DecisionCombiningAlgorithmProviderBuilder decisionAlgoProviderBuilder;
 		private Collection<Supplier<InputStream>> policies;
 
 		public Builder(String pdpId, String pipId, String repositoryId){
 			Preconditions.checkNotNull(pdpId);
 			Preconditions.checkNotNull(pipId);
 			Preconditions.checkNotNull(repositoryId);
-			this.functionProviderBuilder = FunctionProvider.Builder.builder();
-			this.decisionAlgoProviderBuilder = DecisionCombiningAlgorithmProvider.Builder.builder();
+			this.functionProviderBuilder = FunctionProviderBuilder.builder();
+			this.decisionAlgoProviderBuilder = DecisionCombiningAlgorithmProviderBuilder.builder();
 			this.pipBuilder = PolicyInformationPointBuilder.builder(pipId);
 			this.policies = new ArrayList<Supplier<InputStream>>();
 			this.repositoryId = repositoryId;

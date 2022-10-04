@@ -34,7 +34,7 @@ import com.google.common.collect.ImmutableMap;
 public class ExpectedAttributeResolverBuilder
 {
 	private AttributeResolverDescriptorBuilder b;
-	private ImmutableMap.Builder<String, BagOfAttributeValues> values;
+	private ImmutableMap.Builder<String, BagOfValues> values;
 
 	private ExpectedAttributeResolverBuilder(AttributeResolverDescriptorBuilder b){
 		this.b = b;
@@ -51,18 +51,18 @@ public class ExpectedAttributeResolverBuilder
 	}
 
 	public ExpectedAttributeResolverBuilder designatorKeyRef(
-			CategoryId category, String attributeId, AttributeValueType type)
+			CategoryId category, String attributeId, ValueType type)
 	{
 		b.requestContextKey(category, attributeId, type);
 		return this;
 	}
-	public ExpectedAttributeResolverBuilder value(String id, AttributeValue value){
+	public ExpectedAttributeResolverBuilder value(String id, Value value){
 		b.attribute(id, value.getType());
 		this.values.put(id, value.toBag());
 		return this;
 	}
 
-	public ExpectedAttributeResolverBuilder value(String id, BagOfAttributeValues value){
+	public ExpectedAttributeResolverBuilder value(String id, BagOfValues value){
 		b.attribute(id, value.getBagValueType());
 		this.values.put(id, value);
 		return this;
@@ -72,7 +72,7 @@ public class ExpectedAttributeResolverBuilder
 		return new BaseAttributeResolver(b.build()) {
 
 			@Override
-			protected Map<String, BagOfAttributeValues> doResolve(ResolverContext context)
+			protected Map<String, BagOfValues> doResolve(ResolverContext context)
 					throws Exception {
 				return values.build();
 			}

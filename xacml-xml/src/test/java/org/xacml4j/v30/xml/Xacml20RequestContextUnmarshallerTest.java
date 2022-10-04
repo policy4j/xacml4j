@@ -31,10 +31,11 @@ import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.Unmarshaller;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.XacmlTypes;
 import static org.xacml4j.v30.types.XacmlTypes.STRING;

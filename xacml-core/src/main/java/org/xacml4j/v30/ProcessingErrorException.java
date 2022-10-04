@@ -42,8 +42,8 @@ public class ProcessingErrorException extends CoreException
     }
 
     public static ProcessingErrorException invalidResolverAttributeType(String id, String attributeId,
-                                                                        AttributeValueType type,
-                                                                        AttributeValueType expectedType){
+                                                                        ValueType type,
+                                                                        ValueType expectedType){
         return new ProcessingErrorException(
                 "Invalid resolverId=\"%s\", attributeId=\"%s\" XACML type=\"%s\" expectedType=\"%s\"",
                 id, attributeId, type.getAbbrevDataTypeId(),

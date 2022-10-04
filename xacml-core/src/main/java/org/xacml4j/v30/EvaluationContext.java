@@ -27,7 +27,6 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -88,7 +87,7 @@ public interface EvaluationContext
 	 * time for a decision
 	 */
 	default void setDecisionCacheTTL(int ttl){
-		setDecisionCacheTTL(Duration.ofSeconds(ttl));
+		setDecisionCacheTTL(Duration.ofSeconds(ttl < 0?0:ttl));
 	}
 
 	/**
@@ -286,25 +285,25 @@ public interface EvaluationContext
 	 *
 	 * @return a map of all resolved designators
 	 */
-	Map<AttributeDesignatorKey, BagOfAttributeValues> getResolvedDesignators();
+	Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators();
 
 	/**
 	 * Gets all resolved selectors in this context
 	 *
 	 * @return a map of all resolved designators
 	 */
-	Map<AttributeSelectorKey, BagOfAttributeValues> getResolvedSelectors();
+	Map<AttributeSelectorKey, BagOfValues> getResolvedSelectors();
 
 	/**
 	 * Resolves a given {@link AttributeSelectorKey} or {@link AttributeDesignatorKey}
-	 * to the {@link BagOfAttributeValues}
+	 * to the {@link BagOfValues}
 	 *
 	 * @param ref an attribute selector
-	 * @return {@link BagOfAttributeValues}
+	 * @return {@link BagOfValues}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given selector
 	 */
-	Optional<BagOfAttributeValues> resolve(AttributeReferenceKey ref)
+	Optional<BagOfValues> resolve(AttributeReferenceKey ref)
 		throws EvaluationException;
 
 	/**
@@ -346,14 +345,14 @@ public interface EvaluationContext
 
 	/**
 	 * Resolves a given {@link AttributeSelectorKey} or {@link AttributeDesignatorKey}
-	 * asynchronously to a an {@kink Optional} with {@link BagOfAttributeValues}
+	 * asynchronously to a an {@kink Optional} with {@link BagOfValues}
 	 *
 	 * @param ref an attribute selector
 	 * @return {@link CompletableFuture}
 	 * @throws EvaluationException if an error
 	 * occurs while resolving given selector
 	 */
-	default CompletableFuture<Optional<BagOfAttributeValues>> resolveAsync(AttributeReferenceKey ref)
+	default CompletableFuture<Optional<BagOfValues>> resolveAsync(AttributeReferenceKey ref)
 			throws EvaluationException
 	{
 		return CompletableFuture.completedFuture(resolve(ref));

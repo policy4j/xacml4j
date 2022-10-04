@@ -26,7 +26,7 @@ import java.io.IOException;
 
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.RequestType;
-import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.marshal.Marshaller;
 
 public class Xacml30RequestContextMarshaller extends BaseJAXBMarshaller<RequestContext> 

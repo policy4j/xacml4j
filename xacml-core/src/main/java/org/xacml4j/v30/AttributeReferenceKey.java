@@ -36,7 +36,7 @@ import java.util.Optional;
 public abstract class AttributeReferenceKey
 {
 	protected final Optional<CategoryId> category;
-	protected final AttributeValueType dataType;
+	protected final ValueType dataType;
 
 	protected AttributeReferenceKey(
 			Builder<?> b){
@@ -48,7 +48,7 @@ public abstract class AttributeReferenceKey
 		return category.get();
 	}
 
-	public final AttributeValueType getDataType(){
+	public final ValueType getDataType(){
 		return dataType;
 	}
 
@@ -56,7 +56,7 @@ public abstract class AttributeReferenceKey
 	public static abstract class Builder<T>
 	{
 		private CategoryId category;
-		private AttributeValueType dataType;
+		private ValueType dataType;
 
 
 		public T category(String category) {
@@ -64,7 +64,7 @@ public abstract class AttributeReferenceKey
 			return getThis();
 		}
 
-		public T category(AttributeValue category) {
+		public T category(Value category) {
 			this.category = CategoryId.of(category);
 			return getThis();
 		}

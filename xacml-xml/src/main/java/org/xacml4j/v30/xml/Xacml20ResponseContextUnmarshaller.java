@@ -42,6 +42,8 @@ import org.xacml4j.v30.marshal.ResponseUnmarshaller;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 public class Xacml20ResponseContextUnmarshaller
@@ -135,7 +137,7 @@ implements ResponseUnmarshaller
 			for(AttributeAssignmentType a : o.getAttributeAssignment()){
 				attrs.add(
 						AttributeAssignment.builder()
-						.id(a.getAttributeId())
+						.attributeId(a.getAttributeId())
 						.value(createValue(a.getDataType(), a.getOtherAttributes(), a.getContent())).build());
 			}
 			return Obligation
@@ -165,7 +167,7 @@ implements ResponseUnmarshaller
 					.build();
 		}
 
-		private AttributeValue createValue(String dataType, Map<QName, String> attr, List<Object> content)
+		private Value createValue(String dataType, Map<QName, String> attr, List<Object> content)
 		{
 			org.oasis.xacml.v30.jaxb.AttributeValueType va = new org.oasis.xacml.v30.jaxb.AttributeValueType();
 			va.setDataType(dataType);

@@ -24,23 +24,23 @@ package org.xacml4j.v30.spi.function;
 
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.pdp.FunctionSpec;
+import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.FunctionSpec;
 
 import java.util.List;
 
 final class StaticFunctionReturnTypeResolver implements FunctionReturnTypeResolver
 {
-	private ValueType returnType;
+	private ValueTypeInfo returnType;
 
-	public StaticFunctionReturnTypeResolver(ValueType returnType){
+	public StaticFunctionReturnTypeResolver(ValueTypeInfo returnType){
 		Preconditions.checkNotNull(returnType);
 		this.returnType = returnType;
 	}
 
 	@Override
-	public ValueType resolve(FunctionSpec spec,
-			List<Expression> arguments) {
+	public ValueTypeInfo resolve(FunctionSpec spec,
+	                             List<Expression> arguments) {
 		return returnType;
 	}
 }

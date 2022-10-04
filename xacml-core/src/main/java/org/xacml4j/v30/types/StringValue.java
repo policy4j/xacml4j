@@ -30,7 +30,7 @@ import org.xacml4j.v30.Expression;
  * Implementation an XACML {@link Expression}
  * for {@link XacmlTypes#STRING} type.
  */
-public final class StringValue extends BaseAttributeValue<String>
+public final class StringValue extends BaseValue<String>
 {
     private static final long serialVersionUID = 657672949137533611L;
 

@@ -25,7 +25,7 @@ package org.xacml4j.v20;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.spi.pip.XacmlAttributeDescriptor;
 import org.xacml4j.v30.spi.pip.XacmlAttributeDesignator;
 import org.xacml4j.v30.spi.pip.XacmlAttributeResolverDescriptor;
@@ -43,14 +43,14 @@ public class Xacml20ConformanceAttributeResolver
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#string",
 						id="urn:oasis:names:tc:xacml:1.0:example:attribute:role")
 	})
-	public Map<String, BagOfAttributeValues> IIA002(
+	public Map<String, BagOfValues> IIA002(
 			@XacmlAttributeDesignator(
 					category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
 					attributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id",
-					dataType="http://www.w3.org/2001/XMLSchema#string") BagOfAttributeValues subjectId)
+					dataType="http://www.w3.org/2001/XMLSchema#string") BagOfValues subjectId)
 	{
-		StringValue name = BagOfAttributeValues.value(subjectId);
-		Map<String, BagOfAttributeValues> attributes = new HashMap<String, BagOfAttributeValues>();
+		StringValue name = BagOfValues.value(subjectId);
+		Map<String, BagOfValues> attributes = new HashMap<String, BagOfValues>();
 		if(name.value().equalsIgnoreCase("Julius Hibbert")){
 			attributes.put("urn:oasis:names:tc:xacml:1.0:example:attribute:role",
 			               XacmlTypes.STRING.of("Physician").toBag());

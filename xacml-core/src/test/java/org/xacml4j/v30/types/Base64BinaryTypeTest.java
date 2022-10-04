@@ -24,7 +24,7 @@ package org.xacml4j.v30.types;
 
 
 import org.junit.Test;
-import org.xacml4j.v30.BagOfAttributeValues;
+import org.xacml4j.v30.BagOfValues;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -46,7 +46,7 @@ public class Base64BinaryTypeTest
 		Base64BinaryValue value1 = XacmlTypes.BASE64BINARY.of(v0);
 		Base64BinaryValue value2 = XacmlTypes.BASE64BINARY.of(v1);
 		
-		BagOfAttributeValues b = XacmlTypes.BASE64BINARY.bag().value(v0, v1).build();
+		BagOfValues b = XacmlTypes.BASE64BINARY.bag().value(v0, v1).build();
 		assertEquals(value1, value2);
 		assertEquals(XacmlTypes.STRING.of("AAEDBQ=="), value1.toStringExp());
 		assertTrue(b.contains(XacmlTypes.BASE64BINARY.of(v0)));

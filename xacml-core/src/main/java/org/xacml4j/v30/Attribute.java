@@ -27,6 +27,8 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMultiset;
+
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -37,14 +39,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A XACML request context attribute, a container for {@link AttributeValue} of the same type
+ * A XACML request context attribute, a container for {@link Value} of the same type
  *
  * @author Giedrius Trumpickas
  */
 public class Attribute
 {
 	private final String attributeId;
-	private final ImmutableMultiset<AttributeValue> values;
+	private final ImmutableMultiset<Value> values;
 	private final boolean includeInResult;
 	private final String issuer;
 
@@ -93,26 +95,26 @@ public class Attribute
 
 	/**
 	 * Gets attribute values as collection of
-	 * {@link AttributeValue} instances
+	 * {@link Value} instances
 	 *
-	 * @return collection of {@link AttributeValue}
+	 * @return collection of {@link Value}
 	 * instances
 	 */
-	public Collection<AttributeValue> getValues(){
+	public Collection<Value> getValues(){
 		return values;
 	}
 
 	/**
-	 * Gets all instances of {@link AttributeValue} by type
+	 * Gets all instances of {@link Value} by type
 	 *
 	 * @param type an attribute type
-	 * @return a collection of {@link AttributeValue} of given type
+	 * @return a collection of {@link Value} of given type
 	 */
-	public Collection<AttributeValue> getValuesByType(final AttributeValueType... type) {
+	public Collection<Value> getValuesByType(final ValueType... type) {
 		if(type == null || type.length == 0){
 			return Collections.emptyList();
 		}
-		List<AttributeValueType> types = Arrays.asList(type);
+		List<ValueType> types = Arrays.asList(type);
 		return values.stream().filter(a->types.contains(a.getType()))
 				.collect(Collectors.toList());
 	}
@@ -153,7 +155,7 @@ public class Attribute
 		private String attributeId;
 		private String issuer;
 		private boolean includeInResult;
-		private ImmutableMultiset.Builder<AttributeValue> valueBuilder;
+		private ImmutableMultiset.Builder<Value> valueBuilder;
 
 		private Builder(String attributeId){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(attributeId));
@@ -176,9 +178,9 @@ public class Attribute
 			return this;
 		}
 
-		public Builder value(AttributeValue...values){
+		public Builder value(Value...values){
 			Preconditions.checkNotNull(values);
-			for(AttributeValue v : values){
+			for(Value v : values){
 				valueBuilder.add(v);
 			}
 			return this;
@@ -214,9 +216,9 @@ public class Attribute
 			return this;
 		}
 
-		public Builder values(Iterable<AttributeValue> values){
+		public Builder values(Iterable<Value> values){
 			Preconditions.checkNotNull(values);
-			for(AttributeValue v : values){
+			for(Value v : values){
 				valueBuilder.add(v);
 			}
 			return this;

@@ -53,27 +53,27 @@ import org.oasis.xacml.v30.jaxb.TargetType;
 import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.AttributeValue;
-import org.xacml4j.v30.pdp.AdviceExpression;
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
-import org.xacml4j.v30.pdp.AttributeDesignator;
-import org.xacml4j.v30.pdp.AttributeReference;
-import org.xacml4j.v30.pdp.AttributeSelector;
-import org.xacml4j.v30.pdp.Match;
-import org.xacml4j.v30.pdp.MatchAllOf;
-import org.xacml4j.v30.pdp.MatchAnyOf;
-import org.xacml4j.v30.pdp.ObligationExpression;
-import org.xacml4j.v30.pdp.Policy;
-import org.xacml4j.v30.pdp.PolicyDefaults;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySet;
-import org.xacml4j.v30.pdp.PolicySetDefaults;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.pdp.Rule;
-import org.xacml4j.v30.pdp.Target;
-import org.xacml4j.v30.pdp.VariableDefinition;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.policy.AdviceExpression;
+import org.xacml4j.v30.policy.AttributeAssignmentExpression;
+import org.xacml4j.v30.policy.AttributeDesignator;
+import org.xacml4j.v30.policy.AttributeReference;
+import org.xacml4j.v30.policy.AttributeSelector;
+import org.xacml4j.v30.policy.Match;
+import org.xacml4j.v30.policy.MatchAllOf;
+import org.xacml4j.v30.policy.MatchAnyOf;
+import org.xacml4j.v30.policy.ObligationExpression;
+import org.xacml4j.v30.policy.Policy;
+import org.xacml4j.v30.policy.PolicyDefaults;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySet;
+import org.xacml4j.v30.policy.PolicySetDefaults;
+import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.policy.Rule;
+import org.xacml4j.v30.policy.Target;
+import org.xacml4j.v30.policy.VariableDefinition;
+import org.xacml4j.v30.types.Entity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -270,13 +270,13 @@ public class Xacml30PolicyFromObjectModelToJaxbMapper
 		jaxbAttr.setAttributeId(a.getAttributeId());
 		jaxbAttr.setIncludeInResult(a.isIncludeInResult());
 		jaxbAttr.setIssuer(a.getIssuer());
-		for(AttributeValue v : a.getValues()){
+		for(Value v : a.getValues()){
 			jaxbAttr.getAttributeValue().add(toJaxb(v));
 		}
 		return jaxbAttr;
 	}
 
-	private AttributeValueType toJaxb(AttributeValue a)
+	private AttributeValueType toJaxb(Value a)
 	{
 		Preconditions.checkNotNull(a);
 		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.forType(a.getType());

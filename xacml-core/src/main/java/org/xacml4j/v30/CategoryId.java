@@ -103,10 +103,10 @@ public final class CategoryId extends ExtensibleIdentifier
 
 	/**
 	 * Parses given value to the {@link CategoryId}
-	 * Supported value types: {@link AttributeValue},{@link String}
+	 * Supported value types: {@link Value},{@link String}
 	 * {@link URI} {@link CategoryId} and {@link Optional<CategoryId>}
 	 *
-	 * @param v a value, supported value types {@link String} {@link URI} {@link AttributeValue}
+	 * @param v a value, supported value types {@link String} {@link URI} {@link Value}
 	 * @return {@link CategoryId}
 	 */
 	public static Optional<CategoryId> parse(Object v)
@@ -126,8 +126,8 @@ public final class CategoryId extends ExtensibleIdentifier
 		if(v instanceof URI){
 			return getById(v.toString());
 		}
-		if(v instanceof AttributeValue){
-			AttributeValue a = (AttributeValue)v;
+		if(v instanceof Value){
+			Value a = (Value)v;
 			if(a.getType().equals(XacmlTypes.ANYURI) ||
 					a.getType().equals(XacmlTypes.STRING)){
 				return getById(a.value().toString());
@@ -147,7 +147,7 @@ public final class CategoryId extends ExtensibleIdentifier
 	}
 
 
-	public static CategoryId of(AttributeValue v)
+	public static CategoryId of(Value v)
 			throws SyntaxException {
 		return parse(v).orElseThrow(
 				()-> SyntaxException.invalidCategoryId(v));

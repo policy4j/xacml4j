@@ -24,6 +24,7 @@ package org.xacml4j.v30.types;
 
 import com.google.common.collect.ImmutableSet;
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.Content;
 
 import javax.security.auth.x500.X500Principal;
 import javax.xml.datatype.Duration;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
  *
  * @author Giedrius Trumpickas
  */
-public enum XacmlTypes implements AttributeValueType
+public enum XacmlTypes implements ValueType
 {
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI", "anyURI") {
 		public AnyURIValue of(Object v, Object... params) {
@@ -204,14 +205,14 @@ public enum XacmlTypes implements AttributeValueType
 				a = Optional.of(
 						TimeValue.of((Calendar) v));
 			}
-			if (v instanceof org.xacml4j.v30.Time) {
+			if (v instanceof Time) {
 				a = Optional.of(
-						TimeValue.of((org.xacml4j.v30.Time) v));
+						TimeValue.of((Time) v));
 			}
 
 			if (v instanceof Instant) {
 				a = Optional.of(
-						TimeValue.of((org.xacml4j.v30.Time) v));
+						TimeValue.of((Time) v));
 			}
 			return a.orElseThrow(
 					() -> SyntaxException
@@ -323,7 +324,7 @@ public enum XacmlTypes implements AttributeValueType
 	},
 	ENTITY("urn:oasis:names:tc:xacml:3.0:data-type:entity", "entity") {
 		public EntityValue of(Object v, Object... params) {
-			if (v instanceof AttributeValue) {
+			if (v instanceof Value) {
 				Entity.Builder b = Entity.builder();
 				if (params != null || params.length > 0) {
 					b.attributes(
@@ -337,12 +338,12 @@ public enum XacmlTypes implements AttributeValueType
 		}
 	};
 
-	private final static Map<String, AttributeValueType> SYSTEM_TYPES_BY_ID = Arrays
+	private final static Map<String, ValueType> SYSTEM_TYPES_BY_ID = Arrays
 			.stream(values())
 			.collect(Collectors
 					.toMap(v -> v.getDataTypeId(), v->v));
 
-	private final static Map<String, AttributeValueType> SYSTEM_TYPES_BY_SHORT_ID = Arrays
+	private final static Map<String, ValueType> SYSTEM_TYPES_BY_SHORT_ID = Arrays
 			.stream(values())
 			.collect(Collectors
 					.toMap(v -> v.getAbbrevDataTypeId(), v->v));
@@ -351,13 +352,13 @@ public enum XacmlTypes implements AttributeValueType
 	private String typeId;
 	private String shortTypeId;
 	private Set<String> aliases;
-	private BagOfAttributeValuesType bagType;
+	private BagOfValuesType bagType;
 
 
 	XacmlTypes(String typeId, String shortTypeId, String... aliases) {
 		this.typeId = typeId;
 		this.shortTypeId = shortTypeId;
-		this.bagType = new BagOfAttributeValuesType(this);
+		this.bagType = new BagOfValuesType(this);
 		this.aliases = (aliases == null) ? ImmutableSet.<String>of() : ImmutableSet
 				.<String>builder()
 				.add(shortTypeId)
@@ -365,7 +366,7 @@ public enum XacmlTypes implements AttributeValueType
 				.build();
 	}
 
-	public static Optional<AttributeValueType> getType(Object typeId){
+	public static Optional<ValueType> getType(Object typeId){
 		return getType(typeId, false);
 	}
 
@@ -376,9 +377,9 @@ public enum XacmlTypes implements AttributeValueType
 	 * {@link String}, {@link URI}, {@link URI}
 	 * @return {@link Optional} with resolved type
 	 */
-	public static Optional<AttributeValueType> getType(Object typeId, boolean refresh){
-		if(typeId instanceof AttributeValueType){
-			return Optional.of((AttributeValueType)typeId);
+	public static Optional<ValueType> getType(Object typeId, boolean refresh){
+		if(typeId instanceof ValueType){
+			return Optional.of((ValueType)typeId);
 		}
 		if(typeId instanceof String){
 			return _getTypeById(typeId.toString(), refresh);
@@ -386,8 +387,8 @@ public enum XacmlTypes implements AttributeValueType
 		if(typeId instanceof URI){
 			return _getTypeById(typeId.toString(), refresh);
 		}
-		if(typeId instanceof AttributeValue){
-			AttributeValue a = (AttributeValue)typeId;
+		if(typeId instanceof Value){
+			Value a = (Value)typeId;
 			if(a.getType().equals(XacmlTypes.STRING) || a.getType().equals(ANYURI)){
 				return _getTypeById(a.value().toString(), refresh);
 			}
@@ -399,7 +400,7 @@ public enum XacmlTypes implements AttributeValueType
 	 * A factory for the extension types
 	 */
 	public interface Factory {
-		Optional<AttributeValueType> getExtensionType(String typeId);
+		Optional<ValueType> getExtensionType(String typeId);
 	}
 
 	private static final ThreadLocal<ServiceLoader<Factory>> EXTENSIONS = ThreadLocal
@@ -412,8 +413,8 @@ public enum XacmlTypes implements AttributeValueType
 	 * @param refresh refresh extension types
 	 * @return {@link Optional} with resolved type
 	 */
-	private static Optional<AttributeValueType> _getTypeById(final String typeId, boolean refresh){
-		Optional<AttributeValueType> type = Optional
+	private static Optional<ValueType> _getTypeById(final String typeId, boolean refresh){
+		Optional<ValueType> type = Optional
 				.ofNullable(SYSTEM_TYPES_BY_ID.get(typeId))
 				.or(()->Optional.ofNullable(SYSTEM_TYPES_BY_SHORT_ID.get(typeId)));
 		if(type.isPresent()){
@@ -435,7 +436,7 @@ public enum XacmlTypes implements AttributeValueType
 	 * @return
 	 */
 	@Override
-	public BagOfAttributeValuesType bagType() {
+	public BagOfValuesType bagType() {
 		return bagType;
 	}
 
@@ -458,7 +459,7 @@ public enum XacmlTypes implements AttributeValueType
 		return shortTypeId;
 	}
 
-	public AttributeValueType getDataType(){
+	public ValueType getDataType(){
 		return this;
 	}
 

@@ -35,10 +35,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 
@@ -73,14 +75,14 @@ public class JsonResponseContextMarshallerTest {
 								ImmutableList.<AttributeAssignment> of(
 										AttributeAssignment
 												.builder()
-										        .id(SubjectAttributes.SUBJECT_ID.toString())
+										        .attributeId(SubjectAttributes.SUBJECT_ID.toString())
 												.category(CategoryId.ACTION)
 												.issuer("Vytenai")
 												.value(XacmlTypes.STRING.of("obuolys"))
 												.build(),
 										AttributeAssignment
 												.builder()
-												.id(SubjectAttributes.KEY_INFO.toString())
+												.attributeId(SubjectAttributes.KEY_INFO.toString())
 												.category(CategoryId.ACTION)
 												.issuer("ispanija")
 												.value(XacmlTypes.STRING.of("apelsinas"))
@@ -92,7 +94,7 @@ public class JsonResponseContextMarshallerTest {
 						ImmutableList.<AttributeAssignment> of(
 								AttributeAssignment
 										.builder()
-										.id("custom:attribute1")
+										.attributeId("custom:attribute1")
 										.category("totaly:made:up:attribute-category1")
 										.value(XacmlTypes.STRING.of("same old apelsinas"))
 						                .build()))
@@ -103,7 +105,7 @@ public class JsonResponseContextMarshallerTest {
 								ImmutableList.<AttributeAssignment> of(
 										AttributeAssignment
 												.builder()
-												.id("test:advice1")
+												.attributeId("test:advice1")
 												.value(XacmlTypes.STRING.of("nespjauk i sulini"))
 												.build()))
 						.build(),

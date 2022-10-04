@@ -23,9 +23,9 @@ package org.xacml4j.v30.spi.function;
  */
 
 import com.google.common.base.MoreObjects;
-import org.xacml4j.v30.AttributeValueType;
-import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.ValueTypeInfo;
 
 import java.util.ListIterator;
 
@@ -36,8 +36,8 @@ final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
 		super(false, false, null);
 	}
 	@Override
-	public boolean isValidParamType(ValueType type) {
-		return (type instanceof AttributeValueType);
+	public boolean isValidParamType(ValueTypeInfo type) {
+		return (type instanceof ValueType);
 	}
 	
 	@Override

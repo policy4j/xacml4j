@@ -3,7 +3,7 @@ package org.xacml4j.v30.xml;
 import javax.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProvider;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;

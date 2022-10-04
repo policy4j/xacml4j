@@ -25,7 +25,6 @@ package org.xacml4j.v30;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
 
 import java.net.URI;
 
@@ -37,7 +36,7 @@ import java.net.URI;
  */
 public final class AttributeAssignment
 {
-	private final AttributeValue attribute;
+	private final Value attribute;
 	private final CategoryId category;
 	private final String attributeId;
 	private final String issuer;
@@ -62,6 +61,10 @@ public final class AttributeAssignment
 		return new Builder();
 	}
 
+	public static Builder builder(String attributeId){
+		return new Builder().attributeId(attributeId);
+	}
+
 	/**
 	 * Gets attribute identifier
 	 *
@@ -76,7 +79,7 @@ public final class AttributeAssignment
 	 *
 	 * @return attribute value
 	 */
-	public AttributeValue getAttribute(){
+	public Value getAttribute(){
 		return attribute;
 	}
 
@@ -111,7 +114,7 @@ public final class AttributeAssignment
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-		.add("id", attributeId)
+		.add("attributeId", attributeId)
 		.add("category", category)
 		.add("value", attribute)
 		.add("issuer", issuer).toString();
@@ -140,9 +143,9 @@ public final class AttributeAssignment
 		private String attributeId;
 		private CategoryId category;
 		private String issuer;
-		private AttributeValue value;
+		private Value value;
 
-		public Builder id(String attributeId){
+		public Builder attributeId(String attributeId){
 			Preconditions.checkNotNull(attributeId);
 			this.attributeId = attributeId;
 			return this;
@@ -153,7 +156,7 @@ public final class AttributeAssignment
 			return this;
 		}
 
-		public Builder category(AttributeValue category) {
+		public Builder category(Value category) {
 			this.category = CategoryId.of(category);
 			return this;
 		}
@@ -168,21 +171,6 @@ public final class AttributeAssignment
 			return this;
 		}
 
-		/**
-		 * Copies all state from a given {@link AttributeAssignmentExpression}
-		 * except attribute value expression
-		 *
-		 * @param attrAssigExp attribute assignment expression
-		 * @return {@link Builder}
-		 */
-		public Builder from(AttributeAssignmentExpression a)
-		{
-			java.util.Objects.requireNonNull(a);
-			this.attributeId = a.getAttributeId();
-			this.category = a.getCategory();
-			this.issuer = a.getIssuer();
-			return this;
-		}
 
 
 		public Builder issuer(String issuer){
@@ -190,7 +178,7 @@ public final class AttributeAssignment
 			return this;
 		}
 
-		public Builder value(AttributeValue v){
+		public Builder value(Value v){
 			Preconditions.checkNotNull(v);
 			this.value = v;
 			return this;

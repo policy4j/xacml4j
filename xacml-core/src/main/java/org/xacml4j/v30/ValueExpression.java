@@ -29,12 +29,12 @@ package org.xacml4j.v30;
 public interface ValueExpression extends Expression
 {
 	/**
-	 * Returns {@link ValueType} representing
+	 * Returns {@link ValueTypeInfo} representing
 	 * type of this value
 	 *
-	 * @return {@link ValueType} type for this value
+	 * @return {@link ValueTypeInfo} type for this value
 	 */
-	default ValueType getType(){
+	default ValueTypeInfo getType(){
 		return getEvaluatesTo();
 	}
 

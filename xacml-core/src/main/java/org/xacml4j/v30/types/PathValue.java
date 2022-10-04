@@ -23,6 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.Content;
 
 import java.util.Optional;
 
@@ -31,11 +32,11 @@ import java.util.Optional;
  *
  * for {@link XacmlTypes#XPATH} type.
  */
-public final class PathValue extends BaseAttributeValue<Path>
+public final class PathValue extends BaseValue<Path>
 {
     private static final long serialVersionUID = 8576542145890616101L;
 
-    private PathValue(AttributeValueType type, Path path){
+    private PathValue(ValueType type, Path path){
         super(type, path);
     }
 
