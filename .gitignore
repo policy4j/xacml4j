@@ -20,6 +20,13 @@
 /xacml-test/target
 /xacml-test/xacml-test.iml
 
+# /xacml-pdp/
+/xacml-pdp/.classpath
+/xacml-pdp/.project
+/xacml-pdp/target
+/xacml-pdp/.settings
+/xacml-pdp/xacml-pdp.iml
+
 # /xacml-json/
 /xacml-json/.classpath
 /xacml-json/.project
