@@ -116,7 +116,7 @@ public final class Entity extends AttributeContainer
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
 		.add("attributes", attributes)
-		.add("content", content.toString())
+		.add("content", content != null? content.toString():null)
 		.toString();
 	}
 

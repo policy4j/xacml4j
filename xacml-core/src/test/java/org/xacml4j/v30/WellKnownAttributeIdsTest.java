@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertSame;
 
-public class XacmlWellKnownAttributeIdsTest
+public class WellKnownAttributeIdsTest
 {
     @Test
     public void testCreateWellKnownAttributeId(){

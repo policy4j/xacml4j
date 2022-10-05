@@ -237,7 +237,7 @@ public class PolicySetTest
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
 
-		//expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
+		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
 
 		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
 		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
@@ -263,7 +263,7 @@ public class PolicySetTest
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
 
-		//expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
+		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
 		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
 		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
 

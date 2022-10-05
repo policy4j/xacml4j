@@ -33,6 +33,7 @@ import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.*;
 
 import java.time.Duration;
+import java.util.Collection;
 
 
 public class RuleTest
@@ -190,33 +191,23 @@ public class RuleTest
 
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
 				XacmlTypes.STRING.of("testVal1"));
-
-
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(
 				XacmlTypes.STRING.of("testVal1"));
-
 		c.replay();
-
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
-
 		c.verify();
-
+		Collection<Advice> advices = context.getMatchingAdvices(Decision.DENY);
+		System.out.println(advices);
 		assertTrue(
-				context.getMatchingAdvices(Decision.DENY) .contains(Advice
-						.builder("denyAdvice", Effect.DENY)
-						.attribute(
-								"testId",
-								XacmlTypes.STRING.of("testVal1"))
-								.build()));
-
+				advices
+				       .contains(Advice.builder("denyAdvice", Effect.DENY)
+				                       .attribute("testId", XacmlTypes.STRING.of("testVal1"))
+				                       .build()));
 		assertTrue(
-				context.getMatchingObligations(Decision.DENY).contains(Obligation
-						.builder("denyObligation", Effect.DENY)
-						.attribute(
-								"testId",
-								XacmlTypes.STRING.of("testVal1"))
-								.build()));
-
+				context.getMatchingObligations(Decision.DENY)
+				       .contains(Obligation.builder("denyObligation", Effect.DENY)
+				                           .attribute("testId", XacmlTypes.STRING.of("testVal1"))
+				                           .build()));
 	}
 
 	@Test

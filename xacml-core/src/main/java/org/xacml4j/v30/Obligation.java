@@ -80,6 +80,7 @@ public class Obligation
 		}
 		Obligation o = Obligation.class.cast(a);
 		return Obligation.from(o)
+				.attributes(getAttributes())
 				.attributes(o.getAttributes())
 				.build();
 	}

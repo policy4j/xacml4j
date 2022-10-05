@@ -162,7 +162,7 @@ public final class AttributeAssignment
 		}
 
 		public Builder category(CategoryId category) {
-			this.category = java.util.Objects.requireNonNull(category, "category");
+			this.category = category;
 			return this;
 		}
 

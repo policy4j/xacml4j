@@ -241,7 +241,7 @@ public class PolicyTest
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
 
 		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
-		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.INTEGER.of("testValue1"));
+		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.of("testValue1"));
 
 		c.replay();
 		assertEquals(Decision.DENY, policy.evaluate(policyContext));

@@ -83,7 +83,7 @@ public abstract class DecisionRuleResponse
 	 * @param a an advice
 	 * @return a new advice defaultProvider with combined attributes
 	 */
-	public abstract DecisionRuleResponse merge(DecisionRuleResponse a);
+	public abstract  <T extends DecisionRuleResponse> T merge(T a);
 
 	@Override
 	public final int hashCode(){

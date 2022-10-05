@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -45,16 +46,16 @@ import java.util.stream.Collectors;
 
 public final class RootEvaluationContext implements EvaluationContext
 {
-	protected final Logger log = LoggerFactory.getLogger(RootEvaluationContext.class);
+	protected final Logger LOG = LoggerFactory.getLogger(RootEvaluationContext.class);
 
 	private final XPathVersion defaultXPathVersion;
 	private final EvaluationContextHandler contextHandler;
 	private final PolicyReferenceResolver resolver;
-	private final Map<String, Advice> denyAdvices;
-	private final Map<String, Obligation> denyObligations;
-	private final Map<String, Advice> permitAdvices;
-	private final Map<String, Obligation> permitObligations;
-	private final Map<String, CompositeDecisionRule> evaluatedPolicies;
+	private final ConcurrentMap<String, Advice> denyAdvices;
+	private final ConcurrentMap<String, Obligation> denyObligations;
+	private final ConcurrentMap<String, Advice> permitAdvices;
+	private final ConcurrentMap<String, Obligation> permitObligations;
+	private final ConcurrentMap<String, CompositeDecisionRule> evaluatedPolicies;
 	private Clock clock;
 
 	private boolean validateFuncParamsAtRuntime;
@@ -185,10 +186,14 @@ public final class RootEvaluationContext implements EvaluationContext
 			return;
 		}
 		for(Advice a : advices){
-			addAndMerge(a, ()-> (Decision.PERMIT.equals(d) ? permitAdvices :
-			                     ((Decision.DENY.equals(d))?denyAdvices:Collections.emptyMap())));
+			LOG.debug("Adding advice=\"{}\"", a);
+			addAndMergeConcurrent(a, ()-> (Decision.PERMIT.equals(d) ? permitAdvices :
+			                               ((Decision.DENY.equals(d))?denyAdvices:null)));
 		}
 	}
+
+
+
 
 	@Override
 	public void addObligations(Decision d, Iterable<Obligation> obligations)
@@ -199,16 +204,21 @@ public final class RootEvaluationContext implements EvaluationContext
 			return;
 		}
 		for(Obligation a : obligations){
-			addAndMerge(a, ()-> (Decision.PERMIT.equals(d) ? permitObligations :
-			                     ((Decision.DENY.equals(d))?denyObligations:Collections.emptyMap())));
+			addAndMergeConcurrent(a, ()-> (Decision.PERMIT.equals(d) ? permitObligations :
+			                               ((Decision.DENY.equals(d))?denyObligations:null)));
 		}
 	}
 
-	private <T extends DecisionRuleResponse> void addAndMerge(T response, Supplier<Map<String, T>> mapSupplier)
+	private <T extends DecisionRuleResponse> void addAndMergeConcurrent(T response,
+	                                                                    Supplier<ConcurrentMap<String, T>> mapSupplier)
 	{
-		Optional.ofNullable(mapSupplier.get())
-				.map(v->Optional.ofNullable(v.get(
-						response.getId())).map(r->r.merge(response)));
+		LOG.debug("Processing {}=\"{}\"", response.getClass().getSimpleName(), response);
+		ConcurrentMap<String, T> rules = mapSupplier.get();
+		if(rules == null){
+			return;
+		}
+		rules.putIfAbsent(response.getId(), response);
+		rules.computeIfPresent(response.getId(), (id,r)->r.merge(response));
 	}
 
 	@Override
@@ -297,8 +307,8 @@ public final class RootEvaluationContext implements EvaluationContext
 	private Policy resolve(PolicyIDReference ref)
 		throws PolicyResolutionException {
 		Policy p =	resolver.resolve(ref);
-		if(log.isDebugEnabled()){
-			log.debug("Trying to resolve " +
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Trying to resolve " +
 					"Policy reference=\"{}\"", ref);
 		}
 		if(p == null){
@@ -311,8 +321,8 @@ public final class RootEvaluationContext implements EvaluationContext
 	private PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		PolicySet p = resolver.resolve(ref);
-		if(log.isDebugEnabled()){
-			log.debug("Trying to resolve " +
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Trying to resolve " +
 					"PolicySet reference=\"{}\"", ref);
 		}
 		if(p == null){

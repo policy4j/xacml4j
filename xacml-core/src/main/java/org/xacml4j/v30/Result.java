@@ -34,10 +34,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.types.Entity;
 
-public class Result
+public final class Result
 {
+	private final static Logger LOG  = LoggerFactory.getLogger(Result.class);
+
 	private final Status status;
 	private final Decision decision;
 	private final Map<String, Obligation> obligations;
@@ -349,9 +353,12 @@ public class Result
 		}
 
 		private  Builder addObligation(Obligation obligation){
-			Preconditions.checkNotNull(obligation);
-			Obligation o = obligations.get(obligation.getId());
+
+			Obligation o = java.util.Objects.requireNonNull(obligations, "obligations")
+			                                .get(obligation.getId());
+
 			if(o != null){
+				LOG.debug("Merging obligations a={} b={}", o, obligation);
 				o = o.merge(obligation);
 				obligations.replace(o.getId(), o);
 				return this;
