@@ -24,6 +24,8 @@ package org.xacml4j.v30;
 
 import java.io.Serializable;
 
+import javax.management.AttributeValueExp;
+
 
 /**
  * Represents XACML attribute value
@@ -64,11 +66,21 @@ public interface Value
 		return getType();
 	}
 
+	default void accept(ExpressionVisitor v) {
+		if(!(v instanceof ValueExpVisitor)){
+			return;
+		}
+		((ValueExpVisitor) v).visitEnter(this);
+		((ValueExpVisitor) v).visitLeave(this);
+	}
 
-
-	interface AttributeExpVisitor extends ExpressionVisitor
+	interface ValueExpVisitor extends ExpressionVisitor
 	{
-		void visitEnter(Value v);
-		void visitLeave(Value v);
+		default void visitEnter(Value value){
+			value.accept(this);
+		}
+		default void visitLeave(Value value){
+			value.accept(this);
+		}
 	}
 }

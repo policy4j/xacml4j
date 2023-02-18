@@ -23,19 +23,34 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
+
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import java.time.Clock;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 import static org.junit.Assert.*;
+import static org.easymock.EasyMock.*;
 
 public class AttributeResolverDescriptorTest
 {
+	private IMocksControl c;
+	private EvaluationContext context;
+	@Before
+	public void setUp(){
+		this.c = EasyMock.createControl();
+		this.context = c.createMock(EvaluationContext.class);
+	}
 
 	@Test(expected= SyntaxException.class)
 	public void testBuildDescriptorWithContextKeyReferringToThisDescriptor()
@@ -62,7 +77,7 @@ public class AttributeResolverDescriptorTest
 				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER, "testAlias1")
 		.attribute("testId2", XacmlTypes.STRING, "testAlias2")
-				.build((c)-> ImmutableMap.of());
+				.build((c)-> ImmutableMap.of("testId1", XacmlTypes.INTEGER.of(10).toBag()));
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());
@@ -79,7 +94,7 @@ public class AttributeResolverDescriptorTest
 		assertFalse(d.canResolve(key.dataType(XacmlTypes.STRING).build()));
 
 		Map<AttributeDesignatorKey, AttributeDescriptor> byKey = d.getAttributesByKey();
-		assertEquals(2, byKey.size());
+		assertEquals(4, byKey.size());
 
 		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey
 				.builder()
@@ -98,11 +113,13 @@ public class AttributeResolverDescriptorTest
 		assertNotNull(byKey.get(key0.build()));
 		assertNotNull(byKey.get(key1.build()));
 
-
-		Iterable<AttributeDesignatorKey> keys = d.getAttributesByKey().keySet();
-
-		assertEquals(key0.build(), Iterables.get(keys, 0));
-		assertEquals(key1.build(), Iterables.get(keys, 1));
+		expect(context.getClock()).andReturn(Clock.systemUTC());
+		c.replay();
+		Function<ResolverContext, Optional<AttributeSet>> r = d.getResolverFunction();
+		ResolverContext resolverContext = ResolverContext.createContext(context, d);
+		assertEquals(XacmlTypes.INTEGER.of(10).toBag(),
+		             r.apply(resolverContext).get().get("testId1").get());
+		c.verify();
 	}
 
 	@Test
@@ -128,7 +145,7 @@ public class AttributeResolverDescriptorTest
 		assertFalse(d.canResolve(key.dataType(XacmlTypes.STRING).build()));
 
 
-		Iterable<AttributeDesignatorKey> keys = d.getAttributesByKey().keySet();
+		Map<AttributeDesignatorKey, AttributeDescriptor> keys = d.getAttributesByKey();
 
 		AttributeDesignatorKey.Builder key0 = AttributeDesignatorKey
 				.builder()
@@ -141,7 +158,7 @@ public class AttributeResolverDescriptorTest
 				.attributeId("testId2")
 				.dataType(XacmlTypes.STRING);
 
-		assertEquals(key0.build(), Iterables.get(keys, 0));
-		assertEquals(key1.build(), Iterables.get(keys, 1));
+		assertTrue(keys.containsKey(key0.build()));
+		assertTrue(keys.containsKey(key1.build()));
 	}
 }

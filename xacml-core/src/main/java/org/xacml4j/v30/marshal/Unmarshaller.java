@@ -26,9 +26,12 @@ import org.xacml4j.v30.SyntaxException;
 
 import java.io.IOException;
 
+import com.google.common.net.MediaType;
+
 
 public interface Unmarshaller<T>
 {
+	MediaType getMediaType();
 	T unmarshal(Object source)
 		throws SyntaxException, IOException;
 }

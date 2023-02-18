@@ -27,6 +27,7 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Multiset;
 
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.EntityValue;
@@ -39,14 +40,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A XACML request context attribute, a container for {@link Value} of the same type
+ * A XACML request context attribute, a container for {@link Value}
+ * of the same type with some additional meta information about values
  *
  * @author Giedrius Trumpickas
  */
 public class Attribute
 {
 	private final String attributeId;
-	private final ImmutableMultiset<Value> values;
+	private final Multiset<Value> values;
 	private final boolean includeInResult;
 	private final String issuer;
 

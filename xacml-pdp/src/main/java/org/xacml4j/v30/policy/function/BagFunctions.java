@@ -24,11 +24,6 @@ package org.xacml4j.v30.policy.function;
 
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamVarArg;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.AnyURIValue;
 import org.xacml4j.v30.types.Base64BinaryValue;
 import org.xacml4j.v30.types.BooleanValue;

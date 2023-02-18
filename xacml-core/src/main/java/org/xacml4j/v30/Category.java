@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.types.Entity;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 
@@ -43,7 +44,7 @@ public final class Category
 	private final static Logger LOG = LoggerFactory.getLogger(Category.class);
 
 	private final String refId;
-	private final CategoryReference ref;
+	private final CategoryReference cachedRef;
 	private final CategoryId categoryId;
 	private final Entity entity;
 
@@ -58,7 +59,7 @@ public final class Category
 				"Category identifier must be specified");
 		this.entity = java.util.Objects.requireNonNull(b.entity,
 				"Category entity must be specified");
-		this.ref = (b.id == null)
+		this.cachedRef = (b.id == null)
 				? null
 				: CategoryReference.builder().id(b.id).build();
 	}
@@ -111,12 +112,12 @@ public final class Category
 	 * @return unique identifier of the attribute
 	 * category in the request context
 	 */
-	public String getReferenceId(){
-		return refId;
+	public Optional<String> getReferenceId(){
+		return Optional.ofNullable(refId);
 	}
 
-	public CategoryReference getReference(){
-		return ref;
+	public Optional<CategoryReference> getReference(){
+		return Optional.ofNullable(cachedRef);
 	}
 
 	/**
@@ -144,7 +145,7 @@ public final class Category
 				.add("category", categoryId.getAbbreviatedId())
 				.add("id", refId)
 				.add("entity", entity)
-				.add("reference", ref)
+				.add("reference", cachedRef)
 				.toString();
 	}
 
@@ -165,7 +166,7 @@ public final class Category
 		return java.util.Objects.equals(categoryId, a.categoryId) &&
 				java.util.Objects.equals(refId, a.refId) &&
 				entity.equals(a.entity) &&
-				java.util.Objects.equals(ref, a.ref);
+				java.util.Objects.equals(cachedRef, a.cachedRef);
 	}
 
 	public final static class Builder
@@ -194,7 +195,7 @@ public final class Category
 		public Builder copyOf(Category a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
-			id(a.getReferenceId());
+			id(a.getReferenceId().orElse(null));
 			category(a.getCategoryId());
 			entity(Entity.builder().copyOf(a.entity, f).build());
 			return this;

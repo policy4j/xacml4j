@@ -63,8 +63,8 @@ public class NumericComparisonFunctionTest
 	@Test
 	public void testGreaterThanInteger()
 	{
-		IntegerValue a = XacmlTypes.DOUBLE.of(35);
-		IntegerValue b = XacmlTypes.DOUBLE.of(35);
+		IntegerValue a = XacmlTypes.INTEGER.of(35);
+		IntegerValue b = XacmlTypes.INTEGER.of(35);
 		assertEquals(XacmlTypes.BOOLEAN.of(false), NumericComparisonFunctions.greaterThanInteger(a, b));
 		a = XacmlTypes.INTEGER.of(36);
 		b = XacmlTypes.INTEGER.of(35);

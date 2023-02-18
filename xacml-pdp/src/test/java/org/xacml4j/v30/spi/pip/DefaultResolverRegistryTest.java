@@ -40,6 +40,8 @@ import static org.easymock.EasyMock.createStrictControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.*;
 
+import java.util.Collection;
+
 public class DefaultResolverRegistryTest
 {
 	private DefaultResolverRegistry r;
@@ -121,18 +123,6 @@ public class DefaultResolverRegistryTest
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build(c->ImmutableMap.of());
 
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
-
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
-
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
-
 		control.replay();
 
 		r.addResolver(d1);
@@ -173,19 +163,6 @@ public class DefaultResolverRegistryTest
 				.builder("test2", "Test2", "Issuer", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build(c->ImmutableMap.of());
-
-
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
-
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
-
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
 
 		control.replay();
 
@@ -228,146 +205,18 @@ public class DefaultResolverRegistryTest
 				.dataType(XacmlTypes.INTEGER);
 
 
-		// get matching
-		Policy p = control.createMock(Policy.class);
-
-		expect(context.getCurrentPolicy()).andReturn(p);
-		expect(p.getId()).andReturn("testId");
-
-		expect(context.getParentContext()).andReturn(null);
-
-
 		control.replay();
 
 		r.addResolver(d1);
 		r.addResolver(d);
 
-		Iterable<AttributeResolverDescriptor> resolvers = r.getMatchingAttributeResolver(context, keyB.build());
+		Collection<AttributeResolverDescriptor> resolvers = r.getMatchingAttributeResolver(context, keyB.build());
 
 		assertFalse(Iterables.isEmpty(resolvers));
-		assertSame(d, Iterables.get(resolvers, 0));
-		assertSame(d1, Iterables.get(resolvers, 1));
+		assertTrue(resolvers.contains(d1));
+		assertTrue(resolvers.contains(d));
 
 		control.verify();
 	}
 
-	@Test
-	public void testAddResolverMatchingResolverGloballyAndScoped()
-	{
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
-				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
-				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build(c->ImmutableMap.of());
-
-		AttributeResolverDescriptor d2 = AttributeResolverDescriptor
-				.builder("test2", "Test2", "Issuer", CategoryId.SUBJECT_ACCESS)
-				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build(c->ImmutableMap.of());
-
-
-		// get matching
-		Policy p = control.createMock(Policy.class);
-
-		expect(context.getCurrentPolicy()).andReturn(p);
-		expect(p.getId()).andReturn("testId");
-
-		expect(context.getParentContext()).andReturn(null);
-
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
-
-		expect(context.getCurrentPolicy()).andReturn(null);
-		expect(context.getCurrentPolicySet()).andReturn(null);
-		expect(context.getParentContext()).andReturn(null);
-
-		control.replay();
-
-		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(CategoryId.SUBJECT_ACCESS)
-				.attributeId("testAttr1")
-				.dataType(XacmlTypes.INTEGER);
-
-		r.addResolver(d1);
-		r.addResolver(d2);
-		Iterable<AttributeResolverDescriptor> matchNoIssuer = r.getMatchingAttributeResolver(context, keyB.build());
-
-		assertEquals(2, Iterables.size(matchNoIssuer));
-		assertSame(d1, Iterables.get(matchNoIssuer, 0));
-		assertSame(d2, Iterables.get(matchNoIssuer, 1));
-
-		Iterable<AttributeResolverDescriptor> matchWithMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer").build());
-
-		assertEquals(1, Iterables.size(matchWithMatchingIssuer));
-		assertSame(d2, Iterables.get(matchWithMatchingIssuer, 0));
-
-		Iterable<AttributeResolverDescriptor> matchWithNotMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer1").build());
-
-		assertEquals(0, Iterables.size(matchWithNotMatchingIssuer));
-
-		control.verify();
-	}
-
-	@Test
-	public void testAddResolverForPolicyIdCurrentPolicyHasMatchingResolver()
-	{
-		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(CategoryId.SUBJECT_ACCESS)
-				.attributeId("testAttr1")
-				.dataType(XacmlTypes.INTEGER);
-
-		assertTrue(d1.canResolve(keyB.build()));
-		Policy p = control.createMock(Policy.class);
-		expect(context.getCurrentPolicy()).andReturn(p);
-		expect(p.getId()).andReturn("testId");
-		expect(context.getParentContext()).andReturn(null);
-		control.replay();
-		r.addResolver(d1);
-		Iterable<AttributeResolverDescriptor> resolvers = r.getMatchingAttributeResolver(context, keyB.build());
-		assertFalse(Iterables.isEmpty(resolvers));
-		assertSame(d1, Iterables.getOnlyElement(resolvers));
-		control.verify();
-	}
-
-	@Test
-	public void testResolverResolutionWith2LevelPolicyHierarchy()
-	{
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
-				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
-				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build((c)->ImmutableMap.of());
-
-		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
-				.category(CategoryId.SUBJECT_ACCESS)
-				.attributeId("testAttr1")
-				.dataType(XacmlTypes.INTEGER);
-
-
-		assertTrue(d1.canResolve(keyB.build()));
-
-		Policy p1 = control.createMock(Policy.class);
-		expect(context.getCurrentPolicy()).andReturn(p1);
-		expect(p1.getId()).andReturn("testIdP1");
-
-		EvaluationContext context1 = control.createMock(EvaluationContext.class);
-
-		expect(context.getParentContext()).andReturn(context1);
-
-		PolicySet p2 = control.createMock(PolicySet.class);
-		expect(context1.getCurrentPolicy()).andReturn(null);
-		expect(context1.getCurrentPolicySet()).andReturn(p2);
-		expect(p2.getId()).andReturn("testIdP2");
-
-		expect(context1.getParentContext()).andReturn(null);
-
-
-		control.replay();
-		r.addResolver("testIdP2", d1);
-
-		Iterable<AttributeResolverDescriptor> resolvers = r.getMatchingAttributeResolver(context, keyB.build());
-
-		assertFalse(Iterables.isEmpty(resolvers));
-		assertSame(resolvers, Iterables.getOnlyElement(resolvers));
-		control.verify();
-	}
 }

@@ -24,8 +24,8 @@ package org.xacml4j.util;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.spi.function.PolicyToPlatformFunctionInvocation;
-import org.xacml4j.v30.spi.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
 
 import static org.junit.Assert.assertEquals;
 

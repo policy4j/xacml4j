@@ -24,16 +24,24 @@ package org.xacml4j.v30;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import javax.management.AttributeValueExp;
 
 /**
  * XACML defines implicit collections of its data-types.
@@ -101,10 +109,10 @@ public final class BagOfValues
 	 * @exception NoSuchElementException if bag is empty
 	 */
 	public <T extends Value> T value(){
-		return this.<T>values().iterator().next();
+		return (T)values.iterator().next();
 	}
 
-	public final <T extends Value> Optional<T> single() {
+	public <T extends Value> Optional<T> single() {
 		return Optional.ofNullable(Iterables.getFirst(this.<T>values(), null));
 	}
 
@@ -139,18 +147,6 @@ public final class BagOfValues
 	}
 
 	/**
-	 * Returns the number of elements in this bag equal
-	 * to the specified attribute value.
-	 *
-	 * @param value an attribute value
-	 * @return a number of elements equal to the
-	 * specified value
-	 */
-	public int count(Value value){
-		return values.count(value);
-	}
-
-	/**
 	 * Returns a bag of such that it contains all elements of
 	 * all the argument bags all duplicate elements are removed
 	 *
@@ -162,9 +158,9 @@ public final class BagOfValues
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
 		return type.builder()
-				.attributes(bag.values)
-				.attributes(values)
-				   .build();
+		           .attributes(Sets.union(values.elementSet(),
+		                                  bag.values.elementSet()))
+		           .build();
 	}
 
 	/**
@@ -178,13 +174,10 @@ public final class BagOfValues
 	public BagOfValues intersection(BagOfValues bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
-		BagOfValues.Builder b = type.builder();
-		for(Value attr : values){
-			if(bag.values.contains(attr)){
-				b.attribute(attr);
-			}
-		}
-		return b.build();
+		return type.builder()
+		           .attributes(Sets.intersection(values.elementSet(),
+		                                         bag.values.elementSet()))
+		           .build();
 	}
 
 	/**
@@ -264,15 +257,19 @@ public final class BagOfValues
 
 	@Override
 	public void accept(ExpressionVisitor expv) {
-		BagOfAttributeVisitor v = (BagOfAttributeVisitor)expv;
+		BagOfAttributeVisitor v = (BagOfAttributeVisitor) expv;
 		v.visitEnter(this);
 		v.visitLeave(this);
 	}
 
 	public interface BagOfAttributeVisitor extends ExpressionVisitor
 	{
-		void visitEnter(BagOfValues v);
-		void visitLeave(BagOfValues v);
+		default void visitEnter(BagOfValues v){
+			v.accept(this);
+		}
+		default void visitLeave(BagOfValues v){
+			v.accept(this);
+		}
 	}
 
 	private static void assertExpressionType(Value value, BagOfValuesType bagType) {

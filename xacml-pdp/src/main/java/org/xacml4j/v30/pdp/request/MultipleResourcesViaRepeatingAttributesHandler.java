@@ -27,7 +27,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.request.RequestContext;
@@ -38,6 +41,8 @@ import com.google.common.collect.Sets;
 final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractRequestContextHandler
 {
 	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:repeated-attribute-categories";
+
+	private final static Logger LOG = LoggerFactory.getLogger(MultipleResourcesViaRepeatingAttributesHandler.class);
 
 	public MultipleResourcesViaRepeatingAttributesHandler(){
 		super(FEATURE_ID);
@@ -50,16 +55,16 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 		if(!request.containsRepeatingCategories()){
 			return handleNext(request, context);
 		}
-		List<Set<Category>> byCategory = new LinkedList<Set<Category>>();
-		for(Category category : request.getCategories()){
-			Collection<Category> attributes = request.getCategory(category.getCategoryId());
+		List<Set<Category>> byCategory = new LinkedList<>();
+		for(CategoryId categoryId : request.getCategoriesByCategoryId().keySet()){
+			Collection<Category> attributes = request.getCategory(categoryId);
 			if(attributes == null ||
 					attributes.isEmpty()) {
 				continue;
 			}
 			byCategory.add(ImmutableSet.copyOf(attributes));
 		}
-		Collection<Result> results = new LinkedList<Result>();
+		Collection<Result> results = new LinkedList<>();
 		Set<List<Category>> cartesian = Sets.cartesianProduct(byCategory);
 		for(List<Category> requestAttr : cartesian){
 			results.addAll(handleNext(RequestContext

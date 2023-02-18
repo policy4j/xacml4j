@@ -32,6 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Rule;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 
 import com.google.common.base.Preconditions;
 

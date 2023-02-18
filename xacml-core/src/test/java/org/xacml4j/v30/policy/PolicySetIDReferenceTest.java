@@ -140,12 +140,12 @@ public class PolicySetIDReferenceTest
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicySet);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> refContext = Capture.newInstance();
 		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
 			@Override
 			public EvaluationContext answer() throws Throwable {
 				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
-				return refPolicySet.new PolicySetDelegatingEvaluationContext(ctx);
+				return refPolicySet.new PolicySetDescendantEvaluationContext(ctx);
 	        }
 		});
 
@@ -176,12 +176,12 @@ public class PolicySetIDReferenceTest
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicySet);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> refContext = Capture.newInstance();
 		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
 			@Override
 			public EvaluationContext answer() throws Throwable {
 				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
-				return refPolicySet.new PolicySetDelegatingEvaluationContext(ctx);
+				return refPolicySet.new PolicySetDescendantEvaluationContext(ctx);
 	        }
 		});
 

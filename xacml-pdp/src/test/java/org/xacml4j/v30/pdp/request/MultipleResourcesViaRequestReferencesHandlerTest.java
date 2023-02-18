@@ -130,8 +130,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.reference(reference0, reference1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());
@@ -207,7 +207,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.returnPolicyIdList(false)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());

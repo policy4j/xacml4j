@@ -30,6 +30,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.combine.DenyOverrides;
+import org.xacml4j.v30.policy.combine.XacmlPolicyDecisionCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 import java.lang.reflect.Method;
 import java.util.Collection;

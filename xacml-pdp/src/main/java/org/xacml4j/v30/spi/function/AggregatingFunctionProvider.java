@@ -24,6 +24,8 @@ package org.xacml4j.v30.spi.function;
 
 import java.util.Collection;
 
+import org.xacml4j.v30.policy.function.FunctionProvider;
+
 /**
  * An implementation of {@link FunctionProvider} which
  * aggregates instances of {@link FunctionProvider}

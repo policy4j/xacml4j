@@ -65,16 +65,19 @@ public class ObligationExpressionTest
 	@Test
 	public void testEvaluateObligationExpression() throws CoreException
 	{
-		AttributeAssignmentExpression attrExp0 = c.createMock(AttributeAssignmentExpression.class);
-		AttributeAssignmentExpression attrExp1 = c.createMock(AttributeAssignmentExpression.class);
-		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
-		expect(attrExp0.getCategory()).andReturn(CategoryId.SUBJECT_ACCESS);
-		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(XacmlTypes.INTEGER.of(1));
-		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
-		expect(attrExp1.getCategory()).andReturn(CategoryId.RESOURCE);
-		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
+		AttributeAssignmentExpression attrExp0 = AttributeAssignmentExpression
+				.builder("attributeId0")
+				.category(CategoryId.SUBJECT_ACCESS)
+				.expression(XacmlTypes.INTEGER.of(1))
+				.issuer("issuer0")
+				.build();
+		AttributeAssignmentExpression attrExp1 = AttributeAssignmentExpression
+				.builder("attributeId1")
+				.category(CategoryId.RESOURCE)
+				.expression(XacmlTypes.BOOLEAN.of(false))
+				.issuer("issuer1")
+				.build();
+
 		c.replay();
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
 
@@ -97,16 +100,21 @@ public class ObligationExpressionTest
 	@Test(expected=EvaluationException.class)
 	public void testAttributeAssignmentThrowsEvaluationException() throws CoreException
 	{
-		AttributeAssignmentExpression attrExp0 = c.createMock(AttributeAssignmentExpression.class);
-		AttributeAssignmentExpression attrExp1 = c.createMock(AttributeAssignmentExpression.class);
-		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
-		expect(attrExp0.getCategory()).andReturn(CategoryId.SUBJECT_ACCESS);
-		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(XacmlTypes.INTEGER.of(1));
-		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
-		expect(attrExp1.getCategory()).andReturn(CategoryId.RESOURCE);
-		expect(attrExp1.getIssuer()).andReturn("issuer1");
-		expect(attrExp1.evaluate(context)).andThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));
+		Expression expression = c.createMock(Expression.class);
+		AttributeAssignmentExpression attrExp0 = AttributeAssignmentExpression
+				.builder("attributeId0")
+				.category(CategoryId.SUBJECT_ACCESS)
+				.expression(XacmlTypes.INTEGER.of(1))
+				.issuer("issuer0")
+				.build();
+		AttributeAssignmentExpression attrExp1 = AttributeAssignmentExpression
+				.builder("attributeId1")
+				.category(CategoryId.RESOURCE)
+				.expression(expression)
+				.issuer("issuer1")
+				.build();
+
+		expect(expression.evaluate(context)).andThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));
 		c.replay();
 
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();

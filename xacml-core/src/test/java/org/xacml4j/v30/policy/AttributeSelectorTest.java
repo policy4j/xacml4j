@@ -60,7 +60,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.DATE.of("1992-03-21").toBag()));
 		replay(context);
@@ -85,7 +85,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.DATE.of("1992-03-21").toBag()));
 		replay(context);
@@ -110,7 +110,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.DATE.emptyBag()));
 		replay(context);
@@ -134,7 +134,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.empty());
 		replay(context);
 		ref.evaluate(context);
@@ -156,7 +156,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(
 				Optional.of(XacmlTypes.DATE.emptyBag()));
 		replay(context);
@@ -183,7 +183,7 @@ public class AttributeSelectorTest
 				.mustBePresent(false)
 				.build();
 
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(
 				AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));
 		replay(context);
@@ -209,7 +209,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -233,7 +233,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		ref.evaluate(context);
@@ -256,7 +256,7 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(
 				AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));
 		replay(context);

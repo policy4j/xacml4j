@@ -26,12 +26,13 @@ public class ProcessingErrorException extends CoreException
 {
     public ProcessingErrorException(String template, Object... arguments) {
         super(Status.processingError()
-                        .detail(String.format(template, arguments)).build(),
+                      .message(String.format(template, arguments))
+                    .build(),
                 String.format(template, arguments));
     }
 
     public ProcessingErrorException(Throwable cause) {
-        super(Status.processingError().detail(cause).build(),
+        super(Status.processingError().error(cause).build(),
                 cause);
     }
 

@@ -24,12 +24,20 @@ package org.xacml4j.v30.spi.function;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
+import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 
 import com.google.common.base.Preconditions;
 
@@ -41,18 +49,26 @@ import com.google.common.base.Preconditions;
  */
 public final class AnnotationBasedFunctionProvider extends BaseFunctionProvider
 {
+	private final static Logger LOG = LoggerFactory.getLogger(AnnotationBasedFunctionProvider.class);
+
 	private AnnotationBasedFunctionProvider(
 			Class<?> factoryClass,
+			Object instance,
 			FunctionInvocationFactory invocationFactory)
 	{
-		super(findFunctions(factoryClass, null,
+		super(findFunctions(factoryClass, instance,
 				invocationFactory).collect(Collectors.toList()));
 	}
 
 	public static Collection<FunctionProvider> toProviders(FunctionInvocationFactory factory, Class<?> ... clazz){
 		return Arrays.stream(clazz)
-				.map(c->new AnnotationBasedFunctionProvider(c, factory))
+				.map(c->new AnnotationBasedFunctionProvider(c, null, factory))
 				.collect(Collectors.toList());
+	}
+
+	public static Collection<FunctionProvider> toProviders(FunctionInvocationFactory factory, Object instance){
+		Objects.requireNonNull(instance,  "instance");
+		return Collections.singleton(new AnnotationBasedFunctionProvider(instance.getClass(), instance, factory));
 	}
 
 	private static Stream<FunctionSpec> findFunctions(Class<?> clazz, Object instance, FunctionInvocationFactory factory)
@@ -60,8 +76,12 @@ public final class AnnotationBasedFunctionProvider extends BaseFunctionProvider
 	{
 		Preconditions.checkArgument(clazz.getAnnotation(XacmlFunctionProvider.class) != null,
 				"Function provider=\"%s\" must have provider annotation", clazz.getName());
+		LOG.debug("function class={} instance={}", clazz, instance);
 		JavaMethodToFunctionSpecConverter converter = new JavaMethodToFunctionSpecConverter(factory);
 		return Reflections.getAnnotatedMethods(clazz, XacmlFuncSpec.class)
-				.stream().map(v->converter.createFunctionSpec(v, instance));
+				.stream().map(v->{
+					FunctionSpec spec = converter.createFunctionSpec(v, instance);
+					return spec;
+				});
 	}
 }

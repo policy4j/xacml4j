@@ -25,6 +25,10 @@ package org.xacml4j.v30.spi.function;
 
 import org.junit.Ignore;
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.policy.function.XacmlFuncParam;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
+import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;

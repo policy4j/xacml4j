@@ -49,10 +49,7 @@ public class ApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws CoreException
 	{
-		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(10L))
-		.build();
-		expect(function.invoke(context, params))
+		expect(function.invoke(context, XacmlTypes.INTEGER.of(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
 		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.of(10L)).build();
@@ -63,10 +60,7 @@ public class ApplyTest
 	@Test(expected=FunctionInvocationException.class)
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws CoreException
 	{
-		List<Expression> params = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(10L))
-		.build();
-		expect(function.invoke(context, params)).
+		expect(function.invoke(context, XacmlTypes.INTEGER.of(10L))).
 		andThrow(new FunctionInvocationException(function, new IllegalArgumentException()));
 		replay(function);
 		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.of(10L)).build();

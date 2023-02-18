@@ -35,17 +35,21 @@ import java.util.Optional;
  */
 public abstract class AttributeReferenceKey
 {
-	protected final Optional<CategoryId> category;
+	protected final CategoryId category;
 	protected final ValueType dataType;
 
 	protected AttributeReferenceKey(
 			Builder<?> b){
-		this.category = Optional.ofNullable(b.category);
+		this.category = b.category;
 		this.dataType = Objects.requireNonNull(b.dataType);
 	}
 
 	public final CategoryId getCategory(){
-		return category.get();
+		return category;
+	}
+
+	public final Optional<CategoryId> getCategoryOpt(){
+		return Optional.ofNullable(category);
 	}
 
 	public final ValueType getDataType(){

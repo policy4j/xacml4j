@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -55,7 +55,7 @@ public class AttributeDesignatorFunctionTest
 			"</md:record>";
 
 	private EvaluationContext context;
-	private static FunctionProvider provider = FunctionProvider.builder().withStandardFunctions().build();
+	private static FunctionProvider provider = FunctionProviderBuilder.builder().withStandardFunctions().build();
 	private IMocksControl c;
 	private EntityValue entity;
 	private FunctionSpec func;
@@ -87,7 +87,7 @@ public class AttributeDesignatorFunctionTest
 				.attributeId("testId")
 				.build();
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		Capture<AttributeDesignatorKey> keyCapture = new Capture<>();
+		Capture<AttributeDesignatorKey> keyCapture = Capture.newInstance();
 		expect(context.resolve(capture(keyCapture)))
 				.andReturn(Optional.of(XacmlTypes.STRING.of("aaaa")
 				                                        .toBag()));

@@ -25,7 +25,8 @@ package org.xacml4j.v30.spi.pip;
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -40,6 +41,7 @@ import org.xacml4j.v30.EvaluationException;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Ticker;
+import com.google.common.collect.ImmutableMap;
 
 
 public interface ResolverContext
@@ -73,13 +75,14 @@ public interface ResolverContext
 	 */
 	ResolverDescriptor getDescriptor();
 
-	<V> Function<ResolverContext, V> getResolver();
+	ResolverCacheKey getCacheKey();
 
 	/**
-	 * Resolves context key
+	 * Resolves context reference key required
+	 * for resolver to resolve its own attributes
 	 */
-	Optional<BagOfValues> resolve(AttributeReferenceKey key);
-
+	Optional<BagOfValues> resolveContextRef(AttributeReferenceKey key);
+	Map<AttributeReferenceKey, BagOfValues> resolveAllContextRefs();
 
 	boolean isCacheable();
 
@@ -103,6 +106,7 @@ public interface ResolverContext
 		private EvaluationContext context;
 		private Map<AttributeReferenceKey, BagOfValues> resolvedKeys;
 		private ResolverDescriptor resolver;
+		private ResolverCacheKey cacheKey;
 
 		public Default(
 				EvaluationContext context,
@@ -111,7 +115,6 @@ public interface ResolverContext
 			this.resolver = Objects.requireNonNull(resolver, "resolver");
 			this.context = Objects.requireNonNull(context, "context");
 			this.contentType = Objects.requireNonNull(supplier, "contentType").get();
-
 		}
 
 		public Default(EvaluationContext context, ResolverDescriptor resolver){
@@ -137,39 +140,45 @@ public interface ResolverContext
 			return context.getClock();
 		}
 
+		public ResolverCacheKey getCacheKey(){
+			if(cacheKey == null){
+				if(resolvedKeys == null ||
+						resolvedKeys.isEmpty()){
+					this.resolvedKeys = resolveAllContextRefs();
+				}
+				this.cacheKey = ResolverCacheKey.builder(getDescriptor().getId())
+				                                .keys(resolvedKeys.values())
+				                                .build();
+			}
+			return cacheKey;
+		}
+
 		@Override
 		public ResolverDescriptor getDescriptor(){
 			return resolver;
 		}
 
 		public Map<AttributeReferenceKey, BagOfValues> getResolvedKeys(){
-			if(resolvedKeys == null){
-				this.resolvedKeys = resolver.resolveKeyRefs(this);
-			}
-			return resolvedKeys;
+			return resolvedKeys == null? Collections.emptyMap():resolvedKeys;
 		}
 
 		@Override
-		public Optional<BagOfValues> resolve(AttributeReferenceKey key)
+		public Optional<BagOfValues> resolveContextRef(AttributeReferenceKey key)
 		{
-			BagOfValues cachedValue = resolvedKeys != null ? resolvedKeys.get(key) : null;
-			if(cachedValue != null){
-				return Optional.ofNullable(cachedValue);
+			if(resolvedKeys == null || resolvedKeys.isEmpty()){
+				this.resolvedKeys = resolveAllContextRefs();
 			}
-			Optional<BagOfValues> resolvedValue = context.resolve(key);
-			resolvedValue.ifPresent((v)->{
-				if(resolvedKeys == null){
-					this.resolvedKeys = new HashMap<>();
-				}
-				resolvedKeys.putIfAbsent(key, v);
-			});
-			return resolvedValue;
+			return Optional.ofNullable(resolvedKeys.get(key));
 		}
 
-		public Supplier<Optional<BagOfValues>> resolveRef(AttributeReferenceKey referenceKey){
-			Optional<BagOfValues> v = resolve(referenceKey);
-			v.ifPresent(bagOfAttributeValues -> resolvedKeys.put(referenceKey, bagOfAttributeValues));
-			return ()->v;
+		@Override
+		public Map<AttributeReferenceKey, BagOfValues> resolveAllContextRefs(){
+			ImmutableMap.Builder<AttributeReferenceKey, BagOfValues> contextKeys = ImmutableMap.builder();
+			Collection<AttributeReferenceKey> keys = getDescriptor().getContextKeyRefs();
+			keys.forEach((k)->context.resolve(k)
+					.ifPresent((v)->contextKeys.put(k, v)));
+			this.resolvedKeys = contextKeys.build();
+			return resolvedKeys;
 		}
 
 		public boolean isCacheable(){
@@ -178,8 +187,8 @@ public interface ResolverContext
 		}
 
 
-		public Function<ResolverContext, Optional<?>> getResolver() {
-			return resolver.getResolver();
+		public Function<ResolverContext, Optional<?>> getResolverFunction() {
+			return resolver.getResolverFunction();
 		}
 
 		@Override

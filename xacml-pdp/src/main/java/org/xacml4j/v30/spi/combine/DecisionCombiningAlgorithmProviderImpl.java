@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Rule;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 
 
 /**
@@ -44,18 +45,18 @@ public class DecisionCombiningAlgorithmProviderImpl implements DecisionCombining
 	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
 
 	protected DecisionCombiningAlgorithmProviderImpl(){
-		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
-		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+		this.ruleAlgo = new ConcurrentHashMap<>();
+		this.policyAlgo = new ConcurrentHashMap<>();
 	}
 
 	public DecisionCombiningAlgorithmProviderImpl(
 			Collection<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms,
 			Collection<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms){
-		this.ruleAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<Rule>>();
+		this.ruleAlgo = new ConcurrentHashMap<>();
 		for(DecisionCombiningAlgorithm<Rule> algo : ruleAlgorithms){
 			addRuleCombineAlgorithm(algo);
 		}
-		this.policyAlgo = new ConcurrentHashMap<String, DecisionCombiningAlgorithm<CompositeDecisionRule>>();
+		this.policyAlgo = new ConcurrentHashMap<>();
 		for(DecisionCombiningAlgorithm<CompositeDecisionRule> algo : policyAlgorithms){
 			addCompositeRuleCombineAlgorithm(algo);
 		}

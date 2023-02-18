@@ -24,7 +24,7 @@ package org.xacml4j.v30.policy;
 
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueTypeInfo;
-import org.xacml4j.v30.spi.function.FunctionParamSpecVisitor;
+import org.xacml4j.v30.policy.function.FunctionParamSpecVisitor;
 
 import java.util.ListIterator;
 import java.util.Optional;

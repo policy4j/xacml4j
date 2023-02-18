@@ -37,7 +37,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -59,7 +59,7 @@ public class LogicalFunctionsTest
 	{
 		this.control = createControl();
 
-		this.f = FunctionProvider.builder().withStandardFunctions().build();
+		this.f = FunctionProviderBuilder.builder().withStandardFunctions().build();
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and").get();
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or").get();
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not").get();

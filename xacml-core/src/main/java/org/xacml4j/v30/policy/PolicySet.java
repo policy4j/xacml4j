@@ -154,7 +154,7 @@ public class PolicySet extends
 		if(context.getCurrentPolicySet() == this){
 			return context;
 		}
-		return new PolicySetDelegatingEvaluationContext(context);
+		return new PolicySetDescendantEvaluationContext(context);
 	}
 
 	@Override
@@ -222,8 +222,8 @@ public class PolicySet extends
 						policySetCombinerParameters, reference);
 	}
 
-	class PolicySetDelegatingEvaluationContext
-			extends DelegatingEvaluationContext {
+	class PolicySetDescendantEvaluationContext
+			extends DescendantEvaluationContext {
 
 		/**
 		 * Constructs delegating evaluation context
@@ -233,7 +233,7 @@ public class PolicySet extends
 		 *
 		 * @param parentContext a parent context
 		 */
-		PolicySetDelegatingEvaluationContext(
+		PolicySetDescendantEvaluationContext(
 				EvaluationContext parentContext){
 			super(parentContext);
 			Preconditions.checkArgument(
@@ -250,7 +250,7 @@ public class PolicySet extends
 
 		@Override
 		public EvaluationContext getParentContext() {
-			return getDelegate();
+			return getParent();
 		}
 
 		@Override

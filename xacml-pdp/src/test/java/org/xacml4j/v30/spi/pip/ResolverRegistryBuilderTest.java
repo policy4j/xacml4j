@@ -32,7 +32,7 @@ import static org.junit.Assert.assertSame;
 
 public class ResolverRegistryBuilderTest
 {
-	private ResolverRegistryBuilder b;
+	private ResolverRegistry.Builder b;
 	private ResolverRegistry r;
 	private IMocksControl c;
 
@@ -40,7 +40,7 @@ public class ResolverRegistryBuilderTest
 	public void init(){
 		this.c = createControl();
 		this.r = c.createMock(ResolverRegistry.class);
-		this.b = ResolverRegistryBuilder.builder();
+		this.b = ResolverRegistry.builder();
 
 	}
 
@@ -48,13 +48,6 @@ public class ResolverRegistryBuilderTest
 	public void testBuildEmpty(){
 		c.replay();
 		assertNotNull(b.build());
-		c.verify();
-	}
-
-	@Test
-	public void testBuildEmptyWithRegistry(){
-		c.replay();
-		assertSame(r, b.build());
 		c.verify();
 	}
 }

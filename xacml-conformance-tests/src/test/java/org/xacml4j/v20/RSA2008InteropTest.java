@@ -39,12 +39,13 @@ import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
-import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
+import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.codahale.metrics.CsvReporter;
 import com.google.common.base.Supplier;
+import com.google.common.net.MediaType;
 
 public class RSA2008InteropTest extends XacmlPolicyTestSupport
 {
@@ -59,6 +60,7 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 	                .convertDurationsTo(TimeUnit.MILLISECONDS)
 	                .build(new File("target/"));
 		reporter.start(1, TimeUnit.MILLISECONDS);
+
 
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
@@ -82,13 +84,13 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
 		for (Supplier<InputStream> policyStream : policyStreams) {
-			policies.add(repository.importPolicy(policyStream));
+			policies.add(repository.importPolicy(MediaType.XML_UTF_8, policyStream));
 		}
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
 			.policyRepository(repository)
 			.pip(
-					PolicyInformationPointBuilder
+					PolicyInformationPoint.builder()
 					.builder("testPip")
 					.defaultResolvers()
 					.build())

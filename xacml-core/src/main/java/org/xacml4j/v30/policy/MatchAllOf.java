@@ -64,7 +64,7 @@ public class MatchAllOf implements PolicyElement, Matchable
 	{
 		MatchResult state = MatchResult.MATCH;
 		for(Matchable m : matches){
-			MatchResult r = m.match(context);
+			MatchResult r = evaluate(context, m);
 			if(r == MatchResult.INDETERMINATE &&
 					state == MatchResult.MATCH){
 				if(log.isDebugEnabled()){
@@ -84,6 +84,14 @@ public class MatchAllOf implements PolicyElement, Matchable
 			}
 		}
 		return state;
+	}
+
+	private MatchResult evaluate(EvaluationContext context, Matchable m){
+		try{
+			return m.match(context);
+		}catch (Exception e){
+			return MatchResult.INDETERMINATE;
+		}
 	}
 
 	@Override

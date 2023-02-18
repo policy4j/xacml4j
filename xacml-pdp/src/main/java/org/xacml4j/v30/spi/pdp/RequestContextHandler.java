@@ -57,7 +57,7 @@ public interface RequestContextHandler
 	 * is already set for this handler
 	 */
 	default void setNext(RequestContextHandler handler){
-		setNext(handler, true);
+		setNext(handler, false);
 	}
 
 	/**

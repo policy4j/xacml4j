@@ -30,7 +30,7 @@ import java.util.Optional;
  *
  * @author Giedrius Trumpickas
  */
-public class StatusCodeId extends ExtensibleIdentifier
+public class StatusCodeId extends SemanticalIdentifier
 {
 	public static final StatusCodeId OK = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:ok", "ok");
 	public static final StatusCodeId MISSING_ATTRIBUTE = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:missing-attribute", "missing-attribute");
@@ -39,8 +39,8 @@ public class StatusCodeId extends ExtensibleIdentifier
 	public static final StatusCodeId UNKNOWN = new StatusCodeId("urn:oasis:names:tc:xacml:1.0:status:unknown", "unknown");
 
 
-	private final static Map<String, StatusCodeId> By_ID = ExtensibleIdentifier.getById(StatusCodeId.class);
-	private final static Map<String, StatusCodeId> By_ABBREVIATED_ID = ExtensibleIdentifier.getByAbbrId(StatusCodeId.class);
+	private final static Map<String, StatusCodeId> By_ID = SemanticalIdentifier.getById(StatusCodeId.class);
+	private final static Map<String, StatusCodeId> By_ABBREVIATED_ID = SemanticalIdentifier.getByAbbrId(StatusCodeId.class);
 
 
 	protected StatusCodeId(String id, String abbreviatedId) {

@@ -60,7 +60,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context
 				.resolve(capture(c)))
 				.andReturn(Optional.empty());
@@ -84,7 +84,7 @@ public class AttributeDesignatorTest
 				.mustBePresent(true)
 				.build();
 
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.empty());
 		replay(context);
 		try{
@@ -106,7 +106,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.INTEGER.bag().attribute(
 						XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()));
@@ -126,7 +126,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(XacmlTypes.INTEGER.emptyBag()));
 		replay(context);
 		Expression v = desig.evaluate(context);
@@ -144,7 +144,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
 		Expression v = desig.evaluate(context);
@@ -162,7 +162,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(desig.getReferenceKey(), "Errror"));
 		replay(context);
 		desig.evaluate(context);
@@ -177,7 +177,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(
 				AttributeReferenceEvaluationException.forDesignator(builder.build()));
 		replay(context);
@@ -196,7 +196,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);
 		desig.evaluate(context);
@@ -211,7 +211,7 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);
 		Expression v = desig.evaluate(context);

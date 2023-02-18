@@ -23,10 +23,14 @@ package org.xacml4j.v30.pdp;
  */
 
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +43,12 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.EntityValue;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
@@ -57,8 +65,8 @@ class DefaultEvaluationContextHandler
 	private Map<AttributeSelectorKey, BagOfValues> selectorCache;
 	private Map<AttributeDesignatorKey, BagOfValues> designatorCache;
 
-	private Stack<AttributeDesignatorKey> designatorResolutionStack;
-	private Stack<AttributeSelectorKey> selectorResolutionStack;
+	private Deque<AttributeDesignatorKey> designatorResolutionStack;
+	private Deque<AttributeSelectorKey> selectorResolutionStack;
 
 	DefaultEvaluationContextHandler(
 			RequestContextCallback requestCallback,
@@ -70,8 +78,8 @@ class DefaultEvaluationContextHandler
 		Preconditions.checkNotNull(requestCallback);
 		this.pip = pip;
 		this.requestCallback = requestCallback;
-		this.selectorResolutionStack = new Stack<>();
-		this.designatorResolutionStack = new Stack<>();
+		this.selectorResolutionStack = new ConcurrentLinkedDeque<>();
+		this.designatorResolutionStack = new ConcurrentLinkedDeque<>();
 		this.designatorCache = designatorCacheSup.get();
 		this.selectorCache = selectorCacheSup.get();
 	}
@@ -81,8 +89,8 @@ class DefaultEvaluationContextHandler
 			PolicyInformationPoint pip)
 	{
 		this(requestCallback, pip,
-				()->new HashMap<>(),
-				()->new HashMap<>());
+				()->new ConcurrentHashMap<>(),
+				()->new ConcurrentHashMap<>());
 	}
 
 	public Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators(){
@@ -115,8 +123,7 @@ class DefaultEvaluationContextHandler
 	private Optional<BagOfValues> doSelectorResolve(EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
-		return requestCallback.resolve((AttributeSelectorKey) ref)
-				.or(()->doPipResolve(context, (AttributeSelectorKey)ref));
+		return doPipResolve(context, (AttributeSelectorKey)ref);
 	}
 
 	private Optional<BagOfValues> doDesignatorResolve(EvaluationContext context, AttributeReferenceKey ref)
@@ -139,16 +146,12 @@ class DefaultEvaluationContextHandler
 			return v;
 
 		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw AttributeReferenceEvaluationException
-					.forDesignator(key, e);
+			log.debug(e.getMessage(), e);
+			return Optional.empty();
 		}finally{
 			designatorResolutionStack.pop();
 		}
 	}
-
 
 	private java.util.Optional<BagOfValues> doPipResolve(
 			final EvaluationContext context,
@@ -160,28 +163,37 @@ class DefaultEvaluationContextHandler
 		try
 		{
 			selectorResolutionStack.push(ref);
-			return Optional.empty();
-		}
-		catch(EvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
+			Optional<BagOfValues> v = ref.getCategoryOpt()
+			          .flatMap(c->requestCallback.getEntity(c))
+			          .flatMap(e->e.resolve(ref)).or(()->pip.resolve(context, ref));
+			v = v.or(()->pip.resolve(context, ref));
+			if(!v.isPresent() &&
+					ref.getContextSelectorId() != null){
+				AttributeDesignatorKey entitySelector =
+						AttributeDesignatorKey.builder()
+				                      .dataType(XacmlTypes.ENTITY)
+				                      .attributeId(ref.getContextSelectorId())
+				                      .category(ref.getCategory())
+				                              .build();
+				v = pip.resolve(context, entitySelector)
+				          .flatMap(b->b.single())
+				          .map(EntityValue.class::cast)
+				          .map(EntityValue::value)
+						.flatMap(e->e.resolve(ref));
 			}
-			context.setEvaluationStatus(e.getStatus());
-			throw e;
+			v.ifPresent(bag -> selectorCache.putIfAbsent(ref, bag));
+			return v;
 		}
 		catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug(e.getMessage(), e);
-			}
-			throw AttributeReferenceEvaluationException
-					.forSelector(ref, e);
+			log.debug(e.getMessage(), e);
+			return Optional.empty();
 		}
 		finally {
 			selectorResolutionStack.pop();
 		}
 	}
 
-	public <C extends Content> Optional<C> getContent(Optional<CategoryId> id){
+	public <C extends Content> Optional<C> getContent(CategoryId id){
 		return requestCallback
 				.getEntity(id)
 				.flatMap((

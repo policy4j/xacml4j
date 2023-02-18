@@ -119,11 +119,13 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		Optional<Value> value = entity.stream()
 		                              .filter(a->a.getAttributeId().equalsIgnoreCase(MULTIPLE_CONTENT_SELECTOR))
 		                              .map(a->a.getValuesByType(XacmlTypes.XPATH, XacmlTypes.JPATH))
-		                              .flatMap(a->a.stream()).findFirst();
+		                              .flatMap(a->a.stream())
+		                              .findFirst();
 		if(!value.isPresent()){
 			return ImmutableSet.of(category);
 		}
 		PathValue path = (PathValue)value.get();
+		LOG.debug("Found multiple content selector path value={}", value.get());
 		Optional<Content> content = entity.getContent().filter(
 				c->c.getType().equals(path.getContentType()));
 		if(!content.isPresent()){
@@ -185,7 +187,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 		Category category = Category
 				.builder(attributes.getCategoryId())
-				.id(attributes.getReferenceId())
+				.id(attributes.getReferenceId().orElse(null))
 				.entity(categoryEntity)
 				.build();
 		if(LOG.isDebugEnabled()){

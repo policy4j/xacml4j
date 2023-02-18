@@ -41,19 +41,32 @@ public class AdviceExpressionTest
 	private AttributeAssignmentExpression attrExp1;
 	private IMocksControl c;
 
+	private Expression expression;
+
 	@Before
 	public void init(){
 		this.c = createControl();
 		this.context = createStrictMock(EvaluationContext.class);
-		this.attrExp0 = c.createMock(AttributeAssignmentExpression.class);
-		this.attrExp1 = c.createMock(AttributeAssignmentExpression.class);
 		this.context = c.createMock(EvaluationContext.class);
+
+		attrExp0 = AttributeAssignmentExpression
+				.builder("attributeId0")
+						.category(CategoryId.SUBJECT_ACCESS)
+								.issuer("issuer0")
+						.expression(XacmlTypes.INTEGER.of(1))
+						.build();
+		this.expression = c.createMock(Expression.class);
+		attrExp1 = AttributeAssignmentExpression
+				.builder("attributeId1")
+				.category(CategoryId.RESOURCE)
+				.issuer("issuer1")
+				.expression(expression)
+				.build();
 	}
 
 	@Test
 	public void testCreateAdviceExpression() throws CoreException
 	{
-		expect(attrExp0.getAttributeId()).andReturn("testId0");
 		c.replay();
 		AdviceExpression exp = AdviceExpression.builder("test",Effect.DENY).attribute(attrExp0).build();
 		assertTrue(exp.isApplicable(Decision.DENY));
@@ -66,17 +79,7 @@ public class AdviceExpressionTest
 	@Test
 	public void testEvaluateAdviceExpression() throws CoreException
 	{
-
-		expect(attrExp0.getAttributeId()).andReturn("attributeId0").times(2);
-		expect(attrExp0.getCategory()).andReturn(CategoryId.SUBJECT_ACCESS);
-		expect(attrExp0.getIssuer()).andReturn("issuer0");
-		expect(attrExp0.evaluate(context)).andReturn(XacmlTypes.INTEGER.of(1));
-
-		expect(attrExp1.getAttributeId()).andReturn("attributeId1").times(2);
-		expect(attrExp1.getCategory()).andReturn(CategoryId.RESOURCE).times(1);
-		expect(attrExp1.getIssuer()).andReturn("issuer1").times(1);
-		expect(attrExp1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.bag().value(false, true).build());
-
+		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
 		c.replay();
 
 		AdviceExpression exp = AdviceExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();

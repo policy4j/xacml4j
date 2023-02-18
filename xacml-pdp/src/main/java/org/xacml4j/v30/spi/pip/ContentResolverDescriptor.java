@@ -56,7 +56,7 @@ public class ContentResolverDescriptor
 	}
 
 	@Override
-	public Function<ResolverContext, Optional<ContentRef>> getResolver() {
+	public Function<ResolverContext, Optional<ContentRef>> getResolverFunction() {
 		return (context)->Optional.ofNullable(contentFunction.apply(context))
 				.map(c->ContentRef.builder()
 						.resolver(this)

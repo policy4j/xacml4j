@@ -151,7 +151,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		v.visitLeave(this);
 	}
 
-	public class RuleEvaluationContext extends DelegatingEvaluationContext
+	public class RuleEvaluationContext extends DescendantEvaluationContext
 	{
 		public RuleEvaluationContext(EvaluationContext context){
 			super(context);

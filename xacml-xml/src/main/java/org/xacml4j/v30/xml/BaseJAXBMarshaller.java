@@ -35,6 +35,8 @@ import javax.xml.transform.Result;
 import org.w3c.dom.Node;
 
 import com.google.common.base.Preconditions;
+import com.google.common.net.MediaType;
+
 import org.xacml4j.v30.marshal.Marshaller;
 
 public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
@@ -44,6 +46,11 @@ public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 	public BaseJAXBMarshaller(JAXBContext context){
 		Preconditions.checkArgument(context != null);
 		this.context = context;
+	}
+
+	@Override
+	public MediaType getMediaType() {
+		return MediaType.XML_UTF_8;
 	}
 
 	@Override

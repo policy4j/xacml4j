@@ -41,7 +41,7 @@ public final class AttributeSelectorKey
 	extends AttributeReferenceKey
 {
 	private String path;
-	private Optional<String> contextSelectorId;
+	private String contextSelectorId;
 	private int hashCode;
 	private Content.PathType type;
 
@@ -70,7 +70,7 @@ public final class AttributeSelectorKey
 
 
 	public String getContextSelectorId(){
-		return contextSelectorId.orElse(null);
+		return contextSelectorId;
 	}
 
 
@@ -113,7 +113,7 @@ public final class AttributeSelectorKey
 	public static class Builder extends AttributeReferenceKey.Builder<Builder>
 	{
 		private String path;
-		private Optional<String> contextSelectorId = Optional.empty();
+		private String contextSelectorId;
 		private Content.PathType type = Content.PathType.XPATH;
 
 		/**
@@ -168,20 +168,16 @@ public final class AttributeSelectorKey
 		}
 
 		public Builder contextSelectorId(String id){
-			this.contextSelectorId = Optional.ofNullable(Strings.emptyToNull(id));
+			this.contextSelectorId = id;
 			return this;
 		}
 
 		public Builder from(AttributeSelectorKey s){
-			Builder b =  builder()
-					.category(s.category
-							.orElse(null))
+			return builder()
+					.category(s.category)
 					.dataType(s.dataType)
 					.path(s.getPath(),  s.getPathType())
-					.contextSelectorId(s
-							.contextSelectorId
-							.orElse(null));
-			return b;
+					.contextSelectorId(s.contextSelectorId);
 		}
 
 		@Override

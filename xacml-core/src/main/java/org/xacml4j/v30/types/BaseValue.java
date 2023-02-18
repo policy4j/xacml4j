@@ -79,22 +79,15 @@ public class BaseValue<T>
 
     @Override
     public boolean equals(Object o) {
-        if(o == this){
+        if (o == this) {
             return true;
         }
-        if(!(o instanceof Value)){
+        if (!(o instanceof Value)) {
             return false;
         }
-        Value e = (Value)o;
+        Value e = (Value) o;
         return type.equals(e.getType()) &&
                 value.equals(e.value());
-    }
-
-    @Override
-    public final void accept(ExpressionVisitor expv) {
-        AttributeExpVisitor v = (AttributeExpVisitor)expv;
-        v.visitEnter(this);
-        v.visitLeave(this);
     }
 
     @Override

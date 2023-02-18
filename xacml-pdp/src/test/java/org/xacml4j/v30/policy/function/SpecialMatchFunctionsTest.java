@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.*;
 
 
@@ -38,7 +38,7 @@ public class SpecialMatchFunctionsTest
 	@Before
 	public void init() throws Exception
 	{
-		this.p = FunctionProvider.builder().withStandardFunctions().build();
+		this.p = FunctionProviderBuilder.builder().withStandardFunctions().build();
 	}
 
 	@Test

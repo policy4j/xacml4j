@@ -42,6 +42,7 @@ import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xml.sax.InputSource;
 
 import com.google.common.base.Preconditions;
+import com.google.common.net.MediaType;
 
 public abstract class BaseJAXBUnmarshaller <T>
 	implements Unmarshaller<T>
@@ -54,6 +55,11 @@ public abstract class BaseJAXBUnmarshaller <T>
 	protected BaseJAXBUnmarshaller(JAXBContext context){
 		Preconditions.checkArgument(context != null);
 		this.context = context;
+	}
+
+	@Override
+	public MediaType getMediaType() {
+		return MediaType.XML_UTF_8;
 	}
 
 	@Override

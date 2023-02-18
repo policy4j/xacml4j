@@ -24,14 +24,19 @@ package org.xacml4j.v30.spi.pip;
 
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
+
+import com.google.common.base.Preconditions;
 
 /**
  * A XACML Policy Information Point
@@ -58,67 +63,55 @@ public interface PolicyInformationPoint
 	 */
 	Optional<BagOfValues> resolve(
 			EvaluationContext context,
-			AttributeDesignatorKey ref)
-		throws Exception;
+			AttributeDesignatorKey ref);
+
+	static Builder<?> builder(String id){
+		return DefaultPolicyInformationPoint.builder(id);
+	}
 
 	/**
-	 * Resolves a content for a given attribute category
+	 * Resolves a content for a given attribute selector
 	 *
 	 * @param context an evaluation context
 	 * @param selectorKey content selector
 	 * @return {@link Node} or {@code null}
 	 * @throws Exception if an error occurs
 	 */
-	Optional<Content> resolve(
+	Optional<BagOfValues> resolve(
 			EvaluationContext context,
-			AttributeSelectorKey selectorKey)
-		throws Exception;
+			AttributeSelectorKey selectorKey);
+
+	abstract class Builder<T extends Builder<?>>
+	{
+
+		String id;
+		PolicyInformationPointCacheProvider cache;
+		ResolverRegistry registry;
+
+		public Builder(String id){
+			Preconditions.checkNotNull(id);
+			this.id = id;
+		}
+
+		public abstract T getThis();
+
+		public T cacheProvider(
+				PolicyInformationPointCacheProvider cache){
+			Preconditions.checkNotNull(cache);
+			this.cache = cache;
+			return getThis();
+		}
+
+		public T registry(
+				ResolverRegistry registry){
+			Preconditions.checkNotNull(registry, "registry");
+			this.registry = registry;
+			return getThis();
+		}
 
 
-	enum ResolutionStrategy {
-		FIRST_NON_EMPTY {
-			public <V> Optional<V> resolve(EvaluationContext context, Iterable<? extends ResolverDescriptor<?>> resolvers,
-										   Function<ResolverContext, Optional<V>> cacheCallback) {
-				Optional<V> value = Optional.empty();
-				for (ResolverDescriptor d : resolvers) {
-					ResolverContext resolverContext = ResolverContext.createContext(context, d);
-					if(resolverContext.isCacheable()){
-						value = cacheCallback.apply(resolverContext);
-					}
-					value = value
-							.or(()->Optional
-									.ofNullable((V)(d.getResolver().apply(resolverContext))));
-					if (value.isPresent()) {
-						return value;
-					}
-				}
-				return value;
-			}
-		},
-		FIRST_NON_EMPTY_IGNORE_ERROR {
-			public <V> Optional<V> resolve(EvaluationContext context, Iterable<? extends ResolverDescriptor<?>> resolvers,
-										   Function<ResolverContext, Optional<V>> cacheCallback) {
-				Optional<V> value = Optional.empty();
-				for (ResolverDescriptor d : resolvers) {
-					try {
-						ResolverContext resolverContext = ResolverContext.createContext(context, d);
-						if(resolverContext.isCacheable()){
-							value = cacheCallback.apply(resolverContext);
-						}
-						value = value
-								.or(()->Optional
-										.ofNullable((V)(d.getResolver().apply(resolverContext))));
-						if (value.isPresent()) {
-							return value;
-						}
-					} catch (Exception e) {
-						continue;
-					}
-				}
-				return value;
-			}
-		};
-
-		abstract <V> Optional<V> resolve(EvaluationContext context, Iterable<? extends ResolverDescriptor<?>> resolvers, Function<ResolverContext, Optional<V>> cacheCallback);
+		public PolicyInformationPoint build(){
+			return new DefaultPolicyInformationPoint(this);
+		}
 	}
 }

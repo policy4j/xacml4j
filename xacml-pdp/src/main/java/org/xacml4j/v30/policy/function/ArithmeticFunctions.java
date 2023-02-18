@@ -22,11 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamVarArg;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.DoubleValue;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -59,7 +54,7 @@ public final class ArithmeticFunctions
 	 * @return an integer data-type value representing
 	 * arithmetic sum of a given values
 	 */
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-add")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-add", shortId = "integer-add")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue addInteger(
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)
@@ -72,7 +67,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.INTEGER.of(sum);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply", shortId = "integer-multiply")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue multiplyInteger(
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)
@@ -85,7 +80,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.INTEGER.of(value);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add", shortId = "double-add")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue addDouble(
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)
@@ -98,7 +93,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.DOUBLE.of(sum);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-multiply", shortId = "double-multiply")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue multiplyDouble(
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#double", min=2)
@@ -111,7 +106,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.DOUBLE.of(value);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-abs", shortId = "integer-abs")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue v)
@@ -119,7 +114,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.INTEGER.of(Math.abs(v.value()));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs", shortId = "double-abs")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
@@ -127,7 +122,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.DOUBLE.of(Math.abs(v.value()));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor", shortId = "floor")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue floor(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
@@ -135,7 +130,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.DOUBLE.of(Math.floor(v.value()));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round", shortId = "round")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue round(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
@@ -143,7 +138,7 @@ public final class ArithmeticFunctions
 		return XacmlTypes.DOUBLE.of(Math.round(v.value()));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract", shortId = "double-subtract")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue subtract(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
@@ -152,7 +147,7 @@ public final class ArithmeticFunctions
 		return a.subtract(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-divide")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-divide", shortId = "double-divide")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue divideDouble(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
@@ -162,7 +157,7 @@ public final class ArithmeticFunctions
 		return a.divide(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide", shortId = "integer-divide")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue divideInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
@@ -172,7 +167,7 @@ public final class ArithmeticFunctions
 		return a.divide(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod", shortId = "integer-mod")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue modInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,

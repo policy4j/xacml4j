@@ -41,8 +41,10 @@ import java.util.Optional;
 public final class Status
 {
 	private final StatusCode code;
-	private final Optional<String> message;
-	private final Optional<StatusDetail> detail;
+	private final String message;
+	private final StatusDetail detail;
+	private final Throwable error;
+
 	private int hashCode;
 
 	/**
@@ -54,8 +56,9 @@ public final class Status
 	public Status(Builder b){
 		Objects.requireNonNull(b);
 		this.code = java.util.Objects.requireNonNull(b.code, "statusCode");
-		this.message = b.message;
-		this.detail = b.detail;
+		this.message = b.message.orElse(null);
+		this.detail = b.detail.orElse(null);
+		this.error = b.error.orElse(null);
 	}
 
 	public static Builder processingError(){
@@ -66,7 +69,7 @@ public final class Status
 		return new Builder()
 				.status(StatusCode.processingError())
 				.message(t.getMessage())
-				.detail(t);
+				.error(t);
 	}
 
 	public static Builder builder(StatusCode code){
@@ -92,8 +95,7 @@ public final class Status
 	public static Builder syntaxError(Throwable e){
 		return new Builder()
 				.status(StatusCode.syntaxError())
-				.message(e.getMessage())
-				.detail(e);
+				.error(e);
 	}
 
 	public static Builder ok(){
@@ -104,15 +106,13 @@ public final class Status
 	public static Builder missingAttribute(AttributeDesignatorKey key){
 		return new Builder()
 				.status(StatusCode.missingAttributeError())
-				.message(key.getAttributeId())
-				.detail(key.toString());
+				.message(key.getAttributeId());
 	}
 
 	public static Builder missingAttribute(AttributeSelectorKey key){
 		return new Builder()
 				.status(StatusCode.missingAttributeError())
-				.message(key.getPath())
-				.detail(key.toString());
+				.message(key.getPath());
 	}
 
 	public boolean hasDetails(){
@@ -121,6 +121,10 @@ public final class Status
 
 	public StatusCode getStatusCode(){
 		return code;
+	}
+
+	public Optional<Throwable> getError(){
+		return Optional.ofNullable(error);
 	}
 
 	public boolean isSuccess(){
@@ -145,19 +149,20 @@ public final class Status
 
 
 	public Optional<String> getMessage(){
-		return message;
+		return Optional.ofNullable(message);
 	}
 
 	public java.util.Optional<StatusDetail> getDetail(){
-		return detail;
+		return Optional.ofNullable(detail);
 	}
 
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
 				.add("code", code)
-				.add("message", message.orElse(null))
-				.add("detail", detail.orElse(null))
+				.add("message", message)
+				.add("detail", detail)
+				.add("error", error)
 				.toString();
 	}
 
@@ -171,8 +176,8 @@ public final class Status
 		}
 		Status s = (Status)o;
 		return code.equals(s.code) &&
-				message.equals(s.message) &&
-				detail.equals(s.detail);
+				Objects.equals(message, s.message) &&
+				Objects.equals(detail, s.detail);
 	}
 
 	@Override
@@ -189,11 +194,13 @@ public final class Status
 		private StatusCode code;
 		private Optional<String> message = Optional.empty();
 		private Optional<StatusDetail> detail = Optional.empty();
+		private Optional<Throwable> error = Optional.empty();
 
 		public Builder from(java.util.Optional<Status> status){
 			this.code = status.map(v->v.getStatusCode()).orElse(null);
 			this.message = status.map(v->v.getMessage()).orElse(null);
 			this.detail = status.map(v->v.getDetail()).orElse(null);
+			this.error = status.map(v->v.getError()).orElse(null);
 			return this;
 		}
 
@@ -222,18 +229,16 @@ public final class Status
 			return this;
 		}
 
-		public Builder detail(Object ...message){
-			return detail(new StatusDetail(message));
-		}
-
-		public Builder detail(List<Object> details){
+		public Builder detail(Status ...details){
 			return detail(new StatusDetail(details));
 		}
 
-		public Builder detail(Throwable t){
-			if(t != null){
-				return detail(Throwables.getStackTraceAsString(t));
-			}
+		public Builder detail(List<Status> details){
+			return detail(new StatusDetail(details));
+		}
+
+		public Builder error(Throwable t){
+
 			return this;
 		}
 

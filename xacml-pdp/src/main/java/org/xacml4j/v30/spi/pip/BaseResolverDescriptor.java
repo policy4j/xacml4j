@@ -23,6 +23,7 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import java.time.Duration;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -78,16 +79,7 @@ abstract class BaseResolverDescriptor<R>
 		return categoryId;
 	}
 
-	@Override
-	public Map<AttributeReferenceKey, BagOfValues> resolveKeyRefs(
-			ResolverContext context) {
-		ImmutableMap.Builder<AttributeReferenceKey, BagOfValues> contextKeys = ImmutableMap.builder();
-		allContextKeys.forEach((k)->context.resolve(k)
-		                                   .ifPresent((v)->contextKeys.put(k, v)));
-		return contextKeys.build();
-	}
-
-	public List<AttributeReferenceKey> getAllContextKeyRefs(){
+	public List<AttributeReferenceKey> getContextKeyRefs(){
 		return allContextKeys;
 	}
 }

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.*;
 
 import static org.xacml4j.v30.types.XacmlTypes.*;
@@ -40,7 +40,7 @@ public class BagFunctionsTest
 	@Test
 	public void testFunctionIfImplemented() throws Exception
 	{
-		FunctionProvider f = FunctionProvider.builder().withStandardFunctions().build();
+		FunctionProvider f = FunctionProviderBuilder.builder().withStandardFunctions().build();
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-bag-size"));
 		assertNotNull(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in"));

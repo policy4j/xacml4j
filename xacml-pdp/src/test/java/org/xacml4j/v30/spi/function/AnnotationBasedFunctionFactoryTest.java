@@ -24,13 +24,19 @@ package org.xacml4j.v30.spi.function;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.lang.reflect.Method;
 
 
 public class AnnotationBasedFunctionFactoryTest
@@ -39,12 +45,18 @@ public class AnnotationBasedFunctionFactoryTest
 	private FunctionProvider f2;
 	private EvaluationContext context;
 
+	private Method method;
+
 	@Before
 	public void init() throws Exception
 	{
-		this.f1 = FunctionProvider.emptyBuilder().fromClass(TestFunctions.class).build();
-		this.f2 = FunctionProvider.emptyBuilder().fromClass(TestInstanceFunctions.class).build();
+		this.f1 = FunctionProviderBuilder.builder()
+		                                 .fromClass(TestFunctions.class).build();
+		this.f2 = FunctionProviderBuilder.builder()
+		                                 .fromInstance(new TestInstanceFunctions()).build();
 		this.context = createStrictMock(EvaluationContext.class);
+		this.method = Reflections.getMethod(TestFunctions.class, "test5VarArg").orElse(null);
+		assertNotNull(method);
 	}
 
 	@Test
@@ -97,7 +109,7 @@ public class AnnotationBasedFunctionFactoryTest
 	@Test
 	public void testVarArgFunctionInvocation()
 	{
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true).times(6);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true).anyTimes();
 		replay(context);
 		FunctionSpec spec5 = f1.getFunction("test5VarArg").get();
 		FunctionSpec spec6 = f1.getFunction("test6VarArg").get();
@@ -111,6 +123,12 @@ public class AnnotationBasedFunctionFactoryTest
 		spec6.invoke(context, XacmlTypes.INTEGER.of(0), XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false));
 		verify(context);
 
+	}
+
+	@Test
+	public void testReflectionVarArgs() throws Exception
+	{
+		method.invoke(null, new Object[]{XacmlTypes.INTEGER.of(10), new BooleanValue[]{XacmlTypes.BOOLEAN.of(false)}});
 	}
 
 }

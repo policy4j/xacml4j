@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.DateTimeValue;
 import org.xacml4j.v30.types.DayTimeDurationValue;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -42,7 +42,7 @@ public class DateTimeValueArithmeticFunctionTest
 	@Before
 	public void init() throws Exception
 	{
-		this.p = FunctionProvider
+		this.p = FunctionProviderBuilder
 				.builder()
 				.withStandardFunctions()
 				.build();
@@ -51,15 +51,17 @@ public class DateTimeValueArithmeticFunctionTest
 	@Test
 	public void testProvidedFunctions()
 	{
+		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-add-dayTimeDuration").isPresent());
+		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-add-yearMonthDuration").isPresent());
+		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-dayTimeDuration").isPresent());
+		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-yearMonthDuration").isPresent());
+
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-add-dayTimeDuration").isPresent());
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-add-yearMonthDuration").isPresent());
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-dayTimeDuration").isPresent());
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-yearMonthDuration").isPresent());
 
-		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-add-dayTimeDuration").isPresent());
-		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-add-yearMonthDuration").isPresent());
-		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-dayTimeDuration").isPresent());
-		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-yearMonthDuration").isPresent());
+
 
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:date-add-yearMonthDuration").isPresent());
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:date-subtract-yearMonthDuration").isPresent());

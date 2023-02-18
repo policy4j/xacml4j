@@ -1,5 +1,27 @@
 package org.xacml4j.v30.spi.function;
 
+/*
+ * #%L
+ * Xacml4J PDP
+ * %%
+ * Copyright (C) 2009 - 2022 Xacml4J.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -11,6 +33,8 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.XacmlDefaultFunctions;
 
 /**
@@ -21,7 +45,7 @@ import org.xacml4j.v30.policy.function.XacmlDefaultFunctions;
 public final class FunctionProviderBuilder {
 	private final static Logger LOG = LoggerFactory.getLogger(FunctionProviderBuilder.class);
 
-	private static AtomicReference<FunctionProvider> STANDARD_FUNCTIONS;
+	private FunctionProvider STANDARD_FUNCTIONS;
 
 	private List<FunctionProvider> providers;
 	private FunctionInvocationFactory invocationFactory;
@@ -73,11 +97,7 @@ public final class FunctionProviderBuilder {
 	 * @return {@link FunctionProviderBuilder}
 	 */
 	public FunctionProviderBuilder withStandardFunctions() {
-		if (STANDARD_FUNCTIONS == null) {
-			STANDARD_FUNCTIONS = new AtomicReference<>(new XacmlDefaultFunctions(invocationFactory));
-			provider(STANDARD_FUNCTIONS.get());
-		}
-		return this;
+		return provider(new XacmlDefaultFunctions(invocationFactory));
 	}
 
 	/**
@@ -106,6 +126,23 @@ public final class FunctionProviderBuilder {
 		try {
 			return providers(AnnotationBasedFunctionProvider
 					                 .toProviders(invocationFactory, clazz));
+		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/**
+	 * Adds function provider from a given annotated class
+	 *
+	 * @param insa an annotated function provider as instance
+	 * @return {@link FunctionProviderBuilder} reference it itself
+	 */
+	public FunctionProviderBuilder fromInstance(Object instance) {
+		Objects.requireNonNull(instance, "instance");
+		try {
+			return providers(AnnotationBasedFunctionProvider
+					                 .toProviders(invocationFactory, instance));
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 			throw new IllegalArgumentException(e);

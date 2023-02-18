@@ -24,6 +24,7 @@ package org.xacml4j.v30.spi.pip;
 
 import static org.xacml4j.util.Preconditions.checkNotNull;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -31,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
 
 /**
@@ -40,25 +40,18 @@ import org.xacml4j.v30.EvaluationContext;
  * @author Giedrius Trumpickas
  */
 final class DefaultPolicyInformationPoint
-		implements PolicyInformationPoint {
-	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
-
+		implements PolicyInformationPoint
+{
+	private final static Logger LOG = LoggerFactory.getLogger(DefaultPolicyInformationPoint.class);
 	private String id;
 	private PolicyInformationPointCacheProvider cache;
 	private ResolverRegistry registry;
-	private ResolutionStrategy contentStrategy = ResolutionStrategy.FIRST_NON_EMPTY_IGNORE_ERROR;
-	private ResolutionStrategy attributeStrategy = ResolutionStrategy.FIRST_NON_EMPTY_IGNORE_ERROR;
 
-	DefaultPolicyInformationPoint(String id,
-	                                     ResolverRegistry registry,
-	                                     ResolutionStrategy contentStrategy,
-								  		ResolutionStrategy attributeStrategy,
-	                                     PolicyInformationPointCacheProvider cache) {
-		this.id = checkNotNull(id, "id");;
-		this.cache = checkNotNull(cache, "cache");;
-		this.registry = checkNotNull(registry, "registry");
-		this.contentStrategy = checkNotNull(contentStrategy, "contentStrategy");
-		this.attributeStrategy = checkNotNull(attributeStrategy, "attributeStrategy");
+
+	DefaultPolicyInformationPoint(PolicyInformationPoint.Builder b) {
+		this.id = checkNotNull(b.id, "id");;
+		this.cache = checkNotNull(b.cache, "cache");;
+		this.registry = checkNotNull(b.registry, "registry");
 	}
 
 	@Override
@@ -69,19 +62,84 @@ final class DefaultPolicyInformationPoint
 	@Override
 	public Optional<BagOfValues> resolve(
 			final EvaluationContext context,
-			AttributeDesignatorKey designatorKey) throws Exception
+			AttributeDesignatorKey designatorKey)
 	{
-		Iterable<AttributeResolverDescriptor> matched = registry.getMatchingAttributeResolver(context, designatorKey);
-		return attributeStrategy.resolve(context, matched, (resolverContext)->cache.getAttributes(resolverContext))
-				.flatMap(a->a.get(designatorKey.getAttributeId()));
+		Collection<AttributeResolverDescriptor> matched = registry.getMatchingAttributeResolver(context, designatorKey);
+		for(AttributeResolverDescriptor d : matched){
+			LOG.debug("Processing resolverId={} for key={}", d.getId(), designatorKey);
+			try{
+				ResolverContext resolverContext = ResolverContext.createContext(context, d);
+				Optional<AttributeSet> value = resolverContext.isCacheable()?
+				                               cache.getAttributes(resolverContext)
+				                                    .or(()->d.getResolverFunction().apply(resolverContext)):
+				                               d.getResolverFunction().apply(resolverContext);
+				LOG.debug("Resolved key={} via resolverId={} value={}", designatorKey, value, d.getId());
+				if(value != null && value.isPresent()){
+					if(resolverContext.isCacheable()){
+						LOG.debug("Caching key={}  attributeSet={}", designatorKey, value);
+						cache.putAttributes(resolverContext, value.get());
+					}
+
+					Optional<BagOfValues> r = value.flatMap(v->v.get(designatorKey
+							                              .getAttributeId()));
+					LOG.debug("Resolved key={} value={} via resolverId={}", designatorKey, r, d.getId());
+					return r;
+				}
+			}catch (Exception e){
+				LOG.debug(e.getMessage(), e);
+			}
+		}
+		return Optional.empty();
 	}
 
 	@Override
-	public Optional<Content> resolve(EvaluationContext context,
+	public Optional<BagOfValues> resolve(EvaluationContext context,
 	                                 AttributeSelectorKey selectorKey)
 	{
-		Iterable<ContentResolverDescriptor> matched = registry.getMatchingContentResolver(context, selectorKey);
-		return contentStrategy.resolve(context, matched, (resolverContext)->cache.getContent(resolverContext))
-				.map(v->v.getContent());
+		Collection<ContentResolverDescriptor> matched = registry.getMatchingContentResolver(context, selectorKey);
+		for(ContentResolverDescriptor d : matched)
+		{
+			LOG.debug("Processing resolverId={} for key={}", d.getId(), selectorKey);
+			ResolverContext resolverContext = ResolverContext.createContext(context, d);
+			try
+			{
+				Optional<ContentRef> value = resolverContext.isCacheable()?
+				                             cache.getContent(resolverContext)
+				                                  .or(()->d.getResolverFunction().apply(resolverContext)):
+				                             d.getResolverFunction().apply(resolverContext);
+				LOG.debug("Resolved key={} content={}", selectorKey, value);
+				if(value != null && value.isPresent()){
+					if(resolverContext.isCacheable()){
+						LOG.debug("Caching key={} content={}", selectorKey, value);
+						cache.putContent(resolverContext, value.get());
+					}
+					Optional<BagOfValues> r = value.flatMap(c->c.getContent()
+					                         .resolve(selectorKey));
+					LOG.debug("Resolved key={} value={} via resolverId={}", selectorKey, r, d.getId());
+					return r;
+				}
+			}catch (Exception e){
+				LOG.debug("Error while resolverId={} key={}", d.getId(), selectorKey, e);
+			}
+		}
+		return Optional.empty();
+
+	}
+
+	public static Builder builder(String id){
+		return new Builder(id);
+	}
+
+	public static final class Builder
+			extends PolicyInformationPoint.Builder<Builder>
+	{
+		public Builder(String id) {
+			super(id);
+		}
+
+		@Override
+		public Builder getThis() {
+			return this;
+		}
 	}
 }

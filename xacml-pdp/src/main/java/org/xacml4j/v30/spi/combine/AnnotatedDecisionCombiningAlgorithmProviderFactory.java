@@ -38,8 +38,11 @@ import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Rule;
-import org.xacml4j.v30.spi.function.FunctionInvocationFactory;
-import org.xacml4j.v30.spi.function.PolicyToPlatformFunctionInvocation;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.combine.XacmlPolicyDecisionCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.XacmlRuleDecisionCombiningAlgorithm;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
 
 import com.google.common.base.Preconditions;
 

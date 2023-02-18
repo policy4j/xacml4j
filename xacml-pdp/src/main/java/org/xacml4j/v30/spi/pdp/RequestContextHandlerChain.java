@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.request.RequestContext;
@@ -46,14 +48,15 @@ import com.google.common.collect.Sets;
 public class RequestContextHandlerChain
 	implements RequestContextHandler
 {
+	private final static Logger LOG = LoggerFactory.getLogger(RequestContextHandlerChain.class);
 	private boolean immutable;
 	private List<RequestContextHandler> handlers;
 
 	public RequestContextHandlerChain(
-			Iterable<RequestContextHandler> handlers)
+			Collection<RequestContextHandler> handlers)
 	{
 		this.handlers = new CopyOnWriteArrayList<>();
-		Iterables.addAll(this.handlers, handlers);
+		this.handlers.addAll(handlers);
 		RequestContextHandler prev = null;
 		for (RequestContextHandler h : handlers) {
 			if (prev == null) {

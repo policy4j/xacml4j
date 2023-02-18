@@ -25,6 +25,7 @@ package org.xacml4j.v30.spi.pip;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -43,13 +44,13 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 /**
- *
+ * A default
  *
  * @author Giedrius Trumpickas
  */
-class DefaultResolverRegistry implements ResolverRegistry
+final class DefaultResolverRegistry implements ResolverRegistry
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultResolverRegistry.class);
+	private final static Logger LOG = LoggerFactory.getLogger(DefaultResolverRegistry.class);
 
 	/**
 	 * Resolvers index by category and attribute identifier
@@ -58,8 +59,6 @@ class DefaultResolverRegistry implements ResolverRegistry
 	private final Map<String, AttributeResolverDescriptor> attributeResolversById;
 	private final Map<CategoryId, ContentResolverDescriptor> contentResolvers;
 	private final Map<String, ContentResolverDescriptor> contentResolversById;
-	private final Map<String, Map<String, AttributeResolverDescriptor>> policyOrSetScopedAttributeResolvers;
-	private final Map<String, Map<String, AttributeResolverDescriptor>> policyOrSetScopedContentResolvers;
 
 	public DefaultResolverRegistry(Collection<AttributeResolverDescriptor> attributeResolvers,
 								   Collection<ContentResolverDescriptor> contentResolvers)
@@ -68,8 +67,6 @@ class DefaultResolverRegistry implements ResolverRegistry
 		this.contentResolvers = new ConcurrentHashMap<>();
 		this.attributeResolversById = new ConcurrentHashMap<>();
 		this.contentResolversById = new ConcurrentHashMap<>();
-		this.policyOrSetScopedAttributeResolvers = new ConcurrentHashMap<>();
-		this.policyOrSetScopedContentResolvers = new ConcurrentHashMap<>();
 		attributeResolvers.forEach(r->addResolver(r));
 		contentResolvers.forEach(c->addResolver(c));
 	}
@@ -80,26 +77,33 @@ class DefaultResolverRegistry implements ResolverRegistry
 	}
 
 	@Override
-	public Iterable<AttributeResolverDescriptor> getMatchingAttributeResolver(
+	public Collection<AttributeResolverDescriptor> getMatchingAttributeResolver(
 			EvaluationContext context, AttributeDesignatorKey key) {
 		Multimap<String, AttributeResolverDescriptor> r = attributeResolvers.get(key.getCategory());
 		return Optional.ofNullable(r)
 				.map(v->v.get(key.getAttributeId()))
-				.orElse(Collections.emptyList());
+				.orElse(Collections.emptyList())
+				.stream().filter(v-> key.getIssuer() != null?
+				                     Objects.equals(key.getIssuer(), v.getIssuer()):true)
+				.collect(Collectors.toList());
 	}
 
 	@Override
-	public Iterable<ContentResolverDescriptor> getMatchingContentResolver(EvaluationContext context,
+	public Collection<ContentResolverDescriptor> getMatchingContentResolver(EvaluationContext context,
 																AttributeSelectorKey selectorKey)
 	{
 		ContentResolverDescriptor descriptor = contentResolvers.get(selectorKey.getCategory());
-		return ImmutableList.of(descriptor);
+		return descriptor == null?Collections.emptyList():ImmutableList.of(descriptor);
 
 	}
 
 	private void addResolverForCategory(CategoryId categoryId,
 										AttributeResolverDescriptor d)
 	{
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Adding resolver id=\"{}\" categoryId=\"{}\"",
+			          new Object[]{d.getId(), categoryId});
+		}
 		if(!d.getCategory().equals(categoryId)){
 			throw SyntaxException.invalidCategoryId(categoryId, "is not " +
 							"contained in the resolverId=\"%s\", descriptor categories",
@@ -108,28 +112,16 @@ class DefaultResolverRegistry implements ResolverRegistry
 		Multimap<String, AttributeResolverDescriptor> byCategoryId = attributeResolvers.get(categoryId);
 		if(byCategoryId == null){
 			byCategoryId = LinkedHashMultimap.create();
+			attributeResolvers.put(categoryId, byCategoryId);
 		}
 		for(String attributeId : d.getProvidedAttributeIds()){
-			if(log.isDebugEnabled()){
-				log.debug("Indexing resolver id=\"{}\" categoryId=\"{}\", id=\"{}\"",
-						new Object[]{d.getId(), categoryId, attributeId});
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Indexing resolver id=\"{}\" categoryId=\"{}\", id=\"{}\"",
+				          new Object[]{d.getId(), categoryId, attributeId});
 			}
 			byCategoryId.put(attributeId, d);
 		}
 		attributeResolversById.put(d.getId(), d);
-	}
-
-	public void addResolver(String id, AttributeResolverDescriptor resolver){
-		if(!policyOrSetScopedAttributeResolvers.containsKey(id)){
-			Map<String, AttributeResolverDescriptor> resolverMap = resolver.getProvidedAttributeIds()
-			                                                               .stream()
-			                                                               .collect(Collectors.toMap(v->v, v->resolver));
-			policyOrSetScopedAttributeResolvers.putIfAbsent(id, resolverMap);
-		}
-	}
-
-	public void addResolver(String id, ContentResolverDescriptor resolver){
-
 	}
 
 	public void addResolver(AttributeResolverDescriptor resolver)
@@ -151,9 +143,9 @@ class DefaultResolverRegistry implements ResolverRegistry
 					contentResolverOther.getClass()));
 		}
 		contentResolvers.putIfAbsent(r.getCategory(), r);
-		if(log.isDebugEnabled()){
-			log.debug("Adding content contentResolverId=\"{}\" for categoryId=\"{}\"",
-					r.getId(), r.getCategory());
+		if(LOG.isDebugEnabled()){
+			LOG.debug("Adding content contentResolverId=\"{}\" for categoryId=\"{}\"",
+			          r.getId(), r.getCategory());
 		}
 	}
 }

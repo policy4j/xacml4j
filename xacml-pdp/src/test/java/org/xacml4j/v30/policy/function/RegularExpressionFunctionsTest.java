@@ -33,7 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.*;
 
 
@@ -51,9 +51,9 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testFunctionIfImplemented() throws Exception {
-		FunctionProvider f = FunctionProvider.builder()
-				.withStandardFunctions()
-				.build();
+		FunctionProvider f = FunctionProviderBuilder.builder()
+		                                            .withStandardFunctions()
+		                                            .build();
 		assertThat(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match"), notNullValue());
 		assertThat(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match"), notNullValue());
 		assertThat(f.getFunction("urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match"), notNullValue());

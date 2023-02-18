@@ -40,6 +40,25 @@ import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.PolicySyntaxException;
+import org.xacml4j.v30.policy.function.DefaultFunctionInvocation;
+import org.xacml4j.v30.policy.function.FunctionInvocation;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.FunctionParametersValidator;
+import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
+import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParamAnyAttribute;
+import org.xacml4j.v30.policy.function.XacmlFuncParamAnyBag;
+import org.xacml4j.v30.policy.function.XacmlFuncParamFunctionReference;
+import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;
+import org.xacml4j.v30.policy.function.XacmlFuncParamValidator;
+import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnTypeResolver;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
+import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
+import org.xacml4j.v30.policy.function.XacmlLegacyFunc;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -47,7 +66,7 @@ import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter
 {
-	private final static Logger log = LoggerFactory.getLogger(JavaMethodToFunctionSpecConverter.class);
+	private final static Logger LOG = LoggerFactory.getLogger(JavaMethodToFunctionSpecConverter.class);
 
 	private final FunctionInvocationFactory invocationFactory;
 
@@ -75,6 +94,7 @@ class JavaMethodToFunctionSpecConverter
 			throw new PolicySyntaxException(
 					"Method=\"%s\" must have other then void return type", m.getName());
 		}
+
 		if(!Expression.class.isAssignableFrom(m.getReturnType())){
 			throw new PolicySyntaxException(
 					"Method=\"%s\" must return XACML expression", m.getName());
@@ -101,12 +121,14 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncReturnTypeResolver returnTypeResolver = m.getAnnotation(XacmlFuncReturnTypeResolver.class);
 		XacmlFuncParamValidator validator = m.getAnnotation(XacmlFuncParamValidator.class);
 		validateMethodReturnType(m);
-		FunctionSpecBuilder b = FunctionSpecBuilder.builder(funcId.id(),
-				(legacyFuncId == null) ? null : legacyFuncId.id());
+		FunctionSpecBuilder b = FunctionSpecBuilder
+				.builder(funcId.id(),
+				         (legacyFuncId == null) ? null : legacyFuncId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
 		boolean evalContextParamFound = false;
-		for (int i = 0; i < params.length; i++) {
+		for (int i = 0; i < params.length; i++)
+		{
 			if (params[i] == null) {
 				throw new PolicySyntaxException(String.format(
 						"Method=\"%s\" contains parameter without annotation",
@@ -135,13 +157,13 @@ class JavaMethodToFunctionSpecConverter
 				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.error("Expecting bag at index=\"{}\", actual type type=\"{}\"", i, types[i].getName());
+					LOG.error("Expecting bag at index=\"{}\", actual type type=\"{}\"", i, types[i].getName());
 					throw PolicySyntaxException
 							.invalidFunctionParameter(funcId, param, m);
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-						log.error("Expecting attribute value at index=\"{}\", "
+						LOG.error("Expecting attribute value at index=\"{}\", "
 								+ "actual type type=\"{}\"", i, types[i].getName());
 					throw PolicySyntaxException
 							.invalidFunctionParameter(funcId, param, m);
@@ -158,14 +180,14 @@ class JavaMethodToFunctionSpecConverter
 				}
 				if (param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.error("Expecting bag at index=\"{}\", actual type type=\"{}\"",
-							i, types[i].getName());
+					LOG.error("Expecting bag at index=\"{}\", actual type type=\"{}\"",
+					          i, types[i].getName());
 					throw PolicySyntaxException
 							.invalidFunctionParameter(funcId, param, m);
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
-					log.error("Expecting attribute value at index=\"{}\", "
+					LOG.error("Expecting attribute value at index=\"{}\", "
 							+ "actual type type=\"{}\"", i, types[i].getName());
 					throw PolicySyntaxException
 							.invalidFunctionParameter(funcId, param, m);
@@ -231,9 +253,8 @@ class JavaMethodToFunctionSpecConverter
 			return b.build(returnType.isBag() ? type.get().bagType() : type.get(),
 					(validator != null) ? createValidator(validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(invocationFactory
-							.<ValueExpression>create(instance, m),
-							evalContextParamFound));
+					new DefaultFunctionInvocation(invocationFactory.create(instance, m),
+					                              evalContextParamFound));
 		}
 		if (returnTypeResolver != null) {
 			return b.build(createResolver(returnTypeResolver.resolverClass()),

@@ -40,12 +40,11 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.xml.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 

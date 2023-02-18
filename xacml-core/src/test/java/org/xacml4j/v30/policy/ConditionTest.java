@@ -41,12 +41,14 @@ public class ConditionTest
 	private Expression exp;
 	private EvaluationContext context;
 	private IMocksControl ctl;
+	private Rule rule;
 
 	@Before
 	public void init(){
 		ctl = createStrictControl();
 		this.exp = ctl.createMock(Expression.class);
 		this.context = ctl.createMock(EvaluationContext.class);
+		this.rule = ctl.createMock(Rule.class);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
@@ -64,11 +66,13 @@ public class ConditionTest
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(
 				ctl.createMock(FunctionSpec.class), new NullPointerException()));
-		Capture<Status> statusCapture = new Capture<>();
-		context.setEvaluationStatus(capture(statusCapture));
+		Capture<Status> statusCapture = Capture.newInstance();
+		Capture<Rule> ruleCapture = Capture.newInstance();
+		expect(context.getCurrentRule()).andReturn(rule);
+		context.setEvaluationStatus(capture(ruleCapture), capture(statusCapture));
 
 		ctl.replay();
-		Condition c = new Condition(exp);
+		Condition c = Condition.condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
 		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, statusCapture.getValue().getStatusCode().getValue());
 		ctl.verify();
@@ -78,8 +82,11 @@ public class ConditionTest
 	public void testExpressionThrowsRuntimeException() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
 		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
-		Capture<Status> statusCapture = new Capture<>();
-		context.setEvaluationStatus(capture(statusCapture));
+
+		Capture<Status> statusCapture = Capture.newInstance();
+		Capture<Rule> ruleCapture = Capture.newInstance();
+		expect(context.getCurrentRule()).andReturn(rule);
+		context.setEvaluationStatus(capture(ruleCapture), capture(statusCapture));
 
 		ctl.replay();
 		Condition c = new Condition(exp);

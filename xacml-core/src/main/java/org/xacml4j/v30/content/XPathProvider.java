@@ -33,6 +33,8 @@ import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.XPathVersion;
 
 import javax.xml.xpath.*;
+
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -67,12 +69,14 @@ public interface XPathProvider
 			}
 			XPathExpression xpath = newXPath(path, context);
 			Node result = (Node)xpath.evaluate(context, XPathConstants.NODE);
-			if(log.isDebugEnabled() &&
-					result != null){
-				log.debug("Result node name=\"{}:{}\" node type=\"{}\"",
+			if(result != null){
+				log.debug("Xpath={} result node name=\"{}:{}\" node type=\"{}\"",
+						  xpath,
 				          result.getLocalName(), result.getNamespaceURI(),
 				          result.getNodeType());
 
+			}else{
+				log.warn("Xpath={} result null", xpath);
 			}
 			return result;
 		}catch(XPathExpressionException e){
@@ -95,18 +99,23 @@ public interface XPathProvider
 			}
 			XPathExpression xpath = newXPath(path, context);
 			NodeList result = (NodeList)xpath.evaluate(context, XPathConstants.NODESET);
-			if(log.isDebugEnabled() && result != null){
+			if(result != null){
 				log.debug("Evaluation result has=\"{}\" nodes",
-						result.getLength());
-				for(int i = 0; i < result.getLength(); i++){
-					Node n = result.item(i);
-					log.debug("Result at index=\"{}\" name=\"{}:{}\" type=\"{}\"", i,
-					          n.getLocalName(), n.getNamespaceURI(),
-					          n.getNodeType());
+				          result.getLength());
+				if(log.isDebugEnabled()){
+					for(int i = 0; i < result.getLength(); i++){
+						Node n = result.item(i);
+						log.debug("Result at index=\"{}\" name=\"{}:{}\" type=\"{}\"", i,
+						          n.getLocalName(), n.getNamespaceURI(),
+						          n.getNodeType());
+					}
 				}
+			}else {
+				log.warn("XPath={} result is null", path);
 			}
 			return result;
-		}catch(XPathExpressionException e){
+		}
+		catch(XPathExpressionException e){
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}

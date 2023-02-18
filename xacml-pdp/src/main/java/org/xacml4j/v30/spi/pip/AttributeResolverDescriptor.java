@@ -22,50 +22,78 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueType;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 
 
 public final class AttributeResolverDescriptor
 	extends BaseResolverDescriptor<AttributeSet>
 {
+	private final static Logger LOG = LoggerFactory.getLogger(AttributeResolverDescriptor.class);
 	private String issuer;
 	private Map<String, AttributeDescriptor> attributesById;
 	private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
-	private Function<ResolverContext, Map<String, BagOfValues>> resolver;
+	private Function<ResolverContext, Optional<AttributeSet>> resolver;
 
 	private AttributeResolverDescriptor(Builder b, Function<ResolverContext,
 			Map<String, BagOfValues>> resolverFunction){
 		super(b);
 		this.issuer = b.issuer;
-		this.attributesByKey = b.attributesByKey.build();
-		this.attributesById = b.attributesById.build();
-		this.resolver = Objects.requireNonNull(resolverFunction, "resolverFunction");
+		this.attributesByKey = ImmutableMap.copyOf(b.attributesByKey);
+		this.attributesById = ImmutableMap.copyOf(b.attributesById);
+		this.resolver = decorate(Objects.requireNonNull(resolverFunction, "resolverFunction"));
 		for(AttributeReferenceKey k : attributesByKey.keySet()){
-			if(getAllContextKeyRefs().contains(k)){
+			if(getContextKeyRefs().contains(k)){
 				throw SyntaxException.invalidResolverReferenceSelfRef(getId(), "key={}", k);
 			}
 		}
+	}
+
+	private Function<ResolverContext, Optional<AttributeSet>> decorate(Function<ResolverContext,
+			Map<String, BagOfValues>> resolverFunction)
+	{
+		return (context)->{
+			try{
+				Map<String, BagOfValues> v = resolverFunction.apply(context);
+				LOG.error("Resolver values={}", v);
+				return Optional.ofNullable(v)
+				               .flatMap(values->values.isEmpty()?Optional.empty():
+				                                Optional.of(AttributeSet
+						                                            .builder(this)
+						                                            .clock(context.getClock())
+						                                            .attributes(values).build()));
+			}catch (EvaluationException e){
+				throw e;
+			}
+			catch (Exception e){
+				throw new EvaluationException(context.getEvaluationContext(), e);
+			}
+		};
 	}
 
 	/**
@@ -78,21 +106,30 @@ public final class AttributeResolverDescriptor
 		return issuer;
 	}
 
-	public boolean canResolve(AttributeReferenceKey category) {
-		if(!(category instanceof AttributeSelectorKey)){
+	public boolean canResolve(AttributeReferenceKey referenceKey) {
+		if((referenceKey instanceof AttributeSelectorKey)){
 			return false;
 		}
-		return attributesByKey.containsKey(category);
+		if((referenceKey instanceof AttributeDesignatorKey)){
+			AttributeDesignatorKey designatorKey = (AttributeDesignatorKey) referenceKey;
+			LOG.debug("AttributesByKey={}", attributesByKey.keySet());
+			return attributesByKey.keySet()
+			               .stream()
+			                      .filter(v->match(designatorKey, v))
+			                      .findFirst().isPresent();
+		}
+		return false;
+	}
+
+	private static boolean match(AttributeDesignatorKey a, AttributeDesignatorKey b){
+		return a.getDataType().equals(b.getDataType())
+				&& Objects.equals(a.getAttributeId(), b.getAttributeId())
+				&& Objects.equals(a.getCategory(), b.getCategory()) &&
+				(a.getIssuer() != null?Objects.equals(a.getIssuer(), b.getIssuer()):true);
 	}
 	@Override
-	public Function<ResolverContext, Optional<AttributeSet>> getResolver() {
-		return (context)->{
-			Map<String, BagOfValues> v = resolver.apply(context);
-			return Optional.ofNullable(v)
-					.map(values->AttributeSet.builder(this)
-							.clock(context.getClock())
-							.attributes(values).build());
-		};
+	public Function<ResolverContext, Optional<AttributeSet>> getResolverFunction() {
+		return resolver;
 	}
 
 	/**
@@ -178,8 +215,8 @@ public final class AttributeResolverDescriptor
 	{
 		private static Logger LOG = LoggerFactory.getLogger(Builder.class);
 
-		private ImmutableMap.Builder<String, AttributeDescriptor> attributesById;
-		private ImmutableMap.Builder<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
+		private Map<String, AttributeDescriptor> attributesById;
+		private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
 		private String issuer;
 
 		private Builder(
@@ -189,8 +226,8 @@ public final class AttributeResolverDescriptor
 				CategoryId categoryId){
 			super(id, name, categoryId);
 			this.issuer = Strings.emptyToNull(issuer);
-			this.attributesById = ImmutableMap.builder();
-			this.attributesByKey = ImmutableMap.builder();
+			this.attributesById = new HashMap<>();
+			this.attributesByKey = new HashMap<>();
 		}
 
 		public Builder  attribute(
@@ -199,25 +236,39 @@ public final class AttributeResolverDescriptor
 				Collection<String> aliases){
 			AttributeDescriptor d = AttributeDescriptor.of(attributeId, dataType, aliases);
 			LOG.debug("Adding attributeId=\"{}\" aliases=\"{}\"", attributeId, aliases);
+			if(attributesById.containsKey(attributeId)){
+				throw SyntaxException.invalidResolverAttributeId(attributeId,
+				                                                 "Builder already has an attribute with id=\"%s\" aliases={}",
+				                                                 aliases);
+			}
+			AttributeDesignatorKey k = AttributeDesignatorKey.builder()
+			                                                 .category(categoryId)
+			                                                 .attributeId(attributeId)
+			                                                 .dataType(dataType)
+			                                                 .issuer(issuer)
+			                                                 .build();
 			attributesById.put(attributeId, d);
-			for(String alias : d.getAliases() ){
-				if(attributesById.put(alias, d) != null){
+			attributesByKey.put(k, d);
+			for(String alias : aliases ){
+				if(attributesById.containsKey(alias)){
 					throw SyntaxException.invalidResolverAttributeId(id,
-							"Builder already has an attribute with id=\"%s\" alias",
-							                                         alias);
+							"Builder already has an attribute with id=\"%s\" aliases={}",
+							                                         attributeId, aliases);
 				}
-				AttributeDesignatorKey k = AttributeDesignatorKey.builder()
+				k = AttributeDesignatorKey.builder()
 				                                                 .category(categoryId)
 				                                                 .attributeId(alias)
 				                                                 .dataType(dataType)
 				                                                 .issuer(issuer)
 				                                                 .build();
-				if(this.attributesByKey.put(k, d) != null){
+				if(this.attributesByKey.containsKey(k)){
 					throw SyntaxException
 							.invalidResolverAttributeId(id,
-							                            "Builder already has an attribute with key=\"%s\" alias={}",
+							                            "Builder already has an attribute with key=\"%s\" aliases={}",
 							                            k, k);
 				}
+				attributesById.put(alias, d);
+				attributesByKey.put(k, d);
 			}
 			return this;
 		}
@@ -226,7 +277,7 @@ public final class AttributeResolverDescriptor
 				String attributeId,
 				ValueType dataType, String ... aliases){
 			return attribute(attributeId, dataType,
-					(aliases == null)?Collections.emptyList(): ImmutableList.copyOf(aliases));
+			                 (aliases == null)? Collections.emptyList(): Arrays.asList(aliases));
 		}
 
 		@Override

@@ -40,7 +40,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -48,7 +48,6 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 public class HigherOrderFunctionsTest
 {
-	private FunctionProvider functions;
 	private EvaluationContext context;
 
 	private FunctionSpec intToString;
@@ -64,13 +63,15 @@ public class HigherOrderFunctionsTest
 
 	private IMocksControl c;
 
+	private FunctionProvider functions;
 
 	@Before
 	public void init() throws Exception
 	{
 		this.c  = createControl();
-		this.functions = FunctionProvider.builder().withStandardFunctions().build();
+
 		this.context = c.createMock(EvaluationContext.class);
+		this.functions = FunctionProviderBuilder.builder().withStandardFunctions().build();
 		this.intToString = functions.getFunction("urn:oasis:names:tc:xacml:3.0:function:string-from-integer").get();
 		this.intEq = functions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-equal").get();
 		this.intGreaterThan = functions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-greater-than").get();
@@ -116,7 +117,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = anyOf.invoke(context, new FunctionReference(intEq), XacmlTypes.INTEGER.of(20),
-				XacmlTypes.INTEGER.bag().attributes(v).build());
+		                              XacmlTypes.INTEGER.bag().attributes(v).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -138,7 +139,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = allOfAny.invoke(context, new FunctionReference(intGreaterThan),
-				XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
+		                                 XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -161,7 +162,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan),
-				XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
+		                                 XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -182,7 +183,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		c.replay();
 		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch),
-				XacmlTypes.STRING.bag().attributes(a).build(), XacmlTypes.STRING.bag().attributes(b).build());
+		                                 XacmlTypes.STRING.bag().attributes(a).build(), XacmlTypes.STRING.bag().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -204,7 +205,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
-				XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
+		                                 XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}

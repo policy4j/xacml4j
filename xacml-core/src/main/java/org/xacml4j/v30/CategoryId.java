@@ -35,7 +35,7 @@ import java.util.Optional;
  *
  * @author Giedrius Trumpickas
  */
-public final class CategoryId extends ExtensibleIdentifier
+public final class CategoryId extends SemanticalIdentifier
 {
 	public static final CategoryId ACTION  = new CategoryId("urn:oasis:names:tc:xacml:3.0:attribute-category:action", "action");
 	public static final CategoryId ENVIRONMENT = new CategoryId("urn:oasis:names:tc:xacml:3.0:attribute-category:environment", "environment");

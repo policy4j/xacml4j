@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -40,7 +40,7 @@ public class SetFunctionTest
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		p = FunctionProvider.builder().withStandardFunctions().build();
+		p = FunctionProviderBuilder.builder().withStandardFunctions().build();
 	}
 
 	@Test

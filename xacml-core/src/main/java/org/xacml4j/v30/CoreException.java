@@ -52,7 +52,9 @@ public class CoreException extends RuntimeException
 	protected CoreException(Status status,
 	                        Throwable t){
 		super(t);
-		this.status = Status.from(status).detail(t).build();
+		this.status = Status.from(status)
+		                    .error(t)
+		                    .build();
 	}
 
 	/**

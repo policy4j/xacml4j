@@ -65,7 +65,7 @@ public final class Resolver<T> implements Function<ResolverContext, Optional<T>>
      * @return {@link Optional<V>}
      */
     public Optional<T> resolve(ResolverContext resolverContext){
-        return descriptor.getResolver()
+        return descriptor.getResolverFunction()
                 .apply(resolverContext);
     }
 

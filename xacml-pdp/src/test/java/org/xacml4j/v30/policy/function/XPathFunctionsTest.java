@@ -36,7 +36,7 @@ import org.xacml4j.v30.*;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.*;
 
 
@@ -51,11 +51,29 @@ public class XPathFunctionsTest
 	"</md:patient>" +
 	"</md:record>";
 
+	private String testXmlSame = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+			"xmlns:md=\"urn:example:med:schemas:record\">" +
+			"<md:patient>" +
+			"<md:patientDoB>1992-03-21</md:patientDoB>" +
+			"<md:patient-number>555555</md:patient-number>" +
+			"</md:patient>" +
+			"</md:record>";
+
+	private String testXmlDiff = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+			"xmlns:md=\"urn:example:med:schemas:record\">" +
+			"<md:patient>" +
+			"<md:patientDoB>1976-13-21</md:patientDoB>" +
+			"<md:patient-number>109293</md:patient-number>" +
+			"</md:patient>" +
+			"</md:record>";
+
 	private EvaluationContext context;
 	private XmlContent content;
+	private XmlContent contentSame;
+	private XmlContent contentDiff;
 	private FunctionProvider funcF;
 
-	private XmlContent content1;
+	private XmlContent contentDifferent;
 
 	@Before
 	public void init() throws Exception
@@ -63,15 +81,17 @@ public class XPathFunctionsTest
 
 		this.context = createStrictMock(EvaluationContext.class);
 		this.content = XmlContent.of(XmlContent.fromString(testXml));
-		this.content1 = XmlContent.of(
+		this.contentSame = XmlContent.of(XmlContent.fromString(testXmlSame));
+		this.contentDiff = XmlContent.of(XmlContent.fromString(testXmlDiff));
+		this.contentDifferent = XmlContent.of(
 				XmlContent
 						.fromStream(
 								Thread.currentThread()
 										.getContextClassLoader()
 										.getResourceAsStream("./testContentXPathFunctions.xml")));
 
-		this.funcF = FunctionProvider
-				.emptyBuilder()
+		this.funcF = FunctionProviderBuilder
+				.builder()
 				.fromClass(XPathFunctions.class)
 				.build();
 	}
@@ -94,7 +114,7 @@ public class XPathFunctionsTest
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count").get();
 		PathValue xpath  = XacmlTypes.XPATH.of("/md:record/md:patient", CategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolve(xpath.getCategory(), xpath.getContentType())).andReturn(Optional.of(content));
+		expect(context.resolve(xpath.getCategory().orElse(null), xpath.getContentType())).andReturn(Optional.of(content));
 		replay(context);
 		assertEquals(XacmlTypes.INTEGER.of(1), f.invoke(context, xpath));
 		verify(context);
@@ -106,8 +126,8 @@ public class XPathFunctionsTest
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count").get();
 		Value xpath  = XacmlTypes.STRING.of("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolve(Optional.of(CategoryId.RESOURCE), Content.Type.XML_UTF8))
-				.andReturn(Optional.of(content1));
+		expect(context.resolve(CategoryId.RESOURCE, Content.Type.XML_UTF8))
+				.andReturn(Optional.of(contentDifferent));
 		replay(context);
 		assertEquals(XacmlTypes.INTEGER.of(2), f.invoke(context, xpath));
 		verify(context);
@@ -118,7 +138,7 @@ public class XPathFunctionsTest
 	{
 		PathValue xpath  = XacmlTypes.XPATH.of("/test",
 				CategoryId.SUBJECT_ACCESS);
-		expect(context.resolve(xpath.getCategory(), xpath.getContentType())).andReturn(Optional.of(content));
+		expect(context.resolve(xpath.getCategory().orElse(null), xpath.getContentType())).andReturn(Optional.of(content));
 		replay(context);
 		assertEquals(XacmlTypes.INTEGER.of(0), XPathFunctions.xpathCount(context, xpath));
 		verify(context);
@@ -128,27 +148,27 @@ public class XPathFunctionsTest
 	public void testXPathNodeMatch() throws EvaluationException
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match").get();
-		PathValue xpath0  = XacmlTypes.XPATH.of("/md:record", CategoryId.SUBJECT_ACCESS);
-		PathValue xpath1  = XacmlTypes.XPATH.of("/md:record/md:patient/md:patientDoB", CategoryId.SUBJECT_ACCESS);
+		PathValue xpath0  = XacmlTypes.XPATH.of("/md:record/md:patient", CategoryId.SUBJECT_ACCESS);
+		PathValue xpath1  = XacmlTypes.XPATH.of("/md:record/md:patient", CategoryId.SUBJECT_ACCESS);
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolve(xpath0.getCategory(), xpath0.getContentType())).andReturn(Optional.of(content));
-		expect(context.resolve(xpath1.getCategory(), xpath1.getContentType())).andReturn(Optional.of(content));
+		expect(context.resolve(xpath0.getCategory().get(), xpath0.getContentType())).andReturn(Optional.of(content));
+		expect(context.resolve(xpath1.getCategory().get(), xpath1.getContentType())).andReturn(Optional.of(contentSame));
 		replay(context);
 		assertEquals(XacmlTypes.BOOLEAN.of(true), f.invoke(context, xpath0, xpath1));
 		verify(context);
 	}
 
 	@Test
-	public void testXPathNodeMatchXacml20() throws EvaluationException
+	public void testXPathNodeMatchXacml1()
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match").get();
-		Value xpath0  = XacmlTypes.STRING.of(".");
+		Value xpath0  = XacmlTypes.STRING.of("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
 		Value xpath1  = XacmlTypes.STRING.of("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolve(Optional.of(CategoryId.RESOURCE), Content.Type.XML_UTF8))
-				.andReturn(Optional.of(content1));
-		expect(context.resolve(Optional.of(CategoryId.RESOURCE), Content.Type.XML_UTF8))
-				.andReturn(Optional.of(content1));
+		expect(context.resolve(CategoryId.RESOURCE, Content.Type.XML_UTF8))
+				.andReturn(Optional.of(content));
+		expect(context.resolve(CategoryId.RESOURCE, Content.Type.XML_UTF8))
+				.andReturn(Optional.of(contentSame));
 		replay(context);
 		assertEquals(XacmlTypes.BOOLEAN.of(true), f.invoke(context, xpath0, xpath1));
 		verify(context);

@@ -32,13 +32,13 @@ public class SyntaxException extends CoreException
 
 	public SyntaxException(String template, Object... arguments) {
 		super(Status.syntaxError()
-						.detail(format(template,
-						                      arguments)).build(),
+						.message(format(template, arguments))
+                    .build(),
 				format(template, arguments));
 	}
 
 	public SyntaxException(Throwable cause) {
-		super(Status.syntaxError().detail(cause).build(),
+		super(Status.syntaxError().error(cause).build(),
 				cause);
 	}
 

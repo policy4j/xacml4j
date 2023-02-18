@@ -24,8 +24,12 @@ package org.xacml4j.v30.marshal;
 
 import java.io.IOException;
 
+import com.google.common.net.MediaType;
+
 public interface Marshaller <T>
 {
+	MediaType getMediaType();
+
 	Object marshal(T source)
 		throws IOException;
 

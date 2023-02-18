@@ -33,6 +33,7 @@ import org.xacml4j.v30.request.RequestReference;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
 
+import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -47,6 +48,11 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
 				.registerTypeAdapter(RequestReference.class, new RequestReferenceAdapter())
 				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
+	}
+
+	@Override
+	public MediaType getMediaType() {
+		return MediaType.JSON_UTF_8;
 	}
 
 	@Override

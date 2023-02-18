@@ -53,7 +53,7 @@ public class FunctionInvocationException extends EvaluationException
 		super(Status.processingError()
 				.message(Optional.ofNullable(message)
 				                 .map(v-> String.format(v, params)).orElse(null))
-				.detail(cause).build(), cause);
+				.error(cause).build(), cause);
 		this.spec = spec;
 	}
 

@@ -22,8 +22,7 @@
   -->
 
 
-<md:record xmlns:md="http://www.medico.com/schemas/record"
->
+<md:record xmlns:md="http://www.medico.com/schemas/record">
 	<md:hospital_info>
 		<md:name>ABC Hospital</md:name>
 		<md:department>Surgery</md:department>

@@ -91,9 +91,6 @@ public final class AttributeSet
 		return d.getIssuer();
 	}
 
-	public Iterable<AttributeDesignatorKey> getAttributeKeys(){
-		return d.getAttributesByKey().keySet();
-	}
 
 	/**
 	 * Gets an attribute value for a given designator
@@ -103,8 +100,11 @@ public final class AttributeSet
 	 */
 	public Optional<BagOfValues> get(AttributeDesignatorKey key)
 	{
-		AttributeDescriptor ad = d.getAttributesByKey().get(key);
-		return Optional.ofNullable(ad).map(v->values.get(v.getAttributeId()));
+		if(key.getIssuer() != null){
+			return Objects.equals(key.getIssuer(), d.getIssuer())?
+			       get(key.getAttributeId()):Optional.empty();
+		}
+		return get(key.getAttributeId());
 	}
 
 	/**
@@ -126,12 +126,7 @@ public final class AttributeSet
 	}
 
 	public boolean isEmpty() {
-		for (BagOfValues v : values.values()) {
-			if (!v.isEmpty()) {
-				return false;
-			}
-		}
-		return true;
+		return values.isEmpty();
 	}
 
 	public Instant getTimestamp(){
@@ -178,7 +173,7 @@ public final class AttributeSet
 		}
 
 		public Builder clock(Clock t){
-			this.ticker = t;
+			this.ticker = Objects.requireNonNull(t);
 			return this;
 		}
 
@@ -189,8 +184,8 @@ public final class AttributeSet
 					.orElseThrow(()-> new IllegalArgumentException(String.format(
 							"Attribute=\"%s\" is not defined by resolver=\"%s\"",
 							id, d.getId())));
-			LOG.debug("attributeId=\"{}\" descriptor type=\"{}\" value type=\"{}\"",
-			          id, attrDesc.getDataType(), value.getBagValueType());
+			LOG.debug("attributeId=\"{}\" descriptor type=\"{}\" value=\"{}\"",
+			          id, attrDesc.getDataType(), value);
 			if(!attrDesc.getDataType().equals(value.getBagValueType())){
 				throw new IllegalArgumentException(String.format(
 						"Given attribute=\"%s\" value has wrong type=\"%s\", type=\"%s\" is expected",

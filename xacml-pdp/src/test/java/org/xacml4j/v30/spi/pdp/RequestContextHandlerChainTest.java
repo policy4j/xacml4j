@@ -28,7 +28,9 @@ import org.junit.Test;
 
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
 
+import com.google.common.collect.ImmutableList;
 
 
 public class RequestContextHandlerChainTest

@@ -28,6 +28,13 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParamFunctionReference;
+import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
+import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -44,27 +51,27 @@ public final class TestFunctions
 	private TestFunctions() {}
 
 	@XacmlFuncSpec(id="test1")
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	@XacmlFuncReturnType(typeId="boolean")
 	public static BooleanValue test1(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
+			@XacmlFuncParam(typeId="integer") IntegerValue a,
+			@XacmlFuncParam(typeId="integer") IntegerValue b)
 	{
 		return XacmlTypes.BOOLEAN.of(a.equals(b));
 	}
 
 	@XacmlFuncSpec(id="test2")
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
+	@XacmlFuncReturnType(typeId="integer")
 	public static IntegerValue test2(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true) BagOfValues bag)
+			@XacmlFuncParam(typeId="integer", isBag=true) BagOfValues bag)
 	{
 		return XacmlTypes.INTEGER.of(bag.size());
 	}
 
 	@XacmlFuncSpec(id="test3", evaluateArguments=false)
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValue and(
+	@XacmlFuncReturnType(typeId="integer")
+	public static IntegerValue varArgTestCase1(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2) IntegerValue...values)
+			@XacmlFuncParamVarArg(typeId="integer", min=2) IntegerValue...values)
 		throws EvaluationException
 	{
 		Long v = 0L;
@@ -77,7 +84,7 @@ public final class TestFunctions
 
 	@XacmlFuncSpec(id="test4", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValue and(
+	public static IntegerValue varArgTestCase1(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)Expression ...values)
 		throws EvaluationException
@@ -110,26 +117,24 @@ public final class TestFunctions
 	}
 
 	@XacmlFuncSpec(id="test5VarArg")
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static BooleanValue test5VarArg(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue value,
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0) BooleanValue...values)
+	@XacmlFuncReturnType(typeId="integer")
+	public static IntegerValue test5VarArg(
+			@XacmlFuncParam(typeId="integer") IntegerValue value,
+			@XacmlFuncParamVarArg(typeId="boolean", min=0) BooleanValue...values)
 		throws EvaluationException
 	{
-		if(values != null){
-			System.out.println(values.length);
-		}
-		return XacmlTypes.BOOLEAN.of(false);
+		System.out.println("test5VarArg");
+		return XacmlTypes.INTEGER.of(0);
 	}
 
 	@XacmlFuncSpec(id="test6VarArg")
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static BooleanValue test6(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b,
-			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0) BooleanValue...values)
+	@XacmlFuncReturnType(typeId="integer")
+	public static IntegerValue test6(
+			@XacmlFuncParam(typeId="integer") IntegerValue a,
+			@XacmlFuncParam(typeId="integer") IntegerValue b,
+			@XacmlFuncParamVarArg(typeId="boolean", min=0) BooleanValue...values)
 		throws EvaluationException
 	{
-		return XacmlTypes.BOOLEAN.of(false);
+		return XacmlTypes.INTEGER.of(10);
 	}
 }

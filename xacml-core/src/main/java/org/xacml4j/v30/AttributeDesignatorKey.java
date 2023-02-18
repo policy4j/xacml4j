@@ -139,6 +139,11 @@ public final class AttributeDesignatorKey
 			return this;
 		}
 
+		public Builder issuer(AnyURIValue issuer){
+			this.issuer = java.util.Objects.requireNonNull(issuer).toString();
+			return this;
+		}
+
 		@Override
 		protected Builder getThis() {
 			return this;

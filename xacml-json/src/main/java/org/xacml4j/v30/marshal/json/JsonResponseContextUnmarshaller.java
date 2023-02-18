@@ -39,6 +39,7 @@ import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
 
+import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -58,6 +59,11 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 				.registerTypeAdapter(Attribute.class, new AttributeDeserializer())
 				.registerTypeAdapter(PolicyIDReference.class, new IdReferenceAdapter())
 				.registerTypeAdapter(PolicySetIDReference.class, new IdReferenceAdapter()).create();
+	}
+
+	@Override
+	public MediaType getMediaType() {
+		return MediaType.JSON_UTF_8;
 	}
 
 	@Override

@@ -226,7 +226,7 @@ public interface Content
      */
     enum Type
     {
-        XML_UTF8(MediaType.XML_UTF_8, MediaType.APPLICATION_XML_UTF_8),
+         XML_UTF8(MediaType.XML_UTF_8, MediaType.APPLICATION_XML_UTF_8),
         JSON_UTF8(MediaType.JSON_UTF_8);
 
         private Set<MediaType> supportedMediaTypes;

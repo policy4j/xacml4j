@@ -75,10 +75,10 @@ public abstract class AbstractRequestContextHandler
 
 	@Override
 	public final void setNext(RequestContextHandler handler, boolean makeImmutable) {
-		Preconditions.checkState(immutable);
 		Preconditions.checkNotNull(handler);
 		Preconditions.checkState(next.get() == null,
 				"Handler is already has next handler");
+		Preconditions.checkState(!immutable);
 		this.next.set(handler);
 		this.immutable = makeImmutable;
 	}

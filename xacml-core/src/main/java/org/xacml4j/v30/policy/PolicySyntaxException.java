@@ -27,10 +27,10 @@ import java.lang.reflect.Method;
 import javax.xml.stream.Location;
 
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.spi.function.XacmlFuncParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamOptional;
-import org.xacml4j.v30.spi.function.XacmlFuncParamVarArg;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
+import org.xacml4j.v30.policy.function.XacmlFuncParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;
+import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 
 public class PolicySyntaxException extends SyntaxException
 {

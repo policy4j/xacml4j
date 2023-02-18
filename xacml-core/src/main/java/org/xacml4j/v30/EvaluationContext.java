@@ -142,22 +142,41 @@ public interface EvaluationContext
 	 * included in the response as {@link StatusCode}
 	 * defaultProvider
 	 *
+	 * @param rule a decision rule
 	 * @return {@link Status} or
 	 * {@code null} if status
 	 * information is unavailable
 	 */
-	Optional<Status> getEvaluationStatus();
+	Optional<Status> getEvaluationStatus(DecisionRule rule);
+
+	default Optional<Status> getEvaluationStatus(){
+		return getEvaluationStatus(getCurrentRule());
+	}
 
 	/**
 	 * Sets extended evaluation failure
 	 * status information to be included
-	 * in the response
+	 * in the response for a given decision
+	 * rule
+	 *
+	 * @param rule a decision rule
+	 * @param code a status code indicating
+	 * evaluation failure status
+	 */
+	void setEvaluationStatus(DecisionRule rule, Status status);
+
+	/**
+	 * Sets extended evaluation failure
+	 * status information to be included
+	 * in the response for a current decision
+	 * rule
 	 *
 	 * @param code a status code indicating
 	 * evaluation failure status
 	 */
-	void setEvaluationStatus(Status code);
-
+	default void setEvaluationStatus(Status status){
+		setEvaluationStatus(getCurrentRule(), status);
+	}
 
 	/**
 	 * Gets parent evaluation context
@@ -315,7 +334,7 @@ public interface EvaluationContext
 	 * @param <C>
 	 * @return optional content {@link Content} of the given category and type
 	 */
-	<C extends Content> Optional<C> resolve(Optional<CategoryId> categoryId, Content.Type type);
+	<C extends Content> Optional<C> resolve(CategoryId categoryId, Content.Type type);
 
 
 	default Collection<CompositeDecisionRuleIDReference> getReferencedCompositeDecisionRules(){
@@ -342,50 +361,5 @@ public interface EvaluationContext
 	 */
 	CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
 		throws PolicyResolutionException;
-
-	/**
-	 * Resolves a given {@link AttributeSelectorKey} or {@link AttributeDesignatorKey}
-	 * asynchronously to a an {@kink Optional} with {@link BagOfValues}
-	 *
-	 * @param ref an attribute selector
-	 * @return {@link CompletableFuture}
-	 * @throws EvaluationException if an error
-	 * occurs while resolving given selector
-	 */
-	default CompletableFuture<Optional<BagOfValues>> resolveAsync(AttributeReferenceKey ref)
-			throws EvaluationException
-	{
-		return CompletableFuture.completedFuture(resolve(ref));
-	}
-
-	/**
-	 * Resolves {@link CategoryId} and {@link Content.Type} asynchronously
-	 * to an optional with ontent of the given category and type
-	 *
-	 * @param categoryId an optional category identifier
-	 * @param type a content type
-	 * @param <C>
-	 * @return optional content {@link Content} of the given category and type
-	 */
-	default <C extends Content> CompletableFuture<Optional<C>> resolveAsync(Optional<CategoryId> categoryId, Content.Type type)
-			throws EvaluationException
-	{
-		return CompletableFuture.completedFuture(resolve(categoryId, type));
-	}
-
-	/**
-	 * Resolves given {@link CompositeDecisionRuleIDReference}
-	 * reference
-	 *
-	 * @param ref a policy reference
-	 * @return resolved {@link CompositeDecisionRule} defaultProvider
-	 * @throws PolicyResolutionException if
-	 * policy reference can not be resolved
-	 */
-	default CompletableFuture<CompositeDecisionRule> resolveAsync(CompositeDecisionRuleIDReference ref)
-			throws PolicyResolutionException
-	{
-		return CompletableFuture.completedFuture(resolve(ref));
-	}
 
 }

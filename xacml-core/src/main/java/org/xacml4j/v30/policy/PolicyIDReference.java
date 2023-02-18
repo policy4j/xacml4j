@@ -162,7 +162,7 @@ public final class PolicyIDReference extends
 	 * @author Giedrius Trumpickas
 	 */
 	class PolicyIDReferenceEvaluationContext extends
-			DelegatingEvaluationContext
+	                                         DescendantEvaluationContext
 	{
 		/**
 		 * Creates policy evaluation context with a given parent context
@@ -180,7 +180,7 @@ public final class PolicyIDReference extends
 
 		@Override
 		public EvaluationContext getParentContext() {
-			return getDelegate();
+			return getParent();
 		}
 
 		@Override

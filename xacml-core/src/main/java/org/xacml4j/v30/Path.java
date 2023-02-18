@@ -29,6 +29,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -39,7 +40,7 @@ import java.util.Optional;
 public final class Path implements Externalizable
 {
 	private String path;
-	private Optional<CategoryId> categoryId;
+	private CategoryId categoryId;
 	private Content.PathType type;
 
 	private Path(String path,
@@ -47,7 +48,7 @@ public final class Path implements Externalizable
 				 Content.PathType type){
 		Preconditions.checkNotNull(path);
 		this.path = path;
-		this.categoryId = Optional.ofNullable(category);
+		this.categoryId = category;
 		this.path = java.util.Objects.requireNonNull(path);
 		this.type = java.util.Objects.requireNonNull(type);
 	}
@@ -64,11 +65,11 @@ public final class Path implements Externalizable
 	}
 
 	public Optional<CategoryId> getCategory(){
-		return categoryId;
+		return Optional.ofNullable(categoryId);
 	}
 
 	public boolean hasCategory(){
-		return categoryId.isPresent();
+		return categoryId != null;
 	}
 
 	/**
@@ -108,6 +109,11 @@ public final class Path implements Externalizable
 	}
 
 	@Override
+	public int hashCode(){
+		return Objects.hash(categoryId, path, type);
+	}
+
+	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this)
 				.add("path", path)
@@ -125,7 +131,7 @@ public final class Path implements Externalizable
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		this.categoryId = (Optional<CategoryId>) in.readObject();
+		this.categoryId = (CategoryId)in.readObject();
 		this.type = (Content.PathType) in.readObject();
 		this.path = in.readUTF();
 	}

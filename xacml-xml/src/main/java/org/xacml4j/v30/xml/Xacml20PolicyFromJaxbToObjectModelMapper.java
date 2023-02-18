@@ -81,8 +81,8 @@ import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.Target;
 import org.xacml4j.v30.policy.VariableDefinition;
 import org.xacml4j.v30.policy.VariableReference;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 
 import com.google.common.collect.ImmutableMap;
 

@@ -24,6 +24,7 @@ package org.xacml4j.v30.policy.combine;
 
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
@@ -36,6 +37,7 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 
 
@@ -49,7 +51,7 @@ public class OnPermitApplySecondPolicyTest
 	@Before
 	public void init(){
 		this.c = createControl();
-		this.decisions = new LinkedList<CompositeDecisionRule>();
+		this.decisions = new LinkedList<>();
 		this.algorithm = new OnPermitApplySecondPolicyCombiningAlgorithm();
 		this.context = c.createMock(EvaluationContext.class);
 	}
@@ -57,7 +59,10 @@ public class OnPermitApplySecondPolicyTest
 	@Test
 	public void testCombineWithNoDecisions()
 	{
+		context.setEvaluationStatus(Status.processingError().build());
+		c.replay();
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
+		c.verify();
 	}
 
 	@Test

@@ -169,7 +169,6 @@ public interface PolicyRepository
 	 */
 	boolean remove(CompositeDecisionRule r);
 
-
 	/**
 	 * Adds {@link PolicyRepositoryListener} to this repository
 	 *
@@ -189,8 +188,8 @@ public interface PolicyRepository
 	 * @param unmarshaller a policy unmarshaller
 	 * @return {@Link ImportTool}
 	 */
-	default PolicyImportTool newImportTool(Unmarshaller<CompositeDecisionRule> unmarshaller){
-		return new PolicyImportTool(unmarshaller, this);
+	default PolicyImportTool newImportTool(Unmarshaller<CompositeDecisionRule> ...unmarshaller){
+		return new PolicyImportTool(this, unmarshaller);
 	}
 
 }

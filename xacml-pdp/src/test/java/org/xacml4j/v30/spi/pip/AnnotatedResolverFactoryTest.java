@@ -79,9 +79,7 @@ public class AnnotatedResolverFactoryTest
 		Method m = getMethod(this.getClass(), "resolve1");
 		assertNotNull(m);
 
-		expect(context.resolve(eq(expectedKey0))).andReturn(Optional.of(XacmlTypes.BOOLEAN.of(false).toBag()));
-		expect(context.resolve(eq(expectedKey1))).andReturn(Optional.of(XacmlTypes.INTEGER.of(1).toBag()));
-		expect(context.getClock()).andReturn(Clock.systemUTC());
+		expect(context.getEvaluationStatus()).andReturn(Optional.of(Status.ok().build()));
 
 		control.replay();
 
@@ -94,7 +92,7 @@ public class AnnotatedResolverFactoryTest
 
 		ResolverContext pipContext = ResolverContext.createContext(context, d);
 
-		d.getResolver().apply(pipContext);
+		d.getResolverFunction().apply(pipContext);
 
 		assertEquals("Test", d.getName());
 		Truth8.assertThat(CategoryId.parse("subject")).hasValue(d.getCategory());
@@ -121,7 +119,7 @@ public class AnnotatedResolverFactoryTest
 		assertEquals("testId4", a4.getAttributeId());
 		assertEquals(XacmlTypes.DOUBLE, a4.getDataType());
 
-		List<AttributeReferenceKey> keys = d.getAllContextKeyRefs();
+		List<AttributeReferenceKey> keys = d.getContextKeyRefs();
 		assertEquals(2, keys.size());
 
 		assertEquals(expectedKey0, keys.get(0));
@@ -140,7 +138,7 @@ public class AnnotatedResolverFactoryTest
 		replay(context);
 		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
 		ResolverContext pipContext = ResolverContext.createContext(context, d);
-		d.getResolver().apply(pipContext);
+		d.getResolverFunction().apply(pipContext);
 
 		assertEquals("Test", d.getName());
 		assertEquals(CategoryId.parse("subject").get(), d.getCategory());
@@ -156,7 +154,7 @@ public class AnnotatedResolverFactoryTest
 		Method m = getMethod(this.getClass(), "resolve3");
 		assertNotNull(m);
 		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
-		assertTrue(d.getAllContextKeyRefs().isEmpty());
+		assertTrue(d.getContextKeyRefs().isEmpty());
 	}
 
 	@Test(expected= SyntaxException.class)

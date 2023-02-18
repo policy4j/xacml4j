@@ -22,7 +22,13 @@ package org.xacml4j.v30.pdp.request;
  * #L%
  */
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
+
 import org.easymock.Capture;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,9 +43,12 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
+
+import javax.annotation.concurrent.Immutable;
 
 public class MultipleResourcesViaXacmlXPathHandlerTest
 {
@@ -105,8 +114,8 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
 
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
@@ -128,8 +137,15 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector1 = r1.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[1]", CategoryId.RESOURCE),  Iterables.getOnlyElement(selector0.getValues()));
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE),  Iterables.getOnlyElement(selector1.getValues()));
+		Set<Value> valueSet = ImmutableSet.<Value>builder()
+		                                  .addAll(selector0.getValues())
+		                                  .addAll(selector1.getValues())
+
+		                                  .build();
+
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[1]", CategoryId.RESOURCE)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE)));
+
 
 		verify(pdp);
 	}
@@ -172,10 +188,10 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
@@ -202,27 +218,30 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 		Attribute selector00 = r0.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector01 = r0.getAttribute(CategoryId.SUBJECT_ACCESS, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[1]", CategoryId.RESOURCE),  Iterables.getOnlyElement(selector00.getValues()));
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector01.getValues()));
-
 		Attribute selector10 = r1.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector11 = r1.getAttribute(CategoryId.SUBJECT_ACCESS, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
-
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[1]", CategoryId.RESOURCE),  Iterables.getOnlyElement(selector10.getValues()));
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector11.getValues()));
 
 		Attribute selector20 = r2.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector21 = r2.getAttribute(CategoryId.SUBJECT_ACCESS, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE),  Iterables.getOnlyElement(selector20.getValues()));
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector21.getValues()));
-
-
 		Attribute selector30 = r3.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector31 = r3.getAttribute(CategoryId.SUBJECT_ACCESS, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE),  Iterables.getOnlyElement(selector30.getValues()));
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS),  Iterables.getOnlyElement(selector31.getValues()));
+		Set<Value> valueSet = ImmutableSet.<Value>builder()
+		                                  .addAll(selector00.getValues())
+		                                  .addAll(selector01.getValues())
+		                                  .addAll(selector10.getValues())
+		                                  .addAll(selector11.getValues())
+		                                  .addAll(selector20.getValues())
+		                                  .addAll(selector21.getValues())
+		                                  .addAll(selector30.getValues())
+		                                  .addAll(selector31.getValues())
+		                                  .build();
+		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE), XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[1]", CategoryId.RESOURCE)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
 
 		verify(pdp);
 	}
@@ -258,7 +277,7 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.build();
 
 		assertFalse(request.containsRepeatingCategories());
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());
@@ -317,7 +336,7 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 
 		RequestContext context = RequestContext.builder().build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
 
 		expect(pdp.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());

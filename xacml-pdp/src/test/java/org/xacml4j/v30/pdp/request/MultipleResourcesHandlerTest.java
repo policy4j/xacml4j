@@ -24,6 +24,7 @@ package org.xacml4j.v30.pdp.request;
 
 
 import org.easymock.Capture;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
@@ -48,11 +49,13 @@ public class MultipleResourcesHandlerTest
 	private Category resource1;
 	private Category subject0;
 	private Category subject1;
+	private IMocksControl c;
 
 
 	@Before
 	public void init(){
-		this.context = createStrictMock(PolicyDecisionPointContext.class);
+		this.c = createStrictControl();
+		this.context = c.mock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesHandler();
 
 		this.resource0 = Category.builder(CategoryId.RESOURCE)
@@ -99,10 +102,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 						Result.ok(Decision.DENY).build());
@@ -113,8 +116,9 @@ public class MultipleResourcesHandlerTest
 
 		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.DENY).build());
 
-		replay(context);
+		c.replay();
 		Collection<Result> results = profile.handle(request, context);
+		c.verify();
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
 
@@ -124,7 +128,7 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
-		verify(context);
+
 	}
 
 	@Test
@@ -137,10 +141,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.PERMIT).build());
 
@@ -150,8 +154,9 @@ public class MultipleResourcesHandlerTest
 
 		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.PERMIT).build());
 
-		replay(context);
+		c.replay();
 		Collection<Result> results = profile.handle(request, context);
+		c.verify();
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
 
@@ -161,13 +166,12 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
-		verify(context);
+
 	}
 
 	@Test
 	public void testAllResultsAreNotApplicable()
 	{
-
 
 		RequestContext request = RequestContext
 				.builder()
@@ -176,10 +180,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 				Result.ok(Decision.NOT_APPLICABLE).build());
@@ -193,7 +197,7 @@ public class MultipleResourcesHandlerTest
 		expect(context.requestDecision(capture(c3))).andReturn(
 				Result.ok(Decision.NOT_APPLICABLE).build());
 
-		replay(context);
+		c.replay();
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
@@ -204,7 +208,7 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
-		verify(context);
+		c.verify();
 	}
 
 	@Test
@@ -219,10 +223,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
 
@@ -232,7 +236,7 @@ public class MultipleResourcesHandlerTest
 
 		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
 
-		replay(context);
+		c.replay();
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
@@ -243,7 +247,7 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
-		verify(context);
+		c.verify();
 	}
 
 	@Test
@@ -256,19 +260,19 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, resource0)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());
 
-		replay(context);
+		c.replay();
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		RequestContext r0 = c0.getValue();
 		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject0));
 		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0));
-		verify(context);
+		c.verify();
 	}
 
 	@Test
@@ -280,17 +284,17 @@ public class MultipleResourcesHandlerTest
 				.combineDecision(true)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());
 
-		replay(context);
+		c.replay();
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
 		assertSame(request, c0.getValue());
-		verify(context);
+		c.verify();
 	}
 }
 

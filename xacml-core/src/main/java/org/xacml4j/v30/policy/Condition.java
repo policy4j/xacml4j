@@ -50,7 +50,7 @@ public class Condition implements PolicyElement
 	{
 		Preconditions.checkNotNull(predicate, "Condition predicate can not be null");
 		final ValueTypeInfo resultType = predicate.getEvaluatesTo();
-		Preconditions.checkArgument(resultType.equals(XacmlTypes.BOOLEAN),
+		Preconditions.checkArgument(XacmlTypes.BOOLEAN.equals(resultType),
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +
 					"with return value type=\"%s\"",
@@ -58,6 +58,9 @@ public class Condition implements PolicyElement
 		this.predicate = predicate;
 	}
 
+	public static Condition condition(Expression e){
+		return new Condition(e);
+	}
 	/**
 	 * Gets condition expression predicate
 	 *
@@ -82,12 +85,13 @@ public class Condition implements PolicyElement
 			BooleanValue result = predicate.evaluate(context);
 			return result.value()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
-			context.setEvaluationStatus(
+			context.setEvaluationStatus(context.getCurrentRule(),
 					e.getStatus());
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
-			context.setEvaluationStatus(Status
-					.processingError(e).build());
+			context.setEvaluationStatus(context.getCurrentRule(),
+			                            Status.processingError(e)
+			                                  .build());
 			return ConditionResult.INDETERMINATE;
 		}
 	}

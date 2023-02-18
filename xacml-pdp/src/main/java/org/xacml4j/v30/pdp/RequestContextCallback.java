@@ -30,7 +30,6 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.Entity;
 
-@FunctionalInterface
 public interface RequestContextCallback
 {
 	/***
@@ -41,11 +40,7 @@ public interface RequestContextCallback
 	 */
 	Optional<Entity> getEntity(CategoryId category);
 
-	default Optional<Entity> getEntity(Optional<CategoryId> category){
-		return category.isPresent()?getEntity(category.get()):Optional.empty();
-	}
-
-	default Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
+	default Optional<BagOfValues> cd(AttributeSelectorKey selectorKey){
 		return getEntity(selectorKey.getCategory())
 				.flatMap(e->e.resolve(selectorKey));
 	}

@@ -29,8 +29,8 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.spi.function.FunctionInvocation;
-import org.xacml4j.v30.spi.function.FunctionSpecBuilder;
+import org.xacml4j.v30.policy.function.FunctionInvocation;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import static org.easymock.EasyMock.capture;
@@ -46,17 +46,20 @@ public class MatchTest
 	private FunctionSpecBuilder builder;
 	private FunctionInvocation invocation;
 	private IMocksControl c;
-
+	private Rule rule;
 	@Before
 	public void init()
 	{
 		this.c = createControl();
 		this.ref = c.createMock(AttributeDesignator.class);
 		this.context = c.createMock(EvaluationContext.class);
-		this.builder = FunctionSpecBuilder.builder("testFunction");
 		this.invocation = c.createMock(FunctionInvocation.class);
-		this.spec = builder.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).build(
-				XacmlTypes.BOOLEAN, invocation);
+		this.spec = FunctionSpecBuilder.builder("testFunctionId1")
+		                               .param(XacmlTypes.INTEGER)
+		                               .param(XacmlTypes.INTEGER)
+		                               .build(XacmlTypes.BOOLEAN, invocation);
+		this.context = c.createMock(EvaluationContext.class);
+		this.rule = c.createMock(Rule.class);
 	}
 
 	@Test
@@ -64,12 +67,13 @@ public class MatchTest
 	{
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
 		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bag().attribute(XacmlTypes.INTEGER.of(2), XacmlTypes.INTEGER.of(1)).build());
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context,
-				ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()))
+		                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()))
 				.andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context,
-				ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(1)).build()))
+		                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(1)).build()))
 				.andReturn(XacmlTypes.BOOLEAN.of(true));
 		c.replay();
 		Match m = Match
@@ -92,8 +96,10 @@ public class MatchTest
 				.build();
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
 		expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(key, "Failed"));
-		Capture<Status> statusCapture = new Capture<>();
-		context.setEvaluationStatus(capture(statusCapture));
+		Capture<Status> statusCapture = Capture.newInstance();
+		Capture<Rule> ruleCapture = Capture.newInstance();
+		expect(context.getCurrentRule()).andReturn(rule);
+		context.setEvaluationStatus(capture(ruleCapture), capture(statusCapture));
 		c.replay();
 		Match m = Match
 				.builder()

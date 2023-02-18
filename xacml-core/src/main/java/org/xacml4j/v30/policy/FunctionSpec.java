@@ -23,7 +23,10 @@ package org.xacml4j.v30.policy;
  */
 
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.policy.function.FunctionCategory;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +45,8 @@ public interface FunctionSpec
 	 * @return XACML function identifier
 	 */
 	String getId();
+
+	FunctionCategory getCategory();
 
 	/**
 	 * Gets short function identifier
@@ -130,15 +135,12 @@ public interface FunctionSpec
 	 * @return {@link ValueExpression} defaultProvider representing
 	 * function invocation result
 	 */
-	<T extends ValueExpression> T invoke(EvaluationContext context, List<Expression> arguments)
-		throws EvaluationException;
+	default<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...arguments)
+		throws EvaluationException{
+		return invokeWithList(context, arguments == null ? Collections.emptyList() : Arrays.asList(arguments));
+	}
 
-	/**
-	 * Invokes this function with a given arguments
-	 *
-	 * @return {@link ValueExpression} defaultProvider representing
-	 * function invocation result
-	 */
-	<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...arguments)
-		throws EvaluationException;
+	<T extends ValueExpression> T invokeWithList(EvaluationContext context, List<Expression> arguments)
+			throws EvaluationException;
+
 }

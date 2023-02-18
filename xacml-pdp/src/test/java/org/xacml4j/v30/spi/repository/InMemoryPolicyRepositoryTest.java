@@ -27,14 +27,14 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.Rule;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 
 import java.util.Collection;
 import java.util.Iterator;

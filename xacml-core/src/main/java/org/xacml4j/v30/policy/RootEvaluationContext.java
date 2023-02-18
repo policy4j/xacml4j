@@ -34,7 +34,6 @@ import org.xacml4j.v30.Content;
 import java.time.Clock;
 import java.time.Duration;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,6 +55,8 @@ public final class RootEvaluationContext implements EvaluationContext
 	private final ConcurrentMap<String, Advice> permitAdvices;
 	private final ConcurrentMap<String, Obligation> permitObligations;
 	private final ConcurrentMap<String, CompositeDecisionRule> evaluatedPolicies;
+	private final ConcurrentMap<DecisionRule, Status> evaluationStatusMap;
+
 	private Clock clock;
 
 	private boolean validateFuncParamsAtRuntime;
@@ -89,6 +90,7 @@ public final class RootEvaluationContext implements EvaluationContext
 		this.denyObligations = new ConcurrentHashMap<>();
 		this.permitAdvices = new ConcurrentHashMap<>();
 		this.permitObligations = new ConcurrentHashMap<>();
+		this.evaluationStatusMap = new ConcurrentHashMap<>();
 		this.contextHandler = contextHandler;
 		this.resolver = referenceResolver;
 		this.clock = java.util.Objects.requireNonNull(clock);
@@ -111,6 +113,16 @@ public final class RootEvaluationContext implements EvaluationContext
 	}
 
 	@Override
+	public void setEvaluationStatus(DecisionRule rule, Status status) {
+		this.evaluationStatusMap.put(rule, status);
+	}
+
+	@Override
+	public Optional<Status> getEvaluationStatus(DecisionRule rule) {
+		return Optional.ofNullable(evaluationStatusMap.get(rule));
+	}
+
+	@Override
 	public XPathVersion getXPathVersion() {
 		return defaultXPathVersion;
 	}
@@ -127,7 +139,7 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public EvaluationContext createExtIndeterminateEvalContext() {
-		return new DelegatingEvaluationContext(this){
+		return new DescendantEvaluationContext(this){
 			@Override
 			public EvaluationContext createExtIndeterminateEvalContext() {
 				return this;
@@ -145,10 +157,6 @@ public final class RootEvaluationContext implements EvaluationContext
 		return evaluationStatus;
 	}
 
-	@Override
-	public void setEvaluationStatus(Status status){
-		this.evaluationStatus = Optional.ofNullable(status);
-	}
 
 	@Override
 	public Duration getDecisionCacheTTL() {
@@ -228,7 +236,7 @@ public final class RootEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public <C extends Content> Optional<C> resolve(Optional<CategoryId> categoryId, Content.Type type) {
+	public <C extends Content> Optional<C> resolve(CategoryId categoryId, Content.Type type) {
 		return contextHandler.<C>getContent(
 				categoryId)
 				.filter(

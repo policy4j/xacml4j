@@ -247,8 +247,11 @@ public final class XmlContent implements Content
     @Override
     public <T> List<T> evaluateToNodeSet(String path) {
         try{
-            return (List<T>) (DOMUtil.nodeListToList(
-                    xPathProvider.evaluateToNodeSet(path, contextNode)));
+            NodeList nodeList = xPathProvider.evaluateToNodeSet(path, contextNode);
+            if(nodeList != null){
+                return (List<T>) (DOMUtil.nodeListToList(nodeList));
+            }
+            return Collections.emptyList();
         }catch (XPathEvaluationException e){
             throw PathEvaluationException
                     .wrap(e);
@@ -340,7 +343,9 @@ public final class XmlContent implements Content
                 throw e;
             } catch (Exception e) {
                 throw new XPathEvaluationException(
-                        Status.processingError().detail(e).build(),
+                        Status.processingError()
+                              .error(e)
+                              .build(),
                         xpath);
             }
         }

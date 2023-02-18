@@ -24,6 +24,7 @@ package org.xacml4j.v30.content;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -136,6 +137,17 @@ public class XmlContentTest
                         .dataType(XacmlTypes.INTEGER)
                         .build());
         assertTrue(values.get().contains(XacmlTypes.INTEGER.of(555555)));
+    }
+
+    @Test
+    public void testEntityXPathCorrectTypeString(){
+        Optional<BagOfValues> values = xml1.resolve(
+                AttributeSelectorKey
+                        .builder()
+                        .xpath("/md:record/md:patient/md:patient-number/text()")
+                        .dataType(XacmlTypes.STRING)
+                        .build());
+        assertTrue(values.get().contains(XacmlTypes.STRING.of("555555")));
     }
 
     @Test(expected = PathEvaluationException.class)

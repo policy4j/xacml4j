@@ -24,8 +24,6 @@ package org.xacml4j.v30.policy.function;
 
 import org.xacml4j.v30.spi.function.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.spi.function.BaseFunctionProvider;
-import org.xacml4j.v30.spi.function.FunctionInvocationFactory;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 
 @XacmlFunctionProvider(description = "XACML 3.0 standard functions")
 public final class XacmlDefaultFunctions extends BaseFunctionProvider

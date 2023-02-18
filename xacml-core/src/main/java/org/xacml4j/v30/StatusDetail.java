@@ -24,8 +24,11 @@ package org.xacml4j.v30;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableList;
 
 import java.util.*;
+
+import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
 
 
 /**
@@ -35,40 +38,51 @@ import java.util.*;
  */
 public final class StatusDetail
 {
-	private List<Object> detailsMessage = new LinkedList<>();
+	private List<Status> details;
+	private String decisionRuleId;
 
 	StatusDetail(){
 	}
 
-	public StatusDetail(Throwable t){
-		this(Throwables.getStackTraceAsString(t));
+	public StatusDetail(String decisionRuleId,
+	                    Status ...details){
+		this(decisionRuleId, Arrays.asList(details));
 	}
 
-	public StatusDetail(Object ...details){
-		this(Arrays.asList(details));
+	public StatusDetail(Status ...details){
+		this(null, Arrays.asList(details));
 	}
 
-	public StatusDetail(Collection<Object> details){
-		this.detailsMessage.add(Objects
-				.requireNonNull(details, "details"));
-		this.detailsMessage.addAll(details);
-		this.detailsMessage = Collections.unmodifiableList(detailsMessage);
+	public StatusDetail(Collection<Status> details){
+		this(null, details);
 	}
 
-	public List<Object> getDetails(){
-		return detailsMessage;
+	public StatusDetail(String decisionRuleId,
+	                    Collection<Status> details){
+		this.details = ImmutableList.copyOf(
+				Objects.requireNonNull(details, "details"));
+		this.decisionRuleId = decisionRuleId;
+	}
+
+	public String getDecisionRuleId() {
+		return decisionRuleId;
+	}
+
+	public List<Status> getDetails(){
+		return details;
 	}
 
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-				.add("details", detailsMessage)
+				.add("details", details)
+				.add("decisionRuleId", decisionRuleId)
 				.toString();
 	}
 
 	@Override
 	public int hashCode(){
-		return Objects.hash(detailsMessage);
+		return Objects.hash(details, decisionRuleId);
 	}
 
 }

@@ -26,6 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import java.lang.reflect.Method;
@@ -82,9 +83,9 @@ public class JavaMethodToFunctionSpecTest
 	public void optionalParametersTest() throws Exception
 	{
 		FunctionSpec spec = builder.createFunctionSpec(getTestMethod("optionalParametersTest"));
-		assertEquals(XacmlTypes.STRING.bag().value("false", "true").build(), spec.getParamSpecAt(1).getDefaultValue());
+		assertEquals(XacmlTypes.STRING.bag().value("false", "true").build(), spec.getParamSpecAt(1).getDefaultValue().get());
 		assertEquals(
-				XacmlTypes.STRING.of("false"), spec.getParamSpecAt(2).getDefaultValue());
+				XacmlTypes.STRING.of("false"), spec.getParamSpecAt(2).getDefaultValue().get());
 		
 	}
 

@@ -29,6 +29,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.xacml4j.v30.Attribute;
@@ -69,9 +70,8 @@ public class RequestContext
 		this.entities = b.attrBuilder.build();
 		ImmutableMap.Builder<String, Category> attributesByXmlIdBuilder = ImmutableMap.builder();
 		for(Category attr : entities.values()){
-			if(attr.getReferenceId() != null){
-				attributesByXmlIdBuilder.put(attr.getReferenceId(), attr);
-			}
+			attr.getReferenceId()
+			    .ifPresent(id->attributesByXmlIdBuilder.put(id, attr));
 		}
 		this.attributesByXmlId = attributesByXmlIdBuilder.build();
 		this.cachedHashCode = Objects.hashCode(
@@ -149,6 +149,14 @@ public class RequestContext
 
 	public Collection<Category> getCategories(){
 		return entities.values();
+	}
+
+	public Multimap<CategoryId, Category> getCategoriesByCategoryId(){
+		return entities;
+	}
+
+	public Set<CategoryId> getCategoryIds(){
+		return entities.keySet();
 	}
 
 	/**
@@ -269,6 +277,26 @@ public class RequestContext
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Gets repeating categories
+	 *
+	 * @return repeating categories
+	 */
+	public Multimap<CategoryId, Category> getRepeatingCategories() {
+		Multimap<CategoryId, Category> c = HashMultimap.create();
+		for (Category category : getCategories()) {
+			Collection<Category> categories = entities.get(category.getCategoryId());
+			if (categories.size() > 1) {
+				c.putAll(category.getCategoryId(), categories.stream()
+				                                             .filter(v->v.getEntity()
+				                                                         .getAttributes()
+				                                                         .isEmpty() && !v.getEntity().hasContent())
+				                                             .collect(Collectors.toList()));
+			}
+		}
+		return c;
 	}
 
 	public boolean containsAttributeValues(

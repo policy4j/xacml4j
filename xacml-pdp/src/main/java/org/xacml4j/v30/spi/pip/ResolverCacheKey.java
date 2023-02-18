@@ -46,19 +46,23 @@ public final class ResolverCacheKey implements Serializable
 	private final String resolverId;
 	private final BagOfValues[] keys;
 
+	private int hashCode = -1;
+
 	public ResolverCacheKey(Builder b) {
 		this.resolverId = b.id;
-		this.keys = b.keysBuilder.toArray(
-				new BagOfValues[b.keysBuilder.size()]);
+		this.keys = b.keysBuilder.toArray(new BagOfValues[0]);
 	}
 
-	public static Builder builder(){
-		return new Builder();
+	public static Builder builder(String resolverId){
+		return new Builder().id(resolverId);
 	}
 
 	@Override
 	public int hashCode(){
-		return java.util.Objects.hash(resolverId, keys);
+		if(hashCode == -1){
+			this.hashCode = java.util.Objects.hash(resolverId, keys);
+		}
+		return hashCode;
 	}
 
 	@Override
@@ -72,7 +76,7 @@ public final class ResolverCacheKey implements Serializable
 		}
 		ResolverCacheKey k = (ResolverCacheKey)o;
 		return resolverId.equals(k.resolverId) &&
-				Arrays.equals(keys, k.keys);
+				Arrays.deepEquals(keys, k.keys);
 	}
 
 	@Override

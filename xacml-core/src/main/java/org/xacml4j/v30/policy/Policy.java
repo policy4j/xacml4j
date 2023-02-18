@@ -151,7 +151,7 @@ public class Policy extends BaseCompositeDecisionRule
 		if(p == this){
 			return context;
 		}
-		return new PolicyDelegatingEvaluationContext(context);
+		return new PolicyDescendantEvaluationContext(context);
 	}
 
 	protected Decision combineDecisions(EvaluationContext context){
@@ -225,7 +225,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 * An {@link EvaluationContext} implementation for evaluating
 	 * {@link Policy} instances
 	 */
-	class PolicyDelegatingEvaluationContext extends DelegatingEvaluationContext
+	class PolicyDescendantEvaluationContext extends DescendantEvaluationContext
 	{
 		private final Map<String, ValueExpression> varDefEvalResults;
 
@@ -234,7 +234,7 @@ public class Policy extends BaseCompositeDecisionRule
 		 *
 		 * @param context a parent evaluation context
 		 */
-		PolicyDelegatingEvaluationContext(EvaluationContext context){
+		PolicyDescendantEvaluationContext(EvaluationContext context){
 			super(context);
 			this.varDefEvalResults = Maps.newHashMap();
 		}
@@ -246,7 +246,7 @@ public class Policy extends BaseCompositeDecisionRule
 
 		@Override
 		public EvaluationContext getParentContext() {
-			return getDelegate();
+			return getParent();
 		}
 
 		@Override

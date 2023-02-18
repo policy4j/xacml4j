@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.policy.FunctionSpec;
-
+import org.xacml4j.v30.policy.function.FunctionProvider;
 
 
 /**
@@ -46,6 +46,7 @@ public class BaseFunctionProvider implements FunctionProvider
 	private final static Logger LOG = LoggerFactory.getLogger(BaseFunctionProvider.class);
 
 	private Map<String, FunctionSpec> functionsById;
+	private Map<String, FunctionSpec> functionsByLegacyId;
 	private Map<String, FunctionSpec> functionsByShortId;
 
 	protected BaseFunctionProvider(Collection<FunctionSpec> functions,
@@ -58,6 +59,15 @@ public class BaseFunctionProvider implements FunctionProvider
 								v -> v,
 								(a, b) -> merge(a, b),
 								mapSupplier));
+		this.functionsByLegacyId = functions
+				.stream()
+				.filter(f->f.getLegacyId().isPresent())
+				.collect(Collectors
+						         .toMap(
+								         v -> v.getLegacyId().get(),
+								         v -> v,
+								         (a, b) -> merge(a, b),
+								         mapSupplier));
 		this.functionsByShortId = functions
 				.stream()
 				.collect(Collectors
@@ -76,10 +86,6 @@ public class BaseFunctionProvider implements FunctionProvider
 
 	private static FunctionSpec merge(
 			FunctionSpec a, FunctionSpec b){
-		if(LOG.isWarnEnabled()){
-			LOG.warn("Function={} already exist={}",
-					b.getId(), a);
-		}
 		return a;
 	}
 
@@ -99,7 +105,8 @@ public class BaseFunctionProvider implements FunctionProvider
 	public final Optional<FunctionSpec> getFunction(String functionId) {
 		return Optional.ofNullable(
 				functionsById.get(functionId))
-				.or(()->Optional.ofNullable(functionsByShortId.get(functionId)));
+				.or(()->Optional.ofNullable(functionsByShortId.get(functionId)))
+				.or(()->Optional.ofNullable(functionsByLegacyId.get(functionId)));
 	}
 
 	@Override

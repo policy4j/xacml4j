@@ -33,7 +33,7 @@ import org.xacml4j.v30.*;
 import java.util.Collection;
 import java.util.LinkedList;
 
-abstract class BaseDecisionRule implements DecisionRule
+abstract class  BaseDecisionRule implements DecisionRule
 {
 	protected static final Logger log = LoggerFactory.getLogger(BaseDecisionRule.class);
 
@@ -149,22 +149,16 @@ abstract class BaseDecisionRule implements DecisionRule
 			context.addAdvices(result, advices);
 			context.addObligations(result, obligations);
 		}catch(EvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate " +
-						"associated advices and obligations", e);
-			}
-			context.setEvaluationStatus(e.getStatus());
+			context.setEvaluationStatus(this, e.getStatus());
 			throw e;
 		}
 		catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate " +
-						"associated advices and obligations", e);
-			}
-			throw new EvaluationException(
-					Status.processingError()
-					.message(e.getMessage())
-					.detail(e).build(), e);
+			Status status = Status.processingError()
+			                      .message(e.getMessage())
+			                      .error(e)
+			                      .build();
+			context.setEvaluationStatus(this, status);
+			throw new EvaluationException(status, e);
 		}
 	}
 
@@ -206,13 +200,15 @@ abstract class BaseDecisionRule implements DecisionRule
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule advices", e);
 			}
-			context.setEvaluationStatus(e.getStatus());
+			context.setEvaluationStatus(this, e.getStatus());
 			throw e;
 		}catch(Exception e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to evaluate decision rule advices", e);
-			}
-			throw new EvaluationException(Status.processingError().build(), e);
+			Status status = Status.processingError()
+			                      .message(e.getMessage())
+			                      .error(e)
+			                      .build();
+			context.setEvaluationStatus(this, status);
+			throw new EvaluationException(status, e);
 		}
 	}
 
@@ -253,14 +249,18 @@ abstract class BaseDecisionRule implements DecisionRule
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule obligations", e);
 			}
-			context.setEvaluationStatus(e.getStatus());
+			context.setEvaluationStatus(this, e.getStatus());
 			throw e;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule obligations", e);
 			}
-			throw new EvaluationException(
-					Status.processingError().build(), e);
+			Status status = Status.processingError()
+			                      .message(e.getMessage())
+			                      .error(e)
+			                      .build();
+			context.setEvaluationStatus(this, status);
+			throw new EvaluationException(status, e);
 		}
 	}
 
@@ -318,12 +318,6 @@ abstract class BaseDecisionRule implements DecisionRule
 
 		public T target(Target target){
 			this.target = target;
-			return getThis();
-		}
-
-		public T condition(Expression predicate){
-			Preconditions.checkNotNull(predicate);
-			this.condition = new Condition(predicate);
 			return getThis();
 		}
 

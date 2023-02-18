@@ -3,10 +3,10 @@ package org.xacml4j.v30.xml;
 import javax.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 
 public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecisionRule>
 		implements PolicyUnmarshaller

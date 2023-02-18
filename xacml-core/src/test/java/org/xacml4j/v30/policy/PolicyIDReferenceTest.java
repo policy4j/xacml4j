@@ -201,7 +201,7 @@ public class PolicyIDReferenceTest
 
 		expect(context.resolve(ref)).andReturn(refPolicy);
 
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> refContext = Capture.newInstance();
 		EvaluationContext policyContext = c.createMock(EvaluationContext.class);
 		expect(refPolicy.createContext(capture(refContext))).andReturn(policyContext);
 
@@ -222,12 +222,12 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> refContext = Capture.newInstance();
 		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
 			@Override
 			public EvaluationContext answer() throws Throwable {
 				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
-				return refPolicy.new PolicyDelegatingEvaluationContext(ctx);
+				return refPolicy.new PolicyDescendantEvaluationContext(ctx);
 	        }
 		});
 		expectPolicyMatch(refPolicy, "testId", "1.0");
@@ -249,12 +249,12 @@ public class PolicyIDReferenceTest
 		expect(context.getCurrentPolicy()).andReturn(null);
 		expect(context.getCurrentPolicyIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicy);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> refContext = Capture.newInstance();
 		expect(refPolicy.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
 			@Override
 			public EvaluationContext answer() throws Throwable {
 				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
-				return refPolicy.new PolicyDelegatingEvaluationContext(ctx);
+				return refPolicy.new PolicyDescendantEvaluationContext(ctx);
 	        }
 		});
 		expectPolicyMatch(refPolicy, "testId", "1.0");

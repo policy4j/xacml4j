@@ -33,6 +33,8 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import static org.junit.Assert.*;
 
+import java.util.Optional;
+
 public class AttributeSetTest
 {
 	private AttributeResolverDescriptor noIssuer;
@@ -56,40 +58,39 @@ public class AttributeSetTest
 	@Test
 	public void testAttributeSetWithIssuer()
 	{
-		AttributeDesignatorKey.Builder key =
+		AttributeDesignatorKey key0 =
 				AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId1")
 				.dataType(XacmlTypes.INTEGER)
-				.issuer("issuer");
+				.build();
 
-		AttributeDesignatorKey.Builder key1 =
+		AttributeDesignatorKey key1 =
 				AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testId2")
-				.issuer("issuer")
-				.dataType(XacmlTypes.STRING);
-
-		AttributeSet v = AttributeSet
-				.builder(withIssuer)
+				.issuer("issuer1")
+				.dataType(XacmlTypes.STRING)
 				.build();
-		assertNotNull(v.get("testId1"));
-		assertNotNull(v.get("testId2"));
-		BagOfValues v1 = v.get(key.build()).get();
-		assertNotNull(v1);
-		assertTrue(v1.isEmpty());
-		assertEquals(XacmlTypes.INTEGER, v1.getBagValueType());
 
-		BagOfValues v2 = v.get(key.build()).get();
-		assertNotNull(v2);
-		assertTrue(v1.isEmpty());
-		assertEquals(XacmlTypes.INTEGER, v1.getBagValueType());
+		AttributeSet v0 = AttributeSet
+				.builder(noIssuer)
+				.attribute("testId1", XacmlTypes.INTEGER.of(1).toBag())
+				.attribute("testId2", XacmlTypes.STRING.of("b").toBag())
+				.build();
+		AttributeSet v1 = AttributeSet
+				.builder(withIssuer)
+				.attribute("testId1", XacmlTypes.INTEGER.of(1).toBag())
+				.attribute("testId2", XacmlTypes.STRING.of("b").toBag())
+				.build();
 
-		Iterable<AttributeDesignatorKey> keys = v.getAttributeKeys();
-		assertEquals(key.build(), Iterables.get(keys, 0));
-		assertEquals(key1.build(), Iterables.get(keys, 1));
+		assertEquals(v0.get("testId1").get(), XacmlTypes.INTEGER.of(1).toBag());
+		assertEquals(v0.get(key0).get(), XacmlTypes.INTEGER.of(1).toBag());
+
+		assertEquals(v1.get(key1), Optional.empty());
+
 	}
 
 	@Test
@@ -107,11 +108,10 @@ public class AttributeSetTest
 				.build();
 		assertNotNull(v.get("testId1"));
 		assertNotNull(v.get("testId2"));
-		BagOfValues v1 = v.get(key.build()).get();
-		assertNotNull(v1);
-		assertTrue(v1.isEmpty());
-		assertEquals(XacmlTypes.INTEGER, v1.getBagValueType());
+		Optional<BagOfValues> v1 = v.get(key.build());
+		assertFalse(v1.isPresent());
 	}
+
 
 	@Test
 	public void testIsEmpty(){

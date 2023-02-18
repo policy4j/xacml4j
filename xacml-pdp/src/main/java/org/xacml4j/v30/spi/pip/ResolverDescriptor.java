@@ -25,7 +25,6 @@ package org.xacml4j.v30.spi.pip;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -62,8 +61,7 @@ public interface ResolverDescriptor<R>
 	 *
 	 * @return resolver function
 	 */
-	Function<ResolverContext, Optional<R>> getResolver();
-
+	Function<ResolverContext, Optional<R>> getResolverFunction();
 
 	/**
 	 * Tests if this attribute reference key can be resolved
@@ -73,15 +71,7 @@ public interface ResolverDescriptor<R>
 	 */
 	boolean canResolve(AttributeReferenceKey ref);
 
-	/**
-	 * Resolved key references from the context
-	 *
-	 * @param context a context
-	 * @return a map with resolved key references
-	 */
-	Map<AttributeReferenceKey, BagOfValues> resolveKeyRefs(ResolverContext context);
-
-	List<AttributeReferenceKey> getAllContextKeyRefs();
+	List<AttributeReferenceKey> getContextKeyRefs();
 
 	/**
 	 * Gets supported categories
@@ -134,13 +124,12 @@ public interface ResolverDescriptor<R>
 						   AttributeReferenceKey b){
 			this.contextReferenceKeys.add(a);
 			this.contextReferenceKeys.add(b);
-			return orElse((context -> context.resolve(a)),
-					(context -> context.resolve(b)));
+			return orElse((context -> context.resolveContextRef(a)),
+					(context -> context.resolveContextRef(b)));
 		}
 
 		public T contextRef(AttributeReferenceKey a){
 			this.contextReferenceKeys.add(a);
-			this.contextKeysResolutionPlan.add((context -> context.resolve(a)));
 			return getThis();
 		}
 

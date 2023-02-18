@@ -95,7 +95,7 @@ public class AttributesTest
 				.build();
 		Entity e = test.getEntity();
 		assertTrue(e.getAttributes().containsAll(attributes));
-		assertNull(test.getReferenceId());
+		assertFalse(test.getReferenceId().isPresent());
 		assertTrue(content1.equals(e.getContent().get()));
 		assertEquals(CategoryId.RESOURCE, test.getCategoryId());
 	}

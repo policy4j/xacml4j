@@ -56,7 +56,7 @@ import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.Target;
 import org.xacml4j.v30.policy.VariableDefinition;
 import org.xacml4j.v30.policy.VariableReference;
-import org.xacml4j.v30.spi.function.FunctionProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.types.StringValue;
 import org.xacml4j.v30.types.XacmlTypes;
 

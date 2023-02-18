@@ -50,14 +50,8 @@ public interface EvaluationContextHandler
 	 * @param <C>
 	 * @return optional with resolved content
 	 */
-	<C extends Content>Optional<C> getContent(Optional<CategoryId> id);
+	<C extends Content>Optional<C> getContent(CategoryId id);
 
 	Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators();
 	Map<AttributeSelectorKey, BagOfValues> getResolvedSelectors();
-
-
-
-	default <C extends Content  >Optional<C> getContent(CategoryId id){
-		return getContent(Optional.of(id));
-	}
 }

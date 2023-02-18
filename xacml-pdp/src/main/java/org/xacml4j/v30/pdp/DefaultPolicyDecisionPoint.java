@@ -182,8 +182,9 @@ final class DefaultPolicyDecisionPoint
 					.build();
 		}
 		if(decision.isIndeterminate()){
-			Status status = context.getEvaluationStatus().orElse(
-					Status.processingError().build());
+			Status status = context.getEvaluationStatus()
+			                       .orElse(Status.processingError()
+			                                     .build());
 			return Result
 					.builder(decision, status)
 					.includeInResultAttr(includeInResult)

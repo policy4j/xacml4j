@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import org.xacml4j.v30.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -110,7 +111,7 @@ public final class Apply implements Expression
 		throws EvaluationException
 	{
 		try{
-			return spec.invoke(context, arguments);
+			return spec.invoke(context, arguments.toArray(new Expression[]{}));
 		}catch(EvaluationException e){
 			throw e;
 		}catch(Exception e){

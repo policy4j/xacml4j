@@ -30,7 +30,7 @@ import org.xacml4j.v30.*;
  *
  * @author Giedrius Trumpickas
  */
-public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
+public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 	implements PolicyElement
 {
 
@@ -145,7 +145,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 		return false;
 	}
 
-	class PolicySetIDReferenceEvaluationContext extends DelegatingEvaluationContext
+	class PolicySetIDReferenceEvaluationContext extends DescendantEvaluationContext
 	{
 		PolicySetIDReferenceEvaluationContext(
 				EvaluationContext context) {
@@ -160,7 +160,7 @@ public final class PolicySetIDReference extends BaseCompositeDecisionRuleIDRefer
 
 		@Override
 		public EvaluationContext getParentContext() {
-			return getDelegate();
+			return getParent();
 		}
 	}
 

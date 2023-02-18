@@ -36,17 +36,6 @@ import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.ValueTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.spi.function.FunctionParametersValidator;
-import org.xacml4j.v30.spi.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.spi.function.XacmlFuncParamAnyAttribute;
-import org.xacml4j.v30.spi.function.XacmlFuncParamAnyBag;
-import org.xacml4j.v30.spi.function.XacmlFuncParamFunctionReference;
-import org.xacml4j.v30.spi.function.XacmlFuncParamValidator;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnType;
-import org.xacml4j.v30.spi.function.XacmlFuncReturnTypeResolver;
-import org.xacml4j.v30.spi.function.XacmlFuncSpec;
-import org.xacml4j.v30.spi.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.XacmlTypes;
 

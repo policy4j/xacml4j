@@ -22,6 +22,8 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
 
 import java.util.Optional;
@@ -34,6 +36,8 @@ import java.util.Optional;
  */
 public abstract class AttributeReference implements Expression
 {
+	private final static Logger LOG = LoggerFactory.getLogger(AttributeReference.class);
+
 	private final boolean mustBePresent;
 
 	/**
@@ -96,6 +100,7 @@ public abstract class AttributeReference implements Expression
 		Optional<BagOfValues> v = resolveImpl(context);
 			if(!v.isPresent() &&
 					isMustBePresent()){
+				LOG.debug("Failed to evaluate ref={}", this);
 				throw AttributeReferenceEvaluationException
 						.forMissingRef(getReferenceKey());
 			}

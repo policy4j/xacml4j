@@ -22,7 +22,6 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import org.easymock.Capture;
@@ -35,6 +34,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import java.time.Clock;
 import java.util.Optional;
 
 import static org.easymock.EasyMock.*;
@@ -52,28 +52,24 @@ public class DefaultPolicyInformationPointTest
 	private EvaluationContext context;
 
 	private AttributeResolverDescriptor descriptor1;
-	private AttributeResolverDescriptor descriptor1WithIssuer;
-	private AttributeResolverDescriptor descriptor1WithNoCache;
+	private AttributeResolverDescriptor testId2WithIssuerEmpty;
+	private AttributeResolverDescriptor testId2WithIssuerException;
+	private AttributeResolverDescriptor testId3WithIssuerNoCacheWithValues;
 
 	private IMocksControl control;
 
 	private AttributeDesignatorKey.Builder attr0;
 	private AttributeDesignatorKey.Builder attr1;
-	private AttributeDesignatorKey.Builder key;
+	private AttributeDesignatorKey usernameContextKey;
 
 	@Before
 	public void init()
 	{
 		this.control = createStrictControl();
 		this.cache = control.createMock(PolicyInformationPointCacheProvider.class);
-		this.registry = control.createMock(ResolverRegistry.class);
+		ResolverRegistry.Builder builder = ResolverRegistry.builder();
 
 		this.context = control.createMock(EvaluationContext.class);
-
-		this.pip = PolicyInformationPointBuilder
-		.builder("testPip")
-		.withCacheProvider(cache)
-		.build();
 
 		this.attr0 = AttributeDesignatorKey
 				.builder()
@@ -85,13 +81,14 @@ public class DefaultPolicyInformationPointTest
 				.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("testAttributeId2")
+				.issuer("Issuer")
 				.dataType(XacmlTypes.INTEGER);
 
-		this.key = AttributeDesignatorKey
+		this.usernameContextKey = AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
 				.attributeId("username")
-				.dataType(XacmlTypes.STRING);
+				.dataType(XacmlTypes.STRING).build();
 
 		this.descriptor1 = AttributeResolverDescriptor
 				.builder("testId1", "Test Resolver",
@@ -105,25 +102,56 @@ public class DefaultPolicyInformationPointTest
 						.attributeId("username")
 						.dataType(XacmlTypes.STRING)
 						.build())
-				.build(c->ImmutableMap.of());
+				.build(c->
+				       {
+						   c.resolveContextRef(usernameContextKey);
+						   return ImmutableMap.of("testAttributeId1", XacmlTypes.STRING.of("v1").toBag());
+					   });
 
-		this.descriptor1WithIssuer = AttributeResolverDescriptor
-				.builder("testId2", "Test Resolver", "Issuer",
-						CategoryId.SUBJECT_ACCESS)
+		builder.withAttributeResolver(descriptor1);
+
+
+		this.testId2WithIssuerEmpty = AttributeResolverDescriptor
+				.builder("testId2WithIssuerEmpty", "Test Resolver", "Issuer",
+				         CategoryId.SUBJECT_ACCESS)
 				.cache(40)
 				.attribute("testAttributeId1", XacmlTypes.STRING)
 				.attribute("testAttributeId2", XacmlTypes.INTEGER)
 				.contextRef(AttributeDesignatorKey
-						.builder()
-						.category(CategoryId.SUBJECT_ACCESS)
-						.attributeId("username")
-						.dataType(XacmlTypes.STRING)
-						.build())
-				.build((c)-> ImmutableMap.of());
+						            .builder()
+						            .category(CategoryId.SUBJECT_ACCESS)
+						            .attributeId("username")
+						            .dataType(XacmlTypes.STRING)
+						            .build())
+				.build(c->
+				       {
+					       c.resolveContextRef(usernameContextKey);
+					       throw new IllegalArgumentException();
+				       });
+		builder.withAttributeResolver(testId2WithIssuerEmpty);
+
+		this.testId2WithIssuerException = AttributeResolverDescriptor
+				.builder("testId2WithIssuerException", "Test Resolver", "Issuer",
+				         CategoryId.SUBJECT_ACCESS)
+				.cache(40)
+				.attribute("testAttributeId1", XacmlTypes.STRING)
+				.attribute("testAttributeId2", XacmlTypes.INTEGER)
+				.contextRef(AttributeDesignatorKey
+						            .builder()
+						            .category(CategoryId.SUBJECT_ACCESS)
+						            .attributeId("username")
+						            .dataType(XacmlTypes.STRING)
+						            .build())
+				.build(c->
+				       {
+					       c.resolveContextRef(usernameContextKey);
+					       throw new IllegalArgumentException();
+				       });
+		builder.withAttributeResolver(testId2WithIssuerException);
 
 
-		this.descriptor1WithNoCache = AttributeResolverDescriptor
-		.builder("testId3", "Test Resolver", "Issuer",
+		this.testId3WithIssuerNoCacheWithValues = AttributeResolverDescriptor
+		.builder("testId3WithIssuerNoCacheWithValues", "Test Resolver", "Issuer",
 				CategoryId.SUBJECT_ACCESS)
 		.noCache()
 		.attribute("testAttributeId1", XacmlTypes.STRING)
@@ -135,40 +163,43 @@ public class DefaultPolicyInformationPointTest
 				.attributeId("username")
 				.dataType(XacmlTypes.STRING)
 				.build())
-		.build((c)-> ImmutableMap.of());
+		.build(c->
+		       {
+			       c.resolveContextRef(usernameContextKey);
+			       return ImmutableMap.of("testAttributeId1", XacmlTypes.STRING.of("v1").toBag());
+		       });
+
+		builder.withAttributeResolver(testId3WithIssuerNoCacheWithValues);
+
+		this.pip = PolicyInformationPoint
+				.builder("testPip")
+				.cacheProvider(cache)
+				.registry(builder.build())
+				.build();
+
 	}
 
 	@Test
-	public void testMatchingResolverFoundAndResultIsCachable() throws Exception
+	public void testMatchingResolverFoundAndResultIsCacheable() throws Exception
 	{
 		AttributeDesignatorKey a0 = attr0.build();
-		AttributeDesignatorKey a1 = attr1.build();
-		AttributeDesignatorKey k = key.build();
-
-		AttributeSet result = AttributeSet
-				.builder(descriptor1)
-				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
-				.build();
 
 		// attribute resolver found
-		expect(registry.getMatchingAttributeResolver(context, a0)).andReturn(ImmutableList.of(descriptor1));
-		expect(context.resolve(eq(k))).andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+		Capture<ResolverContext> ctx = Capture.newInstance();
+		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
+		expect(context.resolve(eq(usernameContextKey)))
+				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+		expect(context.getClock()).andReturn(Clock.systemUTC());
 
-		Capture<ResolverContext> resolverContext1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
-
-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(null);
-
-		Capture<ResolverContext> resolverContext2 = new Capture<ResolverContext>();
-
-		cache.putAttributes(capture(resolverContext2), eq(result));
-
-		context.setDecisionCacheTTL(descriptor1.getPreferredCacheTTL());
+		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
 
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
-		assertEquals(XacmlTypes.STRING.bag().attribute(XacmlTypes.STRING.of("v1")), v.get());
+		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
 
 		control.verify();
@@ -179,41 +210,25 @@ public class DefaultPolicyInformationPointTest
 	public void testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet() throws Exception
 	{
 
-		AttributeDesignatorKey a0 = attr0.build();
+		AttributeDesignatorKey a0 = attr1.build();
 
-		expect(registry.getMatchingAttributeResolver(context, a0))
-				.andReturn(ImmutableList.of(descriptor1));
 
-		AttributeSet result1 = AttributeSet
-				.builder(descriptor1)
-				.build();
+		// attribute resolver found
+		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
+		expect(context.resolve(eq(usernameContextKey)))
+				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+		expect(cache.getAttributes(capture(resolverContext2))).andReturn(Optional.empty());
+		expect(context.resolve(eq(usernameContextKey)))
+				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+		expect(context.resolve(eq(usernameContextKey)))
+				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+		expect(context.getClock()).andReturn(Clock.systemUTC());
 
-		AttributeSet result2 = AttributeSet
-				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
-				.build();
-
-		expect(context.resolve(key.build()))
-		.andReturn(Optional.of(
-				XacmlTypes.STRING.of("testUser").toBag()));
-
-		Capture<ResolverContext> ctx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> ctx2 = new Capture<ResolverContext>();
-
-		Capture<ResolverContext> cacheCtx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> cacheCtx2 = new Capture<ResolverContext>();
-
-		expect(cache.getAttributes(capture(cacheCtx1))).andReturn(null);
-
-		expect(context.resolve(key.build()))
-		.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
-
-		expect(cache.getAttributes(capture(cacheCtx2))).andReturn(null);
-
-		Capture<ResolverContext> cacheCtx3 = new Capture<ResolverContext>();
-
-		cache.putAttributes(capture(cacheCtx3), eq(result2));
-		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferredCacheTTL());
+		Capture<ResolverContext> resolverContext3 = Capture.newInstance();
+		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+		cache.putAttributes(capture(resolverContext3), capture(attributeSetCapture));
 
 		control.replay();
 
@@ -227,48 +242,23 @@ public class DefaultPolicyInformationPointTest
 	public void testFound2MatchingResolversWithDifferentIssuersFirstResolverThrowsException() throws Exception
 	{
 		AttributeDesignatorKey a0 = attr0.build();
-		AttributeDesignatorKey k = key.build();
 
 		// attribute resolver found
-		expect(registry.getMatchingAttributeResolver(context, a0)).andReturn(
-				ImmutableList.of(descriptor1, descriptor1WithIssuer));
+		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+		Capture<ResolverContext> ctx = Capture.newInstance();
+		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
+		expect(context.resolve(eq(usernameContextKey)))
+				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+		expect(context.getClock()).andReturn(Clock.systemUTC());
 
-
-		Capture<ResolverContext> ctx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> ctx2 = new Capture<ResolverContext>();
-
-		Capture<ResolverContext> cacheCtx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> cacheCtx2 = new Capture<ResolverContext>();
-
-		AttributeSet result2 = AttributeSet
-				.builder(descriptor1WithIssuer)
-				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
-				.build();
-
-		expect(context.resolve(k))
-			.andReturn(Optional.of(
-					XacmlTypes.STRING.of("testUser").toBag()));
-		expect(cache.getAttributes(capture(cacheCtx1))).andReturn(null);
-		expect(descriptor1.getResolver().apply(capture(ctx1))).andThrow(new NullPointerException());
-
-
-		expect(context.resolve(k))
-			.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
-		expect(cache.getAttributes(capture(cacheCtx2))).andReturn(null);
-
-
-		expect(descriptor1WithIssuer.getResolver().apply(capture(ctx2))).andReturn(Optional.of(result2));
-
-		Capture<ResolverContext> ctx3 = new Capture<ResolverContext>();
-		cache.putAttributes(capture(ctx3), eq(result2));
-
-		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferredCacheTTL());
+		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
 
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
 		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
-		assertSame(ctx2.getValue(), ctx3.getValue());
 
 		control.verify();
 	}
@@ -277,26 +267,20 @@ public class DefaultPolicyInformationPointTest
 	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable()
 		throws Exception
 	{
-		AttributeDesignatorKey a0 = attr0.build();
-		AttributeDesignatorKey k = key.build();
+		AttributeDesignatorKey a0 = attr1.build();
 
 		// attribute resolver found
-		expect(registry.getMatchingAttributeResolver(context, a0)).andReturn(ImmutableList.of(descriptor1));
-
-		// key resolved
-		expect(context.resolve(k))
+		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+		Capture<ResolverContext> ctx = Capture.newInstance();
+		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
+		expect(context.resolve(eq(usernameContextKey)))
 				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+		expect(context.getClock()).andReturn(Clock.systemUTC());
 
-		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
+		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
 
-		AttributeSet result = AttributeSet
-				.builder(descriptor1WithNoCache)
-				.attribute("testAttributeId1", XacmlTypes.STRING.of("v1").toBag())
-				.build();
-
-		expect(descriptor1.getResolver().apply(capture(ctx))).andReturn(Optional.of(result));
-
-		context.setDecisionCacheTTL(descriptor1WithNoCache.getPreferredCacheTTL());
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
