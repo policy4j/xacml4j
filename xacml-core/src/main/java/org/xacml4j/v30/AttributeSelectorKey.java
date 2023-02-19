@@ -22,14 +22,12 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.PathValue;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-
-import org.xacml4j.v30.types.PathValue;
-
-import java.util.Optional;
 
 
 /**

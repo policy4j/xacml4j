@@ -22,11 +22,12 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
-import org.xacml4j.v30.Expression;
-
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
+
+import org.xacml4j.v30.Expression;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Implementation an XACML {@link Expression}

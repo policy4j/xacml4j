@@ -22,15 +22,16 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 public final class PortRange implements Externalizable
 {

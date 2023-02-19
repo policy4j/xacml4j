@@ -23,9 +23,9 @@ package org.xacml4j.v30;
  */
 
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertSame;
+
+import org.junit.Test;
 
 public class WellKnownAttributeIdsTest
 {

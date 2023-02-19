@@ -57,10 +57,13 @@ public class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDecis
 	{
 		this(JAXBUtils.getInstance(),
 		     FunctionProvider.builder()
-		                     .withStandardFunctions()
+		                     .withDiscoveredFunctions()
+		                     .withDefaultFunctions()
 		                     .build(),
 		     DecisionCombiningAlgorithmProvider
-				.builder().withDefaultAlgorithms()
+				.builder()
+				.withDiscoveredAlgorithms()
+				.withDefaultAlgorithms()
 				.build(), supportsXacml20Policies);
 	}
 

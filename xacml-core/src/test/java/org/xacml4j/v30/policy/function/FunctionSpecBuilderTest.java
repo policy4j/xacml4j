@@ -23,22 +23,21 @@ package org.xacml4j.v30.policy.function;
  */
 
 
-import com.google.common.collect.ImmutableList;
+import static org.easymock.EasyMock.createControl;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.policy.function.FunctionInvocation;
-import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import java.util.List;
-
-import static org.easymock.EasyMock.createControl;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.google.common.collect.ImmutableList;
 
 public class FunctionSpecBuilderTest
 {

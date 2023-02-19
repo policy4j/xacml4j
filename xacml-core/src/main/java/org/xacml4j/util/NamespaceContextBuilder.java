@@ -38,15 +38,26 @@ package org.xacml4j.util;
  * limitations under the License.
  */
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.*;
-import org.w3c.dom.Node;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import org.w3c.dom.Node;
+
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 
 /**
  * A {@link NamespaceContext} builder

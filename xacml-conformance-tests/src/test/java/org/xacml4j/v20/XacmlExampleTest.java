@@ -30,8 +30,8 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 

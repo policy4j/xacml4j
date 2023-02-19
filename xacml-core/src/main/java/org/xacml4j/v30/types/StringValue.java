@@ -22,9 +22,10 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import org.xacml4j.v30.Expression;
+
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import org.xacml4j.v30.Expression;
 
 /**
  * Implementation an XACML {@link Expression}

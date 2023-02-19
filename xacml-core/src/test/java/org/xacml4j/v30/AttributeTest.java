@@ -22,16 +22,20 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.collect.ImmutableSet;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute.Builder;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
-import static org.junit.Assert.*;
+import com.google.common.collect.ImmutableSet;
 
 
 public class AttributeTest

@@ -23,6 +23,7 @@ package org.xacml4j.v30;
  */
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 public interface TypeCapabilityFactory<T extends TypeCapability>
@@ -30,4 +31,5 @@ public interface TypeCapabilityFactory<T extends TypeCapability>
 	Class<T> getCapabilityType();
 	Collection<T> getCapabilities();
 	Optional<T> forType(ValueType type);
+	Map<ValueType, T> asMap();
 }

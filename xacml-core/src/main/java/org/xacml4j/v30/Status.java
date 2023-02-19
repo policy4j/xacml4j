@@ -23,13 +23,13 @@ package org.xacml4j.v30;
  */
 
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Throwables;
-import org.xacml4j.util.StringUtils;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import org.xacml4j.util.StringUtils;
+
+import com.google.common.base.MoreObjects;
 
 /**
  * Represents XACML status
@@ -232,8 +232,7 @@ public final class Status
 		public Builder detail(Status ...details){
 			return detail(new StatusDetail(details));
 		}
-
-		public Builder detail(List<Status> details){
+		public Builder detail(List<Object> details){
 			return detail(new StatusDetail(details));
 		}
 

@@ -22,7 +22,6 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
@@ -31,6 +30,8 @@ import org.xacml4j.v30.policy.PolicySyntaxException;
 import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.policy.function.FunctionProvider;
+
+import com.google.common.base.Preconditions;
 
 /**
  * A support class for dealing with XACML

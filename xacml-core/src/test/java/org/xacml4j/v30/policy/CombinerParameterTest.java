@@ -22,12 +22,14 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import static org.easymock.EasyMock.createStrictControl;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.easymock.IMocksControl;
 import org.junit.Test;
 import org.xacml4j.v30.Value;
-
-import static org.easymock.EasyMock.createStrictControl;
-import static org.junit.Assert.*;
 
 /**
  * @author Valdas Sevelis

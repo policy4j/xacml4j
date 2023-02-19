@@ -22,14 +22,16 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.types.XacmlTypes;
-
-import static org.junit.Assert.*;
 
 
 public class AdviceTest

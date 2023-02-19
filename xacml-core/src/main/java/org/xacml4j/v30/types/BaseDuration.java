@@ -22,15 +22,16 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
+
+import com.google.common.base.Preconditions;
 
 public abstract class BaseDuration <T extends BaseDuration<?>>
 	implements Comparable<T>, Externalizable

@@ -22,13 +22,14 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.types.Entity;
-import org.xacml4j.v30.types.XacmlTypes;
-
-import static org.junit.Assert.*;
 
 public class   EntityTest
 {
@@ -87,7 +88,7 @@ public class   EntityTest
 
 	@Test
 	public void testEntityType(){
-		assertNotNull(XacmlTypes.getType(XacmlTypes.ENTITY.getDataTypeId(), false).orElse(null));
+		assertNotNull(XacmlTypes.getType(XacmlTypes.ENTITY.getDataTypeId()).orElse(null));
 	}
 	@Test
 	public void testEntityEquals(){

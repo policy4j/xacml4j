@@ -22,10 +22,10 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.Optional;
+
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Status;
-
-import java.util.Optional;
 
 
 @SuppressWarnings("serial")

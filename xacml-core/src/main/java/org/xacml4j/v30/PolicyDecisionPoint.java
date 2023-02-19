@@ -22,11 +22,9 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.Result;
-
 import java.io.Closeable;
+
+import org.xacml4j.v30.request.RequestContext;
 
 
 public interface PolicyDecisionPoint extends Closeable

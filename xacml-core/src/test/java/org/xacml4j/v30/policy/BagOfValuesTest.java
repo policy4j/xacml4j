@@ -22,22 +22,28 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.xacml4j.v30.types.XacmlTypes.INTEGER;
+import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-import static org.xacml4j.v30.types.XacmlTypes.INTEGER;
-import static org.xacml4j.v30.types.XacmlTypes.STRING;
+import org.junit.Before;
+import org.junit.Test;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.collect.ImmutableList;
 
 
 public class BagOfValuesTest

@@ -22,14 +22,14 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Collection;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-
-import java.util.Collection;
 
 
 public abstract class DecisionRuleResponse

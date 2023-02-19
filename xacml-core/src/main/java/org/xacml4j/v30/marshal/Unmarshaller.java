@@ -22,9 +22,9 @@ package org.xacml4j.v30.marshal;
  * #L%
  */
 
-import org.xacml4j.v30.SyntaxException;
-
 import java.io.IOException;
+
+import org.xacml4j.v30.SyntaxException;
 
 import com.google.common.net.MediaType;
 

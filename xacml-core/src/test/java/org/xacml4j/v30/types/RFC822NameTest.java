@@ -22,11 +22,10 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.types.RFC822Name;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 public class RFC822NameTest
 {

@@ -22,28 +22,39 @@ package org.xacml4j.v30.content;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.*;
+import org.w3c.dom.Attr;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.Text;
 import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.Content;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import java.io.InputStream;
-import java.util.*;
-import java.util.function.Supplier;
+import com.google.common.base.MoreObjects;
 
 /**
  * {@link Content} implementation for XML content type

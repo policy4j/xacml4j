@@ -22,10 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.types.Binary;
-
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 public class BinaryTest
 {

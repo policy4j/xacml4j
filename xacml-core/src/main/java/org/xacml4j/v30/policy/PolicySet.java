@@ -22,15 +22,27 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.*;
-import org.xacml4j.v30.*;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.CompositeDecisionRuleIDReference;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.XPathVersion;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 
 public class PolicySet extends
 	BaseCompositeDecisionRule implements PolicyElement

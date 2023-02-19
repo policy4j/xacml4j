@@ -22,14 +22,15 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.SyntaxException;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
+
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
 /**
  * Implementation an XACML {@link Expression}

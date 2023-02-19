@@ -22,10 +22,10 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.xacml4j.v30.CategoryId;
-
-import static org.junit.Assert.assertEquals;
 
 
 public class XacmlXPathTypeTest

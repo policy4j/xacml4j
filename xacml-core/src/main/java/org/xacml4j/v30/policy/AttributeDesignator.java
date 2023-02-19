@@ -22,11 +22,17 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.Optional;
+
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.ExpressionVisitor;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import org.xacml4j.v30.*;
-
-import java.util.Optional;
 
 /**
  * The {@link AttributeDesignator} retrieves a bag of values for a

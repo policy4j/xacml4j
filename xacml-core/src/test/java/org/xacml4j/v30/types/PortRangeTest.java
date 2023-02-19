@@ -22,10 +22,11 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.types.PortRange;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class PortRangeTest
 {

@@ -30,7 +30,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Evaluation context for {@link CompositeDecisionRule} evaluations

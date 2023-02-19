@@ -22,22 +22,22 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.EntityValue;
+import org.xacml4j.v30.types.XacmlTypes;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
-
-import org.xacml4j.v30.types.Entity;
-import org.xacml4j.v30.types.EntityValue;
-import org.xacml4j.v30.types.XacmlTypes;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A XACML request context attribute, a container for {@link Value}

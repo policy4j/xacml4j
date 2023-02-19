@@ -22,11 +22,12 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.SyntaxException;
+import java.util.Calendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.Calendar;
+
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
 
 /**
 * Implementation an XACML {@link Expression}

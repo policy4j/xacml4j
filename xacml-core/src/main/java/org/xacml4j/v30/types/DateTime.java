@@ -22,11 +22,12 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
+import java.util.GregorianCalendar;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.util.GregorianCalendar;
+
+import com.google.common.base.Preconditions;
 
 public final class DateTime extends
 	BaseCalendar<DateTime>

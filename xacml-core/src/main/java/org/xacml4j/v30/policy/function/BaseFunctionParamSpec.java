@@ -22,11 +22,11 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import java.util.Optional;
+
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionParamSpec;
-
-import java.util.Optional;
 
 abstract class BaseFunctionParamSpec implements FunctionParamSpec
 {

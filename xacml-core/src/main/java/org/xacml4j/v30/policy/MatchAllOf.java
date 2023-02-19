@@ -22,17 +22,18 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.Value;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Value;
 
-import java.util.Collection;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 public class MatchAllOf implements PolicyElement, Matchable
 {

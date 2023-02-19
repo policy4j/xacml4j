@@ -22,17 +22,16 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.policy.FunctionParamSpec;
-import org.xacml4j.v30.policy.function.FunctionParamValueTypeSpec;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.policy.FunctionParamSpec;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class ParamSingleTypeSpecTest

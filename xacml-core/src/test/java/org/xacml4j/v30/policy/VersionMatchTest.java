@@ -23,13 +23,13 @@ package org.xacml4j.v30.policy;
  */
 
 
-import org.junit.Test;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.SyntaxException;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Test;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Version;
+import org.xacml4j.v30.VersionMatch;
 
 
 public class VersionMatchTest

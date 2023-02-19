@@ -22,10 +22,9 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.junit.Test;
-
-
 import static com.google.common.truth.Truth8.assertThat;
+
+import org.junit.Test;
 
 public class ContentTest
 {

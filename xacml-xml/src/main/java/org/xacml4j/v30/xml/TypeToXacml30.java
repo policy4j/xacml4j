@@ -22,7 +22,13 @@ package org.xacml4j.v30.xml;
  * #L%
  */
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -71,6 +77,27 @@ public interface TypeToXacml30 extends TypeCapability
 	 */
 	Value fromXacml30(org.oasis.xacml.v30.jaxb.AttributeValueType v);
 
+	TypeToXacml30Factory systemFactory = new DefaultTypeToXacml30Factory();
+	Map<ValueType, TypeToXacml30> capabilities = discoverCapabilities();
+
+	static Optional<TypeToXacml30> forType(ValueType valueType){
+		return Optional.ofNullable(capabilities.get(valueType));
+	}
+
+	static Optional<TypeToXacml30> forType(String valueType){
+		return XacmlTypes.getType(valueType).map(t->capabilities.get(t));
+	}
+
+	static Map<ValueType, TypeToXacml30> discoverCapabilities(){
+		ServiceLoader<TypeToXacml30Factory> serviceLoader = ServiceLoader.load(TypeToXacml30Factory.class);
+		Map<ValueType, TypeToXacml30> discovered =
+				serviceLoader.stream()
+				             .map(v->v.get())
+				             .flatMap(f->f.asMap().entrySet().stream())
+				             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b)->a));
+		discovered.putAll(systemFactory.asMap());
+		return Collections.unmodifiableMap(discovered);
+	}
 
 
 	enum Types implements TypeToXacml30
@@ -543,4 +570,14 @@ public interface TypeToXacml30 extends TypeCapability
 			return b.build();
 		}
 	}
+
+	final class DefaultTypeToXacml30Factory
+			extends TypeCapability.AbstractCapabilityFactory<TypeToXacml30> implements TypeToXacml30Factory
+	{
+		public DefaultTypeToXacml30Factory() {
+			super(Arrays.asList(TypeToXacml30.Types.values()), TypeToXacml30.class);
+		}
+	}
+
+
 }

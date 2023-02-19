@@ -22,11 +22,15 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.Content;
-
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Expression;
 
 /**
 * Implementation an XACML {@link Expression}

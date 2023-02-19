@@ -22,13 +22,18 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.policy.function.FunctionCategory;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.function.FunctionCategory;
 
 
 /**

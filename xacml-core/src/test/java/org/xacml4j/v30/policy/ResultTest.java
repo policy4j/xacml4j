@@ -22,7 +22,8 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Decision;
@@ -31,7 +32,7 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import static org.junit.Assert.assertEquals;
+import com.google.common.collect.ImmutableList;
 
 
 public class ResultTest

@@ -22,11 +22,19 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
-
-import java.util.Optional;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
+import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.ValueTypeInfo;
 
 /**
  * A base class for XACML attribute references

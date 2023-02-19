@@ -22,15 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.CharMatcher;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.net.MediaType;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.content.JsonContent;
-import org.xacml4j.v30.content.XmlContent;
-import org.xacml4j.v30.types.Entity;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +30,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xacml4j.v30.content.JsonContent;
+import org.xacml4j.v30.content.XmlContent;
+import org.xacml4j.v30.types.Entity;
+
+import com.google.common.base.CharMatcher;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.net.MediaType;
 
 /**
  * XACML {@link Entity} content abstraction

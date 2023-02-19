@@ -22,16 +22,27 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.easymock.IMocksControl;
+import org.junit.Before;
+import org.junit.Test;
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.CoreException;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class AdviceExpressionTest

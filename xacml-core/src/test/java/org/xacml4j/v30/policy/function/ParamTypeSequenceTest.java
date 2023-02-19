@@ -22,17 +22,16 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.policy.function.FunctionParamValueTypeSequenceSpec;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class ParamTypeSequenceTest

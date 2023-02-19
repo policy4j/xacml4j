@@ -23,14 +23,15 @@ package org.xacml4j.v30.policy;
  */
 
 
-import com.google.common.base.MoreObjects;
-import org.xacml4j.v30.Value;
+import java.util.Objects;
+
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import java.util.Objects;
+import com.google.common.base.MoreObjects;
 
 /**
  * A base class for XACML quantified expressions

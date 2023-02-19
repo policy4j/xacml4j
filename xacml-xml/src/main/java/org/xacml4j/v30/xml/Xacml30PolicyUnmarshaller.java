@@ -26,7 +26,7 @@ public class Xacml30PolicyUnmarshaller extends BaseJAXBUnmarshaller<CompositeDec
 			throws Exception
 	{
 		this(FunctionProvider.builder()
-		                     .withStandardFunctions()
+		                     .withDefaultFunctions()
 		                     .build(),
 		      DecisionCombiningAlgorithmProvider.builder()
 		                                        .withDefaultAlgorithms()

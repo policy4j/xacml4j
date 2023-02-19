@@ -22,17 +22,27 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.truth.Truth;
-import org.easymock.Capture;
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createStrictMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Optional;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
+import org.easymock.Capture;
+import org.junit.Before;
+import org.junit.Test;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.truth.Truth;
 
 
 public class AttributeSelectorTest

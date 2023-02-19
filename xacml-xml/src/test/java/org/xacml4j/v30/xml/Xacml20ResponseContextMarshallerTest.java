@@ -69,7 +69,7 @@ public class Xacml20ResponseContextMarshallerTest {
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
 				FunctionProvider.builder()
-				.withStandardFunctions()
+				.withDefaultFunctions()
 				.build(),
 				DecisionCombiningAlgorithmProvider.builder()
 				                                          .withDefaultAlgorithms()

@@ -22,14 +22,16 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.Version;
-import org.xacml4j.v30.SyntaxException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Version;
 
 
 public class VersionTest

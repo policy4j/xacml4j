@@ -22,13 +22,8 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import java.util.ServiceLoader;
-
 import org.junit.Test;
-import org.xacml4j.v30.TypeCapability;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.truth.Truth;
 import com.google.common.truth.Truth8;
 
 public class TypeToStringCapabilityTest 

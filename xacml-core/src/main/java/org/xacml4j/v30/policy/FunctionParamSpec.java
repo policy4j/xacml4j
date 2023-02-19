@@ -22,12 +22,12 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.ListIterator;
+import java.util.Optional;
+
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueTypeInfo;
 import org.xacml4j.v30.policy.function.FunctionParamSpecVisitor;
-
-import java.util.ListIterator;
-import java.util.Optional;
 
 
 /**

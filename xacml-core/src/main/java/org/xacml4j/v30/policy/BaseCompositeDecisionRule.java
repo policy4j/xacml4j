@@ -22,17 +22,24 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.Collection;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.Version;
+import org.xacml4j.v30.Versionable;
+import org.xacml4j.v30.types.Entity;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.types.Entity;
-
-import java.util.Collection;
 
 /**
  * A base class for composite decision rule. A composite decision

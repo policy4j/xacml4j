@@ -22,19 +22,35 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.Content;
-
 import java.time.Clock;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
+
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.CompositeDecisionRuleIDReference;
+import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.PolicyResolutionException;
+import org.xacml4j.v30.Status;
+import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.XPathVersion;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 
 /**
  * An implementation of {@link EvaluationContext} which

@@ -35,8 +35,8 @@ import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
@@ -299,7 +299,7 @@ public class XacmlPolicyTestSupport {
 		}
 
 		public Builder standardFunctions() {
-			functionProviderBuilder.withStandardFunctions();
+			functionProviderBuilder.withDefaultFunctions();
 			return this;
 		}
 

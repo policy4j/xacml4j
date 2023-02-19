@@ -22,8 +22,8 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeSelectorKey;
@@ -31,7 +31,8 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.ExpressionVisitor;
 
-import java.util.Optional;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 
 /**
  * XACML attribute selector expression

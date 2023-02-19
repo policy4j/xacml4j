@@ -22,11 +22,13 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.xacml4j.v30.types.XacmlTypes;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author Valdas Sevelis

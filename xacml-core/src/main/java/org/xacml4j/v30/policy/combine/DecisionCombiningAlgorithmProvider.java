@@ -22,11 +22,11 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
+import java.util.Set;
+
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Rule;
-
-import java.util.Set;
 
 
 public interface DecisionCombiningAlgorithmProvider
@@ -89,4 +89,7 @@ public interface DecisionCombiningAlgorithmProvider
 	 */
 	boolean isPolicyAlgorithmProvided(String algorithmId);
 
+	static DecisionCombiningAlgorithmProviderBuilder builder(){
+		return new DecisionCombiningAlgorithmProviderBuilder();
+	}
 }

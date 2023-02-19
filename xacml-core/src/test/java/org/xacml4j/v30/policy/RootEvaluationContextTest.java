@@ -22,6 +22,14 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.time.Duration;
+import java.util.Optional;
+
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,18 +38,6 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.types.XacmlTypes;
-
-import java.time.Duration;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import com.google.common.collect.ImmutableMap;
 
 
 public class RootEvaluationContextTest

@@ -76,7 +76,7 @@ public class XacmlPolicyUnmarshallerTest
 	public static void init_static() throws Exception
 	{
 		functionProvider = FunctionProvider.builder()
-		                                   .withStandardFunctions()
+		                                   .withDefaultFunctions()
 		                                   .build();
 		reader = new XacmlPolicyUnmarshaller(true);
 		writer = new XacmlPolicyMarshaller();

@@ -22,11 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.types.XacmlTypes;
-
 import java.net.URI;
 import java.util.Objects;
 import java.util.Optional;
+
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * A base class for attribute references

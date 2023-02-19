@@ -22,13 +22,11 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.util.IPAddressUtils;
-import org.xacml4j.v30.types.IPAddress;
-import org.xacml4j.v30.types.PortRange;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+
+import org.junit.Test;
+import org.xacml4j.util.IPAddressUtils;
 
 
 public class IPAddressTest

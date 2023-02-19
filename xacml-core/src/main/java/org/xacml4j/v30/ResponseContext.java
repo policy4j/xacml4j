@@ -22,11 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Collection;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-
-import java.util.Collection;
 
 public class ResponseContext
 {

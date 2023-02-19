@@ -22,13 +22,13 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableList;
-
-import java.util.*;
-
-import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
 
 
 /**
@@ -38,27 +38,22 @@ import org.apache.logging.log4j.core.appender.rolling.OnStartupTriggeringPolicy;
  */
 public final class StatusDetail
 {
-	private List<Status> details;
+	private List<Object> details;
 	private String decisionRuleId;
 
 	StatusDetail(){
 	}
 
-	public StatusDetail(String decisionRuleId,
-	                    Status ...details){
-		this(decisionRuleId, Arrays.asList(details));
-	}
-
-	public StatusDetail(Status ...details){
+	public StatusDetail(Object details){
 		this(null, Arrays.asList(details));
 	}
 
-	public StatusDetail(Collection<Status> details){
+	public StatusDetail(Collection<Object> details){
 		this(null, details);
 	}
 
 	public StatusDetail(String decisionRuleId,
-	                    Collection<Status> details){
+	                    Collection<Object> details){
 		this.details = ImmutableList.copyOf(
 				Objects.requireNonNull(details, "details"));
 		this.decisionRuleId = decisionRuleId;
@@ -68,7 +63,7 @@ public final class StatusDetail
 		return decisionRuleId;
 	}
 
-	public List<Status> getDetails(){
+	public List<Object> getDetails(){
 		return details;
 	}
 

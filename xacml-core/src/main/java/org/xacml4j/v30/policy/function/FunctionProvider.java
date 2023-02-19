@@ -22,9 +22,10 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import org.xacml4j.v30.policy.FunctionSpec;
+import java.util.Collection;
+import java.util.Optional;
 
-import java.util.*;
+import org.xacml4j.v30.policy.FunctionSpec;
 
 /**
  * Provider interface for XACML functions
@@ -71,6 +72,7 @@ public interface FunctionProvider
 	 */
 	Collection<FunctionSpec> getProvidedFunctions();
 
-
-
+	static FunctionProviderBuilder builder(){
+		return new FunctionProviderBuilder();
+	}
 }

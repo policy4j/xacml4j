@@ -23,14 +23,11 @@ package org.xacml4j.v30.content;
  */
 
 
+import javax.xml.xpath.XPathExpressionException;
 
 import org.w3c.dom.Node;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.StatusCodeId;
-
-import javax.xml.xpath.XPathExpressionException;
 
 public class XPathEvaluationException extends PathEvaluationException
 {

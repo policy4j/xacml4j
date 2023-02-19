@@ -22,17 +22,22 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-import org.xacml4j.v30.*;
-
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.ExpressionVisitor;
+import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueTypeInfo;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 /**
  * The class denotes application of a function to its arguments,

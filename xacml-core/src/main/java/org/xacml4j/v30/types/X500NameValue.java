@@ -22,9 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.Expression;
-
 import javax.security.auth.x500.X500Principal;
+
+import org.xacml4j.v30.Expression;
 
 /**
  * Implementation an XACML {@link Expression}

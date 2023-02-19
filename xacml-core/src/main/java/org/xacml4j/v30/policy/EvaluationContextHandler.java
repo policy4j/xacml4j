@@ -23,11 +23,17 @@ package org.xacml4j.v30.policy;
  */
 
 
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.Content;
-
 import java.util.Map;
 import java.util.Optional;
+
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Content;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
 
 public interface EvaluationContextHandler
 {

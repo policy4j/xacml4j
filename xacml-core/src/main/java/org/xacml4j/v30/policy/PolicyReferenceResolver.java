@@ -23,10 +23,6 @@ package org.xacml4j.v30.policy;
  */
 
 import org.xacml4j.v30.PolicyResolutionException;
-import org.xacml4j.v30.policy.Policy;
-import org.xacml4j.v30.policy.PolicyIDReference;
-import org.xacml4j.v30.policy.PolicySet;
-import org.xacml4j.v30.policy.PolicySetIDReference;
 
 
 /**

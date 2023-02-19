@@ -22,9 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.Expression;
-
 import java.net.InetAddress;
+
+import org.xacml4j.v30.Expression;
 
 /**
 * Implementation an XACML {@link Expression}

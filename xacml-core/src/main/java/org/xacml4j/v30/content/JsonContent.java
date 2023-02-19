@@ -22,7 +22,12 @@ package org.xacml4j.v30.content;
  * #L%
  */
 
-import com.jayway.jsonpath.*;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeSelectorKey;
@@ -30,11 +35,11 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.types.Entity;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Supplier;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.TypeRef;
 
 /**
  * JSON content abstraction

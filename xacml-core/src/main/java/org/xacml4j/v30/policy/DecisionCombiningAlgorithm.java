@@ -23,14 +23,15 @@ package org.xacml4j.v30.policy;
  */
 
 
+import java.util.List;
+import java.util.function.BiFunction;
+
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 
-import java.util.List;
-
-
 public interface DecisionCombiningAlgorithm <D extends DecisionRule>
+		extends BiFunction<EvaluationContext, List<D>, Decision>
 {
 	/**
 	 * Gets algorithm identifier
@@ -47,4 +48,8 @@ public interface DecisionCombiningAlgorithm <D extends DecisionRule>
 	 * @return {@link Decision} context
 	 */
 	Decision combine(EvaluationContext context, List<D> decisions);
+
+	default Decision apply(EvaluationContext context, List<D> rules){
+		return combine(context, rules);
+	}
 }

@@ -27,8 +27,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
-
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

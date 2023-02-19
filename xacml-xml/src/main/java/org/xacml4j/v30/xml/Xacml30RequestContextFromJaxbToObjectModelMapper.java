@@ -233,7 +233,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private AttributesType create(Category a)
 	{
 		AttributesType attributes = new AttributesType();
-		attributes.setId(a.getReferenceId());
+		attributes.setId(a.getReferenceId().orElse(null));
 		attributes.setCategory(a.getCategoryId().toString());
 		for(Attribute attr : a.getEntity().getAttributes()){
 			attributes.getAttribute().add(create(attr));

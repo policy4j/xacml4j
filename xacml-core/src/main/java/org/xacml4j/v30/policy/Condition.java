@@ -22,11 +22,17 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Status;
+import org.xacml4j.v30.ValueTypeInfo;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 
 /**
  * Condition represents a Boolean expression that refines the applicability

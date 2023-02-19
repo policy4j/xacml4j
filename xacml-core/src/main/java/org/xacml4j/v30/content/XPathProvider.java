@@ -22,8 +22,14 @@ package org.xacml4j.v30.content;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Supplier;
+import java.util.Objects;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -32,10 +38,8 @@ import org.xacml4j.util.NodeNamespaceContext;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.XPathVersion;
 
-import javax.xml.xpath.*;
-
-import java.util.Arrays;
-import java.util.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
 
 /**
  * An XPath provider for executing XPath expressions

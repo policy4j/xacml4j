@@ -22,9 +22,9 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Strings;
-
 import java.util.regex.Pattern;
+
+import com.google.common.base.Strings;
 
 public class VersionMatch
 {

@@ -22,6 +22,20 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.Collection;
+
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueExpression;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -29,9 +43,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
-import org.xacml4j.v30.*;
-
-import java.util.Collection;
 
 /**
  * A base class for XACML Obligation or Advice expressions

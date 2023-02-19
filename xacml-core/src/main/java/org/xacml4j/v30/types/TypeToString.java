@@ -22,15 +22,14 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.TypeCapability;
-
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.ServiceLoader;
+
+import org.xacml4j.v30.TypeCapability;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueType;
 
 
 /**
@@ -60,27 +59,23 @@ public interface TypeToString extends TypeCapability
 
 	static Optional<TypeToString> forType(String typeId){
 		return XacmlTypes.getType(typeId)
-		                 .flatMap(v->forType(v));
+		                 .flatMap(t->forType(t));
 	}
 
 	static Optional<TypeToString> forType(ValueType type)
 	{
-		return TypeCapability.forType(type,
-		                              t->Factory.SYSTEM_TYPES.forType(t),
-		                              ()->Factory.EXTENSIONS.get());
+		return Optional.ofNullable(type).map(t->Types.capabilities.get(t));
 	}
 
 	/**
 	 * Factory for {@code TypeToString} extensions
 	 */
-	class Factory extends AbstractCapabilityFactory<TypeToString>
+	class SystemFactory extends AbstractCapabilityFactory<TypeToString>
+			implements TypeToStringFactory
 	{
-		private static final Factory SYSTEM_TYPES = new Factory(Arrays.asList(Types.values()));
-		private static ThreadLocal<ServiceLoader<Factory>> EXTENSIONS = ThreadLocal
-				.withInitial(()->ServiceLoader.load(Factory.class));
-
-		protected Factory(Collection<TypeToString> providedCapabilities) {
-			super(providedCapabilities, TypeToString.class);
+		protected SystemFactory() {
+			super(Arrays.asList(TypeToString.Types.values()),
+			      TypeToString.class);
 		}
 	}
 
@@ -319,6 +314,10 @@ public interface TypeToString extends TypeCapability
 		public ValueType getType(){
 			return type;
 		}
+
+		private final static Map<ValueType, TypeToString> capabilities = TypeCapability.discoverCapabilities(new SystemFactory(),
+		                                                                                TypeToString.class,
+		                                                                                TypeToStringFactory.class);
 
 	}
 }

@@ -23,16 +23,18 @@ package org.xacml4j.v30;
  */
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -72,6 +74,18 @@ public interface TypeCapability
 		                 .flatMap(v->v.get().forType(type));
 	}
 
+	static <T extends TypeCapability, F extends TypeCapabilityFactory<T>> Map<ValueType, T>
+	discoverCapabilities(F systemFactory, Class<T> capabilityType, Class<F> capabilityFactoryType){
+		ServiceLoader<F> serviceLoader = ServiceLoader.load(capabilityFactoryType);
+		Map<ValueType, T> discovered =
+				serviceLoader.stream()
+				             .map(v->v.get())
+				             .flatMap(f->f.asMap().entrySet().stream())
+				             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b)->a));
+		discovered.putAll(systemFactory.asMap());
+		return Collections.unmodifiableMap(discovered);
+	}
+
 	abstract class AbstractCapabilityFactory<T extends TypeCapability>
 			implements org.xacml4j.v30.TypeCapabilityFactory<T>
 	{
@@ -90,6 +104,10 @@ public interface TypeCapability
 			this.capabilityType = Objects.requireNonNull(capabilityType, "capabilityType");
 			this.capabilitiesByType = providedCapabilities.stream()
 			                                            .collect(ImmutableMap.toImmutableMap(e->e.getType(), e->e));
+		}
+
+		public final Map<ValueType, T> asMap(){
+			return capabilitiesByType;
 		}
 
 		public final Class<T> getCapabilityType(){

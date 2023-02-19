@@ -1,11 +1,11 @@
 package org.xacml4j.v30;
 
-import org.xacml4j.util.StringUtils;
-import org.xacml4j.v30.types.XacmlTypes;
-
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
+
+import org.xacml4j.util.StringUtils;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /*
  * #%L

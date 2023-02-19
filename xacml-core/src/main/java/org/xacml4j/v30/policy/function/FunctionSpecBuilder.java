@@ -22,21 +22,32 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.FunctionInvocationException;
+import org.xacml4j.v30.policy.FunctionParamSpec;
+import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.PolicySyntaxException;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterators;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.policy.FunctionInvocationException;
-import org.xacml4j.v30.policy.FunctionParamSpec;
-import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.policy.PolicySyntaxException;
-
-import java.util.*;
 
 /**
  * A builder for building {@link FunctionSpec} instances

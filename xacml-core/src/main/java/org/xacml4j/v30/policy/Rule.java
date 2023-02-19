@@ -23,10 +23,17 @@ package org.xacml4j.v30.policy;
  */
 
 
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.DecisionRule;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.PolicyElement;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.xacml4j.v30.*;
 
 public class Rule extends BaseDecisionRule implements PolicyElement
 {

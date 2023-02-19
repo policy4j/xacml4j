@@ -22,11 +22,11 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.Decision;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.xacml4j.v30.Decision;
 
 
 public class DecisionTest

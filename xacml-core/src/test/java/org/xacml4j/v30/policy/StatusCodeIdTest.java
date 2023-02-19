@@ -22,11 +22,11 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.StatusCodeId;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+
+import org.junit.Test;
+import org.xacml4j.v30.StatusCodeId;
 
 
 public class StatusCodeIdTest

@@ -22,13 +22,21 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.net.URI;
+
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueExpression;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import org.xacml4j.v30.*;
-
-import java.net.URI;
 
 public class AttributeAssignmentExpression implements PolicyElement
 {

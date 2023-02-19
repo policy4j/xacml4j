@@ -22,10 +22,10 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import java.util.List;
+
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.policy.FunctionSpec;
-
-import java.util.List;
 
 public interface FunctionParametersValidator
 {

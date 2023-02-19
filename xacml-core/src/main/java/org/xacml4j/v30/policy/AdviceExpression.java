@@ -22,9 +22,14 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.xacml4j.v30.*;
-
 import java.util.Collection;
+
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.SyntaxException;
 
 
 

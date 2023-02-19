@@ -22,13 +22,13 @@ package org.xacml4j.v30.request;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
-
 import java.util.Collection;
 
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryReference;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 
 public class RequestReference
 {

@@ -22,10 +22,10 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
-
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
+
+import com.google.common.base.Preconditions;
 
 public final class YearMonthDuration extends BaseDuration<YearMonthDuration>
 {

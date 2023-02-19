@@ -22,11 +22,12 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Value;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.PolicyElement;
 
 /**
  * Conveys a single parameter for a policy- or rule-combining algorithm.

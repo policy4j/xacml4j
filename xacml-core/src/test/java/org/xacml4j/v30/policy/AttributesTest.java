@@ -22,17 +22,21 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.content.XmlContent;
-import org.xacml4j.v30.types.Entity;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.content.XmlContent;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class AttributesTest

@@ -22,15 +22,17 @@ package org.xacml4j.util;
  * #L%
  */
 
-import com.google.common.base.Preconditions;
+import java.util.Collections;
+import java.util.Iterator;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import javax.xml.XMLConstants;
-import javax.xml.namespace.NamespaceContext;
-import java.util.Collections;
-import java.util.Iterator;
+import com.google.common.base.Preconditions;
 
 public final class NodeNamespaceContext implements NamespaceContext
 {

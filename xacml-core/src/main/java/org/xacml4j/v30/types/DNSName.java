@@ -22,16 +22,16 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.google.common.net.InternetDomainName;
-
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.List;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.google.common.net.InternetDomainName;
 
 public final class DNSName implements Externalizable
 {

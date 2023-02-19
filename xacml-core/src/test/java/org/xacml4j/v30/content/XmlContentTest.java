@@ -22,20 +22,21 @@ package org.xacml4j.v30.content;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.PathEvaluationException;
-import org.xacml4j.v30.content.XmlContent;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.w3c.dom.Node;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.PathEvaluationException;
+import org.xacml4j.v30.types.XacmlTypes;
 
 public class XmlContentTest
 {

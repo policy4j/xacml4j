@@ -22,13 +22,11 @@ package org.xacml4j.v30.request;
  * #L%
  */
 
-import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.*;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,12 +36,24 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.Condition;
 import org.xacml4j.v30.policy.Target;
+import org.xacml4j.v30.types.Entity;
+
+import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
 
 /**
  * A XACML Request Context Abstraction

@@ -22,7 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 
 public enum FunctionCategory

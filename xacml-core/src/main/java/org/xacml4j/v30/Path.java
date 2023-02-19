@@ -22,15 +22,15 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Preconditions;
-
 import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Objects;
 import java.util.Optional;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 
 /**
  * Represents either XML XPATH or JSON JPATH expression.

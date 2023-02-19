@@ -23,23 +23,24 @@ package org.xacml4j.v30.types;
  */
 
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeContainer;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.Value;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Value;
 
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.base.Preconditions;
 
 /**
  * An entity represents a collection of related attributes

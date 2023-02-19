@@ -22,11 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.regex.Pattern;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-
-import java.util.regex.Pattern;
 
 /**
  * A XACML version  is expressed as a sequence of decimal numbers,

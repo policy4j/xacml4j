@@ -24,8 +24,6 @@ package org.xacml4j.v30;
 
 import java.io.Serializable;
 
-import javax.management.AttributeValueExp;
-
 
 /**
  * Represents XACML attribute value

@@ -22,21 +22,22 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xacml4j.util.NodeNamespaceContext;
-import org.xml.sax.InputSource;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
-import java.io.StringReader;
 
-import static org.junit.Assert.assertNotNull;
+import org.junit.Before;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xacml4j.util.NodeNamespaceContext;
+import org.xml.sax.InputSource;
 
 
 public class XPathTest

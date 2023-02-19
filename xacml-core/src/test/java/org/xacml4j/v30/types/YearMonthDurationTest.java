@@ -22,14 +22,13 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.types.YearMonthDuration;
+import static org.junit.Assert.assertEquals;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 public class YearMonthDurationTest
 {

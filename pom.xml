@@ -34,7 +34,7 @@
 		<easymock.version>5.1.0</easymock.version>
 		<objenesis.version>3.3</objenesis.version>
 		<google.guava.version>31.1-jre</google.guava.version>
-		<google.auto.version>1.0-rc7</google.auto.version>
+		<google.auto.version>1.0.1</google.auto.version>
 		<google.truth.version>0.45</google.truth.version>
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

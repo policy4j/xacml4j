@@ -22,16 +22,22 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.types.Entity;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class RequestTest

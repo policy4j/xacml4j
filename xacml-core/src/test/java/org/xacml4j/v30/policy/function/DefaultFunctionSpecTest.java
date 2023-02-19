@@ -22,7 +22,13 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import com.google.common.collect.ImmutableList;
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +39,7 @@ import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
+import com.google.common.collect.ImmutableList;
 
 public class DefaultFunctionSpecTest
 {

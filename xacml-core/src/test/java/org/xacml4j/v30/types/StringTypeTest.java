@@ -22,11 +22,11 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
-import org.xacml4j.v30.Value;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+import org.xacml4j.v30.Value;
 
 
 public class StringTypeTest

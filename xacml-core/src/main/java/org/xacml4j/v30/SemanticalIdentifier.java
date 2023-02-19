@@ -23,18 +23,23 @@ package org.xacml4j.v30;
  */
 
 
-import com.google.common.base.Function;
-import com.google.common.base.MoreObjects;
+import static java.util.Optional.ofNullable;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.TreeMap;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import org.slf4j.LoggerFactory;
 import org.xacml4j.util.Pair;
 import org.xacml4j.util.Reflections;
 
-import java.io.Serializable;
-import java.util.*;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import static java.util.Optional.ofNullable;
+import com.google.common.base.Function;
+import com.google.common.base.MoreObjects;
 
 /**
  * Represents an extensible XACML identifier

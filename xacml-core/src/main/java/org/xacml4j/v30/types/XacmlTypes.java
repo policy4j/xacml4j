@@ -22,18 +22,33 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import com.google.common.collect.ImmutableSet;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.Content;
+import java.net.URI;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import javax.security.auth.x500.X500Principal;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.xpath.XPathExpression;
-import java.net.URI;
-import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
+
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.BagOfValuesType;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Path;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueType;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Enumeration of the standard system XACML 3.0 data types
@@ -338,16 +353,36 @@ public enum XacmlTypes implements ValueType
 		}
 	};
 
-	private final static Map<String, ValueType> SYSTEM_TYPES_BY_ID = Arrays
-			.stream(values())
-			.collect(Collectors
-					.toMap(v -> v.getDataTypeId(), v->v));
+	private final static Map<String, ValueType> SYSTEM_TYPES_BY_ID = discoverByTypeId();
 
-	private final static Map<String, ValueType> SYSTEM_TYPES_BY_SHORT_ID = Arrays
-			.stream(values())
-			.collect(Collectors
-					.toMap(v -> v.getAbbrevDataTypeId(), v->v));
+	private final static Map<String, ValueType> SYSTEM_TYPES_BY_SHORT_ID = discoverByShortTypeId();
 
+
+	private static Map<String, ValueType> discoverByTypeId(){
+		ServiceLoader<TypeFactory> serviceLoader = ServiceLoader.load(TypeFactory.class);
+		Map<String, ValueType> types = serviceLoader.stream()
+		                                            .map(f->f.get())
+		                                            .flatMap(f->f.asMapByTypeId()
+		                                                         .entrySet()
+		                                                         .stream())
+		                                            .collect(Collectors.toMap(e->e.getKey(), e->e.getValue(), (a, b)->a,
+		                                                                      ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER)));
+		types.putAll(new SystemTypes().asMapByTypeId());
+		return Collections.unmodifiableMap(types);
+	}
+
+	private static Map<String, ValueType> discoverByShortTypeId(){
+		ServiceLoader<TypeFactory> serviceLoader = ServiceLoader.load(TypeFactory.class);
+		Map<String, ValueType> types = serviceLoader.stream()
+		                                            .map(f->f.get())
+		                                            .flatMap(f->f.asMapByAbbreviatedTypeId()
+		                                                         .entrySet()
+		                                                         .stream())
+		                                            .collect(Collectors.toMap(e->e.getKey(), e->e.getValue(), (a, b)->a,
+		                                                                      ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER)));
+		types.putAll(new SystemTypes().asMapByAbbreviatedTypeId());
+		return Collections.unmodifiableMap(types);
+	}
 
 	private String typeId;
 	private String shortTypeId;
@@ -366,10 +401,6 @@ public enum XacmlTypes implements ValueType
 				.build();
 	}
 
-	public static Optional<ValueType> getType(Object typeId){
-		return getType(typeId, false);
-	}
-
 	/**
 	 * Gets type via type identifier or alias
 	 *
@@ -377,34 +408,25 @@ public enum XacmlTypes implements ValueType
 	 * {@link String}, {@link URI}, {@link URI}
 	 * @return {@link Optional} with resolved type
 	 */
-	public static Optional<ValueType> getType(Object typeId, boolean refresh){
+	public static Optional<ValueType> getType(Object typeId){
 		if(typeId instanceof ValueType){
 			return Optional.of((ValueType)typeId);
 		}
 		if(typeId instanceof String){
-			return _getTypeById(typeId.toString(), refresh);
+			return _getTypeById(typeId.toString());
 		}
 		if(typeId instanceof URI){
-			return _getTypeById(typeId.toString(), refresh);
+			return _getTypeById(typeId.toString());
 		}
 		if(typeId instanceof Value){
 			Value a = (Value)typeId;
 			if(a.getType().equals(XacmlTypes.STRING) || a.getType().equals(ANYURI)){
-				return _getTypeById(a.value().toString(), refresh);
+				return _getTypeById(a.value().toString());
 			}
 		}
 		return Optional.empty();
 	}
 
-	/**
-	 * A factory for the extension types
-	 */
-	public interface Factory {
-		Optional<ValueType> getExtensionType(String typeId);
-	}
-
-	private static final ThreadLocal<ServiceLoader<Factory>> EXTENSIONS = ThreadLocal
-			.withInitial(()->ServiceLoader.load(Factory.class));
 
 	/**
 	 * Gets type via type identifier or alias
@@ -413,22 +435,10 @@ public enum XacmlTypes implements ValueType
 	 * @param refresh refresh extension types
 	 * @return {@link Optional} with resolved type
 	 */
-	private static Optional<ValueType> _getTypeById(final String typeId, boolean refresh){
-		Optional<ValueType> type = Optional
+	private static Optional<ValueType> _getTypeById(final String typeId){
+		return Optional
 				.ofNullable(SYSTEM_TYPES_BY_ID.get(typeId))
 				.or(()->Optional.ofNullable(SYSTEM_TYPES_BY_SHORT_ID.get(typeId)));
-		if(type.isPresent()){
-			return type;
-		}
-		ServiceLoader<Factory> typeFactory = EXTENSIONS.get();
-		if(typeFactory == null){
-			return Optional.empty();
-		}
-		return typeFactory.stream()
-		                  .filter(v->v.get().getExtensionType(typeId).isPresent())
-		                  .map(v->v.get())
-		                  .findFirst().
-				                  flatMap(v->v.getExtensionType(typeId));
 	}
 
 	/**
@@ -469,4 +479,12 @@ public enum XacmlTypes implements ValueType
 				CategoryId.parse(params[0])
 				: Optional.empty();
     }
+
+	static class SystemTypes extends TypeFactory.BaseTypeFactory
+	{
+		public SystemTypes() {
+			super(Arrays.asList(XacmlTypes.values()));
+		}
+	}
+
 }

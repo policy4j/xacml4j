@@ -22,9 +22,15 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.ExpressionVisitor;
+import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueTypeInfo;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import org.xacml4j.v30.*;
 
 public class VariableReference implements Expression
 {

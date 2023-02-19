@@ -22,12 +22,18 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueTypeInfo;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
 
 /**
  * Represents XACML variable definition.

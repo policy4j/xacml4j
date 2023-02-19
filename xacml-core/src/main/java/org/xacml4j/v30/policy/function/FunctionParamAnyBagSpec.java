@@ -22,12 +22,13 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import com.google.common.base.MoreObjects;
+import java.util.ListIterator;
+
 import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueTypeInfo;
 
-import java.util.ListIterator;
+import com.google.common.base.MoreObjects;
 
 final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
 {	

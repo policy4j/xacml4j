@@ -22,11 +22,11 @@ package org.xacml4j.util;
  * #L%
  */
 
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class StringUtils
 {
