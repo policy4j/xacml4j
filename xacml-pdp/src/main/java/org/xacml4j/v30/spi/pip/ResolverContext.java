@@ -159,7 +159,7 @@ public interface ResolverContext
 		}
 
 		public Map<AttributeReferenceKey, BagOfValues> getResolvedKeys(){
-			return resolvedKeys == null? Collections.emptyMap():resolvedKeys;
+			return resolvedKeys != null? resolvedKeys: resolveAllContextRefs();
 		}
 
 		@Override

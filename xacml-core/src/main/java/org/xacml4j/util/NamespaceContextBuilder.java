@@ -154,9 +154,9 @@ public final class NamespaceContextBuilder
             else if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
                 return Optional.of(XMLConstants.XMLNS_ATTRIBUTE_NS_URI);
             }
-            return Optional
+            return Optional.ofNullable(Optional
                     .ofNullable(prefixToNamespace.get(prefix))
-                    .or(()->parentContext.map(v->v.getNamespaceURI(prefix)));
+                    .orElseGet(()->parentContext.map(v->v.getNamespaceURI(prefix)).orElse(null)));
         }
 
         private Collection<String> getPrefixesInternal(String namespaceUri){

@@ -37,6 +37,8 @@ import java.util.stream.Collectors;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.marshal.MarshallingProvider;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
@@ -45,19 +47,14 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;
-import com.google.common.net.MediaType;
 
 public final class PolicyImportTool {
-	private Map<MediaType, Unmarshaller<CompositeDecisionRule>> unmarshallers;
-	private PolicyRepository repository;
+	private final Map<org.xacml4j.v30.marshal.MediaType, MarshallingProvider> unmarshallers;
+	private final PolicyRepository repository;
 
-	PolicyImportTool(
-			PolicyRepository repository,
-			Unmarshaller<CompositeDecisionRule> ...unmarshal) {
-		this.unmarshallers = Arrays.asList(Objects.requireNonNull(unmarshal, "unmarshal"))
-		                           .stream().collect(Collectors.toMap(v->v.getMediaType(), v->v));
+	PolicyImportTool(PolicyRepository repository) {
+		this.unmarshallers = MarshallingProvider.discoverProviders();
 		this.repository = Objects.requireNonNull(repository, "repository");
-
 	}
 
 	/**
@@ -73,19 +70,29 @@ public final class PolicyImportTool {
 	 *                         occurs while parsing XACML policy or policy set
 	 * @throws IOException     if an IO error occurs
 	 */
-	public CompositeDecisionRule importPolicy(MediaType mediaType,
-	                                          Supplier<InputStream> policySource)
+	public CompositeDecisionRule importPolicy(
+			org.xacml4j.v30.marshal.MediaType mediaType,
+			final Supplier<InputStream> policySource)
 			throws SyntaxException, IOException {
+		Optional<Unmarshaller<CompositeDecisionRule>> u = Optional.ofNullable(unmarshallers.get(mediaType))
+				                                  .flatMap(p->p.newPolicyUnmarshaller());
+		if(u.isPresent()){
+			CompositeDecisionRule r = u.get().unmarshal(policySource.get());
+			repository.add(r);
+			return r;
+		}
+		throw new SyntaxException("Unsupported media type=%s", mediaType.toString());
+	}
+
+	private Optional<CompositeDecisionRule> unmarshal(Unmarshaller<CompositeDecisionRule> u, Supplier<InputStream> policySource){
 		InputStream is = null;
-		try {
+		try{
 			is = policySource.get();
-			Unmarshaller<CompositeDecisionRule> u = unmarshallers.get(mediaType);
-			if(u != null){
-				CompositeDecisionRule r = u.unmarshal(policySource.get());
-				repository.add(r);
-			}
-			return null;
-		} finally {
+			return Optional.ofNullable(u.unmarshal(is));
+		}catch (Exception e){
+			return Optional.empty();
+		}
+		finally {
 			Closeables.closeQuietly(is);
 		}
 	}

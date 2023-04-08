@@ -43,7 +43,6 @@ import com.google.gson.JsonParseException;
 
 public class AttributeAssignmentDeserializer implements JsonDeserializer<AttributeAssignment> {
 
-
 	@Override
 	public AttributeAssignment deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {

@@ -26,11 +26,11 @@ import javax.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.SyntaxException;
-
-import com.google.common.base.Preconditions;
 import org.xacml4j.v30.marshal.ResponseUnmarshaller;
 
-public class Xacml30ResponseContextUnmarshaller extends
+import com.google.common.base.Preconditions;
+
+public final class Xacml30ResponseContextUnmarshaller extends
 	BaseJAXBUnmarshaller<ResponseContext>
 implements ResponseUnmarshaller
 {

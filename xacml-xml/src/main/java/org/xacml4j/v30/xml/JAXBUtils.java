@@ -22,17 +22,18 @@ package org.xacml4j.v30.xml;
  * #L%
  */
 
+import java.util.Optional;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import com.google.common.base.Preconditions;
 import org.oasis.xacml.v30.jaxb.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Content;
 
-import java.util.Optional;
+import com.google.common.base.Preconditions;
 
 public class JAXBUtils
 {
@@ -47,7 +48,7 @@ public class JAXBUtils
 					org.oasis.xacml.v20.jaxb.policy.ObjectFactory.class.getPackage().getName() +
 					SEP +
 					org.oasis.xacml.v20.jaxb.context.ObjectFactory.class.getPackage().getName());
-		}catch(JAXBException e){
+		}catch(Exception e){
 				LOG.error(e.getMessage(), e);
 			throw new IllegalStateException("Failed to initialize JAXB context", e);
 		}

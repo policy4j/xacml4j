@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -36,7 +35,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multiset;
 
 /**
@@ -48,7 +49,7 @@ import com.google.common.collect.Multiset;
 public class Attribute
 {
 	private final String attributeId;
-	private final Multiset<Value> values;
+	private final List<Value> values;
 	private final boolean includeInResult;
 	private final String issuer;
 
@@ -149,7 +150,7 @@ public class Attribute
 		return Objects.equal(attributeId, a.attributeId) &&
 			includeInResult == a.includeInResult &&
 			Objects.equal(issuer, a.issuer) &&
-			values.equals(a.values);
+			values.containsAll(a.values) && a.values.containsAll(values);
 	}
 
 	public static class Builder
@@ -157,12 +158,12 @@ public class Attribute
 		private String attributeId;
 		private String issuer;
 		private boolean includeInResult;
-		private ImmutableMultiset.Builder<Value> valueBuilder;
+		private ImmutableList.Builder<Value> valueBuilder;
 
 		private Builder(String attributeId){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(attributeId));
 			this.attributeId = attributeId;
-			this.valueBuilder = ImmutableMultiset.builder();
+			this.valueBuilder = ImmutableList.builder();
 		}
 
 		public Builder issuer(String issuer){
@@ -175,8 +176,8 @@ public class Attribute
 			return this;
 		}
 
-		public Builder noValues(){
-			this.valueBuilder = ImmutableMultiset.builder();
+		public Builder empty(){
+			this.valueBuilder = ImmutableList.builder();
 			return this;
 		}
 

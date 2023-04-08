@@ -79,7 +79,18 @@ public class AnnotatedResolverFactoryTest
 		Method m = getMethod(this.getClass(), "resolve1");
 		assertNotNull(m);
 
-		expect(context.getEvaluationStatus()).andReturn(Optional.of(Status.ok().build()));
+		expect(context.resolve(AttributeDesignatorKey.builder()
+		                                             .category(CategoryId.of("test"))
+		                                             .dataType(XacmlTypes.BOOLEAN)
+				                       .attributeId("attr1").build()))
+				.andReturn(Optional.of(XacmlTypes.BOOLEAN.of(true).toBag()));
+		expect(context.resolve(AttributeDesignatorKey.builder()
+		                                             .category(CategoryId.of("test"))
+		                                             .issuer("test")
+		                                             .dataType(XacmlTypes.INTEGER)
+		                                             .attributeId("attr2").build()))
+				.andReturn(Optional.of(XacmlTypes.INTEGER.of(10).toBag()));
+		expect(context.getClock()).andReturn(Clock.systemUTC());
 
 		control.replay();
 
@@ -93,6 +104,7 @@ public class AnnotatedResolverFactoryTest
 		ResolverContext pipContext = ResolverContext.createContext(context, d);
 
 		d.getResolverFunction().apply(pipContext);
+		control.verify();
 
 		assertEquals("Test", d.getName());
 		Truth8.assertThat(CategoryId.parse("subject")).hasValue(d.getCategory());

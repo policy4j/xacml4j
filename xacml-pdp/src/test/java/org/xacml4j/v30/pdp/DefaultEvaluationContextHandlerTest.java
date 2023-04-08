@@ -32,7 +32,7 @@ import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.Optional;

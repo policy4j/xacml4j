@@ -43,7 +43,7 @@ import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.request.RequestDefaults;
 import org.xacml4j.v30.request.RequestReference;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 

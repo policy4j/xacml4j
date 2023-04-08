@@ -4,6 +4,18 @@
 		<artifactId>xacml</artifactId>
 		<version>1.4.0-SNAPSHOT</version>
 	</parent>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>10</source>
+					<target>10</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>xacml-core</artifactId>
 	<packaging>jar</packaging>
@@ -21,11 +33,6 @@
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>xacml-xml-jaxb</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>

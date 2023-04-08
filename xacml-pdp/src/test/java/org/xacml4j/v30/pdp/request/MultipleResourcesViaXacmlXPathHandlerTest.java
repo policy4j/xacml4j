@@ -22,12 +22,8 @@ package org.xacml4j.v30.pdp.request;
  * #L%
  */
 
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
 
 import org.easymock.Capture;
 import org.junit.Before;
@@ -38,7 +34,7 @@ import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.Collection;
@@ -47,8 +43,6 @@ import java.util.Set;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
-
-import javax.annotation.concurrent.Immutable;
 
 public class MultipleResourcesViaXacmlXPathHandlerTest
 {

@@ -30,6 +30,7 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Expression;
 
 /**

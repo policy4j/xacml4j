@@ -23,6 +23,7 @@ package org.xacml4j.v30.spi.pip;
  */
 
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -89,23 +90,28 @@ public interface PolicyInformationPoint
 		ResolverRegistry registry;
 
 		public Builder(String id){
-			Preconditions.checkNotNull(id);
-			this.id = id;
+
+			this.id = Objects.requireNonNull(id, "id");
 		}
 
 		public abstract T getThis();
 
 		public T cacheProvider(
 				PolicyInformationPointCacheProvider cache){
-			Preconditions.checkNotNull(cache);
-			this.cache = cache;
+			this.cache = Preconditions.checkNotNull(cache, "cache");;
 			return getThis();
 		}
 
 		public T registry(
 				ResolverRegistry registry){
-			Preconditions.checkNotNull(registry, "registry");
-			this.registry = registry;
+			this.registry = Objects.requireNonNull(registry, "registry");
+			return getThis();
+		}
+
+		public T withDefaultRegistry(){
+			this.registry = ResolverRegistry.builder()
+			                                .withDefaultResolvers()
+			                                .build();
 			return getThis();
 		}
 

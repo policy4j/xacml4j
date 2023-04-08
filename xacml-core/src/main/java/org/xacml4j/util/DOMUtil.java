@@ -88,7 +88,7 @@ public class DOMUtil
 	public static List<Node> nodeListToList(NodeList list)
 	{
 		Objects.requireNonNull(list);
-		return new AbstractList<>()
+		return new AbstractList<Node>()
 		{
 				public int size() {
 					return list.getLength();

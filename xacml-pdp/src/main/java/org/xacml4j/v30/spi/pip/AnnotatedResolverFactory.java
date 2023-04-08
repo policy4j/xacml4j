@@ -274,8 +274,13 @@ class AnnotatedResolverFactory
 					System.arraycopy(keys.values().toArray(), 0, params, 1, keys.size());
 					return (T)m.invoke(instance, params);
 				}
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Resolver id={} context keys={}",
+					          context.getDescriptor().getId(), keys);
+				}
 				return (T)m.invoke(instance, keys.values().toArray());
 			}catch (Exception e){
+				LOG.error(e.getMessage(), e);
 				throw new RuntimeException(e);
 			}
 		}

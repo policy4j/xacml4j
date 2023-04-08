@@ -31,11 +31,10 @@ import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.request.RequestReference;
 import org.xacml4j.v30.request.RequestSyntaxException;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
@@ -110,16 +109,11 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.build();
 
 		RequestReference reference0 = RequestReference.builder()
-		                                              .reference("resourceAttr0", "subjectAttr0")
+		                                              .reference("resourceAttr0", "subjectAttr0", "actionAttr0")
 		                                              .build();
 
-
-		Collection<CategoryReference> ref1 = new LinkedList<CategoryReference>();
-		ref1.add(CategoryReference.builder().id("resourceAttr1").build());
-		ref1.add(CategoryReference.builder().id("subjectAttr1").build());
-
 		RequestReference reference1 = RequestReference.builder()
-				.reference("resourceAttr1", "subjectAttr1")
+				.reference("resourceAttr1", "subjectAttr1", "actionAttr0")
 				.build();
 
 		RequestContext context = RequestContext
@@ -140,24 +134,28 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		replay(pdp);
 		profile.handle(context, pdp).iterator();
 		RequestContext context0 = c0.getValue();
-		RequestContext context1 = c0.getValue();
+		RequestContext context1 = c1.getValue();
+
+		assertFalse(context0.containsRequestReferences());
+		assertEquals(3, context0.getCategories().size());
+		assertEquals(1, context0.getCategory(CategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context0.getCategory(CategoryId.RESOURCE).size());
 
 		assertNotNull(context0.getAttribute(CategoryId.SUBJECT_ACCESS, "testId5").orElse(null));
 		assertNotNull(context0.getAttribute(CategoryId.SUBJECT_ACCESS, "testId6").orElse(null));
 		assertNotNull(context0.getAttribute(CategoryId.RESOURCE, "testId1").orElse(null));
 		assertNotNull(context0.getAttribute(CategoryId.RESOURCE, "testId2").orElse(null));
 
-		assertEquals(2, context0.getCategories().size());
-		assertEquals(1, context0.getCategory(CategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context0.getCategory(CategoryId.RESOURCE).size());
+		assertEquals(3, context1.getCategories().size());
+		assertEquals(1, context1.getCategory(CategoryId.SUBJECT_ACCESS).size());
+		assertEquals(1, context1.getCategory(CategoryId.RESOURCE).size());
 
+		assertFalse(context1.containsRequestReferences());
 		assertNotNull(context1.getAttribute(CategoryId.SUBJECT_ACCESS, "testId7").orElse(null));
 		assertNotNull(context1.getAttribute(CategoryId.SUBJECT_ACCESS, "testId8").orElse(null));
 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId3").orElse(null));
 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId4").orElse(null));
-		assertEquals(2, context1.getCategories().size());
-		assertEquals(1, context1.getCategory(CategoryId.SUBJECT_ACCESS).size());
-		assertEquals(1, context1.getCategory(CategoryId.RESOURCE).size());
+
 		verify(pdp);
 	}
 

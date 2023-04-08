@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;

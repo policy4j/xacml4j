@@ -43,6 +43,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Path;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;

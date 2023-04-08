@@ -26,8 +26,6 @@ package org.xacml4j.v30;
 import java.util.Map;
 import java.util.Optional;
 
-import org.xacml4j.v30.types.Entity;
-
 /**
  * XACML attribute identifier
  *

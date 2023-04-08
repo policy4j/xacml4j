@@ -33,13 +33,11 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.Result;
 
 import org.w3c.dom.Node;
-
-import com.google.common.base.Preconditions;
-import com.google.common.net.MediaType;
-
 import org.xacml4j.v30.marshal.Marshaller;
 
-public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
+import com.google.common.base.Preconditions;
+
+ abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 {
 	private JAXBContext context;
 
@@ -48,10 +46,6 @@ public abstract class BaseJAXBMarshaller<T> implements Marshaller<T>
 		this.context = context;
 	}
 
-	@Override
-	public MediaType getMediaType() {
-		return MediaType.XML_UTF_8;
-	}
 
 	@Override
 	public final void marshal(T source, Object target) throws IOException

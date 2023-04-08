@@ -46,7 +46,7 @@ import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Histogram;

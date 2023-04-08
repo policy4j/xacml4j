@@ -79,7 +79,7 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 				XacmlPolicyDecisionCombiningAlgorithm.class)){
 			policyAlgorithms.add(createPolicyDecisionCombineAlgorithm(m));
 		}
-		return new DecisionCombiningAlgorithmProviderImpl(ruleAlgorithms, policyAlgorithms);
+		return new BaseDecisionCombiningAlgorithmProvider(ruleAlgorithms, policyAlgorithms);
 	}
 
 

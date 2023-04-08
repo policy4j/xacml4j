@@ -27,11 +27,11 @@ import java.io.IOException;
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.ResponseType;
 import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.marshal.Marshaller;
+import org.xacml4j.v30.marshal.ResponseMarshaller;
 
-public class Xacml30ResponseContextMarshaller extends
+public final class Xacml30ResponseContextMarshaller extends
 	BaseJAXBMarshaller<ResponseContext>
-implements Marshaller<ResponseContext> {
+		implements ResponseMarshaller {
 	private final static ObjectFactory factory = new ObjectFactory();
 	
 	private Xacml30RequestContextFromJaxbToObjectModelMapper mapper;

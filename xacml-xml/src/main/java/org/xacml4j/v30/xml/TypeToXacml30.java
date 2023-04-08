@@ -23,12 +23,8 @@ package org.xacml4j.v30.xml;
  */
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.ServiceLoader;
-import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -40,7 +36,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.TypeCapability;
 import org.xacml4j.v30.Value;
@@ -89,14 +85,8 @@ public interface TypeToXacml30 extends TypeCapability
 	}
 
 	static Map<ValueType, TypeToXacml30> discoverCapabilities(){
-		ServiceLoader<TypeToXacml30Factory> serviceLoader = ServiceLoader.load(TypeToXacml30Factory.class);
-		Map<ValueType, TypeToXacml30> discovered =
-				serviceLoader.stream()
-				             .map(v->v.get())
-				             .flatMap(f->f.asMap().entrySet().stream())
-				             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b)->a));
-		discovered.putAll(systemFactory.asMap());
-		return Collections.unmodifiableMap(discovered);
+		return TypeCapability.discoverCapabilities(new DefaultTypeToXacml30Factory(),
+		                                           TypeToXacml30.class, TypeToXacml30Factory.class);
 	}
 
 
@@ -578,6 +568,4 @@ public interface TypeToXacml30 extends TypeCapability
 			super(Arrays.asList(TypeToXacml30.Types.values()), TypeToXacml30.class);
 		}
 	}
-
-
 }

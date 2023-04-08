@@ -35,7 +35,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.content.JsonContent;
 import org.xacml4j.v30.content.XmlContent;
-import org.xacml4j.v30.types.Entity;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
@@ -63,7 +62,7 @@ public interface Content
      */
     default Optional<BagOfValues> resolve(
             AttributeSelectorKey selectorKey){
-        return resolve(selectorKey, null);
+        return resolve(selectorKey, ()->null);
     }
 
     /**
@@ -244,7 +243,6 @@ public interface Content
         }
 
         public static Optional<Type> getByMediaType(String mediaType){
-
             return Arrays.asList(values()).stream().filter(v->v.is(mediaType)).findFirst();
         }
     }

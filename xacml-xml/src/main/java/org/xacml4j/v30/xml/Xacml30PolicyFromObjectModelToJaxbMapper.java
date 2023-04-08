@@ -53,7 +53,9 @@ import org.oasis.xacml.v30.jaxb.TargetType;
 import org.oasis.xacml.v30.jaxb.VariableDefinitionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.policy.AdviceExpression;
 import org.xacml4j.v30.policy.AttributeAssignmentExpression;
@@ -73,13 +75,13 @@ import org.xacml4j.v30.policy.PolicySetIDReference;
 import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.Target;
 import org.xacml4j.v30.policy.VariableDefinition;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-public class Xacml30PolicyFromObjectModelToJaxbMapper
+final class Xacml30PolicyFromObjectModelToJaxbMapper
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromObjectModelToJaxbMapper.class);
 

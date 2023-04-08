@@ -26,11 +26,11 @@ import java.io.IOException;
 
 import org.oasis.xacml.v30.jaxb.ObjectFactory;
 import org.oasis.xacml.v30.jaxb.RequestType;
+import org.xacml4j.v30.marshal.RequestMarshaller;
 import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.marshal.Marshaller;
 
-public class Xacml30RequestContextMarshaller extends BaseJAXBMarshaller<RequestContext> 
- implements Marshaller<RequestContext> {
+public final class Xacml30RequestContextMarshaller extends BaseJAXBMarshaller<RequestContext>
+		implements RequestMarshaller {
 private final static ObjectFactory factory = new ObjectFactory();
 	
 	private Xacml30RequestContextFromJaxbToObjectModelMapper mapper;

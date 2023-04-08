@@ -38,7 +38,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;

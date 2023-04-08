@@ -22,7 +22,14 @@ package org.xacml4j.v30.xml;
  * #L%
  */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.xml.bind.JAXBElement;
@@ -55,7 +62,15 @@ import org.oasis.xacml.v30.jaxb.VariableReferenceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Value;
+import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
 import org.xacml4j.v30.policy.AdviceExpression;
@@ -82,13 +97,13 @@ import org.xacml4j.v30.policy.VariableDefinition;
 import org.xacml4j.v30.policy.VariableReference;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.policy.function.FunctionProvider;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 
-public class Xacml30PolicyFromJaxbToObjectModelMapper
+class Xacml30PolicyFromJaxbToObjectModelMapper
 	extends PolicyUnmarshallerSupport
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml30PolicyFromJaxbToObjectModelMapper.class);
@@ -100,7 +115,7 @@ public class Xacml30PolicyFromJaxbToObjectModelMapper
 
 	public Xacml30PolicyFromJaxbToObjectModelMapper(
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionAlgorithms) throws Exception{
+			DecisionCombiningAlgorithmProvider decisionAlgorithms){
 		super(functions, decisionAlgorithms);
 	}
 

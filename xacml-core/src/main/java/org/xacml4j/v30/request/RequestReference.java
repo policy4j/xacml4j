@@ -109,8 +109,8 @@ public class RequestReference
 	{
 		private ImmutableList.Builder<CategoryReference> refs = ImmutableList.builder();
 
-		public Builder reference(String ... attributeIds){
-			for(String attributeId : attributeIds){
+		public Builder reference(String ... categoryIds){
+			for(String attributeId : categoryIds){
 				refs.add(CategoryReference.builder().id(attributeId).build());
 			}
 			return this;

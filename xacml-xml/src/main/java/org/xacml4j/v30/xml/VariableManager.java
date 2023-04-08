@@ -32,7 +32,7 @@ import org.xacml4j.v30.policy.VariableDefinition;
 
 import com.google.common.base.Preconditions;
 
-class VariableManager<VExpression>
+final class VariableManager<VExpression>
 {
 	private final Map<String, VExpression> variableDefinitionExpressions;
 	private final Map<String, VariableDefinition> variableDefinitions;

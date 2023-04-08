@@ -34,6 +34,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.pdp.MetricsSupport;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
@@ -41,11 +42,11 @@ import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.codahale.metrics.CsvReporter;
 import com.google.common.base.Supplier;
-import com.google.common.net.MediaType;
 
 public class RSA2008InteropTest extends XacmlPolicyTestSupport
 {
@@ -65,7 +66,7 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
 				FunctionProviderBuilder.builder()
-				                       .defaultFunctions()
+				                       .withDefaultFunctions()
 				                       .build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
 				                                         .withDefaultAlgorithms()
@@ -83,8 +84,9 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 				_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
+		PolicyImportTool tool = repository.newImportTool();
 		for (Supplier<InputStream> policyStream : policyStreams) {
-			policies.add(repository.importPolicy(MediaType.XML_UTF_8, policyStream));
+			tool.importPolicy(MediaType.Type.XACML20_XML, policyStream);
 		}
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")

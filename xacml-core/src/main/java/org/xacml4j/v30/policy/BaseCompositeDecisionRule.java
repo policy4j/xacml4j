@@ -33,7 +33,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.Versionable;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;

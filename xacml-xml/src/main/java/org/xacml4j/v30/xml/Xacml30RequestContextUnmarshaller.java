@@ -24,15 +24,15 @@ package org.xacml4j.v30.xml;
 
 import javax.xml.bind.JAXBElement;
 
-import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.marshal.RequestUnmarshaller;
+import org.xacml4j.v30.request.RequestContext;
 
 import com.google.common.base.Preconditions;
-import org.xacml4j.v30.marshal.Unmarshaller;
 
-public class Xacml30RequestContextUnmarshaller extends
+public final class Xacml30RequestContextUnmarshaller extends
 	BaseJAXBUnmarshaller<RequestContext>
-implements Unmarshaller<RequestContext> {
+		implements RequestUnmarshaller {
 	private Xacml30RequestContextFromJaxbToObjectModelMapper mapper;
 
 	public Xacml30RequestContextUnmarshaller(){

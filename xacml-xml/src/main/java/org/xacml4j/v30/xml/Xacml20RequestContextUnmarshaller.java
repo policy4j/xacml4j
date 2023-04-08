@@ -41,14 +41,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.content.XmlContent;
-import org.xacml4j.v30.marshal.Unmarshaller;
+import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.Xacml20XPathTo30Transformer;
-import org.xacml4j.v30.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
@@ -58,7 +63,7 @@ import com.google.common.collect.Multimap;
 
 public final class Xacml20RequestContextUnmarshaller extends
 	BaseJAXBUnmarshaller<RequestContext>
-implements Unmarshaller<RequestContext> {
+		implements RequestUnmarshaller {
 	private final static String RESOURCE_ID = "urn:oasis:names:tc:xacml:1.0:resource:resource-id";
 
 	private final static Map<Decision, DecisionType> V30_TO_V20_DECISION_MAPPING = ImmutableMap.<Decision, DecisionType>builder()

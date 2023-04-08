@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 import org.xacml4j.v30.*;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;
@@ -74,7 +74,7 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
 		if (src.getReferenceId() != null) {
-			o.addProperty(JsonProperties.ID_PROPERTY, src.getReferenceId());
+			o.addProperty(JsonProperties.ID_PROPERTY, src.getReferenceId().orElse(null));
 		}
 		Entity e = src.getEntity();
 		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getAbbreviatedId());

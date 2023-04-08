@@ -41,9 +41,11 @@
 		<license.licenseName>lgpl_v3</license.licenseName>
 		<metrics.version>4.1.17</metrics.version>
 		<json.path.version>2.5.0</json.path.version>
-		<jaxb.api.version>2.3.1</jaxb.api.version>
 		<hamcrest.version>1.3</hamcrest.version>
 		<euij4j.version>0.0.3</euij4j.version>
+		<jaxb.api.version>>2.3.3</jaxb.api.version>
+		<jaxb.api.impl.version>3.0.2</jaxb.api.impl.version>
+		<json.smart.version>2.4.10</json.smart.version>
 	</properties>
 
 	<inceptionYear>2009</inceptionYear>
@@ -155,10 +157,16 @@
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
-				<groupId>javax.xml.bind</groupId>
-				<artifactId>jaxb-api</artifactId>
-				<version>${jaxb.api.version}</version>
-				<scope>provided</scope>
+				<groupId>jakarta.xml.bind</groupId>
+				<artifactId>jakarta.xml.bind-api</artifactId>
+				<version>2.3.3</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+				<version>2.3.8</version>
+				<scope>runtime</scope>
 			</dependency>
 			<dependency>
 				<groupId>io.dropwizard.metrics</groupId>
@@ -226,8 +234,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<source>1.9</source>
-					<target>1.9</target>
+					<source>13</source>
+					<target>13</target>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>com.google.auto.service</groupId>

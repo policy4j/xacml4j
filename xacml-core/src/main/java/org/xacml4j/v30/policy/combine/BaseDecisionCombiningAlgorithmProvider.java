@@ -32,26 +32,23 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Rule;
 
-import com.google.auto.service.AutoService;
-
 
 /**
  * A base implementation of {@link DecisionCombiningAlgorithmProvider}
  *
  * @author Giedrius Trumpickas
  */
-@AutoService(DecisionCombiningAlgorithmProvider.class)
-public class DecisionCombiningAlgorithmProviderImpl implements DecisionCombiningAlgorithmProvider
+public class BaseDecisionCombiningAlgorithmProvider implements DecisionCombiningAlgorithmProvider
 {
 	private Map<String, DecisionCombiningAlgorithm<Rule>> ruleAlgo;
 	private Map<String, DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgo;
 
-	protected DecisionCombiningAlgorithmProviderImpl(){
+	protected BaseDecisionCombiningAlgorithmProvider(){
 		this.ruleAlgo = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 		this.policyAlgo = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	}
 
-	public DecisionCombiningAlgorithmProviderImpl(
+	public BaseDecisionCombiningAlgorithmProvider(
 			Collection<DecisionCombiningAlgorithm<Rule>> ruleAlgorithms,
 			Collection<DecisionCombiningAlgorithm<CompositeDecisionRule>> policyAlgorithms){
 		this.ruleAlgo = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);

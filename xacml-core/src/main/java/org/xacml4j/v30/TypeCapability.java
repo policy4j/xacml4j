@@ -74,8 +74,8 @@ public interface TypeCapability
 		                 .flatMap(v->v.get().forType(type));
 	}
 
-	static <T extends TypeCapability, F extends TypeCapabilityFactory<T>> Map<ValueType, T>
-	discoverCapabilities(F systemFactory, Class<T> capabilityType, Class<F> capabilityFactoryType){
+	static <T extends TypeCapability, F extends TypeCapabilityFactory<T>> Map<ValueType, T> discoverCapabilities(
+			F systemFactory, Class<T> capabilityType, Class<F> capabilityFactoryType){
 		ServiceLoader<F> serviceLoader = ServiceLoader.load(capabilityFactoryType);
 		Map<ValueType, T> discovered =
 				serviceLoader.stream()

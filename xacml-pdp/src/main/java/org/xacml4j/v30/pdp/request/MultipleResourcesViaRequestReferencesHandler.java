@@ -25,6 +25,8 @@ package org.xacml4j.v30.pdp.request;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.Result;
@@ -37,6 +39,7 @@ import org.xacml4j.v30.request.RequestSyntaxException;
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {
 	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
+	private final static Logger LOG = LoggerFactory.getLogger(MultipleResourcesViaRequestReferencesHandler.class);
 
 	public MultipleResourcesViaRequestReferencesHandler() {
 		super(FEATURE_ID);
@@ -51,10 +54,14 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			return handleNext(request, context);
 		}
 		for(RequestReference ref : references){
-			try{
+			try
+			{
+				LOG.debug("Resolving request ref={}", ref);
 				RequestContext resolvedRequest = resolveAttributes(request, ref);
+				LOG.debug("Resolved request={}", resolvedRequest);
 				results.addAll(handleNext(resolvedRequest, context));
 			}catch(RequestSyntaxException e){
+				LOG.debug(e.getMessage(), e);
 				results.add(
 						Result
 						.indeterminate(e.getStatus())
@@ -73,7 +80,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			Category attributes = req.getReferencedCategory(ref);
 			if(attributes == null){
 				throw new RequestSyntaxException(
-						"Failed to resolve attribute reference",
+						"Failed to resolve attribute reference=\"%s\"",
 						ref.getReferenceId());
 			}
 			resolved.add(attributes);

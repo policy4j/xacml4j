@@ -65,11 +65,6 @@ public class JsonResponseContextMarshaller implements Marshaller<ResponseContext
 	}
 
 	@Override
-	public MediaType getMediaType() {
-		return MediaType.JSON_UTF_8;
-	}
-
-	@Override
 	public Object marshal(ResponseContext source) throws IOException {
 		return json.toJsonTree(source);
 	}

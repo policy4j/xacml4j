@@ -27,7 +27,7 @@ import java.io.IOException;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.marshal.PolicyMarshaller;
 
-public class XacmlPolicyMarshaller
+public final class XacmlPolicyMarshaller
 		extends BaseJAXBMarshaller<CompositeDecisionRule>
 		implements PolicyMarshaller
 {

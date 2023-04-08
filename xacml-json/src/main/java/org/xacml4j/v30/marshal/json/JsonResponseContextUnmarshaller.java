@@ -61,10 +61,6 @@ public class JsonResponseContextUnmarshaller implements Unmarshaller<ResponseCon
 				.registerTypeAdapter(PolicySetIDReference.class, new IdReferenceAdapter()).create();
 	}
 
-	@Override
-	public MediaType getMediaType() {
-		return MediaType.JSON_UTF_8;
-	}
 
 	@Override
 	public ResponseContext unmarshal(Object source) throws SyntaxException, IOException {

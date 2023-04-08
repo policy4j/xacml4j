@@ -34,11 +34,13 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.pip.ResolverRegistry;
+import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshaller;
 import org.xacml4j.v30.xml.Xacml30RequestContextUnmarshaller;
@@ -50,7 +52,6 @@ import org.xacml4j.v30.spi.repository.PolicyRepository;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 import com.google.common.io.Closeables;
-import com.google.common.net.MediaType;
 
 public class XacmlPolicyTestSupport {
 	protected final Logger log = LoggerFactory.getLogger(XacmlPolicyTestSupport.class);
@@ -72,9 +73,9 @@ public class XacmlPolicyTestSupport {
 	{
 		Builder pdpBuilder = new Builder("testPDP", "testPIP", "testRepositoryId");
 		pdpBuilder.rootPolicy(rootPolicyId, rootPolicyVersion);
-		pdpBuilder.standardResolvers();
-		pdpBuilder.standardFunctions();
-		pdpBuilder.defaultDecisionAlgorithms();
+		pdpBuilder.withDefaultResolvers();
+		pdpBuilder.withDefaultFunctions();
+		pdpBuilder.withDefaultDecisionAlgorithms();
 		return pdpBuilder;
 	}
 
@@ -288,18 +289,29 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 
-		public Builder defaultDecisionAlgorithms(){
+		public Builder withDefaultDecisionAlgorithms(){
 			decisionAlgoProviderBuilder.withDefaultAlgorithms();
 			return this;
 		}
 
-		public Builder standardResolvers(){
+		public Builder withDiscoveredDecisionAlgorithms(){
+			decisionAlgoProviderBuilder.withDiscoveredAlgorithms();
+			return this;
+		}
+
+		public Builder withDefaultResolvers(){
 			registryBuilder.withDefaultResolvers();
 			return this;
 		}
 
-		public Builder standardFunctions() {
+
+		public Builder withDefaultFunctions() {
 			functionProviderBuilder.withDefaultFunctions();
+			return this;
+		}
+
+		public Builder withDiscoveredFunctions() {
+			functionProviderBuilder.withDiscoveredFunctions();
 			return this;
 		}
 
@@ -318,9 +330,14 @@ public class XacmlPolicyTestSupport {
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
 					functionProviderBuilder.build(),
-					decisionAlgoProviderBuilder.build(), un);
+					decisionAlgoProviderBuilder.build());
+			PolicyImportTool tool = repository.newImportTool();
 			for (Supplier<InputStream> in : policies) {
-				repository.importPolicy(MediaType.XML_UTF_8, in);
+				try{
+					tool.importPolicy(MediaType.Type.XACML30_XML, in);
+				}catch (Exception e){
+					tool.importPolicy(MediaType.Type.XACML20_XML, in);
+				}
 			}
 			return PolicyDecisionPointBuilder
 					.builder(pdpId)

@@ -23,10 +23,15 @@ package org.xacml4j.v30.marshal.json;
  */
 
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.TypeCapability;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
@@ -45,9 +50,27 @@ import com.google.gson.reflect.TypeToken;
 
 public interface TypeToGSon extends TypeCapability
 {
+	Logger LOG = LoggerFactory.getLogger(TypeToGSon.class);
+
 	ValueType getType();
 	JsonElement toJson(Value v, JsonSerializationContext ctx);
 	Value fromJson(JsonElement v, JsonDeserializationContext ctx);
+
+	TypeToGsonFactory systemFactory = new TypeToGSon.DefaultTypeToGsonFactory();
+	Map<ValueType, TypeToGSon> capabilities = discoverCapabilities();
+
+	static Optional<TypeToGSon> forType(ValueType valueType){
+		return Optional.ofNullable(capabilities.get(valueType));
+	}
+
+	static Optional<TypeToGSon> forType(String valueType){
+		return XacmlTypes.getType(valueType).map(t->capabilities.get(t));
+	}
+
+	static Map<ValueType, TypeToGSon> discoverCapabilities(){
+		return TypeCapability.discoverCapabilities(new TypeToGSon.DefaultTypeToGsonFactory(),
+		                                           TypeToGSon.class, TypeToGsonFactory.class);
+	}
 
 	enum Types implements TypeToGSon
 	{
@@ -221,11 +244,13 @@ public interface TypeToGSon extends TypeCapability
 			public JsonElement toJson(Value v, JsonSerializationContext ctx) {
 				Entity entity = ((EntityValue)v).value();
 				JsonObject o = new JsonObject();
+				JsonElement element = ctx.serialize(entity.getAttributes());
+				LOG.debug("Json={}", element);
+				o.add(JsonProperties.ATTRIBUTE_PROPERTY, element);
 				if(entity.hasContent()){
 					o.addProperty(JsonProperties.CONTENT_PROPERTY,
 							entity.getContent().get().asString());
 				}
-				o.add(JsonProperties.ATTRIBUTE_PROPERTY, ctx.serialize(entity.getAttributes()));
 				return o;
 			}
 
@@ -259,5 +284,13 @@ public interface TypeToGSon extends TypeCapability
 			return type;
 		}
 
+	}
+
+	final class DefaultTypeToGsonFactory
+			extends TypeCapability.AbstractCapabilityFactory<TypeToGSon> implements TypeToGsonFactory
+	{
+		public DefaultTypeToGsonFactory() {
+			super(Arrays.asList(TypeToGSon.Types.values()), TypeToGSon.class);
+		}
 	}
 }

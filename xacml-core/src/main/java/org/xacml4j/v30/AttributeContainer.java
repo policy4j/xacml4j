@@ -186,10 +186,6 @@ public class AttributeContainer
 			if(attrs == null){
 				return getThis();
 			}
-			if(LOG.isDebugEnabled()){
-				LOG.debug("Adding attributes=\"{}\"",
-						Iterables.toString(attrs));
-			}
 			for(Attribute attr : attrs){
 				attrsBuilder.put(attr.getAttributeId(), attr);
 			}

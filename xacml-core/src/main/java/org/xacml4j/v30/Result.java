@@ -29,7 +29,6 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.types.Entity;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -54,8 +53,6 @@ public final class Result
 	private Result(Builder b){
 		Preconditions.checkArgument(b.decision !=null, "Decision must be specified");
 		Preconditions.checkArgument(b.status !=null, "Status must be specified");
-		Preconditions.checkArgument(!(b.decision.isIndeterminate() ^
-				b.status.isFailure()));
 		this.decision = b.decision;
 		this.status = b.status;
 		this.obligations = ImmutableMap.copyOf(b.obligations);

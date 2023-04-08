@@ -27,7 +27,6 @@ import java.util.function.Predicate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.types.Entity;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;

@@ -23,7 +23,10 @@ package org.xacml4j.v30.xml;
  */
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.oasis.xacml.v20.jaxb.context.DecisionType;
@@ -39,9 +42,19 @@ import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.marshal.Marshaller;
+import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -55,9 +68,9 @@ import com.google.common.collect.Iterables;
  *
  * @author Giedrius Trumpickas
  */
-public class Xacml20ResponseContextMarshaller
+public final class Xacml20ResponseContextMarshaller
 	extends BaseJAXBMarshaller<ResponseContext>
-	implements Marshaller<ResponseContext> {
+		implements ResponseMarshaller {
 	private final Mapper mapper;
 	private final ObjectFactory factory;
 

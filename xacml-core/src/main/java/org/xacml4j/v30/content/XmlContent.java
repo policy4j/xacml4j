@@ -49,7 +49,7 @@ import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -153,8 +153,7 @@ public final class XmlContent implements Content
             return false;
         }
         XmlContent xml = (XmlContent)o;
-        return contextNode.isEqualNode(
-                xml.contextNode);
+        return DOMUtil.isEqual(contextNode, xml.contextNode);
     }
 
     public Object toNode(){

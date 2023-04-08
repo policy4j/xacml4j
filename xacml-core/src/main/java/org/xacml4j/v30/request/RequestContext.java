@@ -41,7 +41,7 @@ import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.Condition;
 import org.xacml4j.v30.policy.Target;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;

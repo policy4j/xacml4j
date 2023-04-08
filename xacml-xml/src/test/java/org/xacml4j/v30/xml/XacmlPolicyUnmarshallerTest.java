@@ -275,13 +275,12 @@ public class XacmlPolicyUnmarshallerTest
 	{
 		final VariableDefinition expectedVar05 = new VariableDefinition(
 				"VAR05",
-				AttributeDesignatorKey.builder()
+				AttributeDesignator.builder().key(
+						AttributeDesignatorKey.builder()
 				                   .attributeId("urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number")
 				                   .category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
 				                   .dataType(XacmlTypes.STRING)
-				                   .toDesignatorBuilder()
-				                      .mustBePresent(true)
-				                      .build());
+				                      .build()).build());
 
 		Policy p = getPolicy("v30-policy-with-variables-2.xml");
 		assertThat(p.getVersion().getValue(), is("1.0"));

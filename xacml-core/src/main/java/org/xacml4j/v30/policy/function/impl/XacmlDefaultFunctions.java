@@ -30,10 +30,14 @@ import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 
 import com.google.auto.service.AutoService;
 
-@XacmlFunctionProvider(description = "XACML 3.0 standard functions")
 @AutoService(FunctionProvider.class)
+@XacmlFunctionProvider(description = "XACML 3.0 standard functions")
 public final class XacmlDefaultFunctions extends BaseFunctionProvider
 {
+    public XacmlDefaultFunctions(){
+        this(FunctionInvocationFactory.defaultFactory());
+    }
+
     public XacmlDefaultFunctions(FunctionInvocationFactory invocationFactory){
         super(toFunctionSpec(
                 AnnotationBasedFunctionProvider.toProviders(

@@ -50,10 +50,6 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
 	}
 
-	@Override
-	public MediaType getMediaType() {
-		return MediaType.JSON_UTF_8;
-	}
 
 	@Override
 	public RequestContext unmarshal(Object source) throws SyntaxException, IOException {

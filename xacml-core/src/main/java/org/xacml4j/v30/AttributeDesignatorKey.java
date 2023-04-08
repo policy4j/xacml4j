@@ -60,6 +60,10 @@ public final class AttributeDesignatorKey
 				.build();
 	}
 
+	public Builder toBuilder(){
+		return new Builder().from(this);
+	}
+
 	public String getAttributeId(){
 		return attributeId;
 	}

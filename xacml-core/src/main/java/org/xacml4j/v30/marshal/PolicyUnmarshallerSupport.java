@@ -46,7 +46,7 @@ public class PolicyUnmarshallerSupport
 
 	protected PolicyUnmarshallerSupport(
 			FunctionProvider functions,
-			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms) throws Exception
+			DecisionCombiningAlgorithmProvider decisionCombiningAlgorithms)
 	{
 		Preconditions.checkNotNull(functions,
 				"Function provider can't be null");

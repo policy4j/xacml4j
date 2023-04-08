@@ -1,4 +1,4 @@
-package org.xacml4j.v30.types;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -29,14 +29,9 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeContainer;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.Content;
-import org.xacml4j.v30.Value;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -49,6 +44,8 @@ import com.google.common.base.Preconditions;
  */
 public final class Entity extends AttributeContainer
 {
+	private final static Logger LOG = LoggerFactory.getLogger(Entity.class);
+
 	private final Content content;
 	private transient int hashCode = -1;
 
@@ -138,7 +135,7 @@ public final class Entity extends AttributeContainer
 			return false;
 		}
 		Entity a = (Entity) o;
-		return Objects.equal(attributes, a.attributes) &&
+		return attributes.equals(a.attributes) &&
 				Objects.equal(content, a.content);
 	}
 

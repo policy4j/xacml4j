@@ -28,8 +28,6 @@ import com.google.common.net.MediaType;
 
 public interface Marshaller <T>
 {
-	MediaType getMediaType();
-
 	Object marshal(T source)
 		throws IOException;
 

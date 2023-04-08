@@ -188,8 +188,8 @@ public interface PolicyRepository
 	 * @param unmarshaller a policy unmarshaller
 	 * @return {@Link ImportTool}
 	 */
-	default PolicyImportTool newImportTool(Unmarshaller<CompositeDecisionRule> ...unmarshaller){
-		return new PolicyImportTool(this, unmarshaller);
+	default PolicyImportTool newImportTool(){
+		return new PolicyImportTool(this);
 	}
 
 }

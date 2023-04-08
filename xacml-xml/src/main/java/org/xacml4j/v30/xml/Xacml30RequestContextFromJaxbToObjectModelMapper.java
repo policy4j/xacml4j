@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v30.jaxb.AdviceType;
 import org.oasis.xacml.v30.jaxb.AssociatedAdviceType;
@@ -52,19 +53,33 @@ import org.oasis.xacml.v30.jaxb.StatusCodeType;
 import org.oasis.xacml.v30.jaxb.StatusDetailType;
 import org.oasis.xacml.v30.jaxb.StatusType;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.CategoryReference;
+import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
+import org.xacml4j.v30.StatusCode;
+import org.xacml4j.v30.StatusCodeId;
+import org.xacml4j.v30.StatusDetail;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.request.RequestDefaults;
 import org.xacml4j.v30.request.RequestReference;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-
-import javax.xml.bind.JAXBElement;
 
 public class Xacml30RequestContextFromJaxbToObjectModelMapper
 {

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.types;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -30,6 +30,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.XacmlTypes;
 
 public class   EntityTest
 {
@@ -110,8 +112,6 @@ public class   EntityTest
 				.attribute(Attribute.builder("testId1").value(XacmlTypes.STRING.of("aa"), XacmlTypes.STRING.of("bb")).build())
 				.attribute(Attribute.builder("testId2").value(XacmlTypes.STRING.of("cc"), XacmlTypes.STRING.of("dd")).build())
 				.build();
-
-		System.out.println(e2);
 		Entity e3 = Entity
 				.builder()
 				.content(testXml)
@@ -120,6 +120,27 @@ public class   EntityTest
 				.build();
 		assertEquals(e0, e1);
 		assertEquals(e2, e3);
+	}
+
+	@Test
+	public void testEntityEquals2(){
+		Entity embeddedEntity = Entity.builder()
+		                      .xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
+		                      .attribute(Attribute.builder("testId1").value(XacmlTypes.STRING.of("aa"), XacmlTypes.STRING.of("bb")).build())
+		                      .attribute(Attribute.builder("testId2").value(XacmlTypes.STRING.of("cc"), XacmlTypes.STRING.of("dd")).build())
+		                      .build();
+		Entity a = Entity.builder()
+				              .attribute(Attribute.builder("testId")
+				                                  .entity(embeddedEntity)
+				                                  .build())
+				              .build();
+		Entity b = Entity.builder()
+		                 .attribute(Attribute.builder("testId")
+		                                     .entity(embeddedEntity)
+		                                     .build())
+		                 .build();
+		assertEquals(a, b);
+
 	}
 }
 

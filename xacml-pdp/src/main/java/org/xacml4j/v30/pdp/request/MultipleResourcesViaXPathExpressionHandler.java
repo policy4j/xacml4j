@@ -42,7 +42,7 @@ import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.request.RequestSyntaxException;
-import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
