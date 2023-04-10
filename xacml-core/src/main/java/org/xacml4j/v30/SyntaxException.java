@@ -53,6 +53,11 @@ public class SyntaxException extends CoreException
 				"Invalid XACML type identifier=\"%s\"",
 				v);
 	}
+	public static SyntaxException invalidStatusCode(String code){
+		return new SyntaxException(
+				"Invalid XACML type identifier=\"%s\"",
+				code);
+	}
 
 	public static SyntaxException invalidCategoryId(Object categoryId){
 		return new SyntaxException(

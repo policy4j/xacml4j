@@ -26,12 +26,8 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Optional;
-import java.util.ServiceLoader;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.security.auth.x500.X500Principal;
@@ -354,36 +350,7 @@ public enum XacmlTypes implements ValueType
 		}
 	};
 
-	private final static Map<String, ValueType> SYSTEM_TYPES_BY_ID = discoverByTypeId();
 
-	private final static Map<String, ValueType> SYSTEM_TYPES_BY_SHORT_ID = discoverByShortTypeId();
-
-
-	private static Map<String, ValueType> discoverByTypeId(){
-		ServiceLoader<TypeFactory> serviceLoader = ServiceLoader.load(TypeFactory.class);
-		Map<String, ValueType> types = serviceLoader.stream()
-		                                            .map(f->f.get())
-		                                            .flatMap(f->f.asMapByTypeId()
-		                                                         .entrySet()
-		                                                         .stream())
-		                                            .collect(Collectors.toMap(e->e.getKey(), e->e.getValue(), (a, b)->a,
-		                                                                      ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER)));
-		types.putAll(new SystemTypes().asMapByTypeId());
-		return Collections.unmodifiableMap(types);
-	}
-
-	private static Map<String, ValueType> discoverByShortTypeId(){
-		ServiceLoader<TypeFactory> serviceLoader = ServiceLoader.load(TypeFactory.class);
-		Map<String, ValueType> types = serviceLoader.stream()
-		                                            .map(f->f.get())
-		                                            .flatMap(f->f.asMapByAbbreviatedTypeId()
-		                                                         .entrySet()
-		                                                         .stream())
-		                                            .collect(Collectors.toMap(e->e.getKey(), e->e.getValue(), (a, b)->a,
-		                                                                      ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER)));
-		types.putAll(new SystemTypes().asMapByAbbreviatedTypeId());
-		return Collections.unmodifiableMap(types);
-	}
 
 	private String typeId;
 	private String shortTypeId;
@@ -414,32 +381,18 @@ public enum XacmlTypes implements ValueType
 			return Optional.of((ValueType)typeId);
 		}
 		if(typeId instanceof String){
-			return _getTypeById(typeId.toString());
+			return systemTypes.forType(typeId.toString());
 		}
 		if(typeId instanceof URI){
-			return _getTypeById(typeId.toString());
+			return systemTypes.forType(typeId.toString());
 		}
 		if(typeId instanceof Value){
 			Value a = (Value)typeId;
 			if(a.getType().equals(XacmlTypes.STRING) || a.getType().equals(ANYURI)){
-				return _getTypeById(a.value().toString());
+				return systemTypes.forType(a.value().toString());
 			}
 		}
 		return Optional.empty();
-	}
-
-
-	/**
-	 * Gets type via type identifier or alias
-	 *
-	 * @param typeId a type identifier
-	 * @param refresh refresh extension types
-	 * @return {@link Optional} with resolved type
-	 */
-	private static Optional<ValueType> _getTypeById(final String typeId){
-		return Optional
-				.ofNullable(SYSTEM_TYPES_BY_ID.get(typeId))
-				.or(()->Optional.ofNullable(SYSTEM_TYPES_BY_SHORT_ID.get(typeId)));
 	}
 
 	/**
@@ -480,6 +433,8 @@ public enum XacmlTypes implements ValueType
 				CategoryId.parse(params[0])
 				: Optional.empty();
     }
+
+	private final static TypeFactory systemTypes = new SystemTypes();
 
 	static class SystemTypes extends TypeFactory.BaseTypeFactory
 	{

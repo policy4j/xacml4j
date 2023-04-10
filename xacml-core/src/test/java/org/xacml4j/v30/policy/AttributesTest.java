@@ -34,8 +34,8 @@ import org.junit.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.types.XacmlTypes;
 
 

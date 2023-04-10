@@ -22,12 +22,12 @@ package org.xacml4j.util;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
-
-import static org.junit.Assert.assertEquals;
+import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
 
 public class DefaultFunctionFunctionInvocationFactoryTest
 {

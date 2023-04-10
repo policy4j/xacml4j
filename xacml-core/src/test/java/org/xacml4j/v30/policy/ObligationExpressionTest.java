@@ -98,12 +98,12 @@ public class ObligationExpressionTest
 		assertEquals(Effect.DENY, obligation.getFulfillOn());
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
-		assertEquals(CategoryId.SUBJECT_ACCESS, a0.getCategory());
+		assertEquals(CategoryId.SUBJECT_ACCESS, a0.getCategory().get());
 		assertEquals(XacmlTypes.INTEGER.of(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
-		assertEquals(CategoryId.RESOURCE, a1.getCategory());
+		assertEquals(CategoryId.RESOURCE, a1.getCategory().get());
 		assertEquals(XacmlTypes.BOOLEAN.of(false), a1.getAttribute());
 		c.verify();
 	}

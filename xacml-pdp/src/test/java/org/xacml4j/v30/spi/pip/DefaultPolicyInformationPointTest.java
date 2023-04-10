@@ -22,7 +22,16 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import com.google.common.collect.ImmutableMap;
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createStrictControl;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import java.time.Clock;
+import java.util.Collections;
+import java.util.Optional;
 
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
@@ -35,14 +44,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import java.time.Clock;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import com.google.common.collect.ImmutableMap;
 
 public class DefaultPolicyInformationPointTest
 {

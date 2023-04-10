@@ -24,16 +24,17 @@ package org.xacml4j.v30.marshal.json;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.xacml4j.v30.marshal.json.JsonProperties.ATTRIBUTE_ID_PROPERTY;
+import static org.xacml4j.v30.marshal.json.JsonProperties.CATEGORY_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.DATA_TYPE_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.ISSUER_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
-import static org.xacml4j.v30.marshal.json.JsonProperties.CATEGORY_PROPERTY;
 
 import java.lang.reflect.Type;
 
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Value;
 
-import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -72,9 +73,8 @@ public class AttributeAssignmentDeserializer implements JsonDeserializer<Attribu
 	}
 
 	private Value deserializeValue(String dataTypeId, JsonElement jsonValue, JsonDeserializationContext ctx) {
-		java.util.Optional<TypeToGSon> toGson = TypeToGSon.forType(dataTypeId);
-		Preconditions.checkState(toGson.isPresent());
-		return toGson.get().fromJson(jsonValue, ctx);
+		TypeToGSon toGson = TypeToGSon.forType(dataTypeId).orElse(TypeToGSon.Types.STRING);
+		return toGson.fromJson(jsonValue, ctx);
 	}
 
 }

@@ -42,7 +42,10 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.collect.Iterables;
 
 
 public class Xacml30ResponseContextUnmarshallerTest {
@@ -53,10 +56,18 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		Xacml30ResponseContextMarshaller m = new Xacml30ResponseContextMarshaller();
 
 		ResponseContext resp = u.unmarshal(getClass().getClassLoader().getResourceAsStream("v30Response.xml"));
+		Status status = Iterables.getFirst(resp.getResults(), null).getStatus();
 		
 		JAXBElement<ResponseType> target = (JAXBElement<ResponseType>)m.marshal(resp);
 		
 		ResponseContext resp1 = u.unmarshal(target);
+
+		Status status1 = Iterables.getFirst(resp1.getResults(), null).getStatus();
+
+		assertEquals("ok", status1.getStatusCode().getValue().getAbbreviatedId());
+		assertEquals(status.getStatusCode().getValue(), status1.getStatusCode().getValue());
+
+		assertEquals(status,  status1);
 		assertEquals(resp,  resp1);
 		
 		assertNotNull(resp);

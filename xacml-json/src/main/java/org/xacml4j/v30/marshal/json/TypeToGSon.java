@@ -25,7 +25,6 @@ package org.xacml4j.v30.marshal.json;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -56,20 +55,23 @@ public interface TypeToGSon extends TypeCapability
 	JsonElement toJson(Value v, JsonSerializationContext ctx);
 	Value fromJson(JsonElement v, JsonDeserializationContext ctx);
 
+	final class DefaultTypeToGsonFactory
+			extends TypeCapability.AbstractCapabilityFactory<TypeToGSon> implements TypeToGsonFactory
+	{
+		public DefaultTypeToGsonFactory() {
+			super(Arrays.asList(TypeToGSon.Types.values()), TypeToGSon.class);
+		}
+	}
+
 	TypeToGsonFactory systemFactory = new TypeToGSon.DefaultTypeToGsonFactory();
-	Map<ValueType, TypeToGSon> capabilities = discoverCapabilities();
 
 	static Optional<TypeToGSon> forType(ValueType valueType){
-		return Optional.ofNullable(capabilities.get(valueType));
+		return systemFactory.forType(valueType);
 	}
 
 	static Optional<TypeToGSon> forType(String valueType){
-		return XacmlTypes.getType(valueType).map(t->capabilities.get(t));
-	}
-
-	static Map<ValueType, TypeToGSon> discoverCapabilities(){
-		return TypeCapability.discoverCapabilities(new TypeToGSon.DefaultTypeToGsonFactory(),
-		                                           TypeToGSon.class, TypeToGsonFactory.class);
+		return XacmlTypes.getType(valueType)
+		                 .flatMap(t->systemFactory.forType(t));
 	}
 
 	enum Types implements TypeToGSon
@@ -284,13 +286,5 @@ public interface TypeToGSon extends TypeCapability
 			return type;
 		}
 
-	}
-
-	final class DefaultTypeToGsonFactory
-			extends TypeCapability.AbstractCapabilityFactory<TypeToGSon> implements TypeToGsonFactory
-	{
-		public DefaultTypeToGsonFactory() {
-			super(Arrays.asList(TypeToGSon.Types.values()), TypeToGSon.class);
-		}
 	}
 }

@@ -25,7 +25,6 @@ package org.xacml4j.v30.xml;
 import java.util.Optional;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 import org.oasis.xacml.v30.jaxb.ContentType;
 import org.slf4j.Logger;

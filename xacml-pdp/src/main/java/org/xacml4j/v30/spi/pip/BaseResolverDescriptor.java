@@ -23,17 +23,13 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import java.time.Duration;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import org.xacml4j.v30.AttributeReferenceKey;
-import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 abstract class BaseResolverDescriptor<R>
 	implements ResolverDescriptor<R>

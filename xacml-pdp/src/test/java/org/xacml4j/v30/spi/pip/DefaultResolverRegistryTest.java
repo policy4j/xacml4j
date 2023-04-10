@@ -22,8 +22,14 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
+import static org.easymock.EasyMock.createStrictControl;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,15 +38,10 @@ import org.junit.rules.ExpectedException;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.policy.Policy;
-import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.*;
-
-import java.util.Collection;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 
 public class DefaultResolverRegistryTest
 {

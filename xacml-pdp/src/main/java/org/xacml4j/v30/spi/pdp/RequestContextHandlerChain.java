@@ -36,7 +36,6 @@ import org.xacml4j.v30.request.RequestContext;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
 /**

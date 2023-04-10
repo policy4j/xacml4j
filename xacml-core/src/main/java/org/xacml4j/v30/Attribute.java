@@ -36,9 +36,6 @@ import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMultiset;
-import com.google.common.collect.LinkedHashMultiset;
-import com.google.common.collect.Multiset;
 
 /**
  * A XACML request context attribute, a container for {@link Value}

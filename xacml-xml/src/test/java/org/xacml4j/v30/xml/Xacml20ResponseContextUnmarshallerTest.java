@@ -33,10 +33,10 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.StatusCodeId;
-
-import com.google.common.collect.Iterables;
 import org.xacml4j.v30.marshal.ResponseUnmarshaller;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.collect.Iterables;
 
 public class Xacml20ResponseContextUnmarshallerTest
 {
@@ -56,8 +56,8 @@ public class Xacml20ResponseContextUnmarshallerTest
 		Result r = Iterables.getOnlyElement(res.getResults());
 		assertEquals(Decision.PERMIT, r.getDecision());
 		assertEquals(r.getStatus().getStatusCode().getValue(), StatusCodeId.OK);
-		assertNull(r.getStatus().getMessage());
-		assertNull(r.getStatus().getDetail());
+		assertNull(r.getStatus().getMessage().orElse(null));
+		assertNull(r.getStatus().getDetail().orElse(null));
 		assertNull(r.getStatus().getStatusCode().getMinorStatus());
 		Obligation o1 = r.getObligation("urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA001:obligation-1");
 		assertNotNull(o1);

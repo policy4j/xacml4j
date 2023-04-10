@@ -22,6 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+
+import java.util.Map;
+import java.util.function.Function;
+
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -29,11 +35,6 @@ import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.XacmlTypes;
-
-import static org.easymock.EasyMock.*;
-
-import java.util.Map;
-import java.util.function.Function;
 
 
 public class BaseAttributeResolverTest

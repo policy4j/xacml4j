@@ -23,6 +23,7 @@ package org.xacml4j.v30;
  */
 
 import java.net.URI;
+import java.util.Optional;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -88,8 +89,8 @@ public final class AttributeAssignment
 	 *
 	 * @return attribute category
 	 */
-	public CategoryId getCategory(){
-		return category;
+	public Optional<CategoryId> getCategory(){
+		return Optional.ofNullable(category);
 	}
 
 
@@ -152,12 +153,16 @@ public final class AttributeAssignment
 		}
 
 		public Builder category(String category) {
-			this.category = CategoryId.of(category);
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
 
 		public Builder category(Value category) {
-			this.category = CategoryId.of(category);
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
 
@@ -167,11 +172,11 @@ public final class AttributeAssignment
 		}
 
 		public Builder category(URI category) {
-			this.category = CategoryId.of(category);
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
-
-
 
 		public Builder issuer(String issuer){
 			this.issuer =  issuer;
@@ -179,7 +184,6 @@ public final class AttributeAssignment
 		}
 
 		public Builder value(Value v){
-			Preconditions.checkNotNull(v);
 			this.value = v;
 			return this;
 		}

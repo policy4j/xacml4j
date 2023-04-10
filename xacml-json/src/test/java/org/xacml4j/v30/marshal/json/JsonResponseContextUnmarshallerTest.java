@@ -34,11 +34,21 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
+import org.xacml4j.v30.SubjectAttributes;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 

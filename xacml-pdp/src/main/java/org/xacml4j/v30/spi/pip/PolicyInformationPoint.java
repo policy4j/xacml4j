@@ -25,16 +25,11 @@ package org.xacml4j.v30.spi.pip;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
 
 import com.google.common.base.Preconditions;

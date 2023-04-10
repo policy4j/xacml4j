@@ -67,6 +67,7 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;
@@ -97,7 +98,6 @@ import org.xacml4j.v30.policy.VariableDefinition;
 import org.xacml4j.v30.policy.VariableReference;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.policy.function.FunctionProvider;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;

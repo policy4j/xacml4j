@@ -24,6 +24,7 @@ package org.xacml4j.v30.marshal.json;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.io.StringReader;
@@ -34,17 +35,28 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.Obligation;
+import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
+import org.xacml4j.v30.SubjectAttributes;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 public class JsonResponseContextMarshallerTest {
 
@@ -62,6 +74,10 @@ public class JsonResponseContextMarshallerTest {
 		ResponseContext reqIn = createTestResponse();
 		Object o = marshaller.marshal(reqIn);
 		ResponseContext reqOut = unmarshaller.unmarshal(o);
+		Advice a = Iterables.getFirst(reqIn.getResults(), null).getAssociatedAdvice("SubjectAttributes");
+		assertThat(a, notNullValue());
+		Advice b = Iterables.getFirst(reqOut.getResults(), null).getAssociatedAdvice("SubjectAttributes");
+		assertThat(b, is(equalTo(a)));
 		assertThat(reqOut, is(equalTo(reqIn)));
 	}
 

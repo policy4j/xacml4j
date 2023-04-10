@@ -25,20 +25,22 @@ package org.xacml4j.v30.xml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.XacmlTypes;
-import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import com.google.common.collect.Iterables;
 
@@ -75,9 +77,8 @@ public class Xacml20RequestContextUnmarshallerTest
 		Entity resource = request.getEntity(CategoryId.RESOURCE).get();
 		assertNotNull(resource);
 		assertNotNull(resource.getContent());
-		assertEquals("record",((Node)resource.getContent().get().toNode()).getLocalName());
-		assertEquals("http://www.medico.com/schemas/record", ((Node)resource.getContent().get().toNode()).getOwnerDocument()
-		                                                                                                 .getDocumentElement().getNamespaceURI());
+		assertEquals("record",((XmlContent)resource.getContent().get()).getNodeLocalName());
+		assertEquals("http://www.medico.com/schemas/record", ((XmlContent)resource.getContent().get()).getNodeNamespaceURI());
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
@@ -241,7 +242,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);
 		PathValue xpath = (PathValue)Iterables.getOnlyElement(resourceId.getValues());
-		assertEquals(CategoryId.RESOURCE, xpath.getCategory());
+		assertEquals(CategoryId.RESOURCE, xpath.getCategory().get());
 		assertEquals("//md:record/md:patient", xpath.value().getPath());
 	}
 

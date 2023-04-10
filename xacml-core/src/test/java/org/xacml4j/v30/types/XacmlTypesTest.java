@@ -31,7 +31,18 @@ public class XacmlTypesTest
 	@Test
 	public void assertSystemTypes(){
 		assertTrue(XacmlTypes.getType("integer").isPresent());
-		assertTrue(XacmlTypes.getType("Integer").isPresent());
+		assertTrue(XacmlTypes.getType("INTEGER").isPresent());
+		assertTrue(XacmlTypes.getType("x500Name").isPresent());
 		assertTrue(XacmlTypes.getType("double").isPresent());
+	}
+
+	@Test
+	public void assertXpathTypes(){
+		assertTrue(XacmlTypes.getType("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression").isPresent());
+		assertTrue(XacmlTypes.getType("xpathExpression").isPresent());
+		assertTrue(XacmlTypes.getType("urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression").isPresent());
+		assertTrue(XacmlTypes.getType("urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression").isPresent());
+
+
 	}
 }

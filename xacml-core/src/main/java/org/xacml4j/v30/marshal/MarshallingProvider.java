@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ServiceLoader;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
@@ -80,5 +79,4 @@ public interface MarshallingProvider
 	static Optional<MarshallingProvider> getProvider(MediaType mediaType){
 		return Optional.ofNullable(discoverProviders().get(mediaType));
 	}
-
 }

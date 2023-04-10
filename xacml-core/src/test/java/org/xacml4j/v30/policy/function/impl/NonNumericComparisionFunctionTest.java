@@ -30,7 +30,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.policy.function.impl.NonNumericComparisonFunctions;
 import org.xacml4j.v30.types.StringValue;
 import org.xacml4j.v30.types.TimeValue;
 import org.xacml4j.v30.types.XacmlTypes;

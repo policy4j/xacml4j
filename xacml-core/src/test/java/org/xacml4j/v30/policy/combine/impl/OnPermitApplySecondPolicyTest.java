@@ -38,7 +38,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
-import org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyCombiningAlgorithm;
 
 
 public class OnPermitApplySecondPolicyTest

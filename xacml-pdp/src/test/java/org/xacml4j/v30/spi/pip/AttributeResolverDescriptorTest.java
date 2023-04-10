@@ -22,7 +22,17 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import com.google.common.collect.ImmutableMap;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.time.Clock;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
@@ -34,13 +44,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 
-import java.time.Clock;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-
-import static org.junit.Assert.*;
-import static org.easymock.EasyMock.*;
+import com.google.common.collect.ImmutableMap;
 
 public class AttributeResolverDescriptorTest
 {

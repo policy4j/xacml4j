@@ -24,8 +24,8 @@ package org.xacml4j.v20;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.PolicyDecisionPoint;
+import org.xacml4j.v30.XacmlPolicyTestSupport;
 
 
 public class Xacml20SamplePolicyTest extends XacmlPolicyTestSupport

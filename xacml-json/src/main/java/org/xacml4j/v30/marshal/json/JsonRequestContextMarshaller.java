@@ -30,11 +30,10 @@ import java.io.Writer;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryReference;
+import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.request.RequestReference;
-import org.xacml4j.v30.marshal.Marshaller;
 
-import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;

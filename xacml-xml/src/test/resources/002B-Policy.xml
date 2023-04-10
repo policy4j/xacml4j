@@ -22,11 +22,10 @@
   -->
 
 <Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
-	xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation=" urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
-	xmlns:md="http://www.med.example.com/schemas/record.xsd" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:1"
-	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation=" urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
+		PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:1"
+		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
 	<PolicyDefaults>
 		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
 	</PolicyDefaults>

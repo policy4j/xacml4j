@@ -74,7 +74,7 @@ public class AttributeAssignmentExpression implements PolicyElement
 		java.util.Objects.requireNonNull(attributeAssigment);
 		return AttributeAssignmentExpression
 				.builder(attributeAssigment.getAttributeId())
-				.category(attributeAssigment.getCategory());
+				.category(attributeAssigment.getCategory().orElse(null));
 	}
 
 	/**
@@ -177,7 +177,9 @@ public class AttributeAssignmentExpression implements PolicyElement
 		}
 
 		public Builder category(String category){
-			this.category = CategoryId.of(category);
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
 
@@ -187,12 +189,16 @@ public class AttributeAssignmentExpression implements PolicyElement
 		}
 
 		public Builder category(Value category){
-			this.category = CategoryId.of(category);
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
 
 		public Builder category(URI category){
-			this.category = CategoryId.of(category);
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
 

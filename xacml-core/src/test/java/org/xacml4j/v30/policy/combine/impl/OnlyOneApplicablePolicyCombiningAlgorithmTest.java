@@ -38,7 +38,6 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithm;
 
 
 public class OnlyOneApplicablePolicyCombiningAlgorithmTest

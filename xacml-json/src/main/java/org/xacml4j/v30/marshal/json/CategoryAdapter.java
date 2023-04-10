@@ -25,8 +25,11 @@ package org.xacml4j.v30.marshal.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.SyntaxException;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;

@@ -23,13 +23,14 @@ package org.xacml4j.v30.marshal.json;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
-
-import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

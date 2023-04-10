@@ -30,13 +30,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -47,7 +45,6 @@ import org.xacml4j.v30.ValueType;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 
 
@@ -202,15 +199,15 @@ public final class AttributeResolverDescriptor
 		return attributesById.containsKey(attributeId);
 	}
 
-	static Builder builder(String id, String name, CategoryId category){
+	public final static Builder builder(String id, String name, CategoryId category){
 		return builder(id, name, null, category);
 	}
 
-	static Builder builder(String id, String name, String issuer, CategoryId category){
+	public final static Builder builder(String id, String name, String issuer, CategoryId category){
 		return new Builder(id, name, issuer, category);
 	}
 
-	final static class Builder
+	public final static class Builder
 			extends BaseBuilder<AttributeSet, Builder>
 	{
 		private static Logger LOG = LoggerFactory.getLogger(Builder.class);

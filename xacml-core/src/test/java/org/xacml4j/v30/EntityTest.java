@@ -29,8 +29,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 public class   EntityTest

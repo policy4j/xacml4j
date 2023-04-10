@@ -36,6 +36,7 @@ import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.PolicyDecisionPoint;
@@ -46,7 +47,6 @@ import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.Entity;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Histogram;

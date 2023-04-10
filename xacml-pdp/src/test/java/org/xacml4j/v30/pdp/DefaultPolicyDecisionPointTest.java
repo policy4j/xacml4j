@@ -22,11 +22,25 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
+import java.time.Duration;
+
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.PolicyDecisionPoint;
+import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.Result;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
@@ -34,12 +48,6 @@ import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
-import java.time.Duration;
 
 
 public class DefaultPolicyDecisionPointTest

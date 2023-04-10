@@ -22,12 +22,10 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.xacml4j.v30.CategoryId;
-
-import static org.junit.Assert.*;
-
-import com.google.common.collect.ImmutableMap;
 
 
 public class ContentResolverDescriptorTest

@@ -27,7 +27,6 @@ import java.util.Collection;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
-import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
 

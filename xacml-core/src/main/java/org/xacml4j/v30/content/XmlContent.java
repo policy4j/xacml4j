@@ -44,12 +44,12 @@ import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -73,9 +73,18 @@ public final class XmlContent implements Content
 
     private XmlContent(Node content,
                        XPathProvider xPathProvider){
-        this.contextNode = checkValidNode(content);
+        this.contextNode = Objects.requireNonNull(content);
         this.xPathProvider = Objects.requireNonNull(xPathProvider);
 
+    }
+
+
+    public String getNodeLocalName(){
+        return contextNode.getLocalName();
+    }
+
+    public String getNodeNamespaceURI(){
+        return contextNode.getNamespaceURI();
     }
 
     private static Node checkValidNode(Node content){
@@ -86,6 +95,7 @@ public final class XmlContent implements Content
         }
         return content;
     }
+
 
     public static Node fromString(String xml){
         return DOMUtil.parseXml(xml).get();
@@ -157,7 +167,7 @@ public final class XmlContent implements Content
     }
 
     public Object toNode(){
-        return DOMUtil.copyNode(contextNode);
+        return contextNode;
     }
 
     public String asString(){

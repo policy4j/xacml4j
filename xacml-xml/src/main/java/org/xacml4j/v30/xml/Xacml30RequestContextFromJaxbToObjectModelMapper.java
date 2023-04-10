@@ -62,6 +62,7 @@ import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -76,7 +77,6 @@ import org.xacml4j.v30.policy.PolicySetIDReference;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.request.RequestDefaults;
 import org.xacml4j.v30.request.RequestReference;
-import org.xacml4j.v30.Entity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -223,8 +223,8 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		PolicyIdentifierListType ids = new PolicyIdentifierListType();
 		for(CompositeDecisionRuleIDReference id : r.getPolicyIdentifiers()){
 			if(id instanceof PolicyIDReference){
-				ids.getPolicyIdReferenceOrPolicySetIdReference().add(
-						factory.createPolicyIdReference(create(id)));
+				ids.getPolicyIdReferenceOrPolicySetIdReference()
+				   .add(factory.createPolicyIdReference(create(id)));
 			}
 			if(id instanceof PolicySetIDReference){
 				ids.getPolicyIdReferenceOrPolicySetIdReference().add(
@@ -249,7 +249,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	{
 		AttributesType attributes = new AttributesType();
 		attributes.setId(a.getReferenceId().orElse(null));
-		attributes.setCategory(a.getCategoryId().toString());
+		attributes.setCategory(a.getCategoryId().getId());
 		for(Attribute attr : a.getEntity().getAttributes()){
 			attributes.getAttribute().add(create(attr));
 		}
@@ -365,9 +365,14 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		if (statusCode == null) {
 			return null;
 		}
-		return StatusCode.builder(StatusCodeId.of(statusCode.getValue()).get())
-				.minorStatus(create(statusCode.getStatusCode()))
-				.build();
+		StatusCode.Builder b =  StatusCode
+				.builder(StatusCodeId.of(statusCode.getValue())
+				                     .orElseThrow(()->SyntaxException.invalidStatusCode(statusCode.getValue())));
+		if(statusCode.getStatusCode() != null){
+			b.minorStatus(StatusCode.builder(StatusCodeId.of(statusCode.getStatusCode().getValue())
+			                          .orElseThrow(()->SyntaxException.invalidStatusCode(statusCode.getValue()))).build());
+		}
+		return b.build();
 	}
 
 	private StatusType create(Status status)
@@ -385,7 +390,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 			return null;
 		}
 		StatusCodeType code = new StatusCodeType();
-		code.setValue(c.getValue().toString());
+		code.setValue(c.getValue().getId());
 		code.setStatusCode(create(c.getMinorStatus()));
 		return code;
 	}
@@ -421,9 +426,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		AttributeAssignmentType attr = new AttributeAssignmentType();
 		attr.setAttributeId(a.getAttributeId());
 		attr.setIssuer(a.getIssuer());
-		if(a.getCategory() != null){
-			attr.setCategory(a.getCategory().toString());
-		}
+		a.getCategory().ifPresent(c->attr.setCategory(c.getId()));
 		AttributeValueType av = toJaxb(a.getAttribute());
 		attr.setDataType(av.getDataType());
 		attr.getContent().addAll(av.getContent());

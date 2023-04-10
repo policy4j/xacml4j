@@ -27,7 +27,6 @@ import java.util.Optional;
 
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.StatusDetail;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

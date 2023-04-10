@@ -56,6 +56,7 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.policy.AdviceExpression;
 import org.xacml4j.v30.policy.AttributeAssignmentExpression;
@@ -75,7 +76,6 @@ import org.xacml4j.v30.policy.PolicySetIDReference;
 import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.Target;
 import org.xacml4j.v30.policy.VariableDefinition;
-import org.xacml4j.v30.Entity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;

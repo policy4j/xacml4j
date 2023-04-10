@@ -22,13 +22,13 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Node;
-import org.xacml4j.v30.*;
-import org.xacml4j.v30.types.XacmlTypes;
+import static org.easymock.EasyMock.createControl;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 import java.time.Clock;
@@ -38,8 +38,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.easymock.IMocksControl;
+import org.junit.Before;
+import org.junit.Test;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.truth.Truth8;

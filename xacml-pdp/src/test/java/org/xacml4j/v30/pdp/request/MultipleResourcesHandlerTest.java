@@ -23,21 +23,30 @@ package org.xacml4j.v30.pdp.request;
  */
 
 
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createStrictControl;
+import static org.easymock.EasyMock.expect;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
-
-import java.util.Collection;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
 
 
 public class MultipleResourcesHandlerTest

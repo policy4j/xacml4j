@@ -61,11 +61,10 @@ public class StatusCodeAdapter implements JsonSerializer<StatusCode>, JsonDeseri
 	@Override
 	public JsonElement serialize(StatusCode src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		o.addProperty(VALUE_PROPERTY, src.getValue().toString());
+		o.addProperty(VALUE_PROPERTY, src.getValue().getAbbreviatedId());
 		if (src.getMinorStatus() != null) {
 			o.add(STATUS_CODE_PROPERTY, context.serialize(src.getMinorStatus()));
 		}
-
 		return o;
 	}
 

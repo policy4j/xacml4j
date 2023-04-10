@@ -48,6 +48,7 @@ import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -57,7 +58,6 @@ import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.marshal.ResponseUnmarshaller;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;

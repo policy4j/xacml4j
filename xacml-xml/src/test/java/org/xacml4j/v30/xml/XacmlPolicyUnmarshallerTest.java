@@ -41,7 +41,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.oasis.xacml.v30.jaxb.PolicyType;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Version;
+import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.policy.Apply;
@@ -275,12 +282,13 @@ public class XacmlPolicyUnmarshallerTest
 	{
 		final VariableDefinition expectedVar05 = new VariableDefinition(
 				"VAR05",
-				AttributeDesignator.builder().key(
-						AttributeDesignatorKey.builder()
+				AttributeDesignator.builder()
+				                   .key(AttributeDesignatorKey.builder()
 				                   .attributeId("urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number")
 				                   .category("urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
 				                   .dataType(XacmlTypes.STRING)
-				                      .build()).build());
+				                   .build()).mustBePresent(true)
+				                   .build());
 
 		Policy p = getPolicy("v30-policy-with-variables-2.xml");
 		assertThat(p.getVersion().getValue(), is("1.0"));

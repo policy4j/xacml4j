@@ -25,7 +25,6 @@ package org.xacml4j.v30.policy.function.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.xacml4j.v30.policy.function.impl.NumericComparisonFunctions;
 import org.xacml4j.v30.types.DoubleValue;
 import org.xacml4j.v30.types.IntegerValue;
 import org.xacml4j.v30.types.XacmlTypes;

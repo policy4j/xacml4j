@@ -150,7 +150,7 @@ public final class Entity extends AttributeContainer
 		}
 
 		public Builder content(Optional<Content> content) {
-			this.content = content.get();
+			this.content = content.orElse(null);
 			return this;
 		}
 

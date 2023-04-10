@@ -42,11 +42,13 @@ public interface TypeFactory
 
 	Map<String, ValueType> asMapByTypeId();
 	Map<String, ValueType> asMapByAbbreviatedTypeId();
+	Map<String, ValueType> asMapByAliasTypeId();
 
 	class BaseTypeFactory implements TypeFactory
 	{
 		private Map<String, ValueType> byTypeId;
 		private Map<String, ValueType> byAbbreviatedTypeId;
+		private Map<String, ValueType> byAliasTypeId;
 
 		public BaseTypeFactory(Collection<ValueType> types){
 			this.byTypeId = Collections.unmodifiableMap(types.stream()
@@ -57,12 +59,22 @@ public interface TypeFactory
 			                                            .collect(Collectors
 					                                   .toMap(v->v.getAbbrevDataTypeId(), v->v, (a, b)->a,
 					                                          ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER))));
+			this.byAliasTypeId  = Collections.unmodifiableMap(types.stream()
+			                           .flatMap(t->t.getDataTypeIdAliases()
+			                                        .stream()
+			                                        .collect(Collectors.toMap(a->a, a->t, (v1, v2)->v1))
+			                                        .entrySet()
+			                                        .stream())
+			                           .collect(Collectors.toMap(a->a.getKey(), a->a.getValue(), (a, b)->a)));
 		}
 
 		@Override
 		public final Optional<ValueType> forType(String typeId) {
 			return Optional.ofNullable(byTypeId.get(typeId))
-			               .or(()->Optional.ofNullable(byAbbreviatedTypeId.get(typeId)));
+			               .or(()->Optional
+					               .ofNullable(byAbbreviatedTypeId.get(typeId))
+					               .or(()->Optional
+							               .ofNullable(byAliasTypeId.get(typeId))));
 		}
 
 		@Override
@@ -73,6 +85,11 @@ public interface TypeFactory
 		@Override
 		public final Map<String, ValueType> asMapByAbbreviatedTypeId() {
 			return byAbbreviatedTypeId;
+		}
+
+		@Override
+		public final Map<String, ValueType> asMapByAliasTypeId() {
+			return byAliasTypeId;
 		}
 	}
 }

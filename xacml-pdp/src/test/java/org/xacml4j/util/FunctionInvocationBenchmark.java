@@ -25,8 +25,8 @@ package org.xacml4j.util;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
 
 @Ignore
 public class FunctionInvocationBenchmark

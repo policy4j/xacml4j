@@ -22,8 +22,6 @@ package org.xacml4j.v30.marshal.json;
  * #L%
  */
 
-import java.util.function.Supplier;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

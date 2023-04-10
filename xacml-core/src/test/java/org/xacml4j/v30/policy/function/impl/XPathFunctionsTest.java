@@ -42,7 +42,6 @@ import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.policy.function.impl.XPathFunctions;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.XacmlTypes;
 

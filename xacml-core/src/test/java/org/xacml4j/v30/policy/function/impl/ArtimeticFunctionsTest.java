@@ -25,7 +25,6 @@ package org.xacml4j.v30.policy.function.impl;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.xacml4j.v30.policy.function.impl.ArithmeticFunctions;
 import org.xacml4j.v30.types.XacmlTypes;
 
 public class ArtimeticFunctionsTest

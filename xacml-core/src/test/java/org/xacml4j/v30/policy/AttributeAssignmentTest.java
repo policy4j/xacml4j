@@ -41,7 +41,7 @@ public class AttributeAssignmentTest
 				.value(XacmlTypes.INTEGER.of(10))
 				.build();
 		assertEquals("testId", a0.getAttributeId());
-		assertEquals(CategoryId.ACTION, a0.getCategory());
+		assertEquals(CategoryId.ACTION, a0.getCategory().get());
 		assertEquals(XacmlTypes.INTEGER.of(10), a0.getAttribute());
 		AttributeAssignment a1 =  AttributeAssignment.builder()
 				.attributeId("testId")

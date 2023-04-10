@@ -70,7 +70,6 @@ public final class XacmlPolicyUnmarshaller extends BaseJAXBUnmarshaller<Composit
 		                     .build(),
 		     DecisionCombiningAlgorithmProvider
 				.builder()
-				.withDiscoveredAlgorithms()
 				.withDefaultAlgorithms()
 				.build(), supportsXacml20Policies);
 	}

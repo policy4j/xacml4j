@@ -38,12 +38,12 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
