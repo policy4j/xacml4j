@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfValues;
@@ -58,8 +57,7 @@ class JavaMethodToFunctionSpecConverter
 		this.invocationFactory = invocationFactory;
 	}
 
-	@Nullable
-	public FunctionSpec apply(@Nullable Method method) {
+	public FunctionSpec apply(Method method) {
 		return createFunctionSpec(method);
 	}
 

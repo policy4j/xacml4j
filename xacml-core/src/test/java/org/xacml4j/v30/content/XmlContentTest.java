@@ -33,6 +33,7 @@ import java.util.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
+import org.xacml4j.util.JSONUtil;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.PathEvaluationException;
@@ -161,6 +162,14 @@ public class XmlContentTest
                         .dataType(XacmlTypes.INTEGER)
                         .build());
         assertFalse(values.isPresent());
+    }
+
+    @Test
+    public void testWithContentEscaping(){
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><security>\n<through obscurity=\"true\"/></security>";
+        XmlContent xmlContent1 = XmlContent.of(xml);
+        XmlContent xmlContent2 = XmlContent.of(xmlContent1.asString());
+        assertEquals(xmlContent1, xmlContent2);
     }
 
 }

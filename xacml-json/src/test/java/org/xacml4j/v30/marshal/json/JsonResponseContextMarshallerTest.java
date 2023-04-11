@@ -26,6 +26,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.io.StringReader;
 
@@ -35,6 +36,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Node;
+import org.xacml4j.util.DOMUtil;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
@@ -74,10 +76,11 @@ public class JsonResponseContextMarshallerTest {
 		ResponseContext reqIn = createTestResponse();
 		Object o = marshaller.marshal(reqIn);
 		ResponseContext reqOut = unmarshaller.unmarshal(o);
-		Advice a = Iterables.getFirst(reqIn.getResults(), null).getAssociatedAdvice("SubjectAttributes");
+		Category a = Iterables.getFirst(reqIn.getResults(), null).getCategory(CategoryId.SUBJECT_ACCESS);
 		assertThat(a, notNullValue());
-		Advice b = Iterables.getFirst(reqOut.getResults(), null).getAssociatedAdvice("SubjectAttributes");
-		assertThat(b, is(equalTo(a)));
+		Category b = Iterables.getFirst(reqOut.getResults(), null).getCategory(CategoryId.SUBJECT_ACCESS);
+		assertThat(b.getEntity(), equalTo(a.getEntity()));
+		assertThat(b, equalTo(a));
 		assertThat(reqOut, is(equalTo(reqIn)));
 	}
 

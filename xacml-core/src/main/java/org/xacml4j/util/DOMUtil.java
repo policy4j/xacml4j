@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -54,8 +55,10 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xacml4j.v30.SyntaxException;
 import org.xml.sax.InputSource;
 
@@ -382,7 +385,7 @@ public class DOMUtil
 	public static boolean isEqual(Node a, Node b){
 		return (a == null)
 				? b == null
-				: b != null && a.isEqualNode(b);
+				: b != null && compareNodes(a, b, true);
 	}
 
 
@@ -406,6 +409,127 @@ public class DOMUtil
 		}
 		fqname.append(n.getLocalName());
 		return fqname.toString();
+	}
+
+	private static void trimEmptyTextNodes(Node node) {
+		Element element = null;
+		if (node instanceof Document) {
+			element = ((Document) node).getDocumentElement();
+		} else if (node instanceof Element) {
+			element = (Element) node;
+		} else {
+			return;
+		}
+
+		List<Node> nodesToRemove = new ArrayList<>();
+		NodeList children = element.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			Node child = children.item(i);
+			if (child instanceof Element) {
+				trimEmptyTextNodes(child);
+			} else if (child instanceof Text) {
+				Text t = (Text) child;
+				if (t.getData().trim().length() == 0) {
+					nodesToRemove.add(child);
+				}
+			}
+		}
+
+		for (Node n : nodesToRemove) {
+			element.removeChild(n);
+		}
+	}
+
+	public static boolean compareNodes(Node expected, Node actual, boolean trimEmptyTextNodes)
+	{
+		if (trimEmptyTextNodes) {
+			trimEmptyTextNodes(expected);
+			trimEmptyTextNodes(actual);
+		}
+		return compareNodes(expected, actual);
+	}
+
+	public static boolean compareNodes(Node expected, Node actual){
+		if (expected.getNodeType() != actual.getNodeType()) {
+			return false;
+		}
+		if (expected instanceof Document) {
+			Document expectedDoc = (Document) expected;
+			Document actualDoc = (Document) actual;
+			compareNodes(expectedDoc.getDocumentElement(), actualDoc.getDocumentElement());
+		} else if (expected instanceof Element) {
+			Element expectedElement = (Element) expected;
+			Element actualElement = (Element) actual;
+
+			// compare element names
+			if ( expectedElement.getLocalName() != null &&
+					(!expectedElement.getLocalName().equals(actualElement.getLocalName()))) {
+				return false;
+			}
+			// compare element ns
+			String expectedNS = expectedElement.getNamespaceURI();
+			String actualNS = actualElement.getNamespaceURI();
+			if ((expectedNS == null && actualNS != null)
+					|| (expectedNS != null && !expectedNS.equals(actualNS))) {
+				return false;
+			}
+
+			// compare attributes
+			NamedNodeMap expectedAttrs = expectedElement.getAttributes();
+			NamedNodeMap actualAttrs = actualElement.getAttributes();
+			if (countNonNamespaceAttribures(expectedAttrs) != countNonNamespaceAttribures(actualAttrs)) {
+				return false;
+			}
+			for (int i = 0; i < expectedAttrs.getLength(); i++) {
+				Attr expectedAttr = (Attr) expectedAttrs.item(i);
+				if (expectedAttr.getName().startsWith("xmlns")) {
+					continue;
+				}
+				Attr actualAttr = null;
+				if (expectedAttr.getNamespaceURI() == null) {
+					actualAttr = (Attr) actualAttrs.getNamedItem(expectedAttr.getName());
+				} else {
+					actualAttr = (Attr) actualAttrs.getNamedItemNS(expectedAttr.getNamespaceURI(),
+					                                               expectedAttr.getLocalName());
+				}
+				if (actualAttr == null) {
+					return false;
+				}
+				if (!expectedAttr.getValue().equals(actualAttr.getValue())) {
+					return false;
+				}
+			}
+			// compare children
+			NodeList expectedChildren = expectedElement.getChildNodes();
+			NodeList actualChildren = actualElement.getChildNodes();
+			if (expectedChildren.getLength() != actualChildren.getLength()) {
+				return false;
+			}
+			for (int i = 0; i < expectedChildren.getLength(); i++) {
+				Node expectedChild = expectedChildren.item(i);
+				Node actualChild = actualChildren.item(i);
+				compareNodes(expectedChild, actualChild);
+			}
+		} else if (expected instanceof Text) {
+			String expectedData = ((Text) expected).getData().trim();
+			String actualData = ((Text) actual).getData().trim();
+
+			if (!expectedData.equals(actualData)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static int countNonNamespaceAttribures(NamedNodeMap attrs) {
+		int n = 0;
+		for (int i = 0; i < attrs.getLength(); i++) {
+			Attr attr = (Attr) attrs.item(i);
+			if (!attr.getName().startsWith("xmlns")) {
+				n++;
+			}
+		}
+		return n;
 	}
 
 	public static NamespaceContext createNamespaceContext(Node n){
@@ -464,5 +588,8 @@ public class DOMUtil
 					java.util.Collections.<String>emptyList().iterator():
 						Collections.singleton(prefix).iterator();
 		}
+
+
+
 	}
 }

@@ -135,7 +135,8 @@ public final class Entity extends AttributeContainer
 			return false;
 		}
 		Entity a = (Entity) o;
-		return attributes.equals(a.attributes) &&
+		return attributes.values().containsAll(a.attributes.values()) &&
+				a.attributes.values().containsAll(attributes.values()) &&
 				Objects.equal(content, a.content);
 	}
 

@@ -26,7 +26,6 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class StringUtils
 {
@@ -47,7 +46,7 @@ public class StringUtils
 
     }
 
-    public static String lenientFormat(@Nullable String template, @Nullable Object... args) {
+    public static String lenientFormat(String template, Object... args) {
         template = String.valueOf(template);
         if (args == null) {
             args = new Object[]{"(Object[])null"};
@@ -88,7 +87,7 @@ public class StringUtils
         return builder.toString();
     }
 
-    private static String lenientToString(@Nullable Object o) {
+    private static String lenientToString(Object o) {
         try {
             return String.valueOf(o);
         } catch (Exception var3) {

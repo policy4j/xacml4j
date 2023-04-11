@@ -25,11 +25,15 @@ package org.xacml4j.v30.marshal.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.util.JSONUtil;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.content.XmlContent;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;
@@ -43,6 +47,8 @@ import com.google.gson.reflect.TypeToken;
 
 class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category>
 {
+	private final static Logger LOG = LoggerFactory.getLogger(CategoryAdapter.class);
+
 	@Override
 	public Category deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
@@ -61,6 +67,7 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			String content = GsonUtil.getAsString(o,
 					JsonProperties.CONTENT_PROPERTY, null);
 			if(content != null){
+				LOG.debug("Content size={} content={}", content.length(), content);
 				entityBuilder.content(content);
 			}
 			return Category.builder(category)
@@ -81,9 +88,12 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 		}
 		Entity e = src.getEntity();
 		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getAbbreviatedId());
-		o.addProperty(JsonProperties.CONTENT_PROPERTY, e.getContent()
-				.map(v->v.asString()).orElse(null));
 		o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
+		String content = e.getContent().map(v-> v.asString()).orElse(null);
+		if(content != null){
+			LOG.debug("Content size={} content={}", content.length(), content);
+			o.addProperty(JsonProperties.CONTENT_PROPERTY, content);
+		}
 		return o;
 	}
 }
