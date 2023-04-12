@@ -44,14 +44,16 @@ public interface MarshallingProvider
 		return Optional.empty();
 	}
 
+	FunctionProvider funcSystemProvider = FunctionProvider.builder()
+	                                                  .withDefaultFunctions()
+	                                                  .build();
+	DecisionCombiningAlgorithmProvider combineSystemProvider = DecisionCombiningAlgorithmProvider.builder()
+	                                                                                             .withDefaultAlgorithms()
+	                                                                                             .build();
 	default Optional<PolicyUnmarshaller> newPolicyUnmarshaller(){
 		return newPolicyUnmarshaller(
-				FunctionProvider.builder()
-				                .withDefaultFunctions()
-				                .build(),
-				DecisionCombiningAlgorithmProvider.builder()
-				                                  .withDefaultAlgorithms()
-				                                  .build());
+				funcSystemProvider,
+				combineSystemProvider);
 	}
 	default Optional<RequestMarshaller> newRequestMarshaller(){
 		return Optional.empty();

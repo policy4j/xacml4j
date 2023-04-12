@@ -41,7 +41,16 @@
 		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Root level="DEBUG" additivity="false">
+		<Logger name="org.xacml4j.v30.policy" level="DEBUG" additivity="false">
+			<AppenderRef ref="console"/>
+		</Logger>
+		<Logger name="org.xacml4j.v30.policy.combine" level="ERROR" additivity="false">
+			<AppenderRef ref="console"/>
+		</Logger>
+		<Logger name="org.xacml4j.v30.policy.function" level="ERROR" additivity="false">
+			<AppenderRef ref="console"/>
+		</Logger>
+		<Root level="ERROR" additivity="false">
 			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFile" />
 		</Root>

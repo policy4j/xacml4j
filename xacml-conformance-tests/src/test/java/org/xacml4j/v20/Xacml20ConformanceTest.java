@@ -63,20 +63,22 @@ public class Xacml20ConformanceTest
 
 	private static ResponseMarshaller responseMarshaller;
 	private static PolicyRepository repository;
+	private static PolicyImportTool tool;
 
 	private PolicyDecisionPointBuilder pdpBuilder;
 
+
 	@BeforeClass
-	public static void init_static() throws Exception
-	{
+	public static void init_static() throws Exception {
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
 				FunctionProvider.builder()
 				                .withDefaultFunctions()
 				                .build(),
 				DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build());
+		tool = repository.newImportTool();
 		responseMarshaller = MarshallingProvider.getProvider(MediaType.Type.XACML20_XML)
-		                                        .flatMap(p->p.newResponseMarshaller())
+		                                        .flatMap(p -> p.newResponseMarshaller())
 		                                        .orElseThrow();
 
 		addAllPolicies(repository, "IIA", 22);
@@ -218,7 +220,6 @@ public class Xacml20ConformanceTest
 	{
 		final String name = testPrefix + Strings.padStart(Integer.toString(testCaseNum), 3, '0');
 		RequestContext request = getRequest(testPrefix, testCaseNum);
-		PolicyImportTool tool = repository.newImportTool();
 		final PolicyDecisionPoint pdp = pdpBuilder
 				.rootPolicy(
 						tool.importPolicy(MediaType.Type.XACML20_XML,
