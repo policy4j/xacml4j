@@ -140,7 +140,7 @@ public final class Xacml20ResponseContextMarshaller
 			StatusType statusType = new StatusType();
 			StatusCodeType codeType = new StatusCodeType();
 			statusType.setStatusCode(codeType);
-			codeType.setValue(status.getStatusCode().getValue().toString());
+			codeType.setValue(status.getStatusCode().getValue().getId());
 			statusType.setStatusMessage(status.getMessage().orElse(null));
 			return statusType;
 		}
