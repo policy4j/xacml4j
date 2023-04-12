@@ -47,7 +47,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 
-class DefaultEvaluationContextHandler
+final class DefaultEvaluationContextHandler
 		implements EvaluationContextHandler
 {
 	private final static Logger LOG = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
@@ -117,7 +117,8 @@ class DefaultEvaluationContextHandler
 	private Optional<BagOfValues> doSelectorResolve(EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
-		Optional<BagOfValues> v = doPipResolve(context, (AttributeSelectorKey)ref);
+		Optional<BagOfValues> v = requestCallback.resolve((AttributeDesignatorKey) ref)
+		                                         .or(()->doPipResolve(context, (AttributeSelectorKey)ref));
 		LOG.debug("ref={}, value={}", ref, v);
 		return v;
 	}

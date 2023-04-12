@@ -58,8 +58,6 @@ public interface PolicyDecisionPointContext
 	 */
 	CompositeDecisionRule getDomainPolicy();
 
-	XPathProvider getXPathProvider();
-
 	PolicyDecisionCache getDecisionCache();
 
 	PolicyDecisionAuditor getDecisionAuditor();

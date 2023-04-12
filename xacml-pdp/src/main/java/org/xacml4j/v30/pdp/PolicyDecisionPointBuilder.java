@@ -149,7 +149,7 @@ public final class PolicyDecisionPointBuilder
 		Preconditions.checkState(id != null);
 		Preconditions.checkState(metricRegistry != null);
 		return new DefaultPolicyDecisionPoint(id, metricRegistry,
-				new DefaultPolicyDecisionPointContextFactory(
+				new PolicyDecisionPointContextFactory.DefaultPolicyDecisionPointContextFactory(
 						rootPolicy,
 						repository,
 						decisionAuditor,

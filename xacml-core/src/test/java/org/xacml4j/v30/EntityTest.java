@@ -84,6 +84,49 @@ public class   EntityTest
 		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(XacmlTypes.STRING.of("bbb")));
 	}
 
+	@Test
+	public void testEntityDesignatorResolve()
+	{
+		Entity entity = Entity
+				.builder()
+				.attribute(
+						Attribute.
+								builder("testId1")
+								.value(XacmlTypes.STRING.of("a"), XacmlTypes.STRING.of("bb"))
+								.build(),
+						Attribute
+								.builder("testId2")
+								.value(XacmlTypes.STRING.of("aa"), XacmlTypes.STRING.of("bbb"))
+								.build(),
+						Attribute
+								.builder("testId3")
+								.issuer("test")
+								.value(XacmlTypes.INTEGER.of(10), XacmlTypes.DOUBLE.of(0.1))
+								.build())
+				.build();
+
+		assertEquals(XacmlTypes.STRING.bag().value(XacmlTypes.STRING.of("a"), XacmlTypes.STRING.of("bb")).build(),
+		             entity.resolve(AttributeDesignatorKey.builder()
+		                                                  .attributeId("testId1")
+		                                                  .dataType(XacmlTypes.STRING)
+		                                                  .category(CategoryId.SUBJECT_ACCESS)
+		                                                  .build()).get());
+		assertEquals(XacmlTypes.INTEGER.bag().value(10).build(),
+		             entity.resolve(AttributeDesignatorKey.builder()
+		                                                  .attributeId("testId3")
+		                                                  .dataType(XacmlTypes.INTEGER)
+		                                                  .category(CategoryId.SUBJECT_ACCESS)
+		                                                  .build()).get());
+
+		assertEquals(XacmlTypes.DOUBLE.bag().value(0.1).build(),
+		             entity.resolve(AttributeDesignatorKey.builder()
+		                                                  .attributeId("testId3")
+		                                                  .dataType(XacmlTypes.DOUBLE)
+		                                                  .category(CategoryId.SUBJECT_ACCESS)
+		                                                  .build()).get());
+
+	}
+
 
 
 	@Test

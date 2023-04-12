@@ -38,6 +38,7 @@ import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.*;
+import org.xacml4j.v30.marshal.MarshallingProvider;
 import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.request.RequestContext;
@@ -46,7 +47,6 @@ import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.spi.repository.PolicyImportTool;
-import org.xacml4j.v30.xml.Xacml20ResponseContextMarshaller;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
@@ -71,9 +71,13 @@ public class Xacml20ConformanceTest
 	{
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
-				FunctionProvider.builder().withDefaultFunctions().build(),
+				FunctionProvider.builder()
+				                .withDefaultFunctions()
+				                .build(),
 				DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build());
-		responseMarshaller = new Xacml20ResponseContextMarshaller();
+		responseMarshaller = MarshallingProvider.getProvider(MediaType.Type.XACML20_XML)
+		                                        .flatMap(p->p.newResponseMarshaller())
+		                                        .orElseThrow();
 
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);

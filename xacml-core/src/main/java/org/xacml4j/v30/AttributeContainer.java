@@ -91,9 +91,9 @@ public class AttributeContainer
 	 * and given issuer
 	 */
 	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
-		return Collections2.filter(
-				attributes.get(attributeId),
-				a -> Objects.equals(issuer, a.getIssuer()));
+		return attributes.get(attributeId)
+				          .stream()
+				         .filter(a -> issuer!= null?Objects.equals(issuer, a.getIssuer()):true).collect(Collectors.toList());
 	}
 
 	public Map<String, Attribute> getAttributes(Predicate<Attribute> attributePredicate){
@@ -126,11 +126,12 @@ public class AttributeContainer
 	 * instances
 	 */
 	public Collection<Attribute> getIncludeInResultAttributes(){
-		return Collections2.filter(attributes.values(), new Predicate<Attribute>() {
-				@Override
-				public boolean apply(Attribute attr) {
-					return attr.isIncludeInResult();
-				}});
+		return Collections2.filter(attributes.values(), new Predicate<>() {
+			@Override
+			public boolean apply(Attribute attr) {
+				return attr.isIncludeInResult();
+			}
+		});
 	}
 
 	/**
