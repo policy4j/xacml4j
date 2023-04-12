@@ -80,6 +80,7 @@ public class XacmlExampleTest extends XacmlPolicyTestSupport
 		PolicyImportTool tool = repository.newImportTool();
 		for (String policyResource : policyResources) {
 			CompositeDecisionRule policy = tool.importPolicy(MediaType.Type.XACML20_XML, Xacml20TestUtility.getClasspathResource(policyResource));
+			policies.add(policy);
 			log.info("Policy: {}", policy);
 		}
 

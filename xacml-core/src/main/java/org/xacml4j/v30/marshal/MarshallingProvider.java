@@ -47,11 +47,9 @@ public interface MarshallingProvider
 	default Optional<PolicyUnmarshaller> newPolicyUnmarshaller(){
 		return newPolicyUnmarshaller(
 				FunctionProvider.builder()
-				                .withDiscoveredFunctions()
 				                .withDefaultFunctions()
 				                .build(),
 				DecisionCombiningAlgorithmProvider.builder()
-				                                  .withDiscoveredAlgorithms()
 				                                  .withDefaultAlgorithms()
 				                                  .build());
 	}

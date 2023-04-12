@@ -86,7 +86,8 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
 		PolicyImportTool tool = repository.newImportTool();
 		for (Supplier<InputStream> policyStream : policyStreams) {
-			tool.importPolicy(MediaType.Type.XACML20_XML, policyStream);
+			CompositeDecisionRule policy = tool.importPolicy(MediaType.Type.XACML20_XML, policyStream);
+			policies.add(policy);
 		}
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
