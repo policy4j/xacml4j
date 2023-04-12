@@ -27,7 +27,6 @@ import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 
 import com.google.auto.service.AutoService;
 
-@AutoService(DecisionCombiningAlgorithmProvider.class)
 public final class DefaultXacml30DecisionCombiningAlgorithms
 		extends BaseDecisionCombiningAlgorithmProvider
 {

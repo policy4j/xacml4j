@@ -92,9 +92,10 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
 			.policyRepository(repository)
 			.pip(
-					PolicyInformationPoint.builder()
+					PolicyInformationPoint
 					.builder("testPip")
-					.defaultResolvers()
+					.withDefaultRegistry()
+					.noCacheProvider()
 					.build())
 			.rootPolicy(policies.get(0))
 			.build();

@@ -81,8 +81,10 @@ public interface PolicyInformationPoint
 	{
 
 		String id;
-		PolicyInformationPointCacheProvider cache;
-		ResolverRegistry registry;
+		PolicyInformationPointCacheProvider cache = new PolicyInformationPointCacheProvider.NoCachePolicyInformationPointCacheProvider();
+		ResolverRegistry registry = ResolverRegistry.builder()
+		                                            .withDefaultResolvers()
+		                                            .build();
 
 		public Builder(String id){
 
@@ -94,6 +96,11 @@ public interface PolicyInformationPoint
 		public T cacheProvider(
 				PolicyInformationPointCacheProvider cache){
 			this.cache = Preconditions.checkNotNull(cache, "cache");;
+			return getThis();
+		}
+
+		public T noCacheProvider(){
+			this.cache = new PolicyInformationPointCacheProvider.NoCachePolicyInformationPointCacheProvider();
 			return getThis();
 		}
 

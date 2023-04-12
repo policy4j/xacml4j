@@ -63,4 +63,21 @@ public interface PolicyInformationPointCacheProvider
 
 
 
+	class NoCachePolicyInformationPointCacheProvider implements PolicyInformationPointCacheProvider
+	{
+		@Override
+		public Optional<ContentRef> getContent(ResolverContext context) {
+			return Optional.empty();
+		}
+		@Override
+		public void putContent(ResolverContext context, ContentRef content) {
+		}
+		@Override
+		public Optional<AttributeSet> getAttributes(ResolverContext context) {
+			return Optional.empty();
+		}
+		@Override
+		public void putAttributes(ResolverContext context, AttributeSet v) {
+		}
+	}
 }

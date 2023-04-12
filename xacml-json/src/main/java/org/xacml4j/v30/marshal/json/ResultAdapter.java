@@ -37,6 +37,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.request.RequestReference;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Lists;
@@ -134,7 +135,6 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		if (src.getStatus() != null) {
 			o.add(STATUS_PROPERTY, context.serialize(src.getStatus()));
 		}
-
 		Collection<Obligation> obligations = src.getObligations();
 		if (obligations != null && !obligations.isEmpty()) {
 			o.add(OBLIGATIONS_PROPERTY, context.serialize(obligations, OBLIGATIONS_TYPE));
@@ -145,7 +145,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		}
 		Collection<Category> attributes = src.getIncludeInResultAttributes();
 		if (attributes != null && !attributes.isEmpty()) {
-			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes));
+			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes, new TypeToken<Collection<Category>>() {}.getType()));
 		}
 		serializePolicyIdentifiers(src, context, o);
 		return o;

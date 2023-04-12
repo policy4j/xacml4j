@@ -30,12 +30,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.*;
 import org.xacml4j.v30.PolicyDecisionPoint;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointCacheProvider;
+import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Supplier;
@@ -49,15 +51,16 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 	@BeforeClass
 	public static void init() throws Exception
 	{
-		PolicyRepository repository = new InMemoryPolicyRepository(
-				"testId",
-				FunctionProviderBuilder.builder()
-				                       .defaultFunctions()
-				                       .build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				                                         .withDefaultAlgorithms()
-				                                         .build());
-
+		PolicyRepository repository =
+				new InMemoryPolicyRepository("testId",
+				                             FunctionProviderBuilder
+						                             .builder()
+						                             .withDefaultFunctions()
+						                             .build(),
+				                             DecisionCombiningAlgorithmProviderBuilder
+						                             .builder()
+						                             .withDefaultAlgorithms()
+						                             .build());
 		ImmutableList<Supplier<InputStream>> policyStreams = ImmutableList.of(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),
 				_getPolicy("XacmlPolicySet-02a-CDA.xml"),
@@ -70,17 +73,18 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 				_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 
 		ImmutableList.Builder<CompositeDecisionRule> policies = ImmutableList.builder();
+		PolicyImportTool tool = repository.newImportTool();
 		for (Supplier<InputStream> policyStream : policyStreams) {
-			policies.add(repository.importPolicy(policyStream));
+			tool.importPolicy(MediaType.Type.XACML20_XML, policyStream);
 		}
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
 			.policyRepository(repository)
 			.pip(
-					PolicyInformationPointBuilder
+					PolicyInformationPoint
 					.builder("testPip")
-					.defaultResolvers()
-					.withCacheProvider(new DefaultPolicyInformationPointCacheProvider(0, 0))
+					.withDefaultRegistry()
+					.noCacheProvider()
 					.build())
 			.rootPolicy(policies.build().get(0))
 			.build();

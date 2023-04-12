@@ -156,7 +156,7 @@ public final class Xacml20ResponseContextMarshaller
 			if(log.isDebugEnabled()){
 				log.debug("Mapping result=\"{}\" to resourceId", result);
 			}
-			Category resource = result.getCategory(CategoryId.RESOURCE);
+			Category resource = result.getIncludeInResultByCategory(CategoryId.RESOURCE);
 			if(resource == null){
 				return null;
 			}

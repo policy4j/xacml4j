@@ -146,7 +146,7 @@ public final class Result
 		return resolvedAttributes.values();
 	}
 
-	public Category getCategory(CategoryId categoryId){
+	public Category getIncludeInResultByCategory(CategoryId categoryId){
 		return includeInResultAttributes.get(categoryId);
 	}
 
