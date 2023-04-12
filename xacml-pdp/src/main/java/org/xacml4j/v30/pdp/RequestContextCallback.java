@@ -40,7 +40,7 @@ public interface RequestContextCallback
 	 */
 	Optional<Entity> getEntity(CategoryId category);
 
-	default Optional<BagOfValues> cd(AttributeSelectorKey selectorKey){
+	default Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
 		return getEntity(selectorKey.getCategory())
 				.flatMap(e->e.resolve(selectorKey));
 	}

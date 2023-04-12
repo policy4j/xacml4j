@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
@@ -62,7 +63,7 @@ public class DefaultEvaluationContextHandlerTest
 	private IMocksControl c;
 
 	private Entity entity;
-	private Node content;
+	private XmlContent content;
 
 	private PolicyInformationPoint pip;
 	private XPathProvider xpathProvider;
@@ -83,6 +84,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 		this.xpathProvider = XPathProvider.defaultProvider();
 		this.handler = new DefaultEvaluationContextHandler(requestContextCallback, pip);
+		this.content = XmlContent.of(testXml);
 	}
 
 
@@ -124,36 +126,29 @@ public class DefaultEvaluationContextHandlerTest
 		c.verify();
 	}
 
-//	@Test(expected=AttributeReferenceEvaluationException.class)
-//	public void testSelectorResolveContentIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute()
-//		throws Exception
-//	{
-//		final AttributeSelectorKey ref = AttributeSelectorKey
-//				.builder()
-//				.category(Categories.SUBJECT_RECIPIENT)
-//				.xpath("/md:record/md:patient/md:patient-number/text()")
-//				.dataType(XacmlTypes.INTEGER)
-//				.build();
-//
-//		expect(requestContextCallback.getEntity(Categories.SUBJECT_RECIPIENT)).andReturn(Optional.empty());
-//
-//		expect(pip.resolve(context, Categories.SUBJECT_RECIPIENT)).andStubAnswer(new IAnswer<Node>()
-//		{
-//			@Override
-//			public Node answer() throws Throwable {
-//				 handler.resolve(context, ref);
-//				 return content;
-//			}
-//		});
-//
-//		c.replay();
-//
-//		Optional<BagOfAttributeValues> v = handler.resolve(context, ref);
-//		// test cache
-//		v = handler.resolve(context, ref);
-//		assertEquals(XacmlTypes.INTEGER.bag().value(555555).build(), v);
-//		c.verify();
-//	}
+	@Test
+	public void testSelectorResolveContentIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute()
+		throws Exception
+	{
+		final AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER)
+				.build();
+
+		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.empty());
+
+		expect(pip.resolve(context, ref)).andReturn(Optional.of(content).flatMap(v->v.resolve(ref)));
+
+		c.replay();
+
+		Optional<BagOfValues> v = handler.resolve(context, ref);
+		// test cache
+		v = handler.resolve(context, ref);
+		assertEquals(XacmlTypes.INTEGER.bag().value(555555).build(), v.get());
+		c.verify();
+	}
 
 
 	@Test

@@ -64,7 +64,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 {
 	private static final Logger LOG = LoggerFactory.getLogger(AttributeDesignatorFunctions.class);
 	
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:attribute-designator")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:attribute-designator", shortId = "attribute-designator")
 	@XacmlFuncReturnTypeResolver(resolverClass=AttributeDesignatorFunctions.class)
 	public static BagOfValues designator(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
@@ -111,7 +111,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 	}
 
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:attribute-selector")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:attribute-selector", shortId = "attribute-selector")
 	@XacmlFuncReturnTypeResolver(resolverClass=AttributeDesignatorFunctions.class)
 	public static BagOfValues selector(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,

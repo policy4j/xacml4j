@@ -50,7 +50,7 @@ import com.google.common.base.Supplier;
 class DefaultEvaluationContextHandler
 		implements EvaluationContextHandler
 {
-	private final static Logger log = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
+	private final static Logger LOG = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
 
 	private PolicyInformationPoint pip;
 
@@ -117,14 +117,18 @@ class DefaultEvaluationContextHandler
 	private Optional<BagOfValues> doSelectorResolve(EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
-		return doPipResolve(context, (AttributeSelectorKey)ref);
+		Optional<BagOfValues> v = doPipResolve(context, (AttributeSelectorKey)ref);
+		LOG.debug("ref={}, value={}", ref, v);
+		return v;
 	}
 
 	private Optional<BagOfValues> doDesignatorResolve(EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeDesignatorKey);
-		return requestCallback.resolve((AttributeDesignatorKey) ref)
+		Optional<BagOfValues> v = requestCallback.resolve((AttributeDesignatorKey) ref)
 				.or(()->doPipResolve(context, (AttributeDesignatorKey)ref));
+		LOG.debug("ref={}, value={}", ref, v);
+		return v;
 	}
 
 	private Optional<BagOfValues> doPipResolve(EvaluationContext context, AttributeDesignatorKey key)
@@ -140,7 +144,7 @@ class DefaultEvaluationContextHandler
 			return v;
 
 		}catch(Exception e){
-			log.debug(e.getMessage(), e);
+			LOG.debug(e.getMessage(), e);
 			return Optional.empty();
 		}finally{
 			designatorResolutionStack.pop();
@@ -164,11 +168,12 @@ class DefaultEvaluationContextHandler
 			if(!v.isPresent() &&
 					ref.getContextSelectorId() != null){
 				AttributeDesignatorKey entitySelector =
-						AttributeDesignatorKey.builder()
-				                      .dataType(XacmlTypes.ENTITY)
-				                      .attributeId(ref.getContextSelectorId())
-				                      .category(ref.getCategory())
-				                              .build();
+						AttributeDesignatorKey
+								.builder()
+								.dataType(XacmlTypes.ENTITY)
+								.attributeId(ref.getContextSelectorId())
+								.category(ref.getCategory())
+								.build();
 				v = pip.resolve(context, entitySelector)
 				          .flatMap(b->b.single())
 				          .map(EntityValue.class::cast)
@@ -179,7 +184,7 @@ class DefaultEvaluationContextHandler
 			return v;
 		}
 		catch(Exception e){
-			log.debug(e.getMessage(), e);
+			LOG.debug(e.getMessage(), e);
 			return Optional.empty();
 		}
 		finally {

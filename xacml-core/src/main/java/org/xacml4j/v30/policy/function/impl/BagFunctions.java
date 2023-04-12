@@ -121,7 +121,7 @@ public final class BagFunctions
 		return XacmlTypes.BOOLEAN.of(bag.isEmpty());
 	}
 
-	@XacmlFuncSpec(id="urn:xacml4j:names:tc:xacml:1.0:function:string-bag-is-empty")
+	@XacmlFuncSpec(id="urn:xacml4j:names:tc:xacml:1.0:function:string-bag-is-empty", shortId = "string-bag-is-empty")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue stringBagIsEmpty(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)
@@ -130,7 +130,7 @@ public final class BagFunctions
 		return isEmpty(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only", shortId = "string-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
 	public static StringValue stringOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)
@@ -139,7 +139,7 @@ public final class BagFunctions
 		return oneAndOnlyImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-bag-size")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-bag-size", shortId = "string-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue stringBagSize(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true) BagOfValues bag)
@@ -147,7 +147,7 @@ public final class BagFunctions
 		return typeBagSizeImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-is-in")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-is-in", shortId = "string-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue stringIsIn(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v,
@@ -156,7 +156,7 @@ public final class BagFunctions
 		return containsImpl(v, bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-bag")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-bag", shortId = "string-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true)
 	public static BagOfValues stringBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#string")
@@ -169,7 +169,7 @@ public final class BagFunctions
 
 	// boolean
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only", shortId = "boolean-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue booleanOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true) BagOfValues bag)
@@ -177,7 +177,7 @@ public final class BagFunctions
 		return oneAndOnlyImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag-size")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag-size", shortId = "boolean-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue booleanBagSize(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true) BagOfValues bag)
@@ -185,7 +185,7 @@ public final class BagFunctions
 		return typeBagSizeImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-is-in")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-is-in", shortId = "boolean-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue booleanIsIn(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue v,
@@ -194,7 +194,7 @@ public final class BagFunctions
 		return containsImpl(v, bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-bag", shortId = "boolean-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)
 	public static BagOfValues booleanBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -207,7 +207,7 @@ public final class BagFunctions
 
 	// integer
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only", shortId = "integer-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue integerOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true) BagOfValues bag)
@@ -215,7 +215,7 @@ public final class BagFunctions
 		return oneAndOnlyImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-bag-size")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-bag-size", shortId = "integer-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue integerBagSize(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true) BagOfValues bag)
@@ -223,7 +223,7 @@ public final class BagFunctions
 		return typeBagSizeImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-is-in")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-is-in", shortId = "integer-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue integerIsIn(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue v,
@@ -232,7 +232,7 @@ public final class BagFunctions
 		return containsImpl(v, bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-bag")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-bag", shortId = "integer-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true)
 	public static BagOfValues integerBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#integer")
@@ -245,7 +245,7 @@ public final class BagFunctions
 
 	// time
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-one-and-only")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-one-and-only", shortId = "time-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#time")
 	public static TimeValue timeOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true) BagOfValues bag)
@@ -253,7 +253,7 @@ public final class BagFunctions
 		return oneAndOnlyImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-bag-size")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-bag-size", shortId = "time-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue timeBagSize(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true) BagOfValues bag)
@@ -261,7 +261,7 @@ public final class BagFunctions
 		return typeBagSizeImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-is-in")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-is-in", shortId = "time-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanValue timeIsIn(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") TimeValue v,
@@ -270,7 +270,7 @@ public final class BagFunctions
 		return containsImpl(v, bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-bag")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-bag", shortId = "time-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#time", isBag=true)
 	public static BagOfValues timeBag(
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#time")
@@ -283,7 +283,7 @@ public final class BagFunctions
 
 	// double
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-one-and-only")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-one-and-only", shortId = "double-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleValue doubleOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues bag)

@@ -73,8 +73,8 @@ public final class XmlContent implements Content
 
     private XmlContent(Node content,
                        XPathProvider xPathProvider){
-        this.contextNode = Objects.requireNonNull(content);
-        this.xPathProvider = Objects.requireNonNull(xPathProvider);
+        this.contextNode = Objects.requireNonNull(content, "content");
+        this.xPathProvider = Objects.requireNonNull(xPathProvider, "xPathProvider");
 
     }
 
@@ -88,7 +88,7 @@ public final class XmlContent implements Content
     }
 
     private static Node checkValidNode(Node content){
-        Objects.requireNonNull(content);
+        Objects.requireNonNull(content, "content");
         if(!(content.getNodeType() == Node.DOCUMENT_NODE)){
             throw new IllegalArgumentException(
                     String.format("Only Document DOM nodes are supported"));

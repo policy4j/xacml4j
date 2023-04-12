@@ -181,7 +181,7 @@ public final class ArithmeticFunctions
 		return a.mod(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-subtract", shortId = "integer-subtract")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerValue subtract(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,

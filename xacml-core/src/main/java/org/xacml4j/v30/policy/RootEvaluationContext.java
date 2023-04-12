@@ -78,7 +78,7 @@ public final class RootEvaluationContext implements EvaluationContext
 	private Clock clock;
 
 	private boolean validateFuncParamsAtRuntime;
-	private Optional<Status> evaluationStatus;
+	private Status evaluationStatus;
 	private AtomicReference<Duration> combinedDecisionCacheTTL;
 	private final boolean extendedIndeterminateEval = false;
 
@@ -172,7 +172,7 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public Optional<Status> getEvaluationStatus() {
-		return evaluationStatus;
+		return Optional.ofNullable(evaluationStatus);
 	}
 
 

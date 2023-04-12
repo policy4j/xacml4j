@@ -202,6 +202,7 @@ public class Xacml20ConformanceTest
 	{
 		for(int i = 1; i < testCount; i++)
 		{
+
 			if (!exclude.contains(i)) {
 				executeTestCase(testPrefix, i);
 			}
