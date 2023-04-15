@@ -32,7 +32,10 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xacml4j.util.DOMUtil;
 import org.xacml4j.util.JSONUtil;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -65,11 +68,14 @@ public class XmlContentTest
             "</md:patient>" +
             "</md:record>";
 
-    private String testXml3 = "<test>aaa</test>";
+
+
+    private String testXml4 = "<test>aaa</test>";
 
     private XmlContent xml1;
     private XmlContent xml2;
     private XmlContent xml3;
+    private XmlContent xml4;
 
     @Before
     public void setUp(){
@@ -77,6 +83,13 @@ public class XmlContentTest
                 XmlContent.fromString(testXml1));
         this.xml2 = XmlContent.of(
                 XmlContent.fromString(testXml2));
+        Optional<Document> xml = DOMUtil.parseXml(Thread.currentThread()
+                               .getContextClassLoader()
+                               .getResourceAsStream("./TestXpathContent.xml"))
+                                        .map(Document.class::cast);
+        Node e = xml.get().getElementsByTagName("md:record").item(0);
+
+        this.xml4 = XmlContent.of(e);
         this.xml3 = XmlContent.of(
                 XmlContent
                         .fromStream(
@@ -150,6 +163,24 @@ public class XmlContentTest
                         .dataType(XacmlTypes.STRING)
                         .build());
         assertTrue(values.get().contains(XacmlTypes.STRING.of("555555")));
+    }
+
+    @Test
+    public void testEntityXPathCorrectTypeString4(){
+        Optional<BagOfValues> values = xml4.resolve(
+                AttributeSelectorKey
+                        .builder()
+                        .xpath("//md:record/md:patient_info/md:health_insurance/text()")
+                        .dataType(XacmlTypes.STRING)
+                        .build());
+        assertTrue(values.get().contains(XacmlTypes.STRING.of("123456")));
+        values = xml4.resolve(
+                AttributeSelectorKey
+                        .builder()
+                        .xpath("./md:record/md:patient_info/md:health_insurance/text()")
+                        .dataType(XacmlTypes.STRING)
+                        .build());
+        assertTrue(values.get().contains(XacmlTypes.STRING.of("123456")));
     }
 
     @Test(expected = PathEvaluationException.class)

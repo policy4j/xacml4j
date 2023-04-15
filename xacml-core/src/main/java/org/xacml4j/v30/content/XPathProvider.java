@@ -177,15 +177,15 @@ public interface XPathProvider
 	}
 
 	static XPathProvider defaultProvider(){
-		return DefaultJDK.INSTANCE;
+		return DefaultXPathProvider.INSTANCE;
 	}
 
 	/**
 	 * @see {@link <a href="http://leakfromjavaheap.blogspot.com/2014/12/xpath-evaluation-performance-tweaks.html"/>}
 	 */
-	final class DefaultJDK implements XPathProvider
+	final class DefaultXPathProvider implements XPathProvider
 	{
-		private final static XPathProvider INSTANCE = new DefaultJDK();
+		private final static XPathProvider INSTANCE = new DefaultXPathProvider();
 
 		/**
 		 * Magic properties for XPath performance
@@ -210,18 +210,18 @@ public interface XPathProvider
 		private Supplier<XPathFactory> xpathFactory;
 
 
-		private DefaultJDK(){
+		private DefaultXPathProvider(){
 			this(()->XPATH_FACTORY.get());
 		}
 
-		private DefaultJDK(Supplier<XPathFactory> xpathFactory){
+		private DefaultXPathProvider(Supplier<XPathFactory> xpathFactory){
 			Preconditions.checkNotNull(xpathFactory);
 			this.xpathFactory = Objects.requireNonNull(xpathFactory,
 					"xpathFactorySupplier");
 		}
 
 		public XPathExpression newXPath(String xpath, Node node){
-			XPath xp = DefaultJDK.XPATH_FACTORY.get().newXPath();
+			XPath xp = DefaultXPathProvider.XPATH_FACTORY.get().newXPath();
 			xp.setNamespaceContext(new NodeNamespaceContext(node));
 			try{
 				return xp.compile(xpath);

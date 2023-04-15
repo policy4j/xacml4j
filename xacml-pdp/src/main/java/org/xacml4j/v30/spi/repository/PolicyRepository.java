@@ -23,12 +23,15 @@ package org.xacml4j.v30.spi.repository;
  */
 
 import java.util.Collection;
+import java.util.Objects;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 
 
 /**
@@ -191,4 +194,37 @@ public interface PolicyRepository
 		return new PolicyImportTool(this);
 	}
 
+	static Builder build(String id){
+		return new Builder(id);
+	}
+
+	class Builder
+	{
+		private String id;
+		private FunctionProvider functionProvider = FunctionProvider.builder()
+		                                                            .withDefaultFunctions()
+		                                                            .build();
+		private DecisionCombiningAlgorithmProvider algorithmProvider = DecisionCombiningAlgorithmProvider
+				.builder()
+				.withDefaultAlgorithms()
+				.build();
+
+		public Builder(String id){
+			this.id = Objects.requireNonNull(id, "id");
+		}
+
+		public Builder withFunctionProvider(FunctionProvider functionProvider){
+			this.functionProvider = Objects.requireNonNull(functionProvider, "functionProvider");
+			return this;
+		}
+
+		public Builder withAlgorithmProvider(DecisionCombiningAlgorithmProvider algorithmProvider){
+			this.algorithmProvider = Objects.requireNonNull(algorithmProvider, "algorithmProvider");
+			return this;
+		}
+
+		public PolicyRepository build(){
+			return new InMemoryPolicyRepository(id, functionProvider, algorithmProvider);
+		}
+	}
 }

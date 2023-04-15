@@ -25,6 +25,10 @@ package org.xacml4j.v30;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xacml4j.util.DOMUtil;
+
 
 public class SyntaxException extends CoreException
 {
@@ -84,6 +88,18 @@ public class SyntaxException extends CoreException
 		return new SyntaxException(
 				"Invalid XML file=\"{}\"", message, t);
 	}
+
+	public static SyntaxException invalidXmlDomNode(String message, Element source){
+		return new SyntaxException(
+				"Invalid XML node=\"{}\" error=\"{}\"", DOMUtil.toString(source), message);
+	}
+
+	public static SyntaxException failedToParseXml(String message, Throwable t){
+		return new SyntaxException(
+				"Failed to parse XML error=\"{}\"", message, t);
+	}
+
+
 
 	public static SyntaxException syntaxError(String message, Object ...params){
 		return new SyntaxException(message, params);

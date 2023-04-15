@@ -122,10 +122,10 @@ public class WellKnownAttributeIds extends SemanticalIdentifier
             .getProperty(WellKnownAttributeIds.class.getName() + ".ALWAYS_USE_SUPPLIER"))
             .map(v->Boolean.parseBoolean(v)).orElse(false);
 
-    private WellKnownAttributeIds(String id, String abbreviatedId) {
+    protected WellKnownAttributeIds(String id, String abbreviatedId) {
         super(id, abbreviatedId);
     }
-    private WellKnownAttributeIds(String id) {
+    protected WellKnownAttributeIds(String id) {
         super(id, id);
     }
 

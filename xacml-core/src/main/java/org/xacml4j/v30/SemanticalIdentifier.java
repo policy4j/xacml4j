@@ -122,9 +122,6 @@ public class SemanticalIdentifier implements Serializable
                 Reflections.getDeclaredStaticFields(type, type)
                         .stream()
                         .collect(Collectors.groupingBy(map));
-        if(LOG.isDebugEnabled()){
-            LOG.debug("Found identifiers=\"{}\" for type=\"{}\"", byId, type);
-        }
         return  byId.entrySet()
                 .stream()
                 .map(v->map(v))

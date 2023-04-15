@@ -173,20 +173,20 @@ public class DOMUtil
 	 * document with copy of the node as
 	 * root element
 	 */
-	public static Document copyNode(Node source)
+	public static Document copyNode(Element source)
 	{
 		if (source == null) {
 			return null;
 		}
-		Document sourceDoc = (source.getNodeType() == Node.DOCUMENT_NODE)?(Document)source:source.getOwnerDocument();
-		Node rootNode = (source.getNodeType() == Node.DOCUMENT_NODE)?sourceDoc.getDocumentElement():source;
-		Preconditions.checkState(sourceDoc != null);
-		DOMImplementation domImpl = sourceDoc.getImplementation();
-		Document doc = domImpl.createDocument(sourceDoc.getNamespaceURI(),
-				null, sourceDoc.getDoctype());
-		Node copy =  doc.importNode(rootNode, true);
-		doc.appendChild(copy);
-		return doc;
+		try{
+			DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+			Document doc = builder.newDocument();
+			Element copy =  (Element)doc.importNode(source, true);
+			doc.appendChild(copy);
+			return doc;
+		}catch (ParserConfigurationException e){
+			throw SyntaxException.invalidXml(e.getMessage(), e);
+		}
 	}
 
 	/**
@@ -395,20 +395,48 @@ public class DOMUtil
 	 * @param n a DOM node
 	 * @return a string representation
 	 */
-	public static String toString(Element n){
+	public static String toString(Node n){
 		if(n == null){
 			return null;
+		}
+		Element e = null;
+		if(n  instanceof Document){
+			e = ((Document)n).getDocumentElement();
+		}
+		if(n  instanceof Element){
+			e = ((Element)n);
 		}
 		StringBuilder fqname = new StringBuilder();
 		if(!Strings.isNullOrEmpty(
 				n.getNamespaceURI())){
 			fqname
-			.append('{')
-			.append(n.getNamespaceURI())
-			.append('}');
+					.append('{')
+					.append(n.getNamespaceURI())
+					.append('}');
 		}
-		fqname.append(n.getLocalName());
-		return fqname.toString();
+		if(e != null){
+			fqname.append(n.getLocalName());
+			return fqname.toString();
+		}
+		return fqname.append(notTypeToString(n)).toString();
+	}
+	
+	private static String notTypeToString(Node node){
+			switch(node.getNodeType()) {
+				case Node.ELEMENT_NODE:                return "Element";
+				case Node.DOCUMENT_NODE:               return "Document";
+				case Node.DOCUMENT_TYPE_NODE:          return "Document type";
+				case Node.DOCUMENT_FRAGMENT_NODE:      return "Document fragment";
+				case Node.ENTITY_NODE:                 return "Entity";
+				case Node.ENTITY_REFERENCE_NODE:       return "Entity reference";
+				case Node.NOTATION_NODE:               return "Notation";
+				case Node.TEXT_NODE:                   return "Text";
+				case Node.COMMENT_NODE:                return "Comment";
+				case Node.CDATA_SECTION_NODE:          return "CDATA Section";
+				case Node.ATTRIBUTE_NODE:              return "Attribute";
+				case Node.PROCESSING_INSTRUCTION_NODE: return "Processing Instruction";
+			}
+			return "Unidentified";
 	}
 
 	private static void trimEmptyTextNodes(Node node) {

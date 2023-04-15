@@ -22,13 +22,13 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.xacml4j.util.Preconditions.checkArgument;
-
 import java.time.Duration;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Preconditions;
 
 /**
  * Base class for {@link PolicyInformationPointCacheProvider} implementations
@@ -49,7 +49,7 @@ public abstract class BasePolicyInformationPointCacheProvider
 
 	@Override
 	public final void putContent(ResolverContext context, ContentRef content) {
-		checkArgument(context.getDescriptor().getId().equals(content.getDescriptor().getId()),
+		Preconditions.checkArgument(context.getDescriptor().getId().equals(content.getDescriptor().getId()),
 				"ContentRef descriptor Id \"%s\" " +
 						"must match resolver context descriptor Id \"%s\"",
 				content.getDescriptor().getId(), context.getDescriptor().getId());
@@ -68,7 +68,7 @@ public abstract class BasePolicyInformationPointCacheProvider
 
 	@Override
 	public final void putAttributes(ResolverContext context, AttributeSet v) {
-		checkArgument(context.getDescriptor().getId().equals(v.getDescriptor().getId()),
+		Preconditions.checkArgument(context.getDescriptor().getId().equals(v.getDescriptor().getId()),
 				"Attribute set descriptor Id \"%s\" must match resolver context descriptor Id \"%s\"",
 				v.getDescriptor().getId(), context.getDescriptor().getId());
 		if (context.getDescriptor().isCacheable() ||

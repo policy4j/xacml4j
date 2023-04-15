@@ -35,6 +35,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ProcessingInstruction;
@@ -55,6 +57,7 @@ import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 
 /**
  * {@link Content} implementation for XML content type
@@ -67,14 +70,17 @@ public final class XmlContent implements Content
 
     private final static Logger LOG = LoggerFactory.getLogger(XmlContent.class);
 
-    private Node contextNode;
+    private Document contextNode;
 
     private XPathProvider xPathProvider;
 
     private XmlContent(Node content,
                        XPathProvider xPathProvider){
-        this.contextNode = Objects.requireNonNull(content, "content");
+        Objects.requireNonNull(content, "content");
+        Preconditions.checkArgument(content instanceof Element || content instanceof Document, "Element or Document nodes only");
+        this.contextNode = DOMUtil.copyNode(content.getNodeType() == Node.DOCUMENT_NODE?((Document)content).getDocumentElement():(Element)content);
         this.xPathProvider = Objects.requireNonNull(xPathProvider, "xPathProvider");
+        LOG.debug("Context node={}", DOMUtil.toString(contextNode.getDocumentElement()));
 
     }
 
@@ -111,44 +117,27 @@ public final class XmlContent implements Content
      * @param node an DOM node
      * @return {@link XmlContent} defaultProvider
      */
-    public static  XmlContent of(Supplier<Node> supplier, boolean copyContent){
-        return of(supplier, copyContent, XPathProvider.defaultProvider());
-    }
-
     public static  XmlContent of(Supplier<Node> supplier){
-       return of(supplier, false, XPathProvider.defaultProvider());
+        return of(supplier, XPathProvider.defaultProvider());
     }
-
 
     public static  XmlContent of(Supplier<Node> supplier, XPathProvider xPathProvider){
-        return of(supplier, false, xPathProvider);
+        return new XmlContent(supplier.get(), xPathProvider);
     }
 
     public static  XmlContent of(String xmlDoc){
-        return of(()->fromString(xmlDoc), false);
+        return of(()->fromString(xmlDoc));
     }
 
     public static  XmlContent of(Node xmlDoc){
-        return of(()->xmlDoc, false);
+        return of(()->xmlDoc);
     }
 
     public static  XmlContent of(InputStream inputStream){
-        return of(()->fromStream(inputStream), false);
+        return of(()->fromStream(inputStream));
     }
 
-    /**
-     * Creates {@link XmlContent} from a given {@link Node}
-     *
-     * @param node an DOM node
-     * @param copyContent a deep copy flag
-     * @param xPathProvider an xpath provider
-     * @return {@link XmlContent} defaultProvider
-     */
-    public static  XmlContent of(Supplier<Node> supplier,
-                              boolean copyContent,
-                              XPathProvider xPathProvider){
-        return new XmlContent(copyContent?DOMUtil.copyNode(supplier.get()):supplier.get(), xPathProvider);
-    }
+
 
     @Override
     public Type getType() {
@@ -209,6 +198,7 @@ public final class XmlContent implements Content
     {
         try
         {
+            Node context = null;
             if(callback != null) {
                 Collection<Value> v = callback.get().getAttributeValues(
                         (selectorKey.getContextSelectorId() == null ? CONTENT_SELECTOR : selectorKey.getContextSelectorId()),
@@ -232,10 +222,10 @@ public final class XmlContent implements Content
                                                                                 ()->String.format("and ContextSelectorId.Category=\"%s\"",
                                         xpath.getCategory().orElse(null)));
                     }
-                    contextNode = xPathProvider.evaluateToNode(xpathAttr.value().getPath(), contextNode);
+                    context = xPathProvider.evaluateToNode(xpathAttr.value().getPath(), contextNode);
                 }
             }
-            NodeList nodeSet = xPathProvider.evaluateToNodeSet(selectorKey.getPath(), contextNode);
+            NodeList nodeSet = xPathProvider.evaluateToNodeSet(selectorKey.getPath(), context == null?contextNode:context);
             if(nodeSet == null ||
                     nodeSet.getLength() == 0){
                 return Optional.empty();

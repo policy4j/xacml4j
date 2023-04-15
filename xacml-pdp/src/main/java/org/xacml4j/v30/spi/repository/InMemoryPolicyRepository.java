@@ -125,7 +125,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		}
 		ConcurrentNavigableMap<Version, Policy> versions = policies.get(id);
 		if(versions == null){
-			versions = new ConcurrentSkipListMap<Version, Policy>();
+			versions = new ConcurrentSkipListMap<>();
 			ConcurrentNavigableMap<Version, Policy> existing = policies.putIfAbsent(id, versions);
 			if(existing != null){
 				versions = existing;
@@ -146,7 +146,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 		}
 		ConcurrentNavigableMap<Version, PolicySet> versions = policySets.get(id);
 		if(versions == null){
-			versions = new ConcurrentSkipListMap<Version, PolicySet>();
+			versions = new ConcurrentSkipListMap<>();
 			ConcurrentNavigableMap<Version, PolicySet> existing = policySets.putIfAbsent(id, versions);
 			if(existing != null){
 				versions = existing;
@@ -195,7 +195,7 @@ public class InMemoryPolicyRepository extends AbstractPolicyRepository
 			final VersionMatch earliest,
 			final VersionMatch latest)
 	{
-		org.xacml4j.util.Preconditions.checkNotNull(c, "policies");
+		Preconditions.checkNotNull(c, "policies");
 		return c.stream()
 				.filter(p->((version == null || version.match(p.getVersion())) &&
 				(earliest == null || earliest.match(p.getVersion())) &&

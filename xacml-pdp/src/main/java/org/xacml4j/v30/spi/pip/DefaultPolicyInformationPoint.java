@@ -22,7 +22,6 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.xacml4j.util.Preconditions.checkNotNull;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -33,6 +32,8 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
+
+import com.google.common.base.Preconditions;
 
 /**
  * A default implementation of {@link PolicyInformationPoint}
@@ -49,9 +50,9 @@ final class DefaultPolicyInformationPoint
 
 
 	DefaultPolicyInformationPoint(PolicyInformationPoint.Builder b) {
-		this.id = checkNotNull(b.id, "id");;
-		this.cache = checkNotNull(b.cache, "cache");;
-		this.registry = checkNotNull(b.registry, "registry");
+		this.id = Preconditions.checkNotNull(b.id, "id");;
+		this.cache = Preconditions.checkNotNull(b.cache, "cache");;
+		this.registry = Preconditions.checkNotNull(b.registry, "registry");
 	}
 
 	@Override

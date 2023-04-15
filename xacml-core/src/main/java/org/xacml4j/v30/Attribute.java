@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +44,7 @@ import com.google.common.collect.ImmutableList;
  *
  * @author Giedrius Trumpickas
  */
-public class Attribute
+public class Attribute implements Serializable
 {
 	private final String attributeId;
 	private final List<Value> values;

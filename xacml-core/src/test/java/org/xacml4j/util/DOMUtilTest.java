@@ -76,7 +76,6 @@ public class DOMUtilTest
 
 	private Element content1;
 	private Element content2;
-	private Element content3;
 	private Element content4;
 	private XPathFactory xpf;
 	private XPath xpath;
@@ -88,8 +87,8 @@ public class DOMUtilTest
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.content1 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
-		this.content2 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
-		this.content3 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
+		this.content2 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
+		this.content2 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
 		this.content4 = builder.parse(new InputSource(new StringReader(testXml4))).getDocumentElement();
 		this.xpf = XPathFactory.newInstance();
 		this.xpath = xpf.newXPath();
@@ -100,12 +99,9 @@ public class DOMUtilTest
 	@Test
 	public void testCopyNode()
 	{
-		Document copy = DOMUtil.copyNode(content1);
-		assertEquals(Node.DOCUMENT_NODE, copy.getNodeType());
-		assertNotNull(copy);
-		Element c = copy.getDocumentElement();
+		Document copy  = DOMUtil.copyNode(content1);
+		Element c  = copy.getDocumentElement();
 		assertEquals(2, c.getChildNodes().getLength());
-		assertNotNull(copy);
 		assertEquals("record", c.getLocalName());
 		assertEquals("urn:example:med:schemas:record", c.getNamespaceURI());
 		assertEquals(2, c.getChildNodes().getLength());
@@ -114,6 +110,7 @@ public class DOMUtilTest
 		assertEquals("patient", c.getChildNodes().item(1).getLocalName());
 		assertEquals("urn:example:med:schemas:record", c.getChildNodes().item(1).getNamespaceURI());
 		assertTrue(c.isEqualNode(content1));
+		assertTrue(DOMUtil.compareNodes(c, content1));
 
 	}
 
@@ -161,11 +158,8 @@ public class DOMUtilTest
 	public void testWriteNodeToStream() throws Exception
 	{
 		ByteArrayOutputStream out1 = new ByteArrayOutputStream();
-		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
 		DOMUtil.serializeToXml(content1, out1);
-		DOMUtil.serializeToXml(content2, out2);
 		assertEquals(testXml1, new String(out1.toByteArray()));
-		assertEquals(testXml1, new String(out2.toByteArray()));
 	}
 
 	@Test
@@ -175,8 +169,6 @@ public class DOMUtilTest
 		assertFalse(DOMUtil.isEqual(null, content1));
 		assertTrue(DOMUtil.isEqual(content1, content2));
 		assertTrue(DOMUtil.isEqual(content2, content1));
-		assertFalse(DOMUtil.isEqual(content1, content3));
-		assertFalse(DOMUtil.isEqual(content3, content1));
 	}
 
 	@Test

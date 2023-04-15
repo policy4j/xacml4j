@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.io.Serializable;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -39,7 +40,7 @@ import com.google.common.base.Preconditions;
  *
  * @author Giedrius Trumpickas
  */
-public final class Category
+public final class Category implements Serializable
 {
 	private final static Logger LOG = LoggerFactory.getLogger(Category.class);
 
@@ -105,6 +106,38 @@ public final class Category
 	public static Builder builder(){
 		return new Builder();
 	}
+
+	public static Builder subjectAccess(){
+		return new Builder(CategoryId.SUBJECT_ACCESS);
+	}
+	public static Builder subjectRecipient(){
+		return new Builder(CategoryId.SUBJECT_RECIPIENT);
+	}
+
+	public static Builder subjectCodebase(){
+		return new Builder(CategoryId.SUBJECT_CODEBASE);
+	}
+	public static Builder subjectIntermediary(){
+		return new Builder(CategoryId.SUBJECT_INTERMEDIARY);
+	}
+	public static Builder subjectRequestingMachine(){
+		return new Builder(CategoryId.SUBJECT_REQUESTING_MACHINE);
+	}
+
+	public static Builder subjectRoleEnablementAuthority(){
+		return new Builder(CategoryId.SUBJECT_ROLE_ENABLEMENT_AUTHORITY);
+	}
+
+	public static Builder resource(){
+		return new Builder(CategoryId.RESOURCE);
+	}
+	public static Builder action(){
+		return new Builder(CategoryId.ACTION);
+	}
+	public static Builder enviroment(){
+		return new Builder(CategoryId.ENVIRONMENT);
+	}
+
 
 	/**
 	 * An unique identifier of the attribute category

@@ -30,6 +30,7 @@ import javax.xml.namespace.NamespaceContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import com.google.common.base.Preconditions;
@@ -41,14 +42,23 @@ public final class NodeNamespaceContext implements NamespaceContext
 	private Node node;
 
 	public NodeNamespaceContext(Node node){
-		Preconditions.checkNotNull(node);
+		Preconditions.checkNotNull(node, "node");
 		this.node = node;
 	}
 
 	@Override
 	public String getNamespaceURI(String prefix){
-		String namespaceURI = node.lookupNamespaceURI(prefix);
-		return namespaceURI == null?XMLConstants.NULL_NS_URI:namespaceURI;
+		String namespaceURI = null;
+		if (prefix == null || prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
+			namespaceURI = node.lookupNamespaceURI(null);
+		} else {
+			namespaceURI = node.lookupNamespaceURI(prefix);
+		}
+		if(log.isDebugEnabled()){
+			log.debug("Namespace prefix=\"{}\" " +
+					          "for namespaceURI=\"{}\"", prefix, namespaceURI);
+		}
+		return namespaceURI;
 	}
 
 	@Override
