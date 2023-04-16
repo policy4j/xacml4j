@@ -449,15 +449,14 @@ public class DOMUtil
 			e = ((Element)n);
 		}
 		StringBuilder fqname = new StringBuilder();
-		if(!Strings.isNullOrEmpty(
-				n.getNamespaceURI())){
-			fqname
-					.append('{')
-					.append(n.getNamespaceURI())
-					.append('}');
-		}
 		if(e != null){
-			fqname.append(n.getLocalName());
+			if(!Strings.isNullOrEmpty(
+					n.getNamespaceURI())){
+				fqname
+						.append('{')
+						.append(n.getNamespaceURI())
+						.append('}');
+			}
 			return fqname.toString();
 		}
 		return fqname.append(notTypeToString(n)).toString();

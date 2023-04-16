@@ -39,14 +39,4 @@ public interface RequestContextCallback
 	 * @return {@link Entity}
 	 */
 	Optional<Entity> getEntity(CategoryId category);
-
-	default Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
-		return getEntity(selectorKey.getCategory())
-				.flatMap(e->e.resolve(selectorKey));
-	}
-
-	default Optional<BagOfValues> resolve(AttributeDesignatorKey designatorKey){
-		return getEntity(designatorKey.getCategory())
-				.flatMap(e->e.resolve(designatorKey));
-	}
 }

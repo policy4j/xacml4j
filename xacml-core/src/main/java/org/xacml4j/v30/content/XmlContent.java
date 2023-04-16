@@ -397,7 +397,7 @@ public final class XmlContent implements Content
             throw new XPathEvaluationException(
                     Status.processingError().build(),
                     "Unsupported XACML xpath=\"%s%\" type=\"%d\"",
-                    xpath, type.getDataTypeId());
+                    xpath, type.getDataTypeId(), v);
         }
         Value value = toString.get().fromString(v);
         if (LOG.isDebugEnabled()) {

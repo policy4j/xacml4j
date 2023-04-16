@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xacml4j.util.DOMUtil;
 import org.xacml4j.util.NodeNamespaceContext;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.XPathVersion;
@@ -74,9 +75,9 @@ public interface XPathProvider
 			XPathExpression xpath = newXPath(path, context);
 			Node result = (Node)xpath.evaluate(context, XPathConstants.NODE);
 			if(result != null){
-				log.debug("Xpath={} result node name=\"{}:{}\" node type=\"{}\"",
+				log.debug("Xpath={} result node name=\"{}\" node type=\"{}\"",
 						  xpath,
-				          result.getLocalName(), result.getNamespaceURI(),
+						  DOMUtil.toString(result),
 				          result.getNodeType());
 
 			}else{
@@ -109,8 +110,8 @@ public interface XPathProvider
 				if(log.isDebugEnabled()){
 					for(int i = 0; i < result.getLength(); i++){
 						Node n = result.item(i);
-						log.debug("Result at index=\"{}\" name=\"{}:{}\" type=\"{}\"", i,
-						          n.getLocalName(), n.getNamespaceURI(),
+						log.debug("Result at index=\"{}\" type=\"{}\" domType=\"{}\"", i,
+						          DOMUtil.toString(n),
 						          n.getNodeType());
 					}
 				}

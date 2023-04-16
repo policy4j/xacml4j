@@ -37,8 +37,10 @@ import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.types.EntityValue;
@@ -117,8 +119,10 @@ final class DefaultEvaluationContextHandler
 	private Optional<BagOfValues> doSelectorResolve(EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
-		Optional<BagOfValues> v = requestCallback.resolve((AttributeSelectorKey) ref)
-		                                         .or(()->doPipResolve(context, (AttributeSelectorKey)ref));
+		AttributeSelectorKey selectorKey = (AttributeSelectorKey)ref;
+		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
+		                                         .flatMap(e->doSafeResolve(context, selectorKey, e))
+		                                         .or(()->doPipResolve(context, selectorKey));
 		LOG.debug("ref={}, value={}", ref, v);
 		return v;
 	}
@@ -126,17 +130,20 @@ final class DefaultEvaluationContextHandler
 	private Optional<BagOfValues> doDesignatorResolve(EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeDesignatorKey);
-		Optional<BagOfValues> v = requestCallback.resolve((AttributeDesignatorKey) ref)
-				.or(()->doPipResolve(context, (AttributeDesignatorKey)ref));
+		AttributeDesignatorKey designatorKey = (AttributeDesignatorKey)ref;
+		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
+		                                         .flatMap(e->doSafeResolve(context, designatorKey, e))
+		                                         .or(()->doPipResolve(context, (AttributeDesignatorKey)ref));
 		LOG.debug("ref={}, value={}", ref, v);
 		return v;
 	}
 
 	private Optional<BagOfValues> doPipResolve(EvaluationContext context, AttributeDesignatorKey key)
 	{
-		Preconditions.checkState(
-				!designatorResolutionStack.contains(key),
-				"Cyclic designator=\"%s\" resolution detected", key);
+		if(designatorResolutionStack.contains(key)){
+			LOG.warn("Cyclic designator=\"{}\" resolution detected", key);
+			return Optional.empty();
+		}
 		try
 		{
 			designatorResolutionStack.push(key);
@@ -156,16 +163,14 @@ final class DefaultEvaluationContextHandler
 			final EvaluationContext context,
 			final AttributeSelectorKey ref) throws EvaluationException
 	{
-		Preconditions.checkState(
-				!selectorResolutionStack.contains(ref),
-				"Cyclic designator=\"%s\" resolution detected", ref);
+		if(selectorResolutionStack.contains(ref)){
+			LOG.warn("Cyclic selector=\"{}\" resolution detected", ref);
+			return Optional.empty();
+		}
 		try
 		{
 			selectorResolutionStack.push(ref);
-			Optional<BagOfValues> v = ref.getCategoryOpt()
-			          .flatMap(c->requestCallback.getEntity(c))
-			          .flatMap(e->e.resolve(ref)).or(()->pip.resolve(context, ref));
-			v = v.or(()->pip.resolve(context, ref));
+			Optional<BagOfValues> v = pip.resolve(context, ref);
 			if(!v.isPresent() &&
 					ref.getContextSelectorId() != null){
 				AttributeDesignatorKey entitySelector =
@@ -175,7 +180,7 @@ final class DefaultEvaluationContextHandler
 								.attributeId(ref.getContextSelectorId())
 								.category(ref.getCategory())
 								.build();
-				v = pip.resolve(context, entitySelector)
+				v = resolve(context, entitySelector)
 				          .flatMap(b->b.single())
 				          .map(EntityValue.class::cast)
 				          .map(EntityValue::value)
@@ -190,6 +195,24 @@ final class DefaultEvaluationContextHandler
 		}
 		finally {
 			selectorResolutionStack.pop();
+		}
+	}
+
+	private Optional<BagOfValues> doSafeResolve(EvaluationContext context, AttributeSelectorKey ref, Entity entity){
+		try{
+			return entity.resolve(ref);
+		}
+		catch (Exception e){
+			return Optional.empty();
+		}
+
+	}
+
+	private Optional<BagOfValues> doSafeResolve(EvaluationContext context, AttributeDesignatorKey ref, Entity entity){
+		try{
+			return entity.resolve(ref);
+		}catch (Exception e){
+			return Optional.empty();
 		}
 	}
 

@@ -161,6 +161,8 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
+
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		c.verify();
@@ -177,6 +179,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
 		
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
@@ -196,7 +199,7 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		
+		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		c.verify();
@@ -212,9 +215,8 @@ public class DefaultEvaluationContextHandlerTest
 				.xpath("/test")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
-
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andReturn(Optional.empty()).times(2);
+		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
 		
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
@@ -255,8 +257,8 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.resolve(ref)).andReturn(Optional.of(XacmlTypes.ANYURI.of("testValue").toBag()));
-
+		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity));
+		expect(pip.resolve(context, ref)).andReturn(Optional.of(XacmlTypes.ANYURI.of("testValue").toBag()));
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		assertEquals(XacmlTypes.ANYURI.of("testValue").toBag(), v.get());
@@ -275,7 +277,7 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.resolve(ref)).andReturn(Optional.empty());
+		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity));
 		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
 
 		c.replay();
@@ -294,7 +296,7 @@ public class DefaultEvaluationContextHandlerTest
 				.attributeId("testId")
 				.dataType(XacmlTypes.ANYURI)
 				.build();
-		expect(requestContextCallback.resolve(ref)).andReturn(Optional.empty()).anyTimes();
+		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity)).anyTimes();
 		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<Optional<BagOfValues>>() {
 		public Optional<BagOfValues> answer() throws Throwable{
 				return handler.resolve(context, ref);

@@ -134,7 +134,7 @@ public final class Category implements Serializable
 	public static Builder action(){
 		return new Builder(CategoryId.ACTION);
 	}
-	public static Builder enviroment(){
+	public static Builder environment(){
 		return new Builder(CategoryId.ENVIRONMENT);
 	}
 
