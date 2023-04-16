@@ -454,9 +454,10 @@ public class DOMUtil
 					n.getNamespaceURI())){
 				fqname
 						.append('{')
-						.append(n.getNamespaceURI())
+						.append(e.getNamespaceURI())
 						.append('}');
 			}
+			fqname.append(e.getLocalName());
 			return fqname.toString();
 		}
 		return fqname.append(notTypeToString(n)).toString();
