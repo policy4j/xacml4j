@@ -26,10 +26,12 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.ExpressionVisitor;
+import org.xacml4j.v30.Status;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -71,10 +73,16 @@ public class AttributeSelector extends
 	@Override
 	protected Optional<BagOfValues> doContextResolve(EvaluationContext context)
 	{
-		if(LOG.isDebugEnabled()){
-			LOG.debug("Resolving SelectorKey=\"{}\"", selectorKey);
+		Optional<BagOfValues> v = context.resolve(selectorKey);
+		if((v == null || !v.isPresent() &&
+				isMustBePresent())){
+			context.setEvaluationStatusIfAbsent(()->Status.missingAttribute(selectorKey)
+			                                              .build());
+			throw AttributeReferenceEvaluationException
+					.forMissingRef(getReferenceKey());
 		}
-		return context.resolve(selectorKey);
+		return v == null?Optional.of(getDataType().emptyBag()):v;
+
 	}
 
 	@Override

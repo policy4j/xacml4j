@@ -30,6 +30,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Status;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -107,6 +108,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	public final Decision evaluate(EvaluationContext context)
 	{
 		if(!isEvaluationContextValid(context)){
+			context.setEvaluationStatusIfAbsent(()->Status.processingError().build());
 			return getExtendedIndeterminate();
 		}
 		MatchResult m  = isMatch(context);
@@ -115,6 +117,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 					"target evaluation is=\"{}\"", id, m);
 		}
 		if(m == MatchResult.INDETERMINATE){
+			context.setEvaluationStatusIfAbsent(()->Status.processingError().build());
 			return getExtendedIndeterminate();
 		}
 		if(m == MatchResult.NOMATCH){
@@ -131,12 +134,17 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 				try{
 					evaluateAdvicesAndObligations(context, d);
 				}catch(EvaluationException e){
+					context.setEvaluationStatusIfAbsent(()->Status.processingError()
+					                                              .error(e)
+					                                              .build());
 					return getExtendedIndeterminate();
 				}
 			}
 			return d;
 		}
 		if(result == ConditionResult.INDETERMINATE){
+			context.setEvaluationStatusIfAbsent(()->Status.processingError()
+			                                  .build());
 			return getExtendedIndeterminate();
 		}
 		return Decision.NOT_APPLICABLE;
@@ -167,6 +175,16 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		@Override
 		public DecisionRule getCurrentRule() {
 			return Rule.this;
+		}
+
+		@Override
+		public EvaluationContext createExtIndeterminateEvalContext() {
+			return new RuleEvaluationContext(this){
+				@Override
+				public boolean isExtendedIndeterminateEval() {
+					return true;
+				}
+			};
 		}
 	}
 

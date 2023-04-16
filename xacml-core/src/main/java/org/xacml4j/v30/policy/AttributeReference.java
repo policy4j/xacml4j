@@ -106,27 +106,30 @@ public abstract class AttributeReference implements Expression
 		throws EvaluationException
 	{
 		Optional<BagOfValues> v = resolveImpl(context);
-			if(!v.isPresent() &&
-					isMustBePresent()){
-				LOG.debug("Failed to evaluate ref={}", this);
-				throw AttributeReferenceEvaluationException
-						.forMissingRef(getReferenceKey());
-			}
-			return v.orElse(
-					getDataType()
-							.emptyBag());
+		LOG.debug("Evaluating ref={} result={}", getReferenceKey(), v);
+		if(!v.isPresent() &&
+				isMustBePresent()){
+			LOG.debug("Failed to evaluate ref={}", this);
+			throw AttributeReferenceEvaluationException
+					.forMissingRef(getReferenceKey());
+		}
+		return v.orElse(
+				getDataType()
+						.emptyBag());
 	}
 
 	private Optional<BagOfValues> resolveImpl(EvaluationContext context)
 	{
 		try{
 			return doContextResolve(context);
-		}catch(EvaluationException e){
+		}catch(AttributeReferenceEvaluationException e){
+			LOG.debug(e.getMessage(), e);
 			if(isMustBePresent()){
 				throw e;
 			}
 			return Optional.empty();
 		}catch(Exception e){
+			LOG.debug(e.getMessage(), e);
 			if(isMustBePresent()){
 				throw AttributeReferenceEvaluationException
 						.forMissingRef(getReferenceKey());

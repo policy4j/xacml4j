@@ -75,9 +75,7 @@ public class ConditionTest
 		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(
 				ctl.createMock(FunctionSpec.class), new NullPointerException()));
 		Capture<Status> statusCapture = Capture.newInstance();
-		Capture<Rule> ruleCapture = Capture.newInstance();
-		expect(context.getCurrentRule()).andReturn(rule);
-		context.setEvaluationStatus(capture(ruleCapture), capture(statusCapture));
+		context.setEvaluationStatus(capture(statusCapture));
 
 		ctl.replay();
 		Condition c = Condition.condition(exp);

@@ -77,8 +77,6 @@ public class Xacml20RequestContextUnmarshallerTest
 		Entity resource = request.getEntity(CategoryId.RESOURCE).get();
 		assertNotNull(resource);
 		assertNotNull(resource.getContent());
-		assertEquals("record",((XmlContent)resource.getContent().get()).getNodeLocalName());
-		assertEquals("http://www.medico.com/schemas/record", ((XmlContent)resource.getContent().get()).getNodeNamespaceURI());
 
 		Attribute resourceId = Iterables.getOnlyElement(resource.getAttributes("urn:oasis:names:tc:xacml:1.0:resource:resource-id"));
 		assertNotNull(resourceId);

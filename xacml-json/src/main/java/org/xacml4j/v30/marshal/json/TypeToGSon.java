@@ -30,6 +30,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.TypeCapability;
 import org.xacml4j.v30.Value;
@@ -247,12 +248,8 @@ public interface TypeToGSon extends TypeCapability
 				Entity entity = ((EntityValue)v).value();
 				JsonObject o = new JsonObject();
 				JsonElement element = ctx.serialize(entity.getAttributes());
-				LOG.debug("Json={}", element);
 				o.add(JsonProperties.ATTRIBUTE_PROPERTY, element);
-				if(entity.hasContent()){
-					o.addProperty(JsonProperties.CONTENT_PROPERTY,
-							entity.getContent().get().asString());
-				}
+				entity.getContent().ifPresent(c->o.addProperty(JsonProperties.CONTENT_PROPERTY, c.asString()));
 				return o;
 			}
 
@@ -263,7 +260,7 @@ public interface TypeToGSon extends TypeCapability
 				JsonObject o  = v.getAsJsonObject();
 				if(o.has(JsonProperties.CONTENT_PROPERTY)){
 					String content = o.get(JsonProperties.CONTENT_PROPERTY).getAsString();
-					b.content(XmlContent.of(content));
+					b.content(Content.fromString(content));
 				}
 				if(o.has(JsonProperties.ATTRIBUTE_PROPERTY)){
 					JsonArray array = o.get(JsonProperties.ATTRIBUTE_PROPERTY).getAsJsonArray();

@@ -41,6 +41,7 @@ import org.xacml4j.v30.request.RequestReference;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -103,8 +104,9 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 			builder.advice(advice);
 		}
 
-		Collection<Category> attributes = context.deserialize(o.get(ATTRIBUTES_PROPERTY), ATTRIBUTES_TYPE);
-		if (attributes != null) {
+		JsonArray categories = o.getAsJsonArray(ATTRIBUTES_PROPERTY);
+		if (categories != null) {
+			Collection<Category> attributes = context.deserialize(categories, ATTRIBUTES_TYPE);
 			builder.includeInResultAttr(attributes);
 		}
 		deserializePolicyIdentifiers(o, context, builder);

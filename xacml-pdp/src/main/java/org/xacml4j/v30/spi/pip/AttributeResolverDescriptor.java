@@ -85,9 +85,11 @@ public final class AttributeResolverDescriptor
 						                                            .clock(context.getClock())
 						                                            .attributes(values).build()));
 			}catch (EvaluationException e){
+				LOG.debug(e.getMessage(), e);
 				throw e;
 			}
 			catch (Exception e){
+				LOG.debug(e.getMessage(), e);
 				throw new EvaluationException(context.getEvaluationContext(), e);
 			}
 		};

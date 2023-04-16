@@ -131,7 +131,13 @@ abstract class  BaseDecisionRule implements DecisionRule
 		}
 		try{
 			return (target == null)?MatchResult.MATCH:target.match(context);
-		}catch(Exception e){
+		}catch(EvaluationException e){
+			context.setEvaluationStatus(e.getStatus());
+			return MatchResult.INDETERMINATE;
+		}
+		catch(Exception e){
+			context.setEvaluationStatus(Status.processingError()
+			                                  .error(e).build());
 			return MatchResult.INDETERMINATE;
 		}
 	}
@@ -157,7 +163,7 @@ abstract class  BaseDecisionRule implements DecisionRule
 			context.addAdvices(result, advices);
 			context.addObligations(result, obligations);
 		}catch(EvaluationException e){
-			context.setEvaluationStatus(this, e.getStatus());
+			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}
 		catch(Exception e){
@@ -165,7 +171,7 @@ abstract class  BaseDecisionRule implements DecisionRule
 			                      .message(e.getMessage())
 			                      .error(e)
 			                      .build();
-			context.setEvaluationStatus(this, status);
+			context.setEvaluationStatus(status);
 			throw new EvaluationException(status, e);
 		}
 	}
@@ -208,14 +214,14 @@ abstract class  BaseDecisionRule implements DecisionRule
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule advices", e);
 			}
-			context.setEvaluationStatus(this, e.getStatus());
+			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}catch(Exception e){
 			Status status = Status.processingError()
 			                      .message(e.getMessage())
 			                      .error(e)
 			                      .build();
-			context.setEvaluationStatus(this, status);
+			context.setEvaluationStatus(status);
 			throw new EvaluationException(status, e);
 		}
 	}
@@ -257,7 +263,7 @@ abstract class  BaseDecisionRule implements DecisionRule
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule obligations", e);
 			}
-			context.setEvaluationStatus(this, e.getStatus());
+			context.setEvaluationStatus(e.getStatus());
 			throw e;
 		}catch(Exception e){
 			if(log.isDebugEnabled()){
@@ -267,7 +273,7 @@ abstract class  BaseDecisionRule implements DecisionRule
 			                      .message(e.getMessage())
 			                      .error(e)
 			                      .build();
-			context.setEvaluationStatus(this, status);
+			context.setEvaluationStatus(status);
 			throw new EvaluationException(status, e);
 		}
 	}

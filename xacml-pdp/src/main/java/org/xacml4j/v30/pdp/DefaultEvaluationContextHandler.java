@@ -117,7 +117,7 @@ final class DefaultEvaluationContextHandler
 	private Optional<BagOfValues> doSelectorResolve(EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
-		Optional<BagOfValues> v = requestCallback.resolve((AttributeDesignatorKey) ref)
+		Optional<BagOfValues> v = requestCallback.resolve((AttributeSelectorKey) ref)
 		                                         .or(()->doPipResolve(context, (AttributeSelectorKey)ref));
 		LOG.debug("ref={}, value={}", ref, v);
 		return v;

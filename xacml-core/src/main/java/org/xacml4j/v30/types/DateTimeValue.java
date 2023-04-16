@@ -22,7 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import java.time.ZonedDateTime;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -51,6 +53,10 @@ public final class DateTimeValue
         }
         if (v instanceof StringValue) {
             return new DateTimeValue(DateTime.of(((StringValue) v).value()));
+        }
+        if (v instanceof ZonedDateTime) {
+            return new DateTimeValue(
+                    DateTime.of(GregorianCalendar.from((ZonedDateTime)v)));
         }
         if (v instanceof Calendar ||
                 v instanceof XMLGregorianCalendar) {

@@ -25,18 +25,23 @@ package org.xacml4j.v30;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.content.JsonContent;
 import org.xacml4j.v30.content.XmlContent;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 
@@ -47,6 +52,8 @@ import com.google.common.net.MediaType;
  */
 public interface Content
 {
+    Logger LOG = LoggerFactory.getLogger(Content.class);
+
     /**
      * Gets content type
      *
@@ -157,13 +164,26 @@ public interface Content
      * @return an optional {@link Type}
      */
     static Optional<Type> resolveTypeFromContent(String content){
+        return resolveTypeFromContentImpl(content, true);
+    }
+
+    private static Optional<Type> resolveTypeFromContentImpl(String content, boolean tryBinary){
         if(content == null){
             return Optional.empty();
         }
+        if(tryBinary){
+            try{
+                String decoded = new String(Base64.getDecoder().decode(content), StandardCharsets.UTF_8);
+                return resolveTypeFromContentImpl(decoded, false);
+            }catch (Exception e){
+                LOG.debug(e.getMessage(), e);
+            }
+        }
+        LOG.debug("Guessing type for={}", content);
         int xmlStartIndex = content.indexOf("<");
         if(xmlStartIndex >= 0){
             if(CharMatcher.whitespace()
-                    .matchesAllOf(content.substring(0, xmlStartIndex))){
+                          .matchesAllOf(content.substring(0, xmlStartIndex))){
                 return Optional.of(Type.XML_UTF8);
             }
         }
@@ -171,7 +191,7 @@ public interface Content
         jsonStartIndex = (jsonStartIndex >= 0)?jsonStartIndex:content.indexOf("[");
         if(jsonStartIndex >=0){
             if(CharMatcher.whitespace()
-                    .matchesAllOf(content.substring(0, jsonStartIndex))){
+                          .matchesAllOf(content.substring(0, jsonStartIndex))){
                 return Optional.of(Type.JSON_UTF8);
             }
         }

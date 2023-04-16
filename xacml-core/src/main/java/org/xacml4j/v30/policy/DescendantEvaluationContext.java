@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeReferenceKey;
@@ -51,6 +53,7 @@ import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import com.google.common.base.Supplier;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -60,7 +63,9 @@ import com.google.common.base.Preconditions;
  */
 abstract class DescendantEvaluationContext implements EvaluationContext
 {
+	private final static Logger LOG = LoggerFactory.getLogger(DescendantEvaluationContext.class);
 	private final EvaluationContext parent;
+	private Status evaluationStatus;
 
 	protected DescendantEvaluationContext(
 			EvaluationContext context){
@@ -68,6 +73,26 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 		this.parent = context;
 	}
 
+	@Override
+	public void setEvaluationStatusIfAbsent(java.util.function.Supplier<Status> supplier)
+	{
+		if(evaluationStatus == null){
+			setEvaluationStatus(supplier.get());
+		}
+	}
+
+	@Override
+	public void setEvaluationStatus(Status status) {
+		if(getCurrentDecisionRule().isPresent()){
+			parent.setEvaluationStatus(getCurrentDecisionRule().get(), status);
+		}
+		parent.setEvaluationStatus(status);
+		this.evaluationStatus = status;
+	}
+
+	public Optional<Status> getEvaluationStatus(){
+		return Optional.ofNullable(evaluationStatus);
+	}
 	@Override
 	public void setEvaluationStatus(DecisionRule rule, Status status) {
 		this.parent.setEvaluationStatus(rule, status);
@@ -80,16 +105,6 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 
 	protected EvaluationContext getParent(){
 		return parent;
-	}
-
-	@Override
-	public EvaluationContext createExtIndeterminateEvalContext() {
-		return parent.createExtIndeterminateEvalContext();
-	}
-
-	@Override
-	public boolean isExtendedIndeterminateEval() {
-		return parent.isExtendedIndeterminateEval();
 	}
 
 	@Override

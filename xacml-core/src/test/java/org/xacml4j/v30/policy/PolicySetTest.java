@@ -43,6 +43,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -159,6 +160,8 @@ public class PolicySetTest
 		c.replay();
 		assertEquals(MatchResult.INDETERMINATE, policy.isMatch(policyContext));
 		c.verify();
+		assertEquals(Status.processingError(new NullPointerException())
+		                   .build(), policyContext.getEvaluationStatus().get());
 	}
 
 	@Test

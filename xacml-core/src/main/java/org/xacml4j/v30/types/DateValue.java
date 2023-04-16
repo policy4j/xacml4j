@@ -22,7 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import java.time.ZonedDateTime;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -54,6 +56,9 @@ public final class DateValue extends BaseValue<Date>
         }
         if (v instanceof Calendar) {
             return DateValue.of((Calendar) v);
+        }
+        if (v instanceof ZonedDateTime) {
+            return DateValue.of(GregorianCalendar.from((ZonedDateTime)v));
         }
         if (v instanceof XMLGregorianCalendar) {
             return DateValue.of(v.toString());

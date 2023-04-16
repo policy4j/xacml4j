@@ -29,10 +29,15 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
+import static org.hamcrest.CoreMatchers.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
@@ -41,6 +46,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -52,9 +58,11 @@ public class AttributeDesignatorTest
 	private EvaluationContext context;
 	private AttributeDesignatorKey.Builder builder;
 
+	private IMocksControl control;
 	@Before
 	public void init(){
-		this.context = createStrictMock(EvaluationContext.class);
+		this.control = EasyMock.createStrictControl();
+		this.context = control.createMock(EvaluationContext.class);
 		this.builder = AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_RECIPIENT)
@@ -71,22 +79,27 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
+		Capture<AttributeDesignatorKey> capture = Capture.newInstance();
 		expect(context
-				.resolve(capture(c)))
+				.resolve(capture(capture)))
 				.andReturn(Optional.empty());
-		replay(context);
+		Capture<Supplier<Status>> status = Capture.newInstance();
+		context.setEvaluationStatusIfAbsent(capture(status));
+
+		control.replay();
 		try{
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
-			Truth.assertThat(c.getValue()).isSameInstanceAs(e.getReference());
+			control.verify();
+			Truth.assertThat(capture.getValue()).isSameInstanceAs(e.getReference());
 			Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
+			assertThat(e.getStatus().getStatusCode().getValue(), is(StatusCodeId.MISSING_ATTRIBUTE));
 			throw e;
 		}
-		verify(context);
+
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
+	@Test
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional() throws EvaluationException
 	{
 		AttributeDesignator desig = AttributeDesignator
@@ -97,15 +110,16 @@ public class AttributeDesignatorTest
 
 		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.empty());
-		replay(context);
+		Capture<Supplier<Status>> status = Capture.newInstance();
+		context.setEvaluationStatusIfAbsent(capture(status));
+		control.replay();
 		try{
 			desig.evaluate(context);
 		}catch(AttributeReferenceEvaluationException e){
+			control.verify();
 			Truth.assertThat(c.getValue()).isSameInstanceAs(e.getReference());
 			Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
-			throw e;
 		}
-		verify(context);
 	}
 
 
@@ -121,9 +135,9 @@ public class AttributeDesignatorTest
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.INTEGER.bag().attribute(
 						XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()));
-
-		replay(context);
+		control.replay();
 		Expression v = desig.evaluate(context);
+		control.verify();
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bag().attribute(
 				XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build(), v);

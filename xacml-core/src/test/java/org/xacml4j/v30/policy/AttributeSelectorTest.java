@@ -30,8 +30,11 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.easymock.Capture;
+import org.easymock.EasyMock;
+import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeReferenceEvaluationException;
@@ -40,6 +43,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.truth.Truth;
@@ -48,11 +52,13 @@ import com.google.common.truth.Truth;
 public class AttributeSelectorTest
 {
 	private EvaluationContext context;
+	private IMocksControl control;
 
 	@Before
 	public void init() throws Exception
 	{
-		this.context = createStrictMock(EvaluationContext.class);
+		this.control = EasyMock.createStrictControl();
+		this.context = control.createMock(EvaluationContext.class);
 	}
 
 	@Test
@@ -73,11 +79,12 @@ public class AttributeSelectorTest
 		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.DATE.of("1992-03-21").toBag()));
-		replay(context);
+		control.replay();
 		Expression v = ref.evaluate(context);
+		control.verify();
 		assertEquals(XacmlTypes.DATE.of("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
-		verify(context);
+
 	}
 
 	@Test
@@ -98,11 +105,11 @@ public class AttributeSelectorTest
 		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.DATE.of("1992-03-21").toBag()));
-		replay(context);
+		control.replay();
 		Expression v = ref.evaluate(context);
+		control.verify();
 		assertEquals(XacmlTypes.DATE.of("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
-		verify(context);
 	}
 
 	@Test
@@ -123,9 +130,9 @@ public class AttributeSelectorTest
 		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.DATE.emptyBag()));
-		replay(context);
+		control.replay();
 		Truth.assertThat(ref.evaluate(context)).isEqualTo(XacmlTypes.DATE.emptyBag());
-		verify(context);
+		control.verify();
 
 	}
 
@@ -146,9 +153,11 @@ public class AttributeSelectorTest
 				.build();
 		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.empty());
-		replay(context);
+		Capture<Supplier<Status>> status = Capture.newInstance();
+		context.setEvaluationStatusIfAbsent(capture(status));
+		control.replay();
 		ref.evaluate(context);
-		verify(context);
+		control.verify();
 	}
 
 	@Test

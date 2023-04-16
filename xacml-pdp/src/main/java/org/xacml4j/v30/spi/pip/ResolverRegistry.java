@@ -38,6 +38,7 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.WellKnownAttributeIds;
 
 import com.google.common.base.Preconditions;
 import com.google.common.reflect.TypeToken;
@@ -96,36 +97,26 @@ public interface ResolverRegistry
 
 	abstract class Builder<T extends Builder<?>>
 	{
-		private final static String CURRENT_TIME = "urn:oasis:names:tc:xacml:1.0:environment:current-time";
-		private final static String CURRENT_DATE = "urn:oasis:names:tc:xacml:1.0:environment:current-date";
-		private final static String CURRENT_DATETIME = "urn:oasis:names:tc:xacml:1.0:environment:current-dateTime";
-
-		private final static String SHORT_CURRENT_TIME = "current-time";
-		private final static String SHORT_CURRENT_DATE = "current-date";
-		private final static String SHORT_CURRENT_DATETIME = "current-dateTime";
-
 		Collection<AttributeResolverDescriptor> attributeResolvers;
 		Collection<ContentResolverDescriptor> contentResolvers;
 		AnnotatedResolverFactory annotatedResolverFactory;
 
-		private final static TypeToken<Resolver<AttributeSet>> ATTRIBUTE_RESOLVER_TYPE = new TypeToken<>(){};
-		private final static TypeToken<Resolver<ContentRef>> CONTENT_RESOLVER_TYPE = new TypeToken<>(){};
 
 		private final static AttributeResolverDescriptor ENVIRONMENT_RESOLVER = AttributeResolverDescriptor
 				.builder("XacmlEnvironmentResolver",
 				         "XACML Environment Attributes Resolver", CategoryId.ENVIRONMENT)
 				.noCache()
-				.attribute(CURRENT_TIME, TIME, SHORT_CURRENT_TIME)
-				.attribute(CURRENT_DATE, DATE, SHORT_CURRENT_DATE)
-				.attribute(CURRENT_DATETIME,DATETIME, SHORT_CURRENT_DATETIME)
+				.attribute(WellKnownAttributeIds.CURRENT_TIME.getId(), TIME, WellKnownAttributeIds.CURRENT_TIME.getAbbreviatedId())
+				.attribute(WellKnownAttributeIds.CURRENT_DATE.getId(), DATE, WellKnownAttributeIds.CURRENT_DATE.getAbbreviatedId())
+				.attribute(WellKnownAttributeIds.CURRENT_DATETIME.getId(),DATETIME, WellKnownAttributeIds.CURRENT_DATETIME.getAbbreviatedId())
 				.build((context)->{
 					ZonedDateTime currentDateTime = context.getCurrentDateTime();
 					Map<String, BagOfValues> v = new HashMap<String, BagOfValues>();
-					v.put("urn:oasis:names:tc:xacml:1.0:environment:current-time",
+					v.put(WellKnownAttributeIds.CURRENT_TIME.getId(),
 					      TIME.of(currentDateTime).toBag());
-					v.put("urn:oasis:names:tc:xacml:1.0:environment:current-date",
+					v.put(WellKnownAttributeIds.CURRENT_DATE.getId(),
 					      DATE.of(currentDateTime).toBag());
-					v.put("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime",
+					v.put(WellKnownAttributeIds.CURRENT_DATETIME.getId(),
 					      DATETIME.of(currentDateTime).toBag());
 					return v;
 				});

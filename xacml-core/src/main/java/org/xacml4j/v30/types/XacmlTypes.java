@@ -24,8 +24,10 @@ package org.xacml4j.v30.types;
 
 import java.net.URI;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -207,6 +209,10 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof StringValue) {
 				a = Optional.of(
 						TimeValue.of(((StringValue) v).value()));
+			}
+			if (v instanceof ZonedDateTime) {
+				a = Optional.of(
+						TimeValue.of(GregorianCalendar.from((ZonedDateTime) v)));
 			}
 			if (v instanceof XMLGregorianCalendar) {
 				a = Optional.of(

@@ -24,11 +24,13 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.ZonedDateTime;
+
 import org.junit.Before;
 import org.junit.Test;
 
 
-public class DateTimeValueTypeTest
+public class DateTimeValueTest
 {
 	private TypeToString toString;
 
@@ -107,6 +109,12 @@ public class DateTimeValueTypeTest
 		DateTimeValue dateTime2 = XacmlTypes.DATETIME.of("2006-08-22T08:23:47-05:00");
 		YearMonthDurationValue duration = YearMonthDurationValue.of("-P4Y1M");
 		assertEquals(dateTime2, dateTime1.subtract(duration));
+	}
+
+	@Test
+	public void fromZonedDateTime()
+	{
+		DateTimeValue dateTime1 = XacmlTypes.DATETIME.of(ZonedDateTime.now());
 	}
 
 }

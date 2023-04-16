@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +53,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -60,7 +60,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xacml4j.v30.SyntaxException;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -71,6 +74,7 @@ public class DOMUtil
 
 	private static TransformerFactory transformerFactory;
 	private static DocumentBuilderFactory documentBuilderFactory;
+	private static final Logger LOG = LoggerFactory.getLogger(DOMUtil.class);
 
 	static{
 		try{
@@ -80,8 +84,28 @@ public class DOMUtil
 			documentBuilderFactory.setNamespaceAware(true);
 			documentBuilderFactory.setIgnoringComments(true);
 			documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+
+			//REDHAT
+			//https://www.blackhat.com/docs/us-15/materials/us-15-Wang-FileCry-The-New-Age-Of-XXE-java-wp.pdf
+			documentBuilderFactory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+			//OWASP
+			//https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			documentBuilderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			documentBuilderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			// Disable external DTDs as well
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			// and these as well, per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks"
+			documentBuilderFactory.setXIncludeAware(false);
+			documentBuilderFactory.setExpandEntityReferences(false);
+
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/allow-java-encodings", true);
+
 		}catch(Exception e){
-			e.printStackTrace(System.err);
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
@@ -288,9 +312,9 @@ public class DOMUtil
 		if(src == null){
 			return Optional.empty();
 		}
-		return parseXml(
-				new InputSource(
-						new StringReader(src)));
+		InputSource source = new InputSource(new StringReader(src));
+		source.setEncoding(StandardCharsets.UTF_8.name());
+		return parseXml(source);
 	}
 
 
@@ -301,6 +325,23 @@ public class DOMUtil
 		try {
 			documentBuilder = documentBuilderFactory
 					.newDocumentBuilder();
+			documentBuilder.setErrorHandler(new ErrorHandler() {
+				@Override
+				public void warning(SAXParseException exception) throws SAXException {
+					LOG.debug("Error at=\"{}:{}\"", exception.getLineNumber(), exception.getColumnNumber());
+					LOG.debug(exception.getMessage(), exception);
+				}
+				@Override
+				public void error(SAXParseException exception) throws SAXException {
+					LOG.debug("At=\"{}:{}\"", exception.getLineNumber(), exception.getColumnNumber());
+					LOG.debug(exception.getMessage(), exception);
+				}
+				@Override
+				public void fatalError(SAXParseException exception) throws SAXException {
+					LOG.debug("At=\"{}:{}\"", exception.getLineNumber(), exception.getColumnNumber());
+					LOG.debug(exception.getMessage(), exception);
+				}
+			});
 		} catch (ParserConfigurationException e) {
 			throw new IllegalStateException(
 					e.getMessage(), e);
@@ -309,6 +350,7 @@ public class DOMUtil
 			return Optional.of(
 					documentBuilder.parse(src));
 		} catch (Exception e) {
+			LOG.debug(e.getMessage(), e);
 			throw SyntaxException
 					.invalidXml(e.getMessage(), e);
 		}

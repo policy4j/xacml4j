@@ -24,6 +24,7 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 
 import org.junit.Test;
@@ -59,6 +60,13 @@ public class DateTypeTest
 		assertEquals(d1.value().getDay(), now.get(Calendar.DAY_OF_MONTH));
 		assertEquals(d1.value().getYear(), now.get(Calendar.YEAR));
 		assertEquals(d1.value().getMonth(), now.get(Calendar.MONTH) + 1);
+	}
+
+	@Test
+	public void testCreateFromZonedDateTime()
+	{
+		ZonedDateTime now = ZonedDateTime.now();
+		XacmlTypes.DATE.of(now);
 	}
 }
 

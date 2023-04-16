@@ -30,6 +30,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import java.time.Clock;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -42,6 +43,7 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.WellKnownAttributeIds;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableMap;
@@ -174,6 +176,7 @@ public class DefaultPolicyInformationPointTest
 		       });
 
 		builder.withAttributeResolver(testId3WithIssuerNoCacheWithValues);
+		builder.withDefaultResolvers();
 
 		this.pip = PolicyInformationPoint
 				.builder("testPip")
@@ -289,6 +292,25 @@ public class DefaultPolicyInformationPointTest
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
 		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
+
+		control.verify();
+	}
+
+	@Test
+	public void testEnvironmentResolver()
+			throws Exception
+	{
+		ZonedDateTime now = ZonedDateTime.now();
+		AttributeDesignatorKey key  = AttributeDesignatorKey
+				.builder().category(CategoryId.ENVIRONMENT).dataType(XacmlTypes.DATETIME)
+				.attributeId(WellKnownAttributeIds.CURRENT_TIME.getId()).build();
+		expect(context.getCurrentDateTime()).andReturn(now);
+		expect(context.getClock()).andReturn(Clock.systemUTC());
+
+		control.replay();
+
+		Optional<BagOfValues> v = pip.resolve(context, key);
+		assertEquals(XacmlTypes.TIME.of(now).toBag(), v.get());
 
 		control.verify();
 	}

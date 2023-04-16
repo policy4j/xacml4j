@@ -30,6 +30,7 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.ExpressionVisitor;
+import org.xacml4j.v30.Status;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -88,12 +89,15 @@ public class AttributeDesignator extends AttributeReference
 
 	@Override
 	protected Optional<BagOfValues> doContextResolve(EvaluationContext context) {
-		Optional<BagOfValues> v =  context.resolve(designatorKey);
-		if(!v.isPresent() &&
+		Optional<BagOfValues> v = context.resolve(designatorKey);
+		if((v == null || !v.isPresent()) &&
 				isMustBePresent()){
+
+			context.setEvaluationStatusIfAbsent(()->Status.missingAttribute(designatorKey)
+			                                  .build());
 			throw AttributeReferenceEvaluationException.forDesignator(designatorKey);
 		}
-		return v;
+		return v != null?v:Optional.of(getDataType().emptyBag());
 	}
 
 	@Override

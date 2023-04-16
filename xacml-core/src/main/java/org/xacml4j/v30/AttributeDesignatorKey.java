@@ -53,6 +53,10 @@ public final class AttributeDesignatorKey
 		return new Builder();
 	}
 
+	public static Builder builder(String id){
+		return new Builder().attributeId(id);
+	}
+
 	public AttributeDesignatorKey withIssuer(String issuer){
 		return builder()
 				.from(this)

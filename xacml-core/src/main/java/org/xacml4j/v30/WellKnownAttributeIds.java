@@ -115,6 +115,11 @@ public class WellKnownAttributeIds extends SemanticalIdentifier
      */
     public final static WellKnownAttributeIds TARGET_NAMESPACE = new WellKnownAttributeIds("urn:oasis:names:tc:xacml:2.0:resource:target-namespace", "target-namespace");
 
+    public final static WellKnownAttributeIds CURRENT_TIME = new WellKnownAttributeIds("urn:oasis:names:tc:xacml:1.0:environment:current-time", "current-time");
+    public final static WellKnownAttributeIds CURRENT_DATE = new WellKnownAttributeIds("urn:oasis:names:tc:xacml:1.0:environment:current-date", "current-date");
+    public final static WellKnownAttributeIds CURRENT_DATETIME = new WellKnownAttributeIds("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", "current-dateTime");
+
+
     private final static Map<String, WellKnownAttributeIds> By_ID = SemanticalIdentifier.getById(WellKnownAttributeIds.class);
     private final static Map<String, WellKnownAttributeIds> By_ABBREVIATED_ID = SemanticalIdentifier.getByAbbrId(WellKnownAttributeIds.class);
 

@@ -25,6 +25,9 @@ package org.xacml4j.v30.types;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.ZonedDateTime;
+import java.util.GregorianCalendar;
+
 import org.junit.Test;
 
 public class TimeValueTest
@@ -38,6 +41,23 @@ public class TimeValueTest
 		assertEquals(47, t1.getSecond());
 		assertTrue(t1.isTimezoneSet());
 		assertEquals(-5 * 60, t1.getTimezoneOffset());
+		Time t2 = Time.valueOf("08:23:47");
+		assertEquals(8, t2.getHour());
+		assertEquals(23, t2.getMinute());
+		assertEquals(47, t2.getSecond());
+		assertTrue(t2.isTimezoneSet());
+		assertEquals(0, t2.getTimezoneOffset());
+	}
+
+	@Test
+	public void testParseFromZonedTime()
+	{
+		ZonedDateTime now = ZonedDateTime.now();
+		Time t1 = Time.valueOf(GregorianCalendar.from(now));
+		assertEquals(now.getHour(), t1.getHour());
+		assertEquals(now.getMinute(), t1.getMinute());
+		assertEquals(now.getSecond(), t1.getSecond());
+		assertTrue(t1.isTimezoneSet());
 		Time t2 = Time.valueOf("08:23:47");
 		assertEquals(8, t2.getHour());
 		assertEquals(23, t2.getMinute());

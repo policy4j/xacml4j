@@ -90,7 +90,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	{
 		String messageText = message !=  null?message.get():null;
 		StringBuilder b = new StringBuilder(
-				"Designator.AttributeId=\"%s\", Designator.CategoryId=\"%s\", Designator.DataType=\"%s\"");
+				"AttributeId=\"%s\", CategoryId=\"%s\", DataType=\"%s\"");
 		return new AttributeReferenceEvaluationException(
 				Status
 						.missingAttribute(designatorKey)
@@ -108,7 +108,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 	{
 		String messageText = message !=  null?message.get():null;
 		StringBuilder b = new StringBuilder(
-				"Selector.Path=\"%s\", Selector.CategoryId=\"%s\", Selector.ContextSelectorId=\"%s\", Selector.DataType=\"%s\"");
+				"Path=\"%s\", Type=\"%s\" CategoryId=\"%s\", ContextSelectorId=\"%s\", DataType=\"%s\"");
 		return new AttributeReferenceEvaluationException(
 				Status
 						.missingAttribute(selectorKey)
@@ -116,6 +116,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 				selectorKey,
 				(messageText != null)?b .append("- %s").toString():b.toString(),
 				selectorKey.getPath(),
+				selectorKey.getPathType(),
 				selectorKey.getCategory(),
 				selectorKey.getContextSelectorId(),
 				selectorKey.getDataType().getAbbrevDataTypeId(),

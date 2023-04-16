@@ -28,6 +28,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.easymock.IMocksControl;
 import org.junit.Before;
@@ -36,6 +37,7 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 
 

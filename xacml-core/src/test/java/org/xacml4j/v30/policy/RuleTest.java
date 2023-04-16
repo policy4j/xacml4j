@@ -35,6 +35,8 @@ import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Advice;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Effect;
@@ -44,6 +46,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -109,7 +112,6 @@ public class RuleTest
 				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
 					.attribute("testId", permitAdviceAttributeExp));
-
 		this.rulePermit = builder
 				.id("testPermitRule")
 				.withEffect(Effect.PERMIT)
@@ -261,6 +263,7 @@ public class RuleTest
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, ruleContext.getEvaluationStatus().map(s->s.getStatusCode().getValue()).orElse(null));
 		c.verify();
 	}
 
@@ -385,6 +388,23 @@ public class RuleTest
 		c.replay();
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
 		c.verify();
+	}
+
+	@Test
+	public void testPermitRuleEvaluateIfApplicableWithTargetEvaluationException()
+			throws EvaluationException
+	{
+		Status.Builder b =  Status.missingAttribute(AttributeDesignatorKey.builder("id")
+		                                              .category(CategoryId.ACTION)
+		                                              .dataType(XacmlTypes.INTEGER)
+		                                              .build());
+		EvaluationContext ruleContext = rulePermit.createContext(context);
+		expect(target.match(ruleContext)).andThrow(new EvaluationException(b.build(), "Bad"));
+		c.replay();
+		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
+		c.verify();
+		assertEquals(ruleContext.getEvaluationStatus().get(), b.message("Bad").build());
+		assertEquals(context.getEvaluationStatus().get(), b.message("Bad").build());
 	}
 
 	@Test

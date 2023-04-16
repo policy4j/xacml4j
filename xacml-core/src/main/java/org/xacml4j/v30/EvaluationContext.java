@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TimeZone;
+import java.util.function.Supplier;
 
 /**
  * Evaluation context for {@link CompositeDecisionRule} evaluations
@@ -48,7 +49,22 @@ public interface EvaluationContext
 	 * @return {@code true} if context
 	 * was build to evaluate extended indeterminate
 	 */
-	boolean isExtendedIndeterminateEval();
+	default boolean isExtendedIndeterminateEval(){
+		return false;
+	}
+
+	default Optional<DecisionRule> getCurrentDecisionRule(){
+		if(getCurrentRule() != null){
+			return Optional.of(getCurrentRule());
+		}
+		if(getCurrentPolicy() != null){
+			return Optional.of(getCurrentPolicy());
+		}
+		if(getCurrentPolicySet() != null){
+			return Optional.of(getCurrentPolicySet());
+		}
+		return Optional.empty();
+	}
 
 	/**
 	 * Creates an evaluation context to evaluate
@@ -58,7 +74,9 @@ public interface EvaluationContext
 	 * @return {@link EvaluationContext} to evaluate
 	 * extended indeterminate
 	 */
-	EvaluationContext createExtIndeterminateEvalContext();
+	default EvaluationContext createExtIndeterminateEvalContext(){
+		return this;
+	}
 
 	/**
 	 * Gets context clock
@@ -148,9 +166,7 @@ public interface EvaluationContext
 	 */
 	Optional<Status> getEvaluationStatus(DecisionRule rule);
 
-	default Optional<Status> getEvaluationStatus(){
-		return getEvaluationStatus(getCurrentRule());
-	}
+	Optional<Status> getEvaluationStatus();
 
 	/**
 	 * Sets extended evaluation failure
@@ -159,7 +175,7 @@ public interface EvaluationContext
 	 * rule
 	 *
 	 * @param rule a decision rule
-	 * @param code a status code indicating
+	 * @param status a status indicating
 	 * evaluation failure status
 	 */
 	void setEvaluationStatus(DecisionRule rule, Status status);
@@ -173,9 +189,9 @@ public interface EvaluationContext
 	 * @param code a status code indicating
 	 * evaluation failure status
 	 */
-	default void setEvaluationStatus(Status status){
-		setEvaluationStatus(getCurrentRule(), status);
-	}
+	void setEvaluationStatus(Status status);
+
+	void setEvaluationStatusIfAbsent(Supplier<Status> supplier);
 
 	/**
 	 * Gets parent evaluation context

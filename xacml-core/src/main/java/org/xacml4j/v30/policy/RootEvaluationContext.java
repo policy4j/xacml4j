@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -131,8 +132,26 @@ public final class RootEvaluationContext implements EvaluationContext
 	}
 
 	@Override
+	public void setEvaluationStatus(Status status) {
+		this.evaluationStatus = status;
+	}
+
+	@Override
 	public void setEvaluationStatus(DecisionRule rule, Status status) {
+		if(rule == null){
+			this.evaluationStatus = status;
+			return;
+		}
 		this.evaluationStatusMap.put(rule, status);
+	}
+
+	@Override
+	public void setEvaluationStatusIfAbsent(java.util.function.Supplier<Status> supplier)
+	{
+		if(evaluationStatus == null){
+			Status status = supplier.get();
+			this.evaluationStatus = status;
+		}
 	}
 
 	@Override
@@ -157,17 +176,7 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public EvaluationContext createExtIndeterminateEvalContext() {
-		return new DescendantEvaluationContext(this){
-			@Override
-			public EvaluationContext createExtIndeterminateEvalContext() {
-				return this;
-			}
-
-			@Override
-			public boolean isExtendedIndeterminateEval() {
-				return true;
-			}
-		};
+		return this;
 	}
 
 	@Override
@@ -256,9 +265,8 @@ public final class RootEvaluationContext implements EvaluationContext
 	@Override
 	public <C extends Content> Optional<C> resolve(CategoryId categoryId, Content.Type type) {
 		return contextHandler.<C>getContent(
-				categoryId)
-				.filter(
-						c -> c.getType().equals(type));
+					                     categoryId)
+		                     .filter(c -> c.getType().equals(type));
 	}
 
 	/**

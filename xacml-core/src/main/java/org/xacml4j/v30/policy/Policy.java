@@ -253,6 +253,21 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 
 		@Override
+		public EvaluationContext createExtIndeterminateEvalContext() {
+			return new PolicyDescendantEvaluationContext(this){
+				@Override
+				public EvaluationContext createExtIndeterminateEvalContext() {
+					return this;
+				}
+
+				@Override
+				public boolean isExtendedIndeterminateEval() {
+					return true;
+				}
+			};
+		}
+
+		@Override
 		public ValueExpression getVariableEvaluationResult(String variableId) {
 			return varDefEvalResults.get(variableId);
 		}

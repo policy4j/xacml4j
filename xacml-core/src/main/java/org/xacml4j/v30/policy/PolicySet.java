@@ -33,6 +33,7 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.Objects;
@@ -255,14 +256,28 @@ public class PolicySet extends
 		}
 
 		@Override
-		public PolicySet getCurrentPolicySet() {
-			return PolicySet.this;
+		public Collection<CompositeDecisionRuleIDReference> getReferencedCompositeDecisionRules() {
+			return super.getReferencedCompositeDecisionRules();
 		}
 
+		@Override
+		public EvaluationContext createExtIndeterminateEvalContext() {
+			return new DescendantEvaluationContext(this){
+				@Override
+				public EvaluationContext createExtIndeterminateEvalContext() {
+					return this;
+				}
+
+				@Override
+				public boolean isExtendedIndeterminateEval() {
+					return true;
+				}
+			};
+		}
 
 		@Override
-		public EvaluationContext getParentContext() {
-			return getParent();
+		public PolicySet getCurrentPolicySet() {
+			return PolicySet.this;
 		}
 
 		@Override

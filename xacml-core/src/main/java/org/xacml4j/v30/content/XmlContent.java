@@ -80,8 +80,6 @@ public final class XmlContent implements Content
         Preconditions.checkArgument(content instanceof Element || content instanceof Document, "Element or Document nodes only");
         this.contextNode = DOMUtil.copyNode(content.getNodeType() == Node.DOCUMENT_NODE?((Document)content).getDocumentElement():(Element)content);
         this.xPathProvider = Objects.requireNonNull(xPathProvider, "xPathProvider");
-        LOG.debug("Context node={}", DOMUtil.toString(contextNode.getDocumentElement()));
-
     }
 
 

@@ -129,11 +129,11 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		}
 		if(r == MatchResult.MATCH){
 			ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
+			if(log.isDebugEnabled()){
+				log.debug("Composite decision rule " +
+						          "id=\"{}\" condition=\"{}\", evaluating rules", id, result);
+			}
 			if(result == ConditionResult.TRUE){
-				if(log.isDebugEnabled()){
-					log.debug("Composite decision rule " +
-							          "id=\"{}\" condition=TRUE, evaluating rules", id);
-				}
 				Decision decision = combineDecisions(context);
 				if(log.isDebugEnabled()){
 					log.debug("Composite decision rule " +

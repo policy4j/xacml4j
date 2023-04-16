@@ -203,4 +203,15 @@ public class XmlContentTest
         assertEquals(xmlContent1, xmlContent2);
     }
 
+    @Test
+    public void testWithContentNoProlog(){
+        String xml1 = "<security>\n<through obscurity=\"true\"/></security>";
+        String xml2 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><security>\n<through obscurity=\"true\"/></security>";
+        XmlContent xmlContent1 = XmlContent.of(xml1);
+        XmlContent xmlContent2 = XmlContent.of(xmlContent1.asString());
+        XmlContent xmlContent3 = XmlContent.of(xml2);
+        assertEquals(xmlContent1, xmlContent2);
+        assertEquals(xmlContent3, xmlContent2);
+    }
+
 }

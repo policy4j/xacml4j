@@ -91,8 +91,7 @@ public class Condition implements PolicyElement
 			BooleanValue result = predicate.evaluate(context);
 			return result.value()?ConditionResult.TRUE:ConditionResult.FALSE;
 		}catch(EvaluationException e){
-			context.setEvaluationStatus(context.getCurrentRule(),
-					e.getStatus());
+			context.setEvaluationStatus(e.getStatus());
 			return ConditionResult.INDETERMINATE;
 		}catch(Exception e){
 			context.setEvaluationStatus(context.getCurrentRule(),

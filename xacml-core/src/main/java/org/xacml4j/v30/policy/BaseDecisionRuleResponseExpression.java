@@ -33,6 +33,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueExpression;
 
@@ -117,22 +118,30 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		throws EvaluationException
 	{
 
-		ImmutableList.Builder<AttributeAssignment> attr = ImmutableList.builder();
-		for(AttributeAssignmentExpression attrExp : attributeExpressions.values()){
-			AttributeAssignment.Builder b = AttributeAssignment.builder(attrExp.getAttributeId())
-			                                                   .category(attrExp.getCategory())
-			                                                   .issuer(attrExp.getIssuer());
-			ValueExpression val = attrExp.evaluate(context);
-			if(val instanceof Value){
-				attr.add(b.value((Value)val).build());
-				continue;
+		try {
+			ImmutableList.Builder<AttributeAssignment> attr = ImmutableList.builder();
+			for (AttributeAssignmentExpression attrExp : attributeExpressions.values()) {
+				AttributeAssignment.Builder b = AttributeAssignment.builder(attrExp.getAttributeId())
+				                                                   .category(attrExp.getCategory())
+				                                                   .issuer(attrExp.getIssuer());
+				ValueExpression val = attrExp.evaluate(context);
+				if (val instanceof Value) {
+					attr.add(b.value((Value) val).build());
+					continue;
+				}
+				BagOfValues bag = (BagOfValues) val;
+				for (Value v : bag.values()) {
+					attr.add(b.value(v).build());
+				}
 			}
-			BagOfValues bag = (BagOfValues)val;
-			for(Value v : bag.values()){
-				attr.add(b.value(v).build());
-			}
+			return attr.build();
+		}catch (EvaluationException e){
+			throw e;
+		}catch (Exception e){
+			throw new EvaluationException(Status.processingError()
+			                                    .error(e)
+			                                    .build(), e);
 		}
-		return attr.build();
 	}
 
 	@Override
