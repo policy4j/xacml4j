@@ -79,7 +79,7 @@ public final class PolicyImportTool {
 			repository.add(r);
 			return r;
 		}
-		throw new SyntaxException("Unsupported media type=%s", mediaType.toString());
+		throw new SyntaxException(String.format("Unsupported media type=%s", mediaType.toString()));
 	}
 
 	private Optional<CompositeDecisionRule> unmarshal(Unmarshaller<CompositeDecisionRule> u, Supplier<InputStream> policySource){

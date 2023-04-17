@@ -62,8 +62,8 @@ public class VersionMatch
     	}
     	if(!VERSION_PATTERN.matcher(versionMatchPattern).matches()){
     		throw new SyntaxException(
-				    "Given version match=\"%s\" should match regular expression=\"%s\"",
-        		    versionMatchPattern, PATTERN_STRING);
+				    String.format("Given version match=\"%s\" should match regular expression=\"%s\"",
+        		    versionMatchPattern, PATTERN_STRING));
     	}
         this.pattern = versionMatchPattern;
         this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));

@@ -22,14 +22,19 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
+import java.util.ListIterator;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionParamSpec;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 
 abstract class BaseFunctionParamSpec implements FunctionParamSpec
 {
+	protected final Logger LOG = LoggerFactory.getLogger(getClass());
 	private final boolean optional;
 	private final Optional<Expression> defaultValue;
 	private final boolean variadic;
@@ -53,7 +58,7 @@ abstract class BaseFunctionParamSpec implements FunctionParamSpec
 
 	@Override
 	public final boolean isOptional(){
-		return optional;
+		return optional && defaultValue != null;
 	}
 
 	@Override

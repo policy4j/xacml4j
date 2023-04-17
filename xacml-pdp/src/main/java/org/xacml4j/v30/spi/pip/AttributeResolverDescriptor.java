@@ -77,7 +77,6 @@ public final class AttributeResolverDescriptor
 		return (context)->{
 			try{
 				Map<String, BagOfValues> v = resolverFunction.apply(context);
-				LOG.error("Resolver values={}", v);
 				return Optional.ofNullable(v)
 				               .flatMap(values->values.isEmpty()?Optional.empty():
 				                                Optional.of(AttributeSet

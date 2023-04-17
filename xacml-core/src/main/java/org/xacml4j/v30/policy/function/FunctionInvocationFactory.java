@@ -71,7 +71,7 @@ public interface FunctionInvocationFactory
                 }
                 return (T)Objects.requireNonNull(m, "method").invoke(instance, params);
             }catch(Throwable t){
-                LOG.error(t.getMessage(), t);
+                LOG.debug(t.getMessage(), t);
                 throw new RuntimeException(t);
             }
         }

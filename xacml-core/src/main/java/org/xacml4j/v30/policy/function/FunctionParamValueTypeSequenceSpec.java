@@ -23,11 +23,13 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -35,8 +37,6 @@ import com.google.common.base.Objects;
 
 final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 {
-	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSequenceSpec.class);
-
 	private Integer min = 0;
 	private Integer max = Integer.MAX_VALUE;
 
@@ -55,15 +55,15 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 			Integer min, 
 			Integer max,
 			ValueTypeInfo paramType){
-		super((min != null && min == 0), true, null);
-		this.min = min;
-		this.max = max;
-		this.paramType = paramType;
+		super((min == null || min == 0), true, null);
+		this.min = min == null?0:min;
+		this.max = max == null?Integer.MAX_VALUE:max;
+		this.paramType = java.util.Objects.requireNonNull(paramType, "paramType");;
 	}
 
 	public FunctionParamValueTypeSequenceSpec(int min,
 			ValueTypeInfo paramType){
-		this(min, null, paramType);
+		this(min, Integer.MAX_VALUE, paramType);
 	}
 	
 	/**
@@ -95,37 +95,52 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	}
 
 	@Override
-	public boolean validate(ListIterator<Expression> it) {
-		int c = 0;
-		boolean valid = true;
-		while(it.hasNext()){
-			Expression exp = it.next();
-			if(exp == null && 
-					min == 0){
-				return true;
-			}
-			if(exp == null && min >= 1){
+	public boolean validate(ListIterator<Expression> it, boolean suppressExceptions) throws PolicySyntaxException {
+		if(!it.hasNext() && min > 0){
+			if(suppressExceptions){
 				return false;
 			}
-			ValueTypeInfo expType = exp.getEvaluatesTo();
-			if(!expType.equals(paramType)){
-				if(log.isDebugEnabled()){
-					log.debug("Expecting parameter of type=\"{}\" " +
-							"at index=\"{}\" found=\"{}\" valid=\"{}\"",
-							new Object[]{paramType, it.previousIndex(), expType, false});
-				}
-				valid = false;
+			throw PolicySyntaxException
+					.invalidParam(
+							this, it.nextIndex(),
+							String.format("expecting parameter params of type=\"%s\" " +
+									              "to have least min=\"%d\" params, found=\"%d\"",
+							              new Object[]{paramType, min, 0}));
+		}
+		int c = 0;
+		while(it.hasNext()){
+			Expression exp = it.next();
+			if(exp == null){
 				break;
+			}
+			ValueTypeInfo expType = exp.getEvaluatesTo();
+			// variadic param is always last
+			if(!expType.equals(paramType))
+			{
+				if(suppressExceptions){
+					return false;
+				}
+				throw PolicySyntaxException
+						.invalidParam(
+								this, it.previousIndex(),
+								String.format("expecting parameter params of type=\"%s\" at index=\"%s\" " +
+										              "to have min=\"%d\" max=\"%d\" params, found=\"%d\"",
+								              new Object[]{paramType, it.nextIndex(), min, max, c}));
 			}
 			c++;
 		}
-		if(min != null){
-			valid &= c >= min;
+		if(c >= min && c <= max){
+			return true;
 		}
-		if(max != null){
-			valid &= c <= max;
+		if(suppressExceptions){
+			return false;
 		}
-		return valid;
+		throw PolicySyntaxException
+				.invalidParam(
+						this, it.previousIndex(),
+						String.format("expecting parameter params of type=\"%s\" at index=\"%s\" " +
+								              "to have min=\"%d\" max=\"%d\" params, found=\"%d\"",
+						              new Object[]{paramType, it.nextIndex(), min, max, c}));
 	}
 
 	@Override

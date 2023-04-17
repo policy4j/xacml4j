@@ -40,7 +40,7 @@ import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.types.EntityValue;
@@ -121,9 +121,8 @@ final class DefaultEvaluationContextHandler
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
 		AttributeSelectorKey selectorKey = (AttributeSelectorKey)ref;
 		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
-		                                         .flatMap(e->doSafeResolve(context, selectorKey, e))
+		                                         .flatMap(e-> e.resolve(selectorKey))
 		                                         .or(()->doPipResolve(context, selectorKey));
-		LOG.debug("ref={}, value={}", ref, v);
 		return v;
 	}
 
@@ -132,9 +131,8 @@ final class DefaultEvaluationContextHandler
 		Preconditions.checkArgument(ref instanceof AttributeDesignatorKey);
 		AttributeDesignatorKey designatorKey = (AttributeDesignatorKey)ref;
 		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
-		                                         .flatMap(e->doSafeResolve(context, designatorKey, e))
+		                                         .flatMap(e-> e.resolve(designatorKey))
 		                                         .or(()->doPipResolve(context, (AttributeDesignatorKey)ref));
-		LOG.debug("ref={}, value={}", ref, v);
 		return v;
 	}
 
@@ -195,24 +193,6 @@ final class DefaultEvaluationContextHandler
 		}
 		finally {
 			selectorResolutionStack.pop();
-		}
-	}
-
-	private Optional<BagOfValues> doSafeResolve(EvaluationContext context, AttributeSelectorKey ref, Entity entity){
-		try{
-			return entity.resolve(ref);
-		}
-		catch (Exception e){
-			return Optional.empty();
-		}
-
-	}
-
-	private Optional<BagOfValues> doSafeResolve(EvaluationContext context, AttributeDesignatorKey ref, Entity entity){
-		try{
-			return entity.resolve(ref);
-		}catch (Exception e){
-			return Optional.empty();
 		}
 	}
 

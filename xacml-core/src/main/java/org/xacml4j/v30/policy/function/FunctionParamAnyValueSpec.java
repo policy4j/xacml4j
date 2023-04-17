@@ -25,15 +25,17 @@ package org.xacml4j.v30.policy.function;
 import java.util.ListIterator;
 
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
 
 
-final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
+final class FunctionParamAnyValueSpec extends BaseFunctionParamSpec
 {
-	public FunctionParamAnyAttributeSpec() {
+	public FunctionParamAnyValueSpec() {
 		super(false, false, null);
 	}
 	@Override
@@ -42,12 +44,38 @@ final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
 	}
 	
 	@Override
-	public boolean validate(ListIterator<Expression> it) {
+	public boolean validate(ListIterator<Expression> it, boolean suppressException) {
 		if(!it.hasNext()){
-			return false;
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              "parameter list is too short");
 		}
 		Expression exp = it.next();
-		return isValidParamType(exp.getEvaluatesTo());
+		if(exp == null){
+			if(isOptional()){
+				return true;
+			}
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              String.format("expected param of type=\"%s\", found null",
+					                            Value.class.getSimpleName()));
+		}
+		if(!isValidParamType(exp.getEvaluatesTo())){
+			if(suppressException) {
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              String.format("expected param of type=\"%s\", found type=\"%s\"",
+					              ValueType.class.getSimpleName(), exp.getEvaluatesTo()));
+		}
+		return true;
 	}
 
 	public String toString(){
@@ -69,7 +97,7 @@ final class FunctionParamAnyAttributeSpec extends BaseFunctionParamSpec
 		if(o == this){
 			return true;
 		}
-		return (o instanceof FunctionParamAnyAttributeSpec);
+		return (o instanceof FunctionParamAnyValueSpec);
 	}
 	
 	public void accept(FunctionParamSpecVisitor v){

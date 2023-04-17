@@ -22,6 +22,7 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import static org.easymock.EasyMock.capture;
 import static org.easymock.EasyMock.createControl;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertFalse;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import org.easymock.Capture;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
 import org.junit.Before;
@@ -42,6 +44,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
@@ -162,7 +165,8 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
 		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
-
+		Capture<Status> statusCapture = Capture.newInstance();
+		context.setEvaluationStatus(capture(statusCapture));
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		c.verify();
@@ -180,6 +184,8 @@ public class DefaultEvaluationContextHandlerTest
 
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
 		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
+		Capture<Status> statusCapture = Capture.newInstance();
+		context.setEvaluationStatus(capture(statusCapture));
 		
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
@@ -200,6 +206,8 @@ public class DefaultEvaluationContextHandlerTest
 
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
 		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
+		Capture<Status> statusCapture = Capture.newInstance();
+		context.setEvaluationStatus(capture(statusCapture));
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		c.verify();

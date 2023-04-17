@@ -88,9 +88,9 @@ public class PolicyUnmarshallerSupport
 		DecisionCombiningAlgorithm<Rule> algorithm = combiningAlgorithms
 				.getRuleAlgorithm(algorithmId);
 		if (algorithm == null) {
-			throw new SyntaxException(
+			throw new SyntaxException(String.format(
 					"Rule combining algorithm=\"%s\" can not be resolved",
-					algorithmId);
+					algorithmId));
 		}
 		return algorithm;
 	}
@@ -109,9 +109,9 @@ public class PolicyUnmarshallerSupport
 		DecisionCombiningAlgorithm<CompositeDecisionRule> algorithm = combiningAlgorithms
 				.getPolicyAlgorithm(algorithmId);
 		if (algorithm == null) {
-			throw new PolicySyntaxException(
+			throw new PolicySyntaxException(String.format(
 					"Policy combining algorithm=\"%s\" can not be resolved",
-					algorithmId);
+					algorithmId));
 		}
 		return algorithm;
 	}

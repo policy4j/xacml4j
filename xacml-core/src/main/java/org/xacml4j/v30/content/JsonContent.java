@@ -34,11 +34,16 @@ import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.PathEvaluationException;
 
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.EvaluationListener;
+import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.JsonPathException;
 import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.TypeRef;
 
 /**
@@ -65,8 +70,7 @@ public final class JsonContent
         this.context = JsonPath
                 .using(config
                         .addOptions(
-                                Option.DEFAULT_PATH_LEAF_TO_NULL,
-                                Option.SUPPRESS_EXCEPTIONS))
+                                Option.REQUIRE_PROPERTIES))
                 .parse(jsonDocument);
         this.pathListContext = JsonPath
                 .using(config.addOptions(
@@ -120,11 +124,16 @@ public final class JsonContent
 
     @Override
     public <T> List<T> evaluateToNodeSet(String path) {
-        List<T> nodeSet = context.read(path);
-        if(LOG.isDebugEnabled()){
-            LOG.debug("JsonPath=\"{}\", Results=\"{}\"", path, nodeSet);
+        try{
+            List<T> nodeSet = context.read(path);
+            if(LOG.isDebugEnabled()){
+                LOG.debug("JsonPath=\"{}\", Results=\"{}\"", path, nodeSet);
+            }
+            return nodeSet;
+        }catch (InvalidPathException e){
+            throw PathEvaluationException.invalidJsonPath(path, e);
         }
-        return nodeSet;
+
     }
 
     @Override
@@ -134,16 +143,21 @@ public final class JsonContent
 
     @Override
     public Optional<String> evaluateToNodePath(String path) {
-        List<String> paths = pathListContext.read(path);
-        if(LOG.isDebugEnabled()){
-            LOG.debug("JsonPath=\"{}\", Results=\"{}\"", path, paths);
+        try{
+            List<String> paths = pathListContext.read(path);
+            if(LOG.isDebugEnabled()){
+                LOG.debug("JsonPath=\"{}\", Results=\"{}\"", path, paths);
+            }
+            if(paths == null || paths.isEmpty()){
+                return Optional.empty();
+            }
+            return paths
+                    .stream()
+                    .findFirst();
+        }catch (Exception e){
+            throw PathEvaluationException.invalidJsonPath(path, e);
         }
-        if(paths == null || paths.isEmpty()){
-            return Optional.empty();
-        }
-        return paths
-                .stream()
-                .findFirst();
+
     }
 
     @Override
@@ -153,15 +167,21 @@ public final class JsonContent
 
     @Override
     public List<String> evaluateToNodePathList(String path) {
-        List<String> paths = pathListContext.read(path);
-        if(LOG.isDebugEnabled()){
-            LOG.debug("JsonPath=\"{}\", Results=\"{}\"", path, paths);
+        try{
+            List<String> paths = pathListContext.read(path);
+            if(LOG.isDebugEnabled()){
+                LOG.debug("JsonPath=\"{}\", Results=\"{}\"", path, paths);
+            }
+            return paths;
+        }catch (Exception e){
+            throw PathEvaluationException.invalidJsonPath(path, e);
         }
-        return paths;
+
     }
 
     @Override
     public Optional<String> evaluateToString(String path) {
+
         return Optional.ofNullable(context.read(path, STRING));
     }
 
@@ -169,7 +189,7 @@ public final class JsonContent
     public <T extends Number> Optional<T> evaluateToNumber(
             String path) {
         try{
-            List<? extends Number> result = context.read(path);
+            List < ? extends Number> result = context.read(path);
             if(LOG.isDebugEnabled()){
                 LOG.debug("JsonPath=\"{}\", Results=\"{}\"", path, result);
             }
@@ -177,10 +197,9 @@ public final class JsonContent
                 return Optional.empty();
             }
             return (Optional<T>) result.stream().findFirst();
-        }catch (Exception e){
-            LOG.debug(e.getMessage(), e);
-            return Optional.empty();
         }
-
+        catch (Exception e){
+            throw PathEvaluationException.invalidJsonPath(path, e);
+        }
     }
 }

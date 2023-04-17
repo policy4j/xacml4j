@@ -30,7 +30,8 @@ public class ResponseSyntaxException extends SyntaxException
 	private static final long serialVersionUID = 3874931918490495608L;
 
 	public ResponseSyntaxException(String template, Object... arguments) {
-		super(template, arguments);
+		super((arguments == null && template != null)?
+		      template:String.format(template, arguments));
 	}
 
 	public ResponseSyntaxException(String message) {

@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.PathEvaluationException;
 
 import com.google.common.truth.Truth8;
 
@@ -101,6 +102,12 @@ public class JsonContentTest
                 "$['store']['book'][3]['author']");
     }
 
+    @Test(expected = PathEvaluationException.class)
+    public void testJsonEvaluateToNodeSetAmdNodePathListInvalidPath()
+    {
+        List<Object> authors0 = content.evaluateToNodeSet("$.store.??aa-203(-book[*].author");
+    }
+
     @Test
     public void testJsonPathEvalToNodePathAndNode(){
         Optional<String> path = content.evaluateToNodePath("$.store.book[0]");
@@ -115,6 +122,12 @@ public class JsonContentTest
     @Test
     public void testEvaludateToNumber() {
         Optional<Number> price = content.evaluateToNumber("$.store.book[*].price");
+        Truth8.assertThat(price).hasValue(8.95);
+    }
+
+    @Test(expected = PathEvaluationException.class)
+    public void testInvalidInvalidPath() {
+        Optional<Number> price = content.evaluateToNumber("$.store.---?book[*].price");
         Truth8.assertThat(price).hasValue(8.95);
     }
 

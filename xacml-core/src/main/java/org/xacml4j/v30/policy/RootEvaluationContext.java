@@ -133,6 +133,7 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public void setEvaluationStatus(Status status) {
+		LOG.debug("Setting decisionRuleId=\"{}\"", status);
 		this.evaluationStatus = status;
 	}
 
@@ -334,8 +335,7 @@ public final class RootEvaluationContext implements EvaluationContext
 		if(ref instanceof PolicySetIDReference){
 			return resolve((PolicySetIDReference)ref);
 		}
-		throw new PolicyResolutionException(this,
-				"Failed to resolve reference");
+		throw new PolicyResolutionException(this);
 	}
 
 	private Policy resolve(PolicyIDReference ref)
@@ -346,8 +346,7 @@ public final class RootEvaluationContext implements EvaluationContext
 					"Policy reference=\"{}\"", ref);
 		}
 		if(p == null){
-			throw new PolicyResolutionException(this,
-					"Failed to resolve PolicySet reference");
+			throw new PolicyResolutionException(this);
 		}
 		return p;
 	}
@@ -360,8 +359,7 @@ public final class RootEvaluationContext implements EvaluationContext
 					"PolicySet reference=\"{}\"", ref);
 		}
 		if(p == null){
-			throw new PolicyResolutionException(this,
-					"Failed to resolve PolicySet reference");
+			throw new PolicyResolutionException(this);
 		}
 		return p;
 	}

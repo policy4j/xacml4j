@@ -80,8 +80,8 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 			Category attributes = req.getReferencedCategory(ref);
 			if(attributes == null){
 				throw new RequestSyntaxException(
-						"Failed to resolve attribute reference=\"%s\"",
-						ref.getReferenceId());
+						String.format("Failed to resolve attribute ref=\"%s\"",
+						ref.getReferenceId()));
 			}
 			resolved.add(attributes);
 		}

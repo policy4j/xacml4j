@@ -12,7 +12,6 @@
         <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
     </PolicySetDefaults>
     <Target>
-
         <Resources>
             <Resource>
                 <ResourceMatch
@@ -28,7 +27,6 @@
         </Resources>
 
     </Target>
-
 <Policy
       PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF006:policy"
       RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">

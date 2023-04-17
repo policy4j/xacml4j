@@ -154,6 +154,16 @@ public class XmlContentTest
         assertTrue(values.get().contains(XacmlTypes.INTEGER.of(555555)));
     }
 
+    @Test(expected = PathEvaluationException.class)
+    public void testEntityXPathSyntaxError(){
+        Optional<BagOfValues> values = xml1.resolve(
+                AttributeSelectorKey
+                        .builder()
+                        .xpath("/md:record[?]/md:patient/md:patient-number/text()")
+                        .dataType(XacmlTypes.INTEGER)
+                        .build());
+    }
+
     @Test
     public void testEntityXPathCorrectTypeString(){
         Optional<BagOfValues> values = xml1.resolve(

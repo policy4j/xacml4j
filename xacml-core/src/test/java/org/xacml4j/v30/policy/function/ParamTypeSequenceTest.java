@@ -39,6 +39,7 @@ public class ParamTypeSequenceTest
 	private FunctionParamValueTypeSequenceSpec specAttrZeroOrMore;
 	private FunctionParamValueTypeSequenceSpec specAttrOneOrMore;
 	private FunctionParamValueTypeSequenceSpec specAttrFromOneToFour;
+	private FunctionParamValueTypeSequenceSpec specAttr3OneTo6;
 
 	@Before
 	public void setUp() throws Exception
@@ -46,6 +47,7 @@ public class ParamTypeSequenceTest
 		this.specAttrZeroOrMore = new FunctionParamValueTypeSequenceSpec(0, Integer.MAX_VALUE, XacmlTypes.STRING);
 		this.specAttrOneOrMore = new FunctionParamValueTypeSequenceSpec(1, Integer.MAX_VALUE, XacmlTypes.STRING);
 		this.specAttrFromOneToFour = new FunctionParamValueTypeSequenceSpec(1, 4, XacmlTypes.STRING);
+		this.specAttr3OneTo6 = new FunctionParamValueTypeSequenceSpec(3, 6, XacmlTypes.STRING);
 	}
 
 	@Test

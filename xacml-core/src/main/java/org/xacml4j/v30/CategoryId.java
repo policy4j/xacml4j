@@ -35,7 +35,7 @@ import org.xacml4j.v30.types.XacmlTypes;
  *
  * @author Giedrius Trumpickas
  */
-public final class CategoryId extends SemanticalIdentifier
+public final class CategoryId extends SemanticIdentifier
 {
 	public static final CategoryId ACTION  = new CategoryId("urn:oasis:names:tc:xacml:3.0:attribute-category:action", "action");
 	public static final CategoryId ENVIRONMENT = new CategoryId("urn:oasis:names:tc:xacml:3.0:attribute-category:environment", "environment");

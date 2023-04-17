@@ -175,7 +175,7 @@ public final class XmlContent implements Content
     }
 
     @Override
-    public Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey) {
+    public Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey) throws EvaluationException {
         return getAttributeValues(
                 selectorKey,
                 null);
@@ -183,7 +183,7 @@ public final class XmlContent implements Content
 
     @Override
     public Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey,
-                                         Supplier<Entity> entitySupplier) {
+                                         Supplier<Entity> entitySupplier) throws EvaluationException {
         return getAttributeValues(
                 selectorKey,
                 entitySupplier);
@@ -192,7 +192,7 @@ public final class XmlContent implements Content
     private Optional<BagOfValues> getAttributeValues(
             AttributeSelectorKey selectorKey,
             Supplier<Entity> callback)
-		    throws PathEvaluationException
+		    throws EvaluationException
     {
         try
         {
@@ -202,10 +202,8 @@ public final class XmlContent implements Content
                         (selectorKey.getContextSelectorId() == null ? CONTENT_SELECTOR : selectorKey.getContextSelectorId()),
                         XacmlTypes.XPATH);
                 if (v.size() > 1) {
-                    throw new XPathEvaluationException(
-		                    Status.syntaxError().build(),
-		                    "Found more than one value of=\"%s\"",
-		                    selectorKey.getContextSelectorId());
+                    throw PathEvaluationException.invalidXpathContextSelectorId(selectorKey.getPath(),
+                                                                                selectorKey.getContextSelectorId());
                 }
                 if (v.size() == 1) {
                     PathValue xpathAttr = (PathValue) v.iterator().next();
@@ -238,7 +236,7 @@ public final class XmlContent implements Content
                     selectorKey.getDataType(),
                     nodeSet);
         }
-        catch(EvaluationException e){
+        catch(PathEvaluationException e){
             if(LOG.isDebugEnabled()){
                 LOG.debug(e.getMessage(), e);
             }
@@ -248,7 +246,7 @@ public final class XmlContent implements Content
             if(LOG.isDebugEnabled()){
                 LOG.debug(e.getMessage(), e);
             }
-            throw XPathEvaluationException.wrap(e);
+            throw PathEvaluationException.invalidXpath(selectorKey.getPath(), e);
         }
     }
 
@@ -260,9 +258,10 @@ public final class XmlContent implements Content
                 return (List<T>) (DOMUtil.nodeListToList(nodeList));
             }
             return Collections.emptyList();
-        }catch (XPathEvaluationException e){
-            throw PathEvaluationException
-                    .wrap(e);
+        }catch (PathEvaluationException e){
+            throw e;
+        }catch (Exception e){
+            throw PathEvaluationException.invalidXpath(path, e);
         }
     }
 
@@ -275,9 +274,10 @@ public final class XmlContent implements Content
                  paths.add(DOMUtil.getXPath(nodeList.item(i)));
              }
              return paths;
-        }catch (XPathEvaluationException e){
-            throw PathEvaluationException
-                    .wrap(e);
+        }catch (PathEvaluationException e){
+            throw e;
+        }catch (Exception e){
+            throw PathEvaluationException.invalidXpath(path, e);
         }
     }
 
@@ -288,9 +288,10 @@ public final class XmlContent implements Content
                     xPathProvider.evaluateToNode(path, contextNode))
                     .map(DOMUtil::getXPath);
 
-        }catch (XPathEvaluationException e){
-            throw PathEvaluationException
-                    .wrap(e);
+        }catch (PathEvaluationException e){
+            throw e;
+        }catch (Exception e){
+            throw PathEvaluationException.invalidXpath(path, e);
         }
     }
 
@@ -299,9 +300,10 @@ public final class XmlContent implements Content
         try{
             return Optional.ofNullable(xPathProvider
                 .evaluateToString(path, contextNode));
-        }catch (XPathEvaluationException e){
-            throw PathEvaluationException
-                    .wrap(e);
+        }catch (PathEvaluationException e){
+            throw e;
+        }catch (Exception e){
+            throw PathEvaluationException.invalidXpath(path, e);
         }
     }
 
@@ -310,9 +312,10 @@ public final class XmlContent implements Content
         try{
             return (Optional<T>) Optional.ofNullable(xPathProvider
                     .evaluateToNode(path, contextNode));
-        }catch (XPathEvaluationException e){
-            throw PathEvaluationException
-                    .wrap(e);
+        }catch (PathEvaluationException e){
+            throw e;
+        }catch (Exception e){
+            throw PathEvaluationException.invalidXpath(path, e);
         }
     }
 
@@ -321,9 +324,10 @@ public final class XmlContent implements Content
         try{
             return (Optional<T>) Optional.ofNullable(xPathProvider
                     .evaluateToNumber(path, contextNode));
-        }catch (XPathEvaluationException e){
-            throw PathEvaluationException
-                    .wrap(e);
+        }catch (PathEvaluationException e){
+            throw e;
+        }catch (Exception e){
+            throw PathEvaluationException.invalidXpath(path, e);
         }
     }
 
@@ -347,14 +351,10 @@ public final class XmlContent implements Content
             {
                 Node n = nodeSet.item(i);
                 b.attribute(convertNodeToXacml(xpath, n, type));
-            } catch (EvaluationException e) {
+            } catch (PathEvaluationException e) {
                 throw e;
             } catch (Exception e) {
-                throw new XPathEvaluationException(
-                        Status.processingError()
-                              .error(e)
-                              .build(),
-                        xpath);
+                throw PathEvaluationException.invalidXpath(xpath, e);
             }
         }
         return Optional.of(
@@ -387,17 +387,16 @@ public final class XmlContent implements Content
                 v = ((Comment) n).getData();
                 break;
             default:
-                throw new XPathEvaluationException(
-                        Status.syntaxError().build(),
-                        "Unsupported DOM node for xpath=\"%s%\" type=\"%d\"",
-                        xpath, n.getNodeType());
+                throw PathEvaluationException.invalidXpath(
+                        xpath,
+                        String.format("Unsupported DOM node for xpath=\"%s\" type=\"%d\"",
+                                      xpath, n.getNodeType()));
         }
         Optional<TypeToString> toString = TypeToString.forType(type);
         if (!toString.isPresent()) {
-            throw new XPathEvaluationException(
-                    Status.processingError().build(),
-                    "Unsupported XACML xpath=\"%s%\" type=\"%d\"",
-                    xpath, type.getDataTypeId(), v);
+            throw PathEvaluationException.invalidXpath(xpath,
+                    String.format("Unsupported XACML xpath=\"%s%\" type=\"%d\"",
+                    xpath, type.getDataTypeId(), v));
         }
         Value value = toString.get().fromString(v);
         if (LOG.isDebugEnabled()) {

@@ -173,7 +173,7 @@ class JavaMethodToFunctionSpecConverter
 				}
 
 				b.param(param.isBag() ? type.get().bagType() : type.get(),
-						createDefaultValue(type.get(), param.isBag(), param.value()), true);
+						createDefaultValue(m, type.get(), param.isBag(), param.value()), true);
 				continue;
 			}
 			if (params[i][0] instanceof XacmlFuncParamVarArg) {
@@ -192,8 +192,7 @@ class JavaMethodToFunctionSpecConverter
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
 				java.util.Optional<ValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
-					throw new SyntaxException(
-							"Unknown XACML type id=\"%s\"", param.typeId());
+					throw SyntaxException.invalidDataTypeId(param.typeId());
 				}
 				b.varArg(param.isBag() ? type.get().bagType() : type.get(), param.min(),
 						param.max());
@@ -213,12 +212,12 @@ class JavaMethodToFunctionSpecConverter
 				continue;
 			}
 			if (params[i][0] == null) {
-				throw new PolicySyntaxException(String.format(
+				throw SyntaxException.invalidResolverMethod(m, String.format(
 						"Found method=\"%s\" parameter at "
 								+ "index=\"%s\" with no annotation", m
 								.getName(), i));
 			}
-			throw new PolicySyntaxException(String.format(
+			throw SyntaxException.invalidResolverMethod(m, String.format(
 					"Found method=\"%s\" parameter at "
 							+ "index=\"%s\" with unknown annotation=\"%s\"", m
 							.getName(), i, params[i][0]));
@@ -226,25 +225,25 @@ class JavaMethodToFunctionSpecConverter
 		if (returnType != null) {
 			java.util.Optional<ValueType> type = XacmlTypes.getType(returnType.typeId());
 			if(!type.isPresent()){
-				throw new PolicySyntaxException(
-						"Unknown XACML type id=\"%s\"", returnType.typeId());
+				throw SyntaxException.invalidDataTypeId(returnType.typeId());
 			}
 			return b.build(returnType.isBag() ? type.get().bagType() : type.get(),
-					(validator != null) ? createValidator(validator
+					(validator != null) ? createValidator(m, validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory.create(instance, m),
 					                              evalContextParamFound));
 		}
 		if (returnTypeResolver != null) {
-			return b.build(createResolver(returnTypeResolver.resolverClass()),
-					(validator != null) ? createValidator(validator
+			return b.build(createResolver(m, returnTypeResolver.resolverClass()),
+					(validator != null) ? createValidator(m, validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory
 							.<ValueExpression>create(instance, m),
 							evalContextParamFound));
 		}
-		throw new PolicySyntaxException(
-				"Either static return type or return type resolver must be specified");
+		throw SyntaxException.invalidResolverMethod(m,
+		                                            "Either static return type or " +
+				                                            "return type resolver must be specified");
 	}
 
 	private void validateMethodReturnType(Method m) {
@@ -253,54 +252,56 @@ class JavaMethodToFunctionSpecConverter
 		XacmlFuncReturnTypeResolver returnTypeResolver = m
 				.getAnnotation(XacmlFuncReturnTypeResolver.class);
 		if (!(returnType == null ^ returnTypeResolver == null)) {
-			throw new SyntaxException(
-					"Either \"XacmlFuncReturnTypeResolver\" or "
-							+ "\"XacmlFuncReturnType\" annotation must be specified, not both");
+			throw SyntaxException.invalidResolverMethod(m,
+					String.format("Either \"XacmlFuncReturnTypeResolver\" or "
+							+ "\"XacmlFuncReturnType\" annotation must be specified, not both"));
 		}
 		if (returnTypeResolver != null) {
 			return;
 		}
 		if (returnType.isBag() &&
 					!BagOfValues.class.isAssignableFrom(m.getReturnType())) {
-			throw new PolicySyntaxException(
-					"Method=\"%s\" return type declared XACML " +
+			throw SyntaxException.invalidResolverMethod(m,
+					String.format("Method=\"%s\" return type declared XACML " +
 					"bag of=\"%s\" but method returns type=\"%s\"",
-					m.getName(), returnType.typeId(), m.getReturnType());
+					m.getName(), returnType.typeId(), m.getReturnType()));
 		}
 		if(!returnType.isBag() && BagOfValues.class.isAssignableFrom(m.getReturnType())) {
-			throw new PolicySyntaxException("Method=\"%s\" return type declared XACML attribute type=\"%s\" "
-							+ "but method returns=\"%s\"", m.getName(),
-					returnType.typeId(), m.getReturnType());
+			throw SyntaxException
+					.invalidResolverMethod(m,
+					                       String.format("Method=\"%s\" return type declared " +
+							                                     "XACML attribute type=\"%s\" but method returns=\"%s\"",
+					                                     m.getName(),
+					returnType.typeId(), m.getReturnType()));
 		}
 	}
 
-	private FunctionReturnTypeResolver createResolver(
+	private FunctionReturnTypeResolver createResolver(Method m,
 			Class<? extends FunctionReturnTypeResolver> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {
-			throw new SyntaxException(
-					String.format(
-						"Failed to build defaultProvider of function return type resolver, class=\"%s\"",
-						clazz.getName()),
-					e);
+			throw SyntaxException.invalidResolverMethod(
+					m, String.format(
+						"Failed to build defaultProvider of function " +
+								"return type resolver, class=\"%s\" error=\"%s\"", clazz.getName(), e.getMessage()));
 		}
 	}
 
-	private FunctionParametersValidator createValidator(
+	private FunctionParametersValidator createValidator(Method m,
 			Class<? extends FunctionParametersValidator> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {
-			throw new PolicySyntaxException(
+			throw SyntaxException.invalidResolverMethod(m,
 					String.format(
 							"Failed to build defaultProvider of function parameter validator, class=\"%s\"",
-							clazz.getName()),
-					e);
+							clazz.getName()));
 		}
 	}
 
-	private ValueExpression createDefaultValue(
+	private ValueExpression createDefaultValue
+			(Method method,
 			ValueType type,
 			boolean isBag, String[] values)
 	{
@@ -309,8 +310,12 @@ class JavaMethodToFunctionSpecConverter
 		}
 		Optional<TypeToString> fromString = TypeToString.forType(type);
 		if(!fromString.isPresent()){
-			throw new SyntaxException("Xacml type=\"%s\" does support default values in annotation",
-					type.getDataTypeId());
+			throw SyntaxException
+					.invalidResolverMethod(method,
+					                       String.format(
+												   "Xacml type=\"%s\" does support " +
+														   "default values in annotation",
+					type.getDataTypeId()));
 		}
 		List<Value> defaultValues = new ArrayList<Value>(values.length);
 		for(String v : values){

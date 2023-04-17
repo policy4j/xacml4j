@@ -22,34 +22,95 @@ package org.xacml4j.v30;
  * #L%
  */
 
-public class PathEvaluationException extends EvaluationException
+import java.util.Optional;
+
+public final class PathEvaluationException extends EvaluationException
 {
 	private static final long serialVersionUID = 1511624494955246280L;
 
-	protected PathEvaluationException(String message){
-		super(Status.processingError().build(), message);
+	private String path;
+	private Content.PathType pathType;
+
+	private PathEvaluationException(String path, Content.PathType pathType){
+		super(Status.processingError()
+		            .message(path)
+		            .build(), path);
+		this.pathType = pathType;
+		this.path = path;
 	}
 
-	protected PathEvaluationException(String message, Throwable t){
-		super(Status.processingError().build(), message, t);
+	private PathEvaluationException(String path, Content.PathType pathType, Throwable t){
+		super(Status.processingError()
+		            .message(Optional.ofNullable(t).map(e->e.getMessage()).orElse(null))
+		            .error(t)
+		            .build(),
+		      path, t);
+		this.pathType = pathType;
+		this.path = path;
 	}
 
-
-
-	protected PathEvaluationException(Throwable t){
-		super(Status.processingError().build(), t);
+	private PathEvaluationException(String path, Content.PathType pathType, String message){
+		super(Status.processingError()
+		            .message(message)
+		            .build(), message);
+		this.pathType = pathType;
+		this.path = path;
 	}
 
-	protected PathEvaluationException(String m, Object...p){
-		super(Status.processingError().build(), m, p);
+	private PathEvaluationException(Status status, String path, Content.PathType pathType, Throwable t){
+		super(Status.from(status)
+		            .error(t)
+		            .build(), path, t);
+		this.pathType = pathType;
+		this.path = path;
 	}
 
-	protected PathEvaluationException(Status status, String m, Object...p){
-		super(status, m, p);
+	public String getPath() {
+		return path;
 	}
 
+	public Content.PathType getPathType() {
+		return pathType;
+	}
 
-	public static PathEvaluationException wrap(Throwable e){
-		return new PathEvaluationException(e);
+	public static PathEvaluationException invalidXpath(String path, Status status, Throwable t){
+		return new PathEvaluationException(status, path, Content.PathType.XPATH, t);
+	}
+
+	public static PathEvaluationException invalidXpath(String path, Throwable t){
+		return new PathEvaluationException( path, Content.PathType.XPATH, t);
+	}
+
+	public static PathEvaluationException invalidXpath(String path, String message){
+		return new PathEvaluationException( path, Content.PathType.XPATH, message);
+	}
+
+	public static PathEvaluationException invalidXpathPath(String path){
+		return new PathEvaluationException(path, Content.PathType.JPATH);
+	}
+
+	public static PathEvaluationException invalidJsonPath(String path, Status status, Throwable t){
+		return new PathEvaluationException(status, path, Content.PathType.JPATH, t);
+	}
+
+	public static PathEvaluationException invalidJsonPath(String path, Throwable t){
+		return new PathEvaluationException(path, Content.PathType.JPATH,
+		                                   format("Invalid path=\"%s\" type=\"%s\" error=\"%s\"", path,
+		                                          Content.PathType.JPATH.name(), t.getMessage()));
+	}
+
+	public static PathEvaluationException invalidJsonPath(String path){
+		return new PathEvaluationException(path, Content.PathType.XPATH);
+	}
+	public static PathEvaluationException invalidXpathContextSelectorId(String path, String contextSelectorId){
+		return new PathEvaluationException(path, Content.PathType.XPATH,
+		                                   format("Invalid path=\"%s\" type=\"%s\" contextSelectorId=\"%s\"", path,
+		                                          Content.PathType.XPATH.name(), contextSelectorId));
+	}
+
+	public static PathEvaluationException invalidJsonPathContextSelectorId(String path, String contextSelectorId){
+		return new PathEvaluationException(path, Content.PathType.JPATH,
+		                                   format("Invalid path=\"%s\" type=\"%s\" contextSelectorId=\"%s\"", path,
+		                                          Content.PathType.JPATH.name(), contextSelectorId));
 	}
 }

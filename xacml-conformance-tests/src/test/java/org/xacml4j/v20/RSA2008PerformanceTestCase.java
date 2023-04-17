@@ -75,7 +75,7 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 		ImmutableList.Builder<CompositeDecisionRule> policies = ImmutableList.builder();
 		PolicyImportTool tool = repository.newImportTool();
 		for (Supplier<InputStream> policyStream : policyStreams) {
-			tool.importPolicy(MediaType.Type.XACML20_XML, policyStream);
+			policies.add(tool.importPolicy(MediaType.Type.XACML20_XML, policyStream));
 		}
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")

@@ -129,9 +129,9 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		Optional<Content> content = entity.getContent().filter(
 				c->c.getType().equals(path.getContentType()));
 		if(!content.isPresent()){
-			throw new RequestSyntaxException("Request attributes category=\"%s\" content " +
+			throw new RequestSyntaxException(String.format("Request attributes category=\"%s\" content " +
 					"for selector=\"%s\" must be specified",
-					category.getCategoryId(), path.value());
+					category.getCategoryId(), path.value()));
 		}
 		try
 		{

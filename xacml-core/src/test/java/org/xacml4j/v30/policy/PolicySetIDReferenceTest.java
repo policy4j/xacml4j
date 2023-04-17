@@ -31,6 +31,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Optional;
+
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
@@ -67,7 +69,8 @@ public class PolicySetIDReferenceTest
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
+		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));
+
 
 		c.replay();
 		EvaluationContext policyRefContext = ref.createContext(context);
@@ -118,7 +121,7 @@ public class PolicySetIDReferenceTest
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(context, "Failed to resolve"));
+		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));
 
 		c.replay();
 

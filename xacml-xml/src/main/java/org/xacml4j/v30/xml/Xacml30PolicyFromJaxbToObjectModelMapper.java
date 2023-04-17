@@ -92,6 +92,7 @@ import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.policy.PolicySetDefaults;
 import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.Target;
 import org.xacml4j.v30.policy.VariableDefinition;
@@ -587,8 +588,8 @@ class Xacml30PolicyFromJaxbToObjectModelMapper
 					.build();
 		}
 		throw new SyntaxException(
-				"Given JAXB object defaultProvider of=\"%s\" can not be converted to XACML AttributeSelector or AttributeDesignator",
-				ref.getClass().getName());
+				String.format("Given JAXB object defaultProvider of=\"%s\" can not be converted to XACML AttributeSelector or AttributeDesignator",
+				ref.getClass().getName()));
 	}
 
 	/**
@@ -665,7 +666,7 @@ class Xacml30PolicyFromJaxbToObjectModelMapper
 			}
 			final JAXBElement<?> varDefExp = m.getVariableDefinitionExpression(varRef.getVariableId());
 			if (varDefExp == null) {
-				throw new SyntaxException(
+				throw new PolicySyntaxException(
 						"Variable with id=\"%s\" is not defined",
 						varRef.getVariableId());
 			}
@@ -680,7 +681,7 @@ class Xacml30PolicyFromJaxbToObjectModelMapper
 			return new FunctionReference(
 					lookUpFunction(fRef.getFunctionId()));
 		}
-		throw new SyntaxException(
+		throw new PolicySyntaxException(
 				"Unknown XACML expression JAXB object=\"%s\"", e.getClass());
 	}
 
@@ -710,7 +711,7 @@ class Xacml30PolicyFromJaxbToObjectModelMapper
 				}
 				VariableDefinitionType varDef = (VariableDefinitionType) o;
 				if (expressions.containsKey(varDef.getVariableId())) {
-					throw new SyntaxException(
+					throw new PolicySyntaxException(
 							"Policy contains a variableId=\"%s\" that is already "
 									+ "used for previously defined variable",
 							varDef.getVariableId());

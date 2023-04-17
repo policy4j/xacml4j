@@ -46,14 +46,14 @@ import com.google.common.base.MoreObjects;
  *
  * @author Giedrius Trumpickas
  */
-public class SemanticalIdentifier implements Serializable
+public class SemanticIdentifier implements Serializable
 {
-    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(SemanticalIdentifier.class);
+    private final static org.slf4j.Logger LOG = LoggerFactory.getLogger(SemanticIdentifier.class);
 
     protected String id;
     protected String abbreviatedId;
 
-    protected SemanticalIdentifier(String id, String abbreviatedId){
+    protected SemanticIdentifier(String id, String abbreviatedId){
         this.id = Objects.requireNonNull(id);
         this.abbreviatedId = Objects.requireNonNull(abbreviatedId);
     }
@@ -85,7 +85,7 @@ public class SemanticalIdentifier implements Serializable
                 !(getClass().isInstance(id))){
             return false;
         }
-        SemanticalIdentifier a = (SemanticalIdentifier)id;
+        SemanticIdentifier a = (SemanticIdentifier)id;
         return this.id.equals(a.getId()) &&
                 Objects.equals(abbreviatedId, a.getAbbreviatedId());
     }
@@ -103,7 +103,7 @@ public class SemanticalIdentifier implements Serializable
         return Objects.hash(id, abbreviatedId, getClass());
     }
 
-    protected static <T extends SemanticalIdentifier> Map<String, T> getById(Class<T> type){
+    protected static <T extends SemanticIdentifier> Map<String, T> getById(Class<T> type){
         return geById(type, v->v.getId());
     }
 
@@ -113,11 +113,11 @@ public class SemanticalIdentifier implements Serializable
      * @param <T> an extensible identifier type template param
      * @return map of identifier instances mapped by abbriavated identifier
      */
-    protected static <T extends SemanticalIdentifier> Map<String, T> getByAbbrId(Class<T> type){
+    protected static <T extends SemanticIdentifier> Map<String, T> getByAbbrId(Class<T> type){
         return geById(type, v->v.getAbbreviatedId());
     }
 
-    protected static <T extends SemanticalIdentifier> Map<String, T> geById(Class<T> type, Function<T, String> map){
+    protected static <T extends SemanticIdentifier> Map<String, T> geById(Class<T> type, Function<T, String> map){
         Map<String, List<T>> byId =
                 Reflections.getDeclaredStaticFields(type, type)
                         .stream()
@@ -132,7 +132,7 @@ public class SemanticalIdentifier implements Serializable
                 ));
     }
 
-    private static <T extends SemanticalIdentifier> Pair<String, T> map(
+    private static <T extends SemanticIdentifier> Pair<String, T> map(
             Map.Entry<String, List<T>> e)
     {
         return Pair.of(e.getKey(),
@@ -152,8 +152,8 @@ public class SemanticalIdentifier implements Serializable
      * @param <T> a identifier type
      * @return an optional identifier defaultProvider
      */
-    protected static <T extends SemanticalIdentifier>  Optional<T> of(String id, Map<String, T> bydId, Map<String, T> byAbbreviated,
-                                                                      Supplier<Optional<T>> valueSupplier, boolean alwaysUseSupplier) {
+    protected static <T extends SemanticIdentifier>  Optional<T> of(String id, Map<String, T> bydId, Map<String, T> byAbbreviated,
+                                                                    Supplier<Optional<T>> valueSupplier, boolean alwaysUseSupplier) {
         return alwaysUseSupplier?valueSupplier.get():
                 get(id, bydId)
                         .or(()->get(id, byAbbreviated)

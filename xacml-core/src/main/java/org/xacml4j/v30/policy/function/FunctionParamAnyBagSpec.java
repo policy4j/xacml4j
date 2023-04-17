@@ -23,10 +23,12 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
+import java.util.Optional;
 
 import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
 
@@ -42,12 +44,39 @@ final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
 	}
 
 	@Override
-	public boolean validate(ListIterator<Expression> it) {
+	public boolean validate(ListIterator<Expression> it, boolean suppressException) {
 		if(!it.hasNext()){
-			return false;
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              "Parameter list is too short");
 		}
 		Expression exp = it.next();
-		return isValidParamType(exp.getEvaluatesTo());
+		if(exp == null){
+			if(isOptional()){
+				return true;
+			}
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              String.format("expected param of type=\"%s\", found null",
+					                            BagOfValuesType.class.getSimpleName()));
+		}
+		ValueTypeInfo valueTypeInfo = exp.getEvaluatesTo();
+		if(!isValidParamType(valueTypeInfo)){
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              String.format("expected param of type=\"%s\", found type=\"%s\"",
+					              BagOfValuesType.class.getSimpleName(), valueTypeInfo));
+		}
+		return true;
 	}
 
 	@Override

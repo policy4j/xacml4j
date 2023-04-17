@@ -24,12 +24,13 @@ package org.xacml4j.v30.policy.function;
 
 import org.xacml4j.v30.VersionMatch;
 
+import com.google.common.base.CharMatcher;
+
 public enum FunctionCategory
 {
 	XACML1("1.*"),
 	XACML2("2.*"),
 	XACML3("3.*"),
-	XACML4("4.*"),
 	UNKNOWN("*.*");
 
 	private VersionMatch versionMatch;
@@ -38,6 +39,7 @@ public enum FunctionCategory
 		this.versionMatch = VersionMatch.parse(versionMatch);
 	}
 
+	// TODO: implement version matching <code>xacml:d.d</code>
 	public static FunctionCategory fromString(String id) {
 		return FunctionCategory.UNKNOWN;
 	}

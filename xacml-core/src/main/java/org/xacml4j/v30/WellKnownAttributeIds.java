@@ -31,7 +31,7 @@ import java.util.Optional;
  *
  * @author Giedrius Trumpickas
  */
-public class WellKnownAttributeIds extends SemanticalIdentifier
+public class WellKnownAttributeIds extends SemanticIdentifier
 {
     public final static WellKnownAttributeIds RESOURCE_ID = new WellKnownAttributeIds("urn:oasis:names:tc:xacml:1.0:resource:resource-id", "resource-id");
     public final static WellKnownAttributeIds MDP_MULTIPLE_SELECTOR = new WellKnownAttributeIds("urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector", "multiple:content-selector");
@@ -120,8 +120,8 @@ public class WellKnownAttributeIds extends SemanticalIdentifier
     public final static WellKnownAttributeIds CURRENT_DATETIME = new WellKnownAttributeIds("urn:oasis:names:tc:xacml:1.0:environment:current-dateTime", "current-dateTime");
 
 
-    private final static Map<String, WellKnownAttributeIds> By_ID = SemanticalIdentifier.getById(WellKnownAttributeIds.class);
-    private final static Map<String, WellKnownAttributeIds> By_ABBREVIATED_ID = SemanticalIdentifier.getByAbbrId(WellKnownAttributeIds.class);
+    private final static Map<String, WellKnownAttributeIds> By_ID = SemanticIdentifier.getById(WellKnownAttributeIds.class);
+    private final static Map<String, WellKnownAttributeIds> By_ABBREVIATED_ID = SemanticIdentifier.getByAbbrId(WellKnownAttributeIds.class);
 
     private final static boolean ALWAYS_USE_SUPPLIER = Optional.ofNullable(System
             .getProperty(WellKnownAttributeIds.class.getName() + ".ALWAYS_USE_SUPPLIER"))

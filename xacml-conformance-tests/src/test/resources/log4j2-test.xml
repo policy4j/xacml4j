@@ -41,27 +41,27 @@
 		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Logger name="org.xacml4j.v30.policy" level="DEBUG" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Logger name="org.xacml4j.util.NodeNamespaceContext" level="DEBUG" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Logger name="org.xacml4j.v30.content" level="DEBUG" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Logger name="org.xacml4j.v30.policy.function.impl" level="DEBUG" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Logger name="org.xacml4j.v30.pdp" level="DEBUG" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Logger name="org.xacml4j.v30.policy.combine" level="ERROR" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Logger name="org.xacml4j.v30.policy.function" level="ERROR" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
+<!--		<Logger name="org.xacml4j.v30.policy" level="DEBUG" additivity="false">-->
+<!--			<AppenderRef ref="console"/>-->
+<!--		</Logger>-->
+<!--		<Logger name="org.xacml4j.util.NodeNamespaceContext" level="DEBUG" additivity="false">-->
+<!--			<AppenderRef ref="console"/>-->
+<!--		</Logger>-->
+<!--		<Logger name="org.xacml4j.v30.content" level="DEBUG" additivity="false">-->
+<!--			<AppenderRef ref="console"/>-->
+<!--		</Logger>-->
+<!--		<Logger name="org.xacml4j.v30.policy.function.impl" level="DEBUG" additivity="false">-->
+<!--			<AppenderRef ref="console"/>-->
+<!--		</Logger>-->
+<!--		<Logger name="org.xacml4j.v30.pdp" level="DEBUG" additivity="false">-->
+<!--			<AppenderRef ref="console"/>-->
+<!--		</Logger>-->
+<!--		<Logger name="org.xacml4j.v30.policy.combine" level="ERROR" additivity="false">-->
+<!--			<AppenderRef ref="console"/>-->
+<!--		</Logger>-->
+<!--		<Logger name="org.xacml4j.v30.policy.function" level="ERROR" additivity="false">-->
+<!--			<AppenderRef ref="console"/>-->
+<!--		</Logger>-->
 		<Root level="ERROR" additivity="false">
 			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFile" />

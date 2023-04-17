@@ -63,16 +63,16 @@ public interface XPathProvider
 	XPathExpression newXPath(String xpath, Node node);
 
 	default Node evaluateToNode(String path, Node context)
-			throws XPathEvaluationException
+			throws PathEvaluationException
 	{
 		Objects.requireNonNull(path, "path");
 		Objects.requireNonNull(context, "context");
+		if(log.isDebugEnabled()){
+			log.debug("EvaluateToNode XPath=\"{}\"", path);
+		}
+		XPathExpression xpath = newXPath(path, context);
 		try
 		{
-			if(log.isDebugEnabled()){
-				log.debug("EvaluateToNode XPath=\"{}\"", path);
-			}
-			XPathExpression xpath = newXPath(path, context);
 			Node result = (Node)xpath.evaluate(context, XPathConstants.NODE);
 			if(result != null){
 				log.debug("Xpath={} result node name=\"{}\" node type=\"{}\"",
@@ -84,25 +84,24 @@ public interface XPathProvider
 				log.warn("Xpath={} result null", xpath);
 			}
 			return result;
-		}catch(XPathExpressionException e){
+		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw XPathEvaluationException
-					.wrap(path, context, e);
+			throw PathEvaluationException.invalidXpath(path, e);
 		}
 	}
 
 	default NodeList evaluateToNodeSet(String path, Node context)
-			throws XPathEvaluationException {
+			throws PathEvaluationException {
 		Objects.requireNonNull(path, "path");
 		Objects.requireNonNull(context, "context");
+		if(log.isDebugEnabled()){
+			log.debug("EvaluateToNodeSet XPath=\"{}\"", path);
+		}
+		XPathExpression xpath = newXPath(path, context);
 		try
 		{
-			if(log.isDebugEnabled()){
-				log.debug("EvaluateToNodeSet XPath=\"{}\"", path);
-			}
-			XPathExpression xpath = newXPath(path, context);
 			NodeList result = (NodeList)xpath.evaluate(context, XPathConstants.NODESET);
 			if(result != null){
 				log.debug("Evaluation result has=\"{}\" nodes",
@@ -120,49 +119,47 @@ public interface XPathProvider
 			}
 			return result;
 		}
-		catch(XPathExpressionException e){
+		catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw XPathEvaluationException
-					.wrap(path, context, e);
+			throw PathEvaluationException.invalidXpath(path, e);
 		}
 	}
 
 	default String evaluateToString(String path, Node context)
-			throws XPathEvaluationException {
+			throws PathEvaluationException {
 		Objects.requireNonNull(path, "path");
 		Objects.requireNonNull(context, "context");
+		if(log.isDebugEnabled()){
+			log.debug("EvaluateToString XPath=\"{}\"", path);
+		}
+		XPathExpression xpath = newXPath(path, context);
 		try
 		{
-			if(log.isDebugEnabled()){
-				log.debug("EvaluateToString XPath=\"{}\"", path);
-			}
-			XPathExpression xpath = newXPath(path, context);
 			String result = (String)xpath.evaluate(context, XPathConstants.STRING);
 			if(log.isDebugEnabled()){
 				log.debug("EvaluateToString XPath=\"{}\" result=\"{}\"", path, result);
 			}
 			return result;
-		}catch(XPathExpressionException e){
+		}catch(Exception e){
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw XPathEvaluationException
-					.wrap(path, context, e);
+			throw PathEvaluationException.invalidXpath(path, e);
 		}
 	}
 
 	default Number evaluateToNumber(String path, Node context)
-			throws XPathEvaluationException {
+			throws PathEvaluationException {
 		Objects.requireNonNull(path, "path");
 		Objects.requireNonNull(context, "context");
+		if(log.isDebugEnabled()){
+			log.debug("EvaluateToNumber XPath=\"{}\"", path);
+		}
+		XPathExpression xpath = newXPath(path, context);
 		try
 		{
-			if(log.isDebugEnabled()){
-				log.debug("EvaluateToNumber XPath=\"{}\"", path);
-			}
-			XPathExpression xpath = newXPath(path, context);
 			Number result = (Number)xpath.evaluate(context, XPathConstants.NUMBER);
 			if(log.isDebugEnabled()){
 				log.debug("EvaluateToNumber XPath=\"{}\" result=\"{}\"", path, result);
@@ -172,8 +169,8 @@ public interface XPathProvider
 			if(log.isDebugEnabled()){
 				log.debug(path, e);
 			}
-			throw XPathEvaluationException
-					.wrap(path, context, e);
+			throw PathEvaluationException
+					.invalidXpath(path, e);
 		}
 	}
 
@@ -227,8 +224,7 @@ public interface XPathProvider
 			try{
 				return xp.compile(xpath);
 			}catch(XPathExpressionException e){
-				throw PathEvaluationException
-						.wrap(e);
+				throw PathEvaluationException.invalidXpath(xpath, e);
 			}
 		}
 	}

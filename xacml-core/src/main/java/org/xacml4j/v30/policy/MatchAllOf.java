@@ -27,8 +27,10 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.Value;
 
 import com.google.common.base.MoreObjects;
@@ -90,7 +92,11 @@ public class MatchAllOf implements PolicyElement, Matchable
 	private MatchResult evaluate(EvaluationContext context, Matchable m){
 		try{
 			return m.match(context);
+		}catch (EvaluationException e){
+			context.setEvaluationStatus(e.getStatus());
+			return MatchResult.INDETERMINATE;
 		}catch (Exception e){
+			context.setEvaluationStatus(Status.processingError(e).build());
 			return MatchResult.INDETERMINATE;
 		}
 	}

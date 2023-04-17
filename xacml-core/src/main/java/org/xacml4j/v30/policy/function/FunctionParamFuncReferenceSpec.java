@@ -23,10 +23,13 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
 
@@ -38,9 +41,17 @@ final class FunctionParamFuncReferenceSpec extends BaseFunctionParamSpec
 	}
 
 	@Override
-	public boolean validate(ListIterator<Expression> it) {
+	public boolean validate(ListIterator<Expression> it, boolean suppressException) {
 		Expression exp = it.next();
-		return (exp instanceof FunctionReference);
+		if(!(exp instanceof FunctionReference)){
+			if(suppressException) {
+				return false;
+			}
+			throw PolicySyntaxException.invalidParam(this, it.previousIndex(),
+			                                         String.format("expression class=\"%s\" is not function reference",
+			                                         exp.getClass().getSimpleName()));
+		}
+		return true;
 	}
 
 	@Override
@@ -55,7 +66,7 @@ final class FunctionParamFuncReferenceSpec extends BaseFunctionParamSpec
 
 	@Override
 	public int hashCode(){
-		return 0; // TODO: add proper hashcode
+		return super.hashCode();
 	}
 
 	@Override

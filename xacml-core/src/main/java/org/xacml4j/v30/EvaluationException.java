@@ -33,21 +33,18 @@ import java.util.Optional;
  */
 public class EvaluationException extends CoreException
 {
-	private Optional<EvaluationContext> context;
+	private EvaluationContext context;
 
 	public EvaluationException(EvaluationContext context,
 							   Throwable cause) {
-		super(Status
-				.from(Optional
-						.ofNullable(context)
-						.flatMap(v->v.getEvaluationStatus())
-								.orElse(Status
-										.processingError()
-										.build()))
-				.build(), cause);
-		this.context = Optional.ofNullable(context);
+		super(Optional
+				      .ofNullable(context)
+				      .flatMap(v->v.getEvaluationStatus())
+				      .orElse(Status.processingError()
+				                    .build()),
+		      cause);
+		this.context = context;
 	}
-
 
 	public EvaluationException(
 			Status status,
@@ -56,13 +53,17 @@ public class EvaluationException extends CoreException
 	}
 
 	public EvaluationException(
-			Status status,
-			String m, Object ...p) {
-		super(status, String.format(m, p));
+			Status status, String message) {
+		super(status, message);
+	}
+
+	public EvaluationException(
+			Status status, String message, Throwable t) {
+		super(status, message, t);
 	}
 
 	public Optional<EvaluationContext> getContext(){
-		return context;
+		return Optional.ofNullable(context);
 	}
 
 }

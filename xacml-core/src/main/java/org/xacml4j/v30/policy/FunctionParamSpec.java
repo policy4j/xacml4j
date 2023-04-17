@@ -26,6 +26,7 @@ import java.util.ListIterator;
 import java.util.Optional;
 
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueTypeInfo;
 import org.xacml4j.v30.policy.function.FunctionParamSpecVisitor;
 
@@ -44,11 +45,15 @@ public interface FunctionParamSpec
 	 * the next expression after "sequence"
 	 *
 	 * @param it an iterator
-	 * @return {@code true} if sequence of
-	 * expressions starting at the current position
-	 * is valid according this spec
+	 * @return true if its valid
+	 * @exception PolicySyntaxException
+	 * if expressions dont match function spec
 	 */
-	boolean validate(ListIterator<Expression> it);
+	boolean validate(ListIterator<Expression> it, boolean suppressException)
+			throws PolicySyntaxException;
+	default boolean validate(ListIterator<Expression> it){
+		return validate(it, true);
+	}
 
 	/**
 	 * Gets default parameter value

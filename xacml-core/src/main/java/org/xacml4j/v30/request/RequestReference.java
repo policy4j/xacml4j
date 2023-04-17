@@ -82,8 +82,8 @@ public class RequestReference
 			Category a = context.getReferencedCategory(ref);
 			if(a == null){
 				throw new RequestSyntaxException(
-						"Failed to resolve attribute reference",
-						ref.getReferenceId());
+						String.format("Failed to resolve attribute ref=\"%s\"",
+						ref.getReferenceId()));
 			}
 			b.attributes();
 		}

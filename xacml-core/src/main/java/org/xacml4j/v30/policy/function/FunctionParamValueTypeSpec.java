@@ -23,12 +23,15 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpression;
 import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -45,9 +48,6 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 			boolean optional){
 		super(optional, false, defaultValue);
 		Preconditions.checkNotNull(paramType);
-		if(defaultValue != null){
-			Preconditions.checkArgument(paramType.equals(defaultValue.getEvaluatesTo()));
-		}
 		this.type = paramType;
 	}
 	
@@ -60,24 +60,40 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 	}
 
 	@Override
-	public boolean validate(ListIterator<Expression> it) {
+	public boolean validate(ListIterator<Expression> it, boolean suppressException) {
 		if(!it.hasNext()){
-			log.debug("Parameter iterator at index=\"{}\" does not " +
-					"have any elements left to iterate", it.previousIndex());
-			return false;
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              "parameter iterator at does not " +
+							              "have any elements left to iterate");
 		}
 		Expression exp = it.next();
 		if(exp == null){
-			return isOptional();
+			if(isOptional()){
+				return true;
+			}
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              String.format("expected param of type=\"%s\", found null",
+					                            type));
 		}
 		ValueTypeInfo expType = exp.getEvaluatesTo();
-		boolean valid = type.equals(expType);
-		if(log.isDebugEnabled()){
-			log.debug("Expecting parameter of type=\"{}\" " +
-					"at index=\"{}\" found=\"{}\" valid=\"{}\"",
-					new Object[]{type, it.previousIndex(), expType, valid});
+		if(!isValidParamType(expType)){
+			if(suppressException){
+				return false;
+			}
+			throw PolicySyntaxException
+					.invalidParam(this, it.previousIndex(),
+					              String.format("expected param of type=\"%s\", found type=\"%s\"",
+					                            type, expType));
 		}
-		return valid;
+		return true;
 	}
 	
 	@Override
