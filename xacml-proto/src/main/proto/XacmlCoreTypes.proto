@@ -6,7 +6,7 @@ option java_multiple_files = true;
 
 package com.xacml4j.xacml.proto;
 
-enum XacmlTypes {
+enum PXacmlTypes {
   ANYURI = 0;
   BASE64BINARY = 1;
   BOOLEAN = 2;
@@ -40,7 +40,7 @@ enum PDecision
 
 message PValue
 {
-  XacmlTypes type = 1;
+  PXacmlTypes type = 1;
   google.protobuf.Any value = 2;
 }
 

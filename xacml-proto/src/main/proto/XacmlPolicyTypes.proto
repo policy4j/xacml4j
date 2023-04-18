@@ -120,7 +120,7 @@ message PAttributeDesignator
 {
   string attributeId = 1;
   string categoryId = 2;
-  XacmlTypes valueType = 3;
+  PXacmlTypes valueType = 3;
   string issuer = 4;
   bool mustBePresent = 5;
 }
@@ -135,7 +135,7 @@ message PAttributeSelector
 {
   string path = 1;
   string categoryId = 2;
-  XacmlTypes valueType = 3;
+  PXacmlTypes valueType = 3;
   string contextId = 4;
   bool mustBePresent = 5;
   PPathType type = 6;
