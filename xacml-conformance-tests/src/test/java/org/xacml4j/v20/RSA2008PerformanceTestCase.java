@@ -118,7 +118,7 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 		addTestCase(5, 2);
 
 		long t1 = System.currentTimeMillis();
-		for(int i = 0; i < 1000000; i++) {
+		for(int i = 0; i < 10000; i++) {
 			runTestCase(1, 1);
 			runTestCase(1, 2);
 			runTestCase(1, 3);

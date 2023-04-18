@@ -36,7 +36,7 @@ import com.google.common.base.Strings;
  * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#ANYURI} type.
  */
-public final class AnyURIValue extends BaseValue<URI>
+public final class AnyURIValue extends SingleValue<URI>
 {
     private static final long serialVersionUID = -1279561638068756670L;
 

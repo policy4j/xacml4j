@@ -1,4 +1,4 @@
-package org.xacml4j.v30.types;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -24,58 +24,42 @@ package org.xacml4j.v30.types;
 
 import java.util.GregorianCalendar;
 
-import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.google.common.base.Preconditions;
-
-public class Time extends BaseCalendar<Time>
+public final class Date extends BaseCalendar<Date>
 {
-	private static final long serialVersionUID = -5881356998754053591L;
+	private static final long serialVersionUID = -79539790774966290L;
 
-	public Time(XMLGregorianCalendar value) {
+	public Date(XMLGregorianCalendar value) {
 		super(value);
 	}
 
 	/**
-	 * Creates {@link Time} from a given
+	 * Creates {@link Date} from a given
 	 * object defaultProvider, supported types are:
 	 * {@link String}, {@link GregorianCalendar},
 	 * {@link XMLGregorianCalendar}
 	 *
-	 * @return {@link Time} defaultProvider
+	 * @return {@link Date} defaultProvider
 	 */
-	public static Time valueOf(Object v){
-		return new Time(parseTime(v));
+	public static Date of(Object v){
+		return new Date(parseDate(v));
 	}
 
-	public int getHour(){
-		return calendar.getHour();
+	public int getYear(){
+		return calendar.getYear();
 	}
 
-	public int getMinute(){
-		return calendar.getMinute();
+	public int getMonth(){
+		return calendar.getMonth();
 	}
 
-	public int getSecond(){
-		return calendar.getSecond();
-	}
-
-	public int getMillisecond(){
-		return calendar.getMillisecond();
-	}
-
-	public int getTimezoneOffset(){
-		Preconditions.checkState(isTimezoneSet());
-		return calendar.getTimezone();
-	}
-
-	public boolean isTimezoneSet(){
-		return calendar.getTimezone() != DatatypeConstants.FIELD_UNDEFINED;
+	public int getDay(){
+		return calendar.getDay();
 	}
 
 	@Override
-	protected Time makeCalendar(XMLGregorianCalendar c) {
-		return new Time(c);
+	protected Date makeCalendar(XMLGregorianCalendar c) {
+		return new Date(c);
 	}
 }

@@ -27,6 +27,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.xacml4j.util.IPAddressUtils;
+import org.xacml4j.v30.IPAddress;
+import org.xacml4j.v30.PortRange;
 import org.xacml4j.v30.Value;
 
 

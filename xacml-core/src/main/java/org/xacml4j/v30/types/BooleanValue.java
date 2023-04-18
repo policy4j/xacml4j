@@ -31,7 +31,7 @@ import com.google.common.base.Preconditions;
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#BOOLEAN} type.
 */
-public final class BooleanValue extends BaseValue<Boolean>
+public final class BooleanValue extends SingleValue<Boolean>
 {
     private static final long serialVersionUID = -421397689674188254L;
 

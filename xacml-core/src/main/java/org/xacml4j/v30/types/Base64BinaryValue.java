@@ -22,6 +22,7 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import org.xacml4j.v30.Binary;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 
@@ -30,7 +31,7 @@ import org.xacml4j.v30.SyntaxException;
  * for {@link XacmlTypes#BASE64BINARY} type.
 
 */
-public final class Base64BinaryValue extends BaseValue<Binary>
+public final class Base64BinaryValue extends SingleValue<Binary>
 {
     private static final long serialVersionUID = 3298986540546649848L;
 

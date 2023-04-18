@@ -27,13 +27,14 @@ import java.util.Calendar;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.Time;
 
 /**
  * Implementation an XACML {@link Expression}
  * for {@link XacmlTypes#TIME} type.
  */
 public final class TimeValue
-		extends BaseValue<Time>
+        extends SingleValue<Time>
         implements Comparable<TimeValue>
 {
     private static final long serialVersionUID = -8244143626423796791L;

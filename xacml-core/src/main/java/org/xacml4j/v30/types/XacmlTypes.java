@@ -39,13 +39,19 @@ import javax.xml.xpath.XPathExpression;
 
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.BagOfValuesType;
+import org.xacml4j.v30.Binary;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.DayTimeDuration;
 import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.IPAddress;
 import org.xacml4j.v30.Path;
+import org.xacml4j.v30.RFC822Name;
 import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.Time;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.YearMonthDuration;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -90,7 +96,7 @@ public enum XacmlTypes implements ValueType
 			"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration") {
 		public DayTimeDurationValue of(Object v, Object... params) {
 			return Optional.of(DayTimeDurationValue.of(
-					DayTimeDuration.parse(v)))
+					               DayTimeDuration.parse(v)))
 					.orElseThrow(() -> SyntaxException
 							.invalidAttributeValue(v, this));
 		}

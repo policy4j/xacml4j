@@ -24,14 +24,16 @@ package org.xacml4j.v30;
 
 import java.io.Serializable;
 
+import com.google.common.base.Supplier;
+
 
 /**
  * Represents XACML attribute value
  *
  * @author Giedrius Trumpickas
  */
-public interface Value
-	extends ValueExpression, Serializable
+public interface Value<T>
+	extends ValueExpression, Serializable, Supplier<T>
 {
 	/**
 	 * Gets attribute type
@@ -45,7 +47,11 @@ public interface Value
 	 *
 	 * @return an attribute expression value
 	 */
-	Object value();
+	T value();
+
+	default T get(){
+		return  value();
+	}
 
 	/**
 	 * Creates bag with this attribute in the bag

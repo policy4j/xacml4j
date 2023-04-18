@@ -28,10 +28,12 @@ import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.xacml4j.v30.Date;
+
 /**
  *
  */
-public final class DateValue extends BaseValue<Date>
+public final class DateValue extends SingleValue<Date>
     implements Comparable<DateValue>
 {
     private static final long serialVersionUID = -4744947303379182831L;

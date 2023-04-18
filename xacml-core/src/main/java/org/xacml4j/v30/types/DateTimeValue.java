@@ -28,6 +28,7 @@ import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.xacml4j.v30.DateTime;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 
@@ -36,7 +37,7 @@ import org.xacml4j.v30.SyntaxException;
 * for {@link XacmlTypes#DATETIME} type.
 */
 public final class DateTimeValue
-		extends BaseValue<DateTime>
+        extends SingleValue<DateTime>
     implements Comparable<DateTimeValue>
 {
     private static final long serialVersionUID = 1085808268199675887L;

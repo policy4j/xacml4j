@@ -22,13 +22,14 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import org.xacml4j.v30.DNSName;
 import org.xacml4j.v30.Expression;
 
 /**
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#DNSNAME} type.
 */
-public final class DNSNameValue extends BaseValue<DNSName>
+public final class DNSNameValue extends SingleValue<DNSName>
 {
     private static final long serialVersionUID = -1729624624549215684L;
 

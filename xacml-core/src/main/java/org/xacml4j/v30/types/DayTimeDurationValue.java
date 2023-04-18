@@ -25,6 +25,7 @@ package org.xacml4j.v30.types;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 
+import org.xacml4j.v30.DayTimeDuration;
 import org.xacml4j.v30.Expression;
 
 import com.google.common.base.Preconditions;
@@ -33,7 +34,7 @@ import com.google.common.base.Preconditions;
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#DAYTIMEDURATION} type.
 */
-public final class DayTimeDurationValue extends BaseValue<DayTimeDuration>
+public final class DayTimeDurationValue extends SingleValue<DayTimeDuration>
     implements Comparable<DayTimeDurationValue>
 {
     private static final long serialVersionUID = -3264977978603429807L;

@@ -24,9 +24,12 @@ package org.xacml4j.v30;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import com.google.common.base.MoreObjects;
@@ -50,7 +53,7 @@ import com.google.common.collect.Sets;
  * @author Giedrius Trumpickas
  */
 public final class BagOfValues
-	implements ValueExpression, Serializable
+	implements ValueExpression, Serializable, Iterable<Value>
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 
@@ -65,9 +68,23 @@ public final class BagOfValues
 	 * @param attributes a collection of attributes
 	 */
 	private BagOfValues(Builder b){
-
 		this.type = b.bagType;
 		this.values = b.valuesBuilder.build();
+	}
+
+	@Override
+	public Iterator<Value> iterator() {
+		return values.iterator();
+	}
+
+	@Override
+	public void forEach(Consumer<? super Value> action) {
+		values.forEach(action);
+	}
+
+	@Override
+	public Spliterator<Value> spliterator() {
+		return values.spliterator();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -241,11 +258,7 @@ public final class BagOfValues
 	 * if a given bag is {@code null} or empty
 	 */
 	public static <T extends Value> T value(BagOfValues v){
-		if(v == null ||
-				v.isEmpty()){
-			return null;
-		}
-		return v.value();
+		return v.<T>single().orElse(null);
 	}
 
 	@Override

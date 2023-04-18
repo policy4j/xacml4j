@@ -31,7 +31,7 @@ import com.google.common.base.Preconditions;
 * for {@link XacmlTypes#INTEGER} type.
 */
 public final class IntegerValue
-		extends BaseValue<Long>
+        extends SingleValue<Long>
 {
     private static final long serialVersionUID = 6654857010399020496L;
 

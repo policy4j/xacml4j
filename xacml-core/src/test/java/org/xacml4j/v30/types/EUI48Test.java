@@ -51,6 +51,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 
 import org.junit.Test;
+import org.xacml4j.v30.EUI48;
 
 /**
  * JUnit Test class for the com.fasterxml.uuid.EthernetAddress class.

@@ -29,6 +29,7 @@ import java.time.ZonedDateTime;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
+import org.xacml4j.v30.Time;
 
 public class TimeValueTest
 {

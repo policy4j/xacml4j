@@ -25,12 +25,14 @@ package org.xacml4j.v30.types;
 import java.net.InetAddress;
 
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.IPAddress;
+import org.xacml4j.v30.PortRange;
 
 /**
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#IPADDRESS} type.
 */
-public final class IPAddressValue extends BaseValue<IPAddress>
+public final class IPAddressValue extends SingleValue<IPAddress>
 {
     private static final long serialVersionUID = 8391410414891430400L;
 

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.types;
+package org.xacml4j.v30;
 
 /*
  * #%L

@@ -37,7 +37,7 @@ import org.xacml4j.v30.Expression;
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#ENTITY} type.
 */
-public class EntityValue extends BaseValue<Entity>
+public class EntityValue extends SingleValue<Entity>
 {
     private static final long serialVersionUID = 6188174758603655643L;
 
@@ -51,6 +51,10 @@ public class EntityValue extends BaseValue<Entity>
 
     public Optional<BagOfValues> resolve(AttributeDesignatorKey designatorKey){
         return value().resolve(designatorKey);
+    }
+
+    public Optional<Content> getContent(){
+        return value().getContent();
     }
 
     public Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){

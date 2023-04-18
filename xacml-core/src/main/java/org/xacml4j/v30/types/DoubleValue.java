@@ -31,7 +31,7 @@ import com.google.common.base.Strings;
  * Implementation an XACML {@link Expression}
  * for {@link XacmlTypes#DOUBLE} type.
  */
-public final class DoubleValue extends BaseValue<Double>
+public final class DoubleValue extends SingleValue<Double>
 {
     private static final long serialVersionUID = -3689668541615314228L;
 

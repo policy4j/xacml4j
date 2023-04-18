@@ -25,6 +25,7 @@ package org.xacml4j.v30.types;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.xacml4j.v30.Binary;
 
 public class BinaryTest
 {

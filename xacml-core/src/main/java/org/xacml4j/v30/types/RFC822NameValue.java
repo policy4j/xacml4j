@@ -23,6 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.RFC822Name;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -31,7 +32,7 @@ import com.google.common.base.Strings;
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#RFC822NAME} type.
 */
-public final class RFC822NameValue extends BaseValue<RFC822Name>
+public final class RFC822NameValue extends SingleValue<RFC822Name>
 {
     private static final long serialVersionUID = -1983511364298319436L;
 

@@ -30,7 +30,7 @@ import org.xacml4j.v30.Expression;
  * Implementation an XACML {@link Expression}
  * for {@link XacmlTypes#X500NAME} type.
  */
-public final class X500NameValue extends BaseValue<X500Principal>
+public final class X500NameValue extends SingleValue<X500Principal>
 {
     private static final long serialVersionUID = -609417077475809404L;
 

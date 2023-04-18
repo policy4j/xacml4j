@@ -36,7 +36,7 @@ import org.xacml4j.v30.ValueType;
  *
  * for {@link XacmlTypes#XPATH} type.
  */
-public final class PathValue extends BaseValue<Path>
+public final class PathValue extends SingleValue<Path>
 {
     private static final long serialVersionUID = 8576542145890616101L;
 

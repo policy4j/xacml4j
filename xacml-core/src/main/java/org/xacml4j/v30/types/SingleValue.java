@@ -32,21 +32,22 @@ import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Supplier;
 
 /**
  * Abstract implementation of {@Link AttributeValue}
  *
  * @param <T>
  */
-public class BaseValue<T>
-        implements Value, Externalizable
+public class SingleValue<T>
+        implements Value<T>, Externalizable, Supplier<T>
 {
     private static final long serialVersionUID = 4131180767511036271L;
 
     private T value;
     private ValueType type;
 
-    protected BaseValue(
+    protected SingleValue(
             ValueType attrType,
             T attrValue) {
         this.type = Objects.requireNonNull(attrType);
@@ -65,7 +66,7 @@ public class BaseValue<T>
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
+        return MoreObjects.toStringHelper("Value")
                 .add("value", value)
                 .add("type", type.getAbbrevDataTypeId())
                 .toString();
