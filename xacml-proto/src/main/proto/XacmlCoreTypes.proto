@@ -25,6 +25,7 @@ enum PXacmlTypes {
   JPATH = 15;
   YEARMONTH_DURATION = 16;
   ENTITY = 17;
+  DNSNAME = 18;
 }
 
 enum PDecision
@@ -44,6 +45,25 @@ message PValue
   google.protobuf.Any value = 2;
 }
 
+message PDNSNameValue
+{
+   string hostname = 1;
+   PPortRange portRange = 2;
+}
+
+message PIPAddressValue
+{
+  bytes address = 1;
+  bytes mask = 2;
+  PPortRange portRange = 3;
+}
+
+message PPortRange
+{
+  int32 lowerPort = 1;
+  int32 upperPort = 2;
+}
+
 message PAttribute
 {
   string id = 1;
@@ -52,9 +72,8 @@ message PAttribute
   repeated PValue values = 4;
 }
 
-message PEntity
+message PEntityValue
 {
-  string id = 1;
-  repeated PAttribute attributes = 2;
-  bytes content = 3;
+  repeated PAttribute attributes = 1;
+  bytes content = 2;
 }

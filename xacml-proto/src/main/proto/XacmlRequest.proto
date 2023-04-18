@@ -90,7 +90,7 @@ message PCategory
 {
   string refId = 1;
   string categoryId = 2;
-  PEntity entity = 3;
+  PEntityValue entity = 3;
 }
 
 message PCategoryReference {

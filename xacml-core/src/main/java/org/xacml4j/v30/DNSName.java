@@ -163,4 +163,5 @@ public final class DNSName implements Externalizable
 		this.name = InternetDomainName.from(in.readUTF());
 		this.portRange = (PortRange)in.readObject();
 	}
+
 }
