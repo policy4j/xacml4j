@@ -44,6 +44,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
@@ -154,7 +155,7 @@ public class DefaultEvaluationContextHandlerTest
 	}
 
 
-	@Test
+	@Test(expected = PathEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType() throws EvaluationException
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
@@ -172,7 +173,7 @@ public class DefaultEvaluationContextHandlerTest
 		c.verify();
 		assertFalse(v.isPresent());
 	}
-	@Test
+	@Test(expected = PathEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndNodeFailsConvertionToDate() throws EvaluationException
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
@@ -193,7 +194,7 @@ public class DefaultEvaluationContextHandlerTest
 		assertFalse(v.isPresent());
 	}
 
-	@Test
+	@Test(expected = PathEvaluationException.class)
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndCorrectNodeTypeAndNodeFailsConvertionToDate() throws EvaluationException
 	{
 
@@ -211,7 +212,6 @@ public class DefaultEvaluationContextHandlerTest
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		c.verify();
-		assertFalse(v.isPresent());
 	}
 
 	@Test
@@ -228,8 +228,8 @@ public class DefaultEvaluationContextHandlerTest
 		
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
-		assertFalse(v.isPresent());
 		c.verify();
+		assertFalse(v.isPresent());
 	}
 
 	@Test
