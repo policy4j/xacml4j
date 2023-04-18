@@ -6,6 +6,16 @@ import "XacmlCoreTypes.proto";
 package com.xacml4j.xacml.proto;
 option java_multiple_files = true;
 
+
+service PPolicyDecisionPoint {
+  rpc decide(PRequestContext) returns (PResponseContext);
+}
+
+message PPolicyDecisionPointMetadata
+{
+  string id = 1;
+}
+
 message PRequestContext
 {
   bool returnPolicyIdList = 1;
