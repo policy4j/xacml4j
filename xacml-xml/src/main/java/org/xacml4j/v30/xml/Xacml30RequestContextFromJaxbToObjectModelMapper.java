@@ -74,9 +74,9 @@ import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
-import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.request.RequestDefaults;
-import org.xacml4j.v30.request.RequestReference;
+import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.RequestDefaults;
+import org.xacml4j.v30.RequestReference;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;

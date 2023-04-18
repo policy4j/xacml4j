@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.request.RequestReference;
+import org.xacml4j.v30.RequestReference;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

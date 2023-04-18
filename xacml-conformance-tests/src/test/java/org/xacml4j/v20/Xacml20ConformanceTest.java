@@ -46,7 +46,7 @@ import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.policy.function.FunctionProvider;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;

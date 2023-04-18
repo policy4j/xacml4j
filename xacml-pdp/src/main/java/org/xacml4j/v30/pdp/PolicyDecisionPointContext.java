@@ -25,7 +25,7 @@ package org.xacml4j.v30.pdp;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;

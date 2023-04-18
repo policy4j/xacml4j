@@ -16,7 +16,7 @@ import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.policy.PolicyReferenceResolver;
 import org.xacml4j.v30.policy.RootEvaluationContext;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;

@@ -103,9 +103,15 @@ public class JsonContentTest
     }
 
     @Test(expected = PathEvaluationException.class)
+    public void testJsonEvaluateToNodeSetAmdNodePathListWithInvalidPath()
+    {
+        List<Object> authors0 = content.evaluateToNodeSet("$.store--.book[***].author");
+    }
+
+    @Test(expected = PathEvaluationException.class)
     public void testJsonEvaluateToNodeSetAmdNodePathListInvalidPath()
     {
-        List<Object> authors0 = content.evaluateToNodeSet("$.store.??aa-203(-book[*].author");
+        content.evaluateToNodeSet("$.store.??aa-203(-book[*].author");
     }
 
     @Test

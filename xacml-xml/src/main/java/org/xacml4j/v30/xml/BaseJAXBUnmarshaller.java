@@ -65,7 +65,7 @@ abstract class BaseJAXBUnmarshaller <T>
 			u.setEventHandler(new ValidationEventHandler() {
 				@Override
 				public boolean handleEvent(ValidationEvent event) {
-					log.warn("{}", event);
+					log.debug("{}", event);
 					return true;
 				}
 			});
@@ -85,6 +85,8 @@ abstract class BaseJAXBUnmarshaller <T>
 				jaxbInstance = (JAXBElement<?>) u.unmarshal((Source) source);
 			} else if (source instanceof byte[]) {
 				jaxbInstance = (JAXBElement<?>) u.unmarshal(new ByteArrayInputStream((byte[]) source));
+			} else if (source instanceof JAXBElement<?>) {
+				jaxbInstance = (JAXBElement<?>)source;
 			}
 			if (jaxbInstance != null) {
 				return create(jaxbInstance);

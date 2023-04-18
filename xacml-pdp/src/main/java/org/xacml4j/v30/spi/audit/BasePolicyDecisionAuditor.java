@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 
 
 public class BasePolicyDecisionAuditor

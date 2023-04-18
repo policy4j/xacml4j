@@ -30,7 +30,7 @@ import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 
 import com.google.common.collect.ImmutableList;

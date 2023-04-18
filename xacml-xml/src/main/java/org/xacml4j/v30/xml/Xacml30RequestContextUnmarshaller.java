@@ -26,7 +26,7 @@ import javax.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 
 import com.google.common.base.Preconditions;
 

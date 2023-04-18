@@ -29,7 +29,7 @@ import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.policy.Rule;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 import org.xacml4j.v30.spi.pip.ContentResolverDescriptor;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;

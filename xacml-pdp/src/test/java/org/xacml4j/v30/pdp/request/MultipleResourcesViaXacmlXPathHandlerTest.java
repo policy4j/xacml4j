@@ -50,7 +50,7 @@ import org.xacml4j.v30.Value;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 import org.xacml4j.v30.types.XacmlTypes;
 

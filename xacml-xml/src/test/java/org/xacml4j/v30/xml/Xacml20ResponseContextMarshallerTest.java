@@ -29,7 +29,7 @@ import org.junit.Test;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 
 import com.google.common.base.Supplier;
 import com.google.common.io.Closeables;

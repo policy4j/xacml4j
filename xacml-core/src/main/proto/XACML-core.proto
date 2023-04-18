@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+enum XacmlTypes {
+  ANYURI = 0;
+  BASE64BINARY = 1;
+  BOOLEAN = 2;
+  DATE = 3;
+  DATETIME = 4;
+  DAYTIME_DURATION = 5;
+  DOUBLE = 6;
+  INTEGER = 7;
+  HEXBINARY = 8;
+  IPADDRESS = 9;
+  STRING = 10;
+  RFC822NAME = 11;
+  TIME = 12;
+  X500NAME = 13;
+  XPATH = 14;
+  JPATH = 15;
+  YEARMONTH_DURATION = 16;
+  ENTITY = 17;
+}
+
+enum Decision
+{
+  PERMIT = 0;
+  DENY = 1;
+  NOT_APPLICABLE = 2;
+  INDETERMINATE = 3;
+  INDETERMINATE_D = 4;
+  INDETERMINATE_P = 5;
+  INDETERMINATE_DP = 6;
+}
+
+message Value
+{
+  XacmlTypes type = 1;
+  google.protobuf.Any value = 2;
+}
+
+message Attribute
+{
+  string id = 1;
+  optional string issuer = 2;
+  optional bool includeInResult = 3;
+  repeated Value values = 4;
+}
+
+message Entity
+{
+  optional string id = 1;
+  repeated Attribute attributes = 2;
+  optional bytes content = 3;
+}

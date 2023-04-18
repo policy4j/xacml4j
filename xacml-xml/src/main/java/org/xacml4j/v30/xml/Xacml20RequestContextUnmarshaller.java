@@ -51,7 +51,7 @@ import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.types.XacmlTypes;

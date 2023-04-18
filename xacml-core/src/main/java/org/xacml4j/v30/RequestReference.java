@@ -1,4 +1,4 @@
-package org.xacml4j.v30.request;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -23,9 +23,6 @@ package org.xacml4j.v30.request;
  */
 
 import java.util.Collection;
-
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryReference;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;

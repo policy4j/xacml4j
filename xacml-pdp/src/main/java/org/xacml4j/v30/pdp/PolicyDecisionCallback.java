@@ -24,7 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
 

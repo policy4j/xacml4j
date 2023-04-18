@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
-import org.xacml4j.v30.request.RequestContext;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
 import com.google.common.base.Preconditions;

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.request;
+package org.xacml4j.v30;
 
 /*
  * #%L

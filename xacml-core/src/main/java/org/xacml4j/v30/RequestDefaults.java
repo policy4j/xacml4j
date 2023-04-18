@@ -1,4 +1,4 @@
-package org.xacml4j.v30.request;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -21,8 +21,6 @@ package org.xacml4j.v30.request;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
-import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.MoreObjects;
 

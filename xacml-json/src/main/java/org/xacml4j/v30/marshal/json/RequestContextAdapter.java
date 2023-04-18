@@ -26,8 +26,8 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.request.RequestContext;
-import org.xacml4j.v30.request.RequestReference;
+import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.RequestReference;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;

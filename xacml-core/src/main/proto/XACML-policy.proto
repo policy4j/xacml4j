@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "XACML-core.proto";
+
+
+enum CompositeRuleType
+{
+  POLICY = 0;
+  POLICY_REF = 1;
+  POLICY_SET = 2;
+  POLICY_SET_REF = 3;
+}
+
+enum Effect
+{
+  RULE_PERMIT = 0;
+  RULE_DENY = 1;
+}
+
+message CompositeDecisionRule
+{
+  CompositeRuleType type = 1;
+  google.protobuf.Any value = 2;
+}
+
+message MatchAnyOf
+{
+  repeated MatchAllOf allOf = 1;
+}
+
+message MatchAllOf
+{
+  repeated Match match = 1;
+}
+
+message Match
+{
+  Value value = 1;
+  AttributeReference reference = 2;
+  FunctionRef matchFunction = 3;
+}
+
+message Target
+{
+  repeated MatchAnyOf anyOf = 1;
+}
+
+message Condition
+{
+}
+
+message Rule
+{
+  string id = 1;
+  optional Target target = 2;
+  optional Condition condition = 3;
+  Effect effect = 4;
+}
+
+message Policy
+{
+  string id = 1;
+  optional Target target = 2;
+  repeated Rule rules = 3;
+}
+
+message PolicySet
+{
+  string id = 1;
+  optional Target target = 2;
+  repeated CompositeDecisionRule rules = 2;
+}
+
+message PolicyRef
+{
+  string id = 1;
+}
+
+message PolicySetRef
+{
+  string id = 1;
+}
+
+enum ExpressionType
+{
+  APPLY_EXP = 0;
+  DESIGNATOR_EXP = 1;
+  SELECTOR_EXP = 2;
+  VARIABLE_REF_EXP = 3;
+  FUNCTION_REF_EXP = 4;
+  VALUE_EXP = 5;
+}
+
+message Expression
+{
+    ExpressionType type = 1;
+    google.protobuf.Any expression = 2;
+}
+
+message Apply
+{
+  FunctionRef function = 1;
+  repeated Expression params = 2;
+}
+
+enum AttributeReferenceType
+{
+   SELECTOR = 0;
+   DESIGNATOR = 1;
+}
+message AttributeReference
+{
+  AttributeReferenceType type = 1;
+  google.protobuf.Any reference = 2;
+}
+
+message AttributeDesignator
+{
+  string attributeId = 1;
+  string categoryId = 2;
+  XacmlTypes valueType = 3;
+  optional string issuer = 4;
+  optional bool mustBePresent = 5;
+}
+
+enum PathType
+{
+   JSON_PATH = 0;
+   XML_PATH = 1;
+}
+message AttributeSelector
+{
+  string path = 1;
+  string categoryId = 2;
+  XacmlTypes valueType = 3;
+  optional string contextId = 4;
+  optional bool mustBePresent = 5;
+  optional PathType type = 6;
+}
+
+message VariableRef
+{
+  string variableId = 1;
+}
+
+message FunctionRef
+{
+  string functionId = 1;
+}
+

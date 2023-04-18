@@ -1,4 +1,4 @@
-package org.xacml4j.v30.request;
+package org.xacml4j.v30;
 
 /*
  * #%L
@@ -30,16 +30,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.CategoryReference;
-import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.Condition;
 import org.xacml4j.v30.policy.Target;
 
