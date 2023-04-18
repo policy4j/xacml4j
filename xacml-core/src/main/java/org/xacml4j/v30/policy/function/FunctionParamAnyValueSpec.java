@@ -27,7 +27,7 @@ import java.util.ListIterator;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
@@ -39,7 +39,7 @@ final class FunctionParamAnyValueSpec extends BaseFunctionParamSpec
 		super(false, false, null);
 	}
 	@Override
-	public boolean isValidParamType(ValueTypeInfo type) {
+	public boolean isValidParamType(ValueExpTypeInfo type) {
 		return (type instanceof ValueType);
 	}
 	

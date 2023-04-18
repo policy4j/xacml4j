@@ -23,11 +23,10 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
-import java.util.Optional;
 
 import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
@@ -39,7 +38,7 @@ final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
 	}
 	
 	@Override
-	public boolean isValidParamType(ValueTypeInfo type) {
+	public boolean isValidParamType(ValueExpTypeInfo type) {
 		return (type instanceof BagOfValuesType);
 	}
 
@@ -66,7 +65,7 @@ final class FunctionParamAnyBagSpec extends BaseFunctionParamSpec
 					              String.format("expected param of type=\"%s\", found null",
 					                            BagOfValuesType.class.getSimpleName()));
 		}
-		ValueTypeInfo valueTypeInfo = exp.getEvaluatesTo();
+		ValueExpTypeInfo valueTypeInfo = exp.getEvaluatesTo();
 		if(!isValidParamType(valueTypeInfo)){
 			if(suppressException){
 				return false;

@@ -36,7 +36,7 @@ public class XacmlXPathTypeTest
 	{
 		PathValue v = XacmlTypes.XPATH.of("/test", CategoryId.SUBJECT_RECIPIENT);
 		assertEquals("/test", v.getPath());
-		assertEquals(v.getType(), v.getType());
+		assertEquals(v.getEvaluatesTo(), v.getEvaluatesTo());
 		assertEquals(CategoryId.SUBJECT_RECIPIENT, v.getCategory().get());
 	}
 }

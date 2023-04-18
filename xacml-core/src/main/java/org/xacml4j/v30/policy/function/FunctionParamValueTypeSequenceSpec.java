@@ -23,12 +23,9 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
-import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
@@ -40,7 +37,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	private Integer min = 0;
 	private Integer max = Integer.MAX_VALUE;
 
-	private ValueTypeInfo paramType;
+	private ValueExpTypeInfo paramType;
 
 	/**
 	 * Constructs parameter specification 
@@ -54,7 +51,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	public FunctionParamValueTypeSequenceSpec(
 			Integer min, 
 			Integer max,
-			ValueTypeInfo paramType){
+			ValueExpTypeInfo paramType){
 		super((min == null || min == 0), true, null);
 		this.min = min == null?0:min;
 		this.max = max == null?Integer.MAX_VALUE:max;
@@ -62,7 +59,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	}
 
 	public FunctionParamValueTypeSequenceSpec(int min,
-			ValueTypeInfo paramType){
+			ValueExpTypeInfo paramType){
 		this(min, Integer.MAX_VALUE, paramType);
 	}
 	
@@ -71,7 +68,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	 *
 	 * @return parameter XACML type
 	 */
-	public ValueTypeInfo getParamType(){
+	public ValueExpTypeInfo getParamType(){
 		return paramType;
 	}
 
@@ -90,7 +87,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 	}
 
 	@Override
-	public boolean isValidParamType(ValueTypeInfo type){
+	public boolean isValidParamType(ValueExpTypeInfo type){
 		return this.paramType.equals(type);
 	}
 
@@ -113,7 +110,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 			if(exp == null){
 				break;
 			}
-			ValueTypeInfo expType = exp.getEvaluatesTo();
+			ValueExpTypeInfo expType = exp.getEvaluatesTo();
 			// variadic param is always last
 			if(!expType.equals(paramType))
 			{

@@ -35,7 +35,7 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.PolicySyntaxException;
@@ -238,7 +238,7 @@ class JavaMethodToFunctionSpecConverter
 					(validator != null) ? createValidator(m, validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory
-							.<ValueExpression>create(instance, m),
+							.<ValueExp>create(instance, m),
 							evalContextParamFound));
 		}
 		throw SyntaxException.invalidResolverMethod(m,
@@ -300,7 +300,7 @@ class JavaMethodToFunctionSpecConverter
 		}
 	}
 
-	private ValueExpression createDefaultValue
+	private ValueExp createDefaultValue
 			(Method method,
 			ValueType type,
 			boolean isBag, String[] values)

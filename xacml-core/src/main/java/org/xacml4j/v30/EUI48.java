@@ -96,7 +96,7 @@ public class EUI48 implements Externalizable, Cloneable,
 	 * @param addrStr
 	 *            String representation of the ethernet address
 	 */
-	EUI48(String addrStr) throws NumberFormatException {
+	public EUI48(String addrStr) throws NumberFormatException {
 		int len = addrStr.length();
 		long addr = 0L;
 
@@ -179,7 +179,7 @@ public class EUI48 implements Externalizable, Cloneable,
 	 * address. Useful if an address is saved in binary format (for saving space
 	 * for example).
 	 */
-	EUI48(byte[] addr) throws NumberFormatException {
+	public EUI48(byte[] addr) throws NumberFormatException {
 		if (addr.length != 6) {
 			throw new NumberFormatException(
 					"Ethernet address has to consist of 6 bytes");
@@ -199,7 +199,7 @@ public class EUI48 implements Externalizable, Cloneable,
 	 *            long that contains the MAC address in 6 least significant
 	 *            bytes.
 	 */
-	EUI48(long addr) {
+	public EUI48(long addr) {
 		_address = addr;
 	}
 

@@ -53,7 +53,7 @@ import com.google.common.collect.Sets;
  * @author Giedrius Trumpickas
  */
 public final class BagOfValues
-	implements ValueExpression, Serializable, Iterable<Value>
+		implements ValueExp, Serializable, Iterable<Value>
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 
@@ -102,7 +102,7 @@ public final class BagOfValues
 	 * @return {@link ValueType}
 	 */
 	public ValueType getBagValueType(){
-		return type.getDataType();
+		return type.getValueType();
 	}
 
 	@Override
@@ -236,7 +236,7 @@ public final class BagOfValues
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this).
-		add("DataType", type.getDataType()).
+		add("DataType", type.getValueType()).
 		add("Values", values).toString();
 	}
 
@@ -279,7 +279,7 @@ public final class BagOfValues
 	}
 
 	private static void assertExpressionType(Value value, BagOfValuesType bagType) {
-		if (!value.getType().equals(bagType.getDataType())) {
+		if (!value.getEvaluatesTo().equals(bagType.getValueType())) {
 			throw new IllegalArgumentException(String.format(
 					"Given attribute value=\"%s\" " +
 							"can't be used as a value of bag=\"%s\"", value, bagType));
@@ -303,14 +303,14 @@ public final class BagOfValues
 
 		public Builder value(Object ...values){
 			for(Object v : values){
-				this.valuesBuilder.add(bagType.getDataType().of(v));
+				this.valuesBuilder.add(bagType.getValueType().of(v));
 			}
 			return this;
 		}
 
 		public Builder values(Iterable<Object> values){
 			for(Object v : values){
-				this.valuesBuilder.add(bagType.getDataType().of(v));
+				this.valuesBuilder.add(bagType.getValueType().of(v));
 			}
 			return this;
 		}

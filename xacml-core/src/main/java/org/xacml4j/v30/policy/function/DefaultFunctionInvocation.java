@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
 
@@ -44,7 +44,7 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 	private final static Logger LOG = LoggerFactory.getLogger(DefaultFunctionInvocation.class);
 
 	private boolean evalContextRequired;
-	private PolicyToPlatformFunctionInvocation<ValueExpression> invocation;
+	private PolicyToPlatformFunctionInvocation<ValueExp> invocation;
 
 	/**
 	 * Constructs XACML function invoker
@@ -54,7 +54,7 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 	 * requires an {@link EvaluationContext} reference
 	 */
 	public DefaultFunctionInvocation(
-			PolicyToPlatformFunctionInvocation<ValueExpression> invocation,
+			PolicyToPlatformFunctionInvocation<ValueExp> invocation,
 			boolean evalContextRequired)
 	{
 		this.invocation = Objects.requireNonNull(invocation, "invocation");
@@ -62,8 +62,8 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 	}
 
 	@Override
-	public ValueExpression invoke(FunctionSpec spec,
-			EvaluationContext context, Expression ...params)
+	public ValueExp invoke(FunctionSpec spec,
+	                       EvaluationContext context, Expression ...params)
 			throws FunctionInvocationException{
 		return invoke(spec, context, (params == null)?
 				Collections.<Expression>emptyList():
@@ -71,7 +71,7 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 	}
 
 	@Override
-	public ValueExpression invoke(
+	public ValueExp invoke(
 			FunctionSpec spec,
 			EvaluationContext context,
 			List<Expression> arguments)

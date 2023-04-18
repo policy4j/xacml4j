@@ -164,7 +164,7 @@ public final class Xacml20ResponseContextMarshaller
 			if(attrs.size() == 1){
 				Attribute resourceId = Iterables.getOnlyElement(attrs);
 				Value v =  Iterables.getOnlyElement(resourceId.getValues());
-				java.util.Optional<TypeToString> toString = TypeToString.forType(v.getType());
+				java.util.Optional<TypeToString> toString = TypeToString.forType(v.getEvaluatesTo());
 				Preconditions.checkState(toString.isPresent());
 				return toString.get().toString(v);
 			}
@@ -175,7 +175,7 @@ public final class Xacml20ResponseContextMarshaller
 				return null;
 			}
 			Value v =  Iterables.getOnlyElement(values);
-			Optional<TypeToString> toString = TypeToString.forType(v.getType());
+			Optional<TypeToString> toString = TypeToString.forType(v.getEvaluatesTo());
 			Preconditions.checkState(toString.isPresent());
 			return toString.get().toString(v);
 		}
@@ -224,7 +224,7 @@ public final class Xacml20ResponseContextMarshaller
 
 		private AttributeAssignmentType create(AttributeAssignment a)
 		{
-			java.util.Optional<TypeToXacml30> toXacml30 = TypeToXacml30.forType(a.getAttribute().getType());
+			java.util.Optional<TypeToXacml30> toXacml30 = TypeToXacml30.forType(a.getAttribute().getEvaluatesTo());
 			Preconditions.checkState(toXacml30.isPresent());
 			AttributeValueType v30 = toXacml30.get().toXacml30(a.getAttribute());
 			AttributeAssignmentType attr = new AttributeAssignmentType();

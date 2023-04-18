@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
 
@@ -44,11 +44,11 @@ public interface FunctionInvocation
 	 * @param spec a function spec
 	 * @param context an evaluation context
 	 * @param arguments a function invocation parameters
-	 * @return {@link ValueExpression} representing function invocation result
+	 * @return {@link ValueExp} representing function invocation result
 	 * @throws FunctionInvocationException if function invocation fails
 	 */
-	ValueExpression invoke(FunctionSpec spec,
-			EvaluationContext context, Expression ...arguments)
+	ValueExp invoke(FunctionSpec spec,
+	                EvaluationContext context, Expression ...arguments)
 		throws FunctionInvocationException;
 
 	/**
@@ -60,7 +60,7 @@ public interface FunctionInvocation
 	 * @return a function invocation result
 	 * @throws FunctionInvocationException if a function invocation fails
 	 */
-	ValueExpression invoke(FunctionSpec spec,
-			EvaluationContext context, List<Expression> params)
+	ValueExp invoke(FunctionSpec spec,
+	                EvaluationContext context, List<Expression> params)
 		throws FunctionInvocationException;
 }

@@ -31,8 +31,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.function.FunctionCategory;
 
 
@@ -130,22 +130,22 @@ public interface FunctionSpec
 	 * invocation arguments
 	 *
 	 * @param arguments a function invocation arguments
-	 * @return {@link ValueTypeInfo} resolved function return type
+	 * @return {@link ValueExpTypeInfo} resolved function return type
 	 */
-	ValueTypeInfo resolveReturnType(List<Expression> arguments);
+	ValueExpTypeInfo resolveReturnType(List<Expression> arguments);
 
 	/**
 	 * Invokes this function with a given arguments
 	 *
-	 * @return {@link ValueExpression} defaultProvider representing
+	 * @return {@link ValueExp} defaultProvider representing
 	 * function invocation result
 	 */
-	default<T extends ValueExpression> T invoke(EvaluationContext context, Expression ...arguments)
+	default<T extends ValueExp> T invoke(EvaluationContext context, Expression ...arguments)
 		throws EvaluationException{
 		return invokeWithList(context, arguments == null ? Collections.emptyList() : Arrays.asList(arguments));
 	}
 
-	<T extends ValueExpression> T invokeWithList(EvaluationContext context, List<Expression> arguments)
+	<T extends ValueExp> T invokeWithList(EvaluationContext context, List<Expression> arguments)
 			throws EvaluationException;
 
 }

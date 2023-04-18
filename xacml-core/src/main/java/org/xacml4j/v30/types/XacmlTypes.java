@@ -400,7 +400,7 @@ public enum XacmlTypes implements ValueType
 		}
 		if(typeId instanceof Value){
 			Value a = (Value)typeId;
-			if(a.getType().equals(XacmlTypes.STRING) || a.getType().equals(ANYURI)){
+			if(a.getEvaluatesTo().equals(XacmlTypes.STRING) || a.getEvaluatesTo().equals(ANYURI)){
 				return systemTypes.forType(a.value().toString());
 			}
 		}
@@ -435,7 +435,7 @@ public enum XacmlTypes implements ValueType
 		return shortTypeId;
 	}
 
-	public ValueType getDataType(){
+	public ValueType getValueType(){
 		return this;
 	}
 

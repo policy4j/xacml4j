@@ -128,8 +128,8 @@ public final class CategoryId extends SemanticIdentifier
 		}
 		if(v instanceof Value){
 			Value a = (Value)v;
-			if(a.getType().equals(XacmlTypes.ANYURI) ||
-					a.getType().equals(XacmlTypes.STRING)){
+			if(a.getEvaluatesTo().equals(XacmlTypes.ANYURI) ||
+					a.getEvaluatesTo().equals(XacmlTypes.STRING)){
 				return getById(a.value().toString());
 			}
 		}

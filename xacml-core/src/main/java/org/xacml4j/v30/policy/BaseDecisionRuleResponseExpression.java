@@ -35,7 +35,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -124,7 +124,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 				AttributeAssignment.Builder b = AttributeAssignment.builder(attrExp.getAttributeId())
 				                                                   .category(attrExp.getCategory())
 				                                                   .issuer(attrExp.getIssuer());
-				ValueExpression val = attrExp.evaluate(context);
+				ValueExp val = attrExp.evaluate(context);
 				if (val instanceof Value) {
 					attr.add(b.value((Value) val).build());
 					continue;

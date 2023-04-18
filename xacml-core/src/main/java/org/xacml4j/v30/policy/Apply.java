@@ -32,8 +32,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -90,7 +90,7 @@ public final class Apply implements Expression
 	}
 
 	@Override
-	public ValueTypeInfo getEvaluatesTo(){
+	public ValueExpTypeInfo getEvaluatesTo(){
 		return spec.resolveReturnType(arguments);
 	}
 
@@ -108,11 +108,11 @@ public final class Apply implements Expression
 	 * with a given parameters
 	 *
 	 * @param context an evaluation context
-	 * @return expression evaluation result as {@link ValueExpression}
+	 * @return expression evaluation result as {@link ValueExp}
 	 * defaultProvider
 	 */
 	@Override
-	public ValueExpression evaluate(EvaluationContext context)
+	public ValueExp evaluate(EvaluationContext context)
 		throws EvaluationException
 	{
 		try{

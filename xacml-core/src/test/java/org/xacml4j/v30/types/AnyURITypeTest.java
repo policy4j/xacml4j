@@ -44,8 +44,8 @@ public class AnyURITypeTest
 		Value v0 = XacmlTypes.ANYURI.of("http://www.test.org");
 		Value v1 = XacmlTypes.ANYURI.of("http://www.test.org");
 		assertEquals(v0, v1);
-		assertEquals(XacmlTypes.ANYURI, v0.getType());
-		assertEquals(XacmlTypes.ANYURI, v1.getType());
+		assertEquals(XacmlTypes.ANYURI, v0.getEvaluatesTo());
+		assertEquals(XacmlTypes.ANYURI, v1.getEvaluatesTo());
 	}
 	
 	

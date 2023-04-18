@@ -302,9 +302,9 @@ public interface EvaluationContext
 	 * variable identifier.
 	 *
 	 * @param variableId a variable identifier
-	 * @return {@link ValueExpression} defaultProvider or {@code null}
+	 * @return {@link ValueExp} defaultProvider or {@code null}
 	 */
-	 ValueExpression getVariableEvaluationResult(String variableId);
+	 ValueExp getVariableEvaluationResult(String variableId);
 
 	/**
 	 * Caches current policy variable evaluation result.
@@ -312,7 +312,7 @@ public interface EvaluationContext
 	 * @param variableId a variable identifier
 	 * @param value a variable value
 	 */
-	void setVariableEvaluationResult(String variableId, ValueExpression value);
+	void setVariableEvaluationResult(String variableId, ValueExp value);
 
 	/**
 	 * Gets all resolved designators in this context

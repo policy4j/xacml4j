@@ -34,7 +34,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 
 /**
  * A base class for XACML attribute references
@@ -59,7 +59,7 @@ public abstract class AttributeReference implements Expression
 	}
 
 	@Override
-	public ValueTypeInfo getEvaluatesTo(){
+	public ValueExpTypeInfo getEvaluatesTo(){
 		return getReferenceKey().getDataType().bagType();
 	}
 

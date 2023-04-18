@@ -31,7 +31,7 @@ import com.google.common.base.Preconditions;
  *
  * @author Giedrius Trumpickas
  */
-public final class BagOfValuesType implements ValueTypeInfo
+public final class BagOfValuesType implements ValueExpTypeInfo
 {
 	private static final long serialVersionUID = 1317103379388105997L;
 
@@ -53,7 +53,7 @@ public final class BagOfValuesType implements ValueTypeInfo
 	 *
 	 * @return bag attribute type
 	 */
-	public ValueType getDataType(){
+	public ValueType getValueType(){
 		return type;
 	}
 
@@ -62,7 +62,7 @@ public final class BagOfValuesType implements ValueTypeInfo
 		return true;
 	}
 
-	public ValueTypeInfo toBag(){
+	public ValueExpTypeInfo toBagType(){
 		return this;
 	}
 

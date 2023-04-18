@@ -29,7 +29,7 @@ import java.io.Serializable;
  *
  * @author Giedrius Trumpickas
  */
-public interface ValueTypeInfo extends Serializable
+public interface ValueExpTypeInfo extends Serializable
 {
 	/**
 	 * Test if given type represents a XACML bag type
@@ -39,10 +39,10 @@ public interface ValueTypeInfo extends Serializable
 	boolean isBag();
 
 	/**
-	 * Gets XACML data type
-	 *
+	 * Gets XACML data type for
+	 * values of this type
 	 */
-	ValueTypeInfo getDataType();
+	ValueType getValueType();
 
 	/**
 	 * Converts this value type to bag type
@@ -50,5 +50,5 @@ public interface ValueTypeInfo extends Serializable
 	 * @param <T>
 	 * @return bag type
 	 */
-	<T extends ValueTypeInfo> T toBag();
+	<T extends ValueExpTypeInfo> T toBagType();
 }

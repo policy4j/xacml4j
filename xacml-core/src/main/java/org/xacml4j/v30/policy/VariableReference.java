@@ -26,8 +26,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -56,7 +56,7 @@ public class VariableReference implements Expression
 	}
 
 	@Override
-	public ValueTypeInfo getEvaluatesTo() {
+	public ValueExpTypeInfo getEvaluatesTo() {
 		return varDef.getEvaluatesTo();
 	}
 
@@ -73,10 +73,10 @@ public class VariableReference implements Expression
 	 * Evaluates appropriate variable definition.
 	 *
 	 * @param context a policy evaluation context
-	 * @return {@link ValueExpression} representing evaluation
+	 * @return {@link ValueExp} representing evaluation
 	 * result
 	 */
-	public ValueExpression evaluate(EvaluationContext context)
+	public ValueExp evaluate(EvaluationContext context)
 		throws EvaluationException
 	{
 		return varDef.evaluate(context);

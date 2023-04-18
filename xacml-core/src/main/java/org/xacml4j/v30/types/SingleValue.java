@@ -55,7 +55,7 @@ public class SingleValue<T>
     }
 
     @Override
-    public final ValueType getType(){
+    public final ValueType getEvaluatesTo(){
         return type;
     }
 
@@ -87,7 +87,7 @@ public class SingleValue<T>
             return false;
         }
         Value e = (Value) o;
-        return type.equals(e.getType()) &&
+        return type.equals(e.getEvaluatesTo()) &&
                 value.equals(e.value());
     }
 

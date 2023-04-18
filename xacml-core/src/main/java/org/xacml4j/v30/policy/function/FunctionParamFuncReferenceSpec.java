@@ -23,11 +23,9 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
-import java.util.Objects;
-import java.util.Optional;
 
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 
@@ -36,7 +34,7 @@ import com.google.common.base.MoreObjects;
 final class FunctionParamFuncReferenceSpec extends BaseFunctionParamSpec
 {
 	@Override
-	public boolean isValidParamType(ValueTypeInfo type) {
+	public boolean isValidParamType(ValueExpTypeInfo type) {
 		return false;
 	}
 

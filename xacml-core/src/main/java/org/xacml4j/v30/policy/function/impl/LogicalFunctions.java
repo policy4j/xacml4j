@@ -24,7 +24,7 @@ package org.xacml4j.v30.policy.function.impl;
 
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
@@ -164,7 +164,7 @@ public final class LogicalFunctions
 		int count = 0;
 		int num = n.value().intValue();
 		for (Expression value : values) {
-			ValueExpression v = value.evaluate(context);
+			ValueExp v = value.evaluate(context);
 			if (v.equals(TRUE)) {
 				count++;
 				if (num == count) {

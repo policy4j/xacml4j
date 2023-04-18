@@ -33,7 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -42,8 +42,8 @@ import com.google.common.collect.ImmutableList;
 
 public class DefaultFunctionFunctionInvocationTest
 {
-	private PolicyToPlatformFunctionInvocation<ValueExpression> inv0;
-	private PolicyToPlatformFunctionInvocation<ValueExpression> inv1;
+	private PolicyToPlatformFunctionInvocation<ValueExp> inv0;
+	private PolicyToPlatformFunctionInvocation<ValueExp> inv1;
 	private FunctionSpec spec;
 	private IMocksControl c;
 	private FunctionInvocation f0;
@@ -73,7 +73,7 @@ public class DefaultFunctionFunctionInvocationTest
 		expect(spec.isVariadic()).andReturn(false).times(2);
 		expect(inv0.invoke(p.toArray())).andReturn(XacmlTypes.INTEGER.of(1));
 		c.replay();
-		ValueExpression v = f0.invoke(spec, context, p);
+		ValueExp v = f0.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.of(1), v);
 		c.verify();
 	}
@@ -106,7 +106,7 @@ public class DefaultFunctionFunctionInvocationTest
 		expect(inv1.invoke(params.toArray()))
 				.andReturn(XacmlTypes.INTEGER.of(1));
 		c.replay();
-		ValueExpression v = f1.invoke(spec, context, p);
+		ValueExp v = f1.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.of(1), v);
 		c.verify();
 	}
@@ -133,7 +133,7 @@ public class DefaultFunctionFunctionInvocationTest
 		expect(inv1.invoke(pArray))
 		.andReturn(XacmlTypes.INTEGER.of(1));
 		c.replay();
-		ValueExpression v = f1.invoke(spec, context, p);
+		ValueExp v = f1.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.of(1), v);
 		c.verify();
 	}
@@ -158,7 +158,7 @@ public class DefaultFunctionFunctionInvocationTest
 		expect(spec.isVariadic()).andReturn(true).times(2);
 		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.of(1));
 		c.replay();
-		ValueExpression v = f0.invoke(spec, context, p);
+		ValueExp v = f0.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.of(1), v);
 		c.verify();
 	}
@@ -178,7 +178,7 @@ public class DefaultFunctionFunctionInvocationTest
 		expect(spec.isVariadic()).andReturn(true).times(2);
 		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.of(1));
 		c.replay();
-		ValueExpression v = f0.invoke(spec, context, p);
+		ValueExp v = f0.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.of(1), v);
 		c.verify();
 	}

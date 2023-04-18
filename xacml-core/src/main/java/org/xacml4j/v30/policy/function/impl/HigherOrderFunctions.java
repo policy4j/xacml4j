@@ -33,7 +33,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionParametersValidator;
@@ -213,8 +213,8 @@ public final class HigherOrderFunctions
 		}
 
 		@Override
-		public ValueTypeInfo resolve(FunctionSpec spec,
-		                             List<Expression> arguments)
+		public ValueExpTypeInfo resolve(FunctionSpec spec,
+		                                List<Expression> arguments)
 		{
 			Preconditions.checkArgument(arguments != null,
 					"Can't resolve function=\"%s\" return type " +

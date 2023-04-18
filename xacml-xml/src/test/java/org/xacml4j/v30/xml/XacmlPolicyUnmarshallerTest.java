@@ -351,7 +351,7 @@ public class XacmlPolicyUnmarshallerTest
 		AttributeSelector attributeSelector = (AttributeSelector) o1AttrExp1.getExpression();
 		System.err.println(attributeSelector.getReferenceKey());
 		assertThat(attributeSelector.getReferenceKey().getPath(), is("//md:/record/md:patient/md:patientContact/md:email"));
-		assertThat(attributeSelector.getReferenceKey().getDataType(), is(XacmlTypes.STRING.getDataType()));
+		assertThat(attributeSelector.getReferenceKey().getDataType(), is(XacmlTypes.STRING.getValueType()));
 
 		AttributeAssignmentExpression o1AttrExp2 = Iterables.get(o1AttrExps, 1);
 		assertThat(o1AttrExp2.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));
@@ -363,6 +363,6 @@ public class XacmlPolicyUnmarshallerTest
 		AttributeDesignator attributeDesignator = (AttributeDesignator) o1AttrExp3.getExpression();
 		assertThat(attributeDesignator.getReferenceKey().getCategory().getId(), is(CategoryId.SUBJECT_ACCESS.getId()));
 		assertThat(attributeDesignator.getReferenceKey().getAttributeId(), is("urn:oasis:names:tc:xacml:1.0:subject:subject-id"));
-		assertThat(attributeDesignator.getReferenceKey().getDataType(), is(XacmlTypes.STRING.getDataType()));
+		assertThat(attributeDesignator.getReferenceKey().getDataType(), is(XacmlTypes.STRING.getValueType()));
 	}
 }

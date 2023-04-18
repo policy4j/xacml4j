@@ -28,8 +28,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.PolicyElement;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -66,7 +66,7 @@ public class VariableDefinition implements PolicyElement
 		return variableId;
 	}
 
-	public ValueTypeInfo getEvaluatesTo() {
+	public ValueExpTypeInfo getEvaluatesTo() {
 		return expression.getEvaluatesTo();
 	}
 
@@ -112,9 +112,9 @@ public class VariableDefinition implements PolicyElement
 	 * evaluation result in the current
 	 * {@link EvaluationContext} evaluation context
 	 */
-	public ValueExpression evaluate(EvaluationContext context) throws EvaluationException
+	public ValueExp evaluate(EvaluationContext context) throws EvaluationException
 	{
-		ValueExpression result = context.getVariableEvaluationResult(variableId);
+		ValueExp result = context.getVariableEvaluationResult(variableId);
 		if(result != null){
 			log.debug("Found cached variable=\"{}\" evaluation result=\"{}\"",
 					variableId, result);

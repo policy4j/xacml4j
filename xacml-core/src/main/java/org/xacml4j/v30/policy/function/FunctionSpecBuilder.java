@@ -35,8 +35,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionParamSpec;
 import org.xacml4j.v30.policy.FunctionSpec;
@@ -118,19 +118,19 @@ public final class FunctionSpecBuilder {
 		return this;
 	}
 
-	public FunctionSpecBuilder param(ValueTypeInfo type) {
+	public FunctionSpecBuilder param(ValueExpTypeInfo type) {
 		return param(type, null, false);
 	}
 
-	public FunctionSpecBuilder optional(ValueTypeInfo type) {
+	public FunctionSpecBuilder optional(ValueExpTypeInfo type) {
 		return param(type, null, true);
 	}
 
-	public FunctionSpecBuilder optional(ValueTypeInfo type, ValueExpression defaultValue) {
+	public FunctionSpecBuilder optional(ValueExpTypeInfo type, ValueExp defaultValue) {
 		return param(type, defaultValue, true);
 	}
 
-	public FunctionSpecBuilder param(ValueTypeInfo type, ValueExpression defaultValue, boolean optional) {
+	public FunctionSpecBuilder param(ValueExpTypeInfo type, ValueExp defaultValue, boolean optional) {
 		Preconditions.checkNotNull(type);
 		FunctionParamSpec spec = new FunctionParamValueTypeSpec(type, defaultValue, optional);
 		if (defaultValue != null && !optional) {
@@ -142,7 +142,7 @@ public final class FunctionSpecBuilder {
 			throw PolicySyntaxException
 					.invalidFunctionParam(functionId, spec, paramSpec.size() - 1,
 					                      String.format("Parameter default value type=\"%s\" but param requires=\"%s\"",
-					                                    type.getDataType(), defaultValue.getType()));
+					                                    type.getValueType(), defaultValue.getEvaluatesTo()));
 		}
 		if (hadVarArg) {
 			throw PolicySyntaxException
@@ -171,7 +171,7 @@ public final class FunctionSpecBuilder {
 		return this;
 	}
 
-	public FunctionSpecBuilder varArg(ValueTypeInfo type, int min, int max) {
+	public FunctionSpecBuilder varArg(ValueExpTypeInfo type, int min, int max) {
 		Preconditions.checkNotNull(type);
 		Preconditions.checkArgument(min >= 0 && max > 0);
 		Preconditions.checkArgument(max > min);
@@ -224,7 +224,7 @@ public final class FunctionSpecBuilder {
 	}
 
 	public FunctionSpec build(
-			ValueTypeInfo returnType,
+			ValueExpTypeInfo returnType,
 			FunctionInvocation invocation) {
 		return build(
 				new StaticFunctionReturnTypeResolver(returnType),
@@ -232,7 +232,7 @@ public final class FunctionSpecBuilder {
 	}
 
 	public FunctionSpec build(
-			ValueTypeInfo returnType,
+			ValueExpTypeInfo returnType,
 			FunctionParametersValidator validator,
 			FunctionInvocation invocation) {
 		return build(
@@ -342,13 +342,13 @@ public final class FunctionSpecBuilder {
 		}
 
 		@Override
-		public ValueTypeInfo resolveReturnType(List<Expression> arguments) {
+		public ValueExpTypeInfo resolveReturnType(List<Expression> arguments) {
 			return resolver.resolve(this, arguments);
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public <T extends ValueExpression> T invokeWithList(
+		public <T extends ValueExp> T invokeWithList(
 				EvaluationContext context,
 				List<Expression> arguments) throws EvaluationException {
 

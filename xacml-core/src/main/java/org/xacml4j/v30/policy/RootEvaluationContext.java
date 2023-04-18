@@ -37,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -53,7 +52,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.MoreObjects;
@@ -316,13 +315,13 @@ public final class RootEvaluationContext implements EvaluationContext
 	}
 
 	@Override
-	public final ValueExpression getVariableEvaluationResult(
+	public final ValueExp getVariableEvaluationResult(
 			String variableId){
 		return null;
 	}
 
 	@Override
-	public final void setVariableEvaluationResult(String variableId, ValueExpression value) {
+	public final void setVariableEvaluationResult(String variableId, ValueExp value) {
 	}
 
 	@Override

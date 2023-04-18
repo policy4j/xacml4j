@@ -142,7 +142,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 				LOG.debug("Found node paths=\"{}\" for path=\"{}\"", paths, path);
 			}
 			return paths.stream()
-					.map(p->transform(p, path.getType(), content.get(), category))
+					.map(p->transform(p, path.getEvaluatesTo(), content.get(), category))
 					.collect(Collectors.toSet());
 		}
 		catch (PathEvaluationException e){

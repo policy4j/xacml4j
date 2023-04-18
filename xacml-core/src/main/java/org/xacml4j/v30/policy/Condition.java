@@ -27,7 +27,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -55,7 +55,7 @@ public class Condition implements PolicyElement
 	public Condition(Expression predicate)
 	{
 		Preconditions.checkNotNull(predicate, "Condition predicate can not be null");
-		final ValueTypeInfo resultType = predicate.getEvaluatesTo();
+		final ValueExpTypeInfo resultType = predicate.getEvaluatesTo();
 		Preconditions.checkArgument(XacmlTypes.BOOLEAN.equals(resultType),
 				"Condition expects an expression " +
 					"with=\"%s\" return value, but got expression " +

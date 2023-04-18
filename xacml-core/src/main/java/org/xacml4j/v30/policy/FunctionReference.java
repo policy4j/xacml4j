@@ -28,8 +28,8 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -47,7 +47,7 @@ public final class FunctionReference implements Expression
 	private final static Logger log = LoggerFactory.getLogger(FunctionReference.class);
 
 	private final FunctionSpec spec;
-	private final ValueTypeInfo returnType;
+	private final ValueExpTypeInfo returnType;
 
 	/**
 	 * Constructs function reference expression
@@ -72,7 +72,7 @@ public final class FunctionReference implements Expression
 	}
 
 	@Override
-	public ValueTypeInfo getEvaluatesTo(){
+	public ValueExpTypeInfo getEvaluatesTo(){
 		return returnType;
 	}
 
@@ -85,8 +85,8 @@ public final class FunctionReference implements Expression
 	 * @return function invocation value
 	 * @throws EvaluationException if function information fails
 	 */
-	public <T extends ValueExpression> T invoke(EvaluationContext context,
-			Expression ...params) throws EvaluationException
+	public <T extends ValueExp> T invoke(EvaluationContext context,
+	                                     Expression ...params) throws EvaluationException
 	{
 		if(log.isDebugEnabled()){
 				log.debug("Invoking function reference=\"{}\"",

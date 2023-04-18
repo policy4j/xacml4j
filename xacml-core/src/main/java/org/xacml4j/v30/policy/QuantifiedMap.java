@@ -31,7 +31,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 
 
 /**
@@ -51,10 +51,10 @@ public final class QuantifiedMap
     }
 
     @Override
-    public ValueTypeInfo getEvaluatesTo() {
+    public ValueExpTypeInfo getEvaluatesTo() {
         return  getIterant()
                 .getEvaluatesTo()
-                .toBag();
+                .toBagType();
     }
 
     @Override
@@ -62,7 +62,7 @@ public final class QuantifiedMap
             throws EvaluationException
     {
         BagOfValues bag = getDomain(context);
-        BagOfValuesType bagType = getIterant().getEvaluatesTo().toBag();
+        BagOfValuesType bagType = getIterant().getEvaluatesTo().toBagType();
         if(LOG.isDebugEnabled()){
             LOG.debug("Domain=\"{}\" iterant evaluates to=\"{}\"", bag, bagType);
         }

@@ -263,9 +263,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		attr.setIncludeInResult(a.isIncludeInResult());
 		for(Value v : a.getValues()){
 			TypeToXacml30 m = TypeToXacml30
-					.forType(v.getType())
+					.forType(v.getEvaluatesTo())
 					.orElseThrow(
-							()-> SyntaxException.invalidDataTypeId(v.getType()));
+							()-> SyntaxException.invalidDataTypeId(v.getEvaluatesTo()));
 			attr.getAttributeValue().add(m.toXacml30(v));
 		}
 		return attr;
@@ -511,8 +511,8 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private AttributeValueType toJaxb(Value a)
 	{
 		Preconditions.checkNotNull(a);
-		return TypeToXacml30.forType(a.getType()).map(v->v.toXacml30(a))
-				.orElseThrow(()->SyntaxException.invalidAttributeValue(a.getType()));
+		return TypeToXacml30.forType(a.getEvaluatesTo()).map(v->v.toXacml30(a))
+		                    .orElseThrow(()->SyntaxException.invalidAttributeValue(a.getEvaluatesTo()));
 	}
 	
 	private Value create(

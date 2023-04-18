@@ -31,7 +31,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -111,10 +111,10 @@ public class AttributeAssignmentExpression implements PolicyElement
 		return expression;
 	}
 
-	public ValueExpression evaluate(EvaluationContext context)
+	public ValueExp evaluate(EvaluationContext context)
 		throws EvaluationException
 	{
-		ValueExpression val =  expression.evaluate(context);
+		ValueExp val =  expression.evaluate(context);
 		Preconditions.checkState(val != null);
 		return val;
 	}

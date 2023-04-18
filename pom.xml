@@ -47,6 +47,7 @@
 		<jaxb.api.version>>2.3.3</jaxb.api.version>
 		<jaxb.api.impl.version>3.0.2</jaxb.api.impl.version>
 		<json.smart.version>2.4.10</json.smart.version>
+		<ipaddress.version>5.4.0</ipaddress.version>
 	</properties>
 
 	<inceptionYear>2009</inceptionYear>
@@ -124,8 +125,12 @@
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
-
 		<dependencies>
+			<dependency>
+				<groupId>com.github.seancfoley</groupId>
+				<artifactId>ipaddress</artifactId>
+				<version>${ipaddress.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>

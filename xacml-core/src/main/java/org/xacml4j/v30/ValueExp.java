@@ -26,18 +26,8 @@ package org.xacml4j.v30;
  *
  * @author Giedrius Trumpickas
  */
-public interface ValueExpression extends Expression
+public interface ValueExp extends Expression
 {
-	/**
-	 * Returns {@link ValueTypeInfo} representing
-	 * type of this value
-	 *
-	 * @return {@link ValueTypeInfo} type for this value
-	 */
-	default ValueTypeInfo getType(){
-		return getEvaluatesTo();
-	}
-
 	/**
 	 * Value expression always evaluates to itself
 	 *

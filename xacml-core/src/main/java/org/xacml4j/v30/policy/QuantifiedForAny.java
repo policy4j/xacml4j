@@ -28,7 +28,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**
@@ -45,7 +45,7 @@ public final class QuantifiedForAny extends QuantifiedExpression
     }
 
     @Override
-    public ValueTypeInfo getEvaluatesTo() {
+    public ValueExpTypeInfo getEvaluatesTo() {
         return XacmlTypes.BOOLEAN;
     }
 

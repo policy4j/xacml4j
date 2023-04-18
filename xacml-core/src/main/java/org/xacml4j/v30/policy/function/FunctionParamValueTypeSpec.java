@@ -23,14 +23,12 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ListIterator;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExpression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 
 import com.google.common.base.MoreObjects;
@@ -40,22 +38,22 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 {
 	private final static Logger log = LoggerFactory.getLogger(FunctionParamValueTypeSpec.class);
 
-	private ValueTypeInfo type;
+	private ValueExpTypeInfo type;
 
 	public FunctionParamValueTypeSpec(
-			ValueTypeInfo paramType,
-			ValueExpression defaultValue, 
+			ValueExpTypeInfo paramType,
+			ValueExp defaultValue,
 			boolean optional){
 		super(optional, false, defaultValue);
 		Preconditions.checkNotNull(paramType);
 		this.type = paramType;
 	}
 	
-	public FunctionParamValueTypeSpec(ValueTypeInfo type){
+	public FunctionParamValueTypeSpec(ValueExpTypeInfo type){
 		this(type, null, false);
 	}
 
-	public ValueTypeInfo getParamType(){
+	public ValueExpTypeInfo getParamType(){
 		return type;
 	}
 
@@ -83,7 +81,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 					              String.format("expected param of type=\"%s\", found null",
 					                            type));
 		}
-		ValueTypeInfo expType = exp.getEvaluatesTo();
+		ValueExpTypeInfo expType = exp.getEvaluatesTo();
 		if(!isValidParamType(expType)){
 			if(suppressException){
 				return false;
@@ -97,7 +95,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 	}
 	
 	@Override
-	public boolean isValidParamType(ValueTypeInfo type) {
+	public boolean isValidParamType(ValueExpTypeInfo type) {
 		return this.type.equals(type);
 	}
 

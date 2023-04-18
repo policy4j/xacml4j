@@ -33,14 +33,15 @@ import com.google.common.base.Supplier;
  * @author Giedrius Trumpickas
  */
 public interface Value<T>
-	extends ValueExpression, Serializable, Supplier<T>
+		extends ValueExp, Serializable, Supplier<T>
 {
 	/**
 	 * Gets attribute type
 	 *
 	 * @return {@link ValueType}
 	 */
-	ValueType getType();
+	ValueType getEvaluatesTo();
+
 
 	/**
 	 * Gets attribute expression value
@@ -59,15 +60,10 @@ public interface Value<T>
 	 * @return {@link BagOfValues}
 	 */
 	default BagOfValues toBag(){
-		return getType()
-				.bag()
-				.attribute(this)
-				.build();
-	}
-
-	@Override
-	default ValueType getEvaluatesTo(){
-		return getType();
+		return this.getEvaluatesTo()
+		           .bag()
+		           .attribute(this)
+		           .build();
 	}
 
 	default void accept(ExpressionVisitor v) {

@@ -31,7 +31,7 @@ import java.util.function.Function;
  *
  * @author Giedrius Trumpickas
  */
-public interface ValueType extends ValueTypeInfo, Function<Object, Value>
+public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 {
 	/**
 	 * Gets fully qualified data type identifier
@@ -57,11 +57,11 @@ public interface ValueType extends ValueTypeInfo, Function<Object, Value>
 	Set<String> getDataTypeIdAliases();
 
 	@Override
-	default ValueTypeInfo getDataType(){
+	default ValueType getValueType(){
 		return this;
 	}
 
-	default ValueTypeInfo toBag(){
+	default ValueExpTypeInfo toBagType(){
 		return bagType();
 	}
 

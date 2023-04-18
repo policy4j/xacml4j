@@ -25,7 +25,7 @@ package org.xacml4j.v30.policy.function;
 import java.util.List;
 
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionSpec;
 
 
@@ -42,7 +42,7 @@ public interface FunctionReturnTypeResolver
 	 *
 	 * @param spec a function specification
 	 * @param arguments a function invocation arguments
-	 * @return {@link ValueTypeInfo} function return type
+	 * @return {@link ValueExpTypeInfo} function return type
 	 */
-	ValueTypeInfo resolve(FunctionSpec spec, List<Expression> arguments);
+	ValueExpTypeInfo resolve(FunctionSpec spec, List<Expression> arguments);
 }

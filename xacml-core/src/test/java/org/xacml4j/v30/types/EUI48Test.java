@@ -104,8 +104,7 @@ public class EUI48Test {
 	private static final byte[] NULL_ETHERNET_ADDRESS_BYTE_ARRAY = new byte[ETHERNET_ADDRESS_ARRAY_LENGTH];
 	// private static final int[] NULL_ETHERNET_ADDRESS_INT_ARRAY = new
 	// int[ETHERNET_ADDRESS_ARRAY_LENGTH];
-	private static final EUI48 NULL_ETHERNET_ADDRESS = new EUI48(
-			0L);
+	private static final EUI48 NULL_ETHERNET_ADDRESS = new EUI48(0L);
 
 	private static final String VALID_ETHERNET_ADDRESS_STRING = "87:f5:93:06:d3:0c";
 	private static final String MIXED_CASE_VALID_ETHERNET_ADDRESS_STRING = "87:f5:93:06:D3:0c";

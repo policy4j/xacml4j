@@ -120,13 +120,13 @@ public final class RegExpFunctions
 		if(log.isDebugEnabled()){
 			log.debug("Matching input=\"{}\" via regexp=\"{}\"", value, regexp);
 		}
-		Optional<TypeToString> toString = TypeToString.forType(value.getType());
+		Optional<TypeToString> toString = TypeToString.forType(value.getEvaluatesTo());
 		return XacmlTypes.BOOLEAN.of(
 				toString.map(v->v.toString(value))
 				.map(v->matches(regexp.value(), v))
 				.orElseThrow(
 						()-> SyntaxException
-								.invalidDataTypeId(value.getType())));
+								.invalidDataTypeId(value.getEvaluatesTo())));
 
 	}
 

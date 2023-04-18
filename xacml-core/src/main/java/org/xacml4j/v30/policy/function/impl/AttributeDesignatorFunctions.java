@@ -35,7 +35,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
 import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
@@ -74,8 +74,8 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"}) BooleanValue mustBePresent,
 			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue issuer)
 	{
-		Preconditions.checkArgument(categoryOrEntity.getType().equals(XacmlTypes.ENTITY) ||
-				categoryOrEntity.getType().equals(XacmlTypes.ANYURI));
+		Preconditions.checkArgument(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY) ||
+				categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI));
 		LOG.debug("CategoryOrEntity=\"{}\" attributeId=\"{}\" " +
 				          "dataType=\"{}\" mustBePresent=\"{}\" issuer=\"{}\"", categoryOrEntity, attributeId, dataType, mustBePresent, issuer);
 
@@ -87,15 +87,15 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 		if(issuer != null){
 			designatorKeyBuilder.issuer(issuer);
 		}
-		if(categoryOrEntity.getType().equals(XacmlTypes.ANYURI)){
+		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
 			designatorKeyBuilder.category(categoryOrEntity).build();
 		}
 		AttributeDesignatorKey designatorKey = designatorKeyBuilder.build();
 		Optional<BagOfValues> v = Optional.empty();
-		if(categoryOrEntity.getType().equals(XacmlTypes.ENTITY)){
+		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY)){
 			v = ((EntityValue)categoryOrEntity).resolve(designatorKey);
 		}
-		if(categoryOrEntity.getType().equals(XacmlTypes.ANYURI)){
+		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
 			v = context.resolve(designatorKey);
 		}
 		if(!v.isPresent()){
@@ -121,24 +121,24 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"}) BooleanValue mustBePresent,
 			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue issuer)
 	{
-		Preconditions.checkArgument(categoryOrEntity.getType().equals(XacmlTypes.ENTITY) ||
-				categoryOrEntity.getType().equals(XacmlTypes.ANYURI));
+		Preconditions.checkArgument(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY) ||
+				categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI));
 		AttributeSelectorKey.Builder selectorKeyBuilder =
 				AttributeSelectorKey
 						.builder()
 						.dataType(dataType)
 						.path(xpath, true);
-		if(categoryOrEntity.getType().equals(XacmlTypes.ANYURI)){
+		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
 			selectorKeyBuilder
 					.category(categoryOrEntity).build();
 		}
 		Optional<BagOfValues> v = Optional.empty();
 		final AttributeSelectorKey selectorKey = selectorKeyBuilder.build();
-		if(categoryOrEntity.getType().equals(XacmlTypes.ENTITY)){
+		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY)){
 			v = ((EntityValue)categoryOrEntity).resolve(selectorKey);
 
 		}
-		if(categoryOrEntity.getType().equals(XacmlTypes.ANYURI)){
+		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
 			v = context.resolve(selectorKey);
 		}
 		if(!v.isPresent()){
@@ -152,11 +152,11 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 
 	private static ValueType getType(AnyURIValue typeUri){
 		return XacmlTypes.getType(typeUri.value().toString())
-		                 .orElseThrow(()->SyntaxException.invalidDataTypeId(typeUri.getType().getDataTypeId()));
+		                 .orElseThrow(()->SyntaxException.invalidDataTypeId(typeUri.getEvaluatesTo().getDataTypeId()));
 	}
 	
 	@Override
-	public ValueTypeInfo resolve(FunctionSpec spec, List<Expression> arguments) {
+	public ValueExpTypeInfo resolve(FunctionSpec spec, List<Expression> arguments) {
 		return getType((AnyURIValue)arguments.get(2));
 	}
 }

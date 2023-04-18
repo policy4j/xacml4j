@@ -116,7 +116,7 @@ public class Attribute implements Serializable
 			return Collections.emptyList();
 		}
 		List<ValueType> types = Arrays.asList(type);
-		return values.stream().filter(a->types.contains(a.getType()))
+		return values.stream().filter(a->types.contains(a.getEvaluatesTo()))
 				.collect(Collectors.toList());
 	}
 

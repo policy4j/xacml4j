@@ -31,7 +31,7 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -59,7 +59,7 @@ public class Match implements PolicyElement, Matchable
 				b.predicate.getNumberOfParams() == 2,
 				"Expecting function with 2 arguments");
 		final FunctionParamSpec param0 = b.predicate.getParamSpecAt(0);
-		final ValueTypeInfo evaluatesToType = b.attr.getEvaluatesTo();
+		final ValueExpTypeInfo evaluatesToType = b.attr.getEvaluatesTo();
 		Preconditions.checkArgument(
 				param0.isValidParamType(evaluatesToType),
 				"Given function argument \"%s\" at index=\"0\" is not " +

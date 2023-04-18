@@ -33,7 +33,7 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.PolicyElement;
-import org.xacml4j.v30.ValueExpression;
+import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.Function;
@@ -240,7 +240,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 */
 	class PolicyDescendantEvaluationContext extends DescendantEvaluationContext
 	{
-		private final Map<String, ValueExpression> varDefEvalResults;
+		private final Map<String, ValueExp> varDefEvalResults;
 
 		/**
 		 * Creates policy evaluation context with a given parent context
@@ -268,7 +268,7 @@ public class Policy extends BaseCompositeDecisionRule
 		}
 
 		@Override
-		public ValueExpression getVariableEvaluationResult(String variableId) {
+		public ValueExp getVariableEvaluationResult(String variableId) {
 			return varDefEvalResults.get(variableId);
 		}
 
@@ -279,7 +279,7 @@ public class Policy extends BaseCompositeDecisionRule
 
 		@Override
 		public void setVariableEvaluationResult(String variableId,
-				ValueExpression value) {
+				ValueExp value) {
 			Preconditions.checkNotNull(variableId);
 			Preconditions.checkNotNull(value);
 			Preconditions.checkArgument(

@@ -26,8 +26,7 @@ import java.util.ListIterator;
 import java.util.Optional;
 
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.ValueTypeInfo;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.function.FunctionParamSpecVisitor;
 
 
@@ -72,7 +71,7 @@ public interface FunctionParamSpec
 	 * @param type a value type
 	 * @return {@code true}
 	 */
-	boolean isValidParamType(ValueTypeInfo type);
+	boolean isValidParamType(ValueExpTypeInfo type);
 
 	/**
 	 * Tests if this parameter is variadic
