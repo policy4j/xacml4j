@@ -7,8 +7,8 @@ import "XACML-core.proto";
 
 message RequestContext
 {
-  optional bool returnPolicyIdList = 1;
-  optional bool combinedDecision = 2;
+  bool returnPolicyIdList = 1;
+  bool combinedDecision = 2;
   repeated Category categories = 3;
   repeated RequestContext requestRefs = 4;
 }
@@ -21,14 +21,14 @@ message ResponseContext
 message Status
 {
   StatusCode code = 1;
-  optional string message = 2;
-  optional StatusDetail detail = 3;
+  string message = 2;
+  StatusDetail detail = 3;
 }
 
 message StatusCode
 {
   StatusCodeId code = 1;
-  optional StatusCode minorStatus = 2;
+  StatusCode minorStatus = 2;
 }
 
 message StatusCodeId
@@ -65,9 +65,9 @@ message Advice
 message AttributeAssignment
 {
   string id = 1;
-  optional string issuer = 2;
+  string issuer = 2;
   Value value = 3;
-  string categoryId = 3;
+  string categoryId = 4;
 }
 
 
@@ -77,7 +77,7 @@ message RequestReference {
 
 message Category
 {
-  optional string refId = 1;
+  string refId = 1;
   string categoryId = 2;
   Entity entity = 3;
 }

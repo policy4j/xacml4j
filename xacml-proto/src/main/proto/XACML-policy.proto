@@ -21,30 +21,30 @@ message CompositeRuleRef
 {
   string id = 1;
   string version = 2;
-  optional string earliest = 3;
-  optional string latest = 4;
+  string earliest = 3;
+  string latest = 4;
 }
 
 message Rule
 {
   string id = 1;
-  optional Target target = 2;
-  optional Condition condition = 3;
+  Target target = 2;
+  Condition condition = 3;
   Effect effect = 4;
 }
 
 message Policy
 {
   string id = 1;
-  optional Target target = 2;
+  Target target = 2;
   repeated Rule rules = 3;
 }
 
 message PolicySet
 {
   string id = 1;
-  optional Target target = 2;
-  repeated CompositeDecisionRule rules = 2;
+  Target target = 2;
+  repeated CompositeDecisionRule rules = 3;
 }
 
 enum Effect
@@ -118,8 +118,8 @@ message AttributeDesignator
   string attributeId = 1;
   string categoryId = 2;
   XacmlTypes valueType = 3;
-  optional string issuer = 4;
-  optional bool mustBePresent = 5;
+  string issuer = 4;
+  bool mustBePresent = 5;
 }
 
 enum PathType
@@ -133,9 +133,9 @@ message AttributeSelector
   string path = 1;
   string categoryId = 2;
   XacmlTypes valueType = 3;
-  optional string contextId = 4;
-  optional bool mustBePresent = 5;
-  optional PathType type = 6;
+  string contextId = 4;
+  bool mustBePresent = 5;
+  PathType type = 6;
 }
 
 message VariableRef

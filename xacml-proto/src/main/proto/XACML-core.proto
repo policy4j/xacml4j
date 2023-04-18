@@ -43,14 +43,14 @@ message Value
 message Attribute
 {
   string id = 1;
-  optional string issuer = 2;
-  optional bool includeInResult = 3;
+  string issuer = 2;
+  bool includeInResult = 3;
   repeated Value values = 4;
 }
 
 message Entity
 {
-  optional string id = 1;
+  string id = 1;
   repeated Attribute attributes = 2;
-  optional bytes content = 3;
+  bytes content = 3;
 }

@@ -21,6 +21,7 @@
 		<module>xacml-core</module>
 		<module>xacml-pdp</module>
 		<module>xacml-json</module>
+		<module>xacml-proto</module>
 		<module>xacml-xml</module>
 		<module>xacml-xml-jaxb</module>
 		<module>xacml-test</module>
@@ -48,6 +49,7 @@
 		<jaxb.api.impl.version>3.0.2</jaxb.api.impl.version>
 		<json.smart.version>2.4.10</json.smart.version>
 		<ipaddress.version>5.4.0</ipaddress.version>
+		<protobuf.version>3.22.3</protobuf.version>
 	</properties>
 
 	<inceptionYear>2009</inceptionYear>
@@ -126,6 +128,16 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java</artifactId>
+				<version>${protobuf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.protobuf</groupId>
+				<artifactId>protobuf-java-util</artifactId>
+				<version>${protobuf.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.github.seancfoley</groupId>
 				<artifactId>ipaddress</artifactId>
