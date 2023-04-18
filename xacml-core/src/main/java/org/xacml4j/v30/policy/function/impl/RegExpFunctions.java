@@ -123,7 +123,7 @@ public final class RegExpFunctions
 		Optional<TypeToString> toString = TypeToString.forType(value.getEvaluatesTo());
 		return XacmlTypes.BOOLEAN.of(
 				toString.map(v->v.toString(value))
-				.map(v->matches(regexp.value(), v))
+				.map(v->matches(regexp.get(), v))
 				.orElseThrow(
 						()-> SyntaxException
 								.invalidDataTypeId(value.getEvaluatesTo())));

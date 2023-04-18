@@ -46,7 +46,7 @@ public final class Base64BinaryValue extends SingleValue<Binary>
         }
         if (v instanceof StringValue) {
             return new Base64BinaryValue(Binary
-                    .valueOfBase64Enc(((StringValue) v).value()));
+                    .valueOfBase64Enc(((StringValue) v).get()));
         }
         if(v instanceof Binary){
             return new Base64BinaryValue((Binary) v);
@@ -61,7 +61,7 @@ public final class Base64BinaryValue extends SingleValue<Binary>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value()
+        return StringValue.of(get()
                 .toBase64Encoded());
     }
 

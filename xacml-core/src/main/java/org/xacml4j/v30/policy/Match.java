@@ -119,7 +119,7 @@ public class Match implements PolicyElement, Matchable
 			}
 			for(Value v : attributes.values()){
 				Value match = predicate.invoke(context, value, v);
-				if((Boolean)match.value()){
+				if((Boolean)match.get()){
 					if(log.isDebugEnabled()){
 						log.debug("Attribute value=\"{}\" " +
 								"matches attribute value=\"{}\"", value, v);

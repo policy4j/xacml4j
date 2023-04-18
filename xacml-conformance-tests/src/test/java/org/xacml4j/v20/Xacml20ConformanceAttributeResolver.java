@@ -51,7 +51,7 @@ public class Xacml20ConformanceAttributeResolver
 	{
 		StringValue name = BagOfValues.value(subjectId);
 		Map<String, BagOfValues> attributes = new HashMap<String, BagOfValues>();
-		if(name.value().equalsIgnoreCase("Julius Hibbert")){
+		if(name.get().equalsIgnoreCase("Julius Hibbert")){
 			attributes.put("urn:oasis:names:tc:xacml:1.0:example:attribute:role",
 			               XacmlTypes.STRING.of("Physician").toBag());
 		}

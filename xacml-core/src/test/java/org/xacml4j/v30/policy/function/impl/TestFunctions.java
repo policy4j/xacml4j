@@ -76,7 +76,7 @@ public final class TestFunctions
 	{
 		Long v = 0L;
 		for(Expression e : values){
-			v += ((IntegerValue)e.evaluate(context)).value();
+			v += ((IntegerValue)e.evaluate(context)).get();
 
 		}
 		return XacmlTypes.INTEGER.of(v);
@@ -91,7 +91,7 @@ public final class TestFunctions
 	{
 		Long v = 0L;
 		for(Expression e : values){
-			v += ((IntegerValue)e.evaluate(context)).value();
+			v += ((IntegerValue)e.evaluate(context)).get();
 
 		}
 		return XacmlTypes.INTEGER.of(v);

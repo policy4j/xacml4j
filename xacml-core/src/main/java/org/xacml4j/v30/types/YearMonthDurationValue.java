@@ -64,23 +64,23 @@ public final class YearMonthDurationValue
     }
 
     public static YearMonthDurationValue of(StringValue v){
-        return of(v.value());
+        return of(v.get());
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 
     @Override
     public int compareTo(YearMonthDurationValue o) {
-        return value().compareTo(o.value());
+        return get().compareTo(o.get());
     }
 
     public YearMonthDurationValue add(YearMonthDurationValue d){
-        return new YearMonthDurationValue(value().add(d.value()));
+        return new YearMonthDurationValue(get().add(d.get()));
     }
 
     public YearMonthDurationValue subtract(YearMonthDurationValue d){
-        return new YearMonthDurationValue(value().subtract(d.value()));
+        return new YearMonthDurationValue(get().subtract(d.get()));
     }
 }

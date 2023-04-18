@@ -41,7 +41,7 @@ public class Xacml20XPathTo30Transformer
 
 	public static PathValue fromXacml20String(StringValue path)
 	{
-		return transform20PathTo30(path.value());
+		return transform20PathTo30(path.get());
 	}
 
 	public static PathValue transform20PathTo30(String xpath)

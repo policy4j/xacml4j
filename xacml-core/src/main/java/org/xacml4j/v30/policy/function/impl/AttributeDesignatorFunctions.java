@@ -83,7 +83,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 				AttributeDesignatorKey
 						.builder()
 						.dataType(dataType)
-						.attributeId(attributeId.value().toString());
+						.attributeId(attributeId.get().toString());
 		if(issuer != null){
 			designatorKeyBuilder.issuer(issuer);
 		}
@@ -99,7 +99,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 			v = context.resolve(designatorKey);
 		}
 		if(!v.isPresent()){
-			if(mustBePresent.value()){
+			if(mustBePresent.get()){
 				throw AttributeReferenceEvaluationException
 						.forDesignator(designatorKey,
 								()->"Designator.MustBePresent=\"true\", but value is absent");
@@ -142,7 +142,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 			v = context.resolve(selectorKey);
 		}
 		if(!v.isPresent()){
-			if(mustBePresent.value()){
+			if(mustBePresent.get()){
 				throw AttributeReferenceEvaluationException
 						.forSelector(selectorKey, ()->"Selector.MustBePresent=\"true\", but value is absent");
 			}
@@ -151,7 +151,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 	}
 
 	private static ValueType getType(AnyURIValue typeUri){
-		return XacmlTypes.getType(typeUri.value().toString())
+		return XacmlTypes.getType(typeUri.get().toString())
 		                 .orElseThrow(()->SyntaxException.invalidDataTypeId(typeUri.getEvaluatesTo().getTypeId()));
 	}
 	

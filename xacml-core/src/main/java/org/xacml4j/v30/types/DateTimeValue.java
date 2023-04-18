@@ -53,7 +53,7 @@ public final class DateTimeValue
             return new DateTimeValue(DateTime.of(v));
         }
         if (v instanceof StringValue) {
-            return new DateTimeValue(DateTime.of(((StringValue) v).value()));
+            return new DateTimeValue(DateTime.of(((StringValue) v).get()));
         }
         if (v instanceof ZonedDateTime) {
             return new DateTimeValue(
@@ -85,33 +85,33 @@ public final class DateTimeValue
     }
 
     static DateTimeValue of(StringValue v){
-        return of(v.value());
+        return of(v.get());
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 
     @Override
     public int compareTo(DateTimeValue o) {
-        return value().compareTo(o.value());
+        return get().compareTo(o.get());
     }
 
     public DateTimeValue add(DayTimeDurationValue v){
         return new DateTimeValue(
-                value().add(v.value()));
+		        get().add(v.get()));
     }
 
     public DateTimeValue subtract(DayTimeDurationValue v){
-        return new DateTimeValue(value().subtract(v.value()));
+        return new DateTimeValue(get().subtract(v.get()));
     }
 
     public DateTimeValue subtract(YearMonthDurationValue v){
-        return new DateTimeValue(value().subtract(v.value()));
+        return new DateTimeValue(get().subtract(v.get()));
     }
 
     public DateTimeValue add(YearMonthDurationValue v){
-        return new DateTimeValue(value().add(v.value()));
+        return new DateTimeValue(get().add(v.get()));
     }
 
 }

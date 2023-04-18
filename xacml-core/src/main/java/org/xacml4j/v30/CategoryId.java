@@ -130,7 +130,7 @@ public final class CategoryId extends SemanticIdentifier
 			Value a = (Value)v;
 			if(a.getEvaluatesTo().equals(XacmlTypes.ANYURI) ||
 					a.getEvaluatesTo().equals(XacmlTypes.STRING)){
-				return getById(a.value().toString());
+				return getById(a.get().toString());
 			}
 		}
 		throw SyntaxException

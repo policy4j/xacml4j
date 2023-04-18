@@ -61,19 +61,19 @@ public final class PathValue extends SingleValue<Path>
     }
 
     public String getPath(){
-        return value().getPath();
+        return get().getPath();
     }
 
     public Content.PathType getPathType(){
-        return value().getType();
+        return get().getType();
     }
 
     public Content.Type getContentType(){
-        return value().getType().getContentType();
+        return get().getType().getContentType();
     }
 
     public Optional<CategoryId> getCategory(){
-        return value().getCategory();
+        return get().getCategory();
     }
 
 }

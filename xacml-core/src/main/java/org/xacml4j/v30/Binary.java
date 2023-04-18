@@ -26,6 +26,8 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import org.xacml4j.util.Base64;
@@ -42,7 +44,7 @@ public final class Binary implements Externalizable
 {
 	private static final long serialVersionUID = 798617605980758773L;
 
-	private byte[] value;
+	private ByteBuffer value;
 
 	private Binary(byte[] b){
 		this(b, 0, b.length);
@@ -51,8 +53,9 @@ public final class Binary implements Externalizable
 	private Binary(byte[] b, int srcPos, int length){
 		Preconditions.checkArgument((b== null && length == 0) ||
 				(b != null) && b.length >= length);
-		this.value = new byte[(b==null)?0:length];
+		byte[] value = new byte[(b==null)?0:length];
 		System.arraycopy(b, srcPos, value, 0, length);
+		this.value = ByteBuffer.wrap(value);
 	}
 
 	public static Binary of(byte[] data){
@@ -62,6 +65,14 @@ public final class Binary implements Externalizable
 
 	public static Binary of(byte[] data, int srcPos, int length){
 		return new Binary(data, srcPos, length);
+	}
+
+	public ByteBuffer asByteBuffer(){
+		return value.asReadOnlyBuffer();
+	}
+
+	public void writeTo(OutputStream out) throws IOException{
+		out.write(value.array());
 	}
 
 	public static Binary valueOfHexEnc(String v){
@@ -82,7 +93,7 @@ public final class Binary implements Externalizable
 
 	@Override
 	public int hashCode(){
-		return Arrays.hashCode(value);
+		return Arrays.hashCode(value.array());
 	}
 
 	@Override
@@ -97,12 +108,12 @@ public final class Binary implements Externalizable
 	    		return false;
 	    	}
 	    	Binary v = (Binary)o;
-	    	return Arrays.equals(value, v.value);
+	    	return Arrays.equals(value.array(), v.value.array());
 	}
 
 	@Override
 	public String toString(){
-		return Arrays.toString(value);
+		return Arrays.toString(value.array());
 	}
 
 	/**
@@ -113,7 +124,7 @@ public final class Binary implements Externalizable
 	 * of this binary value
 	 */
 	public String toHexEncoded(){
-		return binToHex(value);
+		return binToHex(value.array());
 	}
 
 	/**
@@ -124,18 +135,19 @@ public final class Binary implements Externalizable
 	 * of this binary value
 	 */
 	public String toBase64Encoded(){
-		return Base64.encode(value);
+		return Base64.encode(value.array());
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
-		out.write(value);
+		out.write(value.array());
 	}
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		this.value = new byte[in.available()];
-		in.readFully(this.value);
+		byte[] bytes = new byte[in.available()];
+		in.readFully(bytes);
+		this.value = ByteBuffer.wrap(bytes);
 	}
 
 	/**

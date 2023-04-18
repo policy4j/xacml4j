@@ -179,7 +179,7 @@ final class DefaultEvaluationContextHandler
 				v = resolve(context, entitySelector)
 				          .flatMap(b->b.single())
 				          .map(EntityValue.class::cast)
-				          .map(EntityValue::value)
+				          .map(EntityValue::get)
 						.flatMap(e->e.resolve(ref));
 			}
 			v.ifPresent(bag -> selectorCache.putIfAbsent(ref, bag));

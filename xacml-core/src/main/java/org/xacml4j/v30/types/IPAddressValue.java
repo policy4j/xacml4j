@@ -60,7 +60,7 @@ public final class IPAddressValue extends SingleValue<IPAddress>
      * @return {@link InetAddress}
      */
     public InetAddress getAddress(){
-        return value().getAddress();
+        return get().getAddress();
     }
 
     /**
@@ -71,7 +71,7 @@ public final class IPAddressValue extends SingleValue<IPAddress>
      * if mask is not specified
      */
     public InetAddress getMask(){
-        return value().getMask();
+        return get().getMask();
     }
 
     /**
@@ -80,10 +80,10 @@ public final class IPAddressValue extends SingleValue<IPAddress>
      * @return {@link PortRange} defaultProvider
      */
     public PortRange getRange(){
-        return value().getRange();
+        return get().getRange();
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 }

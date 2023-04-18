@@ -48,8 +48,8 @@ public final class BooleanValue extends SingleValue<Boolean>
                     BooleanValue.TRUE: BooleanValue.FALSE;
         }
         if (v instanceof StringValue) {
-            return Boolean.parseBoolean(((StringValue)v).value())?
-                    BooleanValue.TRUE: BooleanValue.FALSE;
+            return Boolean.parseBoolean(((StringValue)v).get()) ?
+                    BooleanValue.TRUE : BooleanValue.FALSE;
         }
         if (v instanceof Boolean) {
             return (Boolean)v? BooleanValue.TRUE: BooleanValue.FALSE;
@@ -68,6 +68,6 @@ public final class BooleanValue extends SingleValue<Boolean>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(Boolean.toString(value()));
+        return StringValue.of(Boolean.toString(get()));
     }
 }

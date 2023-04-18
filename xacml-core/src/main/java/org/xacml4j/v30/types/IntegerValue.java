@@ -53,31 +53,31 @@ public final class IntegerValue
     }
 
     public StringValue toStringValue(){
-        return StringValue.of(value().toString());
+        return StringValue.of(get().toString());
     }
     public DoubleValue toDoubleValue(){
-        return DoubleValue.of(value());
+        return DoubleValue.of(get());
     }
 
     public IntegerValue add(IntegerValue d){
-        return  new IntegerValue(value() + d.value());
+        return  new IntegerValue(get() + d.get());
     }
 
     public IntegerValue subtract(IntegerValue d){
-        return  new IntegerValue(value() - d.value());
+        return  new IntegerValue(get() - d.get());
     }
 
     public IntegerValue multiply(IntegerValue d){
-        return  new IntegerValue(value() * d.value());
+        return  new IntegerValue(get() * d.get());
     }
 
     public DoubleValue divide(IntegerValue d){
-        Preconditions.checkArgument(d.value() != null);
-        return DoubleValue.of(value() / d.value());
+        Preconditions.checkArgument(d.get() != null);
+        return DoubleValue.of(get() / d.get());
     }
 
     public IntegerValue mod(IntegerValue d){
-        Preconditions.checkArgument(d.value() != null);
-        return IntegerValue.of(value() % d.value());
+        Preconditions.checkArgument(d.get() != null);
+        return IntegerValue.of(get() % d.get());
     }
 }

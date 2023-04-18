@@ -94,7 +94,7 @@ interface ExpressionTypeBuilder
  	 			Value v = (Value)e;
  	 			AttributeValueType exp = factory.createAttributeValueType();
  	 			exp.setDataType(v.getEvaluatesTo().getTypeId());
- 				exp.getContent().add(v.value());
+ 				exp.getContent().add(v.get());
  				return factory.createAttributeValue(exp);
  	 		}
  		},

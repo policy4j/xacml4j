@@ -37,8 +37,8 @@ public class DoubleTypeTest
 	{
 		DoubleValue v0 = XacmlTypes.DOUBLE.of(1.0d);
 		DoubleValue v1 = XacmlTypes.DOUBLE.of(-2.0d);
-		assertEquals("1.0", v0.toStringExp().value());
-		assertEquals("-2.0", v1.toStringExp().value());
+		assertEquals("1.0", v0.toStringExp().get());
+		assertEquals("-2.0", v1.toStringExp().get());
 	}
 
 
@@ -52,7 +52,7 @@ public class DoubleTypeTest
 		assertTrue(v0.equals(v2));
 		DoubleValue v0Nan = XacmlTypes.DOUBLE.of(Double.NaN);
 		DoubleValue v1Nan = XacmlTypes.DOUBLE.of(Double.NaN);
-		assertEquals("NaN", v0Nan.toStringExp().value());
+		assertEquals("NaN", v0Nan.toStringExp().get());
 		assertFalse(v0.equals(v0Nan));
 		assertTrue(v0Nan.equals(v0Nan));
 		assertFalse(v1Nan.equals(v0));

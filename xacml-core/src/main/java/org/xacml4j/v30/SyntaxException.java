@@ -24,6 +24,7 @@ package org.xacml4j.v30;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.w3c.dom.Element;
 import org.xacml4j.util.DOMUtil;
@@ -63,8 +64,43 @@ public class SyntaxException extends EvaluationException
 
 	public static SyntaxException invalidAttributeValue(Object v, ValueType expectedType){
 		return new SyntaxException(
-				format("Invalid XACML type=\"%s\" attribute value=\"%s\"", expectedType.getShortTypeId(), v));
+				format("Invalid XACML type=\"%s\" attribute value=\"%s\"",
+				       expectedType.getShortTypeId(), v));
 	}
+
+	public static SyntaxException invalidValueConversionToXacml(Object convertFrom,
+	                                                            Object fromType,
+	                                                            ValueType toType){
+		return invalidValueConversionToXacml(convertFrom, fromType, toType, null);
+	}
+
+	public static SyntaxException invalidValueConversionToXacml(Object convertFrom,
+	                                                            Object fromType,
+	                                                            ValueType toType,
+	                                                            Throwable e){
+		return new SyntaxException(
+				format("Failed value conversion to XACML type=\"%s\" " +
+						       "from value=\"%s\" of type=\"%s\" error=\"%s\"",
+				       toType.getShortTypeId(), convertFrom, fromType,
+				       Optional.ofNullable(e).map(ex->ex.getMessage()).orElse(null)));
+	}
+
+	public static SyntaxException invalidValueConversionFromXacml(Value convertFrom,
+	                                                              ValueType expectedXacmlType,
+	                                                              Object toType){
+		return invalidConversionFromXacml(convertFrom, expectedXacmlType, toType, null);
+	}
+
+	public static SyntaxException invalidConversionFromXacml(Value convertFrom,
+	                                                         ValueType expectedXacmlType,
+	                                                         Object toType, Throwable e){
+		return new SyntaxException(
+				format("Failed value conversion from XACML type=\"%s\" " +
+						       "expected type=\"%s\" to type=\"%s\" error=\"%s\"",
+				       convertFrom.getEvaluatesTo(), expectedXacmlType, convertFrom, toType,
+				       Optional.ofNullable(e).map(ex->ex.getMessage()).orElse(null)));
+	}
+
 
 	public static SyntaxException invalidDataTypeId(Object v){
 		return new SyntaxException(

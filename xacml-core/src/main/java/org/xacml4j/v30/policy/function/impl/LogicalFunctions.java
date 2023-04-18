@@ -70,7 +70,7 @@ public final class LogicalFunctions
 	{
 		Boolean r = Boolean.TRUE;
 		for(Expression e : values){
-			r &= ((BooleanValue) e.evaluate(context)).value();
+			r &= ((BooleanValue) e.evaluate(context)).get();
 			if(!r){
 				break;
 			}
@@ -84,7 +84,7 @@ public final class LogicalFunctions
 	public static BooleanValue not(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue v)
 	{
-		return XacmlTypes.BOOLEAN.of(!v.value());
+		return XacmlTypes.BOOLEAN.of(!v.get());
 	}
 
 	/**
@@ -108,7 +108,7 @@ public final class LogicalFunctions
 	{
 		Boolean r = Boolean.FALSE;
 		for(Expression e : values){
-			Boolean v = ((BooleanValue)e.evaluate(context)).value();
+			Boolean v = ((BooleanValue)e.evaluate(context)).get();
 			r |= v;
 			if(r){
 				break;
@@ -146,23 +146,23 @@ public final class LogicalFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression...values)
 		throws EvaluationException
 	{
-		if(values.length < n.value()){
+		if(values.length < n.get()){
 			throw new IllegalArgumentException(String.format(
 					"Number of arguments=\"%s\" is less " +
 					"than minimum required number=\"%s\"",
-					values.length, n.value()));
+					values.length, n.get()));
 		}
-		if(n.value() > Integer.MAX_VALUE){
+		if(n.get() > Integer.MAX_VALUE){
 			throw new IllegalArgumentException(String.format(
 					"First parameter=\"%s\" is bigger than=\"%d\"",
 					n, Integer.MAX_VALUE));
 		}
 		BooleanValue TRUE = XacmlTypes.BOOLEAN.of(true);
-		if(n.value() == 0){
+		if(n.get() == 0){
 			return TRUE;
 		}
 		int count = 0;
-		int num = n.value().intValue();
+		int num = n.get().intValue();
 		for (Expression value : values) {
 			ValueExp v = value.evaluate(context);
 			if (v.equals(TRUE)) {

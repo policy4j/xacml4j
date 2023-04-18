@@ -91,7 +91,7 @@ public interface TypeToString extends TypeCapability
 			@Override
 			public String toString(Value v) {
 				AnyURIValue anyUri = (AnyURIValue)v;
-				return anyUri.value().toString();
+				return anyUri.get().toString();
 			}
 		},
 		BOOLEAN(XacmlTypes.BOOLEAN){
@@ -105,7 +105,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				BooleanValue boolVal = (BooleanValue)v;
-				return boolVal.value().toString();
+				return boolVal.get().toString();
 			}
 		},
 		BASE64BINARY(XacmlTypes.BASE64BINARY){
@@ -119,7 +119,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				Base64BinaryValue base64Value = (Base64BinaryValue)v;
-				return base64Value.value().toBase64Encoded();
+				return base64Value.get().toBase64Encoded();
 			}
 		},
 		DATE(XacmlTypes.DATE){
@@ -133,7 +133,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DateValue d = (DateValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		},
 		DATETIME(XacmlTypes.DATETIME){
@@ -147,7 +147,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DateTimeValue d = (DateTimeValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		},
 		DAYTIMEDURATION(XacmlTypes.DAYTIMEDURATION){
@@ -161,7 +161,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DayTimeDurationValue d = (DayTimeDurationValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		},
 		DNSNAME(XacmlTypes.DNSNAME){
@@ -175,7 +175,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DNSNameValue d = (DNSNameValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		},
 		DOUBLE(XacmlTypes.DOUBLE){
@@ -189,7 +189,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				DoubleValue d = (DoubleValue)v;
-				return d.value().toString();
+				return d.get().toString();
 			}
 		},
 		HEXBINARY(XacmlTypes.HEXBINARY){
@@ -203,7 +203,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				HexBinaryValue d = (HexBinaryValue)v;
-				return d.value().toHexEncoded();
+				return d.get().toHexEncoded();
 			}
 		},
 		INTEGER(XacmlTypes.INTEGER){
@@ -217,7 +217,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				IntegerValue d = (IntegerValue)v;
-				return d.value().toString();
+				return d.get().toString();
 			}
 		},
 		IPADDRESS(XacmlTypes.IPADDRESS){
@@ -231,7 +231,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				IPAddressValue d = (IPAddressValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		},
 		RFC822NAME(XacmlTypes.RFC822NAME){
@@ -245,7 +245,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				RFC822NameValue d = (RFC822NameValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		},
 		STRING(XacmlTypes.STRING){
@@ -259,7 +259,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				StringValue d = (StringValue)v;
-				return d.value();
+				return d.get();
 			}
 		},
 		TIME(XacmlTypes.TIME){
@@ -273,7 +273,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				TimeValue d = (TimeValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		},
 		X500NAME(XacmlTypes.X500NAME){
@@ -287,7 +287,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				X500NameValue d = (X500NameValue)v;
-				return d.value().toString();
+				return d.get().toString();
 			}
 		},
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
@@ -300,7 +300,7 @@ public interface TypeToString extends TypeCapability
 			public String toString(Value v) {
 				Objects.requireNonNull(v);
 				YearMonthDurationValue d = (YearMonthDurationValue)v;
-				return d.value().toXacmlString();
+				return d.get().toXacmlString();
 			}
 		};
 

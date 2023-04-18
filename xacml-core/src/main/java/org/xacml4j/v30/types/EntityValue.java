@@ -46,19 +46,19 @@ public class EntityValue extends SingleValue<Entity>
     }
 
     public Stream<Attribute> stream(){
-        return value().stream();
+        return get().stream();
     }
 
     public Optional<BagOfValues> resolve(AttributeDesignatorKey designatorKey){
-        return value().resolve(designatorKey);
+        return get().resolve(designatorKey);
     }
 
     public Optional<Content> getContent(){
-        return value().getContent();
+        return get().getContent();
     }
 
     public Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
-        return value().resolve(selectorKey);
+        return get().resolve(selectorKey);
     }
 
     public static EntityValue of(Entity entity){

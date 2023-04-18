@@ -67,7 +67,7 @@ public final class ArithmeticFunctions
 	{
 		Long sum = 0L;
 		for(IntegerValue v : values){
-			sum += v.value();
+			sum += v.get();
 		}
 		return XacmlTypes.INTEGER.of(sum);
 	}
@@ -80,7 +80,7 @@ public final class ArithmeticFunctions
 	{
 		Long value = 1L;
 		for(IntegerValue v : values){
-			value *= v.value();
+			value *= v.get();
 		}
 		return XacmlTypes.INTEGER.of(value);
 	}
@@ -93,7 +93,7 @@ public final class ArithmeticFunctions
 	{
 		Double sum = 0.0;
 		for(DoubleValue v : values){
-			sum += v.value();
+			sum += v.get();
 		}
 		return XacmlTypes.DOUBLE.of(sum);
 	}
@@ -106,7 +106,7 @@ public final class ArithmeticFunctions
 	{
 		Double value = 1.0;
 		for(DoubleValue v : values){
-			value *= v.value();
+			value *= v.get();
 		}
 		return XacmlTypes.DOUBLE.of(value);
 	}
@@ -116,7 +116,7 @@ public final class ArithmeticFunctions
 	public static IntegerValue abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue v)
 	{
-		return XacmlTypes.INTEGER.of(Math.abs(v.value()));
+		return XacmlTypes.INTEGER.of(Math.abs(v.get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs", shortId = "double-abs")
@@ -124,7 +124,7 @@ public final class ArithmeticFunctions
 	public static DoubleValue abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
 	{
-		return XacmlTypes.DOUBLE.of(Math.abs(v.value()));
+		return XacmlTypes.DOUBLE.of(Math.abs(v.get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:floor", shortId = "floor")
@@ -132,7 +132,7 @@ public final class ArithmeticFunctions
 	public static DoubleValue floor(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
 	{
-		return XacmlTypes.DOUBLE.of(Math.floor(v.value()));
+		return XacmlTypes.DOUBLE.of(Math.floor(v.get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:round", shortId = "round")
@@ -140,7 +140,7 @@ public final class ArithmeticFunctions
 	public static DoubleValue round(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
 	{
-		return XacmlTypes.DOUBLE.of(Math.round(v.value()));
+		return XacmlTypes.DOUBLE.of(Math.round(v.get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract", shortId = "double-subtract")
@@ -158,7 +158,7 @@ public final class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		Preconditions.checkArgument(b.value() != 0);
+		Preconditions.checkArgument(b.get() != 0);
 		return a.divide(b);
 	}
 
@@ -168,7 +168,7 @@ public final class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		Preconditions.checkArgument(b.value() != 0);
+		Preconditions.checkArgument(b.get() != 0);
 		return a.divide(b);
 	}
 

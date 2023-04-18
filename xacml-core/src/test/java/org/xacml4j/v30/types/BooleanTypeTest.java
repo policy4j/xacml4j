@@ -39,22 +39,22 @@ public class BooleanTypeTest
 	public void testValueOf()
 	{
 		BooleanValue a = XacmlTypes.BOOLEAN.of("false");
-		assertFalse(a.value());
+		assertFalse(a.get());
 		BooleanValue a1 = XacmlTypes.BOOLEAN.of("true");
-		assertTrue(a1.value());
+		assertTrue(a1.get());
 	}
 
 	@Test
 	public void fromToXacmlString()
 	{
 		BooleanValue v = XacmlTypes.BOOLEAN.of("True");
-		assertEquals(Boolean.TRUE, v.value());
+		assertEquals(Boolean.TRUE, v.get());
 		v = XacmlTypes.BOOLEAN.of("TRUE");
-		assertEquals(Boolean.TRUE, v.value());
+		assertEquals(Boolean.TRUE, v.get());
 		v = XacmlTypes.BOOLEAN.of("FALSE");
-		assertEquals(Boolean.FALSE, v.value());
+		assertEquals(Boolean.FALSE, v.get());
 		v = XacmlTypes.BOOLEAN.of("False");
-		assertEquals(Boolean.FALSE, v.value());
+		assertEquals(Boolean.FALSE, v.get());
 	}
 
 	@Test

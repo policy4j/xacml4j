@@ -264,7 +264,7 @@ public interface TypeToXacml30 extends TypeCapability
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
 				xacml30.setDataType(v.getEvaluatesTo().getTypeId());
-				Entity entity = ((EntityValue)v).value();
+				Entity entity = ((EntityValue)v).get();
 
 				JAXBUtils.from(entity.getContent()).
 						ifPresent(c->xacml30

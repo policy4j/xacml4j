@@ -131,7 +131,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		if(!content.isPresent()){
 			throw new RequestSyntaxException(String.format("Request attributes category=\"%s\" content " +
 					"for selector=\"%s\" must be specified",
-					category.getCategoryId(), path.value()));
+					category.getCategoryId(), path.get()));
 		}
 		try
 		{

@@ -42,7 +42,7 @@ public final class DNSNameValue extends SingleValue<DNSName>
     }
 
     static DNSNameValue of(StringValue v){
-        return DNSNameValue.of(v.value());
+        return DNSNameValue.of(v.get());
     }
 
     static DNSNameValue of(DNSName v){
@@ -50,6 +50,6 @@ public final class DNSNameValue extends SingleValue<DNSName>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 }

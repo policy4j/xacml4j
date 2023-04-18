@@ -53,34 +53,34 @@ public final class StringValue extends SingleValue<String>
     }
 
        public boolean equalsIgnoreCase(StringValue v){
-        return value().equalsIgnoreCase(v.value());
+        return get().equalsIgnoreCase(v.get());
     }
 
     public StringValue concat(StringValue v){
-        return StringValue.of(value() + v);
+        return StringValue.of(get() + v);
     }
 
     public StringValue trim(){
-        return StringValue.of(value().trim());
+        return StringValue.of(get().trim());
     }
 
     public boolean startsWith(StringValue v){
-        return  value().startsWith(v.value());
+        return  get().startsWith(v.get());
     }
 
     public boolean contains(StringValue v){
-        return  value().contains(v.value());
+        return  get().contains(v.get());
     }
 
     public boolean endsWith(StringValue v){
-        return  value().endsWith(v.value());
+        return  get().endsWith(v.get());
     }
 
     public StringValue toLowerCase(){
-        return StringValue.of(value().toLowerCase());
+        return StringValue.of(get().toLowerCase());
     }
 
     public StringValue toUpperCase(){
-        return StringValue.of(value().toUpperCase());
+        return StringValue.of(get().toUpperCase());
     }
 }

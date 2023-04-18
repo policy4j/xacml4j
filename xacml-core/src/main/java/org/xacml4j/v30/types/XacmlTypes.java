@@ -112,7 +112,7 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof StringValue) {
 				a = Optional.of(
 						DNSNameValue.of(
-								((StringValue) v).value()));
+								((StringValue) v).get()));
 			}
 			if (v instanceof DNSNameValue) {
 				a = Optional.of((DNSNameValue) v);
@@ -129,7 +129,7 @@ public enum XacmlTypes implements ValueType
 				return DoubleValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				return DoubleValue.of(((StringValue) v).value());
+				return DoubleValue.of(((StringValue) v).get());
 			}
 			return DoubleValue.of((Number) v);
 		}
@@ -144,7 +144,7 @@ public enum XacmlTypes implements ValueType
 				return IntegerValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				return IntegerValue.of(((StringValue) v).value());
+				return IntegerValue.of(((StringValue) v).get());
 			}
 			return IntegerValue.of((Number) v);
 		}
@@ -155,7 +155,7 @@ public enum XacmlTypes implements ValueType
 				return HexBinaryValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				return HexBinaryValue.of(((StringValue) v).value());
+				return HexBinaryValue.of(((StringValue) v).get());
 			}
 			if (v instanceof byte[]) {
 				return HexBinaryValue.of((byte[]) v);
@@ -169,7 +169,7 @@ public enum XacmlTypes implements ValueType
 				return IPAddressValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				return IPAddressValue.of(((StringValue) v).value());
+				return IPAddressValue.of(((StringValue) v).get());
 			}
 			return IPAddressValue.of((IPAddress) v);
 		}
@@ -177,7 +177,7 @@ public enum XacmlTypes implements ValueType
 	STRING("http://www.w3.org/2001/XMLSchema#string", "string") {
 		public StringValue of(Object v, Object... params) {
 			if (v instanceof StringValue) {
-				return StringValue.of(((StringValue) v).value());
+				return StringValue.of(((StringValue) v).get());
 			}
 			return StringValue.of((String) v);
 		}
@@ -193,7 +193,7 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof StringValue) {
 				a = Optional.of(
 						RFC822NameValue.of(
-								((StringValue) v).value()));
+								((StringValue) v).get()));
 			}
 			if (v instanceof RFC822Name) {
 				a = Optional.of(
@@ -214,7 +214,7 @@ public enum XacmlTypes implements ValueType
 			}
 			if (v instanceof StringValue) {
 				a = Optional.of(
-						TimeValue.of(((StringValue) v).value()));
+						TimeValue.of(((StringValue) v).get()));
 			}
 			if (v instanceof ZonedDateTime) {
 				a = Optional.of(
@@ -259,7 +259,7 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof StringValue) {
 				a = Optional.of(
 						X500NameValue.of(
-								((StringValue) v).value()));
+								((StringValue) v).get()));
 			}
 			if (v instanceof X500Principal) {
 				a = Optional.of(
@@ -338,7 +338,7 @@ public enum XacmlTypes implements ValueType
 				return YearMonthDurationValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				return YearMonthDurationValue.of(((StringValue) v).value());
+				return YearMonthDurationValue.of(((StringValue) v).get());
 			}
 			if (v instanceof Duration) {
 				return YearMonthDurationValue.of((Duration) v);
@@ -401,7 +401,7 @@ public enum XacmlTypes implements ValueType
 		if(typeId instanceof Value){
 			Value a = (Value)typeId;
 			if(a.getEvaluatesTo().equals(XacmlTypes.STRING) || a.getEvaluatesTo().equals(ANYURI)){
-				return systemTypes.forType(a.value().toString());
+				return systemTypes.forType(a.get().toString());
 			}
 		}
 		return Optional.empty();

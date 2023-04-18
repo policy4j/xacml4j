@@ -35,9 +35,9 @@ public class DateTypeTest
 	@Test
 	public void testFromXacmlString(){
 		DateValue value = XacmlTypes.DATE.of("2002-09-24Z");
-		assertEquals(2002, value.value().getYear());
-		assertEquals(9, value.value().getMonth());
-		assertEquals(24, value.value().getDay());
+		assertEquals(2002, value.get().getYear());
+		assertEquals(9, value.get().getMonth());
+		assertEquals(24, value.get().getDay());
 		TypeToString toString = TypeToString.Types.DATE;
 		assertEquals("2002-09-24Z", toString.toString(value));
 	}
@@ -57,9 +57,9 @@ public class DateTypeTest
 		System.out.println(d1.toStringExp());
 		System.out.println(now);
 		assertEquals(d1, d2);
-		assertEquals(d1.value().getDay(), now.get(Calendar.DAY_OF_MONTH));
-		assertEquals(d1.value().getYear(), now.get(Calendar.YEAR));
-		assertEquals(d1.value().getMonth(), now.get(Calendar.MONTH) + 1);
+		assertEquals(d1.get().getDay(), now.get(Calendar.DAY_OF_MONTH));
+		assertEquals(d1.get().getYear(), now.get(Calendar.YEAR));
+		assertEquals(d1.get().getMonth(), now.get(Calendar.MONTH) + 1);
 	}
 
 	@Test

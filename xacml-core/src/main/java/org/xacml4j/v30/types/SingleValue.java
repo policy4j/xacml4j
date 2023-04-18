@@ -60,7 +60,7 @@ public class SingleValue<T>
     }
 
     @Override
-    public final T value(){
+    public final T get(){
         return value;
     }
 
@@ -88,7 +88,7 @@ public class SingleValue<T>
         }
         Value e = (Value) o;
         return type.equals(e.getEvaluatesTo()) &&
-                value.equals(e.value());
+                value.equals(e.get());
     }
 
     @Override

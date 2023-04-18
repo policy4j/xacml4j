@@ -44,7 +44,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value() > b.value());
+		return XacmlTypes.BOOLEAN.of(a.get() > b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than")
@@ -53,7 +53,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value() < b.value());
+		return XacmlTypes.BOOLEAN.of(a.get() < b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal")
@@ -62,7 +62,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() > b.value());
+		return XacmlTypes.BOOLEAN.of(a.get().equals(b.get()) || a.get() > b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than-or-equal")
@@ -71,7 +71,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() < b.value());
+		return XacmlTypes.BOOLEAN.of(a.get().equals(b.get()) || a.get() < b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than")
@@ -80,7 +80,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value() > b.value());
+		return XacmlTypes.BOOLEAN.of(a.get() > b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than")
@@ -89,7 +89,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value() < b.value());
+		return XacmlTypes.BOOLEAN.of(a.get() < b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than-or-equal")
@@ -98,7 +98,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() > b.value());
+		return XacmlTypes.BOOLEAN.of(a.get().equals(b.get()) || a.get() > b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than-or-equal")
@@ -107,6 +107,6 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value().equals(b.value()) || a.value() < b.value());
+		return XacmlTypes.BOOLEAN.of(a.get().equals(b.get()) || a.get() < b.get());
 	}
 }

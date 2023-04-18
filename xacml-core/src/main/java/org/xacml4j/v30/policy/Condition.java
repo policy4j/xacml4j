@@ -89,7 +89,7 @@ public class Condition implements PolicyElement
 		try
 		{
 			BooleanValue result = predicate.evaluate(context);
-			return result.value()?ConditionResult.TRUE:ConditionResult.FALSE;
+			return result.get() ? ConditionResult.TRUE : ConditionResult.FALSE;
 		}catch(EvaluationException e){
 			context.setEvaluationStatus(e.getStatus());
 			return ConditionResult.INDETERMINATE;

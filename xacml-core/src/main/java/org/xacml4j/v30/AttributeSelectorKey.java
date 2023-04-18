@@ -155,8 +155,8 @@ public final class AttributeSelectorKey
 
 		public Builder path(PathValue xpath,
                             boolean ignoreCategoryFromPath){
-			this.path = xpath.value().getPath();
-			this.type = xpath.value().getType();
+			this.path = xpath.get().getPath();
+			this.type = xpath.get().getType();
 			return ignoreCategoryFromPath?this:
 					category(xpath.getCategory().orElse(null));
 		}

@@ -240,7 +240,7 @@ public class Xacml20RequestContextUnmarshallerTest
 		assertNotNull(resourceId);
 		PathValue xpath = (PathValue)Iterables.getOnlyElement(resourceId.getValues());
 		assertEquals(CategoryId.RESOURCE, xpath.getCategory().get());
-		assertEquals("//md:record/md:patient", xpath.value().getPath());
+		assertEquals("//md:record/md:patient", xpath.get().getPath());
 	}
 
 }

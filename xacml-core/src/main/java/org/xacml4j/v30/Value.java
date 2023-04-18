@@ -42,17 +42,12 @@ public interface Value<T>
 	 */
 	ValueType getEvaluatesTo();
 
-
 	/**
 	 * Gets attribute expression value
 	 *
 	 * @return an attribute expression value
 	 */
-	T value();
-
-	default T get(){
-		return  value();
-	}
+	T get();
 
 	/**
 	 * Creates bag with this attribute in the bag

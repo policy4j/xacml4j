@@ -244,7 +244,7 @@ public interface TypeToGSon extends TypeCapability
 		ENTITY(XacmlTypes.ENTITY){
 			@Override
 			public JsonElement toJson(Value v, JsonSerializationContext ctx) {
-				Entity entity = ((EntityValue)v).value();
+				Entity entity = ((EntityValue)v).get();
 				JsonObject o = new JsonObject();
 				JsonElement element = ctx.serialize(entity.getAttributes());
 				o.add(JsonProperties.ATTRIBUTE_PROPERTY, element);

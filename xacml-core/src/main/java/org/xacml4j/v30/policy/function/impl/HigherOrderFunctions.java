@@ -74,7 +74,7 @@ public final class HigherOrderFunctions
 	{
 		for(Value valueFromBag : bag.values()){
 			BooleanValue r = ref.invoke(context, value, valueFromBag);
-			if(r.value()){
+			if(r.get()){
 				return XacmlTypes.BOOLEAN.of(true);
 			}
 		}
@@ -92,7 +92,7 @@ public final class HigherOrderFunctions
 	{
 		for(Value valueFromBag : bag.values()){
 			BooleanValue r = ref.invoke(context, value, valueFromBag);
-			if(!r.value()){
+			if(!r.get()){
 				return XacmlTypes.BOOLEAN.of(false);
 			}
 		}
@@ -111,7 +111,7 @@ public final class HigherOrderFunctions
 		for(Value aValue : a.values()){
 			for(Value bValue : b.values()){
 				BooleanValue r = ref.invoke(context, aValue, bValue);
-				if(r.value()){
+				if(r.get()){
 					return XacmlTypes.BOOLEAN.of(true);
 				}
 			}
@@ -130,7 +130,7 @@ public final class HigherOrderFunctions
 	{
 		boolean result = true;
 		for(Value v : a.values()){
-			result  &= anyOf(context, ref, v, b).value();
+			result  &= anyOf(context, ref, v, b).get();
 			if(!result){
 				break;
 			}
@@ -149,7 +149,7 @@ public final class HigherOrderFunctions
 	{
 		for(Value va : a.values())
 		{
-			boolean result = allOf(context, ref, va, b).value();
+			boolean result = allOf(context, ref, va, b).get();
 			if(result){
 				return XacmlTypes.BOOLEAN.of(true);
 			}
@@ -170,7 +170,7 @@ public final class HigherOrderFunctions
 		{
 			for(Value bValue : b.values()){
 				BooleanValue r = ref.invoke(context, aValue, bValue);
-				if(!r.value()){
+				if(!r.get()){
 					return XacmlTypes.BOOLEAN.of(false);
 				}
 			}

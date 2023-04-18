@@ -45,17 +45,17 @@ public class DayTimeValueDurationTypeTest
 	public void testFromXacmlString()
 	{
 		DayTimeDurationValue v1 = XacmlTypes.DAYTIMEDURATION.of("P3DT10H30M");
-		assertEquals(3, v1.value().getDays());
-		assertEquals(10, v1.value().getHours());
-		assertEquals(30, v1.value().getMinutes());
-		assertEquals(0, v1.value().getSeconds());
+		assertEquals(3, v1.get().getDays());
+		assertEquals(10, v1.get().getHours());
+		assertEquals(30, v1.get().getMinutes());
+		assertEquals(0, v1.get().getSeconds());
 		TypeToString toString = TypeToString.forType(XacmlTypes.DAYTIMEDURATION).get();
 		assertEquals("P3DT10H30M", toString.toString(v1));
 		v1 = (DayTimeDurationValue)toString.fromString("P3DT10H30M10S");
-		assertEquals(3, v1.value().getDays());
-		assertEquals(10, v1.value().getHours());
-		assertEquals(30, v1.value().getMinutes());
-		assertEquals(10, v1.value().getSeconds());
+		assertEquals(3, v1.get().getDays());
+		assertEquals(10, v1.get().getHours());
+		assertEquals(30, v1.get().getMinutes());
+		assertEquals(10, v1.get().getSeconds());
 	}
 
 	@Test

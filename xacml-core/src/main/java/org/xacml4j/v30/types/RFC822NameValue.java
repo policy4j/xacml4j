@@ -46,7 +46,7 @@ public final class RFC822NameValue extends SingleValue<RFC822Name>
     }
 
     static RFC822NameValue of(StringValue v){
-        return of(v.value());
+        return of(v.get());
     }
 
     static RFC822NameValue of(RFC822Name n){
@@ -54,6 +54,6 @@ public final class RFC822NameValue extends SingleValue<RFC822Name>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 }

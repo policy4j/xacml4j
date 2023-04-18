@@ -43,7 +43,7 @@ public final class X500NameValue extends SingleValue<X500Principal>
     }
 
     static X500NameValue of(StringValue v){
-        return of(v.value());
+        return of(v.get());
     }
 
     static X500NameValue of(X500Principal p){
@@ -51,7 +51,7 @@ public final class X500NameValue extends SingleValue<X500Principal>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toString());
+        return StringValue.of(get().toString());
     }
 
 }

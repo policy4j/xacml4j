@@ -79,7 +79,7 @@ public final class AnyURIValue extends SingleValue<URI>
     }
 
     static AnyURIValue of(StringValue v){
-        return of(v.value());
+        return of(v.get());
     }
 
     static AnyURIValue of(URL v){
@@ -97,10 +97,10 @@ public final class AnyURIValue extends SingleValue<URI>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toString());
+        return StringValue.of(get().toString());
     }
 
     public AnyURIValue normalize(){
-        return new AnyURIValue(value().normalize());
+        return new AnyURIValue(get().normalize());
     }
 }

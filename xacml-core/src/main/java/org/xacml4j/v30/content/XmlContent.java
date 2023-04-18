@@ -208,7 +208,7 @@ public final class XmlContent implements Content
                     PathValue xpathAttr = (PathValue) v.iterator().next();
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Evaluating " +
-                                "contextSelector xpath=\"{}\"", xpathAttr.value());
+                                "contextSelector xpath=\"{}\"", xpathAttr.get());
                     }
                     PathValue xpath = (PathValue)v.iterator().next();
                     if(!Objects.equals(xpath.getCategory().orElse(null),
@@ -217,7 +217,7 @@ public final class XmlContent implements Content
                                                                                 ()->String.format("and ContextSelectorId.Category=\"%s\"",
                                         xpath.getCategory().orElse(null)));
                     }
-                    context = xPathProvider.evaluateToNode(xpathAttr.value().getPath(), contextNode);
+                    context = xPathProvider.evaluateToNode(xpathAttr.get().getPath(), contextNode);
                 }
             }
             NodeList nodeSet = xPathProvider.evaluateToNodeSet(selectorKey.getPath(), context == null?contextNode:context);

@@ -47,7 +47,7 @@ public final class SpecialMatchFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue pattern,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822NameValue rfc822Name)
 	{
-		 return XacmlTypes.BOOLEAN.of(rfc822Name.value().matches(pattern.value()));
+		 return XacmlTypes.BOOLEAN.of(rfc822Name.get().matches(pattern.get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-match")
@@ -56,8 +56,8 @@ public final class SpecialMatchFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500NameValue a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500NameValue b)
 	{
-		 String n0 = a.value().getName(X500Principal.CANONICAL);
-		 String n1 = b.value().getName(X500Principal.CANONICAL);
+		 String n0 = a.get().getName(X500Principal.CANONICAL);
+		 String n1 = b.get().getName(X500Principal.CANONICAL);
 		 return XacmlTypes.BOOLEAN.of(n1.endsWith(n0));
 	}
 }

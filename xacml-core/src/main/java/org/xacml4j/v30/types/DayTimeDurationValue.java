@@ -64,15 +64,15 @@ public final class DayTimeDurationValue extends SingleValue<DayTimeDuration>
     }
 
     static DayTimeDurationValue of(StringValue v){
-        return of(v.value());
+        return of(v.get());
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 
     @Override
     public int compareTo(DayTimeDurationValue o) {
-        return value().compareTo(o.value());
+        return get().compareTo(o.get());
     }
 }

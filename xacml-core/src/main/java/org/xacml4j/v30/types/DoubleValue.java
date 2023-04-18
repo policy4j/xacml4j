@@ -54,26 +54,26 @@ public final class DoubleValue extends SingleValue<Double>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toString());
+        return StringValue.of(get().toString());
     }
     public IntegerValue toIntegerValue(){
-        return IntegerValue.of(value().intValue());
+        return IntegerValue.of(get().intValue());
     }
 
     public DoubleValue add(DoubleValue d){
-        return  new DoubleValue(value() + d.value());
+        return  new DoubleValue(get() + d.get());
     }
 
     public DoubleValue subtract(DoubleValue d){
-        return  new DoubleValue(value() - d.value());
+        return  new DoubleValue(get() - d.get());
     }
 
     public DoubleValue multiply(DoubleValue d){
-        return  new DoubleValue(value() * d.value());
+        return  new DoubleValue(get() * d.get());
     }
 
     public DoubleValue divide(DoubleValue d){
-        return  new DoubleValue(value() / d.value());
+        return  new DoubleValue(get() / d.get());
     }
 
 }

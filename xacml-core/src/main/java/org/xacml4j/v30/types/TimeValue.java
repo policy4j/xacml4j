@@ -60,12 +60,12 @@ public final class TimeValue
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 
 
     @Override
     public int compareTo(TimeValue v) {
-        return value().compareTo(v.value());
+        return get().compareTo(v.get());
     }
 }

@@ -54,7 +54,7 @@ public final class DateValue extends SingleValue<Date>
             return DateValue.of((String) v);
         }
         if (v instanceof StringValue) {
-            return DateValue.of(((StringValue) v).value());
+            return DateValue.of(((StringValue) v).get());
         }
         if (v instanceof Calendar) {
             return DateValue.of((Calendar) v);
@@ -73,7 +73,7 @@ public final class DateValue extends SingleValue<Date>
     }
 
     static DateValue of(StringValue v){
-        return of(v.value());
+        return of(v.get());
     }
 
     static DateValue of(XMLGregorianCalendar v){
@@ -89,19 +89,19 @@ public final class DateValue extends SingleValue<Date>
     }
 
     public StringValue toStringExp(){
-        return StringValue.of(value().toXacmlString());
+        return StringValue.of(get().toXacmlString());
     }
 
     @Override
     public int compareTo(DateValue o) {
-        return value().compareTo(o.value());
+        return get().compareTo(o.get());
     }
 
     public DateValue subtract(YearMonthDurationValue v){
-        return new DateValue(value().subtract(v.value()));
+        return new DateValue(get().subtract(v.get()));
     }
 
     public DateValue add(YearMonthDurationValue v){
-        return new DateValue(value().add(v.value()));
+        return new DateValue(get().add(v.get()));
     }
 }

@@ -49,7 +49,7 @@ public final class NonNumericComparisonFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#string") StringValue a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.value().compareTo(b.value()) > 0);
+		return XacmlTypes.BOOLEAN.of(a.get().compareTo(b.get()) > 0);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-greater-than-or-equal")
@@ -58,7 +58,7 @@ public final class NonNumericComparisonFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#string") StringValue a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		int r = a.value().compareTo(b.value());
+		int r = a.get().compareTo(b.get());
 		return XacmlTypes.BOOLEAN.of(r > 0 || r == 0);
 	}
 
@@ -68,7 +68,7 @@ public final class NonNumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		int r = a.value().compareTo(b.value());
+		int r = a.get().compareTo(b.get());
 		return XacmlTypes.BOOLEAN.of(r < 0);
 	}
 
@@ -78,7 +78,7 @@ public final class NonNumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
 	{
-		int r = a.value().compareTo(b.value());
+		int r = a.get().compareTo(b.get());
 		return XacmlTypes.BOOLEAN.of(r < 0 || r == 0);
 	}
 
@@ -128,9 +128,9 @@ public final class NonNumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") TimeValue b,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") TimeValue c)
 	{
-		Time ac = a.value();
-		Time bc = b.value();
-		Time cc = c.value();
+		Time ac = a.get();
+		Time bc = b.get();
+		Time cc = c.get();
 		Preconditions.checkArgument(b.compareTo(c) <= 0);
 		return XacmlTypes.BOOLEAN.of(ac.compareTo(bc) >= 0 && ac.compareTo(cc) <= 0);
 	}

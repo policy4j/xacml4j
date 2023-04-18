@@ -138,7 +138,7 @@ public final class StringFunctions
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return XacmlTypes.BOOLEAN.of(v.value());
+		return XacmlTypes.BOOLEAN.of(v.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-integer")
@@ -156,7 +156,7 @@ public final class StringFunctions
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return XacmlTypes.INTEGER.of(v.value());
+		return XacmlTypes.INTEGER.of(v.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-double")
@@ -174,7 +174,7 @@ public final class StringFunctions
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return XacmlTypes.DOUBLE.of(v.value());
+		return XacmlTypes.DOUBLE.of(v.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-time")
@@ -192,7 +192,7 @@ public final class StringFunctions
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return XacmlTypes.TIME.of(v.value());
+		return XacmlTypes.TIME.of(v.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-date")
@@ -336,7 +336,7 @@ public final class StringFunctions
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
 	{
-		return XacmlTypes.IPADDRESS.of(v.value());
+		return XacmlTypes.IPADDRESS.of(v.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:string-from-dnsName")

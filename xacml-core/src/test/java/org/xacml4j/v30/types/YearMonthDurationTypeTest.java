@@ -46,7 +46,7 @@ public class YearMonthDurationTypeTest
 	{
 		YearMonthDurationValue v1 = YearMonthDurationValue.of("-P1Y2M");
 		YearMonthDurationValue v2 = YearMonthDurationValue.of("-P1Y2M");
-		assertEquals("-P1Y2M", v1.toStringExp().value());
+		assertEquals("-P1Y2M", v1.toStringExp().get());
 		assertEquals(v1, v2);
 	}
 

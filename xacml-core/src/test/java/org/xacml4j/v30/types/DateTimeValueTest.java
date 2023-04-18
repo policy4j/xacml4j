@@ -42,26 +42,26 @@ public class DateTimeValueTest
 	@Test
 	public void testFromXacmlString(){
 		DateTimeValue value = (DateTimeValue)toString.fromString("2002-05-30T09:30:10-06:00");
-		assertEquals(2002, value.value().getYear());
-		assertEquals(5, value.value().getMonth());
-		assertEquals(30, value.value().getDay());
-		assertEquals(9, value.value().getHour());
-		assertEquals(30, value.value().getMinute());
-		assertEquals(10, value.value().getSecond());
-		assertEquals(-360, value.value().getTimezoneOffset());
+		assertEquals(2002, value.get().getYear());
+		assertEquals(5, value.get().getMonth());
+		assertEquals(30, value.get().getDay());
+		assertEquals(9, value.get().getHour());
+		assertEquals(30, value.get().getMinute());
+		assertEquals(10, value.get().getSecond());
+		assertEquals(-360, value.get().getTimezoneOffset());
 		assertEquals("2002-05-30T09:30:10-06:00", toString.toString(value));
 	}
 
 	@Test
 	public void testFromXacmlStringNoTimeZone(){
 		DateTimeValue value = XacmlTypes.DATETIME.of("2002-05-30T09:30:10");
-		assertEquals(2002, value.value().getYear());
-		assertEquals(5, value.value().getMonth());
-		assertEquals(30, value.value().getDay());
-		assertEquals(9, value.value().getHour());
-		assertEquals(30, value.value().getMinute());
-		assertEquals(10, value.value().getSecond());
-		assertEquals(0, value.value().getTimezoneOffset());
+		assertEquals(2002, value.get().getYear());
+		assertEquals(5, value.get().getMonth());
+		assertEquals(30, value.get().getDay());
+		assertEquals(9, value.get().getHour());
+		assertEquals(30, value.get().getMinute());
+		assertEquals(10, value.get().getSecond());
+		assertEquals(0, value.get().getTimezoneOffset());
 		assertEquals("2002-05-30T09:30:10Z", toString.toString(value));
 
 	}
