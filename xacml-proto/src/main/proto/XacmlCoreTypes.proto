@@ -2,6 +2,10 @@ syntax = "proto3";
 
 import "google/protobuf/any.proto";
 
+option java_multiple_files = true;
+
+package com.xacml4j.xacml.proto;
+
 enum XacmlTypes {
   ANYURI = 0;
   BASE64BINARY = 1;
@@ -23,7 +27,7 @@ enum XacmlTypes {
   ENTITY = 17;
 }
 
-enum Decision
+enum PDecision
 {
   PERMIT = 0;
   DENY = 1;
@@ -34,23 +38,23 @@ enum Decision
   INDETERMINATE_DP = 6;
 }
 
-message Value
+message PValue
 {
   XacmlTypes type = 1;
   google.protobuf.Any value = 2;
 }
 
-message Attribute
+message PAttribute
 {
   string id = 1;
   string issuer = 2;
   bool includeInResult = 3;
-  repeated Value values = 4;
+  repeated PValue values = 4;
 }
 
-message Entity
+message PEntity
 {
   string id = 1;
-  repeated Attribute attributes = 2;
+  repeated PAttribute attributes = 2;
   bytes content = 3;
 }

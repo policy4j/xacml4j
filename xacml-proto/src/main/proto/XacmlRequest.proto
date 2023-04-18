@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "XacmlCoreTypes.proto";
+
+package com.xacml4j.xacml.proto;
+option java_multiple_files = true;
+
+message PRequestContext
+{
+  bool returnPolicyIdList = 1;
+  bool combinedDecision = 2;
+  repeated PCategory categories = 3;
+  repeated PRequestContext requestRefs = 4;
+}
+
+message PResponseContext
+{
+  repeated PResult results = 1;
+}
+
+message PStatus
+{
+  PStatusCode code = 1;
+  string message = 2;
+  PStatusDetail detail = 3;
+}
+
+message PStatusCode
+{
+  PStatusCodeId code = 1;
+  PStatusCode minorStatus = 2;
+}
+
+message PStatusCodeId
+{
+  string id = 1;
+}
+
+message PStatusDetail
+{
+  google.protobuf.Any value = 1;
+}
+
+message PResult
+{
+   PStatus status = 1;
+   PDecision decision = 2;
+   repeated PCategory includeInResult = 3;
+   repeated PObligation obligations = 4;
+   repeated PAdvice advices = 5;
+}
+
+message PObligation
+{
+  string id = 1;
+  repeated PAttributeAssignment attributes = 2;
+}
+
+message PAdvice
+{
+  string id = 1;
+  repeated PAttributeAssignment attributes = 2;
+}
+
+message PAttributeAssignment
+{
+  string id = 1;
+  string issuer = 2;
+  PValue value = 3;
+  string categoryId = 4;
+}
+
+
+message PRequestReference {
+  repeated PCategoryReference categoryRefs = 1;
+}
+
+message PCategory
+{
+  string refId = 1;
+  string categoryId = 2;
+  PEntity entity = 3;
+}
+
+message PCategoryReference {
+  string refId = 1;
+}
+
+
