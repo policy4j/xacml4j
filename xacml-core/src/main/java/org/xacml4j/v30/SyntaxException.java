@@ -26,7 +26,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
 
 
@@ -64,7 +63,7 @@ public class SyntaxException extends EvaluationException
 
 	public static SyntaxException invalidAttributeValue(Object v, ValueType expectedType){
 		return new SyntaxException(
-				format("Invalid XACML type=\"%s\" attribute value=\"%s\"", expectedType.getAbbrevDataTypeId(), v));
+				format("Invalid XACML type=\"%s\" attribute value=\"%s\"", expectedType.getShortTypeId(), v));
 	}
 
 	public static SyntaxException invalidDataTypeId(Object v){

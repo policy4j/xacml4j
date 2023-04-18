@@ -315,12 +315,12 @@ class JavaMethodToFunctionSpecConverter
 					                       String.format(
 												   "Xacml type=\"%s\" does support " +
 														   "default values in annotation",
-					type.getDataTypeId()));
+					type.getTypeId()));
 		}
 		List<Value> defaultValues = new ArrayList<Value>(values.length);
 		for(String v : values){
 			defaultValues.add(fromString.get().fromString(v));
 		}
-		return isBag?type.bag().attributes(defaultValues).build():defaultValues.iterator().next();
+		return isBag ? type.bagBuilder().attributes(defaultValues).build() : defaultValues.iterator().next();
 	}
 }

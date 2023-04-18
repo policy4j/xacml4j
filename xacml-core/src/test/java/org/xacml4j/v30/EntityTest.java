@@ -105,20 +105,20 @@ public class   EntityTest
 								.build())
 				.build();
 
-		assertEquals(XacmlTypes.STRING.bag().value(XacmlTypes.STRING.of("a"), XacmlTypes.STRING.of("bb")).build(),
+		assertEquals(XacmlTypes.STRING.bagBuilder().value(XacmlTypes.STRING.of("a"), XacmlTypes.STRING.of("bb")).build(),
 		             entity.resolve(AttributeDesignatorKey.builder()
 		                                                  .attributeId("testId1")
 		                                                  .dataType(XacmlTypes.STRING)
 		                                                  .category(CategoryId.SUBJECT_ACCESS)
 		                                                  .build()).get());
-		assertEquals(XacmlTypes.INTEGER.bag().value(10).build(),
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().value(10).build(),
 		             entity.resolve(AttributeDesignatorKey.builder()
 		                                                  .attributeId("testId3")
 		                                                  .dataType(XacmlTypes.INTEGER)
 		                                                  .category(CategoryId.SUBJECT_ACCESS)
 		                                                  .build()).get());
 
-		assertEquals(XacmlTypes.DOUBLE.bag().value(0.1).build(),
+		assertEquals(XacmlTypes.DOUBLE.bagBuilder().value(0.1).build(),
 		             entity.resolve(AttributeDesignatorKey.builder()
 		                                                  .attributeId("testId3")
 		                                                  .dataType(XacmlTypes.DOUBLE)
@@ -131,7 +131,7 @@ public class   EntityTest
 
 	@Test
 	public void testEntityType(){
-		assertNotNull(XacmlTypes.getType(XacmlTypes.ENTITY.getDataTypeId()).orElse(null));
+		assertNotNull(XacmlTypes.getType(XacmlTypes.ENTITY.getTypeId()).orElse(null));
 	}
 	@Test
 	public void testEntityEquals(){

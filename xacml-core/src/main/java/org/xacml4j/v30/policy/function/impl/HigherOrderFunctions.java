@@ -32,8 +32,8 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionParametersValidator;
@@ -192,7 +192,7 @@ public final class HigherOrderFunctions
 			values.add((Value)ref.invoke(context, v));
 		}
 		ValueType type = (ValueType)ref.getEvaluatesTo();
-		return type.bag()
+		return type.bagBuilder()
 				.attributes(values)
 				.build();
 	}

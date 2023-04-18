@@ -22,10 +22,11 @@ package org.xacml4j.util;
  * #L%
  */
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.xacml4j.util.JSONUtil.escape;
+import static org.xacml4j.util.JSONUtil.unescape;
 
-import static org.junit.Assert.*;
-import static org.xacml4j.util.JSONUtil.*;
+import org.junit.Test;
 
 public class JSONUtilTest
 {

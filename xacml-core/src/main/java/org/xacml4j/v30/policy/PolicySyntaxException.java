@@ -24,8 +24,6 @@ package org.xacml4j.v30.policy;
 
 import java.lang.reflect.Method;
 
-import javax.xml.stream.Location;
-
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;

@@ -162,7 +162,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#string")
 			StringValue...values){
 		return XacmlTypes.STRING
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -200,7 +200,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#boolean")
 			BooleanValue...values){
 		return XacmlTypes.BOOLEAN
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -238,7 +238,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#integer")
 			IntegerValue...values){
 		return XacmlTypes.INTEGER
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -276,7 +276,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#time")
 			TimeValue...values){
 		return XacmlTypes.TIME
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -314,7 +314,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#double")
 			DoubleValue...values){
 		return XacmlTypes.DOUBLE
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -352,7 +352,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#date")
 			DateValue...values){
 		return XacmlTypes.DATE
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -390,7 +390,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dateTime")
 			DateTimeValue...values){
 		return XacmlTypes.DATETIME
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -428,7 +428,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#anyURI")
 			AnyURIValue...values){
 		return XacmlTypes.ANYURI
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -466,7 +466,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#hexBinary")
 			HexBinaryValue...values){
 		return XacmlTypes.HEXBINARY
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -504,7 +504,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#base64Binary")
 			Base64BinaryValue...values){
 		return XacmlTypes.BASE64BINARY
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -542,7 +542,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
 			DayTimeDurationValue...values){
 		return XacmlTypes.DAYTIMEDURATION
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -583,7 +583,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
 			YearMonthDurationValue...values){
 		return XacmlTypes.YEARMONTHDURATION
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -624,7 +624,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")
 			X500NameValue...values){
 		return XacmlTypes.X500NAME
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -665,7 +665,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")
 			RFC822NameValue...values){
 		return XacmlTypes.RFC822NAME
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -706,7 +706,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress")
 			IPAddressValue...values){
 		return XacmlTypes.IPADDRESS
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -747,7 +747,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")
 			DNSNameValue...values){
 		return XacmlTypes.DNSNAME
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}
@@ -785,7 +785,7 @@ public final class BagFunctions
 			@XacmlFuncParamVarArg(min=0, max=Integer.MAX_VALUE, typeId="urn:oasis:names:tc:xacml:3.0:data-type:entity")
 			EntityValue...values){
 		return XacmlTypes.ENTITY
-				.bag()
+				.bagBuilder()
 				.attribute(values)
 				.build();
 	}

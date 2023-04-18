@@ -82,8 +82,8 @@ public class BooleanTypeTest
 	public void testBagOf()
 	{
 		assertNotNull(XacmlTypes.BOOLEAN.bagType());
-		BagOfValues b1 = XacmlTypes.BOOLEAN.bag().value("true", "false").build();
-		BagOfValues b2 = XacmlTypes.BOOLEAN.bag().value(true, false).build();
+		BagOfValues b1 = XacmlTypes.BOOLEAN.bagBuilder().value("true", "false").build();
+		BagOfValues b2 = XacmlTypes.BOOLEAN.bagBuilder().value(true, false).build();
 		assertEquals(2, b1.size());
 		assertEquals(b1, b2);
 		assertTrue(b1.contains(XacmlTypes.BOOLEAN.of(true)));

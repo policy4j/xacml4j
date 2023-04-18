@@ -111,7 +111,7 @@ public final class TestFunctions
 			attributes.add(v);
 
 		}
-		return XacmlTypes.INTEGER.bag()
+		return XacmlTypes.INTEGER.bagBuilder()
 				.attributes(attributes)
 				.build();
 	}

@@ -41,7 +41,6 @@ import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.WellKnownAttributeIds;
 
 import com.google.common.base.Preconditions;
-import com.google.common.reflect.TypeToken;
 
 
 public interface ResolverRegistry

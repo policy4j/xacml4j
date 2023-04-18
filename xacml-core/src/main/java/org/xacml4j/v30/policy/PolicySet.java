@@ -33,7 +33,6 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.PolicyElement;
-import org.xacml4j.v30.Status;
 import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.Objects;

@@ -99,7 +99,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BagOfValues bag =  map.invoke(context, new FunctionReference(intToString),
-		                              XacmlTypes.INTEGER.bag().attributes(v).build());
+		                              XacmlTypes.INTEGER.bagBuilder().attributes(v).build());
 		c.verify();
 		assertTrue(bag.contains(XacmlTypes.STRING.of("10")));
 		assertTrue(bag.contains(XacmlTypes.STRING.of("20")));
@@ -118,7 +118,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = anyOf.invoke(context, new FunctionReference(intEq), XacmlTypes.INTEGER.of(20),
-		                              XacmlTypes.INTEGER.bag().attributes(v).build());
+		                              XacmlTypes.INTEGER.bagBuilder().attributes(v).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -140,7 +140,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = allOfAny.invoke(context, new FunctionReference(intGreaterThan),
-		                                 XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
+		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -163,7 +163,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan),
-		                                 XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
+		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -184,7 +184,7 @@ public class HigherOrderFunctionsTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		c.replay();
 		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch),
-		                                 XacmlTypes.STRING.bag().attributes(a).build(), XacmlTypes.STRING.bag().attributes(b).build());
+		                                 XacmlTypes.STRING.bagBuilder().attributes(a).build(), XacmlTypes.STRING.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}
@@ -206,7 +206,7 @@ public class HigherOrderFunctionsTest
 
 		c.replay();
 		BooleanValue r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
-		                                 XacmlTypes.INTEGER.bag().attributes(a).build(), XacmlTypes.INTEGER.bag().attributes(b).build());
+		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
 		c.verify();
 	}

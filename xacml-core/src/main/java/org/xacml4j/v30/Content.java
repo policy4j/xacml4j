@@ -41,7 +41,6 @@ import org.xacml4j.v30.content.JsonContent;
 import org.xacml4j.v30.content.XmlContent;
 
 import com.google.common.base.CharMatcher;
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 

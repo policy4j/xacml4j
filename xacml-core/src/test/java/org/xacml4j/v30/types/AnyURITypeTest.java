@@ -53,13 +53,13 @@ public class AnyURITypeTest
 	public void testBagOf(){
 		Value v0 = XacmlTypes.ANYURI.of("http://www.test.org");
 		Value v1 = XacmlTypes.ANYURI.of("http://www.test1.org");
-		BagOfValues b0 = XacmlTypes.ANYURI.bag().attribute(v0, v1).build();
-		BagOfValues b1 = XacmlTypes.ANYURI.bag().attributes(ImmutableList.of(v0, v1)).build();
-		BagOfValues b2 = XacmlTypes.ANYURI.bag().value("http://www.test.org", "http://www.test1.org").build();
-		BagOfValues b3 = XacmlTypes.ANYURI.bag().value(URI.create("http://www.test.org"),
-		                                               URI.create("http://www.test1.org")).build();
-		BagOfValues b4 = XacmlTypes.ANYURI.bag().value(URI.create("http://www.test.org"),
-		                                               "http://www.test1.org").build();
+		BagOfValues b0 = XacmlTypes.ANYURI.bagBuilder().attribute(v0, v1).build();
+		BagOfValues b1 = XacmlTypes.ANYURI.bagBuilder().attributes(ImmutableList.of(v0, v1)).build();
+		BagOfValues b2 = XacmlTypes.ANYURI.bagBuilder().value("http://www.test.org", "http://www.test1.org").build();
+		BagOfValues b3 = XacmlTypes.ANYURI.bagBuilder().value(URI.create("http://www.test.org"),
+		                                                      URI.create("http://www.test1.org")).build();
+		BagOfValues b4 = XacmlTypes.ANYURI.bagBuilder().value(URI.create("http://www.test.org"),
+		                                                      "http://www.test1.org").build();
 		assertEquals(b0, b1);
 		assertEquals(b1, b2);
 		assertEquals(b2, b3);

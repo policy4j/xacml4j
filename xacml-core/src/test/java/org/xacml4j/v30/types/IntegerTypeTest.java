@@ -62,7 +62,7 @@ public class IntegerTypeTest
 	public void testBag()
 	{
 		IntegerValue v0 = XacmlTypes.INTEGER.of(3l);
-		BagOfValues bag = XacmlTypes.INTEGER.bag().value(1, 4).attribute(v0).build();
+		BagOfValues bag = XacmlTypes.INTEGER.bagBuilder().value(1, 4).attribute(v0).build();
 		assertTrue(bag.contains(XacmlTypes.INTEGER.of(3l)));
 		assertTrue(bag.contains(XacmlTypes.INTEGER.of(1)));
 		assertTrue(bag.contains(XacmlTypes.INTEGER.of(4)));

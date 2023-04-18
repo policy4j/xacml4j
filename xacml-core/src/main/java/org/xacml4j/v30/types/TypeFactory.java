@@ -53,14 +53,14 @@ public interface TypeFactory
 		public BaseTypeFactory(Collection<ValueType> types){
 			this.byTypeId = Collections.unmodifiableMap(types.stream()
 			                     .collect(Collectors
-					                              .toMap(v->v.getDataTypeId(), v->v, (a, b)->a,
+					                              .toMap(v->v.getTypeId(), v->v, (a, b)->a,
 					                                     ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER))));
 			this.byAbbreviatedTypeId = Collections.unmodifiableMap(types.stream()
 			                                            .collect(Collectors
-					                                   .toMap(v->v.getAbbrevDataTypeId(), v->v, (a, b)->a,
+					                                   .toMap(v->v.getShortTypeId(), v->v, (a, b)->a,
 					                                          ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER))));
 			this.byAliasTypeId  = Collections.unmodifiableMap(types.stream()
-			                           .flatMap(t->t.getDataTypeIdAliases()
+			                           .flatMap(t->t.getTypeIdAliases()
 			                                        .stream()
 			                                        .collect(Collectors.toMap(a->a, a->t, (v1, v2)->v1))
 			                                        .entrySet()

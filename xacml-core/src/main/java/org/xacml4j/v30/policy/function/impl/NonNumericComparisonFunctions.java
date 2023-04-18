@@ -22,6 +22,7 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import org.xacml4j.v30.Time;
 import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
@@ -31,7 +32,6 @@ import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.DateTimeValue;
 import org.xacml4j.v30.types.DateValue;
 import org.xacml4j.v30.types.StringValue;
-import org.xacml4j.v30.Time;
 import org.xacml4j.v30.types.TimeValue;
 import org.xacml4j.v30.types.XacmlTypes;
 

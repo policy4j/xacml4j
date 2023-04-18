@@ -93,7 +93,7 @@ interface ExpressionTypeBuilder
  	 			Preconditions.checkArgument(e instanceof Value);
  	 			Value v = (Value)e;
  	 			AttributeValueType exp = factory.createAttributeValueType();
- 	 			exp.setDataType(v.getEvaluatesTo().getDataTypeId());
+ 	 			exp.setDataType(v.getEvaluatesTo().getTypeId());
  				exp.getContent().add(v.value());
  				return factory.createAttributeValue(exp);
  	 		}
@@ -108,7 +108,7 @@ interface ExpressionTypeBuilder
  				exp.setAttributeId(k.getAttributeId());
  				exp.setCategory(k.getCategory().getId());
  				exp.setIssuer(k.getIssuer());
- 				exp.setDataType(k.getDataType().getDataTypeId());
+ 				exp.setDataType(k.getDataType().getTypeId());
  				exp.setMustBePresent(d.isMustBePresent());
  				return factory.createAttributeDesignator(exp);
  			}
@@ -122,7 +122,7 @@ interface ExpressionTypeBuilder
  				AttributeSelectorKey k = s.getReferenceKey();
  				exp.setPath(k.getPath());
  				exp.setCategory(k.getCategory().getId());
- 				exp.setDataType(k.getDataType().getDataTypeId());
+ 				exp.setDataType(k.getDataType().getTypeId());
  				exp.setMustBePresent(s.isMustBePresent());
  				exp.setContextSelectorId(k.getContextSelectorId());
  				return factory.createAttributeSelector(exp);

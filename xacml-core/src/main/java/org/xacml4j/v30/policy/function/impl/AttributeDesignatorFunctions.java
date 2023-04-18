@@ -34,8 +34,8 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
 import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
@@ -152,7 +152,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 
 	private static ValueType getType(AnyURIValue typeUri){
 		return XacmlTypes.getType(typeUri.value().toString())
-		                 .orElseThrow(()->SyntaxException.invalidDataTypeId(typeUri.getEvaluatesTo().getDataTypeId()));
+		                 .orElseThrow(()->SyntaxException.invalidDataTypeId(typeUri.getEvaluatesTo().getTypeId()));
 	}
 	
 	@Override

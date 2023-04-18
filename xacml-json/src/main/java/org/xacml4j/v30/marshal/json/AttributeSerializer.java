@@ -67,7 +67,7 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 			Collection<Value> values) {
 		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
 		Value firstValue = Iterables.getFirst(values, null);
-		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getEvaluatesTo().getAbbrevDataTypeId());
+		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getEvaluatesTo().getShortTypeId());
 		Optional<TypeToGSon> toGson = TypeToGSon.forType(firstValue.getEvaluatesTo());
 		checkState(toGson.isPresent());
 		if(values.size() == 1){

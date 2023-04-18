@@ -268,7 +268,7 @@ public final class Xacml20RequestContextUnmarshaller extends
 			return TypeToXacml30.forType(a.getDataType())
 					.map(v->
 					{
-						v30.setDataType(v.getType().getDataTypeId());
+						v30.setDataType(v.getType().getTypeId());
 						if(v.getType().equals(XacmlTypes.XPATH))
 						{
 							if(av.getContent().isEmpty()){

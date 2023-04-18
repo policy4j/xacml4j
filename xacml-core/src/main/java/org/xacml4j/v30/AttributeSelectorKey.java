@@ -78,7 +78,7 @@ public final class AttributeSelectorKey
 		.add("Category", getCategory().getAbbreviatedId())
 		.add("Path", path)
 		.add("PathType", type)
-		.add("DataType", getDataType().getAbbrevDataTypeId())
+		.add("DataType", getDataType().getShortTypeId())
 		.add("ContextSelectorId", contextSelectorId).toString();
 	}
 

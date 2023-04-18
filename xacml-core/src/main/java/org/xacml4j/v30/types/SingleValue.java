@@ -66,9 +66,9 @@ public class SingleValue<T>
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper("Value")
-                .add("value", value)
-                .add("type", type.getAbbrevDataTypeId())
+        return MoreObjects.toStringHelper(this)
+                .add("v", value)
+                .add("t", type.getShortTypeId())
                 .toString();
     }
 

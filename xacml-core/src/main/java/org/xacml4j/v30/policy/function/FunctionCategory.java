@@ -24,8 +24,6 @@ package org.xacml4j.v30.policy.function;
 
 import org.xacml4j.v30.VersionMatch;
 
-import com.google.common.base.CharMatcher;
-
 public enum FunctionCategory
 {
 	XACML1("1.*"),

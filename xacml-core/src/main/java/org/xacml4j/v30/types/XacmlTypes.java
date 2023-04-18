@@ -417,16 +417,16 @@ public enum XacmlTypes implements ValueType
 	}
 
 	@Override
-	public final String getDataTypeId() {
+	public final String getTypeId() {
 		return typeId;
 	}
 
 	@Override
-	public final String getAbbrevDataTypeId() {
+	public final String getShortTypeId() {
 		return shortTypeId;
 	}
 
-	public Set<String> getDataTypeIdAliases(){
+	public Set<String> getTypeIdAliases(){
 		return aliases;
 	}
 

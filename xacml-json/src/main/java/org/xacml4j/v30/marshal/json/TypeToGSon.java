@@ -35,7 +35,6 @@ import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.TypeCapability;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;

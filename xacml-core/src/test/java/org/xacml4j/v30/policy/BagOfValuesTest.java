@@ -58,7 +58,7 @@ public class BagOfValuesTest
 	@Test
 	public void testContains() throws Exception
 	{
-		BagOfValues bag = STRING.bag().attribute(STRING.of("1"), STRING.of("2"), STRING.of("3")).build();
+		BagOfValues bag = STRING.bagBuilder().attribute(STRING.of("1"), STRING.of("2"), STRING.of("3")).build();
 		assertTrue(bag.contains(STRING.of("1")));
 		assertTrue(bag.contains(STRING.of("2")));
 		assertTrue(bag.contains(STRING.of("3")));
@@ -68,14 +68,14 @@ public class BagOfValuesTest
 	@Test
 	public void testEqualsEmptyBags()
 	{
-		assertEquals(STRING.bag().build(), STRING.bag().build());
-		assertEquals(STRING.bag().build(), STRING.bag().build());
+		assertEquals(STRING.bagBuilder().build(), STRING.bagBuilder().build());
+		assertEquals(STRING.bagBuilder().build(), STRING.bagBuilder().build());
 	}
 
 	
 	@Test
 	public void testValue(){
-		BagOfValues b = STRING.bag().attribute(
+		BagOfValues b = STRING.bagBuilder().attribute(
 				XacmlTypes.STRING.of("1"),
 				XacmlTypes.STRING.of("aaa"),
 				XacmlTypes.STRING.of("BB")).build();
@@ -86,7 +86,7 @@ public class BagOfValuesTest
 	@Test
 	public void testCreateBagFromValues()
 	{
-		BagOfValues b = STRING.bag().attribute(
+		BagOfValues b = STRING.bagBuilder().attribute(
 				XacmlTypes.STRING.of("1"),
 				XacmlTypes.STRING.of("aaa"),
 				XacmlTypes.STRING.of("BB")).build();
@@ -99,9 +99,9 @@ public class BagOfValuesTest
 	@Test
 	public void testContainsAll() throws Exception
 	{
-		BagOfValues bag = INTEGER.bag().attribute(INTEGER.of(1), INTEGER.of(2), INTEGER.of(1)).build();
-		assertTrue(bag.containsAll(INTEGER.bag().attribute(INTEGER.of(1), INTEGER.of(2)).build()));
-		assertFalse(bag.containsAll(INTEGER.bag().attribute(INTEGER.of(1), INTEGER.of(3)).build()));
+		BagOfValues bag = INTEGER.bagBuilder().attribute(INTEGER.of(1), INTEGER.of(2), INTEGER.of(1)).build();
+		assertTrue(bag.containsAll(INTEGER.bagBuilder().attribute(INTEGER.of(1), INTEGER.of(2)).build()));
+		assertFalse(bag.containsAll(INTEGER.bagBuilder().attribute(INTEGER.of(1), INTEGER.of(3)).build()));
 	}
 
 	@Test
@@ -111,13 +111,13 @@ public class BagOfValuesTest
 		content1.add(INTEGER.of(1));
 		content1.add(INTEGER.of(2));
 		content1.add(INTEGER.of(3));
-		BagOfValues bag1 = INTEGER.bag().attributes(content1).build();
+		BagOfValues bag1 = INTEGER.bagBuilder().attributes(content1).build();
 
 		Collection<Value> content2 = new LinkedList<Value>();
 		content2.add(INTEGER.of(1));
 		content2.add(INTEGER.of(2));
 		content2.add(INTEGER.of(3));
-		BagOfValues bag2 = INTEGER.bag().attributes(content2).build();
+		BagOfValues bag2 = INTEGER.bagBuilder().attributes(content2).build();
 
 		assertEquals(bag1, bag2);
 
@@ -125,7 +125,7 @@ public class BagOfValuesTest
 		content3.add(INTEGER.of(1));
 		content3.add(INTEGER.of(3));
 		content3.add(INTEGER.of(2));
-		BagOfValues bag3 = INTEGER.bag().attributes(content3).build();
+		BagOfValues bag3 = INTEGER.bagBuilder().attributes(content3).build();
 
 		assertTrue(bag1.equals(bag3));
 		assertTrue(bag2.equals(bag3));
@@ -139,7 +139,7 @@ public class BagOfValuesTest
 		Collection<Value> attr = new LinkedList<Value>();
 		attr.add(INTEGER.of(1));
 		attr.add(XacmlTypes.STRING.of("aaa"));
-		INTEGER.bag().attributes(attr).build();
+		INTEGER.bagBuilder().attributes(attr).build();
 	}
 
 	@Test
@@ -149,7 +149,7 @@ public class BagOfValuesTest
 		content2.add(INTEGER.of(3));
 		content2.add(INTEGER.of(4));
 		content2.add(INTEGER.of(5));
-		BagOfValues bag2 = INTEGER.bag().attributes(content2).build();
+		BagOfValues bag2 = INTEGER.bagBuilder().attributes(content2).build();
 		replay(context);
 		assertSame(bag2, bag2.evaluate(context));
 		verify(context);
@@ -158,14 +158,14 @@ public class BagOfValuesTest
 	@Test
 	public void testUnion()
 	{
-		BagOfValues bag0 = INTEGER.bag().attribute(
+		BagOfValues bag0 = INTEGER.bagBuilder().attribute(
 				INTEGER.of(1),
 				INTEGER.of(2),
 				INTEGER.of(3),
 				INTEGER.of(6)).build();
 		assertEquals(4, bag0.size());
 
-		BagOfValues bag1 = INTEGER.bag().attribute(
+		BagOfValues bag1 = INTEGER.bagBuilder().attribute(
 				INTEGER.of(2),
 				INTEGER.of(2),
 				INTEGER.of(7),
@@ -187,13 +187,13 @@ public class BagOfValuesTest
 	@Test
 	public void testIntersection()
 	{
-		BagOfValues bag0 = INTEGER.bag().attribute(
+		BagOfValues bag0 = INTEGER.bagBuilder().attribute(
 				INTEGER.of(1),
 				INTEGER.of(2),
 				INTEGER.of(3),
 				INTEGER.of(6)).build();
 
-		BagOfValues bag1 = INTEGER.bag().attribute(
+		BagOfValues bag1 = INTEGER.bagBuilder().attribute(
 				INTEGER.of(9),
 				INTEGER.of(2),
 				INTEGER.of(6),
@@ -208,11 +208,11 @@ public class BagOfValuesTest
 	@Test
 	public void testBuilder()
 	{
-		BagOfValues bag0 = INTEGER.bag().attribute(
+		BagOfValues bag0 = INTEGER.bagBuilder().attribute(
 				INTEGER.of(1),
 				INTEGER.of(2),
 				INTEGER.of(3)).build();
-		BagOfValues bag1 = INTEGER.bag().attribute(
+		BagOfValues bag1 = INTEGER.bagBuilder().attribute(
 				INTEGER.of(2),
 				INTEGER.of(1),
 				INTEGER.of(3)).build();
@@ -220,8 +220,8 @@ public class BagOfValuesTest
 				INTEGER.of(2),
 				INTEGER.of(1),
 				INTEGER.of(3));
-		BagOfValues bag3 = INTEGER.bag().attributes(values).build();
-		BagOfValues bag4 = INTEGER.bag().attributes(values).build();
+		BagOfValues bag3 = INTEGER.bagBuilder().attributes(values).build();
+		BagOfValues bag4 = INTEGER.bagBuilder().attributes(values).build();
 		assertEquals(bag0, bag1);
 		assertEquals(bag1, bag3);
 		assertEquals(bag1, bag4);

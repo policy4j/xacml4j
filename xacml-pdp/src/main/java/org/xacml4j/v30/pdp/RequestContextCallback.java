@@ -24,9 +24,6 @@ package org.xacml4j.v30.pdp;
 
 import java.util.Optional;
 
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 

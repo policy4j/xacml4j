@@ -27,13 +27,11 @@ import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.util.JSONUtil;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.content.XmlContent;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;

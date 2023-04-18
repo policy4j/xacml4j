@@ -48,7 +48,7 @@ public class HexTypeTest
 		HexBinaryValue value1 = XacmlTypes.HEXBINARY.of("00010305");
 		HexBinaryValue value2 = XacmlTypes.HEXBINARY.of(data);
 		assertEquals(value1, value2);
-		BagOfValues bag = XacmlTypes.HEXBINARY.bag().value(data, "00010305").build();
+		BagOfValues bag = XacmlTypes.HEXBINARY.bagBuilder().value(data, "00010305").build();
 		assertEquals(XacmlTypes.HEXBINARY, bag.getBagValueType());
 	}
 }

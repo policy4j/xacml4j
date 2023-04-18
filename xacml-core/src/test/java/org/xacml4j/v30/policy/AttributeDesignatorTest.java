@@ -23,10 +23,10 @@ package org.xacml4j.v30.policy;
  */
 
 import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -37,7 +37,6 @@ import java.util.function.Supplier;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
-import static org.hamcrest.CoreMatchers.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
@@ -133,13 +132,13 @@ public class AttributeDesignatorTest
 				.build();
 		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
-				XacmlTypes.INTEGER.bag().attribute(
+				XacmlTypes.INTEGER.bagBuilder().attribute(
 						XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()));
 		control.replay();
 		Expression v = desig.evaluate(context);
 		control.verify();
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.bag().attribute(
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().attribute(
 				XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build(), v);
 	}
 
@@ -157,7 +156,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
 		verify(context);
 	}
 
@@ -175,7 +174,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
 		verify(context);
 	}
 
@@ -209,7 +208,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
 		verify(context);
 	}
 
@@ -242,7 +241,7 @@ public class AttributeDesignatorTest
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.bag().build(), v);
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
 		verify(context);
 	}
 }

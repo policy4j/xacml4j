@@ -67,6 +67,7 @@ public final class Entity extends AttributeContainer
 	public Entity getIncludeInResult(){
 		return Entity
 		.builder()
+		.content(content)
 		.copyOf(this, a -> a.isIncludeInResult())
 				.build();
 	}
@@ -100,7 +101,7 @@ public final class Entity extends AttributeContainer
 		}
 		return java.util.Optional.of(designatorKey
 				.getDataType()
-				.bag()
+				.bagBuilder()
 				.attributes(v)
 				.build());
 	}

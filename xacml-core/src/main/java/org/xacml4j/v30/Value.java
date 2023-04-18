@@ -61,7 +61,7 @@ public interface Value<T>
 	 */
 	default BagOfValues toBag(){
 		return this.getEvaluatesTo()
-		           .bag()
+		           .bagBuilder()
 		           .attribute(this)
 		           .build();
 	}

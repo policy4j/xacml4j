@@ -28,13 +28,15 @@ import java.io.InputStream;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.xacml4j.v30.*;
+import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
+import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.XacmlPolicyTestSupport;
 import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.request.RequestContext;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyImportTool;

@@ -37,7 +37,6 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
-import org.xacml4j.v30.request.RequestReference;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Lists;

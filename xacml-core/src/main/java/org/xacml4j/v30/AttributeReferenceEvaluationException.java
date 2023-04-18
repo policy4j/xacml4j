@@ -100,7 +100,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 				designatorKey.getAttributeId(),
 				designatorKey.getCategory(),
 				designatorKey.getDataType()
-						.getAbbrevDataTypeId(),
+						.getShortTypeId(),
 				messageText);
 	}
 
@@ -119,7 +119,7 @@ public class AttributeReferenceEvaluationException extends EvaluationException
 				selectorKey.getPathType(),
 				selectorKey.getCategory(),
 				selectorKey.getContextSelectorId(),
-				selectorKey.getDataType().getAbbrevDataTypeId(),
+				selectorKey.getDataType().getShortTypeId(),
 				messageText);
 	}
 

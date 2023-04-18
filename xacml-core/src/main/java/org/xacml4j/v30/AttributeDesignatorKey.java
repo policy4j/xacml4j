@@ -82,7 +82,7 @@ public final class AttributeDesignatorKey
 		return MoreObjects.toStringHelper(this)
 		.add("Category", getCategory().getAbbreviatedId())
 		.add("AttributeId", attributeId)
-		.add("DataType", getDataType().getAbbrevDataTypeId())
+		.add("DataType", getDataType().getShortTypeId())
 		.add("Issuer", issuer).toString();
 	}
 

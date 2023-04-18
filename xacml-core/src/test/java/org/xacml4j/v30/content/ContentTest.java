@@ -22,21 +22,11 @@ package org.xacml4j.v30.content;
  * #L%
  */
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.xacml4j.v30.Content;
-
-import static com.google.common.truth.Truth.assertThat;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Content;
 
 import com.google.common.truth.Truth8;

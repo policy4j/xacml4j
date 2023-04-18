@@ -97,7 +97,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(asTypeToString(TypeToString.Types.ANYURI).toString(v));
 				return xacml;
 			}
@@ -117,7 +117,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(asTypeToString(TypeToString.Types.BOOLEAN).toString(v));
 				return xacml;
 			}
@@ -137,7 +137,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.BASE64BINARY).toString(v));
 				return xacml;
@@ -158,7 +158,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.DATE).toString(v));
 				return xacml;
@@ -179,7 +179,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.DATETIME).toString(v));
 				return xacml;
@@ -200,7 +200,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.DAYTIMEDURATION).toString(v));
 				return xacml;
@@ -221,7 +221,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.DNSNAME).toString(v));
 				return xacml;
@@ -241,7 +241,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.DOUBLE).toString(v));
 				return xacml;
@@ -263,7 +263,7 @@ public interface TypeToXacml30 extends TypeCapability
 			{
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml30.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml30.setDataType(v.getEvaluatesTo().getTypeId());
 				Entity entity = ((EntityValue)v).value();
 
 				JAXBUtils.from(entity.getContent()).
@@ -313,7 +313,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.HEXBINARY).toString(v));
 				return xacml;
@@ -334,7 +334,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.INTEGER).toString(v));
 				return xacml;
@@ -355,7 +355,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.IPADDRESS).toString(v));
 				return xacml;
@@ -376,7 +376,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.RFC822NAME).toString(v));
 				return xacml;
@@ -397,7 +397,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(asTypeToString(TypeToString.Types.STRING).toString(v));
 				return xacml;
 			}
@@ -417,7 +417,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.TIME).toString(v));
 				return xacml;
@@ -438,7 +438,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.X500NAME).toString(v));
 				return xacml;
@@ -460,7 +460,7 @@ public interface TypeToXacml30 extends TypeCapability
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml30 = new org.oasis.xacml.v30.jaxb.AttributeValueType();
 				PathValue xpath = (PathValue)v;
-				xacml30.setDataType(XacmlTypes.XPATH.getDataTypeId());
+				xacml30.setDataType(XacmlTypes.XPATH.getTypeId());
 				xacml30.getContent().add(xpath.getPath());
 				if(xpath.getCategory().isPresent()){
 					xacml30.getOtherAttributes().put(XPATH_CATEGORY_ATTR_NAME,
@@ -490,7 +490,7 @@ public interface TypeToXacml30 extends TypeCapability
 			public org.oasis.xacml.v30.jaxb.AttributeValueType toXacml30(Value v) {
 				Preconditions.checkArgument(v.getEvaluatesTo().equals(this.getType()));
 				org.oasis.xacml.v30.jaxb.AttributeValueType xacml = new org.oasis.xacml.v30.jaxb.AttributeValueType();
-				xacml.setDataType(v.getEvaluatesTo().getDataTypeId());
+				xacml.setDataType(v.getEvaluatesTo().getTypeId());
 				xacml.getContent().add(
 						asTypeToString(TypeToString.Types.YEARMONTHDURATION).toString(v));
 				return xacml;

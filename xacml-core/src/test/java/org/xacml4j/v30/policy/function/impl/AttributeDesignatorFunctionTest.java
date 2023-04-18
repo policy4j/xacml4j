@@ -100,7 +100,7 @@ public class AttributeDesignatorFunctionTest
 		BagOfValues v = func.invoke(context,
 		                            XacmlTypes.ANYURI.of(CategoryId.SUBJECT_ACCESS.getId()),
 		                            XacmlTypes.ANYURI.of("testId"),
-		                            XacmlTypes.ANYURI.of(XacmlTypes.STRING.getDataTypeId()),
+		                            XacmlTypes.ANYURI.of(XacmlTypes.STRING.getTypeId()),
 		                            XacmlTypes.BOOLEAN.of(false),
 		                            null);
 		assertEquals(XacmlTypes.STRING.of("aaaa").toBag(), v);
@@ -115,7 +115,7 @@ public class AttributeDesignatorFunctionTest
 		BagOfValues v = func.invoke(context,
 		                            entity,
 		                            XacmlTypes.ANYURI.of("testId"),
-		                            XacmlTypes.ANYURI.of(XacmlTypes.STRING.getDataTypeId()),
+		                            XacmlTypes.ANYURI.of(XacmlTypes.STRING.getTypeId()),
 		                            XacmlTypes.BOOLEAN.of(false),
 		                            null);
 		assertEquals(XacmlTypes.STRING.of("aaaa").toBag(), v);

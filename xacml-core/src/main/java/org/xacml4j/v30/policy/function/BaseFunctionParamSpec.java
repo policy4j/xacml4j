@@ -22,7 +22,6 @@ package org.xacml4j.v30.policy.function;
  * #L%
  */
 
-import java.util.ListIterator;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -30,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionParamSpec;
-import org.xacml4j.v30.policy.PolicySyntaxException;
 
 abstract class BaseFunctionParamSpec implements FunctionParamSpec
 {

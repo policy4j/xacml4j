@@ -98,7 +98,7 @@ public final class BagOfValuesType implements ValueExpTypeInfo
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-		.add("TypeId", type.getDataTypeId())
+		.add("TypeId", type.getTypeId())
 		.toString();
 	}
 }

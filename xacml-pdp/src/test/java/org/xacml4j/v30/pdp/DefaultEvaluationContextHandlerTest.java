@@ -29,14 +29,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import org.easymock.Capture;
 import org.easymock.IAnswer;
 import org.easymock.IMocksControl;
 import org.junit.Before;
 import org.junit.Test;
-import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -124,7 +122,7 @@ public class DefaultEvaluationContextHandlerTest
 		c.replay();
 
 		Optional<BagOfValues> v = handler.resolve(context, ref);
-		assertEquals(v.get(), XacmlTypes.INTEGER.bag()
+		assertEquals(v.get(), XacmlTypes.INTEGER.bagBuilder()
 		                                        .value(555555)
 		                                        .build());
 		c.verify();
@@ -150,7 +148,7 @@ public class DefaultEvaluationContextHandlerTest
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		// test cache
 		v = handler.resolve(context, ref);
-		assertEquals(XacmlTypes.INTEGER.bag().value(555555).build(), v.get());
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().value(555555).build(), v.get());
 		c.verify();
 	}
 

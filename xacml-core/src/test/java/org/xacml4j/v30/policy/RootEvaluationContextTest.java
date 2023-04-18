@@ -98,7 +98,7 @@ public class RootEvaluationContextTest
 				.dataType(XacmlTypes.STRING)
 				.issuer("test")
 				.build();
-		BagOfValues expectedValue = XacmlTypes.STRING.bag()
+		BagOfValues expectedValue = XacmlTypes.STRING.bagBuilder()
 		                                             .value("aaa", "ccc")
 		                                             .build();
 

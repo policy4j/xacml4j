@@ -99,7 +99,7 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 		String dataTypeId = GsonUtil.getAsString(o, DATA_TYPE_PROPERTY, null);
 		if (dataTypeId == null) {
 			// TODO: properly infer data type
-			dataTypeId = XacmlTypes.STRING.getDataTypeId();
+			dataTypeId = XacmlTypes.STRING.getTypeId();
 		}
 		Optional<ValueType> type = XacmlTypes.getType(dataTypeId);
 		Preconditions.checkState(type.isPresent());

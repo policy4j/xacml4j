@@ -33,8 +33,8 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.ValueType;
 
 /**
  * A base class for XACML attribute references

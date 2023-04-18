@@ -23,7 +23,6 @@ package org.xacml4j.v30.policy;
  */
 
 import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
@@ -180,7 +179,7 @@ public class AttributeSelectorTest
 				Optional.of(XacmlTypes.DATE.emptyBag()));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, XacmlTypes.DATE.bag().build());
+		assertEquals(v, XacmlTypes.DATE.bagBuilder().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -207,7 +206,7 @@ public class AttributeSelectorTest
 				AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, XacmlTypes.DATE.bag().build());
+		assertEquals(v, XacmlTypes.DATE.bagBuilder().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}
@@ -232,7 +231,7 @@ public class AttributeSelectorTest
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		Expression v = ref.evaluate(context);
-		assertEquals(v, XacmlTypes.DATE.bag().build());
+		assertEquals(v, XacmlTypes.DATE.bagBuilder().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		verify(context);
 	}

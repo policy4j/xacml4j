@@ -38,7 +38,7 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 *
 	 * @return data type identifier
 	 */
-	String getDataTypeId();
+	String getTypeId();
 	
 	/**
 	 * Gets "short" version of
@@ -47,14 +47,14 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 * @return short version of the data type
 	 * identifier
 	 */
-	String getAbbrevDataTypeId();
+	String getShortTypeId();
 
 	/**
 	 * Gets all aliases for this data type
 	 *
 	 * @return {@link Set} of aliases for this type
 	 */
-	Set<String> getDataTypeIdAliases();
+	Set<String> getTypeIdAliases();
 
 	@Override
 	default ValueType getValueType(){
@@ -110,7 +110,7 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 *
 	 * @return {@link BagOfValues.Builder}
 	 */
-	default BagOfValues.Builder bag(){
+	default BagOfValues.Builder bagBuilder(){
 	    return new BagOfValues.Builder(bagType());
     }
 
@@ -120,21 +120,21 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 * @return
 	 */
 	default BagOfValues emptyBag(){
-		return bag().build();
+		return bagBuilder().build();
 	}
 
 	/**
 	 * Builds bag from given
 	 * {@link Value} instances
 	 *
-	 * @param attributeExps
+	 * @param values
 	 * @return {@link BagOfValues}s
 	 */
 	default BagOfValues bagOf(
-			Value...attributeExps){
-		return bag()
+			Value...values){
+		return bagBuilder()
 				.attribute(
-						attributeExps)
+						values)
 				.build();
 	}
 

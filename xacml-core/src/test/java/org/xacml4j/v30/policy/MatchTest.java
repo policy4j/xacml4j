@@ -74,7 +74,7 @@ public class MatchTest
 	public void testMatchEvaluation() throws EvaluationException
 	{
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
-		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bag().attribute(XacmlTypes.INTEGER.of(2), XacmlTypes.INTEGER.of(1)).build());
+		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bagBuilder().attribute(XacmlTypes.INTEGER.of(2), XacmlTypes.INTEGER.of(1)).build());
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context,
 		                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()))

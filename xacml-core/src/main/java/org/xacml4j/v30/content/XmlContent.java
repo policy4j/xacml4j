@@ -49,7 +49,6 @@ import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
-import org.xacml4j.v30.Status;
 import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.types.PathValue;
@@ -344,7 +343,7 @@ public final class XmlContent implements Content
                                         ValueType type, NodeList nodeSet)
             throws PathEvaluationException
     {
-        BagOfValues.Builder b = type.bag();
+        BagOfValues.Builder b = type.bagBuilder();
         for(int i = 0; i< nodeSet.getLength(); i++)
         {
             try
@@ -396,7 +395,7 @@ public final class XmlContent implements Content
         if (!toString.isPresent()) {
             throw PathEvaluationException.invalidXpath(xpath,
                     String.format("Unsupported XACML xpath=\"%s%\" type=\"%d\"",
-                    xpath, type.getDataTypeId(), v));
+                                  xpath, type.getTypeId(), v));
         }
         Value value = toString.get().fromString(v);
         if (LOG.isDebugEnabled()) {

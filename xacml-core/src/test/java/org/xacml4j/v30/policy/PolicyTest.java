@@ -42,7 +42,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
-import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 

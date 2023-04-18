@@ -47,7 +47,7 @@ public class ProcessingErrorException extends CoreException
                                                                         ValueType expectedType){
         return new ProcessingErrorException(
                 "Invalid resolverId=\"%s\", attributeId=\"%s\" XACML type=\"%s\" expectedType=\"%s\"",
-                id, attributeId, type.getAbbrevDataTypeId(),
-                expectedType.getAbbrevDataTypeId());
+                id, attributeId, type.getShortTypeId(),
+                expectedType.getShortTypeId());
     }
 }

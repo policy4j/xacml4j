@@ -46,7 +46,7 @@ public class Base64BinaryTypeTest
 		Base64BinaryValue value1 = XacmlTypes.BASE64BINARY.of(v0);
 		Base64BinaryValue value2 = XacmlTypes.BASE64BINARY.of(v1);
 		
-		BagOfValues b = XacmlTypes.BASE64BINARY.bag().value(v0, v1).build();
+		BagOfValues b = XacmlTypes.BASE64BINARY.bagBuilder().value(v0, v1).build();
 		assertEquals(value1, value2);
 		assertEquals(XacmlTypes.STRING.of("AAEDBQ=="), value1.toStringExp());
 		assertTrue(b.contains(XacmlTypes.BASE64BINARY.of(v0)));
