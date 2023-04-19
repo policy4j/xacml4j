@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
 import org.xacml4j.v30.types.XacmlTypes;
 
 

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -36,6 +36,8 @@ import org.junit.Test;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.policy.function.impl.TestFunctions;
 import org.xacml4j.v30.policy.function.impl.TestInstanceFunctions;
 import org.xacml4j.v30.types.BooleanValue;

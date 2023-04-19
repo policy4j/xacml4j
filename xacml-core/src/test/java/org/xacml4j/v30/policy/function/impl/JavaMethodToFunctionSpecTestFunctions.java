@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -23,6 +23,10 @@ package org.xacml4j.v30.policy.function;
  */
 
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.policy.function.XacmlFuncParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.types.BooleanValue;
 import org.xacml4j.v30.types.StringValue;
 

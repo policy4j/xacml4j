@@ -54,6 +54,7 @@ public class XmlContentTest
             "</md:patient>" +
             "</md:record>";
 
+
     private String testXml2 = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
             "xmlns:md=\"urn:example:med:schemas:record\">" +
             "<md:patient>" +
@@ -67,6 +68,31 @@ public class XmlContentTest
             "</md:record>";
 
 
+    private String testXml5 = "<md:record xmlns:md=\"http://www.medico.com/schemas/record\">\n" +
+            "                <md:hospital_info>\n" +
+            "                    <md:name>ABC Hospital</md:name>\n" +
+            "                    <md:department>Surgery</md:department>\n" +
+            "                </md:hospital_info>\n" +
+            "                <md:patient_info>\n" +
+            "                    <md:name>Bart Simpson</md:name>\n" +
+            "                    <md:age>60</md:age>\n" +
+            "                    <md:sex>male</md:sex>\n" +
+            "                    <md:health_insurance>123456</md:health_insurance>\n" +
+            "                </md:patient_info>\n" +
+            "                <md:diagnosis_info>\n" +
+            "                    <md:diagnosis>\n" +
+            "                        <md:item type=\"primary\">Gastric Cancer</md:item>\n" +
+            "                        <md:item type=\"secondary\">Hyper tension</md:item>\n" +
+            "                    </md:diagnosis>\n" +
+            "                    <md:pathological_diagnosis>\n" +
+            "                        <md:diagnosis>\n" +
+            "                            <md:item type=\"primary\">Well differentiated adeno carcinoma</md:item>\n" +
+            "                        </md:diagnosis>\n" +
+            "                        <md:date>2000-10-05</md:date>\n" +
+            "                        <md:malignancy type=\"yes\"/>\n" +
+            "                    </md:pathological_diagnosis>\n" +
+            "                </md:diagnosis_info>                \n" +
+            "            </md:record>";
 
     private String testXml4 = "<test>aaa</test>";
 
@@ -74,6 +100,7 @@ public class XmlContentTest
     private XmlContent xml2;
     private XmlContent xml3;
     private XmlContent xml4;
+    private XmlContent xml5;
 
     @Before
     public void setUp(){
@@ -81,6 +108,8 @@ public class XmlContentTest
                 XmlContent.fromString(testXml1));
         this.xml2 = XmlContent.of(
                 XmlContent.fromString(testXml2));
+        this.xml5 = XmlContent.of(
+                XmlContent.fromString(testXml5));
         Optional<Document> xml = DOMUtil.parseXml(Thread.currentThread()
                                .getContextClassLoader()
                                .getResourceAsStream("./TestXpathContent.xml"))
@@ -127,6 +156,26 @@ public class XmlContentTest
         paths = xml1.evaluateToNodePathList("//md:record/md:pati");
         assertNotNull(paths);
         assertTrue(paths.isEmpty());
+    }
+
+    @Test
+    public void testEvaluateToNodeListFromSelfContainedDocument(){
+        List<Node> nodes1 = xml5.evaluateToNodeSet("//md:name");
+        assertEquals(2, nodes1.size());
+        List<Node> nodes2 = xml5.evaluateToNodeSet("//md:hospital_info/md:name");
+        assertEquals(1, nodes2.size());
+        List<Node> nodes3 = xml5.evaluateToNodeSet("//md:patient_info/md:name");
+        assertEquals(1, nodes3.size());
+    }
+
+    @Test
+    public void testEvaluateToNodeListFromContainedContent(){
+        List<Node> nodes1 = xml3.evaluateToNodeSet("//md:name");
+        assertEquals(2, nodes1.size());
+        List<Node> nodes2 = xml3.evaluateToNodeSet("//md:hospital_info/md:name");
+        assertEquals(1, nodes2.size());
+        List<Node> nodes3 = xml3.evaluateToNodeSet("//md:patient_info/md:name");
+        assertEquals(1, nodes3.size());
     }
 
 

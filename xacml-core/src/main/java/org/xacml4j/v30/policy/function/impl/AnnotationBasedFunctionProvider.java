@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -34,6 +34,10 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
+import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 
 import com.google.common.base.Preconditions;
 

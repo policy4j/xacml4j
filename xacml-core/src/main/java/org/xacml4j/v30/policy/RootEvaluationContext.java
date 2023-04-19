@@ -396,18 +396,18 @@ public final class RootEvaluationContext implements EvaluationContext
 		return MoreObjects
 				.toStringHelper(this)
 				.add("defaultXPathVersion", defaultXPathVersion)
-				.add("contextHandler", contextHandler)
-				.add("resolver", resolver)
-				.add("denyAdvices", denyAdvices)
-				.add("denyObligations", denyObligations)
-				.add("permitAdvices", permitAdvices)
-				.add("permitObligations", permitObligations)
-				.add("evaluatedPolicies", evaluatedPolicies)
+				.add("contextHandler", contextHandler.getClass().getSimpleName())
+				.add("resolver", resolver.getClass().getSimpleName())
 				.add("clock", clock)
 				.add("validateFuncParamsAtRuntime", validateFuncParamsAtRuntime)
 				.add("evaluationStatus", evaluationStatus)
 				.add("combinedDecisionCacheTTL", combinedDecisionCacheTTL)
 				.add("extendedIndeterminateEval", extendedIndeterminateEval)
+				.add("denyAdvices", denyAdvices)
+				.add("denyObligations", denyObligations)
+				.add("permitAdvices", permitAdvices)
+				.add("permitObligations", permitObligations)
+				.add("evaluatedPolicies", evaluatedPolicies)
 				.toString();
 	}
 

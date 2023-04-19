@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
-import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
+import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
 
 public class DefaultFunctionFunctionInvocationFactoryTest
 {

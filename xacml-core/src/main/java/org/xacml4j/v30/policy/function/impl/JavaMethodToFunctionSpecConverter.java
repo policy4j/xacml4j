@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -39,6 +39,23 @@ import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.PolicySyntaxException;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.FunctionParametersValidator;
+import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
+import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParam;
+import org.xacml4j.v30.policy.function.XacmlFuncParamAnyAttribute;
+import org.xacml4j.v30.policy.function.XacmlFuncParamAnyBag;
+import org.xacml4j.v30.policy.function.XacmlFuncParamFunctionReference;
+import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;
+import org.xacml4j.v30.policy.function.XacmlFuncParamValidator;
+import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnTypeResolver;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
+import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
+import org.xacml4j.v30.policy.function.XacmlLegacyFunc;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -277,7 +294,7 @@ class JavaMethodToFunctionSpecConverter
 	}
 
 	private FunctionReturnTypeResolver createResolver(Method m,
-			Class<? extends FunctionReturnTypeResolver> clazz) {
+	                                                  Class<? extends FunctionReturnTypeResolver> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {
@@ -289,7 +306,7 @@ class JavaMethodToFunctionSpecConverter
 	}
 
 	private FunctionParametersValidator createValidator(Method m,
-			Class<? extends FunctionParametersValidator> clazz) {
+	                                                    Class<? extends FunctionParametersValidator> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {

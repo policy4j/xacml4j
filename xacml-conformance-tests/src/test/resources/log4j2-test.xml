@@ -28,7 +28,7 @@
 	</Properties>
 	<Appenders>
 		<Console name="console" target="SYSTEM_OUT">
-			<PatternLayout pattern="[%highlight{%-5level}] %d{DEFAULT} %highlight{%c{1}.%M()} - %msg%n%throwable{short.lineNumber}" />
+			<PatternLayout pattern="[%highlight{%-5level}] %d{DEFAULT} %highlight{%c{1}.%M()}:(%F:%L) - %msg%n%throwable{short.lineNumber}" />
 		</Console>
 		<RollingFile name="rollingFile" fileName="${logPath}/${rollingFileName}.log" filePattern="${logPath}/${rollingFileName}_%d{yyyy-MM-dd}.log">
 			<PatternLayout pattern="[%highlight{%-5level}] %d{DEFAULT} %c{1}.%M() - %msg%n%throwable{short.lineNumber}" />
@@ -41,28 +41,22 @@
 		</RollingFile>
 	</Appenders>
 	<Loggers>
-		<Logger name="org.xacml4j.v30.policy" level="DEBUG" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Logger name="org.xacml4j.util.NodeNamespaceContext" level="DEBUG" additivity="false">
+		<Logger name="org.xacml4j.util" level="DEBUG" additivity="false">
 			<AppenderRef ref="console"/>
 		</Logger>
 		<Logger name="org.xacml4j.v30.content" level="DEBUG" additivity="false">
 			<AppenderRef ref="console"/>
 		</Logger>
-		<Logger name="org.xacml4j.v30.policy.function.impl" level="DEBUG" additivity="false">
+		<Logger name="org.xacml4j.v30.policy" level="DEBUG" additivity="false">
 			<AppenderRef ref="console"/>
 		</Logger>
-		<Logger name="org.xacml4j.v30.pdp" level="DEBUG" additivity="false">
+		<Logger name="org.xacml4j.v30.policy.function" level="DEBUG" additivity="false">
 			<AppenderRef ref="console"/>
 		</Logger>
-		<Logger name="org.xacml4j.v30.policy.combine" level="ERROR" additivity="false">
+		<Logger name="org.xacml4j.v30.policy.function.impl" level="INFO" additivity="false">
 			<AppenderRef ref="console"/>
 		</Logger>
-		<Logger name="org.xacml4j.v30.policy.function" level="ERROR" additivity="false">
-			<AppenderRef ref="console"/>
-		</Logger>
-		<Root level="INFO" additivity="false">
+		<Root level="ERROR" additivity="false">
 			<AppenderRef ref="console" />
 			<AppenderRef ref="rollingFile" />
 		</Root>

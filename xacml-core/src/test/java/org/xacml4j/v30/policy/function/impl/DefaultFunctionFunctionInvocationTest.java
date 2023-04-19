@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -36,6 +36,9 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocation;
+import org.xacml4j.v30.policy.function.impl.DefaultFunctionInvocation;
+import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;

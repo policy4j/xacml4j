@@ -28,6 +28,7 @@ import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
 
 /**
  * A XACML function to java method invocation factory

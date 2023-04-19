@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.policy.function.impl.AggregatingFunctionProvider;
+import org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionProvider;
 import org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions;
 
 /**

@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -35,6 +35,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocation;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;

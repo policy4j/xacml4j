@@ -22,8 +22,6 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import org.xacml4j.v30.policy.function.AnnotationBasedFunctionProvider;
-import org.xacml4j.v30.policy.function.BaseFunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;

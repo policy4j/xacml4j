@@ -42,6 +42,7 @@ import org.xacml4j.v30.policy.FunctionParamSpec;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -90,14 +91,11 @@ public final class FunctionSpecBuilder {
 		if (!Strings.isNullOrEmpty(shortId)) {
 			return shortId;
 		}
-		List<String> components = Splitter.on(":").splitToList(id);
-		if (components.size() > 1) {
-			return Joiner.on(":")
-			             .join(
-					             components.get(components.size() - 2),
-					             components.get(components.size() - 1));
+		int index = CharMatcher.anyOf(":").lastIndexIn(id);
+		if (index > 0 && index + 1 < id.length()) {
+			return id.substring(index + 1);
 		}
-		return components.get(0);
+		return id;
 	}
 
 	public static FunctionSpecBuilder builder(String functionId) {
@@ -354,29 +352,29 @@ public final class FunctionSpecBuilder {
 
 			try {
 				List<Expression> normalizedArgs = normalize(arguments);
-				LOG.debug("functionId={} normalizedArgs={}", functionId, normalizedArgs);
+				LOG.debug("functionId={} normalizedArgs={}", shortId, normalizedArgs);
 				if (context.isValidateFuncParamsAtRuntime()) {
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("Validating " +
-								          "functionId=\"{}\" parameters=\"{}\"", functionId, parameters);
+								          "functionId=\"{}\" parameters=\"{}\"", shortId, parameters);
 					}
 					if (!doValidateNormalizedParameters(normalizedArgs)) {
-						LOG.debug("Failed to validate function=\"{}\" params=\"{}\"", functionId, normalizedArgs);
+						LOG.debug("Failed to validate function=\"{}\" params=\"{}\"", shortId, normalizedArgs);
 						throw new FunctionInvocationException(this,
 						                                      "Failed to validate function=\"%s\" parameters=\"%s\"",
-						                                      functionId, normalizedArgs);
+						                                      shortId, normalizedArgs);
 					}
 				}
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("Invoking function=\"{}\" with length={} params=\"{}\"",
-					          functionId, normalizedArgs.size(), normalizedArgs);
+					          shortId, normalizedArgs.size(), normalizedArgs);
 				}
 				List<Expression> params = evaluateParameters ? normalizedArgs : evaluate(context, normalizedArgs);
-				LOG.debug("Function=\"{}\" params=\"{}\"", functionId, params);
+				LOG.debug("Function=\"{}\" params=\"{}\"", shortId, params);
 				T result = (T) invocation.invoke(this, context, params);
 				if (LOG.isDebugEnabled()) {
 					LOG.debug("Function=\"{}\" " +
-							          "invocation result=\"{}\"", functionId, result);
+							          "invocation result=\"{}\"", shortId, result);
 				}
 				return result;
 			} catch (EvaluationException e) {
@@ -389,7 +387,7 @@ public final class FunctionSpecBuilder {
 					LOG.debug("Failed to invoke function", e);
 				}
 				throw new FunctionInvocationException(this, e,
-				                                      "Failed to invoke function=\"%s\"", functionId);
+				                                      "Failed to invoke function=\"%s\"", shortId);
 			}
 		}
 
@@ -400,32 +398,32 @@ public final class FunctionSpecBuilder {
 			ListIterator<Expression> expIt = normalizedParameters.listIterator();
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Function=\"{}\" normalized parameters=\"{}\"",
-				          functionId, normalizedParameters);
+				          shortId, normalizedParameters);
 			}
 			while (it.hasNext()) {
 				FunctionParamSpec p = it.next();
 				if(!p.validate(expIt)){
-					throw PolicySyntaxException.invalidFunctionParam(functionId, p, expIt.previousIndex(),
+					throw PolicySyntaxException.invalidFunctionParam(shortId, p, expIt.previousIndex(),
 					                                                 "invalid parameter");
 				}
 				if ((!it.hasNext() &&
 						expIt.hasNext())) {
 					throw PolicySyntaxException
 							.invalidFunctionParameter(
-									functionId, p, expIt.nextIndex(),
+									shortId, p, expIt.nextIndex(),
 									String.format("expecting less function params, unexpected expression=\"%s\"",
 									              expIt.next()));
 				}
 
 				if ((it.hasNext() &&
 						!expIt.hasNext())) {
-					throw PolicySyntaxException.invalidFunctionParam(functionId,
+					throw PolicySyntaxException.invalidFunctionParam(shortId,
 					                                                 p, expIt.previousIndex(), "more arguments expected");
 				}
 			}
 
 			if (!validateAdditional(arguments)) {
-				throw PolicySyntaxException.invalidFunction(functionId, "failed additional validation");
+				throw PolicySyntaxException.invalidFunction(shortId, "failed additional validation");
 			}
 		}
 
@@ -440,7 +438,7 @@ public final class FunctionSpecBuilder {
 			ListIterator<Expression> expIt = normalizedParameters.listIterator();
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Function=\"{}\" normalized parameters=\"{}\"",
-				          functionId, normalizedParameters);
+				          shortId, normalizedParameters);
 			}
 			while (it.hasNext()) {
 				FunctionParamSpec p = it.next();
@@ -455,7 +453,7 @@ public final class FunctionSpecBuilder {
 					if (!(spec.isOptional() || spec.isVariadic())) {
 						if (LOG.isDebugEnabled()) {
 							LOG.debug("Additional arguments are " +
-									          "expected for function=\"{}\"", functionId);
+									          "expected for function=\"{}\"", shortId);
 						}
 						return false;
 					}
@@ -465,7 +463,7 @@ public final class FunctionSpecBuilder {
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("To many arguments=\"{}\", " +
 								          "found for function=\"{}\"",
-						          normalizedParameters, functionId);
+						          normalizedParameters, shortId);
 					}
 					return false;
 				}
@@ -603,8 +601,7 @@ public final class FunctionSpecBuilder {
 		@Override
 		public String toString() {
 			return MoreObjects.toStringHelper(this)
-			                  .add("functionId", functionId)
-			                  .add("legacyId", legacyId)
+			                  .add("functionId", shortId)
 			                  .add("evaluateParams", evaluateParameters)
 			                  .add("params", parameters)
 			                  .toString();

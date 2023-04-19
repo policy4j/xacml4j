@@ -24,6 +24,7 @@ package org.xacml4j.v30.policy.function;
 
 
 import static org.easymock.EasyMock.createControl;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -54,6 +55,19 @@ public class FunctionSpecBuilderTest
 		this.specSameTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).build(XacmlTypes.INTEGER, impl);
 		b = FunctionSpecBuilder.builder("testFunc2");
 		this.specDiffTypeArgs = b.param(XacmlTypes.INTEGER).optional(XacmlTypes.STRING).build(XacmlTypes.INTEGER, impl);
+	}
+
+	@Test
+	public void testFunctionShortId(){
+
+		assertEquals("test", FunctionSpecBuilder.getShortId("test", null));
+		assertEquals("test", FunctionSpecBuilder.getShortId("test:test", null));
+		assertEquals("test", FunctionSpecBuilder.getShortId("test", null));
+		assertEquals("aaaa", FunctionSpecBuilder.getShortId("test:test:aaaa", null));
+		assertEquals("test:test:", FunctionSpecBuilder.getShortId("test:test:", null));
+		assertEquals("xpath-node-match", FunctionSpecBuilder.getShortId("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match", null));
+
+
 	}
 	
 	@Test

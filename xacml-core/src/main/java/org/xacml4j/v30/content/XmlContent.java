@@ -195,6 +195,9 @@ public final class XmlContent implements Content
     {
         try
         {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating selector={}", selectorKey);
+            }
             Node context = null;
             if(callback != null) {
                 Collection<Value> v = callback.get().getAttributeValues(
@@ -211,8 +214,7 @@ public final class XmlContent implements Content
                                 "contextSelector xpath=\"{}\"", xpathAttr.get());
                     }
                     PathValue xpath = (PathValue)v.iterator().next();
-                    if(!Objects.equals(xpath.getCategory().orElse(null),
-                            selectorKey.getCategory())){
+                    if(!Objects.equals(xpath.getCategory().orElse(null), selectorKey.getCategory())){
                         throw AttributeReferenceEvaluationException.forSelector(selectorKey,
                                                                                 ()->String.format("and ContextSelectorId.Category=\"%s\"",
                                         xpath.getCategory().orElse(null)));
@@ -252,14 +254,23 @@ public final class XmlContent implements Content
     @Override
     public <T> List<T> evaluateToNodeSet(String path) {
         try{
-            NodeList nodeList = xPathProvider.evaluateToNodeSet(path, contextNode);
-            if(nodeList != null){
-                return (List<T>) (DOMUtil.nodeListToList(nodeList));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating path={}", path);
             }
-            return Collections.emptyList();
+            NodeList nodeList = xPathProvider.evaluateToNodeSet(path, contextNode);
+            List<T> r = Optional.ofNullable(nodeList)
+                                .map(list->(List<T>)DOMUtil.nodeListToList(list))
+                                .orElse(Collections.emptyList());
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluation of path=\"{}\" result=\"{}\"", path, r);
+            }
+            return r;
+
         }catch (PathEvaluationException e){
+            LOG.debug(e.getMessage(), e);
             throw e;
         }catch (Exception e){
+            LOG.debug(e.getMessage(), e);
             throw PathEvaluationException.invalidXpath(path, e);
         }
     }
@@ -267,13 +278,20 @@ public final class XmlContent implements Content
     @Override
     public List<String> evaluateToNodePathList(String path) {
         try{
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating path={}", path);
+            }
              NodeList nodeList =  xPathProvider.evaluateToNodeSet(path, contextNode);
              List<String> paths = new ArrayList<>(nodeList.getLength());
              for(int i = 0; i < nodeList.getLength(); i++){
                  paths.add(DOMUtil.getXPath(nodeList.item(i)));
              }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluation of path=\"{}\" result=\"{}\"", path, paths);
+            }
              return paths;
         }catch (PathEvaluationException e){
+            LOG.debug(e.getMessage(), e);
             throw e;
         }catch (Exception e){
             throw PathEvaluationException.invalidXpath(path, e);
@@ -283,13 +301,21 @@ public final class XmlContent implements Content
     @Override
     public Optional<String> evaluateToNodePath(String path) {
         try{
-            return Optional.ofNullable(
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating path={}", path);
+            }
+            Optional<String> r = Optional.ofNullable(
                     xPathProvider.evaluateToNode(path, contextNode))
                     .map(DOMUtil::getXPath);
-
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluation of path=\"{}\" result=\"{}\"", path, r);
+            }
+            return r;
         }catch (PathEvaluationException e){
+            LOG.debug(e.getMessage(), e);
             throw e;
         }catch (Exception e){
+            LOG.debug(e.getMessage(), e);
             throw PathEvaluationException.invalidXpath(path, e);
         }
     }
@@ -297,11 +323,20 @@ public final class XmlContent implements Content
     @Override
     public Optional<String> evaluateToString(String path) {
         try{
-            return Optional.ofNullable(xPathProvider
-                .evaluateToString(path, contextNode));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating path={}", path);
+            }
+            Optional<String> r = Optional.ofNullable(xPathProvider
+                                                             .evaluateToString(path, contextNode));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluation of path=\"{}\" result=\"{}\"", path, r);
+            }
+            return r;
         }catch (PathEvaluationException e){
+            LOG.debug(e.getMessage(), e);
             throw e;
         }catch (Exception e){
+            LOG.debug(e.getMessage(), e);
             throw PathEvaluationException.invalidXpath(path, e);
         }
     }
@@ -309,11 +344,22 @@ public final class XmlContent implements Content
     @Override
     public <T> Optional<T> evaluateToNode(String path) {
         try{
-            return (Optional<T>) Optional.ofNullable(xPathProvider
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating path={}", path);
+            }
+            Optional<T> r = (Optional<T>) Optional.ofNullable(xPathProvider
                     .evaluateToNode(path, contextNode));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluation of path=\"{}\" result=\"{}\" node path=\"{}\"",
+                          path, r, r.map(Node.class::cast)
+                                    .map(v->DOMUtil.getXPath(v)).orElse(null));
+            }
+            return r;
         }catch (PathEvaluationException e){
+            LOG.debug(e.getMessage(), e);
             throw e;
         }catch (Exception e){
+            LOG.debug(e.getMessage(), e);
             throw PathEvaluationException.invalidXpath(path, e);
         }
     }
@@ -321,11 +367,20 @@ public final class XmlContent implements Content
     @Override
     public <T extends Number> Optional<T> evaluateToNumber(String path) {
         try{
-            return (Optional<T>) Optional.ofNullable(xPathProvider
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluating path={}", path);
+            }
+            Optional<T> r = (Optional<T>) Optional.ofNullable(xPathProvider
                     .evaluateToNumber(path, contextNode));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Evaluation of path=\"{}\" result=\"{}\"", path, r);
+            }
+            return r;
         }catch (PathEvaluationException e){
+            LOG.debug(e.getMessage(), e);
             throw e;
         }catch (Exception e){
+            LOG.debug(e.getMessage(), e);
             throw PathEvaluationException.invalidXpath(path, e);
         }
     }
@@ -388,19 +443,19 @@ public final class XmlContent implements Content
             default:
                 throw PathEvaluationException.invalidXpath(
                         xpath,
-                        String.format("Unsupported DOM node for xpath=\"%s\" type=\"%d\"",
-                                      xpath, n.getNodeType()));
+                        String.format("Unsupported DOM node for xpath=\"%s\" domType=\"%s\"",
+                                      xpath, DOMUtil.toString(n)));
         }
         Optional<TypeToString> toString = TypeToString.forType(type);
         if (!toString.isPresent()) {
             throw PathEvaluationException.invalidXpath(xpath,
-                    String.format("Unsupported XACML xpath=\"%s%\" type=\"%d\"",
-                                  xpath, type.getTypeId(), v));
+                    String.format("Unsupported XACML type={} xpath=\"%s%\"",
+                                  type.getTypeId(), xpath));
         }
         Value value = toString.get().fromString(v);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Node of type=\"{}\" converted attribute=\"{}\"",
-                    n.getNodeType(), value);
+            LOG.debug("Node of domType=\"{}\" converted attribute=\"{}\"",
+                    DOMUtil.toString(n), value);
         }
         return value;
     }

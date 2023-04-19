@@ -39,7 +39,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
-import org.xacml4j.v30.policy.function.PolicyToPlatformFunctionInvocation;
+import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
 
 import com.google.common.base.Preconditions;
 

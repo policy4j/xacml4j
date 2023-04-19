@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -37,6 +37,9 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocation;
+import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;

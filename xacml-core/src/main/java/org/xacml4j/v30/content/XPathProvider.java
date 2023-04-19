@@ -109,9 +109,8 @@ public interface XPathProvider
 				if(log.isDebugEnabled()){
 					for(int i = 0; i < result.getLength(); i++){
 						Node n = result.item(i);
-						log.debug("Result at index=\"{}\" type=\"{}\" domType=\"{}\"", i,
-						          DOMUtil.toString(n),
-						          n.getNodeType());
+						log.debug("Result at index=\"{}\" domType=\"{}\" domNodeType=\"{}\"", i,
+						          DOMUtil.toString(n), n.getNodeType());
 					}
 				}
 			}else {

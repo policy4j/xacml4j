@@ -46,6 +46,7 @@ import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Preconditions;
 
 /**
@@ -478,9 +479,13 @@ public interface TypeToXacml30 extends TypeCapability
 				}
 				String categoryValue = a.getOtherAttributes().get(XPATH_CATEGORY_ATTR_NAME);
 				String xpathValue = (String)a.getContent().get(0);
+				if(xpathValue == null){
+					SyntaxException
+							.invalidAttributeValue(null, XacmlTypes.XPATH);
+				}
 				Optional<Value> xpath = CategoryId
 						.parse(categoryValue)
-						.map(v->XacmlTypes.XPATH.of(xpathValue, v));
+						.map(v->XacmlTypes.XPATH.of(CharMatcher.whitespace().trimFrom(xpathValue), v));
 				return xpath.orElseThrow(()-> SyntaxException
 						.invalidCategoryId(categoryValue));
 			}

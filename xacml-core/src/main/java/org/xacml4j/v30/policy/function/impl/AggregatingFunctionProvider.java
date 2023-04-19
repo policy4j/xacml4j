@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -24,6 +24,8 @@ package org.xacml4j.v30.policy.function;
 
 import java.util.Collection;
 
+import org.xacml4j.v30.policy.function.FunctionProvider;
+
 /**
  * An implementation of {@link FunctionProvider} which
  * aggregates instances of {@link FunctionProvider}
@@ -31,7 +33,7 @@ import java.util.Collection;
  * @author Giedrius Trumpickas
  */
 public class AggregatingFunctionProvider
-	extends BaseFunctionProvider
+		extends BaseFunctionProvider
 {
 	/**
 	 * Creates aggregating function provider with a given providers

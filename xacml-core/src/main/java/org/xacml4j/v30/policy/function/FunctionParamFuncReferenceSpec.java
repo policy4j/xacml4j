@@ -28,6 +28,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.PolicySyntaxException;
+import org.xacml4j.v30.policy.function.impl.BaseFunctionParamSpec;
 
 import com.google.common.base.MoreObjects;
 
