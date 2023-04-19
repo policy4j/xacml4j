@@ -70,4 +70,13 @@ public class TypeToProtoTest
 		Value v1 = TypeToProto.Types.BASE64BINARY.fromProto(pv);
 		assertEquals(v, v1);
 	}
+
+	@Test
+	public void testDNSName(){
+
+		Value v = XacmlTypes.DNSNAME.of("test.com:10-20");
+		PValue pv = TypeToProto.Types.DNSNAME.toProto(v);
+		Value v1 = TypeToProto.Types.DNSNAME.fromProto(pv);
+		assertEquals(v, v1);
+	}
 }

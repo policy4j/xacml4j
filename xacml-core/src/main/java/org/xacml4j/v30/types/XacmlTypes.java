@@ -22,7 +22,10 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import java.net.InetAddress;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
@@ -42,6 +45,8 @@ import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.Binary;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.DNSName;
+import org.xacml4j.v30.DateTime;
 import org.xacml4j.v30.DayTimeDuration;
 import org.xacml4j.v30.Entity;
 import org.xacml4j.v30.IPAddress;
@@ -88,8 +93,7 @@ public enum XacmlTypes implements ValueType
 	},
 	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime", "dateTime") {
 		public DateTimeValue of(Object v, Object... params) {
-			return DateTimeValue
-					.fromObjectWithParams(v, params);
+			return DateTimeValue.of(DateTime.of(v));
 		}
 	},
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration", "dayTimeDuration",
@@ -105,33 +109,34 @@ public enum XacmlTypes implements ValueType
 		public DNSNameValue of(Object v, Object... params) {
 			Optional<DNSNameValue> a = Optional.empty();
 			if (v instanceof String) {
-				a = Optional.of(
-						DNSNameValue.of(
-								(String) v));
+				return DNSNameValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				a = Optional.of(
-						DNSNameValue.of(
-								((StringValue) v).get()));
+				return DNSNameValue.of(((StringValue) v).get());
+			}
+			if (v instanceof DNSName) {
+				return DNSNameValue.of((DNSName)v);
 			}
 			if (v instanceof DNSNameValue) {
-				a = Optional.of((DNSNameValue) v);
+				return (DNSNameValue) v;
 			}
-			return a.orElseThrow(() ->
-					SyntaxException
-							.invalidAttributeValue(
-									v, this));
+			throw SyntaxException.invalidAttributeValue(v, this);
 		}
 	},
 	DOUBLE("http://www.w3.org/2001/XMLSchema#double", "double") {
 		public DoubleValue of(Object v, Object... params) {
+			Optional<DoubleValue> value = Optional.empty();
 			if (v instanceof String) {
 				return DoubleValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
 				return DoubleValue.of(((StringValue) v).get());
 			}
-			return DoubleValue.of((Number) v);
+			if(v instanceof Number) {
+				return DoubleValue.of((Number) v);
+			}
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	INTEGER("http://www.w3.org/2001/XMLSchema#integer", "integer") {
@@ -146,7 +151,11 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof StringValue) {
 				return IntegerValue.of(((StringValue) v).get());
 			}
-			return IntegerValue.of((Number) v);
+			if(v instanceof Number){
+				return IntegerValue.of((Number) v);
+			}
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary", "hexBinary") {
@@ -160,7 +169,14 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof byte[]) {
 				return HexBinaryValue.of((byte[]) v);
 			}
-			return HexBinaryValue.of((Binary) v);
+			if (v instanceof ByteBuffer) {
+				return HexBinaryValue.of(((ByteBuffer) v).array());
+			}
+			if (v instanceof Binary) {
+				return HexBinaryValue.of((Binary)v);
+			}
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", "ipAddress") {
@@ -171,7 +187,16 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof StringValue) {
 				return IPAddressValue.of(((StringValue) v).get());
 			}
-			return IPAddressValue.of((IPAddress) v);
+			if(v instanceof IPAddress){
+				return IPAddressValue.of((IPAddress) v);
+			}
+			if(v instanceof InetAddress){
+				return IPAddressValue.of(IPAddress.builder()
+				                                  .address((InetAddress)v)
+				                                  .build());
+			}
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	STRING("http://www.w3.org/2001/XMLSchema#string", "string") {
@@ -179,97 +204,79 @@ public enum XacmlTypes implements ValueType
 			if (v instanceof StringValue) {
 				return StringValue.of(((StringValue) v).get());
 			}
-			return StringValue.of((String) v);
+			if(v instanceof String){
+				return StringValue.of((String)v);
+			}
+			if(v instanceof byte[]){
+				byte[] bytes = (byte[])v;
+				return StringValue.of(new String(bytes, StandardCharsets.UTF_8));
+			}
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", "rfc822Name") {
 		public RFC822NameValue of(Object v, Object... params) {
-			Optional<RFC822NameValue> a = Optional.empty();
 			if (v instanceof String) {
-				a = Optional.of(
-						RFC822NameValue.of(
-								(String) v));
+				return RFC822NameValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				a = Optional.of(
-						RFC822NameValue.of(
-								((StringValue) v).get()));
+				return RFC822NameValue.of(((StringValue) v).get());
 			}
 			if (v instanceof RFC822Name) {
-				a = Optional.of(
-						RFC822NameValue.of(
-								(RFC822Name) v));
+				return RFC822NameValue.of((RFC822Name) v);
 			}
-			return a.orElseThrow(
-					() -> SyntaxException.invalidAttributeValue(
-							v, this));
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	TIME("http://www.w3.org/2001/XMLSchema#time", "time") {
 		public TimeValue of(Object v, Object... params) {
-			Optional<TimeValue> a = Optional.empty();
 			if (v instanceof String) {
-				a = Optional.of(
-						TimeValue.of((String) v));
+				return TimeValue.of((String) v);
 			}
 			if (v instanceof StringValue) {
-				a = Optional.of(
-						TimeValue.of(((StringValue) v).get()));
+				return TimeValue.of(((StringValue) v).get());
 			}
 			if (v instanceof ZonedDateTime) {
-				a = Optional.of(
-						TimeValue.of(GregorianCalendar.from((ZonedDateTime) v)));
+				return TimeValue.of(GregorianCalendar
+						                    .from((ZonedDateTime) v));
 			}
 			if (v instanceof XMLGregorianCalendar) {
-				a = Optional.of(
-						TimeValue.of(
-								(XMLGregorianCalendar) v));
+				return TimeValue.of((XMLGregorianCalendar) v);
 			}
 			if (v instanceof Calendar) {
-				a = Optional.of(
-						TimeValue.of((Calendar) v));
+				return TimeValue.of((Calendar) v);
+			}
+			if (v instanceof TimeValue) {
+				return (TimeValue)v;
 			}
 			if (v instanceof Time) {
-				a = Optional.of(
-						TimeValue.of((Time) v));
+				return TimeValue.of((Time) v);
 			}
-
 			if (v instanceof Instant) {
-				a = Optional.of(
-						TimeValue.of((Time) v));
+				return TimeValue.of((Time) v);
 			}
-			return a.orElseThrow(
-					() -> SyntaxException
-							.invalidAttributeValue(
-									v, this));
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name", "x500Name") {
 		public X500NameValue of(Object v, Object... params) {
-			Optional<X500NameValue> a = Optional.empty();
 			if (v instanceof String) {
-				a = Optional.of(
-						X500NameValue.of(
-								String.class.cast(v)));
+				return X500NameValue.of(String.class.cast(v));
 			}
 			if (v instanceof X500NameValue) {
-				a = Optional.of(
-						X500NameValue.class.cast(v));
+				return X500NameValue.class.cast(v);
 			}
 			if (v instanceof StringValue) {
-				a = Optional.of(
-						X500NameValue.of(
-								((StringValue) v).get()));
+				return X500NameValue.of(((StringValue) v).get());
 			}
 			if (v instanceof X500Principal) {
-				a = Optional.of(
-						X500NameValue.of(
-								(X500Principal) v));
+				return X500NameValue.of((X500Principal) v);
 			}
-			return a.orElseThrow(
-					() -> SyntaxException
-							.invalidAttributeValue(
-									v, this));
+			throw SyntaxException
+					.invalidAttributeValue(v, this);
 		}
 	},
 	XPATH("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression",

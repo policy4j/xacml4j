@@ -46,8 +46,7 @@ public final class DateTimeValue
         super(XacmlTypes.DATETIME, value);
     }
 
-    static DateTimeValue fromObjectWithParams(
-            Object v, Object...params)
+    static DateTimeValue of(Object v)
     {
         if (v instanceof String) {
             return new DateTimeValue(DateTime.of(v));
@@ -65,27 +64,7 @@ public final class DateTimeValue
         }
         throw SyntaxException
                 .invalidAttributeValue(v,
-                        XacmlTypes.ANYURI);
-    }
-
-    static DateTimeValue of(String v){
-        return new DateTimeValue(DateTime.of(v));
-    }
-
-    static DateTimeValue of(DateTime v){
-        return new DateTimeValue(v);
-    }
-
-    static DateTimeValue of(XMLGregorianCalendar v){
-        return new DateTimeValue(DateTime.of(v));
-    }
-
-    static DateTimeValue of(Calendar v){
-        return new DateTimeValue(DateTime.of(v));
-    }
-
-    static DateTimeValue of(StringValue v){
-        return of(v.get());
+                                       XacmlTypes.DATETIME);
     }
 
     public StringValue toStringExp(){
