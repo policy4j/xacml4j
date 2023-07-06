@@ -22,36 +22,23 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Optional;
+
 public class PolicyResolutionException extends EvaluationException
 {
 	private static final long serialVersionUID = 5535690322056670601L;
 
-	private EvaluationContext context;
-	
-	public PolicyResolutionException(EvaluationContext context,
-			String template, Object... arguments) {
-		super(Status.processingError().build(), template, arguments);
-		this.context = context;
+	public PolicyResolutionException(EvaluationContext context, Throwable t) {
+		super(context, t);
+	}
+	public PolicyResolutionException(EvaluationContext context) {
+		super(context, null);
 	}
 
-	public PolicyResolutionException(EvaluationContext context,
-			Throwable cause, String message,
-			Object... arguments) {
-		super(Status.processingError().build(), cause, message, arguments);
-		this.context = context;
-	}
+	public Optional<CompositeDecisionRuleIDReference> getFailedIDReference(){
+		return getContext()
+				.map(c->c.getCurrentPolicyIDReference() == null?
+				        c.getCurrentPolicySetIDReference():c.getCurrentPolicyIDReference());
 
-	public PolicyResolutionException(EvaluationContext context,
-			Throwable cause) {
-		super(Status.processingError().build(), cause);
-		this.context = context;
-	}
-
-	public CompositeDecisionRuleIDReference getPolicyIDReference(){
-		return context.getCurrentPolicyIDReference();
-	}
-
-	public CompositeDecisionRuleIDReference getPolicySetIDReference(){
-		return context.getCurrentPolicySetIDReference();
 	}
 }

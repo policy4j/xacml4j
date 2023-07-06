@@ -37,17 +37,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.ResourceAttributes;
+import org.xacml4j.v30.SubjectAttributes;
+import org.xacml4j.v30.content.XmlContent;
+import org.xacml4j.v30.marshal.Marshaller;
+import org.xacml4j.v30.marshal.Unmarshaller;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestDefaults;
 import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.ResourceAttributes;
-import org.xacml4j.v30.SubjectAttributes;
-import org.xacml4j.v30.marshal.Marshaller;
-import org.xacml4j.v30.marshal.Unmarshaller;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableList;
@@ -75,67 +76,67 @@ public class JsonRequestUnmarshallerTest {
 
 	private RequestContext createTestRequest() throws Exception {
 		Category subjectAttributes = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.builder(CategoryId.SUBJECT_ACCESS)
 				.id("SubjectAttributes")
 				.entity(
 						Entity
 						.builder()
-						.content(sampleContent1())
+						.content(XmlContent.of(sampleContent1()))
 						.attributes(
 						ImmutableList.<Attribute> of(
 								Attribute
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(StringExp.of(
+										.value(XacmlTypes.STRING.ofAny(
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringExp.of("TestDomain")).build()))
+										.value(XacmlTypes.STRING.ofAny("TestDomain")).build()))
 						.build())
 				.build();
 		Category resourceAttributes = Category
-				.builder(Categories.RESOURCE)
+				.builder(CategoryId.RESOURCE)
 				.id("ResourceAttributes")
 				.entity(Entity
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.RESOURCE_ID.toString())
-								.includeInResult(true).value(StringExp.of("testResourceId")).build())).build())
+								.includeInResult(true).value(XacmlTypes.STRING.ofAny("testResourceId")).build())).build())
 						.build();
 		Category actionAttributes = Category
-				.builder(Categories.ACTION)
+				.builder(CategoryId.ACTION)
 				.entity(Entity
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
-								.includeInResult(false).value(StringExp.of("VIEW")).build())).build())
+								.includeInResult(false).value(XacmlTypes.STRING.ofAny("VIEW")).build())).build())
 				.build();
 		Category environmentAttributes = Category
-				.builder(Categories.ENVIRONMENT)
+				.builder(CategoryId.ENVIRONMENT)
 				.id("EnvironmentAttributes")
 				.entity(Entity
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.TARGET_NAMESPACE.toString())
-								.includeInResult(false).value(StringExp.of("json\\-\"test\"")).build()))
+								.includeInResult(false).value(XacmlTypes.STRING.ofAny("json\\-\"test\"")).build()))
 						.build())
 				.build();
 		Category subjectIntermAttributes = Category
-				.builder(Categories.SUBJECT_INTERMEDIARY)
+				.builder(CategoryId.SUBJECT_INTERMEDIARY)
 				.id("SubjectIntermediaryAttributes")
 				.entity(Entity
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.AUTHN_METHOD.toString())
 								.includeInResult(false)
-								.value(StringExp.of("koks oras paryziuj?")).build()))
+								.value(XacmlTypes.STRING.ofAny("koks oras paryziuj?")).build()))
 						.build())
 				.build();
 
 		RequestReference requestRef1 = RequestReference.builder().reference(subjectAttributes, resourceAttributes)
-				.build();
+		                                               .build();
 		RequestReference requestRef2 = RequestReference.builder()
 				.reference(subjectAttributes, environmentAttributes, subjectIntermAttributes).build();
 

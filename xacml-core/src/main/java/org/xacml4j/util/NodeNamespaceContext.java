@@ -41,24 +41,23 @@ public final class NodeNamespaceContext implements NamespaceContext
 	private Node node;
 
 	public NodeNamespaceContext(Node node){
-		Preconditions.checkNotNull(node);
+		Preconditions.checkNotNull(node, "node");
 		this.node = node;
 	}
 
 	@Override
 	public String getNamespaceURI(String prefix){
-		 if (XMLConstants.XML_NS_PREFIX.equals(prefix)) {
-	            return XMLConstants.XML_NS_URI;
-	     }
-		 if (XMLConstants.XMLNS_ATTRIBUTE.equals(prefix)) {
-	            return XMLConstants.XMLNS_ATTRIBUTE_NS_URI;
-	    }
-		String namespaceURI = node.lookupNamespaceURI(prefix);
-		if(log.isDebugEnabled()){
-			log.debug("NamespaceURI=\"{}\" " +
-					"for prefix=\"{}\"", namespaceURI, prefix);
+		String namespaceURI = null;
+		if (prefix == null || prefix.equals(XMLConstants.DEFAULT_NS_PREFIX)) {
+			namespaceURI = node.lookupNamespaceURI(null);
+		} else {
+			namespaceURI = node.lookupNamespaceURI(prefix);
 		}
-		return namespaceURI == null?XMLConstants.NULL_NS_URI:namespaceURI;
+		if(log.isDebugEnabled()){
+			log.debug("Namespace prefix=\"{}\" " +
+					          "for namespaceURI=\"{}\"", prefix, namespaceURI);
+		}
+		return namespaceURI;
 	}
 
 	@Override

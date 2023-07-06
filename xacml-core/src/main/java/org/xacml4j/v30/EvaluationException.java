@@ -22,41 +22,48 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.XacmlException;
-
-import com.google.common.base.Preconditions;
+import java.util.Optional;
 
 
-@SuppressWarnings("serial")
-public class EvaluationException extends XacmlException
+/**
+ * XACML {@link Expression} evaluation exception,
+ * indicating runtime expression evaluation failure
+ *
+ * @author Giedrius Trumpickas
+ */
+public class EvaluationException extends CoreException
 {
-	private Status status;
+	private EvaluationContext context;
 
-	public EvaluationException(Status code,
-			String template, Object... arguments) {
-		super(template, arguments);
-		Preconditions.checkNotNull(code);
-		this.status = code;
+	public EvaluationException(EvaluationContext context,
+							   Throwable cause) {
+		super(Optional
+				      .ofNullable(context)
+				      .flatMap(v->v.getEvaluationStatus())
+				      .orElse(Status.processingError()
+				                    .build()),
+		      cause);
+		this.context = context;
 	}
 
-	public EvaluationException(Status code,
-			Throwable cause, String message,
-			Object... arguments) {
-		super(cause, message, arguments);
-		Preconditions.checkNotNull(code);
-		this.status = code;
-	}
-
-	public EvaluationException(Status code,
+	public EvaluationException(
+			Status status,
 			Throwable cause) {
-		super(cause);
-		Preconditions.checkNotNull(code);
-
-		this.status = code;
+		super(status, cause);
 	}
 
-
-	public final Status getStatus(){
-		return status;
+	public EvaluationException(
+			Status status, String message) {
+		super(status, message);
 	}
+
+	public EvaluationException(
+			Status status, String message, Throwable t) {
+		super(status, message, t);
+	}
+
+	public Optional<EvaluationContext> getContext(){
+		return Optional.ofNullable(context);
+	}
+
 }

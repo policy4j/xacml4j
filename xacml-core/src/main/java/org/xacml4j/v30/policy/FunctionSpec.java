@@ -1,0 +1,151 @@
+package org.xacml4j.v30.policy;
+
+/*
+ * #%L
+ * Xacml4J Core Engine Implementation
+ * %%
+ * Copyright (C) 2009 - 2014 Xacml4J.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.policy.function.FunctionCategory;
+
+
+/**
+ * A XACML function specification.
+ * Provides function signature metadata
+ *
+ * @author Giedrius Trumpickas
+ */
+public interface FunctionSpec
+{
+	/**
+	 * Gets function XACML identifier.
+	 *
+	 * @return XACML function identifier
+	 */
+	String getId();
+
+	FunctionCategory getCategory();
+
+	/**
+	 * Gets short function identifier
+	 * @return
+	 */
+	default String getShortId(){
+		return getId();
+	}
+
+	/**
+	 * Gets function legacy identifier
+	 * if any available
+	 *
+	 * @return legacy identifier
+	 */
+	Optional<String> getLegacyId();
+	
+	/**
+	 * Gets parameter specification
+	 * at given
+	 *
+	 * @param index a parameter index
+	 * @return {@link FunctionParamSpec} at given
+	 * index
+	 */
+	FunctionParamSpec getParamSpecAt(int index);
+
+	/**
+	 * Gets number of function formal
+	 * parameters
+	 *
+	 * @return gets number of function formal
+	 * parameters
+	 */
+	int getNumberOfParams();
+
+	/**
+	 * Tells if this function has variable length
+	 * parameter
+	 *
+	 * @return {@code true} if it does
+	 * {@code false} otherwise
+	 */
+	boolean isVariadic();
+
+	/**
+	 * Tests if this function requires lazy
+	 * parameters evaluation
+	 *
+	 * @return {@code true} if this
+	 * function requires lazy parameters
+	 * evaluation
+	 */
+	boolean isRequiresLazyParamEval();
+
+	/**
+	 * Validates given array of expressions
+	 * as potential function invocation arguments
+	 *
+	 * @param arguments an array of expressions
+	 */
+	boolean validateParameters(List<Expression> arguments);
+
+	/**
+	 * Validates given array of expressions
+	 * as potential function invocation arguments
+	 *
+	 * @param arguments an array of expressions
+	 * @exception SyntaxException
+	 */
+	void validateParametersAndThrow(List<Expression> arguments)
+		throws SyntaxException;
+
+	/**
+	 * Resolves function return type based on function
+	 * invocation arguments
+	 *
+	 * @param arguments a function invocation arguments
+	 * @return {@link ValueExpTypeInfo} resolved function return type
+	 */
+	ValueExpTypeInfo resolveReturnType(List<Expression> arguments);
+
+	/**
+	 * Invokes this function with a given arguments
+	 *
+	 * @return {@link ValueExp} defaultProvider representing
+	 * function invocation result
+	 */
+	default<T extends ValueExp> T invoke(EvaluationContext context, Expression ...arguments)
+		throws EvaluationException{
+		return invokeWithList(context, arguments == null ? Collections.emptyList() : Arrays.asList(arguments));
+	}
+
+	<T extends ValueExp> T invokeWithList(EvaluationContext context, List<Expression> arguments)
+			throws EvaluationException;
+
+}

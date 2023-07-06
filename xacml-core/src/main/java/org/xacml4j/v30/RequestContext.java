@@ -23,29 +23,46 @@ package org.xacml4j.v30;
  */
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.xacml4j.v30.policy.Condition;
+import org.xacml4j.v30.policy.Target;
 
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
+/**
+ * A XACML Request Context Abstraction
+ *
+ * @author Giedrius Trumpickas
+ */
 public class RequestContext
 {
 	private final boolean returnPolicyIdList;
 	private final boolean combinedDecision;
-	private final ImmutableMultimap<CategoryId, Category> attributes;
-	private final ImmutableMap<String, Category> attributesByXmlId;
-	private final ImmutableList<RequestReference> requestReferences;
+	private final Multimap<CategoryId, Category> entities;
+	private final Map<String, Category> attributesByXmlId;
+	private final List<RequestReference> requestReferences;
 	private final RequestDefaults requestDefaults;
 
-	private final transient int cachedHashCode;
+	private transient int cachedHashCode = 0;
 
 	private RequestContext(Builder b)
 	{
@@ -53,18 +70,17 @@ public class RequestContext
 		this.requestReferences = b.reqRefs.build();
 		this.requestDefaults = b.reqDefaults;
 		this.combinedDecision = b.combinedDecision;
-		this.attributes = b.attrBuilder.build();
+		this.entities = b.attrBuilder.build();
 		ImmutableMap.Builder<String, Category> attributesByXmlIdBuilder = ImmutableMap.builder();
-		for(Category attr : attributes.values()){
-			if(attr.getId() != null){
-				attributesByXmlIdBuilder.put(attr.getId(), attr);
-			}
+		for(Category attr : entities.values()){
+			attr.getReferenceId()
+			    .ifPresent(id->attributesByXmlIdBuilder.put(id, attr));
 		}
 		this.attributesByXmlId = attributesByXmlIdBuilder.build();
 		this.cachedHashCode = Objects.hashCode(
 				this.returnPolicyIdList,
 				this.combinedDecision,
-				this.attributes,
+				this.entities,
 				this.requestReferences,
 				this.requestDefaults);
 	}
@@ -77,7 +93,7 @@ public class RequestContext
 	 * If the function returns {@code true}, a PDP that implements this optional
 	 * feature MUST return a list of all policies which were
 	 * found to be fully applicable. That is, all policies
-	 * where both the {@link org.xacml4j.v30.pdp.Target} matched and the {@link org.xacml4j.v30.pdp.Condition}
+	 * where both the {@link Target} matched and the {@link Condition}
 	 * evaluated to {@code true}, whether or not the {@link Effect}
 	 *  was the same or different from the {@link Decision}}
 	 *
@@ -105,7 +121,7 @@ public class RequestContext
 	/**
 	 * Gets request defaults
 	 *
-	 * @return an instance of {@link RequestDefaults}
+	 * @return an defaultProvider of {@link RequestDefaults}
 	 */
 	public RequestDefaults getRequestDefaults(){
 		return requestDefaults;
@@ -120,7 +136,7 @@ public class RequestContext
 	 * category occurrence in this request
 	 */
 	public int getCategoryOccurrences(CategoryId category){
-		return attributes.get(category).size();
+		return entities.get(category).size();
 	}
 
 	/**
@@ -134,14 +150,26 @@ public class RequestContext
 		return requestReferences;
 	}
 
+	public Collection<Category> getCategories(){
+		return entities.values();
+	}
+
+	public Multimap<CategoryId, Category> getCategoriesByCategoryId(){
+		return entities;
+	}
+
+	public Set<CategoryId> getCategoryIds(){
+		return entities.keySet();
+	}
+
 	/**
 	 * Gets all {@link Category} instances contained
 	 * in this request
 	 * @return a collection of {@link Category}
 	 * instances
 	 */
-	public Collection<Category> getAttributes(){
-		return attributes.values();
+	public Collection<Category> getCategory(){
+		return entities.values();
 	}
 
 	/**
@@ -156,16 +184,6 @@ public class RequestContext
 		return !requestReferences.isEmpty();
 	}
 
-	/**
-	 * Gets all attribute categories contained
-	 * in this request
-	 *
-	 * @return a set of all attribute categories in
-	 * this request
-	 */
-	public Set<CategoryId> getCategories(){
-		return attributes.keySet();
-	}
 
 	/**
 	 * Resolves attribute reference to {@link Category}
@@ -188,20 +206,26 @@ public class RequestContext
 	 * a request does not have attributes of a specified
 	 * category an empty collection is returned
 	 */
-	public Collection<Category> getAttributes(CategoryId categoryId){
+	public Collection<Category> getCategory(CategoryId categoryId){
 		Preconditions.checkNotNull(categoryId);
-		return attributes.get(categoryId);
+		return entities.get(categoryId);
 	}
 
 	public Collection<Entity> getEntities(CategoryId c) {
 		return Collections2.transform(
-				getAttributes(c),
+				getCategory(c),
 				new Function<Category, Entity>() {
 					@Override
 					public Entity apply(Category input) {
 						return input.getEntity();
 					}
 				});
+	}
+
+	public Stream<Category> stream(){
+		return entities
+				.values()
+				.stream();
 	}
 
 	/**
@@ -211,19 +235,32 @@ public class RequestContext
 	 * @return {@link Category} or {@code null}
 	 * if request does not have attributes of given category
 	 * @exception IllegalArgumentException if a request
-	 * has more than one instance of {@link Category}
+	 * has more than one defaultProvider of {@link Category}
 	 * of the requested category
 	 */
 	public Category getOnlyAttributes(CategoryId category){
-		Collection<Category> attributes = getAttributes(category);
+		Collection<Category> attributes = getCategory(category);
 		return Iterables.getOnlyElement(attributes, null);
 	}
 
-	public Entity getOnlyEntity(CategoryId category){
-		Collection<Entity> attributes = getEntities(category);
-		return Iterables.getOnlyElement(attributes, null);
+
+	public Optional<Entity> getEntity(CategoryId category){
+		return getEntities(category)
+				.stream()
+				.findFirst();
 	}
 
+	public Optional<Attribute> getAttribute(CategoryId id,
+	                                        String attributeId){
+		return getAttribute(id, (a)->a.getAttributeId()
+				.equalsIgnoreCase(attributeId));
+	}
+
+	public Optional<Attribute> getAttribute(CategoryId id,
+											java.util.function.Predicate<Attribute> filter){
+		return getEntity(id)
+				.flatMap(v->v.findFirst(filter));
+	}
 
 	/**
 	 * Tests if this request has an multiple
@@ -234,8 +271,8 @@ public class RequestContext
 	 * has multiple attributes of same category
 	 */
 	public boolean containsRepeatingCategories() {
-		for (CategoryId category : getCategories()) {
-			if (getCategoryOccurrences(category) > 1) {
+		for (Category category : getCategories()) {
+			if (getCategoryOccurrences(category.getCategoryId()) > 1) {
 				return true;
 			}
 		}
@@ -243,12 +280,11 @@ public class RequestContext
 	}
 
 	public boolean containsAttributeValues(
-			String attributeId, String issuer, AttributeExpType type)
+			String attributeId, String issuer, ValueType type)
 	{
-		for (Category a : getAttributes()) {
+		for (Category a : entities.values()) {
 			Entity e = a.getEntity();
-			Collection<AttributeExp> values = e.getAttributeValues(attributeId, issuer, type);
-			if (!values.isEmpty()) {
+			if (e.hasValues(attributeId, type, issuer)) {
 				return true;
 			}
 		}
@@ -265,7 +301,7 @@ public class RequestContext
 	 * one attribute with a given identifier and the given type
 	 */
 	public boolean containsAttributeValues(String attributeId,
-			AttributeExpType type)
+			ValueType type)
 	{
 		return containsAttributeValues(attributeId, null, type);
 	}
@@ -277,49 +313,17 @@ public class RequestContext
 	 * @param attributeId an attribute identifier
 	 * @param dataType an attribute data type
 	 * @param issuer an attribute issuer
-	 * @return a collection of {@link AttributeExp} instances
+	 * @return a collection of {@link Value} instances
 	 */
-	public Collection<AttributeExp> getAttributeValues(CategoryId categoryId,
-			String attributeId, AttributeExpType dataType, String issuer)
+	public <T extends Value<T>> Collection<T> getAttributeValues(CategoryId categoryId,
+	                                            String attributeId, ValueType dataType, String issuer)
 	{
-		ImmutableList.Builder<AttributeExp> found = ImmutableList.builder();
-		for(Category a : attributes.get(categoryId)){
+		ImmutableList.Builder<T> found = ImmutableList.builder();
+		for(Category a : entities.get(categoryId)){
 			Entity e = a.getEntity();
-			found.addAll(e.getAttributeValues(attributeId, issuer, dataType));
+			found.addAll(e.findValues(attributeId, dataType, issuer));
 		}
 		return found.build();
-	}
-
-	/**
-	 * Gets all attribute values of the given category with the
-	 * given identifier and data type
-	 *
-	 * @param categoryId an attribute category
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
-	 * @return a collection of {@link AttributeExp} instances
-	 */
-	public Collection<AttributeExp> getAttributeValues(
-			CategoryId categoryId,
-			String attributeId,
-			AttributeExpType dataType)
-	{
-		return getAttributeValues(categoryId, attributeId, dataType, null);
-	}
-
-	/**
-	 * Gets a single {@link AttributeExp} from this request
-	 *
-	 * @param categoryId an attribute category identifier
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
-	 * @return {@link AttributeExp} or {@code null}
-	 */
-	public AttributeExp getAttributeValue(CategoryId categoryId,
-			String attributeId,
-			AttributeExpType dataType){
-		return Iterables.getOnlyElement(
-				getAttributeValues(categoryId, attributeId, dataType), null);
 	}
 
 	/**
@@ -334,13 +338,12 @@ public class RequestContext
 	public Collection<Category> getIncludeInResultAttributes()
 	{
 		ImmutableList.Builder<Category> resultAttr = ImmutableList.builder();
-		for(Category a : attributes.values()){
-			Entity e = a.getEntity();
-			Collection<Attribute> includeInResult = e.getIncludeInResultAttributes();
+		for(Category a : entities.values()){
+			Collection<Attribute> includeInResult = a.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
 				resultAttr.add(Category
 						.builder(a.getCategoryId())
-						.entity(Entity.builder().attributes(e.getIncludeInResultAttributes()).build())
+						.entity(Entity.builder().attributes(a.getIncludeInResultAttributes()).build())
 						.build());
 			}
 		}
@@ -350,16 +353,24 @@ public class RequestContext
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-		                  .add("ReturnPolicyIDList", returnPolicyIdList)
-		                  .add("CombineDecision", combinedDecision)
-		                  .addValue(attributes.values())
-		                  .add("RequestReferences", requestReferences)
-		                  .add("RequestDefaults", requestDefaults).toString();
+		.add("ReturnPolicyIDList", returnPolicyIdList)
+		.add("CombineDecision", combinedDecision)
+		.addValue(entities.values())
+		.add("RequestReferences", requestReferences)
+		.add("RequestDefaults", requestDefaults).toString();
 	}
 
 	@Override
 	public int hashCode(){
-		return cachedHashCode;
+		 if(cachedHashCode == 0){
+		 	this.cachedHashCode = Objects.hashCode(
+					this.returnPolicyIdList,
+					this.combinedDecision,
+					this.entities,
+					this.requestReferences,
+					this.requestDefaults);
+		 }
+		 return cachedHashCode;
 	}
 
 	@Override
@@ -373,7 +384,7 @@ public class RequestContext
 		RequestContext r = (RequestContext)o;
 		return returnPolicyIdList == r.returnPolicyIdList &&
 				combinedDecision == r.combinedDecision &&
-				attributes.equals(attributes) &&
+				entities.equals(entities) &&
 				requestReferences.equals(r.requestReferences) &&
 				Objects.equal(requestDefaults, r.requestDefaults);
 	}
@@ -428,7 +439,7 @@ public class RequestContext
 			combineDecision(req.isCombinedDecision());
 			returnPolicyIdList(req.isReturnPolicyIdList());
 			reqDefaults(req.getRequestDefaults());
-			attributes(req.getAttributes());
+			attributes(req.getCategories());
 			reference(req.getRequestReferences());
 			return this;
 		}
@@ -438,7 +449,6 @@ public class RequestContext
 		 * a given request context except attributes
 		 *
 		 * @param req a request context
-		 * @param attributes  attributes
 		 * @return {@link Builder}
 		 */
 		public Builder copyOf(RequestContext req, Iterable<Category> attributes)

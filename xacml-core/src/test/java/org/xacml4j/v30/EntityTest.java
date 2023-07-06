@@ -24,26 +24,16 @@ package org.xacml4j.v30;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.xacml4j.v30.pdp.XPathEvaluationException;
-import org.xacml4j.v30.spi.xpath.DefaultXPathProvider;
-import org.xacml4j.v30.types.DoubleExp;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
-import org.xml.sax.InputSource;
 
-import com.google.common.base.Predicate;
-
-public class EntityTest 
+public class   EntityTest
 {
 	
 	private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
@@ -58,75 +48,145 @@ public class EntityTest
 	
 	@Before
 	public void init() throws Exception{
-		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
-		f.setNamespaceAware(true);
-		DocumentBuilder builder = f.newDocumentBuilder();
 		this.entity = Entity
 				.builder()
-				.content(builder.parse
-						(new InputSource(new StringReader(testXml)))).build();
+				.content(testXml)
+				.build();
 	}
 	@Test
 	public void testBuildEntity(){
 		Entity e0 = Entity
 				.builder()
 				.attribute(
-					Attribute.
+						Attribute.
 						builder("testId1")
-						.value(StringExp.of("a"), StringExp.of("bb"))
+						.value(XacmlTypes.STRING.ofAny("a"), XacmlTypes.STRING.ofAny("bb"))
 						.build(),
-					Attribute
+						Attribute
 						.builder("testId2")
-						.value(StringExp.of("aa"), StringExp.of("bbb"))
+						.value(XacmlTypes.STRING.ofAny("aa"), XacmlTypes.STRING.ofAny("bbb"))
 						.build(),
-					Attribute
+						Attribute
 						.builder("testId3")
-						.value(IntegerExp.of(10), DoubleExp.of(0.1))
+						.value(XacmlTypes.INTEGER.ofAny(10), XacmlTypes.DOUBLE.ofAny(0.1))
 						.build())
 				.build();
 		Entity e1 = Entity.builder().copyOf(e0).build();
 		assertEquals(e0,  e1);
-		assertTrue(e1.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.of("a")));
-		assertTrue(e1.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.of("bb")));
-		Entity e2 = Entity.builder().copyOf(e0, new Predicate<Attribute>(){
-			public boolean apply(Attribute a){
-				return a.getAttributeId().equals("testId2");
-			}
-			
-		} ).build();
-		assertFalse(e2.getAttributeValues("testId1", XacmlTypes.STRING).contains(StringExp.of("bb")));
-		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(StringExp.of("aa")));
-		assertTrue(e2.getAttributeValues("testId2", XacmlTypes.STRING).contains(StringExp.of("bbb")));
+		assertTrue(e1.findValues("testId1", XacmlTypes.STRING).contains(XacmlTypes.STRING.ofAny("a")));
+		assertTrue(e1.findValues("testId1", XacmlTypes.STRING).contains(XacmlTypes.STRING.ofAny("bb")));
+		Entity e2 = Entity
+				.builder()
+				.copyOf(e0,
+						(a)->a.getAttributeId()
+								.equalsIgnoreCase("testId2")
+				).build();
+		assertFalse(e2.findValues("testId1", XacmlTypes.STRING).contains(XacmlTypes.STRING.ofAny("bb")));
+		assertTrue(e2.findValues("testId2", XacmlTypes.STRING).contains(XacmlTypes.STRING.ofAny("aa")));
+		assertTrue(e2.findValues("testId2", XacmlTypes.STRING).contains(XacmlTypes.STRING.ofAny("bbb")));
 	}
-	
+
 	@Test
-	public void testEntityXPathCorrectType(){
-		BagOfAttributeExp values = entity.getAttributeValues("/md:record/md:patient/md:patient-number/text()", 
-				new DefaultXPathProvider(), XacmlTypes.INTEGER, null);
-		assertTrue(values.contains(IntegerExp.of(555555)));
+	public void testEntityDesignatorResolve()
+	{
+		Entity entity = Entity
+				.builder()
+				.attribute(
+						Attribute.
+								builder("testId1")
+								.value(XacmlTypes.STRING.ofAny("a"), XacmlTypes.STRING.ofAny("bb"))
+								.build(),
+						Attribute
+								.builder("testId2")
+								.value(XacmlTypes.STRING.ofAny("aa"), XacmlTypes.STRING.ofAny("bbb"))
+								.build(),
+						Attribute
+								.builder("testId3")
+								.issuer("test")
+								.value(XacmlTypes.INTEGER.ofAny(10), XacmlTypes.DOUBLE.ofAny(0.1))
+								.build())
+				.build();
+
+		assertEquals(XacmlTypes.STRING.bagBuilder().value(XacmlTypes.STRING.ofAny("a"), XacmlTypes.STRING.ofAny("bb")).build(),
+		             entity.resolve(AttributeDesignatorKey.builder()
+		                                                  .attributeId("testId1")
+		                                                  .dataType(XacmlTypes.STRING)
+		                                                  .category(CategoryId.SUBJECT_ACCESS)
+		                                                  .build()).get());
+		assertEquals(XacmlTypes.INTEGER.bagBuilder().value(10).build(),
+		             entity.resolve(AttributeDesignatorKey.builder()
+		                                                  .attributeId("testId3")
+		                                                  .dataType(XacmlTypes.INTEGER)
+		                                                  .category(CategoryId.SUBJECT_ACCESS)
+		                                                  .build()).get());
+
+		assertEquals(XacmlTypes.DOUBLE.bagBuilder().value(0.1).build(),
+		             entity.resolve(AttributeDesignatorKey.builder()
+		                                                  .attributeId("testId3")
+		                                                  .dataType(XacmlTypes.DOUBLE)
+		                                                  .category(CategoryId.SUBJECT_ACCESS)
+		                                                  .build()).get());
+
 	}
-	
-	@Test(expected=XPathEvaluationException.class)
-	public void testXPathReturnUnsupportedNodeType(){
-		
-		entity.getAttributeValues("/md:record/md:patient", 
-				new DefaultXPathProvider(), XacmlTypes.INTEGER, null);
+
+
+
+	@Test
+	public void testEntityType(){
+		assertNotNull(XacmlTypes.getType(XacmlTypes.ENTITY.getTypeId()).orElse(null));
 	}
-	
 	@Test
 	public void testEntityEquals(){
 		Entity e0 = Entity
 				.builder()
-				.attribute(Attribute.builder("testId1").value(StringExp.of("aa"), StringExp.of("bb")).build())
-				.attribute(Attribute.builder("testId2").value(StringExp.of("cc"), StringExp.of("dd")).build())
+				.attribute(Attribute.builder("testId1").value(XacmlTypes.STRING.ofAny("aa"), XacmlTypes.STRING.ofAny("bb")).build())
+				.attribute(Attribute.builder("testId2").value(XacmlTypes.STRING.ofAny("cc"), XacmlTypes.STRING.ofAny("dd")).build())
 				.build();
 		
 		Entity e1 = Entity
 				.builder()
-				.attribute(Attribute.builder("testId2").value(StringExp.of("dd"), StringExp.of("cc")).build())
-				.attribute(Attribute.builder("testId1").value(StringExp.of("bb"), StringExp.of("aa")).build())
+				.attribute(Attribute.builder("testId2").value(XacmlTypes.STRING.ofAny("dd"), XacmlTypes.STRING.ofAny("cc")).build())
+				.attribute(Attribute.builder("testId1").value(XacmlTypes.STRING.ofAny("bb"), XacmlTypes.STRING.ofAny("aa")).build())
+				.build();
+
+		Entity e2 = Entity
+				.builder()
+				.content(testXml)
+				.attribute(Attribute.builder("testId1").value(XacmlTypes.STRING.ofAny("aa"), XacmlTypes.STRING.ofAny("bb")).build())
+				.attribute(Attribute.builder("testId2").value(XacmlTypes.STRING.ofAny("cc"), XacmlTypes.STRING.ofAny("dd")).build())
+				.build();
+		Entity e3 = Entity
+				.builder()
+				.content(testXml)
+				.attribute(Attribute.builder("testId1").value(XacmlTypes.STRING.ofAny("aa"), XacmlTypes.STRING.ofAny("bb")).build())
+				.attribute(Attribute.builder("testId2").value(XacmlTypes.STRING.ofAny("cc"), XacmlTypes.STRING.ofAny("dd")).build())
 				.build();
 		assertEquals(e0, e1);
+		assertEquals(e2, e3);
+	}
+
+	@Test
+	public void testEntityEquals2(){
+		System.out.println(StringVal.of("aaaaa"));
+		Entity embeddedEntity = Entity.builder()
+		                      .xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
+		                      .attribute(Attribute.builder("testId1").value(XacmlTypes.STRING.ofAny("aa"), XacmlTypes.STRING.ofAny("bb")).build())
+		                      .attribute(Attribute.builder("testId2").value(XacmlTypes.STRING.ofAny("cc"), XacmlTypes.STRING.ofAny("dd")).build())
+		                      .build();
+		System.out.println(embeddedEntity);
+		Entity a = Entity.builder()
+				              .attribute(Attribute.builder("testId")
+				                                  .value(embeddedEntity)
+				                                  .build())
+				              .build();
+		System.out.println(a);
+		Entity b = Entity.builder()
+		                 .attribute(Attribute.builder("testId")
+		                                     .value(embeddedEntity)
+		                                     .build())
+		                 .build();
+		assertEquals(a, b);
+
 	}
 }
 

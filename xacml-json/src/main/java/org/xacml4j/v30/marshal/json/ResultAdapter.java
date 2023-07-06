@@ -35,11 +35,12 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySetIDReference;
 
 import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -102,8 +103,9 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 			builder.advice(advice);
 		}
 
-		Collection<Category> attributes = context.deserialize(o.get(ATTRIBUTES_PROPERTY), ATTRIBUTES_TYPE);
-		if (attributes != null) {
+		JsonArray categories = o.getAsJsonArray(ATTRIBUTES_PROPERTY);
+		if (categories != null) {
+			Collection<Category> attributes = context.deserialize(categories, ATTRIBUTES_TYPE);
 			builder.includeInResultAttr(attributes);
 		}
 		deserializePolicyIdentifiers(o, context, builder);
@@ -134,7 +136,6 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		if (src.getStatus() != null) {
 			o.add(STATUS_PROPERTY, context.serialize(src.getStatus()));
 		}
-
 		Collection<Obligation> obligations = src.getObligations();
 		if (obligations != null && !obligations.isEmpty()) {
 			o.add(OBLIGATIONS_PROPERTY, context.serialize(obligations, OBLIGATIONS_TYPE));
@@ -145,7 +146,7 @@ public class ResultAdapter implements JsonDeserializer<Result>, JsonSerializer<R
 		}
 		Collection<Category> attributes = src.getIncludeInResultAttributes();
 		if (attributes != null && !attributes.isEmpty()) {
-			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes));
+			o.add(ATTRIBUTES_PROPERTY, context.serialize(attributes, new TypeToken<Collection<Category>>() {}.getType()));
 		}
 		serializePolicyIdentifiers(src, context, o);
 		return o;

@@ -28,11 +28,11 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.ISSUER_PROPERTY;
 import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 
 import java.lang.reflect.Type;
+import java.util.Optional;
 
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.types.Value;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -47,16 +47,13 @@ public class AttributeAssignmentSerializer implements JsonSerializer<AttributeAs
 	{
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
-		AttributeExp value = src.getAttribute();
-		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(value.getType());
+		Value value = src.getAttribute();
+		Optional<TypeToGSon> toGson = TypeToGSon.forType(value.getEvaluatesTo());
 		Preconditions.checkState(toGson.isPresent());
 		o.add(VALUE_PROPERTY, toGson.get().toJson(value, context));
-		o.addProperty(DATA_TYPE_PROPERTY, value.getType().getShortDataTypeId());
+		o.addProperty(DATA_TYPE_PROPERTY, value.getEvaluatesTo().getShortTypeId());
 		o.addProperty(ISSUER_PROPERTY, src.getIssuer());
-		if (src.getCategory() != null) {
-			o.addProperty("Category", 
-					src.getCategory().toString());
-		}
+		src.getCategory().ifPresent(c->o.addProperty("Category", c.getAbbreviatedId()));
 		return o;
 	}
 }

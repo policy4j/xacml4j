@@ -24,26 +24,25 @@ package org.xacml4j.v30;
 
 import java.util.Map;
 
-import org.xacml4j.v30.spi.pip.AttributeResolver;
-import org.xacml4j.v30.spi.pip.AttributeResolverDescriptorBuilder;
-import org.xacml4j.v30.spi.pip.BaseAttributeResolver;
-import org.xacml4j.v30.spi.pip.ResolverContext;
+import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 
 import com.google.common.collect.ImmutableMap;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
 
 public class ExpectedAttributeResolverBuilder
 {
-	private AttributeResolverDescriptorBuilder b;
-	private ImmutableMap.Builder<String, BagOfAttributeExp> values;
+	private AttributeResolverDescriptor.Builder b;
+	private ImmutableMap.Builder<String, BagOfValues> values;
 
-	private ExpectedAttributeResolverBuilder(AttributeResolverDescriptorBuilder b){
+	private ExpectedAttributeResolverBuilder(AttributeResolverDescriptor.Builder b){
 		this.b = b;
 		this.values = ImmutableMap.builder();
 	}
 
 	public static ExpectedAttributeResolverBuilder builder(String id, CategoryId category, String issuer){
-		return new ExpectedAttributeResolverBuilder(AttributeResolverDescriptorBuilder.builder(id, 
+		return new ExpectedAttributeResolverBuilder(AttributeResolverDescriptor.builder(id,
 				"ExpectedAttributeResolver " + id, issuer, category));
 	}
 
@@ -52,31 +51,27 @@ public class ExpectedAttributeResolverBuilder
 	}
 
 	public ExpectedAttributeResolverBuilder designatorKeyRef(
-			CategoryId category, String attributeId, AttributeExpType type)
+			CategoryId category, String attributeId, ValueType type)
 	{
-		b.requestContextKey(category, attributeId, type);
+		b.contextRef(AttributeDesignatorKey.builder()
+		                                   .category(category)
+		                                   .attributeId(attributeId)
+		                                   .dataType(type).build());
 		return this;
 	}
-	public ExpectedAttributeResolverBuilder value(String id, AttributeExp value){
-		b.attribute(id, value.getType());
+	public ExpectedAttributeResolverBuilder value(String id, Value value){
+		b.attribute(id, value.getEvaluatesTo());
 		this.values.put(id, value.toBag());
 		return this;
 	}
 
-	public ExpectedAttributeResolverBuilder value(String id, BagOfAttributeExp value){
-		b.attribute(id, value.getDataType());
+	public ExpectedAttributeResolverBuilder value(String id, BagOfValues value){
+		b.attribute(id, value.getBagValueType());
 		this.values.put(id, value);
 		return this;
 	}
 
-	public AttributeResolver build(){
-		return new BaseAttributeResolver(b.build()) {
-
-			@Override
-			protected Map<String, BagOfAttributeExp> doResolve(ResolverContext context)
-					throws Exception {
-				return values.build();
-			}
-		};
+	public AttributeResolverDescriptor build(Map<String, BagOfValues> values){
+		return b.build(r->values);
 	}
 }

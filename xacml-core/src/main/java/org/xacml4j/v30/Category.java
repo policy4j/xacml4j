@@ -22,18 +22,33 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
+import org.xacml4j.v30.types.Entity;
 
 
-public class Category
+/**
+ * Represents XACML attributes category
+ * represented via {@link CategoryId}
+ *
+ * @author Giedrius Trumpickas
+ */
+public final class Category implements Serializable
 {
-	private final String id;
+	private final static Logger LOG = LoggerFactory.getLogger(Category.class);
+
+	private final String refId;
+	private final CategoryReference cachedRef;
 	private final CategoryId categoryId;
-	private final CategoryReference ref;
 	private final Entity entity;
 
 	/**
@@ -42,22 +57,60 @@ public class Category
 	 * @param b a category builder
 	 */
 	private Category(Builder b) {
-		Preconditions.checkNotNull(b.category);
-		Preconditions.checkNotNull(b.entity);
-		this.id = b.id;
-		this.categoryId = b.category;
-		this.entity = b.entity;
-		this.ref = (b.id == null)
+		this.refId = b.id;
+		this.categoryId = java.util.Objects.requireNonNull(b.category,
+				"Category identifier must be specified");
+		this.entity = java.util.Objects.requireNonNull(b.entity,
+				"Category entity must be specified");
+		this.cachedRef = (b.id == null)
 				? null
 				: CategoryReference.builder().id(b.id).build();
 	}
 
 	/**
+	 * Tries to resolve given {@link org.xacml4j.v30.AttributeDesignatorKey} against this category
+	 *
+	 * @param key an attribute designator
+	 * @return {@link java.util.Optional} resolved
+	 */
+	public java.util.Optional<BagOfValues> resolve(AttributeDesignatorKey key){
+		if(!key.getCategory().equals(getCategoryId())){
+			return java.util.Optional.empty();
+		}
+		return entity.resolve(key);
+	}
+
+	/**
+	 * Tries to resolve given {@link org.xacml4j.v30.AttributeSelectorKey} against this category
+	 *
+	 * @param key an attribute designator
+	 * @return {@link java.util.Optional} resolved
+	 */
+	public java.util.Optional<BagOfValues> resolve(AttributeSelectorKey key){
+		if(!key.getCategory().equals(getCategoryId())){
+			return java.util.Optional.empty();
+		}
+		return entity.resolve(key);
+	}
+
+
+	/**
+	 * Finds all defaultProvider of {@link Attribute} with
+	 * {@link Attribute#isIncludeInResult()} returning
+	 * {@code true}
+	 *
+	 * @return a collection of {@link Attribute}
+	 * instances
+	 */
+	public Collection<Attribute> getIncludeInResultAttributes(){
+		return entity.find(a->a.isIncludeInResult());
+	}
+	/**
 	 * Constructs {@link Category.Builder} for given
 	 * attribute category
 	 *
 	 * @param category attribute category
-	 * @return {@link Category.Builder} instance
+	 * @return {@link Category.Builder} defaultProvider
 	 */
 	public static Builder builder(CategoryId category){
 		return new Builder(category);
@@ -67,21 +120,57 @@ public class Category
 		return new Builder();
 	}
 
+	public static Builder subjectAccess(){
+		return new Builder(CategoryId.SUBJECT_ACCESS);
+	}
+	public static Builder subjectRecipient(){
+		return new Builder(CategoryId.SUBJECT_RECIPIENT);
+	}
+
+	public static Builder subjectCodebase(){
+		return new Builder(CategoryId.SUBJECT_CODEBASE);
+	}
+	public static Builder subjectIntermediary(){
+		return new Builder(CategoryId.SUBJECT_INTERMEDIARY);
+	}
+	public static Builder subjectRequestingMachine(){
+		return new Builder(CategoryId.SUBJECT_REQUESTING_MACHINE);
+	}
+
+	public static Builder subjectRoleEnablementAuthority(){
+		return new Builder(CategoryId.SUBJECT_ROLE_ENABLEMENT_AUTHORITY);
+	}
+
+	public static Builder resource(){
+		return new Builder(CategoryId.RESOURCE);
+	}
+	public static Builder action(){
+		return new Builder(CategoryId.ACTION);
+	}
+	public static Builder environment(){
+		return new Builder(CategoryId.ENVIRONMENT);
+	}
+
+
 	/**
-	 * An unique identifier of the attribute in
-	 * the request context
+	 * An unique identifier of the attribute category
 	 *
-	 * @return unique identifier of the
-	 * attribute in the request context
+	 * @return unique identifier of the attribute
+	 * category in the request context
 	 */
-	public String getId(){
-		return id;
+	public Optional<String> getReferenceId(){
+		return Optional.ofNullable(refId);
 	}
 
-	public CategoryReference getReference(){
-		return ref;
+	public Optional<CategoryReference> getReference(){
+		return Optional.ofNullable(cachedRef);
 	}
 
+	/**
+	 * Gets category entity
+	 *
+	 * @return {@link Entity}
+	 */
 	public Entity getEntity(){
 		return entity;
 	}
@@ -97,16 +186,18 @@ public class Category
 
 	@Override
 	public String toString(){
-		return MoreObjects.toStringHelper(this)
-		                  .add("category", categoryId)
-		                  .add("id", id)
-		                  .add("entity", entity)
-		                  .toString();
+		return MoreObjects
+				.toStringHelper(this)
+				.add("category", categoryId.getAbbreviatedId())
+				.add("id", refId)
+				.add("entity", entity)
+				.add("reference", cachedRef)
+				.toString();
 	}
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(categoryId, id, entity);
+		return Objects.hashCode(categoryId, refId, entity);
 	}
 
 	@Override
@@ -118,11 +209,13 @@ public class Category
 			return false;
 		}
 		Category a = (Category)o;
-		return Objects.equal(categoryId, a.categoryId) &&
-		Objects.equal(id, a.id) && entity.equals(a.entity);
+		return java.util.Objects.equals(categoryId, a.categoryId) &&
+				java.util.Objects.equals(refId, a.refId) &&
+				entity.equals(a.entity) &&
+				java.util.Objects.equals(cachedRef, a.cachedRef);
 	}
 
-	public static class Builder
+	public final static class Builder
 	{
 		private String id;
 		private CategoryId category;
@@ -142,13 +235,13 @@ public class Category
 		}
 
 		public Builder copyOf(Category a){
-			return copyOf(a, Predicates.<Attribute>alwaysTrue());
+			return copyOf(a, (attribute)->true);
 		}
 
 		public Builder copyOf(Category a,
 				Predicate<Attribute> f){
 			Preconditions.checkNotNull(a);
-			id(a.getId());
+			id(a.getReferenceId().orElse(null));
 			category(a.getCategoryId());
 			entity(Entity.builder().copyOf(a.entity, f).build());
 			return this;
@@ -160,8 +253,7 @@ public class Category
 		}
 
 		public Builder category(CategoryId category){
-			Preconditions.checkNotNull(category);
-			this.category = category;
+			this.category = java.util.Objects.requireNonNull(category, "category");
 			return this;
 		}
 

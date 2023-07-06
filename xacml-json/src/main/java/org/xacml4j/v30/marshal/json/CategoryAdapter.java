@@ -25,17 +25,15 @@ package org.xacml4j.v30.marshal.json;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.w3c.dom.Node;
-import org.xacml4j.util.DOMUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.SyntaxException;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableBiMap;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -47,20 +45,7 @@ import com.google.gson.reflect.TypeToken;
 
 class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Category>
 {
-	/**
-	 * Short well know category aliases
-	 */
-	private final static ImmutableBiMap<String, CategoryId> SHORT_NAMES =
-			ImmutableBiMap.<String, CategoryId>builder()
-			.put("action", Categories.ACTION)
-			.put("environment", Categories.ENVIRONMENT)
-			.put("resource", Categories.RESOURCE)
-			.put("subject", Categories.SUBJECT_ACCESS)
-			.put("codebase", Categories.SUBJECT_CODEBASE)
-			.put("intermediary-subject", Categories.SUBJECT_INTERMEDIARY)
-			.put("recipient-subject", Categories.SUBJECT_RECIPIENT)
-			.put("requesting-machine", Categories.SUBJECT_REQUESTING_MACHINE)
-			.build();
+	private final static Logger LOG = LoggerFactory.getLogger(CategoryAdapter.class);
 
 	@Override
 	public Category deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
@@ -69,22 +54,25 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 			JsonObject o = json.getAsJsonObject();
 			String categoryId = GsonUtil.getAsString(o, JsonProperties.CATEGORY_ID_PROPERTY, null);
 			Preconditions.checkState(categoryId != null);
-			CategoryId category = SHORT_NAMES.get(categoryId);
-			category =  (category == null)?Categories.parse(categoryId):category;
+			CategoryId category = CategoryId.of(categoryId);
 			String id = GsonUtil.getAsString(o, JsonProperties.ID_PROPERTY, null);
 			Collection<Attribute> attr = context.deserialize(o.getAsJsonArray(JsonProperties.ATTRIBUTE_PROPERTY),
 					new TypeToken<Collection<Attribute>>() {
 					}.getType());
-			Node content = DOMUtil.stringToNode(GsonUtil.getAsString(o, JsonProperties.CONTENT_PROPERTY, null));
+			Entity.Builder entityBuilder = Entity
+					.builder()
+					.attributes(attr);
+			String content = GsonUtil.getAsString(o,
+					JsonProperties.CONTENT_PROPERTY, null);
+			if(content != null){
+				LOG.debug("Content size={} content={}", content.length(), content);
+				entityBuilder.content(content);
+			}
 			return Category.builder(category)
 					.id(id)
-					.entity(Entity
-							.builder()
-							.attributes(attr)
-							.content(content)
-							.build())
+					.entity(entityBuilder.build())
 					.build();
-		} catch (XacmlSyntaxException e) {
+		} catch (SyntaxException e) {
 			throw new JsonParseException(e);
 		}
 	}
@@ -93,14 +81,17 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 	public JsonElement serialize(Category src, Type typeOfSrc,
 			JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		if (src.getId() != null) {
-			o.addProperty(JsonProperties.ID_PROPERTY, src.getId());
+		if (src.getReferenceId() != null) {
+			o.addProperty(JsonProperties.ID_PROPERTY, src.getReferenceId().orElse(null));
 		}
 		Entity e = src.getEntity();
-		String categoryId = SHORT_NAMES.inverse().get(src.getCategoryId());
-		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, (categoryId == null)?src.getCategoryId().getId():categoryId);
-		o.addProperty(JsonProperties.CONTENT_PROPERTY, DOMUtil.nodeToString(e.getContent()));
-		o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.getAttributes()));
+		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getAbbreviatedId());
+		o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.find()));
+		String content = e.getContent().map(v-> v.asString()).orElse(null);
+		if(content != null){
+			LOG.debug("Content size={} content={}", content.length(), content);
+			o.addProperty(JsonProperties.CONTENT_PROPERTY, content);
+		}
 		return o;
 	}
 }

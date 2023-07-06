@@ -26,8 +26,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Stack;
 
 import javax.xml.XMLConstants;
@@ -47,11 +53,17 @@ import javax.xml.transform.stream.StreamResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.xacml4j.v30.SyntaxException;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
@@ -62,19 +74,61 @@ public class DOMUtil
 
 	private static TransformerFactory transformerFactory;
 	private static DocumentBuilderFactory documentBuilderFactory;
+	private static final Logger LOG = LoggerFactory.getLogger(DOMUtil.class);
 
 	static{
 		try{
 			transformerFactory = TransformerFactory.newInstance();
 			documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilderFactory.setValidating(false);
+			documentBuilderFactory.setNamespaceAware(true);
+			documentBuilderFactory.setIgnoringComments(true);
+			documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+
+			//REDHAT
+			//https://www.blackhat.com/docs/us-15/materials/us-15-Wang-FileCry-The-New-Age-Of-XXE-java-wp.pdf
+			documentBuilderFactory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+			documentBuilderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+
+			//OWASP
+			//https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			documentBuilderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			documentBuilderFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+			// Disable external DTDs as well
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			// and these as well, per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks"
+			documentBuilderFactory.setXIncludeAware(false);
+			documentBuilderFactory.setExpandEntityReferences(false);
+
+			documentBuilderFactory.setFeature("http://apache.org/xml/features/allow-java-encodings", true);
+
 		}catch(Exception e){
-			e.printStackTrace(System.err);
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
 	/** Private constructor for utility class */
 	private DOMUtil() { }
 
+	public static List<Node> nodeListToList(NodeList list)
+	{
+		Objects.requireNonNull(list);
+		return new AbstractList<Node>()
+		{
+				public int size() {
+					return list.getLength();
+				}
+
+				public Node get(int index) {
+					Node item = list.item(index);
+					if (item == null)
+						throw new IndexOutOfBoundsException(index);
+					return item;
+				}
+			};
+	}
 	/**
 	 * Creates XPath expression for a given DOM node
 	 * @param n a DOM node
@@ -143,27 +197,27 @@ public class DOMUtil
 	 * document with copy of the node as
 	 * root element
 	 */
-	public static Document copyNode(Node source)
+	public static Document copyNode(Element source)
 	{
 		if (source == null) {
 			return null;
 		}
-		Document sourceDoc = (source.getNodeType() == Node.DOCUMENT_NODE)?(Document)source:source.getOwnerDocument();
-		Node rootNode = (source.getNodeType() == Node.DOCUMENT_NODE)?sourceDoc.getDocumentElement():source;
-		Preconditions.checkState(sourceDoc != null);
-		DOMImplementation domImpl = sourceDoc.getImplementation();
-		Document doc = domImpl.createDocument(sourceDoc.getNamespaceURI(),
-				null, sourceDoc.getDoctype());
-		Node copy =  doc.importNode(rootNode, true);
-		doc.appendChild(copy);
-		return doc;
+		try{
+			DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+			Document doc = builder.newDocument();
+			Element copy =  (Element)doc.importNode(source, true);
+			doc.appendChild(copy);
+			return doc;
+		}catch (ParserConfigurationException e){
+			throw SyntaxException.invalidXml(e.getMessage(), e);
+		}
 	}
 
 	/**
 	 * Gets parent node of the given node
 	 *
 	 * @param node a DOM node
-	 * @return a parent node {@link Node} instance
+	 * @return a parent node {@link Node} defaultProvider
 	 */
 	private static Node getParent(Node node){
 		return (node.getNodeType() == Node.ATTRIBUTE_NODE)?
@@ -194,10 +248,24 @@ public class DOMUtil
 		return prev_siblings;
 	}
 
+	public static void printNodeInfo(Node node, Logger logger){
+		if(logger.isDebugEnabled()){
+			logger.debug("Node name=\"{}:{}\" type=\"{}\"", node.getLocalName(), node.getNamespaceURI(), node.getNodeType());
+		}
+	}
+
+	public static void printNodeListInfo(NodeList list, Logger logger){
+		if(logger.isDebugEnabled()){
+			logger.debug("NodeList size=\"{}\" nodes", list.getLength());
+			for(int i = 0; i < list.getLength(); i++){
+				printNodeInfo(list.item(i), logger);
+			}
+		}
+	}
 	/**
 	 * Safe cast of the given node to
-	 * {@link Element} instance
-	 * @param n an element or a document instance
+	 * {@link Element} defaultProvider
+	 * @param n an element or a document defaultProvider
 	 * @return {@link Element}
 	 * @exception IllegalArgumentException if a given node
 	 * neither element or document node
@@ -222,35 +290,69 @@ public class DOMUtil
 		serializeToXml(node, out, true, false);
 	}
 
-	public static Node stringToNode(String src) {
+	public static Optional<Node> stringToNode(String src) {
 		if(src == null){
-			return null;
+			return Optional.empty();
 		}
-		return parseXml(new InputSource(new StringReader(src)));
+		return parseXml(
+				new InputSource(
+						new StringReader(src)));
 	}
 
-	public static Node parseXml(InputStream src) {
+	public static Optional<Node> parseXml(InputStream src) {
 		if(src == null){
-			return null;
+			return Optional.empty();
 		}
-		return parseXml(new InputSource(src));
+		return parseXml(
+				new InputSource(src));
+
 	}
 
-	public static Node parseXml(InputSource src)
+	public static Optional<Node> parseXml(String src) {
+		if(src == null){
+			return Optional.empty();
+		}
+		InputSource source = new InputSource(new StringReader(src));
+		source.setEncoding(StandardCharsets.UTF_8.name());
+		return parseXml(source);
+	}
+
+
+	public static Optional<Node> parseXml(InputSource src)
 	{
 		Preconditions.checkNotNull(src);
 		DocumentBuilder documentBuilder = null;
 		try {
-			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			documentBuilder = documentBuilderFactory
+					.newDocumentBuilder();
+			documentBuilder.setErrorHandler(new ErrorHandler() {
+				@Override
+				public void warning(SAXParseException exception) throws SAXException {
+					LOG.debug("Error at=\"{}:{}\"", exception.getLineNumber(), exception.getColumnNumber());
+					LOG.debug(exception.getMessage(), exception);
+				}
+				@Override
+				public void error(SAXParseException exception) throws SAXException {
+					LOG.debug("At=\"{}:{}\"", exception.getLineNumber(), exception.getColumnNumber());
+					LOG.debug(exception.getMessage(), exception);
+				}
+				@Override
+				public void fatalError(SAXParseException exception) throws SAXException {
+					LOG.debug("At=\"{}:{}\"", exception.getLineNumber(), exception.getColumnNumber());
+					LOG.debug(exception.getMessage(), exception);
+				}
+			});
 		} catch (ParserConfigurationException e) {
-			throw new IllegalStateException(String.format("Failed to build %s",
-					DocumentBuilder.class.getName()), e);
+			throw new IllegalStateException(
+					e.getMessage(), e);
 		}
 		try {
-			return documentBuilder.parse(src);
+			return Optional.of(
+					documentBuilder.parse(src));
 		} catch (Exception e) {
-			throw new IllegalArgumentException(String.format(
-					"Failed to parse DOM from string: \"%s\"", src), e);
+			LOG.debug(e.getMessage(), e);
+			throw SyntaxException
+					.invalidXml(e.getMessage(), e);
 		}
 	}
 
@@ -263,16 +365,18 @@ public class DOMUtil
 		try {
 			transformer = transformerFactory.newTransformer();
 		} catch (TransformerConfigurationException e) {
-			throw new IllegalStateException(String.format("Failed to build %s",
-					Transformer.class.getName()), e);
+			throw new IllegalStateException(
+					e.getMessageAndLocation(), e);
 		}
-		DOMSource source = new DOMSource(node);
-		StreamResult result = new StreamResult(new StringWriter());
-		try {
+		try
+		{
+			DOMSource source = new DOMSource(node);
+			StreamResult result = new StreamResult(new StringWriter());
 			transformer.transform(source, result);
 			return result.getWriter().toString();
 		} catch (TransformerException e) {
-			throw new IllegalArgumentException("Failed to serialize Node to String.", e);
+			throw new IllegalArgumentException(
+					e.getMessageAndLocation(), e);
 		}
 	}
 
@@ -295,6 +399,23 @@ public class DOMUtil
 		t.transform (source, result);
 	}
 
+	public static String serializeToXmlString(Node node, boolean omitXmlDecl)
+	{
+		try{
+			StringWriter w = new StringWriter();
+			StreamResult result = new StreamResult(w);
+			Transformer t = transformerFactory.newTransformer();
+			t.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,  omitXmlDecl ?"yes":"no");
+			t.setOutputProperty(OutputKeys.METHOD, "xml");
+			DOMSource source = new DOMSource(node);
+			t.transform (source, result);
+			return w.toString();
+		}catch(TransformerException e){
+			throw new IllegalStateException(e.getCause());
+		}
+
+	}
+
 	/**
 	 * Test two DOM nodes for equality, if both
 	 * nodes are not equal to {@code null}
@@ -306,7 +427,7 @@ public class DOMUtil
 	public static boolean isEqual(Node a, Node b){
 		return (a == null)
 				? b == null
-				: b != null && a.isEqualNode(b);
+				: b != null && compareNodes(a, b, true);
 	}
 
 
@@ -316,20 +437,169 @@ public class DOMUtil
 	 * @param n a DOM node
 	 * @return a string representation
 	 */
-	public static String toString(Element n){
+	public static String toString(Node n){
 		if(n == null){
 			return null;
 		}
-		StringBuilder fqname = new StringBuilder();
-		if(!Strings.isNullOrEmpty(
-				n.getNamespaceURI())){
-			fqname
-			.append('{')
-			.append(n.getNamespaceURI())
-			.append('}');
+		Element e = null;
+		if(n  instanceof Document){
+			e = ((Document)n).getDocumentElement();
 		}
-		fqname.append(n.getLocalName());
-		return fqname.toString();
+		if(n  instanceof Element){
+			e = ((Element)n);
+		}
+		StringBuilder fqname = new StringBuilder();
+		if(e != null){
+			if(!Strings.isNullOrEmpty(
+					n.getNamespaceURI())){
+				fqname
+						.append('{')
+						.append(e.getNamespaceURI())
+						.append('}');
+			}
+			fqname.append(e.getLocalName());
+			return fqname.toString();
+		}
+		return fqname.append(notTypeToString(n)).toString();
+	}
+	
+	private static String notTypeToString(Node node){
+			switch(node.getNodeType()) {
+				case Node.ELEMENT_NODE:                return "Element";
+				case Node.DOCUMENT_NODE:               return "Document";
+				case Node.DOCUMENT_TYPE_NODE:          return "Document type";
+				case Node.DOCUMENT_FRAGMENT_NODE:      return "Document fragment";
+				case Node.ENTITY_NODE:                 return "Entity";
+				case Node.ENTITY_REFERENCE_NODE:       return "Entity reference";
+				case Node.NOTATION_NODE:               return "Notation";
+				case Node.TEXT_NODE:                   return "Text";
+				case Node.COMMENT_NODE:                return "Comment";
+				case Node.CDATA_SECTION_NODE:          return "CDATA Section";
+				case Node.ATTRIBUTE_NODE:              return "Attribute";
+				case Node.PROCESSING_INSTRUCTION_NODE: return "Processing Instruction";
+			}
+			return "Unidentified";
+	}
+
+	private static void trimEmptyTextNodes(Node node) {
+		Element element = null;
+		if (node instanceof Document) {
+			element = ((Document) node).getDocumentElement();
+		} else if (node instanceof Element) {
+			element = (Element) node;
+		} else {
+			return;
+		}
+
+		List<Node> nodesToRemove = new ArrayList<>();
+		NodeList children = element.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			Node child = children.item(i);
+			if (child instanceof Element) {
+				trimEmptyTextNodes(child);
+			} else if (child instanceof Text) {
+				Text t = (Text) child;
+				if (t.getData().trim().length() == 0) {
+					nodesToRemove.add(child);
+				}
+			}
+		}
+
+		for (Node n : nodesToRemove) {
+			element.removeChild(n);
+		}
+	}
+
+	public static boolean compareNodes(Node expected, Node actual, boolean trimEmptyTextNodes)
+	{
+		if (trimEmptyTextNodes) {
+			trimEmptyTextNodes(expected);
+			trimEmptyTextNodes(actual);
+		}
+		return compareNodes(expected, actual);
+	}
+
+	public static boolean compareNodes(Node expected, Node actual){
+		if (expected.getNodeType() != actual.getNodeType()) {
+			return false;
+		}
+		if (expected instanceof Document) {
+			Document expectedDoc = (Document) expected;
+			Document actualDoc = (Document) actual;
+			compareNodes(expectedDoc.getDocumentElement(), actualDoc.getDocumentElement());
+		} else if (expected instanceof Element) {
+			Element expectedElement = (Element) expected;
+			Element actualElement = (Element) actual;
+
+			// compare element names
+			if ( expectedElement.getLocalName() != null &&
+					(!expectedElement.getLocalName().equals(actualElement.getLocalName()))) {
+				return false;
+			}
+			// compare element ns
+			String expectedNS = expectedElement.getNamespaceURI();
+			String actualNS = actualElement.getNamespaceURI();
+			if ((expectedNS == null && actualNS != null)
+					|| (expectedNS != null && !expectedNS.equals(actualNS))) {
+				return false;
+			}
+
+			// compare attributes
+			NamedNodeMap expectedAttrs = expectedElement.getAttributes();
+			NamedNodeMap actualAttrs = actualElement.getAttributes();
+			if (countNonNamespaceAttribures(expectedAttrs) != countNonNamespaceAttribures(actualAttrs)) {
+				return false;
+			}
+			for (int i = 0; i < expectedAttrs.getLength(); i++) {
+				Attr expectedAttr = (Attr) expectedAttrs.item(i);
+				if (expectedAttr.getName().startsWith("xmlns")) {
+					continue;
+				}
+				Attr actualAttr = null;
+				if (expectedAttr.getNamespaceURI() == null) {
+					actualAttr = (Attr) actualAttrs.getNamedItem(expectedAttr.getName());
+				} else {
+					actualAttr = (Attr) actualAttrs.getNamedItemNS(expectedAttr.getNamespaceURI(),
+					                                               expectedAttr.getLocalName());
+				}
+				if (actualAttr == null) {
+					return false;
+				}
+				if (!expectedAttr.getValue().equals(actualAttr.getValue())) {
+					return false;
+				}
+			}
+			// compare children
+			NodeList expectedChildren = expectedElement.getChildNodes();
+			NodeList actualChildren = actualElement.getChildNodes();
+			if (expectedChildren.getLength() != actualChildren.getLength()) {
+				return false;
+			}
+			for (int i = 0; i < expectedChildren.getLength(); i++) {
+				Node expectedChild = expectedChildren.item(i);
+				Node actualChild = actualChildren.item(i);
+				compareNodes(expectedChild, actualChild);
+			}
+		} else if (expected instanceof Text) {
+			String expectedData = ((Text) expected).getData().trim();
+			String actualData = ((Text) actual).getData().trim();
+
+			if (!expectedData.equals(actualData)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static int countNonNamespaceAttribures(NamedNodeMap attrs) {
+		int n = 0;
+		for (int i = 0; i < attrs.getLength(); i++) {
+			Attr attr = (Attr) attrs.item(i);
+			if (!attr.getName().startsWith("xmlns")) {
+				n++;
+			}
+		}
+		return n;
 	}
 
 	public static NamespaceContext createNamespaceContext(Node n){
@@ -385,8 +655,11 @@ public class DOMUtil
 		public Iterator<String> getPrefixes(String namespaceURI) {
 			String prefix = getPrefix(namespaceURI);
 			return (prefix == null)?
-					Collections.<String>emptyList().iterator():
+					java.util.Collections.<String>emptyList().iterator():
 						Collections.singleton(prefix).iterator();
 		}
+
+
+
 	}
 }

@@ -30,22 +30,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml30RequestContextUnmarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml30ResponseContextUnmarshaller;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
-import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
+import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
+import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
+import org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshaller;
+import org.xacml4j.v30.xml.Xacml30RequestContextUnmarshaller;
+import org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshaller;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
@@ -65,34 +66,27 @@ public class XacmlPolicyTestSupport {
 		this.responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
 		this.xacml20ResponseUnmarshaller = new Xacml20ResponseContextUnmarshaller();
 		this.xacml20RequestUnmarshaller = new Xacml20RequestContextUnmarshaller();
-
 	}
 
 	protected Builder builder(String rootPolicyId, String rootPolicyVersion)
 	{
 		Builder pdpBuilder = new Builder("testPDP", "testPIP", "testRepositoryId");
 		pdpBuilder.rootPolicy(rootPolicyId, rootPolicyVersion);
-		pdpBuilder.defaultResolvers();
-		pdpBuilder.defaultFunctions();
-		pdpBuilder.defaultDecisionAlgorithms();
+		pdpBuilder.withDefaultResolvers();
+		pdpBuilder.withDefaultFunctions();
+		pdpBuilder.withDefaultDecisionAlgorithms();
 		return pdpBuilder;
 	}
 
 	protected void verifyXacml30Response(PolicyDecisionPoint pdp,
-			RequestContext request,
-			ResponseContext expectedResponse) throws Exception {
-		ResponseContext resp = pdp.decide(request);
+			String xacmlRequestResource,
+			String expectedXacmlResponseResource) throws Exception {
+		RequestContext req = getXacml30Request(xacmlRequestResource);
+		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
+		ResponseContext resp = pdp.decide(req);
 		log.debug("Expected XACML 3.0 response=\"{}\"", expectedResponse);
 		log.debug("Received XACML 3.0 response=\"{}\"", resp);
 		assertResponse(expectedResponse, resp);
-	}
-
-	protected void verifyXacml30Response(PolicyDecisionPoint pdp,
-										 String xacmlRequestResource,
-										 String expectedXacmlResponseResource) throws Exception {
-		RequestContext req = getXacml30Request(xacmlRequestResource);
-		ResponseContext expectedResponse = getXacml30Response(expectedXacmlResponseResource);
-		verifyXacml30Response(pdp, req, expectedResponse);
 	}
 
 	protected void verifyXacml20Response(
@@ -228,7 +222,7 @@ public class XacmlPolicyTestSupport {
 		assertArrayEquals(a1, a2, new Matcher<Category>() {
 			@Override
 			public boolean matches(Category o1, Category o2) {
-				return o1.getId().equals(o2.getId()) && o1.getCategoryId().equals(o2.getCategoryId());
+				return o1.getReferenceId().equals(o2.getReferenceId()) && o1.getCategoryId().equals(o2.getCategoryId());
 			}
 		});
 	}
@@ -269,18 +263,21 @@ public class XacmlPolicyTestSupport {
 		private String pdpId;
 		private String repositoryId;
 		private FunctionProviderBuilder functionProviderBuilder;
-		private PolicyInformationPointBuilder pipBuilder;
+		private PolicyInformationPoint.Builder pipBuilder;
+		private ResolverRegistry.Builder registryBuilder;
+
 		private DecisionCombiningAlgorithmProviderBuilder decisionAlgoProviderBuilder;
-		private Collection<Object> policies; // might be either Supplier<InputStream> or CompositeDecisionRule
+		private Collection<Supplier<InputStream>> policies;
 
 		public Builder(String pdpId, String pipId, String repositoryId){
 			Preconditions.checkNotNull(pdpId);
 			Preconditions.checkNotNull(pipId);
 			Preconditions.checkNotNull(repositoryId);
 			this.functionProviderBuilder = FunctionProviderBuilder.builder();
+			this.registryBuilder = ResolverRegistry.builder();
 			this.decisionAlgoProviderBuilder = DecisionCombiningAlgorithmProviderBuilder.builder();
-			this.pipBuilder = PolicyInformationPointBuilder.builder(pipId);
-			this.policies = new ArrayList<Object>();
+			this.pipBuilder = PolicyInformationPoint.builder(pipId);
+			this.policies = new ArrayList<>();
 			this.repositoryId = repositoryId;
 			this.pdpId = pdpId;
 		}
@@ -291,33 +288,29 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 
-		public Builder defaultDecisionAlgorithms(){
+		public Builder withDefaultDecisionAlgorithms(){
 			decisionAlgoProviderBuilder.withDefaultAlgorithms();
 			return this;
 		}
 
-		public Builder defaultResolvers(){
-			pipBuilder.defaultResolvers();
+		public Builder withDiscoveredDecisionAlgorithms(){
+			decisionAlgoProviderBuilder.withDiscoveredAlgorithms();
 			return this;
 		}
 
-		public Builder defaultFunctions() {
-			functionProviderBuilder.defaultFunctions();
+		public Builder withDefaultResolvers(){
+			registryBuilder.withDefaultResolvers();
 			return this;
 		}
 
-		public Builder functionProvider(Object provider){
-			functionProviderBuilder.fromInstance(provider);
+
+		public Builder withDefaultFunctions() {
+			functionProviderBuilder.withDefaultFunctions();
 			return this;
 		}
 
-		public Builder functionProvider(Class<?> clazz){
-			functionProviderBuilder.fromClass(clazz);
-			return this;
-		}
-
-		public Builder decisionAlgorithmProvider(Object provider){
-			decisionAlgoProviderBuilder.withAlgorithmProvider(provider);
+		public Builder withDiscoveredFunctions() {
+			functionProviderBuilder.withDiscoveredFunctions();
 			return this;
 		}
 
@@ -331,54 +324,24 @@ public class XacmlPolicyTestSupport {
 			return this;
 		}
 
-		public Builder policy(CompositeDecisionRule policy){
-			this.policies.add(policy);
-			return this;
-		}
-
-		public Builder policies(CompositeDecisionRule... policies){
-			Collections.addAll(this.policies, policies);
-			return this;
-		}
-
-		public Builder policyFromClasspath(String path){
-			this.policies.add(getPolicy(path));
-			return this;
-		}
-
-		public Builder resolver(Object resolver){
-			pipBuilder.resolverFromInstance(resolver);
-			return this;
-		}
-
-		public Builder resolver(String policyId, Object resolver){
-			pipBuilder.resolverFromInstance(resolver);
-			return this;
-		}
-
-		@SuppressWarnings("unchecked")
 		public PolicyDecisionPoint build() throws Exception
 		{
 			PolicyRepository repository = new InMemoryPolicyRepository(
 					repositoryId,
 					functionProviderBuilder.build(),
-					decisionAlgoProviderBuilder.create());
-			for (Object policy : policies) {
-				if (policy instanceof Supplier) {
-					repository.importPolicy((Supplier<InputStream>) policy);
-				} else if (policy instanceof CompositeDecisionRule) {
-					repository.add((CompositeDecisionRule) policy);
-				} else {
-					throw new UnsupportedOperationException(
-						String.format(
-							"Unable to interpret policy represented by '%s'. " +
-							"There are 'Supplier<InputStream>' or 'CompositeDecisionRule' supported only.",
-							policy.getClass()));
+					decisionAlgoProviderBuilder.build());
+			PolicyImportTool tool = repository.newImportTool();
+			for (Supplier<InputStream> in : policies) {
+				try{
+					tool.importPolicy(MediaType.Type.XACML30_XML, in);
+				}catch (Exception e){
+					tool.importPolicy(MediaType.Type.XACML20_XML, in);
 				}
 			}
 			return PolicyDecisionPointBuilder
 					.builder(pdpId)
-					.pip(pipBuilder.build())
+					.pip(pipBuilder.registry(registryBuilder.build())
+					               .build())
 					.policyRepository(repository)
 					.defaultRequestHandlers()
 					.rootPolicy(repository.get(rootPolicyId, Version.parse(rootPolicyVersion)))

@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.ValueType;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -30,19 +32,20 @@ import java.util.Map;
 
 public class AttributeResolverTestSupport {
 
-	protected <T extends AttributeExpType> void checkHasAttribute(
-			Map<String, BagOfAttributeExp> v, String attributeName,
+	protected <T extends ValueType> void checkHasAttribute(
+			Map<String, BagOfValues> v, String attributeName,
 			T type, Object ...values) {
-		BagOfAttributeExp bag = v.get(attributeName);
+		BagOfValues bag = v.get(attributeName);
 		checkHasValues(bag, type, values);
 	}
 
-	protected <T extends AttributeExpType> void checkHasValues(BagOfAttributeExp bag,
+	protected <T extends ValueType> void checkHasValues(
+			BagOfValues bag,
 			T type, Object ...values) {
 		assertNotNull(bag);
 		assertEquals(values.length, bag.size());
 		for(Object value: values) {
-			assertTrue(bag.contains(type.of(value)));
+			assertTrue(bag.contains(type.ofAny(value)));
 		}
 	}
 }

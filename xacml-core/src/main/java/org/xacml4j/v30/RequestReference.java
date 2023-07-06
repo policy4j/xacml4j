@@ -24,10 +24,7 @@ package org.xacml4j.v30;
 
 import java.util.Collection;
 
-import org.xacml4j.v30.pdp.RequestSyntaxException;
-
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
 public class RequestReference
@@ -82,8 +79,8 @@ public class RequestReference
 			Category a = context.getReferencedCategory(ref);
 			if(a == null){
 				throw new RequestSyntaxException(
-						"Failed to resolve attribute reference",
-						ref.getReferenceId());
+						String.format("Failed to resolve attribute ref=\"%s\"",
+						ref.getReferenceId()));
 			}
 			b.attributes();
 		}
@@ -109,8 +106,8 @@ public class RequestReference
 	{
 		private ImmutableList.Builder<CategoryReference> refs = ImmutableList.builder();
 
-		public Builder reference(String ... attributeIds){
-			for(String attributeId : attributeIds){
+		public Builder reference(String ... categoryIds){
+			for(String attributeId : categoryIds){
 				refs.add(CategoryReference.builder().id(attributeId).build());
 			}
 			return this;

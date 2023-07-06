@@ -27,13 +27,15 @@ import java.util.List;
 
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
-import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 public class XacmlExampleTest extends XacmlPolicyTestSupport
@@ -65,26 +67,28 @@ public class XacmlExampleTest extends XacmlPolicyTestSupport
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"tes-repository",
 				FunctionProviderBuilder.builder()
-				.defaultFunctions()
-				.build(),
+				                       .withDefaultFunctions()
+				                       .build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.create());
+				                                         .withDefaultAlgorithms()
+				                                         .build());
 
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>(policyResources.length);
+		PolicyImportTool tool = repository.newImportTool();
 		for (String policyResource : policyResources) {
-			CompositeDecisionRule policy = repository.importPolicy(Xacml20TestUtility.getClasspathResource(policyResource));
-			log.info("Policy: {}", policy);
+			CompositeDecisionRule policy = tool.importPolicy(MediaType.Type.XACML20_XML, Xacml20TestUtility.getClasspathResource(policyResource));
 			policies.add(policy);
+			log.info("Policy: {}", policy);
 		}
 
 		return PolicyDecisionPointBuilder
 				.builder("testPdp")
                 .policyRepository(repository)
                 .pip(
-                        PolicyInformationPointBuilder
+                        PolicyInformationPoint
                                 .builder("testPip")
-                                .defaultResolvers()
+                                .withDefaultRegistry()
+		                        .noCacheProvider()
                                 .build())
                 .rootPolicy(policies.get(0))
                 .build();

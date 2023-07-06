@@ -23,23 +23,15 @@ package org.xacml4j.v30.marshal.json;
  */
 
 import static org.junit.Assert.assertEquals;
-
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.types.EntityExp;
-import org.xacml4j.v30.types.StringExp;
-import org.xml.sax.InputSource;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.types.Entity;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,13 +39,6 @@ import com.google.gson.JsonElement;
 
 public class JsonEntityMarshallingTest 
 {
-	private  Node sampleContent1() throws Exception {
-		DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
-		return documentBuilder.parse(new InputSource(new StringReader(
-				"<security>\n<through obscurity=\"true\"></through></security>")));
-	}
-	
 	private Gson json;
 	
 	@Before
@@ -74,31 +59,77 @@ public class JsonEntityMarshallingTest
 	public void testEntityMarshall() throws Exception
 	{
 		Entity entity = Entity.builder()
-				.content(sampleContent1())
-				.attribute(Attribute
-						.builder("testId3")
-						.value(StringExp.of("aaa"))
-						.value(StringExp.of("bbbb"))
-						.value(StringExp.of("cccc"))
-						.build())
-				.attribute(Attribute
-						.builder("testId4")
-						.value(StringExp.of("zzzz"))
-						.value(StringExp.of("aaaa"))
-						.value(StringExp.of("cccc"))
-						.build())
-				.build();
-		Category a = Category.builder()
-		.category(Categories.SUBJECT_ACCESS)
-		.entity(Entity.builder()
-				.attribute(Attribute
-						.builder("testId1")
-						.value(EntityExp.of(entity))
-						.build())
-			    .build())
+		                      .xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
+		                      .attribute(Attribute.builder("testId3")
+		                                          .value(STRING.ofAny("aaa"))
+		                                          .value(STRING.ofAny("bbbb"))
+		                                          .value(STRING.ofAny("cccc"))
+		                                          .build())
+		                      .attribute(Attribute
+				                                 .builder("testId4")
+				                                 .value(STRING.ofAny("zzzz"))
+				                                 .value(STRING.ofAny("aaaa"))
+				                                 .value(STRING.ofAny("cccc"))
+				                                 .build())
+		                      .build();
+		Category a = Category
+				.builder()
+		.category(CategoryId.SUBJECT_ACCESS)
+		.entity(entity)
 	    .build();
 		JsonElement o = json.toJsonTree(a);
 		Category b = json.fromJson(o, Category.class);
 		assertEquals(a,  b);
+	}
+
+	@Test
+	public void testEntityAsAttributeValueMarshall() throws Exception
+	{
+		Entity entity1 = Entity.builder()
+		                      .xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
+		                      .attribute(Attribute
+				                                 .builder("testId4")
+				                                 .value(STRING.ofAny("zzzz"))
+				                                 .value(STRING.ofAny("aaaa"))
+				                                 .value(STRING.ofAny("cccc"))
+				                                 .build())
+		                      .build();
+		Entity entity2 =Entity.builder()
+		      .xmlContent("<security>\n<through obscurity=\"true\"></through></security>")
+		      .attribute(Attribute
+				                 .builder("testId4")
+				                 .value(STRING.ofAny("zzzz"))
+				                 .value(STRING.ofAny("aaaa"))
+				                 .value(STRING.ofAny("cccc"))
+				                 .build())
+		      .build();
+		assertEquals(entity1, entity2);
+
+		Category a1 = Category
+				.builder()
+				.category(CategoryId.SUBJECT_ACCESS)
+				.entity(Entity.builder()
+				              .attribute(Attribute.builder("testId")
+				                                  .entity(entity1)
+				                                  .build())
+				              .build())
+				.build();
+		Category a2 = Category
+				.builder()
+				.category(CategoryId.SUBJECT_ACCESS)
+				.entity(Entity.builder()
+				              .attribute(Attribute.builder("testId")
+				                                  .entity(entity2)
+				                                  .build())
+				              .build())
+				.build();
+		JsonElement o1 = json.toJsonTree(a1);
+		Category b1 = json.fromJson(o1, Category.class);
+		JsonElement o2 = json.toJsonTree(a2);
+		Category b2 = json.fromJson(o2, Category.class);
+		assertEquals(a1,  b1);
+		assertEquals(a2,  b2);
+		assertEquals(a2,  b1);
+		assertEquals(a1,  b2);
 	}
 }

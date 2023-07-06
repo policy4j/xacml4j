@@ -25,6 +25,10 @@ package org.xacml4j.v30;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -32,9 +36,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import org.xacml4j.v30.types.Entity;
 
-public class Result
+public final class Result
 {
+	private final static Logger LOG  = LoggerFactory.getLogger(Result.class);
+
 	private final Status status;
 	private final Decision decision;
 	private final Map<String, Obligation> obligations;
@@ -47,8 +54,6 @@ public class Result
 	private Result(Builder b){
 		Preconditions.checkArgument(b.decision !=null, "Decision must be specified");
 		Preconditions.checkArgument(b.status !=null, "Status must be specified");
-		Preconditions.checkArgument(!(b.decision.isIndeterminate() ^
-				b.status.isFailure()));
 		this.decision = b.decision;
 		this.status = b.status;
 		this.obligations = ImmutableMap.copyOf(b.obligations);
@@ -83,7 +88,7 @@ public class Result
 	}
 
 	public static Result.Builder indeterminate(Status status){
-		Preconditions.checkArgument(status.isFailure());
+		Preconditions.checkArgument(!status.isSuccess());
 		return new Result.Builder().decision(Decision.INDETERMINATE).status(status);
 	}
 
@@ -142,8 +147,14 @@ public class Result
 		return resolvedAttributes.values();
 	}
 
-	public Category getAttribute(CategoryId categoryId){
+	public Category getIncludeInResultByCategory(CategoryId categoryId){
 		return includeInResultAttributes.get(categoryId);
+	}
+
+	public Optional<Entity> getEntity(CategoryId categoryId){
+		return Optional.ofNullable(
+				includeInResultAttributes.get(categoryId))
+		               .map(v->v.getEntity());
 	}
 
 	/**
@@ -332,7 +343,7 @@ public class Result
 			Advice a = associatedAdvice.get(advice.getId());
 			if(a != null){
 				a = a.merge(advice);
-				associatedAdvice.put(a.getId(), a);
+				associatedAdvice.replace(a.getId(), a);
 				return this;
 			}
 			associatedAdvice.put(advice.getId(), advice);
@@ -340,11 +351,14 @@ public class Result
 		}
 
 		private  Builder addObligation(Obligation obligation){
-			Preconditions.checkNotNull(obligation);
-			Obligation o = obligations.get(obligation.getId());
+
+			Obligation o = java.util.Objects.requireNonNull(obligations, "obligations")
+			                                .get(obligation.getId());
+
 			if(o != null){
+				LOG.debug("Merging obligations a={} b={}", o, obligation);
 				o = o.merge(obligation);
-				obligations.put(o.getId(), o);
+				obligations.replace(o.getId(), o);
 				return this;
 			}
 			obligations.put(obligation.getId(), obligation);

@@ -28,10 +28,10 @@ import java.io.Reader;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryReference;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.marshal.RequestUnmarshaller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,8 +49,9 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
 	}
 
+
 	@Override
-	public RequestContext unmarshal(Object source) throws XacmlSyntaxException, IOException {
+	public RequestContext unmarshal(Object source) throws SyntaxException, IOException {
 		if (source instanceof Reader) {
 			return json.fromJson((Reader) source, RequestContext.class);
 		}

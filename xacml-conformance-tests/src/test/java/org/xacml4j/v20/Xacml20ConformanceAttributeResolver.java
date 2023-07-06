@@ -25,11 +25,12 @@ package org.xacml4j.v20;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.spi.pip.XacmlAttributeDescriptor;
 import org.xacml4j.v30.spi.pip.XacmlAttributeDesignator;
 import org.xacml4j.v30.spi.pip.XacmlAttributeResolverDescriptor;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.String;
+import org.xacml4j.v30.types.XacmlTypes;
 
 
 public class Xacml20ConformanceAttributeResolver
@@ -42,17 +43,17 @@ public class Xacml20ConformanceAttributeResolver
 				@XacmlAttributeDescriptor(dataType="http://www.w3.org/2001/XMLSchema#string",
 						id="urn:oasis:names:tc:xacml:1.0:example:attribute:role")
 	})
-	public Map<String, BagOfAttributeExp> IIA002(
+	public Map<java.lang.String, BagOfValues> IIA002(
 			@XacmlAttributeDesignator(
 					category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
 					attributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id",
-					dataType="http://www.w3.org/2001/XMLSchema#string") BagOfAttributeExp subjectId)
+					dataType="http://www.w3.org/2001/XMLSchema#string") BagOfValues subjectId)
 	{
-		StringExp name = BagOfAttributeExp.value(subjectId);
-		Map<String, BagOfAttributeExp> attributes = new HashMap<String, BagOfAttributeExp>();
-		if(name.getValue().equalsIgnoreCase("Julius Hibbert")){
+		String name = BagOfValues.value(subjectId);
+		Map<java.lang.String, BagOfValues> attributes = new HashMap<java.lang.String, BagOfValues>();
+		if(name.get().equalsIgnoreCase("Julius Hibbert")){
 			attributes.put("urn:oasis:names:tc:xacml:1.0:example:attribute:role",
-					StringExp.of("Physician").toBag());
+			               XacmlTypes.STRING.ofAny("Physician").toBag());
 		}
 		return attributes;
 	}

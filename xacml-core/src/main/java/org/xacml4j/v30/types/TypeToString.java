@@ -22,228 +22,276 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.AttributeExpType;
+import java.util.*;
 
-import com.google.common.base.Preconditions;
+import org.xacml4j.v30.TypeCapability;
 
-public interface TypeToString extends TypeCapability 
+
+/**
+ * A type to/from string capability. Provides a strategy
+ * to convert XACML type values to from string representation
+ *
+ * @author Giedrius Trumpickas
+ */
+public interface TypeToString extends TypeCapability
 {
-	String toString(AttributeExp exp);
-	AttributeExp fromString(String v);
-	
-	public enum Types implements TypeToString
+	/**
+	 * Converts given attribute value to string
+	 *
+	 * @param v an attribute value
+	 * @return string representation of the given value
+	 */
+	java.lang.String toString(Value v);
+
+	/**
+	 * Converts given string value to a {@link Value}
+	 * of given {@link #getType()}
+	 *
+	 * @param v an attribute string value
+	 * @return {@linl AttributeValue}
+	 */
+	Value fromString(java.lang.String v);
+
+	static Optional<TypeToString> forType(java.lang.String typeId){
+		return XacmlTypes.getType(typeId)
+		                 .flatMap(t->forType(t));
+	}
+
+	static Optional<TypeToString> forType(ValueType type)
+	{
+		return Optional.ofNullable(type).map(t->Types.capabilities.get(t));
+	}
+
+	/**
+	 * Factory for {@code TypeToString} extensions
+	 */
+	class SystemFactory extends AbstractCapabilityFactory<TypeToString>
+			implements TypeToStringFactory
+	{
+		protected SystemFactory() {
+			super(Arrays.asList(TypeToString.Types.values()),
+			      TypeToString.class);
+		}
+	}
+
+	enum Types implements TypeToString
 	{
 		ANYURI(XacmlTypes.ANYURI){
 			@Override
-			public AnyURIExp fromString(String v) {
-				return AnyURIExp.of(v);
+			public AnyURI fromString(java.lang.String v) {
+				return AnyURI.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				AnyURIExp anyUri = (AnyURIExp)v;
-				return anyUri.getValue().toString();
+			public java.lang.String toString(Value v) {
+				AnyURI anyURI = (AnyURI)v;
+				return anyURI.toXacmlString();
 			}
 		},
 		BOOLEAN(XacmlTypes.BOOLEAN){
 			@Override
-			public BooleanExp fromString(String v) {
-				return BooleanExp.of(v);
+			public BooleanVal fromString(java.lang.String v) {
+				return BooleanVal.ofAny(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				Preconditions.checkNotNull(v);
-				BooleanExp boolVal = (BooleanExp)v;
-				return boolVal.getValue().toString();
+			public java.lang.String toString(Value v) {
+				BooleanVal booleanVal = (BooleanVal)v;
+				return booleanVal.toXacmlString();
 			}
 		},
 		BASE64BINARY(XacmlTypes.BASE64BINARY){
 			@Override
-			public Base64BinaryExp fromString(String v) {
-				Preconditions.checkNotNull(v);
-				return Base64BinaryExp.of(v);
+			public Base64Binary fromString(java.lang.String v) {
+				return Base64Binary.ofAny(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				Preconditions.checkNotNull(v);
-				Base64BinaryExp base64Value = (Base64BinaryExp)v;
-				return base64Value.getValue().toBase64Encoded();
+			public java.lang.String toString(Value v) {
+				Base64Binary binary = (Base64Binary)v;
+				return binary.toXacmlString();
 			}
 		},
 		DATE(XacmlTypes.DATE){
 			@Override
-			public DateExp fromString(String v) {
-				return DateExp.of(v);
+			public ISO8601Date fromString(java.lang.String v) {
+				return ISO8601Date.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				DateExp d = (DateExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				ISO8601Date d = (ISO8601Date)v;
+				return d.toXacmlString();
 			}
 		},
 		DATETIME(XacmlTypes.DATETIME){
 			@Override
-			public DateTimeExp fromString(String v) {
-				return DateTimeExp.of(v);
+			public ISO8601DateTime fromString(java.lang.String v) {
+				return ISO8601DateTime.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				DateTimeExp d = (DateTimeExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				ISO8601DateTime dateTime = (ISO8601DateTime)v;
+				return dateTime.toXacmlString();
 			}
 		},
 		DAYTIMEDURATION(XacmlTypes.DAYTIMEDURATION){
 			@Override
-			public DayTimeDurationExp fromString(String v) {
-				return DayTimeDurationExp.of(v);
+			public ISO8601DayTimeDuration fromString(java.lang.String v) {
+				return ISO8601DayTimeDuration.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				DayTimeDurationExp d = (DayTimeDurationExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				ISO8601DayTimeDuration duration = (ISO8601DayTimeDuration)v;
+				return duration.toXacmlString();
 			}
 		},
 		DNSNAME(XacmlTypes.DNSNAME){
 			@Override
-			public DNSNameExp fromString(String v) {
-				return DNSNameExp.of(v);
+			public DNSName fromString(java.lang.String v) {
+				return DNSName.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				DNSNameExp d = (DNSNameExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				DNSName name = (DNSName)v;
+				return name.toXacmlString();
 			}
 		},
 		DOUBLE(XacmlTypes.DOUBLE){
 			@Override
-			public DoubleExp fromString(String v) {
-				return DoubleExp.of(v);
+			public DoubleVal fromString(java.lang.String v){
+				Objects.requireNonNull(v);
+				return DoubleVal.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				DoubleExp d = (DoubleExp)v;
-				return d.getValue().toString();
+			public java.lang.String toString(Value v) {
+				Objects.requireNonNull(v);
+				DoubleVal d = (DoubleVal)v;
+				return d.get().toString();
 			}
 		},
 		HEXBINARY(XacmlTypes.HEXBINARY){
 			@Override
-			public HexBinaryExp fromString(String v) {
-				return HexBinaryExp.of(v);
+			public HexBinary fromString(java.lang.String v) {
+				return HexBinary.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				HexBinaryExp d = (HexBinaryExp)v;
-				return d.getValue().toHexEncoded();
+			public java.lang.String toString(Value v) {
+				HexBinary d = (HexBinary)v;
+				return d.get().toHexEncoded();
 			}
 		},
 		INTEGER(XacmlTypes.INTEGER){
 			@Override
-			public IntegerExp fromString(String v) {
-				return IntegerExp.of(v);
+			public IntegerVal fromString(java.lang.String v) {
+				Objects.requireNonNull(v);
+				return IntegerVal.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				IntegerExp d = (IntegerExp)v;
-				return d.getValue().toString();
+			public java.lang.String toString(Value v) {
+				Objects.requireNonNull(v);
+				IntegerVal d = (IntegerVal)v;
+				return d.toString();
 			}
 		},
 		IPADDRESS(XacmlTypes.IPADDRESS){
 			@Override
-			public IPAddressExp fromString(String v) {
-				return IPAddressExp.of(v);
+			public IPAddress fromString(java.lang.String v) {
+				Objects.requireNonNull(v);
+				return IPAddress.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				IPAddressExp d = (IPAddressExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				Objects.requireNonNull(v);
+				IPAddress d = (IPAddress)v;
+				return d.toXacmlString();
 			}
 		},
 		RFC822NAME(XacmlTypes.RFC822NAME){
 			@Override
-			public RFC822NameExp fromString(String v) {
-				return RFC822NameExp.of(v);
+			public RFC822Name fromString(java.lang.String v) {
+				return RFC822Name.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				RFC822NameExp d = (RFC822NameExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				RFC822Name d = (RFC822Name)v;
+				return d.toXacmlString();
 			}
 		},
 		STRING(XacmlTypes.STRING){
 			@Override
-			public StringExp fromString(String v) {
-				return StringExp.of(v);
+			public StringVal fromString(java.lang.String v) {
+				return StringVal.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				StringExp d = (StringExp)v;
-				return d.getValue();
+			public java.lang.String toString(Value v) {
+				Objects.requireNonNull(v);
+				StringVal d = (StringVal) v;
+				return d.get();
 			}
 		},
 		TIME(XacmlTypes.TIME){
 			@Override
-			public TimeExp fromString(String v) {
-				return TimeExp.of(v);
+			public ISO8601Time fromString(java.lang.String v) {
+				return ISO8601Time.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				TimeExp d = (TimeExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				ISO8601Time d = (ISO8601Time)v;
+				return d.toXacmlString();
 			}
 		},
 		X500NAME(XacmlTypes.X500NAME){
 			@Override
-			public X500NameExp fromString(String v) {
-				return X500NameExp.of(v);
+			public X500Name fromString(java.lang.String v) {
+				Objects.requireNonNull(v);
+				return X500Name.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				X500NameExp d = (X500NameExp)v;
-				return d.getValue().toString();
+			public java.lang.String toString(Value v) {
+				Objects.requireNonNull(v);
+				X500Name d = (X500Name)v;
+				return d.toString();
 			}
 		},
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){
 			@Override
-			public YearMonthDurationExp fromString(String v) {
-				return YearMonthDurationExp.of(v);
+			public ISO8601YearMonthDuration fromString(java.lang.String v) {
+				return ISO8601YearMonthDuration.of(v);
 			}
 			
 			@Override
-			public String toString(AttributeExp v) {
-				YearMonthDurationExp d = (YearMonthDurationExp)v;
-				return d.getValue().toXacmlString();
+			public java.lang.String toString(Value v) {
+				ISO8601YearMonthDuration d = (ISO8601YearMonthDuration)v;
+				return d.toXacmlString();
 			}
 		};
+
 		
-		private final static TypeCapability.Index<TypeToString> INDEX = TypeCapability.Index.<TypeToString>build(values());
+		private ValueType type;
 		
-		private AttributeExpType type;
-		
-		private Types(AttributeExpType type){
+		Types(ValueType type){
 			this.type = type;	
 		}
-		
-		public AttributeExpType getType(){
+
+		public ValueType getType(){
 			return type;
 		}
-		
-		public static TypeCapability.Index<TypeToString> getIndex(){
-			return INDEX;
-		}
+
+		private final static Map<ValueType, TypeToString> capabilities = TypeCapability.discoverCapabilities(new SystemFactory(),
+		                                                                                TypeToString.class,
+		                                                                                TypeToStringFactory.class);
+
 	}
 }

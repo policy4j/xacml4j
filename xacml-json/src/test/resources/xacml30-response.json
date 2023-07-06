@@ -77,7 +77,7 @@
     {
      "Id": "SubjectAttributes",
      "CategoryId": "urn:oasis:names:tc:xacml:1.0:subject-category:access-subject",
-     "Content": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><security>\n<through obscurity=\"true\"/></security>",
+     "Content": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><security><through obscurity=\"true\"/></security>",
      "Attribute": [
       {
        "AttributeId": "urn:oasis:names:tc:xacml:1.0:subject:subject-id",

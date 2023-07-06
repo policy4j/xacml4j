@@ -26,7 +26,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
 
 
 public class StringTypeTest
@@ -35,10 +34,10 @@ public class StringTypeTest
 	@Test
 	public void testEquals()
 	{
-		AttributeExp v0 = StringExp.of("v0");
-		AttributeExp v1 = StringExp.of("v1");
+		Value v0 = XacmlTypes.STRING.ofAny("v0");
+		Value v1 = XacmlTypes.STRING.ofAny("v1");
 		assertFalse(v0.equals(v1));
-		AttributeExp v2 = StringExp.of("v0");
+		Value v2 = XacmlTypes.STRING.ofAny("v0");
 		assertFalse(v1.equals(v2));
 		assertTrue(v0.equals(v2));
 	}

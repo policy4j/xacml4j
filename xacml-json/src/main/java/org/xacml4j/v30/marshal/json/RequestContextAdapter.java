@@ -82,7 +82,7 @@ final class RequestContextAdapter implements JsonDeserializer<RequestContext>, J
 		o.addProperty(RETURN_POLICY_ID_LIST_PROPERTY, src.isReturnPolicyIdList());
 		o.addProperty(COMBINED_DECISION_PROPERTY, src.isCombinedDecision());
 		// TODO: add support for predefined Attributes objects: Subject, Action, Resource, Environment
-		o.add(JsonProperties.CATEGORY_ARRAY_NAME, context.serialize(src.getAttributes()));
+		o.add(JsonProperties.CATEGORY_ARRAY_NAME, context.serialize(src.getCategories()));
 		// SPEC: There must be at least one RequestReference object inside the MultiRequests object
 		Collection<RequestReference> requestReferences = src.getRequestReferences();
 		if (requestReferences != null && !requestReferences.isEmpty()) {

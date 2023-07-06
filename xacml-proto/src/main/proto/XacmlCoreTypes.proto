@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+option java_multiple_files = true;
+
+package com.xacml4j.xacml.proto;
+
+enum PXacmlTypes {
+  ANYURI = 0;
+  BASE64BINARY = 1;
+  BOOLEAN = 2;
+  DATE = 3;
+  DATETIME = 4;
+  DAYTIME_DURATION = 5;
+  DOUBLE = 6;
+  INTEGER = 7;
+  HEXBINARY = 8;
+  IPADDRESS = 9;
+  STRING = 10;
+  RFC822NAME = 11;
+  TIME = 12;
+  X500NAME = 13;
+  XPATH = 14;
+  JPATH = 15;
+  YEARMONTH_DURATION = 16;
+  ENTITY = 17;
+  DNSNAME = 18;
+}
+
+enum PDecision
+{
+  PERMIT = 0;
+  DENY = 1;
+  NOT_APPLICABLE = 2;
+  INDETERMINATE = 3;
+  INDETERMINATE_D = 4;
+  INDETERMINATE_P = 5;
+  INDETERMINATE_DP = 6;
+}
+
+message PValue
+{
+  PXacmlTypes type = 1;
+  google.protobuf.Any value = 2;
+}
+
+message PDNSNameValue
+{
+   string hostname = 1;
+   PPortRange portRange = 2;
+}
+
+message PIPAddressValue
+{
+  bytes address = 1;
+  bytes mask = 2;
+  PPortRange portRange = 3;
+}
+
+message PPortRange
+{
+  int32 lowerPort = 1;
+  int32 upperPort = 2;
+}
+
+message PAttribute
+{
+  string id = 1;
+  string issuer = 2;
+  bool includeInResult = 3;
+  repeated PValue values = 4;
+}
+
+message PEntityValue
+{
+  repeated PAttribute attributes = 1;
+  bytes content = 2;
+}

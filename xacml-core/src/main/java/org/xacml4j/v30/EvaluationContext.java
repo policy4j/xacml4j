@@ -22,17 +22,22 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.Calendar;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
+import java.util.function.Supplier;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xacml4j.v30.types.XPathExp;
-
-import com.google.common.base.Ticker;
-
+/**
+ * Evaluation context for {@link CompositeDecisionRule} evaluations
+ *
+ * @see {@link CompositeDecisionRule#createContext(EvaluationContext)}
+ * @see {@link CompositeDecisionRule#evaluate(EvaluationContext)}
+ */
 public interface EvaluationContext
 {
 	/**
@@ -44,23 +49,43 @@ public interface EvaluationContext
 	 * @return {@code true} if context
 	 * was build to evaluate extended indeterminate
 	 */
-	boolean isExtendedIndeterminateEval();
+	default boolean isExtendedIndeterminateEval(){
+		return false;
+	}
+
+	default Optional<DecisionRule> getCurrentDecisionRule(){
+		if(getCurrentRule() != null){
+			return Optional.of(getCurrentRule());
+		}
+		if(getCurrentPolicy() != null){
+			return Optional.of(getCurrentPolicy());
+		}
+		if(getCurrentPolicySet() != null){
+			return Optional.of(getCurrentPolicySet());
+		}
+		return Optional.empty();
+	}
 
 	/**
 	 * Creates an evaluation context to evaluate
 	 * policy tree for extended indeterminate
 	 *
+	 * @see {@link <a href="http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html#_Toc325047187"/a> }
 	 * @return {@link EvaluationContext} to evaluate
 	 * extended indeterminate
 	 */
-	EvaluationContext createExtIndeterminateEvalContext();
+	default EvaluationContext createExtIndeterminateEvalContext(){
+		return this;
+	}
 
 	/**
-	 * Gets clock ticker
+	 * Gets context clock
 	 *
 	 * @return clock ticker
 	 */
-	Ticker getTicker();
+	default Clock getClock(){
+		return Clock.systemUTC();
+	}
 
 	/**
 	 * Gets an authorization decision cache TTL,
@@ -68,9 +93,9 @@ public interface EvaluationContext
 	 * the attributes used in the authorization
 	 * decision caching TTLs
 	 *
-	 * @return a decision cache TTL in seconds
+	 * @return a decision cache TTL as {@link Duration}
 	 */
-	int getDecisionCacheTTL();
+	Duration getDecisionCacheTTL();
 
 	/**
 	 * Sets a decision cache TTL
@@ -78,7 +103,17 @@ public interface EvaluationContext
 	 * @param ttl a new time to cache
 	 * time for a decision
 	 */
-	void setDecisionCacheTTL(int ttl);
+	default void setDecisionCacheTTL(int ttl){
+		setDecisionCacheTTL(Duration.ofSeconds(ttl < 0?0:ttl));
+	}
+
+	/**
+	 * Sets a decision cache TTL
+	 *
+	 * @param ttl a new time to cache
+	 * time for a decision
+	 */
+	void setDecisionCacheTTL(Duration ttl);
 
 	/**
 	 * Gets time zone used in PDP time
@@ -86,16 +121,20 @@ public interface EvaluationContext
 	 *
 	 * @return {@link TimeZone}
 	 */
-	TimeZone getTimeZone();
+	default TimeZone getTimeZone(){
+		return TimeZone.getTimeZone(getClock().getZone());
+	}
 
 	/**
 	 * Gets evaluation context current date/time
 	 * in the evaluation time-zone
 	 *
-	 * @return {@link Calendar} instance
+	 * @return {@link ZonedDateTime} defaultProvider
 	 * in the evaluation context time-zone
 	 */
-	Calendar getCurrentDateTime();
+	default ZonedDateTime getCurrentDateTime(){
+		return ZonedDateTime.now(getClock());
+	}
 
 	/**
 	 * Tests if function parameters
@@ -118,23 +157,41 @@ public interface EvaluationContext
 	/**
 	 * Gets evaluation status information to be
 	 * included in the response as {@link StatusCode}
-	 * instance
+	 * defaultProvider
 	 *
+	 * @param rule a decision rule
 	 * @return {@link Status} or
 	 * {@code null} if status
 	 * information is unavailable
 	 */
-	Status getEvaluationStatus();
+	Optional<Status> getEvaluationStatus(DecisionRule rule);
+
+	Optional<Status> getEvaluationStatus();
 
 	/**
 	 * Sets extended evaluation failure
 	 * status information to be included
-	 * in the response
+	 * in the response for a given decision
+	 * rule
+	 *
+	 * @param rule a decision rule
+	 * @param status a status indicating
+	 * evaluation failure status
+	 */
+	void setEvaluationStatus(DecisionRule rule, Status status);
+
+	/**
+	 * Sets extended evaluation failure
+	 * status information to be included
+	 * in the response for a current decision
+	 * rule
 	 *
 	 * @param code a status code indicating
 	 * evaluation failure status
 	 */
-	void setEvaluationStatus(Status code);
+	void setEvaluationStatus(Status status);
+
+	void setEvaluationStatusIfAbsent(Supplier<Status> supplier);
 
 	/**
 	 * Gets parent evaluation context
@@ -216,6 +273,13 @@ public interface EvaluationContext
 	 * @param advices advices
 	 */
 	void addAdvices(Decision d, Iterable<Advice> advices);
+
+	/**
+	 * Adds evaluated {@link Obligation} matching
+	 * given access decision
+	 *
+	 * @param d an access decision
+	 */
 	void addObligations(Decision d, Iterable<Obligation> obligations);
 
 	/**
@@ -239,9 +303,9 @@ public interface EvaluationContext
 	 * variable identifier.
 	 *
 	 * @param variableId a variable identifier
-	 * @return {@link ValueExpression} instance or {@code null}
+	 * @return {@link ValueExp} defaultProvider or {@code null}
 	 */
-	 ValueExpression getVariableEvaluationResult(String variableId);
+	 ValueExp getVariableEvaluationResult(String variableId);
 
 	/**
 	 * Caches current policy variable evaluation result.
@@ -249,90 +313,65 @@ public interface EvaluationContext
 	 * @param variableId a variable identifier
 	 * @param value a variable value
 	 */
-	void setVariableEvaluationResult(String variableId, ValueExpression value);
-
-	/**
-	 * Resolves a given {@link AttributeDesignatorKey}
-	 * to the {@link BagOfAttributeExp}
-	 *
-	 * @param ref an attribute designator
-	 * @return {@link BagOfAttributeExp}
-	 * @throws EvaluationException if an error
-	 * occurs while resolving given designator
-	 */
-	BagOfAttributeExp resolve(AttributeDesignatorKey ref)
-		throws EvaluationException;
-
-	/**
-	 * Resolves a given {@link AttributeSelectorKey}
-	 * to the {@link BagOfAttributeExp}
-	 *
-	 * @param ref an attribute selector
-	 * @return {@link BagOfAttributeExp}
-	 * @throws EvaluationException if an error
-	 * occurs while resolving given selector
-	 */
-	BagOfAttributeExp resolve(AttributeSelectorKey ref)
-		throws EvaluationException;
+	void setVariableEvaluationResult(String variableId, ValueExp value);
 
 	/**
 	 * Gets all resolved designators in this context
 	 *
 	 * @return a map of all resolved designators
 	 */
-	Map<AttributeDesignatorKey, BagOfAttributeExp> getResolvedDesignators();
+	Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators();
 
 	/**
-	 * Evaluates a given XPath expression to a {@link NodeList}
+	 * Gets all resolved selectors in this context
 	 *
-	 * @param xpath an XPath expression
-	 * @return {@link NodeList} representing an evaluation result
-	 * @throws EvaluationException if an error occurs while evaluating
-	 * given xpath expression
+	 * @return a map of all resolved designators
 	 */
-	NodeList evaluateToNodeSet(XPathExp xpath)
+	Map<AttributeSelectorKey, BagOfValues> getResolvedSelectors();
+
+	/**
+	 * Resolves a given {@link AttributeSelectorKey} or {@link AttributeDesignatorKey}
+	 * to the {@link BagOfValues}
+	 *
+	 * @param ref an attribute selector
+	 * @return {@link BagOfValues}
+	 * @throws EvaluationException if an error
+	 * occurs while resolving given selector
+	 */
+	Optional<BagOfValues> resolve(AttributeReferenceKey ref)
 		throws EvaluationException;
 
 	/**
-	 * Evaluates a given XPath expression to a {@link String}
+	 * Resolves {@link CategoryId} and {@link Content.Type}
+	 * to optional content of the given category and type
 	 *
-	 * @param xpath an XPath expression
-	 * @return {@link String} representing an evaluation result
-	 * @throws EvaluationException if an error occurs while evaluating
-	 * given xpath expression
+	 * @param categoryId an optional category identifier
+	 * @param type a content type
+	 * @param <C>
+	 * @return optional content {@link Content} of the given category and type
 	 */
-	String evaluateToString(XPathExp xpath)
-		throws EvaluationException;
+	<C extends Content> Optional<C> resolve(CategoryId categoryId, Content.Type type);
 
-	/**
-	 * Evaluates a given XPath expression
-	 * to a {@link Node}
-	 *
-	 * @param xpath an XPath expression
-	 * @return {@link Node} representing an evaluation result
-	 * @throws EvaluationException if an error occurs while evaluating
-	 * given xpath expression
-	 */
-	Node evaluateToNode(XPathExp xpath)
-		throws EvaluationException;
 
-	/**
-	 * Evaluates a given XPath expression to a {@link Number}
-	 *
-	 * @param xpath an XPath expression
-	 * @return {@link Number} representing an evaluation result
-	 * @throws EvaluationException if an error occurs while evaluating
-	 * given xpath expression
-	 */
-	Number evaluateToNumber(XPathExp xpath)
-		throws EvaluationException;
+	default Collection<CompositeDecisionRuleIDReference> getReferencedCompositeDecisionRules(){
+		return getReferencedCompositeDecisionRules(this, new LinkedList<>());
+	}
+
+	default Collection<CompositeDecisionRuleIDReference> getReferencedCompositeDecisionRules(EvaluationContext context,
+			Collection<CompositeDecisionRuleIDReference> rules){
+		if(context == null){
+			return rules;
+		}
+		rules.add(context.getCurrentPolicy().getReference());
+		return getReferencedCompositeDecisionRules(context.getParentContext(), rules);
+	}
 
 	/**
 	 * Resolves given {@link CompositeDecisionRuleIDReference}
 	 * reference
 	 *
 	 * @param ref a policy reference
-	 * @return resolved {@link CompositeDecisionRule} instance
+	 * @return resolved {@link CompositeDecisionRule} defaultProvider
 	 * @throws PolicyResolutionException if
 	 * policy reference can not be resolved
 	 */

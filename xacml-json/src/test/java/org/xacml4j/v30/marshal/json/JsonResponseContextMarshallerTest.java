@@ -24,6 +24,7 @@ package org.xacml4j.v30.marshal.json;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.io.StringReader;
@@ -37,23 +38,25 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Categories;
 import org.xacml4j.v30.Category;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SubjectAttributes;
+import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
-import org.xacml4j.v30.pdp.PolicyIDReference;
-import org.xacml4j.v30.pdp.PolicySetIDReference;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.policy.PolicyIDReference;
+import org.xacml4j.v30.policy.PolicySetIDReference;
+import org.xacml4j.v30.types.XacmlTypes;
 import org.xml.sax.InputSource;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 public class JsonResponseContextMarshallerTest {
 
@@ -71,6 +74,11 @@ public class JsonResponseContextMarshallerTest {
 		ResponseContext reqIn = createTestResponse();
 		Object o = marshaller.marshal(reqIn);
 		ResponseContext reqOut = unmarshaller.unmarshal(o);
+		Category a = Iterables.getFirst(reqIn.getResults(), null).getIncludeInResultByCategory(CategoryId.SUBJECT_ACCESS);
+		assertThat(a, notNullValue());
+		Category b = Iterables.getFirst(reqOut.getResults(), null).getIncludeInResultByCategory(CategoryId.SUBJECT_ACCESS);
+		assertThat(b.getEntity(), equalTo(a.getEntity()));
+		assertThat(b, equalTo(a));
 		assertThat(reqOut, is(equalTo(reqIn)));
 	}
 
@@ -84,17 +92,17 @@ public class JsonResponseContextMarshallerTest {
 								ImmutableList.<AttributeAssignment> of(
 										AttributeAssignment
 												.builder()
-										        .id(SubjectAttributes.SUBJECT_ID.toString())
-												.category(Categories.ACTION)
+										        .attributeId(SubjectAttributes.SUBJECT_ID.toString())
+												.category(CategoryId.ACTION)
 												.issuer("Vytenai")
-												.value(StringExp.of("obuolys"))
+												.value(XacmlTypes.STRING.ofAny("obuolys"))
 												.build(),
 										AttributeAssignment
 												.builder()
-												.id(SubjectAttributes.KEY_INFO.toString())
-												.category(Categories.ACTION)
+												.attributeId(SubjectAttributes.KEY_INFO.toString())
+												.category(CategoryId.ACTION)
 												.issuer("ispanija")
-												.value(StringExp.of("apelsinas"))
+												.value(XacmlTypes.STRING.ofAny("apelsinas"))
 												.build()))
 						.build());
 		resultBuilder.obligation(Obligation
@@ -103,9 +111,9 @@ public class JsonResponseContextMarshallerTest {
 						ImmutableList.<AttributeAssignment> of(
 								AttributeAssignment
 										.builder()
-										.id("custom:attribute1")
-										.category(Categories.parse("totaly:made:up:attribute-category1"))
-										.value(StringExp.of("same old apelsinas"))
+										.attributeId("custom:attribute1")
+										.category("totaly:made:up:attribute-category1")
+										.value(XacmlTypes.STRING.ofAny("same old apelsinas"))
 						                .build()))
 				.build());
 		resultBuilder.advice(ImmutableList.of(
@@ -114,30 +122,30 @@ public class JsonResponseContextMarshallerTest {
 								ImmutableList.<AttributeAssignment> of(
 										AttributeAssignment
 												.builder()
-												.id("test:advice1")
-												.value(StringExp.of("nespjauk i sulini"))
+												.attributeId("test:advice1")
+												.value(XacmlTypes.STRING.ofAny("nespjauk i sulini"))
 												.build()))
 						.build(),
 				Advice.builder("advice2").build()));
 
 		Category subjectAttributes = Category
-				.builder(Categories.SUBJECT_ACCESS)
+				.builder(CategoryId.SUBJECT_ACCESS)
 				.id("SubjectAttributes")
 				.entity(Entity
 						.builder()
-						.content(sampleContent1())
+						.content(XmlContent.of(sampleContent1()))
 						.attributes(
 						ImmutableList.<Attribute> of(
 								Attribute
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(StringExp.of(
+										.value(XacmlTypes.STRING.ofAny(
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(StringExp.of("TestDomain")).build())).build())
+										.value(XacmlTypes.STRING.ofAny("TestDomain")).build())).build())
 						.build();
 		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
 

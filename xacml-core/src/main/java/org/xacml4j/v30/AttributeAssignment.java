@@ -22,17 +22,23 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.pdp.AttributeAssignmentExpression;
+import java.net.URI;
+import java.util.Optional;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
+import org.xacml4j.v30.types.Value;
 
 
-public class AttributeAssignment
+/**
+ * XACML attribute assigment
+ *
+ * @author Giedrius Trumpickasd
+ */
+public final class AttributeAssignment
 {
-	private final AttributeExp attribute;
+	private final Value attribute;
 	private final CategoryId category;
 	private final String attributeId;
 	private final String issuer;
@@ -57,6 +63,10 @@ public class AttributeAssignment
 		return new Builder();
 	}
 
+	public static Builder builder(String attributeId){
+		return new Builder().attributeId(attributeId);
+	}
+
 	/**
 	 * Gets attribute identifier
 	 *
@@ -71,7 +81,7 @@ public class AttributeAssignment
 	 *
 	 * @return attribute value
 	 */
-	public AttributeExp getAttribute(){
+	public Value getAttribute(){
 		return attribute;
 	}
 
@@ -80,8 +90,8 @@ public class AttributeAssignment
 	 *
 	 * @return attribute category
 	 */
-	public CategoryId getCategory(){
-		return category;
+	public Optional<CategoryId> getCategory(){
+		return Optional.ofNullable(category);
 	}
 
 
@@ -106,10 +116,10 @@ public class AttributeAssignment
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-		                  .add("attributeId", attributeId)
-		                  .add("category", category)
-		                  .add("value", attribute)
-		                  .add("issuer", issuer).toString();
+		.add("attributeId", attributeId)
+		.add("category", category)
+		.add("value", attribute)
+		.add("issuer", issuer).toString();
 	}
 
 	@Override
@@ -135,36 +145,37 @@ public class AttributeAssignment
 		private String attributeId;
 		private CategoryId category;
 		private String issuer;
-		private AttributeExp value;
+		private Value value;
 
-		public Builder id(String attributeId){
+		public Builder attributeId(String attributeId){
 			Preconditions.checkNotNull(attributeId);
 			this.attributeId = attributeId;
 			return this;
 		}
 
-		/**
-		 * Copies all state from a given {@link AttributeAssignmentExpression}
-		 * except attribute value expression
-		 *
-		 * @param attrAssigExp attribute assignment expression
-		 * @return {@link Builder}
-		 */
-		public Builder from(AttributeAssignmentExpression attrAssigExp)
-		{
-			this.attributeId = attrAssigExp.getAttributeId();
-			this.category = attrAssigExp.getCategory();
-			this.issuer = attrAssigExp.getIssuer();
+		public Builder category(String category) {
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
 
-		public Builder category(CategoryId category){
+		public Builder category(Value category) {
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
+			return this;
+		}
+
+		public Builder category(CategoryId category) {
 			this.category = category;
 			return this;
 		}
 
-		public Builder category(String category){
-			this.category = !Strings.isNullOrEmpty(category)?Categories.parse(category):null;
+		public Builder category(URI category) {
+			if(category != null){
+				this.category = CategoryId.of(category);
+			}
 			return this;
 		}
 
@@ -173,8 +184,7 @@ public class AttributeAssignment
 			return this;
 		}
 
-		public Builder value(AttributeExp v){
-			Preconditions.checkNotNull(v);
+		public Builder value(Value v){
 			this.value = v;
 			return this;
 		}

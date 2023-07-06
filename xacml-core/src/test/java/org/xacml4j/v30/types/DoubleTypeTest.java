@@ -27,7 +27,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
 
 
 public class DoubleTypeTest
@@ -35,22 +34,24 @@ public class DoubleTypeTest
 	@Test
 	public void testToXacmlString()
 	{
-		assertEquals("1.0", DoubleExp.of(1.0d).toStringExp().getValue());
-		assertEquals("-2.0", DoubleExp.of(-2.0d).toStringExp().getValue());
+		DoubleVal v0 = XacmlTypes.DOUBLE.ofAny(1.0d);
+		DoubleVal v1 = XacmlTypes.DOUBLE.ofAny(-2.0d);
+		assertEquals("1.0", v0.toStringExp().get());
+		assertEquals("-2.0", v1.toStringExp().get());
 	}
 
 
 	@Test
 	public void testEquals()
 	{
-		AttributeExp v0 = DoubleExp.of(1.0d);
-		AttributeExp v1 = DoubleExp.of(2.0d);
-		AttributeExp v2 = DoubleExp.of(1.0d);
+		Value v0 = XacmlTypes.DOUBLE.ofAny(1.0d);
+		Value v1 = XacmlTypes.DOUBLE.ofAny(2.0d);
+		Value v2 = XacmlTypes.DOUBLE.ofAny(1.0d);
 		assertFalse(v0.equals(v1));
 		assertTrue(v0.equals(v2));
-		DoubleExp v0Nan = DoubleExp.of(Double.NaN);
-		DoubleExp v1Nan = DoubleExp.of(Double.NaN);
-		assertEquals("NaN", v0Nan.toStringExp().getValue());
+		DoubleVal v0Nan = XacmlTypes.DOUBLE.ofAny(java.lang.Double.NaN);
+		DoubleVal v1Nan = XacmlTypes.DOUBLE.ofAny(java.lang.Double.NaN);
+		assertEquals("NaN", v0Nan.toStringExp().get());
 		assertFalse(v0.equals(v0Nan));
 		assertTrue(v0Nan.equals(v0Nan));
 		assertFalse(v1Nan.equals(v0));

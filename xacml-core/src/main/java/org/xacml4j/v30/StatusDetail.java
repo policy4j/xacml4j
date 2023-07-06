@@ -22,17 +22,62 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-import com.google.common.collect.Iterables;
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 
-public class StatusDetail
+
+/**
+ * Represents XACML status details
+ *
+ * @author Giedrius Trumpickas
+ */
+public final class StatusDetail
 {
-	private final List<Object> content;
+	private List<Object> details;
+	private String decisionRuleId;
 
-	public StatusDetail(Iterable<Object> detail){
-		this.content = new LinkedList<Object>();
-		Iterables.addAll(content, detail);
+	StatusDetail(){
 	}
+
+	public StatusDetail(Object details){
+		this(null, Arrays.asList(details));
+	}
+
+	public StatusDetail(Collection<Object> details){
+		this(null, details);
+	}
+
+	public StatusDetail(String decisionRuleId,
+	                    Collection<Object> details){
+		this.details = ImmutableList.copyOf(
+				Objects.requireNonNull(details, "details"));
+		this.decisionRuleId = decisionRuleId;
+	}
+
+	public String getDecisionRuleId() {
+		return decisionRuleId;
+	}
+
+	public List<Object> getDetails(){
+		return details;
+	}
+
+	@Override
+	public String toString(){
+		return MoreObjects.toStringHelper(this)
+				.add("details", details)
+				.add("decisionRuleId", decisionRuleId)
+				.toString();
+	}
+
+	@Override
+	public int hashCode(){
+		return Objects.hash(details, decisionRuleId);
+	}
+
 }

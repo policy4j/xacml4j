@@ -22,77 +22,72 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.Path;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
+
+/**
+ * Represents XACML attribute selector
+ *
+ * @author Giedrius Trumpickas
+ */
 public final class AttributeSelectorKey
 	extends AttributeReferenceKey
 {
-	private final String xpath;
-	private final String contextSelectorId;
-	private final int hashCode;
+	private String path;
+	private String contextSelectorId;
+	private int hashCode;
+	private Content.PathType type;
 
 	private AttributeSelectorKey(Builder b){
 		super(b);
-		Preconditions.checkArgument(!Strings.isNullOrEmpty(b.xpath));
-		this.xpath = b.xpath;
+		this.path = java.util.Objects.requireNonNull(b.path);
+		this.type = java.util.Objects.requireNonNull(b.type);
 		this.contextSelectorId = b.contextSelectorId;
-		this.hashCode = Objects.hashCode(
-				category, xpath, dataType, contextSelectorId);
 	}
 
 	public static Builder builder(){
 		return new Builder();
 	}
 
-	/**
-	 * An XPath expression whose context node is the Content
-	 * element of the attribute category indicated by the Category
-	 * attribute. There SHALL be no restriction on the XPath syntax,
-	 * but the XPath MUST NOT refer to or traverse any content
-	 * outside the Content element in any way.
-	 *
-	 * @return an XPath expression
-	 */
+
 	public String getPath(){
-		return xpath;
+		return path;
 	}
 
-	/**
-	 * This attribute id refers to the attribute (by its AttributeId)
-	 * in the request context in the category given by the Category attribute.
-	 * The referenced attribute MUST have data type
-	 * urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression,
-	 * and must select a single node in the content element.
-	 * The XPathCategory attribute of the referenced attribute MUST
-	 * be equal to the Category attribute of the attribute selector
-	 *
-	 * @return context selector id
-	 */
+	public Content.Type getContentType(){
+		return type.getContentType();
+	}
+	public Content.PathType getPathType(){
+		return type;
+	}
+
+
 	public String getContextSelectorId(){
 		return contextSelectorId;
 	}
 
 
 	@Override
-	public BagOfAttributeExp resolve(EvaluationContext context)
-			throws EvaluationException {
-		return context.resolve(this);
-	}
-
-	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-		                  .add("Category", getCategory())
-		                  .add("Path", xpath)
-		                  .add("DataType", getDataType())
-		                  .add("ContextSelectorId", contextSelectorId).toString();
+		.add("Category", getCategory().getAbbreviatedId())
+		.add("Path", path)
+		.add("PathType", type)
+		.add("DataType", getDataType().getShortTypeId())
+		.add("ContextSelectorId", contextSelectorId).toString();
 	}
 
 	@Override
 	public int hashCode(){
+		if(hashCode == 0){
+			this.hashCode =  Objects.hashCode(
+					category, path, type, dataType, contextSelectorId);
+		}
 		return hashCode;
 	}
 
@@ -106,24 +101,68 @@ public final class AttributeSelectorKey
 		}
 		AttributeSelectorKey s = (AttributeSelectorKey)o;
 		return category.equals(s.category) &&
-		dataType.equals(s.dataType) &&
-		xpath.equals(s.xpath) &&
-		Objects.equal(contextSelectorId, s.contextSelectorId);
+				dataType.equals(s.dataType) &&
+				type.equals(s.type) &&
+				path.equals(s.path) &&
+				Objects.equal(contextSelectorId,
+						s.contextSelectorId);
 	}
 
 	public static class Builder extends AttributeReferenceKey.Builder<Builder>
 	{
-		private String xpath;
+		private String path;
 		private String contextSelectorId;
+		private Content.PathType type = Content.PathType.XPATH;
 
+		/**
+		 * Creates selector with XML path expression aka XPATH
+		 *
+		 * @param xpath an XPATH expression
+		 * @return {@link Builder}
+		 */
 		public Builder xpath(String xpath){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(xpath));
-			this.xpath = xpath;
+			this.path = xpath;
+			this.type = Content.PathType.XPATH;
 			return this;
 		}
 
+		/**
+		 * Creates selector with JSON path expression
+		 *
+		 * @param jpath a JSON path expression
+		 * @return {@link Builder}
+		 */
+		public Builder jpath(String jpath){
+			Preconditions.checkArgument(!Strings.isNullOrEmpty(jpath));
+			this.path = jpath;
+			this.type = Content.PathType.JPATH;
+			return this;
+		}
+
+		public Builder path(String path, Content.PathType type){
+			this.path = java.util.Objects.requireNonNull(path);
+			this.type = java.util.Objects.requireNonNull(type);
+			return this;
+		}
+
+		public Builder path(Path p){
+			java.util.Objects.requireNonNull(p);
+			this.path = p.getPath();
+			this.type = p.getPathType();
+			return this;
+		}
+
+		public Builder path(Path xpath,
+                            boolean ignoreCategoryFromPath){
+			this.path = xpath.getPath();
+			this.type = xpath.getPathType();
+			return ignoreCategoryFromPath?this:
+					category(xpath.getCategory().orElse(null));
+		}
+
 		public Builder contextSelectorId(String id){
-			this.contextSelectorId = Strings.emptyToNull(id);
+			this.contextSelectorId = id;
 			return this;
 		}
 
@@ -131,7 +170,7 @@ public final class AttributeSelectorKey
 			return builder()
 					.category(s.category)
 					.dataType(s.dataType)
-					.xpath(s.xpath)
+					.path(s.getPath(),  s.getPathType())
 					.contextSelectorId(s.contextSelectorId);
 		}
 
@@ -143,5 +182,6 @@ public final class AttributeSelectorKey
 		public AttributeSelectorKey build(){
 			return new AttributeSelectorKey(this);
 		}
+
 	}
 }

@@ -32,11 +32,11 @@ import static org.xacml4j.v30.marshal.json.JsonProperties.VALUE_PROPERTY;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.AttributeExp;
+import org.xacml4j.v30.types.Value;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -54,7 +54,7 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 		if (src.getIssuer() != null) {
 			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		}
-		Collection<AttributeExp> values = src.getValues();
+		Collection<Value> values = src.getValues();
 		serializeValue(context, o, values);
 		// OMIT property if value is "false"
 		if(src.isIncludeInResult()){
@@ -64,19 +64,19 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 	}
 
 	private void serializeValue(JsonSerializationContext context, JsonObject o, 
-			Collection<AttributeExp> values) {
+			Collection<Value> values) {
 		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
-		AttributeExp firstValue = Iterables.getFirst(values, null);
-		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getType().getShortDataTypeId());
-		Optional<TypeToGSon> toGson = TypeToGSon.Types.getIndex().get(firstValue.getType());
+		Value firstValue = Iterables.getFirst(values, null);
+		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getEvaluatesTo().getShortTypeId());
+		Optional<TypeToGSon> toGson = TypeToGSon.forType(firstValue.getEvaluatesTo());
 		checkState(toGson.isPresent());
 		if(values.size() == 1){
 			o.add(VALUE_PROPERTY, toGson.get().toJson(firstValue, context));
 			return;
 		}
 		JsonArray array = new JsonArray();
-		for(AttributeExp a : values){
-			checkArgument(firstValue.getType().equals(a.getType()));
+		for(Value a : values){
+			checkArgument(firstValue.getEvaluatesTo().equals(a.getEvaluatesTo()));
 			array.add(toGson.get().toJson(a, context));
 		}
 		o.add(VALUE_PROPERTY, array);

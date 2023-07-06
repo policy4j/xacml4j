@@ -33,14 +33,16 @@ import java.util.concurrent.TimeUnit;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.pdp.MetricsSupport;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
-import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
+import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.codahale.metrics.CsvReporter;
@@ -60,14 +62,15 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 	                .build(new File("target/"));
 		reporter.start(1, TimeUnit.MILLISECONDS);
 
+
 		PolicyRepository repository = new InMemoryPolicyRepository(
 				"testId",
 				FunctionProviderBuilder.builder()
-				.defaultFunctions()
-				.build(),
+				                       .withDefaultFunctions()
+				                       .build(),
 				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.create());
+				                                         .withDefaultAlgorithms()
+				                                         .build());
 
 		List<Supplier<InputStream>> policyStreams = Arrays.asList(
 				_getPolicy("XacmlPolicySet-01-top-level.xml"),
@@ -81,16 +84,19 @@ public class RSA2008InteropTest extends XacmlPolicyTestSupport
 				_getPolicy("XacmlPolicySet-04-N-PPS-PRD-004.xml"));
 
 		List<CompositeDecisionRule> policies = new ArrayList<CompositeDecisionRule>();
+		PolicyImportTool tool = repository.newImportTool();
 		for (Supplier<InputStream> policyStream : policyStreams) {
-			policies.add(repository.importPolicy(policyStream));
+			CompositeDecisionRule policy = tool.importPolicy(MediaType.Type.XACML20_XML, policyStream);
+			policies.add(policy);
 		}
 
 		pdp = PolicyDecisionPointBuilder.builder("testPdp")
 			.policyRepository(repository)
 			.pip(
-					PolicyInformationPointBuilder
+					PolicyInformationPoint
 					.builder("testPip")
-					.defaultResolvers()
+					.withDefaultRegistry()
+					.noCacheProvider()
 					.build())
 			.rootPolicy(policies.get(0))
 			.build();

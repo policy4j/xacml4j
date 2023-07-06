@@ -41,8 +41,8 @@ import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.marshal.jaxb.JAXBContextUtil;
-import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
+import org.xacml4j.v30.xml.JAXBUtils;
+import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
 
 import com.google.common.base.Supplier;
 import com.google.common.io.Closeables;
@@ -50,7 +50,7 @@ import com.google.common.io.Closeables;
 
 public class Xacml20TestUtility
 {
-	private static final JAXBContext context = JAXBContextUtil.getInstance();
+	private static final JAXBContext context = JAXBUtils.getInstance();
 	private static final Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 
 	/** Private constructor for utility class */

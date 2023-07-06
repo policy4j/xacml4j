@@ -22,9 +22,6 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-
 /**
  * In some applications it is helpful to specify supplemental
  * information about a decision. XACML provides facilities
@@ -33,7 +30,7 @@ import com.google.common.base.Preconditions;
  *
  * @author Giedrius Trumpickas
  */
-public class Advice extends BaseDecisionRuleResponse
+public final class Advice extends DecisionRuleResponse
 {
 	private Advice(Builder b){
 		super(b);
@@ -41,6 +38,10 @@ public class Advice extends BaseDecisionRuleResponse
 
 	public static Builder builder(String id, Effect fullFillOn){
 		return new Builder(id, fullFillOn);
+	}
+
+	public static Builder from(Advice a){
+		return new Builder(a.getId(), a.getFulfillOn()).attributes(a.getAttributes());
 	}
 
 	public static Builder builder(String id){
@@ -66,19 +67,29 @@ public class Advice extends BaseDecisionRuleResponse
 	 * given advice attributes
 	 *
 	 * @param a an advice
-	 * @return a new advice instance with combined attributes
+	 * @return a new advice defaultProvider with combined attributes
 	 */
-	public Advice merge(Advice a)
+	public Advice merge(DecisionRuleResponse v)
 	{
-		Preconditions.checkArgument(a.getId().equals(getId()));
-		Preconditions.checkArgument(Objects.equal(getFulfillOn(), a.getFulfillOn()));
-		return new Builder(getId(), getFulfillOn())
-		.attributes(getAttributes())
-		.attributes(a.getAttributes()).build();
-
+		if(v == null){
+			return this;
+		}
+		if(v == this){
+			return this;
+		}
+		if(!(v instanceof Advice)){
+			return this;
+		}
+		if(!(getId().equals(v.getId()))){
+			return this;
+		}
+		Advice a = Advice.class.cast(v);
+		return Advice.from(this)
+				.attributes(a.getAttributes())
+				.build();
 	}
 
-	public static class Builder extends BaseDecisionRuleResponse.Builder<Builder>
+	public static class Builder extends DecisionRuleResponse.Builder<Builder>
 	{
 		private Builder(String id, Effect effect){
 			super(id, effect);

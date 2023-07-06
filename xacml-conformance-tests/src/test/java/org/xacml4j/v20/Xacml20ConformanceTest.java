@@ -38,16 +38,19 @@ import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.marshal.MarshallingProvider;
+import org.xacml4j.v30.marshal.MediaType;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
-import org.xacml4j.v30.marshal.jaxb.Xacml20ResponseContextMarshaller;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
-import org.xacml4j.v30.spi.combine.DecisionCombiningAlgorithmProviderBuilder;
-import org.xacml4j.v30.spi.function.FunctionProviderBuilder;
-import org.xacml4j.v30.spi.pip.PolicyInformationPointBuilder;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
+import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
+import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.common.base.Strings;
@@ -61,21 +64,23 @@ public class Xacml20ConformanceTest
 
 	private static ResponseMarshaller responseMarshaller;
 	private static PolicyRepository repository;
+	private static PolicyImportTool tool;
 
 	private PolicyDecisionPointBuilder pdpBuilder;
 
+
 	@BeforeClass
-	public static void init_static() throws Exception
-	{
+	public static void init_static() throws Exception {
 		repository = new InMemoryPolicyRepository(
 				"testRepositoryId",
-				FunctionProviderBuilder.builder()
-				.defaultFunctions()
-				.build(),
-				DecisionCombiningAlgorithmProviderBuilder.builder()
-				.withDefaultAlgorithms()
-				.create());
-		responseMarshaller = new Xacml20ResponseContextMarshaller();
+				FunctionProvider.builder()
+				                .withDefaultFunctions()
+				                .build(),
+				DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build());
+		tool = repository.newImportTool();
+		responseMarshaller = MarshallingProvider.getProvider(MediaType.Type.XACML20_XML)
+		                                        .flatMap(p -> p.newResponseMarshaller())
+		                                        .orElseThrow();
 
 		addAllPolicies(repository, "IIA", 22);
 		addAllPolicies(repository, "IIB", 54);
@@ -102,10 +107,12 @@ public class Xacml20ConformanceTest
 	@Before
 	public void init(){
 		this.pdpBuilder = PolicyDecisionPointBuilder.builder("testPdp")
-		.pip(PolicyInformationPointBuilder.builder("testPip")
-				.defaultResolvers()
-				.resolverFromInstance(new Xacml20ConformanceAttributeResolver())
-				.build())
+		.pip(PolicyInformationPoint.builder("testPip")
+				     .registry(ResolverRegistry.builder()
+				                               .withDefaultResolvers()
+				                               .withResolver(new Xacml20ConformanceAttributeResolver())
+						               .build())
+		                           .build())
 		.policyRepository(repository);
 	}
 
@@ -202,6 +209,7 @@ public class Xacml20ConformanceTest
 	{
 		for(int i = 1; i < testCount; i++)
 		{
+
 			if (!exclude.contains(i)) {
 				executeTestCase(testPrefix, i);
 			}
@@ -215,8 +223,8 @@ public class Xacml20ConformanceTest
 		RequestContext request = getRequest(testPrefix, testCaseNum);
 		final PolicyDecisionPoint pdp = pdpBuilder
 				.rootPolicy(
-						repository.importPolicy(
-								getPolicy(testPrefix, testCaseNum, "Policy.xml")))
+						tool.importPolicy(MediaType.Type.XACML20_XML,
+						                  getPolicy(testPrefix, testCaseNum, "Policy.xml")))
 				.build();
 		long start = System.currentTimeMillis();
 		ResponseContext response = pdp.decide(request);
@@ -245,7 +253,8 @@ public class Xacml20ConformanceTest
 	{
 		try{
 			final Supplier<InputStream> policyStream = getPolicy(prefix, index, suffix);
-			CompositeDecisionRule rule = r.importPolicy(policyStream);
+			PolicyImportTool tool = r.newImportTool();
+			CompositeDecisionRule rule = tool.importPolicy(MediaType.Type.XACML20_XML, policyStream);
 			if (rule == null) {
 				LOG.info("Could not load policy with prefix: {}, index: {}, suffix {}",
 						new Object[]{prefix, index, suffix});

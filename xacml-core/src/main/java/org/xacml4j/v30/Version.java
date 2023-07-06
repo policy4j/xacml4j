@@ -49,7 +49,7 @@ public final class Version implements Comparable<Version>
      * a given string
      *
      * @param version a version represented as string
-     * @exception XacmlSyntaxException if version can not be parsed
+     * @exception SyntaxException if version can not be parsed
      */
     private Version(String version) {
 	    this.value = version;
@@ -155,7 +155,7 @@ public final class Version implements Comparable<Version>
 	 * from a given string
 	 *
 	 * @param version a version
-	 * @return {@link Version} instance
+	 * @return {@link Version} defaultProvider
 	 */
     public static Version parse(String version){
         return Strings.isNullOrEmpty(version)?
@@ -168,10 +168,10 @@ public final class Version implements Comparable<Version>
 	 * from a given integer
 	 *
 	 * @param version a version
-	 * @return {@link Version} instance
+	 * @return {@link Version} defaultProvider
 	 */
     public static Version valueOf(int version)
-    	throws XacmlSyntaxException
+    	throws SyntaxException
     {
     	Preconditions.checkArgument(version > 0,
     			"Version must be positive integer");

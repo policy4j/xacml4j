@@ -33,24 +33,24 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute.Builder;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableSet;
 
 
 public class AttributeTest
 {
-	private Collection<AttributeExp> values;
+	private Collection<Value> values;
 
 	@Before
 	public void init()
 	{
-		this.values = new LinkedList<AttributeExp>();
-		values.add(IntegerExp.of(1));
-		values.add(IntegerExp.of(1));
-		values.add(IntegerExp.of(3));
-		values.add(IntegerExp.of(2));
+		this.values = new LinkedList<Value>();
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(3));
+		values.add(XacmlTypes.INTEGER.ofAny(2));
 	}
 
 	@Test
@@ -75,22 +75,22 @@ public class AttributeTest
 	{
 		Attribute attr = Attribute
 				.builder("testId")
-				.value(StringExp.of("value1"), StringExp.of("value2"))
+				.value(XacmlTypes.STRING.ofAny("value1"), XacmlTypes.STRING.ofAny("value2"))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
 		assertEquals(2, attr.getValues().size());
-		assertTrue(attr.getValues().contains(StringExp.of("value1")));
-		assertTrue(attr.getValues().contains(StringExp.of("value2")));
+		assertTrue(attr.getValues().contains(XacmlTypes.STRING.ofAny("value1")));
+		assertTrue(attr.getValues().contains(XacmlTypes.STRING.ofAny("value2")));
 	}
 
 	@Test
 	public void testCreateWithTheSameValues()
 	{
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
-		values.add(IntegerExp.of(1));
-		values.add(IntegerExp.of(1));
+		Collection<Value> values = new LinkedList<Value>();
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
 		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
 		Attribute attr = b.build();
 		Attribute attr1 = b.issuer(null).build();
@@ -112,7 +112,11 @@ public class AttributeTest
 	public void testCreateWithIdAndValuesVarArg()
 	{
 		Attribute attr = Attribute.builder("testId")
-				.value(IntegerExp.of(1), IntegerExp.of(2), IntegerExp.of(3), IntegerExp.of(2))
+				.value(
+						XacmlTypes.INTEGER.ofAny(1),
+						XacmlTypes.INTEGER.ofAny(2),
+						XacmlTypes.INTEGER.ofAny(3),
+						XacmlTypes.INTEGER.ofAny(2))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
@@ -125,10 +129,10 @@ public class AttributeTest
 	@Test
 	public void testBuilder()
 	{
-		Iterable<AttributeExp> a = ImmutableSet.<AttributeExp>of(StringExp.of("test1"), StringExp.of("test2"));
+		Iterable<Value> a = ImmutableSet.of(XacmlTypes.STRING.ofAny("test1"), XacmlTypes.STRING.ofAny("test2"));
 		Attribute.builder("testId")
 		.values(a)
-		.value(StringExp.of("test2"), StringExp.of("test3"))
+		.value(XacmlTypes.STRING.ofAny("test2"), XacmlTypes.STRING.ofAny("test3"))
 		.build();
 	}
 
