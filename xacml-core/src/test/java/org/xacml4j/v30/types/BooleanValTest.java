@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
 
 
-public class BooleanTest
+public class BooleanValTest
 {
 	@Test
 	public void testValueOf()

@@ -116,7 +116,9 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
         return value.format(DateTimeFormatter.ISO_DATE);
     }
 
-    protected String formatVal(LocalDate v){
+
+    @Override
+    protected java.lang.String formatVal(LocalDate v){
         return toXacmlString();
     }
 

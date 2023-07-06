@@ -81,10 +81,6 @@ public final class ISO8601YearMonthDuration
         return StringVal.of(toXacmlString());
     }
 
-    @Override
-    protected String formatVal(Period v) {
-        return toXacmlString();
-    }
 
     public String toXacmlString(){
         if(formatted == null){

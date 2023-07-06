@@ -23,29 +23,37 @@ package org.xacml4j.v30.types;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.xacml4j.v30.CategoryId;
 
 
-public class PathTypeTest
+public class DoubleValTest
 {
-
 	@Test
-	public void testCreateXPathAttribute() throws Exception
+	public void testToXacmlString()
 	{
-		Path v = XacmlTypes.XPATH.ofAny("/test", CategoryId.SUBJECT_RECIPIENT);
-		assertEquals("/test", v.getPath());
-		assertEquals(v.getEvaluatesTo(), v.getEvaluatesTo());
-		assertEquals(CategoryId.SUBJECT_RECIPIENT, v.getCategory().get());
+		DoubleVal v0 = XacmlTypes.DOUBLE.ofAny(1.0d);
+		DoubleVal v1 = XacmlTypes.DOUBLE.ofAny(-2.0d);
+		assertEquals("1.0", v0.toStringExp().get());
+		assertEquals("-2.0", v1.toStringExp().get());
 	}
 
+
 	@Test
-	public void testCreateJsonAttribute() throws Exception
+	public void testEquals()
 	{
-		Path v = XacmlTypes.JPATH.ofAny("/test", CategoryId.SUBJECT_RECIPIENT);
-		assertEquals("/test", v.getPath());
-		assertEquals(v.getEvaluatesTo(), v.getEvaluatesTo());
-		assertEquals(CategoryId.SUBJECT_RECIPIENT, v.getCategory().get());
+		Value v0 = XacmlTypes.DOUBLE.ofAny(1.0d);
+		Value v1 = XacmlTypes.DOUBLE.ofAny(2.0d);
+		Value v2 = XacmlTypes.DOUBLE.ofAny(1.0d);
+		assertFalse(v0.equals(v1));
+		assertTrue(v0.equals(v2));
+		DoubleVal v0Nan = XacmlTypes.DOUBLE.ofAny(java.lang.Double.NaN);
+		DoubleVal v1Nan = XacmlTypes.DOUBLE.ofAny(java.lang.Double.NaN);
+		assertEquals("NaN", v0Nan.toStringExp().get());
+		assertFalse(v0.equals(v0Nan));
+		assertTrue(v0Nan.equals(v0Nan));
+		assertFalse(v1Nan.equals(v0));
 	}
 }

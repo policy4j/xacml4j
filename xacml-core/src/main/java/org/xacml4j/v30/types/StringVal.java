@@ -26,6 +26,7 @@ import org.xacml4j.v30.Expression;
 
 import org.xacml4j.v30.SyntaxException;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -62,6 +63,11 @@ public final class StringVal extends Value.OtherValue<String>
         }
         throw SyntaxException
                 .invalidAttributeValue(v, XacmlTypes.STRING);
+    }
+
+    @Override
+    protected java.lang.String formatVal(String v){
+        return v;
     }
 
 

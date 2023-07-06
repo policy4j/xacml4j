@@ -27,6 +27,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
 * Implementation an XACML {@link Expression}
@@ -138,6 +139,11 @@ public final class ISO8601DayTimeDuration extends Value.OtherValue<Duration>
             formatted = DateTimeDurationUtils.toXmlDayTimeDuration(value).toString();
         }
         return formatted;
+    }
+
+    @Override
+    protected java.lang.String formatVal(Duration v){
+        return toXacmlString();
     }
 
     public ISO8601DayTimeDuration plus(ISO8601DayTimeDuration duration){

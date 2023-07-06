@@ -101,37 +101,32 @@ public interface Value<T>
 	}
 
 	class OtherValue<T>
-			implements Value<T>, Supplier<T>
+			extends AbstractValue<T> implements Supplier<T>
 	{
 		private static final long serialVersionUID = 4131180767511036271L;
 
 		protected T value;
-		private ValueType type;
-
 		protected OtherValue(
 				ValueType attrType,
 				T attrValue) {
-			this.type = Objects.requireNonNull(attrType);
+			super(attrType);
 			this.value = Objects.requireNonNull(attrValue);
 		}
 
-		@Override
-		public final ValueType getEvaluatesTo(){
-			return type;
-		}
 
 		@Override
 		public final T get(){
 			return value;
 		}
 
-		protected final String formatVal(T v){
+		@Override
+		protected String formatVal(T v){
 			return value.toString();
 		}
 
 		@Override
 		public final int hashCode(){
-			return Objects.hash(value, type);
+			return Objects.hash(value, getEvaluatesTo());
 		}
 
 		@Override
@@ -143,7 +138,7 @@ public interface Value<T>
 				return false;
 			}
 			OtherValue e = (OtherValue) o;
-			return type.equals(e.getEvaluatesTo()) &&
+			return getEvaluatesTo().equals(e.getEvaluatesTo()) &&
 					value.equals(e.get());
 		}
 	}
