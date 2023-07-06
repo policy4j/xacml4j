@@ -26,8 +26,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-import org.xacml4j.v30.DNSName;
-import org.xacml4j.v30.PortRange;
 
 
 public class DNSNameTest
@@ -51,7 +49,7 @@ public class DNSNameTest
 		assertFalse(v.getPortRange().isLowerBounded());
 		assertFalse(v.getPortRange().isUpperBounded());
 
-		v = new DNSName("test.org", new PortRange(10, 20));
+		v = DNSName.of("test.org", new PortRange(10, 20));
 		assertEquals("test.org", v.getDomainName());
 		assertEquals(10, v.getPortRange().getLowerBound());
 		assertEquals(20, v.getPortRange().getUpperBound());
@@ -62,5 +60,35 @@ public class DNSNameTest
 	{
 		assertEquals(DNSName.of("test.org:10-20"), DNSName.of("test.org:10-20"));
 		assertEquals(DNSName.of("test.org"), DNSName.of("test.org"));
+	}
+
+	@Test
+	public void testFromXacmlString()
+	{
+		DNSName v = XacmlTypes.DNSNAME.ofAny("test.org:10-20");
+		assertEquals("test.org", v.getDomainName());
+		assertEquals(10, v.getPortRange().getLowerBound());
+		assertEquals(20, v.getPortRange().getUpperBound());
+
+		v = DNSName.of("test.org:-20");
+		assertEquals("test.org", v.getDomainName());
+		assertFalse(v.getPortRange().isLowerBounded());
+		assertEquals(20, v.getPortRange().getUpperBound());
+
+		v = DNSName.of("test.org");
+		assertEquals("test.org", v.getDomainName());
+		assertFalse(v.getPortRange().isLowerBounded());
+		assertFalse(v.getPortRange().isUpperBounded());
+	}
+
+	@Test
+	public void testToXacmlString()
+	{
+		DNSName v1 = XacmlTypes.DNSNAME.ofAny("test.org:10-20");
+		assertEquals("test.org:10-20", v1.toStringExp().get());
+		assertEquals("test.org:10-20", v1.toXacmlString());
+		DNSName v2 = XacmlTypes.DNSNAME.ofAny("test.org");
+		assertEquals("test.org", v2.toStringExp().get());
+		assertEquals("test.org", v2.toXacmlString());
 	}
 }

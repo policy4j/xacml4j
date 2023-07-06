@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -67,12 +67,12 @@ public class AttributesTest
 	public void init() throws Exception
 	{
 		this.attributes = new LinkedList<Attribute>();
-		attributes.add(Attribute.builder("testId10").value(XacmlTypes.STRING.of("value0")).build());
-		attributes.add(Attribute.builder("testId10").value(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build());
-		attributes.add(Attribute.builder("testId11").value(XacmlTypes.STRING.of("value1")).build());
+		attributes.add(Attribute.builder("testId10").value(XacmlTypes.STRING.ofAny("value0")).build());
+		attributes.add(Attribute.builder("testId10").value(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build());
+		attributes.add(Attribute.builder("testId11").value(XacmlTypes.STRING.ofAny("value1")).build());
 		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true)
-				.value(XacmlTypes.STRING.of("value1"), XacmlTypes.STRING.of("value2")).build());
-		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true).value(XacmlTypes.INTEGER.of(10)).build());
+				.value(XacmlTypes.STRING.ofAny("value1"), XacmlTypes.STRING.ofAny("value2")).build());
+		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true).value(XacmlTypes.INTEGER.ofAny(10)).build());
 
 
 
@@ -98,7 +98,7 @@ public class AttributesTest
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
-		assertTrue(e.getAttributes().containsAll(attributes));
+		assertTrue(e.attributes().containsAll(attributes));
 		assertFalse(test.getReferenceId().isPresent());
 		assertTrue(content1.equals(e.getContent().get()));
 		assertEquals(CategoryId.RESOURCE, test.getCategoryId());
@@ -111,9 +111,9 @@ public class AttributesTest
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
-		assertEquals(2, e.getAttributes("testId10").size());
-		assertEquals(3, e.getAttributes("testId11").size());
-		assertEquals(5, e.getAttributes().size());
+		assertEquals(2, e.find("testId10").size());
+		assertEquals(3, e.find("testId11").size());
+		assertEquals(5, e.attributes().size());
 	}
 
 	@Test
@@ -123,8 +123,8 @@ public class AttributesTest
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
-		assertEquals(2, e.getAttributes("testId11", "testIssuer").size());
-		assertEquals(0, e.getAttributes("testId10", "testIssuer").size());
+		assertEquals(2, e.find("testId11", "testIssuer").size());
+		assertEquals(0, e.find("testId10", "testIssuer").size());
 	}
 
 	@Test
@@ -133,22 +133,21 @@ public class AttributesTest
 		Category test = Category.builder(CategoryId.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
-		Entity e = test.getEntity();
-		assertEquals(2, e.getIncludeInResultAttributes().size());
+		assertEquals(2, test.getIncludeInResultAttributes().size());
 	}
 
 	@Test
 	public void testCreateWithTheSameAttributes()
 	{
 		Collection<Attribute> attributes = new LinkedList<Attribute>();
-		attributes.add(Attribute.builder("testId10").value(XacmlTypes.STRING.of("value0")).build());
-		attributes.add(Attribute.builder("testId10").value(XacmlTypes.STRING.of("value0")).build());
+		attributes.add(Attribute.builder("testId10").value(XacmlTypes.STRING.ofAny("value0")).build());
+		attributes.add(Attribute.builder("testId10").value(XacmlTypes.STRING.ofAny("value0")).build());
 		assertEquals(2, attributes.size());
 		Category test = Category.builder(CategoryId.RESOURCE)
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
-		assertEquals(2, e.getAttributeValues("testId10", XacmlTypes.STRING).size());
+		assertEquals(2, e.findValues("testId10", XacmlTypes.STRING).size());
 	}
 
 	@Test
@@ -158,9 +157,9 @@ public class AttributesTest
 				.entity(Entity.builder().attributes(attributes).content(content1).build())
 				.build();
 		Entity e = test.getEntity();
-		assertEquals(2, e.getAttributeValues("testId10", null, XacmlTypes.INTEGER).size());
-		assertEquals(1, e.getAttributeValues("testId10", null, XacmlTypes.STRING).size());
-		assertEquals(2, e.getAttributeValues("testId11", "testIssuer", XacmlTypes.STRING).size());
-		assertEquals(1, e.getAttributeValues("testId11", "testIssuer", XacmlTypes.INTEGER).size());
+		assertEquals(2, e.findValues("testId10", XacmlTypes.INTEGER).size());
+		assertEquals(1, e.findValues("testId10", XacmlTypes.STRING).size());
+		assertEquals(2, e.findValues("testId11", XacmlTypes.STRING, "testIssuer").size());
+		assertEquals(1, e.findValues("testId11", XacmlTypes.INTEGER, "testIssuer").size());
 	}
 }

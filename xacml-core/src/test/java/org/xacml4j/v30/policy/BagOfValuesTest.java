@@ -40,7 +40,7 @@ import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
@@ -58,11 +58,11 @@ public class BagOfValuesTest
 	@Test
 	public void testContains() throws Exception
 	{
-		BagOfValues bag = STRING.bagBuilder().attribute(STRING.of("1"), STRING.of("2"), STRING.of("3")).build();
-		assertTrue(bag.contains(STRING.of("1")));
-		assertTrue(bag.contains(STRING.of("2")));
-		assertTrue(bag.contains(STRING.of("3")));
-		assertFalse(bag.contains(STRING.of("4")));
+		BagOfValues bag = STRING.bagBuilder().attribute(STRING.ofAny("1"), STRING.ofAny("2"), STRING.ofAny("3")).build();
+		assertTrue(bag.contains(STRING.ofAny("1")));
+		assertTrue(bag.contains(STRING.ofAny("2")));
+		assertTrue(bag.contains(STRING.ofAny("3")));
+		assertFalse(bag.contains(STRING.ofAny("4")));
 	}
 
 	@Test
@@ -76,55 +76,55 @@ public class BagOfValuesTest
 	@Test
 	public void testValue(){
 		BagOfValues b = STRING.bagBuilder().attribute(
-				XacmlTypes.STRING.of("1"),
-				XacmlTypes.STRING.of("aaa"),
-				XacmlTypes.STRING.of("BB")).build();
+				XacmlTypes.STRING.ofAny("1"),
+				XacmlTypes.STRING.ofAny("aaa"),
+				XacmlTypes.STRING.ofAny("BB")).build();
 		Value v = b.value();
-		assertEquals(XacmlTypes.STRING.of("1"), v);
+		assertEquals(XacmlTypes.STRING.ofAny("1"), v);
 	}
 	
 	@Test
 	public void testCreateBagFromValues()
 	{
 		BagOfValues b = STRING.bagBuilder().attribute(
-				XacmlTypes.STRING.of("1"),
-				XacmlTypes.STRING.of("aaa"),
-				XacmlTypes.STRING.of("BB")).build();
-		assertTrue(b.contains(XacmlTypes.STRING.of("1")));
-		assertTrue(b.contains(XacmlTypes.STRING.of("aaa")));
-		assertTrue(b.contains(XacmlTypes.STRING.of("BB")));
-		assertFalse(b.contains(XacmlTypes.STRING.of("aaaa")));
+				XacmlTypes.STRING.ofAny("1"),
+				XacmlTypes.STRING.ofAny("aaa"),
+				XacmlTypes.STRING.ofAny("BB")).build();
+		assertTrue(b.contains(XacmlTypes.STRING.ofAny("1")));
+		assertTrue(b.contains(XacmlTypes.STRING.ofAny("aaa")));
+		assertTrue(b.contains(XacmlTypes.STRING.ofAny("BB")));
+		assertFalse(b.contains(XacmlTypes.STRING.ofAny("aaaa")));
 	}
 
 	@Test
 	public void testContainsAll() throws Exception
 	{
-		BagOfValues bag = INTEGER.bagBuilder().attribute(INTEGER.of(1), INTEGER.of(2), INTEGER.of(1)).build();
-		assertTrue(bag.containsAll(INTEGER.bagBuilder().attribute(INTEGER.of(1), INTEGER.of(2)).build()));
-		assertFalse(bag.containsAll(INTEGER.bagBuilder().attribute(INTEGER.of(1), INTEGER.of(3)).build()));
+		BagOfValues bag = INTEGER.bagBuilder().attribute(INTEGER.ofAny(1), INTEGER.ofAny(2), INTEGER.ofAny(1)).build();
+		assertTrue(bag.containsAll(INTEGER.bagBuilder().attribute(INTEGER.ofAny(1), INTEGER.ofAny(2)).build()));
+		assertFalse(bag.containsAll(INTEGER.bagBuilder().attribute(INTEGER.ofAny(1), INTEGER.ofAny(3)).build()));
 	}
 
 	@Test
 	public void testEqualsWithElementsInTheSameOrder()
 	{
 		Collection<Value> content1 = new LinkedList<Value>();
-		content1.add(INTEGER.of(1));
-		content1.add(INTEGER.of(2));
-		content1.add(INTEGER.of(3));
+		content1.add(INTEGER.ofAny(1));
+		content1.add(INTEGER.ofAny(2));
+		content1.add(INTEGER.ofAny(3));
 		BagOfValues bag1 = INTEGER.bagBuilder().attributes(content1).build();
 
 		Collection<Value> content2 = new LinkedList<Value>();
-		content2.add(INTEGER.of(1));
-		content2.add(INTEGER.of(2));
-		content2.add(INTEGER.of(3));
+		content2.add(INTEGER.ofAny(1));
+		content2.add(INTEGER.ofAny(2));
+		content2.add(INTEGER.ofAny(3));
 		BagOfValues bag2 = INTEGER.bagBuilder().attributes(content2).build();
 
 		assertEquals(bag1, bag2);
 
 		Collection<Value> content3 = new LinkedList<Value>();
-		content3.add(INTEGER.of(1));
-		content3.add(INTEGER.of(3));
-		content3.add(INTEGER.of(2));
+		content3.add(INTEGER.ofAny(1));
+		content3.add(INTEGER.ofAny(3));
+		content3.add(INTEGER.ofAny(2));
 		BagOfValues bag3 = INTEGER.bagBuilder().attributes(content3).build();
 
 		assertTrue(bag1.equals(bag3));
@@ -137,8 +137,8 @@ public class BagOfValuesTest
 	public void testCreateWithDifferentAttributeTypes()
 	{
 		Collection<Value> attr = new LinkedList<Value>();
-		attr.add(INTEGER.of(1));
-		attr.add(XacmlTypes.STRING.of("aaa"));
+		attr.add(INTEGER.ofAny(1));
+		attr.add(XacmlTypes.STRING.ofAny("aaa"));
 		INTEGER.bagBuilder().attributes(attr).build();
 	}
 
@@ -146,9 +146,9 @@ public class BagOfValuesTest
 	public void testEvaluateBag() throws EvaluationException
 	{
 		Collection<Value> content2 = new LinkedList<Value>();
-		content2.add(INTEGER.of(3));
-		content2.add(INTEGER.of(4));
-		content2.add(INTEGER.of(5));
+		content2.add(INTEGER.ofAny(3));
+		content2.add(INTEGER.ofAny(4));
+		content2.add(INTEGER.ofAny(5));
 		BagOfValues bag2 = INTEGER.bagBuilder().attributes(content2).build();
 		replay(context);
 		assertSame(bag2, bag2.evaluate(context));
@@ -159,27 +159,27 @@ public class BagOfValuesTest
 	public void testUnion()
 	{
 		BagOfValues bag0 = INTEGER.bagBuilder().attribute(
-				INTEGER.of(1),
-				INTEGER.of(2),
-				INTEGER.of(3),
-				INTEGER.of(6)).build();
+				INTEGER.ofAny(1),
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(3),
+				INTEGER.ofAny(6)).build();
 		assertEquals(4, bag0.size());
 
 		BagOfValues bag1 = INTEGER.bagBuilder().attribute(
-				INTEGER.of(2),
-				INTEGER.of(2),
-				INTEGER.of(7),
-				INTEGER.of(6)).build();
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(7),
+				INTEGER.ofAny(6)).build();
 
 		assertEquals(4, bag1.size());
 
 		BagOfValues bag2 = bag0.union(bag1);
 
-		assertTrue(bag2.contains(INTEGER.of(2)));
-		assertTrue(bag2.contains(INTEGER.of(7)));
-		assertTrue(bag2.contains(INTEGER.of(6)));
-		assertTrue(bag2.contains(INTEGER.of(1)));
-		assertTrue(bag2.contains(INTEGER.of(3)));
+		assertTrue(bag2.contains(INTEGER.ofAny(2)));
+		assertTrue(bag2.contains(INTEGER.ofAny(7)));
+		assertTrue(bag2.contains(INTEGER.ofAny(6)));
+		assertTrue(bag2.contains(INTEGER.ofAny(1)));
+		assertTrue(bag2.contains(INTEGER.ofAny(3)));
 		assertEquals(5, bag2.size());
 
 	}
@@ -188,20 +188,20 @@ public class BagOfValuesTest
 	public void testIntersection()
 	{
 		BagOfValues bag0 = INTEGER.bagBuilder().attribute(
-				INTEGER.of(1),
-				INTEGER.of(2),
-				INTEGER.of(3),
-				INTEGER.of(6)).build();
+				INTEGER.ofAny(1),
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(3),
+				INTEGER.ofAny(6)).build();
 
 		BagOfValues bag1 = INTEGER.bagBuilder().attribute(
-				INTEGER.of(9),
-				INTEGER.of(2),
-				INTEGER.of(6),
-				INTEGER.of(4)).build();
+				INTEGER.ofAny(9),
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(6),
+				INTEGER.ofAny(4)).build();
 
 		BagOfValues bag3 = bag0.intersection(bag1);
-		assertTrue(bag3.contains(INTEGER.of(2)));
-		assertTrue(bag3.contains(INTEGER.of(6)));
+		assertTrue(bag3.contains(INTEGER.ofAny(2)));
+		assertTrue(bag3.contains(INTEGER.ofAny(6)));
 		assertEquals(2, bag3.size());
 	}
 
@@ -209,17 +209,17 @@ public class BagOfValuesTest
 	public void testBuilder()
 	{
 		BagOfValues bag0 = INTEGER.bagBuilder().attribute(
-				INTEGER.of(1),
-				INTEGER.of(2),
-				INTEGER.of(3)).build();
+				INTEGER.ofAny(1),
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(3)).build();
 		BagOfValues bag1 = INTEGER.bagBuilder().attribute(
-				INTEGER.of(2),
-				INTEGER.of(1),
-				INTEGER.of(3)).build();
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(1),
+				INTEGER.ofAny(3)).build();
 		Iterable<Value> values = ImmutableList.<Value>of(
-				INTEGER.of(2),
-				INTEGER.of(1),
-				INTEGER.of(3));
+				INTEGER.ofAny(2),
+				INTEGER.ofAny(1),
+				INTEGER.ofAny(3));
 		BagOfValues bag3 = INTEGER.bagBuilder().attributes(values).build();
 		BagOfValues bag4 = INTEGER.bagBuilder().attributes(values).build();
 		assertEquals(bag0, bag1);

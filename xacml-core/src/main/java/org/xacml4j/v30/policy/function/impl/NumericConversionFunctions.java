@@ -26,8 +26,8 @@ import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.DoubleValue;
-import org.xacml4j.v30.types.IntegerValue;
+import org.xacml4j.v30.types.DoubleVal;
+import org.xacml4j.v30.types.IntegerVal;
 
 
 /**
@@ -43,16 +43,16 @@ public final class NumericConversionFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-to-integer")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
-	public static IntegerValue doubleToInteger(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue v)
+	public static IntegerVal doubleToInteger(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal v)
 	{
 		return v.toIntegerValue();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static DoubleValue integerToDouble(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue v)
+	public static DoubleVal integerToDouble(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal v)
 	{
 		return v.toDoubleValue();
 	}

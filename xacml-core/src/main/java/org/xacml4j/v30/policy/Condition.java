@@ -28,7 +28,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueExpTypeInfo;
-import org.xacml4j.v30.types.BooleanValue;
+import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.MoreObjects;
@@ -50,7 +50,7 @@ public class Condition implements PolicyElement
 	 * expression
 	 *
 	 * @param predicate an expression which always evaluates
-	 * to {@link BooleanValue}
+	 * to {@link BooleanVal}
 	 */
 	public Condition(Expression predicate)
 	{
@@ -88,7 +88,7 @@ public class Condition implements PolicyElement
 	{
 		try
 		{
-			BooleanValue result = predicate.evaluate(context);
+			BooleanVal result = predicate.evaluate(context);
 			return result.get() ? ConditionResult.TRUE : ConditionResult.FALSE;
 		}catch(EvaluationException e){
 			context.setEvaluationStatus(e.getStatus());

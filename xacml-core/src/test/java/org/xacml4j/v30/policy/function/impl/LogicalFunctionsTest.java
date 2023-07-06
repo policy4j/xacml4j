@@ -39,7 +39,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.types.IntegerValue;
+import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -72,26 +72,26 @@ public class LogicalFunctionsTest
 	public void testAndFunction() throws EvaluationException
 	{
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
-		             LogicalFunctions.and(context, XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+		             LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(false)));
 		control.verify();
 
 		control.reset();
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
-				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)));
 		control.verify();
 
 		control.reset();
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
-				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)));
 		control.verify();
 
 		control.reset();
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
-				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(true)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)));
 		control.verify();
 	}
 
@@ -102,29 +102,29 @@ public class LogicalFunctionsTest
 		Expression p2 = control.createMock(Expression.class);
 		Expression p3 = control.createMock(Expression.class);
 
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 		control.replay();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.and(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 		control.replay();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.and(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
-		expect(p3.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		expect(p3.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 		control.replay();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.and(context, p1, p2, p3));
 		control.verify();
 
@@ -134,24 +134,24 @@ public class LogicalFunctionsTest
 	public void testOrFunction() throws EvaluationException
 	{
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
-				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.of(false),
-						XacmlTypes.BOOLEAN.of(false)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.ofAny(false),
+						XacmlTypes.BOOLEAN.ofAny(false)));
 		control.verify();
 		control.reset();
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
-				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)));
 		control.verify();
 		control.reset();
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
-				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)));
 		control.verify();
 		control.reset();
 		control.replay();
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
-				LogicalFunctions.or(context,XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(true)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				LogicalFunctions.or(context,XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)));
 		verify(context);
 	}
 
@@ -162,28 +162,28 @@ public class LogicalFunctionsTest
 		Expression p2 = control.createMock(Expression.class);
 		Expression p3 = control.createMock(Expression.class);
 
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
+		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
 		control.replay();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.or(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
+		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
 		control.replay();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.or(context, p1, p2, p3));
 		control.verify();
 
 		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 		control.replay();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.or(context, p1, p2));
 		control.verify();
 
@@ -192,53 +192,53 @@ public class LogicalFunctionsTest
 	@Test
 	public void testNOfFunction() throws EvaluationException
 	{
-		IntegerValue n = XacmlTypes.INTEGER.of(0);
+		IntegerVal n = XacmlTypes.INTEGER.ofAny(0);
 		replay(context);
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.nof(context, n));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = XacmlTypes.INTEGER.of(1);
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
-				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.of(true)));
+		n = XacmlTypes.INTEGER.ofAny(1);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.ofAny(true)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
-				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.of(false)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.ofAny(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = XacmlTypes.INTEGER.of(2);
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		n = XacmlTypes.INTEGER.ofAny(2);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.nof(context, n,
-						XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)));
+						XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)));
 		verify(context);
 		reset(context);
 		replay(context);
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.nof(context, n,
-						XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)));
+						XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)));
 		verify(context);
 		reset(context);
 		replay(context);
-		n = XacmlTypes.INTEGER.of(2);
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		n = XacmlTypes.INTEGER.ofAny(2);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.nof(context, n,
-						XacmlTypes.BOOLEAN.of(true),
-						XacmlTypes.BOOLEAN.of(false),
-						XacmlTypes.BOOLEAN.of(true)));
+						XacmlTypes.BOOLEAN.ofAny(true),
+						XacmlTypes.BOOLEAN.ofAny(false),
+						XacmlTypes.BOOLEAN.ofAny(true)));
 		verify(context);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
-		IntegerValue n = XacmlTypes.INTEGER.of(4);
+		IntegerVal n = XacmlTypes.INTEGER.ofAny(4);
 		replay(context);
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
-				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.of(false)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.ofAny(false)));
 		verify(context);
 	}
 }

@@ -22,17 +22,13 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import javax.security.auth.x500.X500Principal;
-
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.RFC822NameValue;
-import org.xacml4j.v30.types.StringValue;
-import org.xacml4j.v30.types.X500NameValue;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.types.*;
+
+import javax.security.auth.x500.X500Principal;
 
 
 @XacmlFunctionProvider(description="XACML special match functions")
@@ -43,21 +39,21 @@ public final class SpecialMatchFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue rfc822NameMatch(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue pattern,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822NameValue rfc822Name)
+	public static BooleanVal rfc822NameMatch(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal pattern,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822Name rfc822Name)
 	{
-		 return XacmlTypes.BOOLEAN.of(rfc822Name.get().matches(pattern.get()));
+		 return BooleanVal.of(RegExpFunctions.matches(pattern.get(), rfc822Name.getFqName()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue x500NameMatch(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500NameValue a,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500NameValue b)
+	public static BooleanVal x500NameMatch(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500Name a,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500Name b)
 	{
-		 String n0 = a.get().getName(X500Principal.CANONICAL);
-		 String n1 = b.get().getName(X500Principal.CANONICAL);
-		 return XacmlTypes.BOOLEAN.of(n1.endsWith(n0));
+		 java.lang.String n0 = a.get().getName(X500Principal.CANONICAL);
+		 java.lang.String n1 = b.get().getName(X500Principal.CANONICAL);
+		 return XacmlTypes.BOOLEAN.ofAny(n1.endsWith(n0));
 	}
 }

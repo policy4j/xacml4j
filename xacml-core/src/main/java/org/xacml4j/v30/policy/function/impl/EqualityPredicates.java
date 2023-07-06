@@ -23,26 +23,8 @@ package org.xacml4j.v30.policy.function.impl;
  */
 
 
-import org.xacml4j.v30.policy.function.XacmlFuncParam;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.policy.function.XacmlLegacyFunc;
-import org.xacml4j.v30.types.AnyURIValue;
-import org.xacml4j.v30.types.Base64BinaryValue;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.DateTimeValue;
-import org.xacml4j.v30.types.DateValue;
-import org.xacml4j.v30.types.DayTimeDurationValue;
-import org.xacml4j.v30.types.DoubleValue;
-import org.xacml4j.v30.types.HexBinaryValue;
-import org.xacml4j.v30.types.IntegerValue;
-import org.xacml4j.v30.types.RFC822NameValue;
-import org.xacml4j.v30.types.StringValue;
-import org.xacml4j.v30.types.TimeValue;
-import org.xacml4j.v30.types.X500NameValue;
-import org.xacml4j.v30.types.XacmlTypes;
-import org.xacml4j.v30.types.YearMonthDurationValue;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.*;
 
 
 /**
@@ -58,141 +40,154 @@ public final class EqualityPredicates
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue eq(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
+	public static BooleanVal eq(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
+	}
+
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-equal")
+	@XacmlFuncReturnType(typeId="boolean")
+	public static BooleanVal eq(
+			@XacmlFuncParam(typeId="entity") Entity a,
+			@XacmlFuncParam(typeId="entity") Entity b)
+	{
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue eq(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue b)
+	public static BooleanVal eq(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue eq(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleValue b)
+	public static BooleanVal eq(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue eq(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue b)
+	public static BooleanVal eq(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanVal a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanVal b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue eq(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500NameValue a,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500NameValue b)
+	public static BooleanVal eq(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500Name a,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500Name b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-equal-ignore-case")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equalsIgnoreCase(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue b)
+	public static BooleanVal equalsIgnoreCase(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equalsIgnoreCase(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") DateValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") DateValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") ISO8601Date a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") ISO8601Date b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") DateTimeValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") DateTimeValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") ISO8601DateTime a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") ISO8601DateTime b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:time-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") TimeValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") TimeValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") ISO8601Time a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") ISO8601Time b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") DayTimeDurationValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") DayTimeDurationValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") ISO8601DayTimeDuration a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") ISO8601DayTimeDuration b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") YearMonthDurationValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") YearMonthDurationValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") ISO8601YearMonthDuration a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") ISO8601YearMonthDuration b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822NameValue a,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822NameValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822Name a,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822Name b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary") HexBinaryValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary") HexBinaryValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary") HexBinary a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#hexBinary") HexBinary b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue equals(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary") Base64BinaryValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary") Base64BinaryValue b)
+	public static BooleanVal equals(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary") Base64Binary a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary") Base64Binary b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return _eq(a, b);
+	}
+
+	private static BooleanVal _eq(Value<?> a, Value<?> b){
+		return BooleanVal.of(a.equals(b));
 	}
 }

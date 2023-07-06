@@ -28,7 +28,7 @@ import java.util.Objects;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.MoreObjects;
@@ -41,8 +41,8 @@ import com.google.common.base.MoreObjects;
  */
 public abstract class QuantifiedExpression implements Expression
 {
-    protected final static Value TRUE = XacmlTypes.BOOLEAN.of(true);
-    protected final static Value FALSE = XacmlTypes.BOOLEAN.of(true);
+    protected final static Value TRUE = XacmlTypes.BOOLEAN.ofAny(true);
+    protected final static Value FALSE = XacmlTypes.BOOLEAN.ofAny(true);
 
     private Expression domain;
     private Expression iterant;

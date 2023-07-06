@@ -31,20 +31,20 @@ public class Xacml20XPathTo30Transformer
 {
 	private final static Logger log = LoggerFactory.getLogger(Xacml20XPathTo30Transformer.class);
 
-	private final static String REQUEST_ELEMENT_NAME = "Request";
-	private final static String RESOURCE_ELEMENT_NAME = "Resource";
-	private final static String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
+	private final static java.lang.String REQUEST_ELEMENT_NAME = "Request";
+	private final static java.lang.String RESOURCE_ELEMENT_NAME = "Resource";
+	private final static java.lang.String RESOURCE_CONTENT_ELEMENT_NAME = "ResourceContent";
 
 	/** Private constructor for utility class */
 	private Xacml20XPathTo30Transformer() {}
 
 
-	public static PathValue fromXacml20String(StringValue path)
+	public static Path fromXacml20String(StringVal path)
 	{
 		return transform20PathTo30(path.get());
 	}
 
-	public static PathValue transform20PathTo30(String xpath)
+	public static Path transform20PathTo30(java.lang.String xpath)
 	{
 		StringBuilder buf = new StringBuilder(xpath);
 		int firstIndex = xpath.indexOf(REQUEST_ELEMENT_NAME);
@@ -53,7 +53,7 @@ public class Xacml20XPathTo30Transformer
 			if(firstIndex == -1){
 				firstIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
 				if(firstIndex == -1){
-					return XacmlTypes.XPATH.of(xpath);
+					return XacmlTypes.XPATH.ofAny(xpath);
 				}
 			}
 		}
@@ -75,18 +75,18 @@ public class Xacml20XPathTo30Transformer
 		int lastIndex = xpath.indexOf(RESOURCE_CONTENT_ELEMENT_NAME);
 		if(lastIndex == -1){
 			throw new SyntaxException(
-					String.format(
+					java.lang.String.format(
 							"Invalid XACML 2.0 xpath=\"%s\" expression, \"ResourceContent\" is missing in the path",
 							xpath));
 		}
 		lastIndex += RESOURCE_CONTENT_ELEMENT_NAME.length();
 		buf.delete(firstIndex, lastIndex + 1);
-		String transformedXpath =  buf.toString();
+		java.lang.String transformedXpath =  buf.toString();
 		if(log.isDebugEnabled()){
 			log.debug("Original xpath=\"{}\", transformed xpath=\"{}\"", xpath,
 					transformedXpath);
 		}
-		return XacmlTypes.XPATH.of(transformedXpath);
+		return XacmlTypes.XPATH.ofAny(transformedXpath);
 	}
 
 }

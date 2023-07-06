@@ -33,7 +33,7 @@ import java.lang.reflect.Type;
 
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.base.Strings;
 import com.google.gson.JsonDeserializationContext;

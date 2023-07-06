@@ -35,7 +35,7 @@ public interface Expression
 	 *
 	 * @return {@link ValueExpTypeInfo}
 	 */
-	<VT extends ValueExpTypeInfo> VT getEvaluatesTo();
+	ValueExpTypeInfo getEvaluatesTo();
 
 	/**
 	 * Evaluates this expression

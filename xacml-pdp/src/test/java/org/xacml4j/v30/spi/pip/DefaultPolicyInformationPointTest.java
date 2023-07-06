@@ -112,7 +112,7 @@ public class DefaultPolicyInformationPointTest
 				.build(c->
 				       {
 						   c.resolveContextRef(usernameContextKey);
-						   return ImmutableMap.of("testAttributeId1", XacmlTypes.STRING.of("v1").toBag());
+						   return ImmutableMap.of("testAttributeId1", XacmlTypes.STRING.ofAny("v1").toBag());
 					   });
 
 		builder.withAttributeResolver(descriptor1);
@@ -172,7 +172,7 @@ public class DefaultPolicyInformationPointTest
 		.build(c->
 		       {
 			       c.resolveContextRef(usernameContextKey);
-			       return ImmutableMap.of("testAttributeId1", XacmlTypes.STRING.of("v1").toBag());
+			       return ImmutableMap.of("testAttributeId1", XacmlTypes.STRING.ofAny("v1").toBag());
 		       });
 
 		builder.withAttributeResolver(testId3WithIssuerNoCacheWithValues);
@@ -196,7 +196,7 @@ public class DefaultPolicyInformationPointTest
 		Capture<ResolverContext> ctx = Capture.newInstance();
 		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
 		expect(context.resolve(eq(usernameContextKey)))
-				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
 		expect(context.getClock()).andReturn(Clock.systemUTC());
 
 		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
@@ -206,7 +206,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
-		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
+		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
 
 		control.verify();
@@ -240,7 +240,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
-		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
+		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 
 		control.verify();
 	}
@@ -255,7 +255,7 @@ public class DefaultPolicyInformationPointTest
 		Capture<ResolverContext> ctx = Capture.newInstance();
 		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
 		expect(context.resolve(eq(usernameContextKey)))
-				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
 		expect(context.getClock()).andReturn(Clock.systemUTC());
 
 		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
@@ -265,7 +265,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
-		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
+		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 
 		control.verify();
 	}
@@ -282,7 +282,7 @@ public class DefaultPolicyInformationPointTest
 		Capture<ResolverContext> ctx = Capture.newInstance();
 		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
 		expect(context.resolve(eq(usernameContextKey)))
-				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
+				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
 
 		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
 		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
@@ -291,7 +291,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
-		assertEquals(XacmlTypes.STRING.of("v1").toBag(), v.get());
+		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 
 		control.verify();
 	}
@@ -310,7 +310,7 @@ public class DefaultPolicyInformationPointTest
 		control.replay();
 
 		Optional<BagOfValues> v = pip.resolve(context, key);
-		assertEquals(XacmlTypes.TIME.of(now).toBag(), v.get());
+		assertEquals(XacmlTypes.TIME.ofAny(now).toBag(), v.get());
 
 		control.verify();
 	}

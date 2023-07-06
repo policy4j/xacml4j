@@ -22,44 +22,27 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import com.google.common.base.Preconditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.PolicySyntaxException;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.TypeToString;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.XacmlTypes;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueExp;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.policy.PolicySyntaxException;
-import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
-import org.xacml4j.v30.policy.function.FunctionParametersValidator;
-import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
-import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParamAnyAttribute;
-import org.xacml4j.v30.policy.function.XacmlFuncParamAnyBag;
-import org.xacml4j.v30.policy.function.XacmlFuncParamFunctionReference;
-import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;
-import org.xacml4j.v30.policy.function.XacmlFuncParamValidator;
-import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnTypeResolver;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.policy.function.XacmlLegacyFunc;
-import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.XacmlTypes;
-
-import com.google.common.base.Preconditions;
 
 class JavaMethodToFunctionSpecConverter
 {
@@ -223,7 +206,7 @@ class JavaMethodToFunctionSpecConverter
 				b.anyBag();
 				continue;
 			}
-			if (params[i][0] instanceof XacmlFuncParamAnyAttribute) {
+			if (params[i][0] instanceof XacmlFuncParamAnyValue) {
 				//XacmlFuncParamAnyAttribute param = (XacmlFuncParamAnyAttribute)params[i][0];
 				b.anyAttribute();
 				continue;

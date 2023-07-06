@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.XPathVersion;

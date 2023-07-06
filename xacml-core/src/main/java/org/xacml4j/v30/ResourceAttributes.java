@@ -23,6 +23,8 @@ package org.xacml4j.v30;
  */
 
 
+import org.xacml4j.v30.types.Entity;
+
 /**
  * A well known XACML resource category attributes attributes
  *

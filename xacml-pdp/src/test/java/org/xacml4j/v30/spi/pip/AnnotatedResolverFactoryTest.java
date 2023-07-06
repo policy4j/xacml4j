@@ -94,13 +94,13 @@ public class AnnotatedResolverFactoryTest
 		                                             .category(CategoryId.of("test"))
 		                                             .dataType(XacmlTypes.BOOLEAN)
 				                       .attributeId("attr1").build()))
-				.andReturn(Optional.of(XacmlTypes.BOOLEAN.of(true).toBag()));
+				.andReturn(Optional.of(XacmlTypes.BOOLEAN.ofAny(true).toBag()));
 		expect(context.resolve(AttributeDesignatorKey.builder()
 		                                             .category(CategoryId.of("test"))
 		                                             .issuer("test")
 		                                             .dataType(XacmlTypes.INTEGER)
 		                                             .attributeId("attr2").build()))
-				.andReturn(Optional.of(XacmlTypes.INTEGER.of(10).toBag()));
+				.andReturn(Optional.of(XacmlTypes.INTEGER.ofAny(10).toBag()));
 		expect(context.getClock()).andReturn(Clock.systemUTC());
 
 		control.replay();
@@ -222,9 +222,9 @@ public class AnnotatedResolverFactoryTest
 					dataType="http://www.w3.org/2001/XMLSchema#integer", issuer="test") BagOfValues k2)
 	{
 		return ImmutableMap.<String, BagOfValues>builder()
-		                   .put("testId1", XacmlTypes.INTEGER.of(10).toBag())
-		                   .put("testId2", XacmlTypes.BOOLEAN.of(false).toBag())
-		                   .put("testId3", XacmlTypes.STRING.of("testId3Value").toBag())
+		                   .put("testId1", XacmlTypes.INTEGER.ofAny(10).toBag())
+		                   .put("testId2", XacmlTypes.BOOLEAN.ofAny(false).toBag())
+		                   .put("testId3", XacmlTypes.STRING.ofAny("testId3Value").toBag())
 				           .build();
 	}
 

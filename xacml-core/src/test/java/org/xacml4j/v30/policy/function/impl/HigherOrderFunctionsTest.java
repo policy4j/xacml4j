@@ -37,12 +37,12 @@ import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.types.BooleanValue;
+import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -91,9 +91,9 @@ public class HigherOrderFunctionsTest
 	public void testMapWithValidArguments() throws EvaluationException
 	{
 		Collection<Value> v = new LinkedList<Value>();
-		v.add(XacmlTypes.INTEGER.of(10));
-		v.add(XacmlTypes.INTEGER.of(20));
-		v.add(XacmlTypes.INTEGER.of(30));
+		v.add(XacmlTypes.INTEGER.ofAny(10));
+		v.add(XacmlTypes.INTEGER.ofAny(20));
+		v.add(XacmlTypes.INTEGER.ofAny(30));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
 
@@ -101,25 +101,25 @@ public class HigherOrderFunctionsTest
 		BagOfValues bag =  map.invoke(context, new FunctionReference(intToString),
 		                              XacmlTypes.INTEGER.bagBuilder().attributes(v).build());
 		c.verify();
-		assertTrue(bag.contains(XacmlTypes.STRING.of("10")));
-		assertTrue(bag.contains(XacmlTypes.STRING.of("20")));
-		assertTrue(bag.contains(XacmlTypes.STRING.of("30")));
+		assertTrue(bag.contains(XacmlTypes.STRING.ofAny("10")));
+		assertTrue(bag.contains(XacmlTypes.STRING.ofAny("20")));
+		assertTrue(bag.contains(XacmlTypes.STRING.ofAny("30")));
 	}
 
 	@Test
 	public void testAnyOf() throws EvaluationException
 	{
 		Collection<Value> v = new LinkedList<Value>();
-		v.add(XacmlTypes.INTEGER.of(10));
-		v.add(XacmlTypes.INTEGER.of(20));
-		v.add(XacmlTypes.INTEGER.of(30));
+		v.add(XacmlTypes.INTEGER.ofAny(10));
+		v.add(XacmlTypes.INTEGER.ofAny(20));
+		v.add(XacmlTypes.INTEGER.ofAny(30));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 
 		c.replay();
-		BooleanValue r = anyOf.invoke(context, new FunctionReference(intEq), XacmlTypes.INTEGER.of(20),
+		BooleanVal r = anyOf.invoke(context, new FunctionReference(intEq), XacmlTypes.INTEGER.ofAny(20),
 		                              XacmlTypes.INTEGER.bagBuilder().attributes(v).build());
-		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
 		c.verify();
 	}
 
@@ -127,21 +127,21 @@ public class HigherOrderFunctionsTest
 	public void testAllOfAny() throws EvaluationException
 	{
 		Collection<Value> a = new LinkedList<Value>();
-		a.add(XacmlTypes.INTEGER.of(10));
-		a.add(XacmlTypes.INTEGER.of(20));
+		a.add(XacmlTypes.INTEGER.ofAny(10));
+		a.add(XacmlTypes.INTEGER.ofAny(20));
 
 		Collection<Value> b = new LinkedList<Value>();
-		b.add(XacmlTypes.INTEGER.of(1));
-		b.add(XacmlTypes.INTEGER.of(3));
-		b.add(XacmlTypes.INTEGER.of(5));
-		b.add(XacmlTypes.INTEGER.of(19));
+		b.add(XacmlTypes.INTEGER.ofAny(1));
+		b.add(XacmlTypes.INTEGER.ofAny(3));
+		b.add(XacmlTypes.INTEGER.ofAny(5));
+		b.add(XacmlTypes.INTEGER.ofAny(19));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 
 		c.replay();
-		BooleanValue r = allOfAny.invoke(context, new FunctionReference(intGreaterThan),
+		BooleanVal r = allOfAny.invoke(context, new FunctionReference(intGreaterThan),
 		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
-		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
 		c.verify();
 	}
 
@@ -149,22 +149,22 @@ public class HigherOrderFunctionsTest
 	public void testAnyOfAll() throws EvaluationException
 	{
 		Collection<Value> a = new LinkedList<Value>();
-		a.add(XacmlTypes.INTEGER.of(3));
-		a.add(XacmlTypes.INTEGER.of(5));
+		a.add(XacmlTypes.INTEGER.ofAny(3));
+		a.add(XacmlTypes.INTEGER.ofAny(5));
 
 		Collection<Value> b = new LinkedList<Value>();
-		b.add(XacmlTypes.INTEGER.of(1));
-		b.add(XacmlTypes.INTEGER.of(2));
-		b.add(XacmlTypes.INTEGER.of(3));
-		b.add(XacmlTypes.INTEGER.of(4));
+		b.add(XacmlTypes.INTEGER.ofAny(1));
+		b.add(XacmlTypes.INTEGER.ofAny(2));
+		b.add(XacmlTypes.INTEGER.ofAny(3));
+		b.add(XacmlTypes.INTEGER.ofAny(4));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(8);
 
 
 		c.replay();
-		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan),
+		BooleanVal r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan),
 		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
-		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
 		c.verify();
 	}
 
@@ -173,19 +173,19 @@ public class HigherOrderFunctionsTest
 	{
 
 		Collection<Value> a = new LinkedList<Value>();
-		a.add(XacmlTypes.STRING.of("   This  is n*o*t* *IT!  "));
-		a.add(XacmlTypes.STRING.of("   This is not a match to IT!  "));
+		a.add(XacmlTypes.STRING.ofAny("   This  is n*o*t* *IT!  "));
+		a.add(XacmlTypes.STRING.ofAny("   This is not a match to IT!  "));
 
 		Collection<Value> b = new LinkedList<Value>();
-		b.add(XacmlTypes.STRING.of("   This  is IT!  "));
-		b.add(XacmlTypes.STRING.of("   This  is not IT!  "));
+		b.add(XacmlTypes.STRING.ofAny("   This  is IT!  "));
+		b.add(XacmlTypes.STRING.ofAny("   This  is not IT!  "));
 
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
 		c.replay();
-		BooleanValue r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch),
+		BooleanVal r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch),
 		                                 XacmlTypes.STRING.bagBuilder().attributes(a).build(), XacmlTypes.STRING.bagBuilder().attributes(b).build());
-		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
 		c.verify();
 	}
 
@@ -193,21 +193,21 @@ public class HigherOrderFunctionsTest
 	public void testAllOfAll() throws EvaluationException
 	{
 		Collection<Value> a = new LinkedList<Value>();
-		a.add(XacmlTypes.INTEGER.of(5));
-		a.add(XacmlTypes.INTEGER.of(6));
+		a.add(XacmlTypes.INTEGER.ofAny(5));
+		a.add(XacmlTypes.INTEGER.ofAny(6));
 
 		Collection<Value> b = new LinkedList<Value>();
-		b.add(XacmlTypes.INTEGER.of(1));
-		b.add(XacmlTypes.INTEGER.of(2));
-		b.add(XacmlTypes.INTEGER.of(3));
-		b.add(XacmlTypes.INTEGER.of(4));
+		b.add(XacmlTypes.INTEGER.ofAny(1));
+		b.add(XacmlTypes.INTEGER.ofAny(2));
+		b.add(XacmlTypes.INTEGER.ofAny(3));
+		b.add(XacmlTypes.INTEGER.ofAny(4));
 
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
 
 		c.replay();
-		BooleanValue r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
+		BooleanVal r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
 		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
-		assertEquals(XacmlTypes.BOOLEAN.of(true), r);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
 		c.verify();
 	}
 }

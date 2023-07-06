@@ -38,13 +38,12 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
 public class AttributeDesignatorFunctionTest
@@ -62,7 +61,7 @@ public class AttributeDesignatorFunctionTest
 	private EvaluationContext context;
 	private static FunctionProvider provider = FunctionProviderBuilder.builder().withDefaultFunctions().build();
 	private IMocksControl c;
-	private EntityValue entity;
+	private Entity entity;
 	private FunctionSpec func;
 
 	@Before
@@ -72,12 +71,12 @@ public class AttributeDesignatorFunctionTest
 		assertNotNull(func);
 		this.context = c.createMock(EvaluationContext.class);
 
-		this.entity = XacmlTypes.ENTITY.of(
+		this.entity = XacmlTypes.ENTITY.ofAny(
 				Entity.builder()
 				      .content(XmlContent.of(XmlContent.fromString(TEST_XML)))
 				      .attribute(Attribute
 						.builder("testId")
-						.value(XacmlTypes.STRING.of("aaaa"))
+						.value(XacmlTypes.STRING.ofAny("aaaa"))
 						.build())
 				      .build());
 	}
@@ -94,16 +93,16 @@ public class AttributeDesignatorFunctionTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		Capture<AttributeDesignatorKey> keyCapture = Capture.newInstance();
 		expect(context.resolve(capture(keyCapture)))
-				.andReturn(Optional.of(XacmlTypes.STRING.of("aaaa")
+				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("aaaa")
 				                                        .toBag()));
 		c.replay();
 		BagOfValues v = func.invoke(context,
-		                            XacmlTypes.ANYURI.of(CategoryId.SUBJECT_ACCESS.getId()),
-		                            XacmlTypes.ANYURI.of("testId"),
-		                            XacmlTypes.ANYURI.of(XacmlTypes.STRING.getTypeId()),
-		                            XacmlTypes.BOOLEAN.of(false),
+		                            XacmlTypes.ANYURI.ofAny(CategoryId.SUBJECT_ACCESS.getId()),
+		                            XacmlTypes.ANYURI.ofAny("testId"),
+		                            XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+		                            XacmlTypes.BOOLEAN.ofAny(false),
 		                            null);
-		assertEquals(XacmlTypes.STRING.of("aaaa").toBag(), v);
+		assertEquals(XacmlTypes.STRING.ofAny("aaaa").toBag(), v);
 		assertEquals(key, keyCapture.getValue());
 		c.verify();
 	}
@@ -114,11 +113,11 @@ public class AttributeDesignatorFunctionTest
 		c.replay();
 		BagOfValues v = func.invoke(context,
 		                            entity,
-		                            XacmlTypes.ANYURI.of("testId"),
-		                            XacmlTypes.ANYURI.of(XacmlTypes.STRING.getTypeId()),
-		                            XacmlTypes.BOOLEAN.of(false),
+		                            XacmlTypes.ANYURI.ofAny("testId"),
+		                            XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+		                            XacmlTypes.BOOLEAN.ofAny(false),
 		                            null);
-		assertEquals(XacmlTypes.STRING.of("aaaa").toBag(), v);
+		assertEquals(XacmlTypes.STRING.ofAny("aaaa").toBag(), v);
 		c.verify();
 	}
 }

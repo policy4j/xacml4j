@@ -39,7 +39,7 @@ import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
@@ -103,7 +103,7 @@ public class DefaultEvaluationContextHandlerTest
 		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
-		assertEquals(v.get(), XacmlTypes.INTEGER.of(555555).toBag());
+		assertEquals(v.get(), XacmlTypes.INTEGER.ofAny(555555).toBag());
 		c.verify();
 	}
 
@@ -264,10 +264,10 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 
 		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andReturn(Optional.of(XacmlTypes.ANYURI.of("testValue").toBag()));
+		expect(pip.resolve(context, ref)).andReturn(Optional.of(XacmlTypes.ANYURI.ofAny("testValue").toBag()));
 		c.replay();
 		Optional<BagOfValues> v = handler.resolve(context, ref);
-		assertEquals(XacmlTypes.ANYURI.of("testValue").toBag(), v.get());
+		assertEquals(XacmlTypes.ANYURI.ofAny("testValue").toBag(), v.get());
 		c.verify();
 	}
 

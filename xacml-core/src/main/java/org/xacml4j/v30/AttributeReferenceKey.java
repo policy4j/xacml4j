@@ -26,6 +26,8 @@ import java.net.URI;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**

@@ -21,6 +21,7 @@
   #L%
   -->
 
+<<<<<<<< HEAD:xacml-xml/src/test/resources/IIIF005Response.xml
 <Response
       xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -34,3 +35,17 @@
         </Status>
     </Result>
 </Response>
+========
+<configuration>
+
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d [%X{requestId}][%t] %-5level [%logger{1}] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="Console" />
+	</root>
+</configuration>
+>>>>>>>> master:xacml-conformance-tests/src/test/resources/logback-test.xml

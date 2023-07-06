@@ -23,6 +23,8 @@ package org.xacml4j.v30;
  */
 
 
+import org.xacml4j.v30.types.Entity;
+
 import java.util.Map;
 import java.util.Optional;
 

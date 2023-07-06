@@ -85,7 +85,7 @@ public class JavaMethodToFunctionSpecTest
 		FunctionSpec spec = builder.createFunctionSpec(getTestMethod("optionalParametersTest"));
 		assertEquals(XacmlTypes.STRING.bagBuilder().value("false", "true").build(), spec.getParamSpecAt(1).getDefaultValue().get());
 		assertEquals(
-				XacmlTypes.STRING.of("false"), spec.getParamSpecAt(2).getDefaultValue().get());
+				XacmlTypes.STRING.ofAny("false"), spec.getParamSpecAt(2).getDefaultValue().get());
 		
 	}
 

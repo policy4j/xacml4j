@@ -22,13 +22,7 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.util.Reflections;
@@ -39,7 +33,12 @@ import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 
-import com.google.common.base.Preconditions;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**

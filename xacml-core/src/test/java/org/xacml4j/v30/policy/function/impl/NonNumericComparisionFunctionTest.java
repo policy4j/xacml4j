@@ -30,8 +30,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.EvaluationContext;
-import org.xacml4j.v30.types.StringValue;
-import org.xacml4j.v30.types.TimeValue;
+import org.xacml4j.v30.types.StringVal;
+import org.xacml4j.v30.types.ISO8601Time;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -47,36 +47,36 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testStringGreaterThan()
 	{
-		StringValue a = XacmlTypes.STRING.of("ab");
-		StringValue b = XacmlTypes.STRING.of("aa");
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		StringVal a = XacmlTypes.STRING.ofAny("ab");
+		StringVal b = XacmlTypes.STRING.ofAny("aa");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 		             NonNumericComparisonFunctions.greaterThan(a, b));
-		a = XacmlTypes.STRING.of("aaa");
-		b = XacmlTypes.STRING.of("aa");
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		a = XacmlTypes.STRING.ofAny("aaa");
+		b = XacmlTypes.STRING.ofAny("aa");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				NonNumericComparisonFunctions.greaterThan(a, b));
 	}
 
 	@Test
 	public void testTimeLessThan()
 	{
-		TimeValue t1 = XacmlTypes.TIME.of("08:23:47-05:00");
-		TimeValue t2 = XacmlTypes.TIME.of("08:23:48-05:00");
-		assertEquals(XacmlTypes.BOOLEAN.of(true), NonNumericComparisonFunctions.lessThan(t1, t2));
-		t2 = XacmlTypes.TIME.of("08:23:47-05:00");
-		assertEquals(XacmlTypes.BOOLEAN.of(false), NonNumericComparisonFunctions.lessThan(t1, t2));
-		t2 = XacmlTypes.TIME.of("08:23:46-05:00");
-		assertEquals(XacmlTypes.BOOLEAN.of(false), NonNumericComparisonFunctions.lessThan(t1, t2));
+		ISO8601Time t1 = XacmlTypes.TIME.ofAny("08:23:47-05:00");
+		ISO8601Time t2 = XacmlTypes.TIME.ofAny("08:23:48-05:00");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), NonNumericComparisonFunctions.lessThan(t1, t2));
+		t2 = XacmlTypes.TIME.ofAny("08:23:47-05:00");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), NonNumericComparisonFunctions.lessThan(t1, t2));
+		t2 = XacmlTypes.TIME.ofAny("08:23:46-05:00");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), NonNumericComparisonFunctions.lessThan(t1, t2));
 	}
 
 	@Test
 	public void testTimeInRangeNoTimeZonesAndTimeIsInRange()
 	{
 		replay(context);
-		TimeValue a = XacmlTypes.TIME.of("09:30:10");
-		TimeValue b = XacmlTypes.TIME.of("08:30:10");
-		TimeValue c = XacmlTypes.TIME.of("09:30:11");
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		ISO8601Time a = XacmlTypes.TIME.ofAny("09:30:10");
+		ISO8601Time b = XacmlTypes.TIME.ofAny("08:30:10");
+		ISO8601Time c = XacmlTypes.TIME.ofAny("09:30:11");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
@@ -84,10 +84,10 @@ public class NonNumericComparisionFunctionTest
 	@Test
 	public void testTimeInRangeWithTimeZonesAndTimeIsInRange()
 	{
-		TimeValue a = XacmlTypes.TIME.of("09:30:10Z");
-		TimeValue b = XacmlTypes.TIME.of("08:30:10Z");
-		TimeValue c = XacmlTypes.TIME.of("09:30:11Z");
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		ISO8601Time a = XacmlTypes.TIME.ofAny("09:30:10Z");
+		ISO8601Time b = XacmlTypes.TIME.ofAny("08:30:10Z");
+		ISO8601Time c = XacmlTypes.TIME.ofAny("09:30:11Z");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 	}
 
@@ -95,10 +95,10 @@ public class NonNumericComparisionFunctionTest
 	public void testTimeInRangeNoTimeZonesAndTimeIsNotInRange()
 	{
 		replay(context);
-		TimeValue a = XacmlTypes.TIME.of("09:30:10");
-		TimeValue b = XacmlTypes.TIME.of("08:30:10");
-		TimeValue c = XacmlTypes.TIME.of("09:30:09");
-		assertEquals(XacmlTypes.BOOLEAN.of(false),
+		ISO8601Time a = XacmlTypes.TIME.ofAny("09:30:10");
+		ISO8601Time b = XacmlTypes.TIME.ofAny("08:30:10");
+		ISO8601Time c = XacmlTypes.TIME.ofAny("09:30:09");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}
@@ -107,10 +107,10 @@ public class NonNumericComparisionFunctionTest
 	public void testTimeInRangeNoTimeZonesAndTimeIsEqualToUpperBound()
 	{
 		replay(context);
-		TimeValue a = XacmlTypes.TIME.of("09:30:10");
-		TimeValue b = XacmlTypes.TIME.of("08:30:10");
-		TimeValue c = XacmlTypes.TIME.of("09:30:10");
-		assertEquals(XacmlTypes.BOOLEAN.of(true),
+		ISO8601Time a = XacmlTypes.TIME.ofAny("09:30:10");
+		ISO8601Time b = XacmlTypes.TIME.ofAny("08:30:10");
+		ISO8601Time c = XacmlTypes.TIME.ofAny("09:30:10");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				NonNumericComparisonFunctions.timeInRange(context, a, b, c));
 		verify(context);
 	}

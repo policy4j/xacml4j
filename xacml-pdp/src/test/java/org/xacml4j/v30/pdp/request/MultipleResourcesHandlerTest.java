@@ -40,7 +40,7 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
@@ -71,23 +71,23 @@ public class MultipleResourcesHandlerTest
 				.entity(
 						Entity.builder()
 						      .attribute(
-								Attribute.builder("testId1").value(XacmlTypes.STRING.of("value0")).build(),
-								Attribute.builder("testId2").value(XacmlTypes.STRING.of("value1")).build()).build())
+								Attribute.builder("testId1").value(XacmlTypes.STRING.ofAny("value0")).build(),
+								Attribute.builder("testId2").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 		this.resource1 = Category.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build()).build())
+						Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 
 		this.subject0 = Category.builder(CategoryId.SUBJECT_ACCESS)
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
-								Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build()).build())
+								Attribute.builder("testId7").value(XacmlTypes.STRING.ofAny("value0")).build(),
+								Attribute.builder("testId8").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 
 
@@ -95,8 +95,8 @@ public class MultipleResourcesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId9").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId10").value(XacmlTypes.STRING.of("value1")).build()).build())
+						Attribute.builder("testId9").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId10").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 	}
 

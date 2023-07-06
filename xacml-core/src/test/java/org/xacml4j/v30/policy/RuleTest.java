@@ -203,9 +203,9 @@ public class RuleTest
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
-				XacmlTypes.STRING.of("testVal1"));
+				XacmlTypes.STRING.ofAny("testVal1"));
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(
-				XacmlTypes.STRING.of("testVal1"));
+				XacmlTypes.STRING.ofAny("testVal1"));
 		c.replay();
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
 		c.verify();
@@ -214,12 +214,12 @@ public class RuleTest
 		assertTrue(
 				advices
 				       .contains(Advice.builder("denyAdvice", Effect.DENY)
-				                       .attribute("testId", XacmlTypes.STRING.of("testVal1"))
+				                       .attribute("testId", XacmlTypes.STRING.ofAny("testVal1"))
 				                       .build()));
 		assertTrue(
 				context.getMatchingObligations(Decision.DENY)
 				       .contains(Obligation.builder("denyObligation", Effect.DENY)
-				                           .attribute("testId", XacmlTypes.STRING.of("testVal1"))
+				                           .attribute("testId", XacmlTypes.STRING.ofAny("testVal1"))
 				                           .build()));
 	}
 
@@ -232,7 +232,7 @@ public class RuleTest
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
 		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
-				XacmlTypes.STRING.of("testVal1"));
+				XacmlTypes.STRING.ofAny("testVal1"));
 
 		expect(denyObligationAttributeExp.evaluate(ruleContext)).andThrow(
 				new EvaluationException(Status.processingError().build(), new NullPointerException()));
@@ -275,8 +275,8 @@ public class RuleTest
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.of("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.of("testVal1"));
+		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
 
 
 		c.replay();
@@ -288,7 +288,7 @@ public class RuleTest
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
 								"testId",
-								XacmlTypes.STRING.of("testVal1"))
+								XacmlTypes.STRING.ofAny("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -296,7 +296,7 @@ public class RuleTest
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
 								"testId",
-								XacmlTypes.STRING.of("testVal1"))
+								XacmlTypes.STRING.ofAny("testVal1"))
 								.build()));
 	}
 
@@ -353,8 +353,8 @@ public class RuleTest
 		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.of("testVal1"));
-		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.of("testVal1"));
+		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
 
 		c.replay();
 
@@ -366,7 +366,7 @@ public class RuleTest
 						.builder("denyAdvice", Effect.DENY)
 						.attribute(
 								"testId",
-								XacmlTypes.STRING.of("testVal1"))
+								XacmlTypes.STRING.ofAny("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -374,7 +374,7 @@ public class RuleTest
 						.builder("denyObligation", Effect.DENY)
 						.attribute(
 								"testId",
-								XacmlTypes.STRING.of("testVal1"))
+								XacmlTypes.STRING.ofAny("testVal1"))
 								.build()));
 	}
 
@@ -428,8 +428,8 @@ public class RuleTest
 
 		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.of("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.of("testVal1"));
+		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
 
 		c.replay();
 
@@ -440,7 +440,7 @@ public class RuleTest
 						.builder("permitAdvice", Effect.PERMIT)
 						.attribute(
 								"testId",
-								XacmlTypes.STRING.of("testVal1"))
+								XacmlTypes.STRING.ofAny("testVal1"))
 								.build()));
 
 		assertTrue(
@@ -448,7 +448,7 @@ public class RuleTest
 						.builder("permitObligation", Effect.PERMIT)
 						.attribute(
 								"testId",
-								XacmlTypes.STRING.of("testVal1"))
+								XacmlTypes.STRING.ofAny("testVal1"))
 								.build()));
 		c.verify();
 	}

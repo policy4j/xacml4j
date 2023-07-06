@@ -29,10 +29,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.types.DateTimeValue;
-import org.xacml4j.v30.types.DayTimeDurationValue;
+import org.xacml4j.v30.types.ISO8601DateTime;
+import org.xacml4j.v30.types.ISO8601DayTimeDuration;
 import org.xacml4j.v30.types.XacmlTypes;
-import org.xacml4j.v30.types.YearMonthDurationValue;
+import org.xacml4j.v30.types.ISO8601YearMonthDuration;
 
 
 public class DateTimeValueArithmeticFunctionTest
@@ -73,9 +73,9 @@ public class DateTimeValueArithmeticFunctionTest
 	@Test
 	public void testDateTimeAddDayTimeDuration()
 	{
-		DateTimeValue dateTime1 = XacmlTypes.DATETIME.of("2002-03-22T08:23:47-05:00");
-		DateTimeValue dateTime2 = XacmlTypes.DATETIME.of("2002-03-27T10:23:47-05:00");
-		DayTimeDurationValue duration = XacmlTypes.DAYTIMEDURATION.of("P5DT2H0M0S");
+		ISO8601DateTime dateTime1 = XacmlTypes.DATETIME.ofAny("2002-03-22T08:23:47-05:00");
+		ISO8601DateTime dateTime2 = XacmlTypes.DATETIME.ofAny("2002-03-27T10:23:47-05:00");
+		ISO8601DayTimeDuration duration = XacmlTypes.DAYTIMEDURATION.ofAny("P5DT2H0M0S");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
 
 	}
@@ -83,9 +83,9 @@ public class DateTimeValueArithmeticFunctionTest
 	@Test
 	public void testDateTimeAddYearMonthDuration()
 	{
-		DateTimeValue dateTime1 = XacmlTypes.DATETIME.of("2002-03-22T08:23:47-05:00");
-		DateTimeValue dateTime2 = XacmlTypes.DATETIME.of("2001-01-22T08:23:47-05:00");
-		YearMonthDurationValue duration = YearMonthDurationValue.of("-P1Y2M");
+		ISO8601DateTime dateTime1 = XacmlTypes.DATETIME.ofAny("2002-03-22T08:23:47-05:00");
+		ISO8601DateTime dateTime2 = XacmlTypes.DATETIME.ofAny("2001-01-22T08:23:47-05:00");
+		ISO8601YearMonthDuration duration = ISO8601YearMonthDuration.of("-P1Y2M");
 		assertEquals(dateTime2, DateTimeArithmeticFunctions.add(dateTime1, duration));
 
 	}

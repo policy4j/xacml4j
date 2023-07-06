@@ -41,7 +41,6 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
-import org.xacml4j.v30.types.EntityValue;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;

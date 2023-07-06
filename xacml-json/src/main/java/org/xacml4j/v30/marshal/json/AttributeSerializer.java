@@ -35,7 +35,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonArray;

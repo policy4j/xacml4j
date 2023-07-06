@@ -29,7 +29,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.xacml4j.v30.types.EntityValue;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.MoreObjects;
@@ -111,12 +113,13 @@ public class Attribute implements Serializable
 	 * @param type an attribute type
 	 * @return a collection of {@link Value} of given type
 	 */
-	public Collection<Value> getValuesByType(final ValueType... type) {
+	public <T extends Value<T>> Collection<T> getValuesByType(final ValueType... type) {
 		if(type == null || type.length == 0){
 			return Collections.emptyList();
 		}
 		List<ValueType> types = Arrays.asList(type);
 		return values.stream().filter(a->types.contains(a.getEvaluatesTo()))
+				.map(v->(T)v)
 				.collect(Collectors.toList());
 	}
 
@@ -183,36 +186,6 @@ public class Attribute implements Serializable
 			Preconditions.checkNotNull(values);
 			for(Value v : values){
 				valueBuilder.add(v);
-			}
-			return this;
-		}
-
-		/**
-		 * Wraps given entities to via {@link EntityValue#of(Entity)}
-		 * and adds them to this entity builder
-		 *
-		 * @param values an array of entities
-		 * @return reference to this builder
-		 */
-		public Builder entity(Entity ...values){
-			Preconditions.checkNotNull(values);
-			for(Entity v : values){
-				valueBuilder.add(XacmlTypes.ENTITY.of(v));
-			}
-			return this;
-		}
-
-		/**
-		 * Wraps given entities to via {@link EntityValue#of(Entity)}
-		 * and adds them to this entity builder
-		 *
-		 * @param it an iterator over collection of {@link Entity}
-		 * @return reference to this builder
-		 */
-		public Builder entities(Iterable<Entity> it){
-			Preconditions.checkNotNull(it);
-			for(Entity v : it){
-				valueBuilder.add(XacmlTypes.ENTITY.of(v));
 			}
 			return this;
 		}

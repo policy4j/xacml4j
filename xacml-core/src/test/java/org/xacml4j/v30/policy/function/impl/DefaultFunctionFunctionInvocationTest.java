@@ -37,8 +37,6 @@ import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionInvocation;
-import org.xacml4j.v30.policy.function.impl.DefaultFunctionInvocation;
-import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
@@ -69,15 +67,15 @@ public class DefaultFunctionFunctionInvocationTest
 	public void testInvokeNoEvaluationContextFunctionIsNotVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(1))
-		.add(XacmlTypes.INTEGER.of(2))
+		.add(XacmlTypes.INTEGER.ofAny(1))
+		.add(XacmlTypes.INTEGER.ofAny(2))
 		.build();
 		expect(spec.getNumberOfParams()).andReturn(2);
 		expect(spec.isVariadic()).andReturn(false).times(2);
-		expect(inv0.invoke(p.toArray())).andReturn(XacmlTypes.INTEGER.of(1));
+		expect(inv0.invoke(p.toArray())).andReturn(XacmlTypes.INTEGER.ofAny(1));
 		c.replay();
 		ValueExp v = f0.invoke(spec, context, p);
-		assertEquals(XacmlTypes.INTEGER.of(1), v);
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
 		c.verify();
 	}
 
@@ -85,8 +83,8 @@ public class DefaultFunctionFunctionInvocationTest
 	public void testInvokeInvocationThrowsRuntimeException() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(1))
-		.add(XacmlTypes.INTEGER.of(2))
+		.add(XacmlTypes.INTEGER.ofAny(1))
+		.add(XacmlTypes.INTEGER.ofAny(2))
 		.build();
 		expect(spec.getNumberOfParams()).andReturn(2);
 		expect(spec.isVariadic()).andReturn(false).times(2);
@@ -100,17 +98,17 @@ public class DefaultFunctionFunctionInvocationTest
 	public void testInvokeWithEvaluationContextFunctionIsNotVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(1))
-		.add(XacmlTypes.INTEGER.of(2))
+		.add(XacmlTypes.INTEGER.ofAny(1))
+		.add(XacmlTypes.INTEGER.ofAny(2))
 		.build();
 		List<Object> params = ImmutableList.builder().add(context).addAll(p).build();
 		expect(spec.getNumberOfParams()).andReturn(2);
 		expect(spec.isVariadic()).andReturn(false).times(2);
 		expect(inv1.invoke(params.toArray()))
-				.andReturn(XacmlTypes.INTEGER.of(1));
+				.andReturn(XacmlTypes.INTEGER.ofAny(1));
 		c.replay();
 		ValueExp v = f1.invoke(spec, context, p);
-		assertEquals(XacmlTypes.INTEGER.of(1), v);
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
 		c.verify();
 	}
 
@@ -118,26 +116,26 @@ public class DefaultFunctionFunctionInvocationTest
 	public void testInvokeWithEvaluationContextFunctionIsVariadic() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(1))
-		.add(XacmlTypes.INTEGER.of(2))
-		.add(XacmlTypes.STRING.of("aaa"))
-		.add(XacmlTypes.STRING.of("bbb"))
+		.add(XacmlTypes.INTEGER.ofAny(1))
+		.add(XacmlTypes.INTEGER.ofAny(2))
+		.add(XacmlTypes.STRING.ofAny("aaa"))
+		.add(XacmlTypes.STRING.ofAny("bbb"))
 		.build();
 		Object[] pArray = new Object[]{
 				context,
-				XacmlTypes.INTEGER.of(1),
-				XacmlTypes.INTEGER.of(2),
+				XacmlTypes.INTEGER.ofAny(1),
+				XacmlTypes.INTEGER.ofAny(2),
 				new Object[]{
-					XacmlTypes.STRING.of("aaa"),
-					XacmlTypes.STRING.of("bbb")}
+					XacmlTypes.STRING.ofAny("aaa"),
+					XacmlTypes.STRING.ofAny("bbb")}
 				};
 		expect(spec.getNumberOfParams()).andReturn(3);
 		expect(spec.isVariadic()).andReturn(true).times(2);
 		expect(inv1.invoke(pArray))
-		.andReturn(XacmlTypes.INTEGER.of(1));
+		.andReturn(XacmlTypes.INTEGER.ofAny(1));
 		c.replay();
 		ValueExp v = f1.invoke(spec, context, p);
-		assertEquals(XacmlTypes.INTEGER.of(1), v);
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
 		c.verify();
 	}
 
@@ -145,24 +143,24 @@ public class DefaultFunctionFunctionInvocationTest
 	public void testInvokeWithNoEvaluationContextFunctionIsVariadicAndMoreThanZeroVariadicParams() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(1))
-		.add(XacmlTypes.INTEGER.of(2))
-		.add(XacmlTypes.STRING.of("aaa"))
-		.add(XacmlTypes.STRING.of("bbb"))
+		.add(XacmlTypes.INTEGER.ofAny(1))
+		.add(XacmlTypes.INTEGER.ofAny(2))
+		.add(XacmlTypes.STRING.ofAny("aaa"))
+		.add(XacmlTypes.STRING.ofAny("bbb"))
 		.build();
 		Object[] pArray = new Object[]{
-				XacmlTypes.INTEGER.of(1),
-				XacmlTypes.INTEGER.of(2),
+				XacmlTypes.INTEGER.ofAny(1),
+				XacmlTypes.INTEGER.ofAny(2),
 				new Object[]{
-					XacmlTypes.STRING.of("aaa"),
-					XacmlTypes.STRING.of("bbb")}
+					XacmlTypes.STRING.ofAny("aaa"),
+					XacmlTypes.STRING.ofAny("bbb")}
 				};
 		expect(spec.getNumberOfParams()).andReturn(3);
 		expect(spec.isVariadic()).andReturn(true).times(2);
-		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.of(1));
+		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.ofAny(1));
 		c.replay();
 		ValueExp v = f0.invoke(spec, context, p);
-		assertEquals(XacmlTypes.INTEGER.of(1), v);
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
 		c.verify();
 	}
 
@@ -170,19 +168,19 @@ public class DefaultFunctionFunctionInvocationTest
 	public void testInvokeWithNoEvaluationContextFunctionIsVariadicAndZeroVariadicParams() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
-		.add(XacmlTypes.INTEGER.of(1))
-		.add(XacmlTypes.INTEGER.of(2))
+		.add(XacmlTypes.INTEGER.ofAny(1))
+		.add(XacmlTypes.INTEGER.ofAny(2))
 		.build();
 		Object[] pArray = new Object[]{
-				XacmlTypes.INTEGER.of(1),
-				XacmlTypes.INTEGER.of(2),
+				XacmlTypes.INTEGER.ofAny(1),
+				XacmlTypes.INTEGER.ofAny(2),
 				null};
 		expect(spec.getNumberOfParams()).andReturn(3);
 		expect(spec.isVariadic()).andReturn(true).times(2);
-		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.of(1));
+		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.ofAny(1));
 		c.replay();
 		ValueExp v = f0.invoke(spec, context, p);
-		assertEquals(XacmlTypes.INTEGER.of(1), v);
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
 		c.verify();
 	}
 }

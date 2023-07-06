@@ -24,7 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import org.xacml4j.v30.BagOfValues.BagOfAttributeVisitor;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Value.ValueExpVisitor;
+import org.xacml4j.v30.types.Value.Visitor;
 import org.xacml4j.v30.policy.Apply;
 import org.xacml4j.v30.policy.AttributeDesignator.AttributeDesignatorVisitor;
 import org.xacml4j.v30.policy.AttributeSelector.AttributeSelectorVisitor;
@@ -38,7 +38,7 @@ import org.xacml4j.v30.policy.VariableReference.VariableReferenceVisitor;
  * @author Giedrius Trumpickas
  */
 public interface DefaultExpressionVisitor extends
-                                          Apply.ApplyVisitor, BagOfAttributeVisitor, ValueExpVisitor, AttributeSelectorVisitor,
+                                          Apply.ApplyVisitor, BagOfAttributeVisitor, Visitor, AttributeSelectorVisitor,
                                           AttributeDesignatorVisitor, VariableReferenceVisitor, FunctionReferenceVisitor
 {
 

@@ -50,11 +50,11 @@ public final class DecisionCombiningAlgorithmProviderBuilder {
 	}
 
 	/**
-	 * Creates a builder with default XACML 3.0 & 2.0 decision
+	 * Creates a builder with default XACML 3.0 &amp; 2.0 decision
 	 * combining algorithms
 	 *
 	 * @return {@link DecisionCombiningAlgorithmProviderBuilder} with
-	 * a XACML 3.0 & 2.0 decision combining algorithms
+	 * a XACML 3.0 &amp; 2.0 decision combining algorithms
 	 */
 	public DecisionCombiningAlgorithmProviderBuilder withDefaultAlgorithms() {
 		this.providers.add(new DefaultXacml30DecisionCombiningAlgorithms());

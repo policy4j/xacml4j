@@ -26,7 +26,7 @@ import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.StringValue;
+import org.xacml4j.v30.types.StringVal;
 
 
 @XacmlFunctionProvider(description="XACML string conversion functions")
@@ -37,24 +37,24 @@ public final class StringConversionFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-space")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringValue normalizeSpace(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
+	public static StringVal normalizeSpace(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal v)
 	{
 		return v.trim();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-to-lower-case")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringValue normalizeToLowerCase(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
+	public static StringVal normalizeToLowerCase(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal v)
 	{
 		return v.toLowerCase();
 	}
 
 	@XacmlFuncSpec(id="urn:xacml4j:names:tc:xacml:1.0:function:string-normalize-to-upper-case")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
-	public static StringValue normalizeToUpperCase(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue v)
+	public static StringVal normalizeToUpperCase(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal v)
 	{
 		return v.toUpperCase();
 	}

@@ -133,13 +133,13 @@ public class AttributeDesignatorTest
 		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
 				XacmlTypes.INTEGER.bagBuilder().attribute(
-						XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()));
+						XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build()));
 		control.replay();
 		Expression v = desig.evaluate(context);
 		control.verify();
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().attribute(
-				XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build(), v);
+				XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build(), v);
 	}
 
 	@Test

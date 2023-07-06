@@ -97,7 +97,7 @@ public class FunctionSpecBuilderTest
 	public void testAddVarArgAfterDefaultValue(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
-		b.optional(XacmlTypes.STRING, XacmlTypes.STRING.of("aaa"));
+		b.optional(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"));
 		b.varArg(XacmlTypes.STRING, 0, 5);
 	}
 	
@@ -115,14 +115,14 @@ public class FunctionSpecBuilderTest
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.varArg(XacmlTypes.STRING, 0, 5);
-		b.optional(XacmlTypes.STRING, XacmlTypes.STRING.of("aaa"));
+		b.optional(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"));
 		
 	}
 	
 	@Test(expected= SyntaxException.class)
 	public void testAddParamWithDefaultValueAndOptionalFalse(){
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
-		b.param(XacmlTypes.STRING, XacmlTypes.STRING.of("aaa"), false);
+		b.param(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"), false);
 		
 	}
 	@Test
@@ -131,9 +131,9 @@ public class FunctionSpecBuilderTest
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
 		c.replay();
 		assertFalse(specSameTypeArgs.validateParameters(b.build()));
-		assertFalse(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.of(10L)).build()));
-		assertTrue(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.of(12L)).build()));
-		assertFalse(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.of(13L)).build()));
+		assertFalse(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(10L)).build()));
+		assertTrue(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(12L)).build()));
+		assertFalse(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(13L)).build()));
 		c.verify();
 	}
 
@@ -143,18 +143,18 @@ public class FunctionSpecBuilderTest
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
 		c.replay();
 		assertFalse(specDiffTypeArgs.validateParameters(b.build()));
-		assertTrue(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.of(10L)).build()));
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.of(12L)).build()));
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.of(13L)).build()));
+		assertTrue(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(10L)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(12L)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(13L)).build()));
 		b = ImmutableList.builder();
-		List<Expression> exp1 = b.add(XacmlTypes.INTEGER.of(10)).add(XacmlTypes.STRING.of("aaa")).build();
+		List<Expression> exp1 = b.add(XacmlTypes.INTEGER.ofAny(10)).add(XacmlTypes.STRING.ofAny("aaa")).build();
 		assertTrue(specDiffTypeArgs.validateParameters(exp1));
 		List<Expression> exp2 = b
-				.add(XacmlTypes.INTEGER.of(10))
-				.add(XacmlTypes.INTEGER.of(11)).build();
+				.add(XacmlTypes.INTEGER.ofAny(10))
+				.add(XacmlTypes.INTEGER.ofAny(11)).build();
 		assertFalse(specDiffTypeArgs.validateParameters(exp2));
 		b = ImmutableList.builder();
-		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.STRING.of("a")).add(XacmlTypes.INTEGER.of(10L)).build()));
+		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.STRING.ofAny("a")).add(XacmlTypes.INTEGER.ofAny(10L)).build()));
 		c.verify();
 	}
 

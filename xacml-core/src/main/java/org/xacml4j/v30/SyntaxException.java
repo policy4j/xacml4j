@@ -28,6 +28,8 @@ import java.util.Optional;
 
 import org.w3c.dom.Element;
 import org.xacml4j.util.DOMUtil;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
 
 public class SyntaxException extends EvaluationException
@@ -86,8 +88,8 @@ public class SyntaxException extends EvaluationException
 	}
 
 	public static SyntaxException invalidValueConversionFromXacml(Value convertFrom,
-	                                                              ValueType expectedXacmlType,
-	                                                              Object toType){
+                                                                  ValueType expectedXacmlType,
+                                                                  Object toType){
 		return invalidConversionFromXacml(convertFrom, expectedXacmlType, toType, null);
 	}
 

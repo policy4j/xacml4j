@@ -38,9 +38,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.policy.function.impl.TestFunctions;
-import org.xacml4j.v30.policy.function.impl.TestInstanceFunctions;
-import org.xacml4j.v30.types.BooleanValue;
+import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -70,11 +68,11 @@ public class AnnotationBasedFunctionFactoryTest
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
 		replay(context);
 		FunctionSpec spec1 = f1.getFunction("test1").get();
-		assertEquals(XacmlTypes.BOOLEAN.of(Boolean.FALSE),
-				spec1.invoke(context, XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(java.lang.Boolean.FALSE),
+				spec1.invoke(context, XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)));
 
 		FunctionSpec spec2 = f1.getFunction("test2").get();
-		assertEquals(XacmlTypes.INTEGER.of(2),
+		assertEquals(XacmlTypes.INTEGER.ofAny(2),
 				spec2.invoke(context, XacmlTypes.INTEGER.bagBuilder().value(1, 2).build()));
 		verify(context);
 
@@ -87,11 +85,11 @@ public class AnnotationBasedFunctionFactoryTest
 		replay(context);
 		FunctionSpec spec1 = f2.getFunction("test1").get();
 		assertNotNull(spec1);
-		assertEquals(XacmlTypes.BOOLEAN.of(Boolean.FALSE),
-				spec1.invoke(context, XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(java.lang.Boolean.FALSE),
+				spec1.invoke(context, XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)));
 
 		FunctionSpec spec2 = f2.getFunction("test2").get();
-		assertEquals(XacmlTypes.INTEGER.of(2),
+		assertEquals(XacmlTypes.INTEGER.ofAny(2),
 				spec2.invoke(context, XacmlTypes.INTEGER.bagBuilder().value(1, 2).build()));
 		verify(context);
 
@@ -104,9 +102,9 @@ public class AnnotationBasedFunctionFactoryTest
 		replay(context);
 		FunctionSpec spec3 = f1.getFunction("test3").get();
 		FunctionSpec spec4 = f1.getFunction("test4").get();
-		spec3.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.INTEGER.of(10));
-		spec3.invoke(context, XacmlTypes.INTEGER.of(10));
-		spec4.invoke(context, XacmlTypes.INTEGER.of(10));
+		spec3.invoke(context, XacmlTypes.INTEGER.ofAny(10), XacmlTypes.INTEGER.ofAny(10));
+		spec3.invoke(context, XacmlTypes.INTEGER.ofAny(10));
+		spec4.invoke(context, XacmlTypes.INTEGER.ofAny(10));
 		verify(context);
 
 	}
@@ -119,13 +117,13 @@ public class AnnotationBasedFunctionFactoryTest
 		FunctionSpec spec5 = f1.getFunction("test5VarArg").get();
 		FunctionSpec spec6 = f1.getFunction("test6VarArg").get();
 
-		spec5.invoke(context, XacmlTypes.INTEGER.of(10));
-		spec5.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false));
-		spec5.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false));
-		spec5.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false));
+		spec5.invoke(context, XacmlTypes.INTEGER.ofAny(10));
+		spec5.invoke(context, XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false));
+		spec5.invoke(context, XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(false));
+		spec5.invoke(context, XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(false));
 
-		spec6.invoke(context, XacmlTypes.INTEGER.of(10), XacmlTypes.INTEGER.of(10));
-		spec6.invoke(context, XacmlTypes.INTEGER.of(0), XacmlTypes.INTEGER.of(10), XacmlTypes.BOOLEAN.of(false));
+		spec6.invoke(context, XacmlTypes.INTEGER.ofAny(10), XacmlTypes.INTEGER.ofAny(10));
+		spec6.invoke(context, XacmlTypes.INTEGER.ofAny(0), XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false));
 		verify(context);
 
 	}
@@ -133,7 +131,7 @@ public class AnnotationBasedFunctionFactoryTest
 	@Test
 	public void testReflectionVarArgs() throws Exception
 	{
-		method.invoke(null, new Object[]{XacmlTypes.INTEGER.of(10), new BooleanValue[]{XacmlTypes.BOOLEAN.of(false)}});
+		method.invoke(null, new Object[]{XacmlTypes.INTEGER.ofAny(10), new BooleanVal[]{XacmlTypes.BOOLEAN.ofAny(false)}});
 	}
 
 }

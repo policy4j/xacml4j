@@ -56,8 +56,8 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.policy.AdviceExpression;
 import org.xacml4j.v30.policy.AttributeAssignmentExpression;
 import org.xacml4j.v30.policy.AttributeDesignator;
@@ -259,7 +259,7 @@ final class Xacml30PolicyFromObjectModelToJaxbMapper
 			jaxbIssuer.getContent().getContent()
 					.add(issuer.getContent().map(v->v.toNode()).get());
 		}
-		for(Attribute a : issuer.getAttributes()){
+		for(Attribute a : issuer.find()){
 			jaxbIssuer.getAttribute().add(toJaxb(a));
 		}
 		return jaxbIssuer;

@@ -54,19 +54,19 @@ public class VariableDefinitionTest
 	public void testVariableEvaluationValueNotAvailableInContext() throws EvaluationException
 	{
 		expect(context.getVariableEvaluationResult("testId")).andReturn(null);
-		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
-		context.setVariableEvaluationResult("testId", XacmlTypes.BOOLEAN.of(true));
+		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		context.setVariableEvaluationResult("testId", XacmlTypes.BOOLEAN.ofAny(true));
 		replay(context, expression);
-		assertEquals(XacmlTypes.BOOLEAN.of(true), varDef.evaluate(context));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), varDef.evaluate(context));
 		verify(context, expression);
 	}
 
 	@Test
 	public void testVariableEvaluationValueAvailableInContext() throws EvaluationException
 	{
-		expect(context.getVariableEvaluationResult("testId")).andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(context.getVariableEvaluationResult("testId")).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 		replay(context, expression);
-		assertEquals(XacmlTypes.BOOLEAN.of(false), varDef.evaluate(context));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), varDef.evaluate(context));
 		verify(context, expression);
 	}
 }

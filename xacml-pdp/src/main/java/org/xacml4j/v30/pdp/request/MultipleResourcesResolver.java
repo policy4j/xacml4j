@@ -25,7 +25,7 @@ package org.xacml4j.v30.pdp.request;
 import java.util.Collection;
 import java.util.Set;
 
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.pdp.RequestContextCallback;
 
 

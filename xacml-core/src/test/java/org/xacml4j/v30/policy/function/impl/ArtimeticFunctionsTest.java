@@ -32,24 +32,24 @@ public class ArtimeticFunctionsTest
 	@Test
 	public void testAddIntegerFunction()
 	{
-		assertEquals(XacmlTypes.INTEGER.of(3),
-		             ArithmeticFunctions.addInteger(XacmlTypes.INTEGER.of(1),
-		                                            XacmlTypes.INTEGER.of(2)));
+		assertEquals(XacmlTypes.INTEGER.ofAny(3),
+		             ArithmeticFunctions.addInteger(XacmlTypes.INTEGER.ofAny(1),
+		                                            XacmlTypes.INTEGER.ofAny(2)));
 	}
 
 	@Test
 	public void testAddDoubleFunction()
 	{
-		assertEquals(XacmlTypes.DOUBLE.of(3.3 + 4.5),
-				ArithmeticFunctions.addDouble(XacmlTypes.DOUBLE.of(3.3),
-						XacmlTypes.DOUBLE.of(4.5)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(3.3 + 4.5),
+				ArithmeticFunctions.addDouble(XacmlTypes.DOUBLE.ofAny(3.3),
+						XacmlTypes.DOUBLE.ofAny(4.5)));
 	}
 
 	@Test
 	public void testDivideIntegerFunction()
 	{
-		assertEquals(XacmlTypes.DOUBLE.of(2),
-				ArithmeticFunctions.divideInteger(XacmlTypes.INTEGER.of(4),
-				XacmlTypes.INTEGER.of(2)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(2),
+				ArithmeticFunctions.divideInteger(XacmlTypes.INTEGER.ofAny(4),
+				XacmlTypes.INTEGER.ofAny(2)));
 	}
 }

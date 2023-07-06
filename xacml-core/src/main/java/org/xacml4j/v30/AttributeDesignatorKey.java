@@ -22,13 +22,13 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.types.AnyURIValue;
-import org.xacml4j.v30.types.StringValue;
+import org.xacml4j.v30.types.AnyURI;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import org.xacml4j.v30.types.StringVal;
 
 /**
  * Represents XACML attribute designator
@@ -38,8 +38,8 @@ import com.google.common.base.Strings;
 public final class AttributeDesignatorKey
 	extends AttributeReferenceKey
 {
-	private final String attributeId;
-	private final String issuer;
+	private final java.lang.String attributeId;
+	private final java.lang.String issuer;
 	private transient int hashCode = -1;
 
 	public AttributeDesignatorKey(Builder b){
@@ -53,11 +53,11 @@ public final class AttributeDesignatorKey
 		return new Builder();
 	}
 
-	public static Builder builder(String id){
+	public static Builder builder(java.lang.String id){
 		return new Builder().attributeId(id);
 	}
 
-	public AttributeDesignatorKey withIssuer(String issuer){
+	public AttributeDesignatorKey withIssuer(java.lang.String issuer){
 		return builder()
 				.from(this)
 				.issuer(issuer)
@@ -68,17 +68,17 @@ public final class AttributeDesignatorKey
 		return new Builder().from(this);
 	}
 
-	public String getAttributeId(){
+	public java.lang.String getAttributeId(){
 		return attributeId;
 	}
 
 
-	public String getIssuer(){
+	public java.lang.String getIssuer(){
 		return issuer;
 	}
 
 	@Override
-	public String toString(){
+	public java.lang.String toString(){
 		return MoreObjects.toStringHelper(this)
 		.add("Category", getCategory().getAbbreviatedId())
 		.add("AttributeId", attributeId)
@@ -111,20 +111,20 @@ public final class AttributeDesignatorKey
 
 	public static class Builder extends AttributeReferenceKey.Builder<Builder>
 	{
-		private String issuer;
-		private String attributeId;
+		private java.lang.String issuer;
+		private java.lang.String attributeId;
 
-		public Builder attributeId(String id){
+		public Builder attributeId(java.lang.String id){
 			this.attributeId = java.util.Objects.requireNonNull(id);
 			return this;
 		}
 
-		public Builder attributeId(StringValue id){
-			this.attributeId = java.util.Objects.requireNonNull(id).toString();
+		public Builder attributeId(StringVal id){
+			this.attributeId = java.util.Objects.requireNonNull(id).get();
 			return this;
 		}
 
-		public Builder attributeId(AnyURIValue id){
+		public Builder attributeId(AnyURI id){
 			this.attributeId = java.util.Objects.requireNonNull(id).toString();
 			return this;
 		}
@@ -137,17 +137,17 @@ public final class AttributeDesignatorKey
 			return this;
 		}
 
-		public Builder issuer(String issuer){
+		public Builder issuer(java.lang.String issuer){
 			this.issuer = Strings.emptyToNull(issuer);
 			return this;
 		}
 
-		public Builder issuer(StringValue issuer){
-			this.issuer = java.util.Objects.requireNonNull(issuer).toString();
+		public Builder issuer(StringVal issuer){
+			this.issuer = java.util.Objects.requireNonNull(issuer).get();
 			return this;
 		}
 
-		public Builder issuer(AnyURIValue issuer){
+		public Builder issuer(AnyURI issuer){
 			this.issuer = java.util.Objects.requireNonNull(issuer).toString();
 			return this;
 		}

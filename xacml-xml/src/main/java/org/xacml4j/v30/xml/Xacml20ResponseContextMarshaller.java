@@ -53,7 +53,7 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.marshal.ResponseMarshaller;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -160,7 +160,7 @@ public final class Xacml20ResponseContextMarshaller
 			if(resource == null){
 				return null;
 			}
-			Collection<Attribute> attrs = resource.getEntity().getAttributes(RESOURCE_ID);
+			Collection<Attribute> attrs = resource.getEntity().get(RESOURCE_ID);
 			if(attrs.size() == 1){
 				Attribute resourceId = Iterables.getOnlyElement(attrs);
 				Value v =  Iterables.getOnlyElement(resourceId.getValues());
@@ -168,7 +168,7 @@ public final class Xacml20ResponseContextMarshaller
 				Preconditions.checkState(toString.isPresent());
 				return toString.get().toString(v);
 			}
-			Collection<Value> values =  resource.getEntity().getAttributeValues(
+			Collection<Value> values =  resource.getEntity().findAttributeValues(
 					CONTENT_SELECTOR, XacmlTypes.XPATH);
 			if(values.isEmpty() ||
 					values.size() > 1){

@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.ValueType;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -43,7 +45,7 @@ public class AttributeResolverTestSupport {
 		assertNotNull(bag);
 		assertEquals(values.length, bag.size());
 		for(Object value: values) {
-			assertTrue(bag.contains(type.of(value)));
+			assertTrue(bag.contains(type.ofAny(value)));
 		}
 	}
 }

@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.Value;
 
 
 public class IntegerTypeTest
@@ -36,10 +35,10 @@ public class IntegerTypeTest
 	@Test
 	public void testCreate()
 	{
-		Value v0 = XacmlTypes.INTEGER.of((short)2);
-		Value v1 = XacmlTypes.INTEGER.of((byte)2);
-		Value v2 = XacmlTypes.INTEGER.of(2);
-		Value v3 = XacmlTypes.INTEGER.of(2l);
+		Value v0 = XacmlTypes.INTEGER.ofAny((short)2);
+		Value v1 = XacmlTypes.INTEGER.ofAny((byte)2);
+		Value v2 = XacmlTypes.INTEGER.ofAny(2);
+		Value v3 = XacmlTypes.INTEGER.ofAny(2l);
 		assertEquals(v3, v0);
 		assertEquals(v3, v1);
 		assertEquals(v3, v2);
@@ -50,9 +49,9 @@ public class IntegerTypeTest
 	public void testEquals()
 	{
 		assertEquals(XacmlTypes.INTEGER, XacmlTypes.INTEGER);
-		Value v0 = XacmlTypes.INTEGER.of(3l);
-		Value v1 = XacmlTypes.INTEGER.of(2l);
-		Value v2 = XacmlTypes.INTEGER.of(3l);
+		Value v0 = XacmlTypes.INTEGER.ofAny(3l);
+		Value v1 = XacmlTypes.INTEGER.ofAny(2l);
+		Value v2 = XacmlTypes.INTEGER.ofAny(3l);
 		assertEquals(v0, v2);
 		assertFalse(v1.equals(v2));
 	}
@@ -61,11 +60,11 @@ public class IntegerTypeTest
 	@Test
 	public void testBag()
 	{
-		IntegerValue v0 = XacmlTypes.INTEGER.of(3l);
+		IntegerVal v0 = XacmlTypes.INTEGER.ofAny(3l);
 		BagOfValues bag = XacmlTypes.INTEGER.bagBuilder().value(1, 4).attribute(v0).build();
-		assertTrue(bag.contains(XacmlTypes.INTEGER.of(3l)));
-		assertTrue(bag.contains(XacmlTypes.INTEGER.of(1)));
-		assertTrue(bag.contains(XacmlTypes.INTEGER.of(4)));
+		assertTrue(bag.contains(XacmlTypes.INTEGER.ofAny(3l)));
+		assertTrue(bag.contains(XacmlTypes.INTEGER.ofAny(1)));
+		assertTrue(bag.contains(XacmlTypes.INTEGER.ofAny(4)));
 		assertEquals(XacmlTypes.INTEGER.emptyBag(), XacmlTypes.INTEGER.emptyBag());
 	}
 }

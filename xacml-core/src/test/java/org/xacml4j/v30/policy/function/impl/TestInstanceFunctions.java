@@ -29,8 +29,8 @@ import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.IntegerValue;
+import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -40,19 +40,19 @@ public class TestInstanceFunctions
 {
 	@XacmlFuncSpec(id="test1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public BooleanValue test1(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue b)
+	public BooleanVal test1(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal b)
 	{
-		return XacmlTypes.BOOLEAN.of(a.equals(b));
+		return XacmlTypes.BOOLEAN.ofAny(a.equals(b));
 	}
 
 	@XacmlFuncSpec(id="test2")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public IntegerValue test2(
+	public IntegerVal test2(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true) BagOfValues bag)
 	{
-		return XacmlTypes.INTEGER.of(bag.size());
+		return XacmlTypes.INTEGER.ofAny(bag.size());
 	}
 }
 

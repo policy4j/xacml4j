@@ -41,7 +41,7 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.types.ValueType;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;

@@ -74,20 +74,20 @@ public class MatchTest
 	public void testMatchEvaluation() throws EvaluationException
 	{
 		expect(ref.getDataType()).andReturn(XacmlTypes.INTEGER);
-		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bagBuilder().attribute(XacmlTypes.INTEGER.of(2), XacmlTypes.INTEGER.of(1)).build());
+		expect(ref.evaluate(context)).andReturn(XacmlTypes.INTEGER.bagBuilder().attribute(XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(1)).build());
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context,
-		                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(2)).build()))
-				.andReturn(XacmlTypes.BOOLEAN.of(false));
+		                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build()))
+				.andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
 		expect(invocation.invoke(spec, context,
-		                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.of(1), XacmlTypes.INTEGER.of(1)).build()))
-				.andReturn(XacmlTypes.BOOLEAN.of(true));
+		                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(1)).build()))
+				.andReturn(XacmlTypes.BOOLEAN.ofAny(true));
 		c.replay();
 		Match m = Match
 				.builder()
 				.predicate(spec)
-				.attribute(XacmlTypes.INTEGER.of(1))
+				.attribute(XacmlTypes.INTEGER.ofAny(1))
 				.attrRef(ref)
 				.build();
 		assertEquals(MatchResult.MATCH, m.match(context));
@@ -112,7 +112,7 @@ public class MatchTest
 		Match m = Match
 				.builder()
 				.predicate(spec)
-				.attribute(XacmlTypes.INTEGER.of(1))
+				.attribute(XacmlTypes.INTEGER.ofAny(1))
 				.attrRef(ref)
 				.build();
 		assertEquals(MatchResult.INDETERMINATE, m.match(context));

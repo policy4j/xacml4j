@@ -36,12 +36,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.TypeCapability;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.types.EntityValue;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.PathValue;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -272,7 +271,7 @@ public interface TypeToXacml30 extends TypeCapability
 				.getContent()
 				.add(XACML30_FACTORY
 						.createContent(c)));
-				for(Attribute a : entity.getAttributes()){
+				for(Attribute a : entity.find()){
 					xacml30.getContent().add(XACML30_FACTORY
 							.createAttribute(Types.toXacml30(a)));
 				}
@@ -306,7 +305,7 @@ public interface TypeToXacml30 extends TypeCapability
 						b.attribute(Types.fromXacml30(xacml30Attr));
 					}
 				}
-				return XacmlTypes.ENTITY.of(b.build());
+				return XacmlTypes.ENTITY.ofAny(b.build());
 			}
 		},
 		HEXBINARY(XacmlTypes.HEXBINARY){
@@ -485,7 +484,7 @@ public interface TypeToXacml30 extends TypeCapability
 				}
 				Optional<Value> xpath = CategoryId
 						.parse(categoryValue)
-						.map(v->XacmlTypes.XPATH.of(CharMatcher.whitespace().trimFrom(xpathValue), v));
+						.map(v->XacmlTypes.XPATH.ofAny(CharMatcher.whitespace().trimFrom(xpathValue), v));
 				return xpath.orElseThrow(()-> SyntaxException
 						.invalidCategoryId(categoryValue));
 			}

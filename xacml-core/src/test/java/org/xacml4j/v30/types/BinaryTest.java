@@ -24,8 +24,8 @@ package org.xacml4j.v30.types;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.common.truth.Truth8;
 import org.junit.Test;
-import org.xacml4j.v30.Binary;
 
 public class BinaryTest
 {
@@ -49,10 +49,10 @@ public class BinaryTest
 		assertEquals("", bv.toHexEncoded());
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test
 	public void testCreateFromNull()
 	{
-		Binary.of(null);
+		Truth8.assertThat(Binary.ofAnyBinary(null)).isEmpty();
 	}
 
 	@Test

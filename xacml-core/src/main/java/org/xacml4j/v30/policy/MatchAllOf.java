@@ -31,7 +31,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;

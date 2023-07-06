@@ -27,8 +27,8 @@ import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.StringValue;
+import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.StringVal;
 
 
 public class JavaMethodToFunctionSpecTestFunctions
@@ -43,27 +43,27 @@ public class JavaMethodToFunctionSpecTestFunctions
 		return null;
 	}
 
-	public BooleanValue missingXacmlFuncAnnotation(){
+	public BooleanVal missingXacmlFuncAnnotation(){
 		return null;
 	}
 
 	@XacmlFuncSpec(id="missingReturnTypeDeclaration1")
-	public static BooleanValue missingReturnTypeDeclaration1(){
+	public static BooleanVal missingReturnTypeDeclaration1(){
 		return null;
 	}
 
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean", isBag=true)
-	public static BooleanValue returnTypeDeclarationExistButWrongMethodReturnType1(){
+	public static BooleanVal returnTypeDeclarationExistButWrongMethodReturnType1(){
 		return null;
 	}
 	
 	@XacmlFuncSpec(id="returnTypeDeclarationExistButWrongMethodReturnType1")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue optionalParametersTest(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue a,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, value={"false", "true"}) StringValue b,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", value="false") StringValue c){
+	public static BooleanVal optionalParametersTest(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanVal a,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, value={"false", "true"}) String b,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", value="false") String c){
 		return null;
 	}
 

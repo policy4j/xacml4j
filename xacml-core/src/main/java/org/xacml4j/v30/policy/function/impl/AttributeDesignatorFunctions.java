@@ -22,37 +22,16 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.List;
-import java.util.Optional;
-
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.AttributeDesignatorKey;
-import org.xacml4j.v30.AttributeReferenceEvaluationException;
-import org.xacml4j.v30.AttributeSelectorKey;
-import org.xacml4j.v30.BagOfValues;
-import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueExpTypeInfo;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParamAnyAttribute;
-import org.xacml4j.v30.policy.function.XacmlFuncParamOptional;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnTypeResolver;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.AnyURIValue;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.EntityValue;
-import org.xacml4j.v30.types.PathValue;
-import org.xacml4j.v30.types.StringValue;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.*;
 
-import com.google.common.base.Preconditions;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * XACML 3.0 regular attribute resolution functions
@@ -68,11 +47,11 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 	@XacmlFuncReturnTypeResolver(resolverClass=AttributeDesignatorFunctions.class)
 	public static BagOfValues designator(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParamAnyAttribute Value categoryOrEntity,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue attributeId,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue dataType,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"}) BooleanValue mustBePresent,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue issuer)
+			@XacmlFuncParamAnyValue Value categoryOrEntity,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI attributeId,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI dataType,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"}) BooleanVal mustBePresent,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") String issuer)
 	{
 		Preconditions.checkArgument(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY) ||
 				categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI));
@@ -93,7 +72,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 		AttributeDesignatorKey designatorKey = designatorKeyBuilder.build();
 		Optional<BagOfValues> v = Optional.empty();
 		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY)){
-			v = ((EntityValue)categoryOrEntity).resolve(designatorKey);
+			v = ((Entity)categoryOrEntity).resolve(designatorKey);
 		}
 		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
 			v = context.resolve(designatorKey);
@@ -115,11 +94,11 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 	@XacmlFuncReturnTypeResolver(resolverClass=AttributeDesignatorFunctions.class)
 	public static BagOfValues selector(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParamAnyAttribute Value categoryOrEntity,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") PathValue xpath,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue dataType,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"}) BooleanValue mustBePresent,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue issuer)
+			@XacmlFuncParamAnyValue Value categoryOrEntity,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path xpath,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI dataType,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"}) BooleanVal mustBePresent,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal issuer)
 	{
 		Preconditions.checkArgument(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY) ||
 				categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI));
@@ -135,7 +114,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 		Optional<BagOfValues> v = Optional.empty();
 		final AttributeSelectorKey selectorKey = selectorKeyBuilder.build();
 		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY)){
-			v = ((EntityValue)categoryOrEntity).resolve(selectorKey);
+			v = ((Entity)categoryOrEntity).resolve(selectorKey);
 
 		}
 		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
@@ -150,13 +129,13 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 		return v.orElse(selectorKey.getDataType().emptyBag());
 	}
 
-	private static ValueType getType(AnyURIValue typeUri){
+	private static ValueType getType(AnyURI typeUri){
 		return XacmlTypes.getType(typeUri.get().toString())
 		                 .orElseThrow(()->SyntaxException.invalidDataTypeId(typeUri.getEvaluatesTo().getTypeId()));
 	}
 	
 	@Override
 	public ValueExpTypeInfo resolve(FunctionSpec spec, List<Expression> arguments) {
-		return getType((AnyURIValue)arguments.get(2));
+		return getType((AnyURI)arguments.get(2));
 	}
 }

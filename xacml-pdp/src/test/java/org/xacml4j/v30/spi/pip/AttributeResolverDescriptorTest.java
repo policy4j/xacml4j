@@ -81,7 +81,7 @@ public class AttributeResolverDescriptorTest
 				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
 		.attribute("testId1", XacmlTypes.INTEGER, "testAlias1")
 		.attribute("testId2", XacmlTypes.STRING, "testAlias2")
-				.build((c)-> ImmutableMap.of("testId1", XacmlTypes.INTEGER.of(10).toBag()));
+				.build((c)-> ImmutableMap.of("testId1", XacmlTypes.INTEGER.ofAny(10).toBag()));
 		assertEquals("id", d.getId());
 		assertEquals("name", d.getName());
 		assertEquals("issuer", d.getIssuer());
@@ -121,7 +121,7 @@ public class AttributeResolverDescriptorTest
 		c.replay();
 		Function<ResolverContext, Optional<AttributeSet>> r = d.getResolverFunction();
 		ResolverContext resolverContext = ResolverContext.createContext(context, d);
-		assertEquals(XacmlTypes.INTEGER.of(10).toBag(),
+		assertEquals(XacmlTypes.INTEGER.ofAny(10).toBag(),
 		             r.apply(resolverContext).get().get("testId1").get());
 		c.verify();
 	}

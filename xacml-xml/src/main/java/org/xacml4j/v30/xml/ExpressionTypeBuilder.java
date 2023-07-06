@@ -34,7 +34,7 @@ import org.oasis.xacml.v30.jaxb.VariableReferenceType;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.policy.Apply;
 import org.xacml4j.v30.policy.AttributeDesignator;
 import org.xacml4j.v30.policy.AttributeSelector;

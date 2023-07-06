@@ -27,7 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.types.ValueType;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSortedSet;

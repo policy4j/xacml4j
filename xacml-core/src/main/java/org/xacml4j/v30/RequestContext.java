@@ -44,6 +44,9 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
 /**
  * A XACML Request Context Abstraction
@@ -256,10 +259,7 @@ public class RequestContext
 	public Optional<Attribute> getAttribute(CategoryId id,
 											java.util.function.Predicate<Attribute> filter){
 		return getEntity(id)
-				.map(v->v.getAttributes())
-				.flatMap(v->v.stream()
-						.filter(filter)
-						.findFirst());
+				.flatMap(v->v.findFirst(filter));
 	}
 
 	/**
@@ -279,33 +279,12 @@ public class RequestContext
 		return false;
 	}
 
-	/**
-	 * Gets repeating categories
-	 *
-	 * @return repeating categories
-	 */
-	public Multimap<CategoryId, Category> getRepeatingCategories() {
-		Multimap<CategoryId, Category> c = HashMultimap.create();
-		for (Category category : getCategories()) {
-			Collection<Category> categories = entities.get(category.getCategoryId());
-			if (categories.size() > 1) {
-				c.putAll(category.getCategoryId(), categories.stream()
-				                                             .filter(v->v.getEntity()
-				                                                         .getAttributes()
-				                                                         .isEmpty() && !v.getEntity().hasContent())
-				                                             .collect(Collectors.toList()));
-			}
-		}
-		return c;
-	}
-
 	public boolean containsAttributeValues(
 			String attributeId, String issuer, ValueType type)
 	{
 		for (Category a : entities.values()) {
 			Entity e = a.getEntity();
-			Collection<Value> values = e.getAttributeValues(attributeId, issuer, type);
-			if (!values.isEmpty()) {
+			if (e.hasValues(attributeId, type, issuer)) {
 				return true;
 			}
 		}
@@ -336,47 +315,15 @@ public class RequestContext
 	 * @param issuer an attribute issuer
 	 * @return a collection of {@link Value} instances
 	 */
-	public Collection<Value> getAttributeValues(CategoryId categoryId,
+	public <T extends Value<T>> Collection<T> getAttributeValues(CategoryId categoryId,
 	                                            String attributeId, ValueType dataType, String issuer)
 	{
-		ImmutableList.Builder<Value> found = ImmutableList.builder();
+		ImmutableList.Builder<T> found = ImmutableList.builder();
 		for(Category a : entities.get(categoryId)){
 			Entity e = a.getEntity();
-			found.addAll(e.getAttributeValues(attributeId, issuer, dataType));
+			found.addAll(e.findValues(attributeId, dataType, issuer));
 		}
 		return found.build();
-	}
-
-	/**
-	 * Gets all attribute values of the given category with the
-	 * given identifier and data type
-	 *
-	 * @param categoryId an attribute category
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
-	 * @return a collection of {@link Value} instances
-	 */
-	public Collection<Value> getAttributeValues(
-			CategoryId categoryId,
-			String attributeId,
-			ValueType dataType)
-	{
-		return getAttributeValues(categoryId, attributeId, dataType, null);
-	}
-
-	/**
-	 * Gets a single {@link Value} from this request
-	 *
-	 * @param categoryId an attribute category identifier
-	 * @param attributeId an attribute identifier
-	 * @param dataType an attribute data type
-	 * @return {@link Value} or {@code null}
-	 */
-	public Value getAttributeValue(CategoryId categoryId,
-	                               String attributeId,
-	                               ValueType dataType){
-		return Iterables.getOnlyElement(
-				getAttributeValues(categoryId, attributeId, dataType), null);
 	}
 
 	/**
@@ -392,12 +339,11 @@ public class RequestContext
 	{
 		ImmutableList.Builder<Category> resultAttr = ImmutableList.builder();
 		for(Category a : entities.values()){
-			Entity e = a.getEntity();
-			Collection<Attribute> includeInResult = e.getIncludeInResultAttributes();
+			Collection<Attribute> includeInResult = a.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
 				resultAttr.add(Category
 						.builder(a.getCategoryId())
-						.entity(Entity.builder().attributes(e.getIncludeInResultAttributes()).build())
+						.entity(Entity.builder().attributes(a.getIncludeInResultAttributes()).build())
 						.build());
 			}
 		}

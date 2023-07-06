@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.ValueType;
+
 public class ProcessingErrorException extends CoreException
 {
     public ProcessingErrorException(String template, Object... arguments) {

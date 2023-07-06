@@ -45,19 +45,19 @@ public class ObligationTest {
 				.builder()
 				.category(CategoryId.ACTION)
 				.attributeId("actionId1")
-				.value(XacmlTypes.INTEGER.of(1))
+				.value(XacmlTypes.INTEGER.ofAny(1))
 				.build();
 		AttributeAssignment attr2 = AttributeAssignment
 				.builder()
 				.category(CategoryId.ACTION)
 				.attributeId("actionId1")
-				.value(XacmlTypes.INTEGER.of(2))
+				.value(XacmlTypes.INTEGER.ofAny(2))
 				.build();
 		AttributeAssignment attr3 = AttributeAssignment
 				.builder()
 				.category(CategoryId.ACTION)
 				.attributeId("actionId1")
-				.value(XacmlTypes.INTEGER.of(3))
+				.value(XacmlTypes.INTEGER.ofAny(3))
 				.build();
 
 		o1 = Obligation.builder("id1").attribute(attr1).attribute(attr2).build();

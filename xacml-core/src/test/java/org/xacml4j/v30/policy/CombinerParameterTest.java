@@ -29,7 +29,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.easymock.IMocksControl;
 import org.junit.Test;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 
 /**
  * @author Valdas Sevelis

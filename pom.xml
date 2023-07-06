@@ -21,7 +21,6 @@
 		<module>xacml-core</module>
 		<module>xacml-pdp</module>
 		<module>xacml-json</module>
-		<module>xacml-proto</module>
 		<module>xacml-xml</module>
 		<module>xacml-xml-jaxb</module>
 		<module>xacml-test</module>

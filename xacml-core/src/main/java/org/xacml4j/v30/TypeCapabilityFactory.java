@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.ValueType;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;

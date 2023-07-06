@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.xacml4j.util.StringUtils;
+import org.xacml4j.v30.types.AnyURI;
+import org.xacml4j.v30.types.StringVal;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /*
@@ -111,12 +114,6 @@ public final class CategoryId extends SemanticIdentifier
 	 */
 	public static Optional<CategoryId> parse(Object v)
 	{
-		if(v instanceof Optional){
-			Optional<Object> o =  (Optional)v;
-			if(o.orElse(null) instanceof CategoryId){
-				return (Optional<CategoryId>)v;
-			}
-		}
 		if(v instanceof CategoryId){
 			return Optional.of((CategoryId)v);
 		}
@@ -126,12 +123,11 @@ public final class CategoryId extends SemanticIdentifier
 		if(v instanceof URI){
 			return getById(v.toString());
 		}
-		if(v instanceof Value){
-			Value a = (Value)v;
-			if(a.getEvaluatesTo().equals(XacmlTypes.ANYURI) ||
-					a.getEvaluatesTo().equals(XacmlTypes.STRING)){
-				return getById(a.get().toString());
-			}
+		if(v instanceof StringVal){
+			return getById(((StringVal)v).get());
+		}
+		if(v instanceof AnyURI){
+			return getById(((AnyURI)v).get().toString());
 		}
 		throw SyntaxException
 				.invalidCategoryId(v);

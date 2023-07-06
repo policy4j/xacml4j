@@ -27,6 +27,8 @@ import java.util.Map;
 import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 
 import com.google.common.collect.ImmutableMap;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
 
 public class ExpectedAttributeResolverBuilder

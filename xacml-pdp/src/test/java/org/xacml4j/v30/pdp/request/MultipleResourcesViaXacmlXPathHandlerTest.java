@@ -43,10 +43,10 @@ import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
@@ -97,10 +97,10 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 						Entity.builder()
 						      .content(content)
 						      .attribute(
-								Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-								Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build(),
+								Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+								Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build(),
 								Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-								.value(XacmlTypes.XPATH.of("//md:record/md:patient", CategoryId.RESOURCE)).build())
+								.value(XacmlTypes.XPATH.ofAny("//md:record/md:patient", CategoryId.RESOURCE)).build())
 						      .build())
 				.build();
 
@@ -109,8 +109,8 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId7").value(XacmlTypes.STRING.of("value2")).build(),
-						Attribute.builder("testId8").value(XacmlTypes.STRING.of("value3")).build())
+						Attribute.builder("testId7").value(XacmlTypes.STRING.ofAny("value2")).build(),
+						Attribute.builder("testId8").value(XacmlTypes.STRING.ofAny("value3")).build())
 						.build())
 				.build();
 
@@ -141,7 +141,7 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 		RequestContext r1 = c1.getValue();
 
 		Attribute selector0 = r0.getEntity(CategoryId.RESOURCE).get().
-				getOnlyAttribute(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
+				single(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector1 = r1.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
 		Set<Value> valueSet = ImmutableSet.<Value>builder()
@@ -150,8 +150,8 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 
 		                                  .build();
 
-		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[1]", CategoryId.RESOURCE)));
-		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]", CategoryId.RESOURCE)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE)));
 
 
 		verify(pdp);
@@ -167,10 +167,10 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 						.builder()
 						.content(content)
 						.attribute(
-						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build(),
+						Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(XacmlTypes.XPATH.of("//md:record/md:patient", CategoryId.RESOURCE)).build()).build())
+						.value(XacmlTypes.XPATH.ofAny("//md:record/md:patient", CategoryId.RESOURCE)).build()).build())
 				.build();
 
 
@@ -181,11 +181,11 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.builder()
 				.content(content)
 				.attribute(
-						Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build(),
+						Attribute.builder("testId7").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId8").value(XacmlTypes.STRING.ofAny("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
 								 .value(
-										 XacmlTypes.XPATH.of("//md:record/md:patient/md:patientDoB/@md:attrn1", CategoryId.SUBJECT_ACCESS)
+										 XacmlTypes.XPATH.ofAny("//md:record/md:patient/md:patientDoB/@md:attrn1", CategoryId.SUBJECT_ACCESS)
 								).build()).build()).build();
 
 		RequestContext context = RequestContext
@@ -244,11 +244,11 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 		                                  .addAll(selector30.getValues())
 		                                  .addAll(selector31.getValues())
 		                                  .build();
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE), XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE));
-		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[1]", CategoryId.RESOURCE)));
-		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[2]", CategoryId.RESOURCE)));
-		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
-		assertTrue(valueSet.contains(XacmlTypes.XPATH.of("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
+		assertEquals(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE), XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]", CategoryId.RESOURCE)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
+		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
 
 		verify(pdp);
 	}
@@ -263,10 +263,10 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 						.builder()
 						.content(content)
 						.attribute(
-						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build(),
+						Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(XacmlTypes.STRING.of("//md:record/md:patient")).build()).build())
+						.value(XacmlTypes.STRING.ofAny("//md:record/md:patient")).build()).build())
 				.build();
 
 		Category subject = Category
@@ -275,8 +275,8 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 						.builder()
 						.content(content)
 						.attribute(
-						Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build()).build()).build();
+						Attribute.builder("testId7").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId8").value(XacmlTypes.STRING.ofAny("value1")).build()).build()).build();
 
 
 		RequestContext request = RequestContext.builder()
@@ -306,10 +306,10 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.entity(Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build(),
+						Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build(),
 						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
-						.value(XacmlTypes.XPATH.of("//md:record/md:patient", CategoryId.RESOURCE)).build()).build())
+						.value(XacmlTypes.XPATH.ofAny("//md:record/md:patient", CategoryId.RESOURCE)).build()).build())
 				.build();
 
 		Category subject = Category
@@ -317,8 +317,8 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.entity(Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build()
+						Attribute.builder("testId7").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId8").value(XacmlTypes.STRING.ofAny("value1")).build()
 				).build()).build();
 
 

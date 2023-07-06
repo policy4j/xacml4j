@@ -198,7 +198,7 @@ public class XmlContentTest
                         .xpath("/md:record/md:patient/md:patient-number/text()")
                         .dataType(XacmlTypes.INTEGER)
                         .build());
-        assertTrue(values.get().contains(XacmlTypes.INTEGER.of(555555)));
+        assertTrue(values.get().contains(XacmlTypes.INTEGER.ofAny(555555)));
     }
 
     @Test(expected = PathEvaluationException.class)
@@ -219,7 +219,7 @@ public class XmlContentTest
                         .xpath("/md:record/md:patient/md:patient-number/text()")
                         .dataType(XacmlTypes.STRING)
                         .build());
-        assertTrue(values.get().contains(XacmlTypes.STRING.of("555555")));
+        assertTrue(values.get().contains(XacmlTypes.STRING.ofAny("555555")));
     }
 
     @Test
@@ -230,14 +230,14 @@ public class XmlContentTest
                         .xpath("//md:record/md:patient_info/md:health_insurance/text()")
                         .dataType(XacmlTypes.STRING)
                         .build());
-        assertTrue(values.get().contains(XacmlTypes.STRING.of("123456")));
+        assertTrue(values.get().contains(XacmlTypes.STRING.ofAny("123456")));
         values = xml4.resolve(
                 AttributeSelectorKey
                         .builder()
                         .xpath("./md:record/md:patient_info/md:health_insurance/text()")
                         .dataType(XacmlTypes.STRING)
                         .build());
-        assertTrue(values.get().contains(XacmlTypes.STRING.of("123456")));
+        assertTrue(values.get().contains(XacmlTypes.STRING.ofAny("123456")));
     }
 
     @Test(expected = PathEvaluationException.class)

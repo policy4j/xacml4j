@@ -25,9 +25,9 @@ package org.xacml4j.v30.policy.function;
 import java.util.ListIterator;
 
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.ValueExpTypeInfo;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 import org.xacml4j.v30.policy.function.impl.BaseFunctionParamSpec;
 

@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
+import org.xacml4j.v30.types.ValueType;
 
 /**
  * A marker interface for XACML type specific capability/strategy.
@@ -45,7 +46,7 @@ import com.google.common.collect.ImmutableMap;
  * 
  * @author Giedrius Trumpickas
  */
-public interface TypeCapability
+public interface TypeCapability<T>
 {
 	/**
 	 * Gets XACML type associated

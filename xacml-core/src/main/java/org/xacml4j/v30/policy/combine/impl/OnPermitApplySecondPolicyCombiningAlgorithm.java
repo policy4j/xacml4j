@@ -40,7 +40,7 @@ import org.xacml4j.v30.policy.combine.BaseDecisionCombiningAlgorithm;
  * For defaultProvider, someone may want to write a policy which applies to the cases where the subject is
  * the owner of the resource. In this case the policy should apply if the subject-id of the request
  * equals the owner attribute of the resource in the request. This matching cannot be done with
- * a <Target> since it is not a match expression against a constant value.
+ * a &lt;Target&gt; since it is not a match expression against a constant value.
  * Such a policy would require a Condition at the Policy level
  *
  * @author Giedrius Trumpickas

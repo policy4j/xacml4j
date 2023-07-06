@@ -22,9 +22,6 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.List;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.NamedNodeMap;
@@ -32,17 +29,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.content.XmlContent;
-import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParam;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.IntegerValue;
-import org.xacml4j.v30.types.PathValue;
-import org.xacml4j.v30.types.StringValue;
-import org.xacml4j.v30.types.Xacml20XPathTo30Transformer;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.*;
+
+import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -65,30 +56,30 @@ public class XPathFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-count")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValue xpathCount(
+	public static IntegerVal xpathCount(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") PathValue path)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path)
 	{
 		try{
-			return XacmlTypes.INTEGER.of(context
+			return XacmlTypes.INTEGER.ofAny(context
 							.resolve(
 									 path.getCategory().orElse(null),
-									 path.getContentType())
+									 path.getPathType().getContentType())
 							.map(
 									c -> c.evaluateToNodeSet(
 											path.getPath())
 											.size())
 					.orElse(0));
 		}catch(EvaluationException e){
-			return XacmlTypes.INTEGER.of(0);
+			return XacmlTypes.INTEGER.ofAny(0);
 		}
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
-	public static IntegerValue xpathCountXacml2(
+	public static IntegerVal xpathCountXacml2(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue xpath)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal xpath)
 	{
 		return xpathCount(context,
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath));
@@ -96,10 +87,10 @@ public class XPathFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue xpathNodeEqual(
+	public static BooleanVal xpathNodeEqual(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") PathValue path0,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") PathValue path1)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path0,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path1)
 	{
 		try{
 
@@ -108,30 +99,30 @@ public class XPathFunctions
 
 			if(!content0.isPresent() ||
 					!content1.isPresent()){
-				return XacmlTypes.BOOLEAN.of(false);
+				return XacmlTypes.BOOLEAN.ofAny(false);
 			}
 			List<Node> nodes0 = content0.get();
 			List<Node> nodes1 = content1.get();
 			for(int i = 0; i < nodes0.size(); i++){
 				for(int j = 0; j < nodes1.size(); j++){
 					if(nodes0.get(i).isSameNode(nodes1.get(j))){
-						return XacmlTypes.BOOLEAN.of(true);
+						return XacmlTypes.BOOLEAN.ofAny(true);
 					}
 				}
 			}
-			return XacmlTypes.BOOLEAN.of(false);
+			return XacmlTypes.BOOLEAN.ofAny(false);
 		}catch(EvaluationException e){
-			return XacmlTypes.BOOLEAN.of(false);
+			return XacmlTypes.BOOLEAN.ofAny(false);
 		}
 	}
 
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue xpathNodeEqualXacml20(
+	public static BooleanVal xpathNodeEqualXacml20(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue xpath0,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue xpath1)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal xpath0,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal xpath1)
 	{
 		return xpathNodeEqual(context,
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
@@ -140,10 +131,10 @@ public class XPathFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:xpath-node-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue xpathNodeMatch(
+	public static BooleanVal xpathNodeMatch(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") PathValue path0,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") PathValue path1)
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path0,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path1)
 	{
 		try{
 
@@ -151,7 +142,7 @@ public class XPathFunctions
 			Optional<List<Node>> content1 =  getNodes(context, path1);
 			if(!content0.isPresent()||
 					!content1.isPresent()){
-				return XacmlTypes.BOOLEAN.of(false);
+				return XacmlTypes.BOOLEAN.ofAny(false);
 			}
 			List<Node> nodes0 = content0.get();
 			List<Node> nodes1 = content1.get();
@@ -163,7 +154,7 @@ public class XPathFunctions
 					Node node0 = nodes0.get(i);
 					Node node1 = nodes1.get(j);
 					if(node0.isEqualNode(node1)){
-						return XacmlTypes.BOOLEAN.of(true);
+						return XacmlTypes.BOOLEAN.ofAny(true);
 					}
 					NamedNodeMap a = node0.getAttributes();
 					NamedNodeMap b = node1.getAttributes();
@@ -171,29 +162,29 @@ public class XPathFunctions
 						for(int ii = 0; ii < a.getLength(); ii++){
 							for(int jj = 0; jj < b.getLength(); jj++){
 								if(a.item(ii).isEqualNode(b.item(jj))){
-									return XacmlTypes.BOOLEAN.of(true);
+									return XacmlTypes.BOOLEAN.ofAny(true);
 								}
 							}
 						}
 					}
 					if(compareChildNodes(node0, node1)){
 						LOg.debug("Child nodes match");
-						return XacmlTypes.BOOLEAN.of(true);
+						return XacmlTypes.BOOLEAN.ofAny(true);
 					}
 				}
 			}
-			return XacmlTypes.BOOLEAN.of(false);
+			return XacmlTypes.BOOLEAN.ofAny(false);
 		}catch(EvaluationException e){
-			return XacmlTypes.BOOLEAN.of(false);
+			return XacmlTypes.BOOLEAN.ofAny(false);
 		}
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue xpathNodeMatchXacml20(
+	public static BooleanVal xpathNodeMatchXacml20(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue xpath0,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue xpath1)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal xpath0,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal xpath1)
 	{
 		return xpathNodeMatch(context,
 				Xacml20XPathTo30Transformer.fromXacml20String(xpath0),
@@ -225,7 +216,7 @@ public class XPathFunctions
 	}
 
 	static Optional<List<Node>> getNodes(org.xacml4j.v30.EvaluationContext context,
-                                         PathValue path){
+                                         Path path){
 		return context
 				.<XmlContent>resolve(
 						path.getCategory().orElse(null), path.getContentType())

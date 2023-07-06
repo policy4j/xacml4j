@@ -37,7 +37,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCodeId;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -104,7 +104,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionEvaluatesToFalse() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 
 		ctl.replay();
 		Condition c = new Condition(exp);
@@ -115,7 +115,7 @@ public class ConditionTest
 	@Test
 	public void testExpressionEvaluatesToTrue() {
 		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(true));
+		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
 		ctl.replay();
 		Condition c = new Condition(exp);

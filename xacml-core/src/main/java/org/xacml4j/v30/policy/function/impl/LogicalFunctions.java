@@ -25,14 +25,9 @@ package org.xacml4j.v30.policy.function.impl;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExp;
-import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.IntegerValue;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -58,33 +53,33 @@ public final class LogicalFunctions
 	 *
 	 * @param context evaluation context
 	 * @param values function parameters
-	 * @return {@link BooleanValue} representing function evaluation result
+	 * @return {@link BooleanVal} representing function evaluation result
 	 * @throws EvaluationException if an error occurs during evaluation
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:and", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue and(
+	public static BooleanVal and(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression ...values)
 		throws EvaluationException
 	{
-		Boolean r = Boolean.TRUE;
+		java.lang.Boolean r = java.lang.Boolean.TRUE;
 		for(Expression e : values){
-			r &= ((BooleanValue) e.evaluate(context)).get();
+			r &= ((BooleanVal) e.evaluate(context)).get();
 			if(!r){
 				break;
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(r);
+		return XacmlTypes.BOOLEAN.ofAny(r);
 	}
 
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:not")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue not(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanValue v)
+	public static BooleanVal not(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanVal v)
 	{
-		return XacmlTypes.BOOLEAN.of(!v.get());
+		return XacmlTypes.BOOLEAN.ofAny(!v.get());
 	}
 
 	/**
@@ -96,25 +91,25 @@ public final class LogicalFunctions
 	 *
 	 * @param context evaluation context
 	 * @param values function parameters
-	 * @return {@link BooleanValue} representing function evaluation result
+	 * @return {@link BooleanVal} representing function evaluation result
 	 * @throws EvaluationException if an error occurs during evaluation
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:or", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue or(
+	public static BooleanVal or(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression...values)
 		throws EvaluationException
 	{
-		Boolean r = Boolean.FALSE;
+		java.lang.Boolean r = java.lang.Boolean.FALSE;
 		for(Expression e : values){
-			Boolean v = ((BooleanValue)e.evaluate(context)).get();
+			java.lang.Boolean v = ((BooleanVal)e.evaluate(context)).get();
 			r |= v;
 			if(r){
 				break;
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(r);
+		return XacmlTypes.BOOLEAN.ofAny(r);
 	}
 
 
@@ -135,14 +130,14 @@ public final class LogicalFunctions
 	 * @param context evaluation context
 	 * @param n minimum number of parameters
 	 * @param values function parameters
-	 * @return {@link BooleanValue} representing function evaluation result
+	 * @return {@link BooleanVal} representing function evaluation result
 	 * @throws EvaluationException if an error occurs during evaluation
 	 */
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:n-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue nof(
+	public static BooleanVal nof(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerValue n,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal n,
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression...values)
 		throws EvaluationException
 	{
@@ -152,12 +147,12 @@ public final class LogicalFunctions
 					"than minimum required number=\"%s\"",
 					values.length, n.get()));
 		}
-		if(n.get() > Integer.MAX_VALUE){
+		if(n.get() > java.lang.Integer.MAX_VALUE){
 			throw new IllegalArgumentException(String.format(
 					"First parameter=\"%s\" is bigger than=\"%d\"",
-					n, Integer.MAX_VALUE));
+					n, java.lang.Integer.MAX_VALUE));
 		}
-		BooleanValue TRUE = XacmlTypes.BOOLEAN.of(true);
+		BooleanVal TRUE = XacmlTypes.BOOLEAN.ofAny(true);
 		if(n.get() == 0){
 			return TRUE;
 		}
@@ -172,6 +167,6 @@ public final class LogicalFunctions
 				}
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(false);
+		return XacmlTypes.BOOLEAN.ofAny(false);
 	}
 }

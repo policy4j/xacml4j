@@ -36,7 +36,7 @@ public class AttributeResolverTestSupportTest extends AttributeResolverTestSuppo
 	@Test
 	public void testCheckHasAttribute() throws Exception {
 		Map<String, BagOfValues> attributeBag = ImmutableMap.of(
-				"key1", STRING.bagOf(STRING.of("value1"), STRING.of("value2")));
+				"key1", STRING.bagOf(STRING.ofAny("value1"), STRING.ofAny("value2")));
 
 		checkHasAttribute(attributeBag, "key1", STRING, "value1", "value2");
 

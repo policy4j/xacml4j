@@ -38,15 +38,15 @@ public class AttributeAssignmentTest
 		AttributeAssignment a0 =  AttributeAssignment.builder()
 				.attributeId("testId")
 				.category(CategoryId.ACTION)
-				.value(XacmlTypes.INTEGER.of(10))
+				.value(XacmlTypes.INTEGER.ofAny(10))
 				.build();
 		assertEquals("testId", a0.getAttributeId());
 		assertEquals(CategoryId.ACTION, a0.getCategory().get());
-		assertEquals(XacmlTypes.INTEGER.of(10), a0.getAttribute());
+		assertEquals(XacmlTypes.INTEGER.ofAny(10), a0.getAttribute());
 		AttributeAssignment a1 =  AttributeAssignment.builder()
 				.attributeId("testId")
 				.category(CategoryId.ACTION)
-				.value(XacmlTypes.INTEGER.of(10))
+				.value(XacmlTypes.INTEGER.ofAny(10))
 				.build();
 		assertEquals(a0, a1);
 	}

@@ -22,9 +22,9 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.Collection;
-
 import org.xacml4j.v30.policy.function.FunctionProvider;
+
+import java.util.Collection;
 
 /**
  * An implementation of {@link FunctionProvider} which

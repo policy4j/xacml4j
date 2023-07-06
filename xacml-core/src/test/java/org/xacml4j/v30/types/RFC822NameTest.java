@@ -22,11 +22,10 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
-import org.xacml4j.v30.RFC822Name;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 public class RFC822NameTest
 {
@@ -57,5 +56,17 @@ public class RFC822NameTest
 		assertTrue(n.matches("east.test.org"));
 		assertTrue(n.matches("test@east.test.org"));
 		assertTrue(n.matches(".test.org"));
+	}
+
+	@Test
+	public void testEquals()
+	{
+		Value n0 = XacmlTypes.RFC822NAME.ofAny("test0@test.org");
+		Value n1 = XacmlTypes.RFC822NAME.ofAny("test1@test.org");
+		Value n2 = XacmlTypes.RFC822NAME.ofAny("test0@TEST.org");
+		Value n3 = XacmlTypes.RFC822NAME.ofAny("TEST0@test.org");
+		assertFalse(n0.equals(n1));
+		assertTrue(n0.equals(n2));
+		assertFalse(n0.equals(n3));
 	}
 }

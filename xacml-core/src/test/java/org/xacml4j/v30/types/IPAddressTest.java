@@ -22,17 +22,53 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import org.junit.Test;
 import org.xacml4j.util.IPAddressUtils;
-import org.xacml4j.v30.IPAddress;
-import org.xacml4j.v30.PortRange;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 
 public class IPAddressTest
 {
+	
+	@Test
+	public void testToXacmlStringIPV4()
+	{
+		IPAddress a0 = XacmlTypes.IPADDRESS.ofAny("127.0.0.1");
+		assertEquals("127.0.0.1", TypeToString.Types.IPADDRESS.toString(a0));
+		IPAddress a1 = XacmlTypes.IPADDRESS.ofAny("127.0.0.1/255.255.255.0");
+		assertEquals("127.0.0.1/255.255.255.0", TypeToString.Types.IPADDRESS.toString(a1));
+		IPAddress a2 =
+				IPAddress.builder()
+				.address("127.0.0.1")
+				.mask("255.255.255.0")
+				.portRange("1024-2048")
+				.build();
+		IPAddress a3 = XacmlTypes.IPADDRESS.ofAny("127.0.0.1/255.255.255.0:1024-2048");
+		assertEquals("127.0.0.1/255.255.255.0:1024-2048", TypeToString.Types.IPADDRESS.toString(a2));
+		assertEquals(a2, a3);
+	}
+
+	@Test
+	public void testToXacmlStringIPV6()
+	{
+		IPAddress a0 = XacmlTypes.IPADDRESS.ofAny("[2001:0db8:85a3:0000:0000:8a2e:0370:7334]");
+		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]", TypeToString.Types.IPADDRESS.toString(a0));
+		IPAddress a1 = XacmlTypes.IPADDRESS.ofAny("[2001:db8:85a3:0:0:8a2e:370:7334]/[::0]");
+		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]/[0:0:0:0:0:0:0:0]", TypeToString.Types.IPADDRESS.toString(a1));
+	}
+
+	@Test
+	public void testParseIPV4()
+	{
+		IPAddress v = (IPAddress)TypeToString.Types.IPADDRESS.fromString("127.0.0.1/127.0.0.1:80");
+		assertNotNull(v);
+		assertEquals(IPAddressUtils.parseAddress("127.0.0.1"), v.getAddress());
+		assertEquals(IPAddressUtils.parseAddress("127.0.0.1"), v.getMask());
+		assertEquals(PortRange.getSinglePort(80), v.getRange());
+	}
+
 	@Test
 	public void testIpv4Address()
 	{
@@ -68,14 +104,12 @@ public class IPAddressTest
 		assertEquals(IPAddressUtils.parseAddress("2001:0db8:85a3:0000:0000:8a2e:0370:7334"),  a.getAddress());
 		assertNull(a.getMask());
 		assertEquals(PortRange.getAnyPort(), a.getRange());
-		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]", a.toString());
 		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]", a.toXacmlString());
 
 		a = IPAddress.builder().address("2001:0db8:85a3:0000:0000:8a2e:0370:7334").portRange("1024-2048").build();
 		assertEquals(IPAddressUtils.parseAddress("2001:0db8:85a3:0000:0000:8a2e:0370:7334"),  a.getAddress());
 		assertNull(a.getMask());
 		assertEquals(PortRange.getRange(1024, 2048), a.getRange());
-		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]:1024-2048", a.toString());
 		assertEquals("[2001:db8:85a3:0:0:8a2e:370:7334]:1024-2048", a.toXacmlString());
 
 

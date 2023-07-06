@@ -31,11 +31,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Content;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.TypeCapability;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.types.EntityValue;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -246,7 +245,7 @@ public interface TypeToGSon extends TypeCapability
 			public JsonElement toJson(Value v, JsonSerializationContext ctx) {
 				Entity entity = ((EntityValue)v).get();
 				JsonObject o = new JsonObject();
-				JsonElement element = ctx.serialize(entity.getAttributes());
+				JsonElement element = ctx.serialize(entity.find());
 				o.add(JsonProperties.ATTRIBUTE_PROPERTY, element);
 				entity.getContent().ifPresent(c->o.addProperty(JsonProperties.CONTENT_PROPERTY, c.asString()));
 				return o;

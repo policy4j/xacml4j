@@ -135,43 +135,43 @@ public class SetFunctionTest
 	@Test
 	public void testBooleanUnion()
 	{
-		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)).build();
-		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
+		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)).build();
+		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)).build();
 		BagOfValues c = SetFunctions.booleanUnion(a, b);
 		assertEquals(2, c.size());
-		assertTrue(c.contains(XacmlTypes.BOOLEAN.of(true)));
-		assertTrue(c.contains(XacmlTypes.BOOLEAN.of(false)));
+		assertTrue(c.contains(XacmlTypes.BOOLEAN.ofAny(true)));
+		assertTrue(c.contains(XacmlTypes.BOOLEAN.ofAny(false)));
 	}
 
 	@Test
 	public void testBooleanSetEquals()
 	{
-		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
-		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(true)).build();
+		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)).build();
+		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)).build();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(true), SetFunctions.booleanSetEquals(a, b));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), SetFunctions.booleanSetEquals(a, b));
 	}
 
 	@Test
 	public void testBooleanIntersection()
 	{
-		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
-		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)).build();
+		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)).build();
+		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)).build();
 
-		assertEquals(XacmlTypes.BOOLEAN.of(true).toBag(), SetFunctions.booleanIntersection(a, b));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true).toBag(), SetFunctions.booleanIntersection(a, b));
 	}
 
 	@Test
 	public void testBooleanIntercetion()
 	{
-		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(true)).build();
-		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(false), XacmlTypes.BOOLEAN.of(false)).build();
+		BagOfValues a = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)).build();
+		BagOfValues b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(false)).build();
 		BagOfValues c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(0, c.size());
 
-		b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.of(true), XacmlTypes.BOOLEAN.of(false)).build();
+		b = XacmlTypes.BOOLEAN.bagBuilder().attribute(XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)).build();
 		c = SetFunctions.booleanIntersection(a, b);
 		assertEquals(1, c.size());
-		assertTrue(c.contains(XacmlTypes.BOOLEAN.of(true)));
+		assertTrue(c.contains(XacmlTypes.BOOLEAN.ofAny(true)));
 	}
 }

@@ -22,15 +22,11 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import org.xacml4j.v30.policy.function.XacmlFuncParam;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.policy.function.XacmlLegacyFunc;
-import org.xacml4j.v30.types.DateTimeValue;
-import org.xacml4j.v30.types.DateValue;
-import org.xacml4j.v30.types.DayTimeDurationValue;
-import org.xacml4j.v30.types.YearMonthDurationValue;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.ISO8601Date;
+import org.xacml4j.v30.types.ISO8601DateTime;
+import org.xacml4j.v30.types.ISO8601DayTimeDuration;
+import org.xacml4j.v30.types.ISO8601YearMonthDuration;
 
 
 /**
@@ -47,60 +43,60 @@ public final class DateTimeArithmeticFunctions
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-add-dayTimeDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-add-dayTimeDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	public static DateTimeValue add(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") DateTimeValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") DayTimeDurationValue b)
+	public static ISO8601DateTime add(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") ISO8601DateTime a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") ISO8601DayTimeDuration b)
 	{
-		return a.add(b);
+		return a.plus(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-dayTimeDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-dayTimeDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	public static DateTimeValue subtract(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") DateTimeValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") DayTimeDurationValue b)
+	public static ISO8601DateTime subtract(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") ISO8601DateTime a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") ISO8601DayTimeDuration b)
 	{
-		return a.subtract(b);
+		return a.minus(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-add-yearMonthDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-add-yearMonthDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	public static DateTimeValue add(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") DateTimeValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") YearMonthDurationValue b)
+	public static ISO8601DateTime add(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") ISO8601DateTime a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") ISO8601YearMonthDuration b)
 	{
-		return a.add(b);
+		return a.plus(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-yearMonthDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-subtract-yearMonthDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dateTime")
-	public static DateTimeValue subtract(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") DateTimeValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") YearMonthDurationValue b)
+	public static ISO8601DateTime subtract(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dateTime") ISO8601DateTime a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") ISO8601YearMonthDuration b)
 	{
-		return a.subtract(b);
+		return a.minus(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-add-yearMonthDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-add-yearMonthDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#date")
-	public static DateValue add(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") DateValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") YearMonthDurationValue b)
+	public static ISO8601Date add(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") ISO8601Date a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") ISO8601YearMonthDuration b)
 	{
-		return a.add(b);
+		return a.plus(b);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-subtract-yearMonthDuration")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-subtract-yearMonthDuration")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#date")
-	public static DateValue subtract(
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") DateValue a,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") YearMonthDurationValue b)
+	public static ISO8601Date subtract(
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#date") ISO8601Date a,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") ISO8601YearMonthDuration b)
 	{
-		return a.subtract(b);
+		return a.minus(b);
 	}
 }

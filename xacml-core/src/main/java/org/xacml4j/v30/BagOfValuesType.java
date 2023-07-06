@@ -25,6 +25,7 @@ package org.xacml4j.v30;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.types.ValueType;
 
 /**
  * Represents a XACML bag of attributes type.

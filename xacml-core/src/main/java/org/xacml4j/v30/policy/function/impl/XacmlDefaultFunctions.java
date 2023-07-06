@@ -22,11 +22,10 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import com.google.auto.service.AutoService;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-
-import com.google.auto.service.AutoService;
 
 @AutoService(FunctionProvider.class)
 @XacmlFunctionProvider(description = "XACML 3.0 standard functions")

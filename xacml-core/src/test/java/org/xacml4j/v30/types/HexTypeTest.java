@@ -36,8 +36,8 @@ public class HexTypeTest
 	{
 		byte[] v0 = {0, 1, 3, 5};
 		byte[] v1 = {0, 1, 3, 5};
-		HexBinaryValue value1 = XacmlTypes.HEXBINARY.of(v0);
-		HexBinaryValue value2 = XacmlTypes.HEXBINARY.of(v1);
+		HexBinary value1 = XacmlTypes.HEXBINARY.ofAny(v0);
+		HexBinary value2 = XacmlTypes.HEXBINARY.ofAny(v1);
 		assertEquals(value1, value2);
 	}
 
@@ -45,8 +45,8 @@ public class HexTypeTest
 	public void testCreateValueFromString()
 	{
 		byte[] data = {0, 1, 3, 5};
-		HexBinaryValue value1 = XacmlTypes.HEXBINARY.of("00010305");
-		HexBinaryValue value2 = XacmlTypes.HEXBINARY.of(data);
+		HexBinary value1 = XacmlTypes.HEXBINARY.ofAny("00010305");
+		HexBinary value2 = XacmlTypes.HEXBINARY.ofAny(data);
 		assertEquals(value1, value2);
 		BagOfValues bag = XacmlTypes.HEXBINARY.bagBuilder().value(data, "00010305").build();
 		assertEquals(XacmlTypes.HEXBINARY, bag.getBagValueType());

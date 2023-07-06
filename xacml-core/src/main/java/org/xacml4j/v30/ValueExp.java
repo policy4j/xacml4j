@@ -21,6 +21,9 @@ package org.xacml4j.v30;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
+
+import org.xacml4j.v30.types.ValueType;
+
 /**
  * Value expressions which evaluates to itself.
  *
@@ -35,8 +38,8 @@ public interface ValueExp extends Expression
 	 * @return itself
 	 * @throws EvaluationException
 	 */
-	default Expression evaluate(
-			EvaluationContext context) throws EvaluationException{
-		return this;
+	default <T extends Expression> T evaluate(EvaluationContext context)
+			throws EvaluationException{
+		return (T)this;
 	}
 }

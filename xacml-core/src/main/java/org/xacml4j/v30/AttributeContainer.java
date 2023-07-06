@@ -38,6 +38,8 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
 /**
  * Base class for XACML attribute containers
@@ -54,7 +56,6 @@ public class AttributeContainer
 		this.attributes = b.attrsBuilder.build();
 	}
 
-
 	/**
 	 * Gets all attributes with a given identifier
 	 *
@@ -63,7 +64,7 @@ public class AttributeContainer
 	 * attributes with a given identifier empty collection
 	 * is returned
 	 */
-	public Collection<Attribute> getAttributes(String attributeId){
+	public Collection<Attribute> get(String attributeId){
 		return attributes.get(attributeId);
 	}
 
@@ -75,7 +76,7 @@ public class AttributeContainer
 	 * @return {@link Attribute} defaultProvider or {@code null}
 	 * if no attribute available with a given identifier
 	 */
-	public Optional<Attribute> getOnlyAttribute(String attributeId){
+	public Optional<Attribute> single(String attributeId){
 		return attributes.get(attributeId)
 				.stream()
 				.findFirst();
@@ -90,13 +91,14 @@ public class AttributeContainer
 	 * @return a collection of attributes with a given identifier
 	 * and given issuer
 	 */
-	public Collection<Attribute> getAttributes(final String attributeId, final String issuer){
+	public Collection<Attribute> find(final String attributeId, final String issuer){
 		return attributes.get(attributeId)
 				          .stream()
-				         .filter(a -> issuer!= null?Objects.equals(issuer, a.getIssuer()):true).collect(Collectors.toList());
+				         .filter(a -> issuer!= null?
+								 Objects.equals(issuer, a.getIssuer()):true).collect(Collectors.toList());
 	}
 
-	public Map<String, Attribute> getAttributes(Predicate<Attribute> attributePredicate){
+	public Map<String, Attribute> find(Predicate<Attribute> attributePredicate){
 		return stream().filter(attributePredicate)
 				.collect(Collectors.toMap(a->a.getAttributeId(), a->a));
 	}
@@ -113,7 +115,7 @@ public class AttributeContainer
 	 * @return immutable collection of {@link Attribute}
 	 * instances
 	 */
-	public Collection<Attribute> getAttributes() {
+	public Collection<Attribute> find() {
 		return attributes.values();
 	}
 
@@ -126,21 +128,16 @@ public class AttributeContainer
 	 * instances
 	 */
 	public Collection<Attribute> getIncludeInResultAttributes(){
-		return Collections2.filter(attributes.values(), new Predicate<>() {
-			@Override
-			public boolean apply(Attribute attr) {
-				return attr.isIncludeInResult();
-			}
-		});
+		return Collections2.filter(attributes.values(), attr -> attr.isIncludeInResult());
 	}
 
 	/**
-	 * @see AttributeContainer#getAttributeValues(String, String, ValueType)
+	 * @see AttributeContainer#findAttributeValues(String, String, ValueType)
 	 */
-	public Collection<Value> getAttributeValues(
+	public Collection<Value> findAttributeValues(
 			String attributeId,
 			ValueType dataType){
-		return getAttributeValues(attributeId, null, dataType);
+		return findAttributeValues(attributeId, null, dataType);
 	}
 
 	/**
@@ -152,10 +149,10 @@ public class AttributeContainer
 	 * @param type an attribute value data type
 	 * @return a collection of {@link Value} instances
 	 */
-	public Collection<Value> getAttributeValues(
+	public Collection<Value> findAttributeValues(
 			String attributeId, String issuer, final ValueType type){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> found = getAttributes(attributeId, issuer);
+		Collection<Attribute> found = find(attributeId, issuer);
 		ImmutableList.Builder<Value> b = ImmutableList.builder();
 		for(Attribute a : found){
 			b.addAll(a.getValuesByType(type));

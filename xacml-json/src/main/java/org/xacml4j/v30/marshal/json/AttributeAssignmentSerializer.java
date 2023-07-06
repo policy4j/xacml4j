@@ -31,7 +31,7 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 import org.xacml4j.v30.AttributeAssignment;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonElement;

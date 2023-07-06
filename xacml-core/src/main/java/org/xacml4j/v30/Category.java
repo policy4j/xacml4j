@@ -23,6 +23,7 @@ package org.xacml4j.v30;
  */
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.types.Entity;
 
 
 /**
@@ -92,6 +94,17 @@ public final class Category implements Serializable
 	}
 
 
+	/**
+	 * Finds all defaultProvider of {@link Attribute} with
+	 * {@link Attribute#isIncludeInResult()} returning
+	 * {@code true}
+	 *
+	 * @return a collection of {@link Attribute}
+	 * instances
+	 */
+	public Collection<Attribute> getIncludeInResultAttributes(){
+		return entity.find(a->a.isIncludeInResult());
+	}
 	/**
 	 * Constructs {@link Category.Builder} for given
 	 * attribute category

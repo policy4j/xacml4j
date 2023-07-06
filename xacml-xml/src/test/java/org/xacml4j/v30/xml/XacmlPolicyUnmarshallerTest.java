@@ -64,7 +64,7 @@ import org.xacml4j.v30.policy.Target;
 import org.xacml4j.v30.policy.VariableDefinition;
 import org.xacml4j.v30.policy.VariableReference;
 import org.xacml4j.v30.policy.function.FunctionProvider;
-import org.xacml4j.v30.types.StringValue;
+import org.xacml4j.v30.types.String;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
@@ -90,7 +90,7 @@ public class XacmlPolicyUnmarshallerTest
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T extends CompositeDecisionRule> T getPolicy(String name) throws Exception
+	private static <T extends CompositeDecisionRule> T getPolicy(java.lang.String name) throws Exception
 	{
 		InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
 		assertThat(stream, notNullValue());
@@ -355,7 +355,7 @@ public class XacmlPolicyUnmarshallerTest
 
 		AttributeAssignmentExpression o1AttrExp2 = Iterables.get(o1AttrExps, 1);
 		assertThat(o1AttrExp2.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));
-		assertThat(o1AttrExp2.getExpression(), instanceOf(StringValue.class));
+		assertThat(o1AttrExp2.getExpression(), instanceOf(String.class));
 
 		AttributeAssignmentExpression o1AttrExp3 = Iterables.get(o1AttrExps, 2);
 		assertThat(o1AttrExp3.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));

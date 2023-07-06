@@ -34,8 +34,8 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;

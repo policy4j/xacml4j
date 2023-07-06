@@ -40,7 +40,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
@@ -71,8 +71,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						      .attribute(
-								Attribute.builder("testId1").value(XacmlTypes.STRING.of("value0")).build(),
-								Attribute.builder("testId2").value(XacmlTypes.STRING.of("value1")).build())
+								Attribute.builder("testId1").value(XacmlTypes.STRING.ofAny("value0")).build(),
+								Attribute.builder("testId2").value(XacmlTypes.STRING.ofAny("value1")).build())
 						      .build())
 				.build();
 
@@ -82,8 +82,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-								Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build())
+								Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+								Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build())
 						.build())
 				.build();
 
@@ -93,8 +93,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-								Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-								Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build())
+								Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+								Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build())
 						.build())
 				.build();
 
@@ -104,8 +104,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId5").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId6").value(XacmlTypes.STRING.of("value1")).build())
+						Attribute.builder("testId5").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId6").value(XacmlTypes.STRING.ofAny("value1")).build())
 						.build())
 				.build();
 
@@ -115,8 +115,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId7").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId8").value(XacmlTypes.STRING.of("value1")).build()).build())
+						Attribute.builder("testId7").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId8").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 
 		RequestReference reference0 = RequestReference.builder()
@@ -180,8 +180,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId3").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId4").value(XacmlTypes.STRING.of("value1")).build()).build())
+						Attribute.builder("testId3").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId4").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 
 		Category attr1 = Category
@@ -190,8 +190,8 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.entity(
 						Entity.builder()
 						.attribute(
-						Attribute.builder("testId5").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId6").value(XacmlTypes.STRING.of("value1")).build()).build())
+						Attribute.builder("testId5").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId6").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 
 		RequestContext request = RequestContext

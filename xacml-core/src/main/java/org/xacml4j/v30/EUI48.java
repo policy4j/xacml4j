@@ -219,11 +219,9 @@ public class EUI48 implements Externalizable, Cloneable,
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
 	 *
-	 * @param addr
-	 *            Binary representation of the ethernet address
-	 *
-	 * @throws NumberFormatException
-	 *             if addr is invalid (less or more than 6 bytes in array)
+	 * @param addr Binary representation of the ethernet address
+	 * @return EUI instance representing the given address
+	 * @throws NumberFormatException if addr is invalid (less or more than 6 bytes in array)
 	 */
 	public static EUI48 valueOf(byte[] addr)
 			throws NumberFormatException {
@@ -237,11 +235,9 @@ public class EUI48 implements Externalizable, Cloneable,
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
 	 *
-	 * @param addr
-	 *            Binary representation of the ethernet address
-	 *
-	 * @throws NumberFormatException
-	 *             if addr is invalid (less or more than 6 ints in array)
+	 * @param addr Binary representation of the ethernet address
+	 * @return EUI instance representing the given address
+	 * @throws NumberFormatException if addr is invalid (less or more than 6 ints in array)
 	 */
 	public static EUI48 valueOf(int[] addr)
 			throws NumberFormatException {
@@ -260,11 +256,9 @@ public class EUI48 implements Externalizable, Cloneable,
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
 	 *
-	 * @param addrStr
-	 *            String representation of the ethernet address
-	 *
-	 * @throws NumberFormatException
-	 *             if addr representation is invalid
+	 * @param addrStr String representation of the ethernet address
+	 * @return EUI instance representing the given address
+	 * @throws NumberFormatException if addr representation is invalid
 	 */
 	public static EUI48 valueOf(String addrStr)
 			throws NumberFormatException {
@@ -279,8 +273,8 @@ public class EUI48 implements Externalizable, Cloneable,
 	 * Note that calling this method returns the same result as would using the
 	 * matching constructor.
 	 *
-	 * @param addr
-	 *            Long int representation of the ethernet address
+	 * @param addr Long int representation of the ethernet address
+	 * @return EUI instance representing the given address
 	 */
 	public static EUI48 valueOf(long addr) {
 		return new EUI48(addr);
@@ -381,6 +375,8 @@ public class EUI48 implements Externalizable, Cloneable,
 	/**
 	 * Method that can be used to check if this address refers to a multicast
 	 * address. Such addresses are never assigned to individual network cards.
+	 *
+	 * @return {@code true} if the address is multicast; returns {@code false} otherwise
 	 */
 	public boolean isMulticastAddress() {
 		return (((int) (_address >> 40)) & 0x01) != 0;
@@ -391,6 +387,8 @@ public class EUI48 implements Externalizable, Cloneable,
 	 * "locally administered address" (see
 	 * [http://en.wikipedia.org/wiki/MAC_address] for details). Such addresses
 	 * are not assigned to individual network cards.
+	 *
+	 * @return {@code true} if the address is locally administered; returns {@code false} otherwise
 	 */
 	public boolean isLocallyAdministeredAddress() {
 		return (((int) (_address >> 40)) & 0x02) != 0;

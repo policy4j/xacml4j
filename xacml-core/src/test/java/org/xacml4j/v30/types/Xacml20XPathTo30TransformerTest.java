@@ -37,8 +37,8 @@ public class Xacml20XPathTo30TransformerTest
 	@Test
 	public void testXacml20StringXPathToXPathExpression()
 	{
-		StringValue xpath = StringValue.of("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
-		assertEquals(XacmlTypes.XPATH.of("//md:record/md:patient/md:patient-number/text()", CategoryId.RESOURCE), fromXacml20String(xpath));
+		StringVal xpath = StringVal.of("//Request/Resource/ResourceContent/md:record/md:patient/md:patient-number/text()");
+		assertEquals(XacmlTypes.XPATH.ofAny("//md:record/md:patient/md:patient-number/text()", CategoryId.RESOURCE), fromXacml20String(xpath));
 	}
 
 	// FIXME: Implement transformation

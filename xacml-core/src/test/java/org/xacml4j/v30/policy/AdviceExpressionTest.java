@@ -64,7 +64,7 @@ public class AdviceExpressionTest
 				.builder("attributeId0")
 						.category(CategoryId.SUBJECT_ACCESS)
 								.issuer("issuer0")
-						.expression(XacmlTypes.INTEGER.of(1))
+						.expression(XacmlTypes.INTEGER.ofAny(1))
 						.build();
 		this.expression = c.createMock(Expression.class);
 		attrExp1 = AttributeAssignmentExpression
@@ -90,7 +90,7 @@ public class AdviceExpressionTest
 	@Test
 	public void testEvaluateAdviceExpression() throws CoreException
 	{
-		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.of(false));
+		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
 		c.replay();
 
 		AdviceExpression exp = AdviceExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
@@ -101,12 +101,12 @@ public class AdviceExpressionTest
 		assertEquals("attributeId0", a0.getAttributeId());
 		assertEquals(Effect.DENY, advice.getFulfillOn());
 		assertEquals(CategoryId.SUBJECT_ACCESS, a0.getCategory().get());
-		assertEquals(XacmlTypes.INTEGER.of(1), a0.getAttribute());
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(CategoryId.RESOURCE, a1.getCategory().get());
-		assertEquals(XacmlTypes.BOOLEAN.of(false), a1.getAttribute());
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), a1.getAttribute());
 
 		c.verify();
 	}

@@ -56,21 +56,21 @@ public class ParamTypeSequenceTest
 		List<Expression> p = new LinkedList<Expression>();
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.DOUBLE.of(0.1));
+		p.add(XacmlTypes.DOUBLE.ofAny(0.1));
 		assertFalse(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("1"));
+		p.add(XacmlTypes.STRING.ofAny("1"));
 		assertTrue(specAttrZeroOrMore.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.STRING.of("3"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.STRING.ofAny("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.STRING.of("3"));
-		p.add(XacmlTypes.STRING.of("4"));
-		p.add(XacmlTypes.STRING.of("5"));
-		p.add(XacmlTypes.STRING.of("6"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.STRING.ofAny("3"));
+		p.add(XacmlTypes.STRING.ofAny("4"));
+		p.add(XacmlTypes.STRING.ofAny("5"));
+		p.add(XacmlTypes.STRING.ofAny("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 
@@ -80,21 +80,21 @@ public class ParamTypeSequenceTest
 		List<Expression> p = new LinkedList<Expression>();
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.DOUBLE.of(0.1));
+		p.add(XacmlTypes.DOUBLE.ofAny(0.1));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("1"));
+		p.add(XacmlTypes.STRING.ofAny("1"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.STRING.of("3"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.STRING.ofAny("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.STRING.of("3"));
-		p.add(XacmlTypes.STRING.of("4"));
-		p.add(XacmlTypes.STRING.of("5"));
-		p.add(XacmlTypes.STRING.of("6"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.STRING.ofAny("3"));
+		p.add(XacmlTypes.STRING.ofAny("4"));
+		p.add(XacmlTypes.STRING.ofAny("5"));
+		p.add(XacmlTypes.STRING.ofAny("6"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 
@@ -103,27 +103,27 @@ public class ParamTypeSequenceTest
 	{
 		List<Expression> p = new LinkedList<Expression>();
 		assertFalse(specAttrOneOrMore.validate(p.listIterator()));
-		p.add(XacmlTypes.STRING.of("1"));
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.STRING.of("3"));
+		p.add(XacmlTypes.STRING.ofAny("1"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.STRING.ofAny("3"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("1"));
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.DOUBLE.of(0.1));
+		p.add(XacmlTypes.STRING.ofAny("1"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.DOUBLE.ofAny(0.1));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("1"));
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.STRING.of("3"));
-		p.add(XacmlTypes.STRING.of("4"));
+		p.add(XacmlTypes.STRING.ofAny("1"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.STRING.ofAny("3"));
+		p.add(XacmlTypes.STRING.ofAny("4"));
 		assertTrue(specAttrFromOneToFour.validate(p.listIterator()));
 		p = new LinkedList<Expression>();
-		p.add(XacmlTypes.STRING.of("1"));
-		p.add(XacmlTypes.STRING.of("2"));
-		p.add(XacmlTypes.STRING.of("3"));
-		p.add(XacmlTypes.STRING.of("4"));
-		p.add(XacmlTypes.STRING.of("5"));
+		p.add(XacmlTypes.STRING.ofAny("1"));
+		p.add(XacmlTypes.STRING.ofAny("2"));
+		p.add(XacmlTypes.STRING.ofAny("3"));
+		p.add(XacmlTypes.STRING.ofAny("4"));
+		p.add(XacmlTypes.STRING.ofAny("5"));
 		assertFalse(specAttrFromOneToFour.validate(p.listIterator()));
 	}
 }

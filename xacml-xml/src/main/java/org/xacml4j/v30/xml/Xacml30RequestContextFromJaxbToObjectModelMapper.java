@@ -62,7 +62,7 @@ import org.xacml4j.v30.CategoryReference;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -71,7 +71,7 @@ import org.xacml4j.v30.StatusCode;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.StatusDetail;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.policy.PolicyIDReference;
 import org.xacml4j.v30.policy.PolicySetIDReference;
 import org.xacml4j.v30.RequestContext;
@@ -250,7 +250,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		AttributesType attributes = new AttributesType();
 		attributes.setId(a.getReferenceId().orElse(null));
 		attributes.setCategory(a.getCategoryId().getId());
-		for(Attribute attr : a.getEntity().getAttributes()){
+		for(Attribute attr : a.getEntity().find()){
 			attributes.getAttribute().add(create(attr));
 		}
 		return attributes;

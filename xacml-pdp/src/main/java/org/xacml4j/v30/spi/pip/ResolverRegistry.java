@@ -112,11 +112,11 @@ public interface ResolverRegistry
 					ZonedDateTime currentDateTime = context.getCurrentDateTime();
 					Map<String, BagOfValues> v = new HashMap<String, BagOfValues>();
 					v.put(WellKnownAttributeIds.CURRENT_TIME.getId(),
-					      TIME.of(currentDateTime).toBag());
+					      TIME.ofAny(currentDateTime).toBag());
 					v.put(WellKnownAttributeIds.CURRENT_DATE.getId(),
-					      DATE.of(currentDateTime).toBag());
+					      DATE.ofAny(currentDateTime).toBag());
 					v.put(WellKnownAttributeIds.CURRENT_DATETIME.getId(),
-					      DATETIME.of(currentDateTime).toBag());
+					      DATETIME.ofAny(currentDateTime).toBag());
 					return v;
 				});
 

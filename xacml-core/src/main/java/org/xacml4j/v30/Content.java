@@ -43,6 +43,9 @@ import org.xacml4j.v30.content.XmlContent;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * XACML {@link Entity} content abstraction
@@ -277,17 +280,23 @@ public interface Content
         /**
          * Denotes XPATH expression
          */
-        XPATH(Type.XML_UTF8),
+        XPATH(Type.XML_UTF8, XacmlTypes.XPATH),
 
         /**
          * Denotes JSON PATH expression
          */
-        JPATH(Type.JSON_UTF8);
+        JPATH(Type.JSON_UTF8, XacmlTypes.XPATH);
 
         private Type type;
+        private ValueType xacmlType;
 
-        PathType(Type type){
+        PathType(Type type, ValueType xacmlType){
             this.type = type;
+            this.xacmlType = xacmlType;
+        }
+
+        public ValueType getXacmlType(){
+            return xacmlType;
         }
 
         public Type getContentType(){

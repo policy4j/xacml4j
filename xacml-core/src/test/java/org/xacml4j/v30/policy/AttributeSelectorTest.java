@@ -77,11 +77,11 @@ public class AttributeSelectorTest
 				.build();
 		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
-				XacmlTypes.DATE.of("1992-03-21").toBag()));
+				XacmlTypes.DATE.ofAny("1992-03-21").toBag()));
 		control.replay();
 		Expression v = ref.evaluate(context);
 		control.verify();
-		assertEquals(XacmlTypes.DATE.of("1992-03-21").toBag(), v);
+		assertEquals(XacmlTypes.DATE.ofAny("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 
 	}
@@ -103,11 +103,11 @@ public class AttributeSelectorTest
 				.build();
 		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(Optional.of(
-				XacmlTypes.DATE.of("1992-03-21").toBag()));
+				XacmlTypes.DATE.ofAny("1992-03-21").toBag()));
 		control.replay();
 		Expression v = ref.evaluate(context);
 		control.verify();
-		assertEquals(XacmlTypes.DATE.of("1992-03-21").toBag(), v);
+		assertEquals(XacmlTypes.DATE.ofAny("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 	}
 

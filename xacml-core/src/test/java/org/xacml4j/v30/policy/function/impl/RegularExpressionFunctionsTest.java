@@ -34,9 +34,9 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
-import org.xacml4j.v30.types.AnyURIValue;
-import org.xacml4j.v30.types.RFC822NameValue;
-import org.xacml4j.v30.types.StringValue;
+import org.xacml4j.v30.types.AnyURI;
+import org.xacml4j.v30.types.RFC822Name;
+import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -72,57 +72,57 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testXacmlRegExpWithSpaceBugTrimming() {
-		StringValue regexp1 = XacmlTypes.STRING.of("   This  is n*o*t* *IT!  ");
-		StringValue regexp2 = XacmlTypes.STRING.of("  *This .*is not IT! *");
-		StringValue input1 = XacmlTypes.STRING.of("   This  is not IT!  ");
+		StringVal regexp1 = XacmlTypes.STRING.ofAny("   This  is n*o*t* *IT!  ");
+		StringVal regexp2 = XacmlTypes.STRING.ofAny("  *This .*is not IT! *");
+		StringVal input1 = XacmlTypes.STRING.ofAny("   This  is not IT!  ");
 		c.replay();
-		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.of(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
 		c.verify();
 		c.reset();
 		c.replay();
-		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp2, input1), equalTo(XacmlTypes.BOOLEAN.of(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp2, input1), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
 		c.verify();
 	}
 
 	@Test
 	public void testRegExpMatchFromIIC168ConformanceTest() {
-		StringValue regexp1 = XacmlTypes.STRING.of("   This  is n*o*t* *IT!  ");
-		StringValue input1 = XacmlTypes.STRING.of("   This  is IT!  ");
-		StringValue input2 = XacmlTypes.STRING.of("   This  is not IT!  ");
+		StringVal regexp1 = XacmlTypes.STRING.ofAny("   This  is n*o*t* *IT!  ");
+		StringVal input1 = XacmlTypes.STRING.ofAny("   This  is IT!  ");
+		StringVal input2 = XacmlTypes.STRING.ofAny("   This  is not IT!  ");
 		c.replay();
-		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.of(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
 		c.verify();
 		c.reset();
 		c.replay();
-		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input2), equalTo(XacmlTypes.BOOLEAN.of(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input2), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
 		c.verify();
 	}
 
 	@Test
 	public void testStringRegExpMatch() throws EvaluationException {
-		StringValue regexp = XacmlTypes.STRING.of("S*,Value");
-		StringValue input = XacmlTypes.STRING.of("Some,Value");
+		StringVal regexp = XacmlTypes.STRING.ofAny("S*,Value");
+		StringVal input = XacmlTypes.STRING.ofAny("Some,Value");
 		c.replay();
-		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.of(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
 		c.verify();
 	}
 
 	@Test
 	public void testAnyURIRegExpMatch() throws EvaluationException {
-		StringValue regexp = XacmlTypes.STRING.of("http://www.test.org/public/*");
-		AnyURIValue input = XacmlTypes.ANYURI.of("http://www.test.org/public/test/a");
+		StringVal regexp = XacmlTypes.STRING.ofAny("http://www.test.org/public/*");
+		AnyURI input = XacmlTypes.ANYURI.ofAny("http://www.test.org/public/test/a");
 		c.replay();
-		assertThat(RegExpFunctions.anyURIRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.of(true)));
+		assertThat(RegExpFunctions.anyURIRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
 		c.verify();
 
 	}
 
 	@Test
 	public void testRFC822NameRegExpMatch() throws EvaluationException{
-		StringValue regexp = XacmlTypes.STRING.of(".*@example.com");
-		RFC822NameValue input = XacmlTypes.RFC822NAME.of("test@example.com");
+		StringVal regexp = XacmlTypes.STRING.ofAny(".*@example.com");
+		RFC822Name input = XacmlTypes.RFC822NAME.ofAny("test@example.com");
 		c.replay();
-		assertThat(RegExpFunctions.rfc822NameRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.of(true)));
+		assertThat(RegExpFunctions.rfc822NameRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
 		c.verify();
 	}
 }

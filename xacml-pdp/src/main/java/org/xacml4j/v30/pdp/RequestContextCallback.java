@@ -25,7 +25,7 @@ package org.xacml4j.v30.pdp;
 import java.util.Optional;
 
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 
 public interface RequestContextCallback
 {

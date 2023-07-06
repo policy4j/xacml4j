@@ -80,17 +80,17 @@ public class AttributeSetTest
 
 		AttributeSet v0 = AttributeSet
 				.builder(noIssuer)
-				.attribute("testId1", XacmlTypes.INTEGER.of(1).toBag())
-				.attribute("testId2", XacmlTypes.STRING.of("b").toBag())
+				.attribute("testId1", XacmlTypes.INTEGER.ofAny(1).toBag())
+				.attribute("testId2", XacmlTypes.STRING.ofAny("b").toBag())
 				.build();
 		AttributeSet v1 = AttributeSet
 				.builder(withIssuer)
-				.attribute("testId1", XacmlTypes.INTEGER.of(1).toBag())
-				.attribute("testId2", XacmlTypes.STRING.of("b").toBag())
+				.attribute("testId1", XacmlTypes.INTEGER.ofAny(1).toBag())
+				.attribute("testId2", XacmlTypes.STRING.ofAny("b").toBag())
 				.build();
 
-		assertEquals(v0.get("testId1").get(), XacmlTypes.INTEGER.of(1).toBag());
-		assertEquals(v0.get(key0).get(), XacmlTypes.INTEGER.of(1).toBag());
+		assertEquals(v0.get("testId1").get(), XacmlTypes.INTEGER.ofAny(1).toBag());
+		assertEquals(v0.get(key0).get(), XacmlTypes.INTEGER.ofAny(1).toBag());
 
 		assertEquals(v1.get(key1), Optional.empty());
 

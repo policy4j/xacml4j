@@ -35,11 +35,11 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.Content;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Result;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestSyntaxException;
@@ -160,14 +160,14 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		Entity.Builder builder = Entity
 				.builder()
 				.content(content);
-		for(Attribute a : e.getAttributes())
+		for(Attribute a : e.find())
 		{
 			if(a.getAttributeId().equals(MULTIPLE_CONTENT_SELECTOR)){
 				Attribute selectorAttr =
 						Attribute.builder(CONTENT_SELECTOR)
 						.issuer(a.getIssuer())
 						.includeInResult(a.isIncludeInResult())
-						.value(selectorType.of(
+						.value(selectorType.ofAny(
 								path, attributes.getCategoryId()))
 						.build();
 				if(LOG.isDebugEnabled()){

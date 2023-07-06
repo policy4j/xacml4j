@@ -22,35 +22,23 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.Value;
 import org.xacml4j.v30.ValueExpTypeInfo;
-import org.xacml4j.v30.ValueType;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
-import org.xacml4j.v30.policy.function.FunctionParametersValidator;
-import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
-import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParamAnyAttribute;
-import org.xacml4j.v30.policy.function.XacmlFuncParamAnyBag;
-import org.xacml4j.v30.policy.function.XacmlFuncParamFunctionReference;
-import org.xacml4j.v30.policy.function.XacmlFuncParamValidator;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnTypeResolver;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
-import com.google.common.base.Preconditions;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * XACML higher order functions
@@ -65,43 +53,43 @@ public final class HigherOrderFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue anyOf(
+	public static BooleanVal anyOf(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
-			@XacmlFuncParamAnyAttribute Value value,
+			@XacmlFuncParamAnyValue Value value,
 			@XacmlFuncParamAnyBag BagOfValues bag)
 		throws EvaluationException
 	{
 		for(Value valueFromBag : bag.values()){
-			BooleanValue r = ref.invoke(context, value, valueFromBag);
+			BooleanVal r = ref.invoke(context, value, valueFromBag);
 			if(r.get()){
-				return XacmlTypes.BOOLEAN.of(true);
+				return BooleanVal.of(true);
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(false);
+		return BooleanVal.of(false);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue allOf(
+	public static BooleanVal allOf(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
-			@XacmlFuncParamAnyAttribute Value value,
+			@XacmlFuncParamAnyValue Value value,
 			@XacmlFuncParamAnyBag BagOfValues bag)
 		throws EvaluationException
 	{
 		for(Value valueFromBag : bag.values()){
-			BooleanValue r = ref.invoke(context, value, valueFromBag);
+			BooleanVal r = ref.invoke(context, value, valueFromBag);
 			if(!r.get()){
-				return XacmlTypes.BOOLEAN.of(false);
+				return BooleanVal.of(false);
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(true);
+		return BooleanVal.of(true);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue anyOfAny(
+	public static BooleanVal anyOfAny(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfValues a,
@@ -110,18 +98,18 @@ public final class HigherOrderFunctions
 	{
 		for(Value aValue : a.values()){
 			for(Value bValue : b.values()){
-				BooleanValue r = ref.invoke(context, aValue, bValue);
+				BooleanVal r = ref.invoke(context, aValue, bValue);
 				if(r.get()){
-					return XacmlTypes.BOOLEAN.of(true);
+					return BooleanVal.of(true);
 				}
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(false);
+		return BooleanVal.of(false);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue allOfAny(
+	public static BooleanVal allOfAny(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfValues a,
@@ -135,12 +123,12 @@ public final class HigherOrderFunctions
 				break;
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(result);
+		return BooleanVal.of(result);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue anyOfAll(
+	public static BooleanVal anyOfAll(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfValues a,
@@ -151,15 +139,15 @@ public final class HigherOrderFunctions
 		{
 			boolean result = allOf(context, ref, va, b).get();
 			if(result){
-				return XacmlTypes.BOOLEAN.of(true);
+				return BooleanVal.of(true);
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(false);
+		return BooleanVal.of(false);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue allOfAll(
+	public static BooleanVal allOfAll(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
 			@XacmlFuncParamAnyBag BagOfValues a,
@@ -169,13 +157,13 @@ public final class HigherOrderFunctions
 		for(Value aValue : a.values())
 		{
 			for(Value bValue : b.values()){
-				BooleanValue r = ref.invoke(context, aValue, bValue);
+				BooleanVal r = ref.invoke(context, aValue, bValue);
 				if(!r.get()){
-					return XacmlTypes.BOOLEAN.of(false);
+					return BooleanVal.of(false);
 				}
 			}
 		}
-		return XacmlTypes.BOOLEAN.of(true);
+		return BooleanVal.of(true);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:map")

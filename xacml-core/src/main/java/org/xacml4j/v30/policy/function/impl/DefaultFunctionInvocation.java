@@ -22,12 +22,8 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
+import com.google.common.base.Preconditions;
+import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
@@ -37,8 +33,11 @@ import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionInvocation;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Throwables;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public final class DefaultFunctionInvocation implements FunctionInvocation
 {

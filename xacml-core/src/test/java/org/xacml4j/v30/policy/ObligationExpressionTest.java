@@ -79,13 +79,13 @@ public class ObligationExpressionTest
 		AttributeAssignmentExpression attrExp0 = AttributeAssignmentExpression
 				.builder("attributeId0")
 				.category(CategoryId.SUBJECT_ACCESS)
-				.expression(XacmlTypes.INTEGER.of(1))
+				.expression(XacmlTypes.INTEGER.ofAny(1))
 				.issuer("issuer0")
 				.build();
 		AttributeAssignmentExpression attrExp1 = AttributeAssignmentExpression
 				.builder("attributeId1")
 				.category(CategoryId.RESOURCE)
-				.expression(XacmlTypes.BOOLEAN.of(false))
+				.expression(XacmlTypes.BOOLEAN.ofAny(false))
 				.issuer("issuer1")
 				.build();
 
@@ -99,12 +99,12 @@ public class ObligationExpressionTest
 		assertEquals("issuer0", a0.getIssuer());
 		assertEquals("attributeId0", a0.getAttributeId());
 		assertEquals(CategoryId.SUBJECT_ACCESS, a0.getCategory().get());
-		assertEquals(XacmlTypes.INTEGER.of(1), a0.getAttribute());
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), a0.getAttribute());
 		AttributeAssignment a1 = it.next();
 		assertEquals("issuer1", a1.getIssuer());
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(CategoryId.RESOURCE, a1.getCategory().get());
-		assertEquals(XacmlTypes.BOOLEAN.of(false), a1.getAttribute());
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), a1.getAttribute());
 		c.verify();
 	}
 
@@ -115,7 +115,7 @@ public class ObligationExpressionTest
 		AttributeAssignmentExpression attrExp0 = AttributeAssignmentExpression
 				.builder("attributeId0")
 				.category(CategoryId.SUBJECT_ACCESS)
-				.expression(XacmlTypes.INTEGER.of(1))
+				.expression(XacmlTypes.INTEGER.ofAny(1))
 				.issuer("issuer0")
 				.build();
 		AttributeAssignmentExpression attrExp1 = AttributeAssignmentExpression

@@ -25,13 +25,11 @@ package org.xacml4j.v30;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.google.common.base.MoreObjects;
@@ -40,6 +38,8 @@ import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
 /**
  * XACML defines implicit collections of its data-types.
@@ -66,8 +66,7 @@ public final class BagOfValues
 	/**
 	 * Constructs bag of attributes.
 	 *
-	 * @param type a bag attribute type
-	 * @param attributes a collection of attributes
+	 * @param b a builder
 	 */
 	private BagOfValues(Builder b){
 		this.type = b.bagType;
@@ -294,25 +293,25 @@ public final class BagOfValues
 		private BagOfValuesType bagType;
 		private ImmutableMultiset.Builder<Value> valuesBuilder = ImmutableMultiset.builder();
 
-		Builder(BagOfValuesType type){
+		public Builder(BagOfValuesType type){
 			this.bagType = Preconditions.checkNotNull(type);
 		}
 
-		Builder(ValueType type){
+		public Builder(ValueType type){
 			this.bagType = Preconditions.checkNotNull(type).bagType();
 		}
 
 
 		public Builder value(Object ...values){
 			for(Object v : values){
-				this.valuesBuilder.add(bagType.getValueType().of(v));
+				this.valuesBuilder.add(bagType.getValueType().ofAny(v));
 			}
 			return this;
 		}
 
 		public Builder values(Iterable<Object> values){
 			for(Object v : values){
-				this.valuesBuilder.add(bagType.getValueType().of(v));
+				this.valuesBuilder.add(bagType.getValueType().ofAny(v));
 			}
 			return this;
 		}

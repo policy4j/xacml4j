@@ -1187,7 +1187,7 @@ public class EUI48Test {
 	}
 
 	private void goodStringValueOfHelper(String ethernetAddressString,
-			String expectedEthernetAddressString) {
+										 String expectedEthernetAddressString) {
 		EUI48 ethernet_address = null;
 		try {
 			ethernet_address = EUI48.valueOf(ethernetAddressString);

@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -55,36 +55,36 @@ public class RequestTest
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId10").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId11").value(XacmlTypes.STRING.of("value1")).build()).build())
+						Attribute.builder("testId10").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId11").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 		this.resource1 = Category.builder(CategoryId.RESOURCE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId22").value(XacmlTypes.STRING.of("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(XacmlTypes.STRING.of("value2")).build(),
-						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(XacmlTypes.STRING.of("value2")).build()).build())
+						Attribute.builder("testId11").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId22").value(XacmlTypes.STRING.ofAny("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(XacmlTypes.STRING.ofAny("value2")).build(),
+						Attribute.builder("testId24").issuer("testIssuer").includeInResult(true).value(XacmlTypes.STRING.ofAny("value2")).build()).build())
 				.build();
 		this.subject0 =  Category.builder(CategoryId.SUBJECT_ACCESS)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId31").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId32").value(XacmlTypes.STRING.of("value1")).build()).build())
+						Attribute.builder("testId31").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId32").value(XacmlTypes.STRING.ofAny("value1")).build()).build())
 				.build();
 		this.subject1 = Category.builder(CategoryId.SUBJECT_CODEBASE)
 				.entity(
 						Entity
 						.builder()
 						.attribute(
-						Attribute.builder("testId11").value(XacmlTypes.STRING.of("value0")).build(),
-						Attribute.builder("testId22").value(XacmlTypes.STRING.of("value1")).build(),
-						Attribute.builder("testId23").includeInResult(true).value(XacmlTypes.STRING.of("value2")).build(),
-						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(XacmlTypes.STRING.of("value2")).build()).build())
+						Attribute.builder("testId11").value(XacmlTypes.STRING.ofAny("value0")).build(),
+						Attribute.builder("testId22").value(XacmlTypes.STRING.ofAny("value1")).build(),
+						Attribute.builder("testId23").includeInResult(true).value(XacmlTypes.STRING.ofAny("value2")).build(),
+						Attribute.builder("testId24").includeInResult(true).issuer("testIssuer").value(XacmlTypes.STRING.ofAny("value2")).build()).build())
 				.build();
 
 	}

@@ -29,10 +29,10 @@ import java.util.LinkedList;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -65,7 +65,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 			return handleNext(request, context);
 		}
 		Entity entity = resource.getEntity();
-		Collection<Value> resourceId = entity.getAttributeValues(RESOURCE_ID_ATTRIBUTE,
+		Collection<Value> resourceId = entity.findAttributeValues(RESOURCE_ID_ATTRIBUTE,
 		                                                         XacmlTypes.XPATH);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);
@@ -87,7 +87,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 			if(attrs.getCategoryId().equals(CategoryId.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
 				Entity en = attrs.getEntity();
-				for(Attribute attr : en.getAttributes()){
+				for(Attribute attr : en.find()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
 					{
 						Attribute selector =

@@ -25,6 +25,8 @@ package org.xacml4j.v30.policy.combine.impl;
 import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
@@ -34,29 +36,34 @@ import org.xacml4j.v30.policy.combine.XacmlPolicyDecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.combine.XacmlRuleDecisionCombiningAlgorithm;
 
 
-public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D>
-{
-	protected DenyUnlessPermit(String algorithmId){
+public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombiningAlgorithm<D> {
+	protected DenyUnlessPermit(String algorithmId) {
 		super(algorithmId);
 	}
 
 	@Override
-	public final Decision combine(EvaluationContext context, List<D> decisions)
-	{
+	public final Decision combine(EvaluationContext context, List<D> decisions) {
 		return doCombine(context, decisions);
 	}
 
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit")
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit")
-	public static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions)
-	{
-		for(D d : decisions){
+	public static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions) {
+		for (D d : decisions) {
 			Decision decision = evaluateIfMatch(context, d);
-			if(decision == Decision.PERMIT){
+			if (decision == Decision.PERMIT) {
 				return decision;
 			}
 		}
 		return Decision.DENY;
 	}
 
+	public static <D extends DecisionRule> Decision doCombine(EvaluationContext context, Stream<D> decisions) {
+		return decisions
+				.filter(d -> evaluateIfMatch(context, d) == Decision.PERMIT)
+				.map(d->Decision.PERMIT)
+				.findFirst()
+				.orElse(Decision.DENY);
+	}
 }
+

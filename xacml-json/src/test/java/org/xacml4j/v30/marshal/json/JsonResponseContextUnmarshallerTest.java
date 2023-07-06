@@ -40,7 +40,7 @@ import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -77,13 +77,13 @@ public class JsonResponseContextUnmarshallerTest {
 												.attributeId(SubjectAttributes.SUBJECT_ID.toString())
 												.category(CategoryId.ACTION)
 												.issuer("Vytenai")
-												.value(XacmlTypes.STRING.of("obuolys"))
+												.value(XacmlTypes.STRING.ofAny("obuolys"))
 												.build(),
 										AttributeAssignment.builder()
 												.attributeId(SubjectAttributes.KEY_INFO.toString())
 												.category(CategoryId.ACTION)
 												.issuer("ispanija")
-												.value(XacmlTypes.STRING.of("apelsinas"))
+												.value(XacmlTypes.STRING.ofAny("apelsinas"))
 												.build()))
 						.build());
 		resultBuilder.obligation(Obligation
@@ -94,7 +94,7 @@ public class JsonResponseContextUnmarshallerTest {
 										.builder()
 										.attributeId("custom:attribute1")
 										.category("totaly:made:up:attribute-category1")
-										.value(XacmlTypes.STRING.of("same old apelsinas"))
+										.value(XacmlTypes.STRING.ofAny("same old apelsinas"))
 						                .build()))
 				.build());
 		resultBuilder.advice(ImmutableList.of(
@@ -105,7 +105,7 @@ public class JsonResponseContextUnmarshallerTest {
 								AttributeAssignment
 										.builder()
 										.attributeId("test:advice1")
-										.value(XacmlTypes.STRING.of("nespjauk i sulini"))
+										.value(XacmlTypes.STRING.ofAny("nespjauk i sulini"))
 										.build()))
 					.build(),
 				Advice.builder("advice2").build()));
@@ -122,12 +122,12 @@ public class JsonResponseContextUnmarshallerTest {
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(XacmlTypes.STRING.of(
+										.value(XacmlTypes.STRING.ofAny(
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(XacmlTypes.STRING.of("TestDomain")).build())).build())
+										.value(XacmlTypes.STRING.ofAny("TestDomain")).build())).build())
 						.build();
 		resultBuilder.includeInResultAttr(ImmutableList.<Category> of(subjectAttributes));
 

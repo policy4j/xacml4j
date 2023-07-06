@@ -48,10 +48,10 @@ public class ApplyTest
 	@Test(expected=EvaluationException.class)
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws CoreException
 	{
-		expect(function.invoke(context, XacmlTypes.INTEGER.of(10L)))
+		expect(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L)))
 		.andThrow(new IllegalArgumentException());
 		replay(function);
-		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.of(10L)).build();
+		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.ofAny(10L)).build();
 		apply.evaluate(context);
 		verify(function);
 	}
@@ -59,10 +59,10 @@ public class ApplyTest
 	@Test(expected=FunctionInvocationException.class)
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws CoreException
 	{
-		expect(function.invoke(context, XacmlTypes.INTEGER.of(10L))).
+		expect(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L))).
 		andThrow(new FunctionInvocationException(function, new IllegalArgumentException()));
 		replay(function);
-		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.of(10L)).build();
+		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.ofAny(10L)).build();
 		apply.evaluate(context);
 		verify(function);
 	}

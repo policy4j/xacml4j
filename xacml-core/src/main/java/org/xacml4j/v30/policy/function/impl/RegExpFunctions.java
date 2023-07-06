@@ -22,30 +22,17 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
-import org.xacml4j.v30.policy.function.XacmlFuncParam;
-import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
-import org.xacml4j.v30.policy.function.XacmlFuncSpec;
-import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
-import org.xacml4j.v30.types.AnyURIValue;
-import org.xacml4j.v30.types.BooleanValue;
-import org.xacml4j.v30.types.DNSNameValue;
-import org.xacml4j.v30.types.IPAddressValue;
-import org.xacml4j.v30.types.RFC822NameValue;
-import org.xacml4j.v30.types.StringValue;
-import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.X500NameValue;
-import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.policy.function.*;
+import org.xacml4j.v30.types.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
 public final class RegExpFunctions
@@ -57,71 +44,71 @@ public final class RegExpFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue stringRegexpMatch(
+	public static BooleanVal stringRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringValue regexp,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal regexp,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal input)
 	{
 		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue anyURIRegexpMatch(
+	public static BooleanVal anyURIRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURIValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal regexp,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI input)
 	{
 		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue ipAddressRegexpMatch(
+	public static BooleanVal ipAddressRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress") IPAddressValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal regexp,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:ipAddress") IPAddress input)
 	{
 		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue dnsNameRegexpMatch(
+	public static BooleanVal dnsNameRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSNameValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal regexp,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:2.0:data-type:dnsName")DNSName input)
 	{
 		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static BooleanValue rfc822NameRegexpMatch(
+	public static BooleanVal rfc822NameRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822NameValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal regexp,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name")RFC822Name input)
 	{
 		 return matches(context, regexp, input);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
-	public static
-			BooleanValue x500NameRegexpMatch(
+	public static BooleanVal x500NameRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string")StringValue regexp,
-			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name")X500NameValue input)
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal regexp,
+			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500Name input)
 	{
 		 return matches(context, regexp, input);
 	}
 
-	private static BooleanValue matches(EvaluationContext context, StringValue regexp, Value value){
+	private static BooleanVal matches(EvaluationContext context, StringVal regexp, Value value){
 		if(log.isDebugEnabled()){
 			log.debug("Matching input=\"{}\" via regexp=\"{}\"", value, regexp);
 		}
-		Optional<TypeToString> toString = TypeToString.forType(value.getEvaluatesTo());
-		return XacmlTypes.BOOLEAN.of(
+		Optional<TypeToString> toString = TypeToString.forType(value.getEvaluatesTo()
+				.getValueType());
+		return BooleanVal.of(
 				toString.map(v->v.toString(value))
 				.map(v->matches(regexp.get(), v))
 				.orElseThrow(
@@ -130,18 +117,18 @@ public final class RegExpFunctions
 
 	}
 
-	private final static ThreadLocal<Map<String, Pattern>> REGEXP_CACHE  = ThreadLocal.withInitial(()->new HashMap<>());
+	private final static ThreadLocal<Map<java.lang.String, Pattern>> REGEXP_CACHE  = ThreadLocal.withInitial(()->new HashMap<>());
 
-	private final static Boolean CACHE_REGXP = Boolean.parseBoolean(
+	private final static java.lang.Boolean CACHE_REGXP = java.lang.Boolean.parseBoolean(
 					System.getProperty(RegExpFunctions.class.getName() + ".cacheRegExps"));
 
-	private static boolean matches(String regExp, String value)
+	public static boolean matches(java.lang.String regExp, java.lang.String value)
 	{
-		String jdk = covertXacmlToJavaSyntax(regExp);
+		java.lang.String jdk = covertXacmlToJavaSyntax(regExp);
 		if(!CACHE_REGXP){
 			return Pattern.matches(jdk, value);
 		}
-		Map<String, Pattern> cache = REGEXP_CACHE.get();
+		Map<java.lang.String, Pattern> cache = REGEXP_CACHE.get();
 		Pattern p = cache.get(jdk);
 		if(p == null){
 			p = Pattern.compile(jdk);
@@ -184,7 +171,7 @@ public final class RegExpFunctions
 	 * You acknowledge that this software is not designed or intended for use in
 	 * the design, construction, operation or maintenance of any nuclear facility.
 	 */
-	public static String covertXacmlToJavaSyntax(String xpr)
+	public static java.lang.String covertXacmlToJavaSyntax(java.lang.String xpr)
 	{
 	       // the regular expression syntax required by XACML differs
 	       // from the syntax supported by java.util.regex.Pattern
@@ -236,7 +223,7 @@ public final class RegExpFunctions
 	    	   idx = buf.indexOf("-[", idx+1);
 	       }
 
-	       String regexp = buf.toString();
+	       java.lang.String regexp = buf.toString();
 	       if(log.isDebugEnabled()){
 	    	   log.debug("XACML regexp=\"{}\", " +
 	    	   		"Java regexp=\"{}\"", xpr, regexp);

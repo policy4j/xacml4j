@@ -1,6 +1,10 @@
 <!--
   #%L
+<<<<<<<< HEAD:xacml-xml/src/test/resources/media-rss.xml
   Xacml4J Core Engine Implementation
+========
+  Xacml4J Policy Unit Test Support
+>>>>>>>> master:xacml-test/src/test/resources/logback-test.xml
   %%
   Copyright (C) 2009 - 2014 Xacml4J.org
   %%
@@ -8,17 +12,18 @@
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation, either version 3 of the
   License, or (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Lesser Public License for more details.
-  
+
   You should have received a copy of the GNU General Lesser Public
   License along with this program.  If not, see
   <http://www.gnu.org/licenses/lgpl-3.0.html>.
   #L%
   -->
+<<<<<<<< HEAD:xacml-xml/src/test/resources/media-rss.xml
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
 <channel>
 <title>Movies</title>
@@ -36,3 +41,20 @@
     </item>
 </channel>
 </rss>
+========
+
+<configuration>
+
+	<appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{ISO8601} [%t] %-5level [%logger{1}] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.xacml4j.v30" level="debug"/>
+
+	<root level="info">
+		<appender-ref ref="Console" />
+	</root>
+</configuration>
+>>>>>>>> master:xacml-test/src/test/resources/logback-test.xml

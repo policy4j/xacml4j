@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.Attribute.Builder;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableSet;
@@ -46,10 +47,10 @@ public class AttributeTest
 	public void init()
 	{
 		this.values = new LinkedList<Value>();
-		values.add(XacmlTypes.INTEGER.of(1));
-		values.add(XacmlTypes.INTEGER.of(1));
-		values.add(XacmlTypes.INTEGER.of(3));
-		values.add(XacmlTypes.INTEGER.of(2));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(3));
+		values.add(XacmlTypes.INTEGER.ofAny(2));
 	}
 
 	@Test
@@ -74,22 +75,22 @@ public class AttributeTest
 	{
 		Attribute attr = Attribute
 				.builder("testId")
-				.value(XacmlTypes.STRING.of("value1"), XacmlTypes.STRING.of("value2"))
+				.value(XacmlTypes.STRING.ofAny("value1"), XacmlTypes.STRING.ofAny("value2"))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
 		assertEquals(2, attr.getValues().size());
-		assertTrue(attr.getValues().contains(XacmlTypes.STRING.of("value1")));
-		assertTrue(attr.getValues().contains(XacmlTypes.STRING.of("value2")));
+		assertTrue(attr.getValues().contains(XacmlTypes.STRING.ofAny("value1")));
+		assertTrue(attr.getValues().contains(XacmlTypes.STRING.ofAny("value2")));
 	}
 
 	@Test
 	public void testCreateWithTheSameValues()
 	{
 		Collection<Value> values = new LinkedList<Value>();
-		values.add(XacmlTypes.INTEGER.of(1));
-		values.add(XacmlTypes.INTEGER.of(1));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
 		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
 		Attribute attr = b.build();
 		Attribute attr1 = b.issuer(null).build();
@@ -112,10 +113,10 @@ public class AttributeTest
 	{
 		Attribute attr = Attribute.builder("testId")
 				.value(
-						XacmlTypes.INTEGER.of(1),
-						XacmlTypes.INTEGER.of(2),
-						XacmlTypes.INTEGER.of(3),
-						XacmlTypes.INTEGER.of(2))
+						XacmlTypes.INTEGER.ofAny(1),
+						XacmlTypes.INTEGER.ofAny(2),
+						XacmlTypes.INTEGER.ofAny(3),
+						XacmlTypes.INTEGER.ofAny(2))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
@@ -128,10 +129,10 @@ public class AttributeTest
 	@Test
 	public void testBuilder()
 	{
-		Iterable<Value> a = ImmutableSet.of(XacmlTypes.STRING.of("test1"), XacmlTypes.STRING.of("test2"));
+		Iterable<Value> a = ImmutableSet.of(XacmlTypes.STRING.ofAny("test1"), XacmlTypes.STRING.ofAny("test2"));
 		Attribute.builder("testId")
 		.values(a)
-		.value(XacmlTypes.STRING.of("test2"), XacmlTypes.STRING.of("test3"))
+		.value(XacmlTypes.STRING.ofAny("test2"), XacmlTypes.STRING.ofAny("test3"))
 		.build();
 	}
 

@@ -22,7 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import org.xacml4j.v30.types.PathValue;
+import org.xacml4j.v30.types.Path;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -149,20 +149,16 @@ public final class AttributeSelectorKey
 		public Builder path(Path p){
 			java.util.Objects.requireNonNull(p);
 			this.path = p.getPath();
-			this.type = p.getType();
+			this.type = p.getPathType();
 			return this;
 		}
 
-		public Builder path(PathValue xpath,
+		public Builder path(Path xpath,
                             boolean ignoreCategoryFromPath){
-			this.path = xpath.get().getPath();
-			this.type = xpath.get().getType();
+			this.path = xpath.getPath();
+			this.type = xpath.getPathType();
 			return ignoreCategoryFromPath?this:
 					category(xpath.getCategory().orElse(null));
-		}
-
-		public Builder path(PathValue xpath){
-			return path(xpath, false);
 		}
 
 		public Builder contextSelectorId(String id){

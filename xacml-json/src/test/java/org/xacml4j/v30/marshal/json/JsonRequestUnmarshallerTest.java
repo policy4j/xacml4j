@@ -39,7 +39,7 @@ import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.ResourceAttributes;
 import org.xacml4j.v30.SubjectAttributes;
 import org.xacml4j.v30.content.XmlContent;
@@ -88,12 +88,12 @@ public class JsonRequestUnmarshallerTest {
 										.builder(SubjectAttributes.SUBJECT_ID.toString())
 										.includeInResult(false)
 										.issuer("testIssuer")
-										.value(XacmlTypes.STRING.of(
+										.value(XacmlTypes.STRING.ofAny(
 												"VFZTAQEAABRcZ03t-NNkK__rcIbvgKcK6e5oHBD5fD0qkdPIuqviWHzzFVR6AAAAgFl8GkUGZQG8TPXg9T6cQCoMO3a_sV1FR8pJC4BPfXfXlOvWDPUt4pr0cBkGTeaSU9RjSvEiXF-kTq5GFPkBHXcYnBW7eNjhq2EB_RWHh7_0sWqY32yb4fxlPLOsh5cUR4WbYZJE-zNuVzudco5cOjHU6Zwlr2HACpHW5siAVKfW"))
 										.build(),
 								Attribute.builder(SubjectAttributes.SUBJECT_ID_QUALIFIER.toString())
 										.includeInResult(false).issuer("testIssuer")
-										.value(XacmlTypes.STRING.of("TestDomain")).build()))
+										.value(XacmlTypes.STRING.ofAny("TestDomain")).build()))
 						.build())
 				.build();
 		Category resourceAttributes = Category
@@ -103,7 +103,7 @@ public class JsonRequestUnmarshallerTest {
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.RESOURCE_ID.toString())
-								.includeInResult(true).value(XacmlTypes.STRING.of("testResourceId")).build())).build())
+								.includeInResult(true).value(XacmlTypes.STRING.ofAny("testResourceId")).build())).build())
 						.build();
 		Category actionAttributes = Category
 				.builder(CategoryId.ACTION)
@@ -111,7 +111,7 @@ public class JsonRequestUnmarshallerTest {
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.SUBJECT_ID.toString())
-								.includeInResult(false).value(XacmlTypes.STRING.of("VIEW")).build())).build())
+								.includeInResult(false).value(XacmlTypes.STRING.ofAny("VIEW")).build())).build())
 				.build();
 		Category environmentAttributes = Category
 				.builder(CategoryId.ENVIRONMENT)
@@ -120,7 +120,7 @@ public class JsonRequestUnmarshallerTest {
 						.builder()
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(ResourceAttributes.TARGET_NAMESPACE.toString())
-								.includeInResult(false).value(XacmlTypes.STRING.of("json\\-\"test\"")).build()))
+								.includeInResult(false).value(XacmlTypes.STRING.ofAny("json\\-\"test\"")).build()))
 						.build())
 				.build();
 		Category subjectIntermAttributes = Category
@@ -131,7 +131,7 @@ public class JsonRequestUnmarshallerTest {
 						.attributes(
 						ImmutableList.<Attribute> of(Attribute.builder(SubjectAttributes.AUTHN_METHOD.toString())
 								.includeInResult(false)
-								.value(XacmlTypes.STRING.of("koks oras paryziuj?")).build()))
+								.value(XacmlTypes.STRING.ofAny("koks oras paryziuj?")).build()))
 						.build())
 				.build();
 

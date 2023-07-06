@@ -46,14 +46,9 @@ import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
-import org.xacml4j.v30.Entity;
+import org.xacml4j.v30.types.*;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.types.PathValue;
-import org.xacml4j.v30.types.TypeToString;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -200,27 +195,24 @@ public final class XmlContent implements Content
             }
             Node context = null;
             if(callback != null) {
-                Collection<Value> v = callback.get().getAttributeValues(
-                        (selectorKey.getContextSelectorId() == null ? CONTENT_SELECTOR : selectorKey.getContextSelectorId()),
+                Optional<Path> v = callback.get()
+                        .findValue((selectorKey.getContextSelectorId() == null ? CONTENT_SELECTOR : selectorKey.getContextSelectorId()),
                         XacmlTypes.XPATH);
-                if (v.size() > 1) {
+                if (!v.isPresent()) {
                     throw PathEvaluationException.invalidXpathContextSelectorId(selectorKey.getPath(),
                                                                                 selectorKey.getContextSelectorId());
                 }
-                if (v.size() == 1) {
-                    PathValue xpathAttr = (PathValue) v.iterator().next();
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Evaluating " +
-                                "contextSelector xpath=\"{}\"", xpathAttr.get());
-                    }
-                    PathValue xpath = (PathValue)v.iterator().next();
-                    if(!Objects.equals(xpath.getCategory().orElse(null), selectorKey.getCategory())){
-                        throw AttributeReferenceEvaluationException.forSelector(selectorKey,
-                                                                                ()->String.format("and ContextSelectorId.Category=\"%s\"",
-                                        xpath.getCategory().orElse(null)));
-                    }
-                    context = xPathProvider.evaluateToNode(xpathAttr.get().getPath(), contextNode);
+                Path xpath = v.get();
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Evaluating " +
+                            "contextSelector xpath=\"{}\"", xpath);
                 }
+                if(!Objects.equals(xpath.getCategory().orElse(null), selectorKey.getCategory())){
+                    throw AttributeReferenceEvaluationException.forSelector(selectorKey,
+                                                                            ()->String.format("and ContextSelectorId.Category=\"%s\"",
+                                    xpath.getCategory().orElse(null)));
+                }
+                context = xPathProvider.evaluateToNode(xpath.getPath(), contextNode);
             }
             NodeList nodeSet = xPathProvider.evaluateToNodeSet(selectorKey.getPath(), context == null?contextNode:context);
             if(nodeSet == null ||

@@ -22,41 +22,14 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import java.net.InetAddress;
 import java.net.URI;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import javax.security.auth.x500.X500Principal;
-import javax.xml.datatype.Duration;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.xpath.XPathExpression;
-
-import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.BagOfValuesType;
-import org.xacml4j.v30.Binary;
 import org.xacml4j.v30.CategoryId;
-import org.xacml4j.v30.Content;
-import org.xacml4j.v30.DNSName;
-import org.xacml4j.v30.DateTime;
-import org.xacml4j.v30.DayTimeDuration;
-import org.xacml4j.v30.Entity;
-import org.xacml4j.v30.IPAddress;
-import org.xacml4j.v30.Path;
-import org.xacml4j.v30.RFC822Name;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.Time;
-import org.xacml4j.v30.Value;
-import org.xacml4j.v30.ValueType;
-import org.xacml4j.v30.YearMonthDuration;
 
 import com.google.common.collect.ImmutableSet;
 
@@ -68,321 +41,138 @@ import com.google.common.collect.ImmutableSet;
 public enum XacmlTypes implements ValueType
 {
 	ANYURI("http://www.w3.org/2001/XMLSchema#anyURI", "anyURI") {
-		public AnyURIValue of(Object v, Object... params) {
-			return AnyURIValue.
-					fromObjectWithParams(v, params);
+		public AnyURI ofAny(Object v, Object... params) {
+			return AnyURI.
+					ofAny(v, params);
 		}
 	},
 	BASE64BINARY("http://www.w3.org/2001/XMLSchema#base64Binary", "base64Binary") {
-		public Base64BinaryValue of(Object v, Object... params) {
-			return Base64BinaryValue
-					.fromObjectWithParams(v, params);
+		public Base64Binary ofAny(Object v, Object... params) {
+			return Base64Binary
+					.ofAny(v, params);
 		}
 	},
 	BOOLEAN("http://www.w3.org/2001/XMLSchema#boolean", "boolean") {
-		public BooleanValue of(Object v, Object... params) {
-			return BooleanValue
-					.fromObjectWithParams(v, params);
+		public BooleanVal ofAny(Object v, Object... params) {
+			return BooleanVal
+					.ofAny(v, params);
 		}
 	},
 	DATE("http://www.w3.org/2001/XMLSchema#date", "date") {
-		public DateValue of(Object v, Object... params) {
-			return DateValue
-					.fromObjectWithParams(v, params);
+		public ISO8601Date ofAny(Object v, Object... params) {
+			return ISO8601Date
+					.ofAny(v, params);
 		}
 	},
 	DATETIME("http://www.w3.org/2001/XMLSchema#dateTime", "dateTime") {
-		public DateTimeValue of(Object v, Object... params) {
-			return DateTimeValue.of(DateTime.of(v));
+		public ISO8601DateTime ofAny(Object v, Object... params) {
+			return ISO8601DateTime
+					.ofAny(v, params);
 		}
 	},
 	DAYTIMEDURATION("http://www.w3.org/2001/XMLSchema#dayTimeDuration", "dayTimeDuration",
 			"http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration") {
-		public DayTimeDurationValue of(Object v, Object... params) {
-			return Optional.of(DayTimeDurationValue.of(
-					               DayTimeDuration.parse(v)))
-					.orElseThrow(() -> SyntaxException
-							.invalidAttributeValue(v, this));
+		public ISO8601DayTimeDuration ofAny(Object v, Object... params) {
+			return ISO8601DayTimeDuration
+					.ofAny(v, params);
 		}
 	},
 	DNSNAME("urn:oasis:names:tc:xacml:2.0:data-type:dnsName", "dnsName") {
-		public DNSNameValue of(Object v, Object... params) {
-			Optional<DNSNameValue> a = Optional.empty();
-			if (v instanceof String) {
-				return DNSNameValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return DNSNameValue.of(((StringValue) v).get());
-			}
-			if (v instanceof DNSName) {
-				return DNSNameValue.of((DNSName)v);
-			}
-			if (v instanceof DNSNameValue) {
-				return (DNSNameValue) v;
-			}
-			throw SyntaxException.invalidAttributeValue(v, this);
+		public DNSName ofAny(Object v, Object... params) {
+			return DNSName.ofAny(v, params);
 		}
 	},
 	DOUBLE("http://www.w3.org/2001/XMLSchema#double", "double") {
-		public DoubleValue of(Object v, Object... params) {
-			Optional<DoubleValue> value = Optional.empty();
-			if (v instanceof String) {
-				return DoubleValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return DoubleValue.of(((StringValue) v).get());
-			}
-			if(v instanceof Number) {
-				return DoubleValue.of((Number) v);
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public DoubleVal ofAny(Object v, Object... params) {
+			return DoubleVal
+					.ofAny(v, params);
 		}
 	},
 	INTEGER("http://www.w3.org/2001/XMLSchema#integer", "integer") {
-		public IntegerValue of(Object v) {
-			return of(v, (Object[]) null);
-		}
 
-		public IntegerValue of(Object v, Object... params) {
-			if (v instanceof String) {
-				return IntegerValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return IntegerValue.of(((StringValue) v).get());
-			}
-			if(v instanceof Number){
-				return IntegerValue.of((Number) v);
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public IntegerVal ofAny(Object v, Object... params) {
+			return IntegerVal
+					.ofAny(v, params);
 		}
 	},
 	HEXBINARY("http://www.w3.org/2001/XMLSchema#hexBinary", "hexBinary") {
-		public HexBinaryValue of(Object v, Object... params) {
-			if (v instanceof String) {
-				return HexBinaryValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return HexBinaryValue.of(((StringValue) v).get());
-			}
-			if (v instanceof byte[]) {
-				return HexBinaryValue.of((byte[]) v);
-			}
-			if (v instanceof ByteBuffer) {
-				return HexBinaryValue.of(((ByteBuffer) v).array());
-			}
-			if (v instanceof Binary) {
-				return HexBinaryValue.of((Binary)v);
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public HexBinary ofAny(Object v, Object... params) {
+			return HexBinary
+					.ofAny(v, params);
 		}
 	},
 	IPADDRESS("urn:oasis:names:tc:xacml:2.0:data-type:ipAddress", "ipAddress") {
-		public IPAddressValue of(Object v, Object... params) {
-			if (v instanceof String) {
-				return IPAddressValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return IPAddressValue.of(((StringValue) v).get());
-			}
-			if(v instanceof IPAddress){
-				return IPAddressValue.of((IPAddress) v);
-			}
-			if(v instanceof InetAddress){
-				return IPAddressValue.of(IPAddress.builder()
-				                                  .address((InetAddress)v)
-				                                  .build());
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public IPAddress ofAny(Object v, Object... params) {
+			return IPAddress
+					.ofAny(v, params);
 		}
 	},
 	STRING("http://www.w3.org/2001/XMLSchema#string", "string") {
-		public StringValue of(Object v, Object... params) {
-			if (v instanceof StringValue) {
-				return StringValue.of(((StringValue) v).get());
-			}
-			if(v instanceof String){
-				return StringValue.of((String)v);
-			}
-			if(v instanceof byte[]){
-				byte[] bytes = (byte[])v;
-				return StringValue.of(new String(bytes, StandardCharsets.UTF_8));
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public StringVal ofAny(Object v, Object... params) {
+			return StringVal
+					.ofAny(v, params);
 		}
 	},
 	RFC822NAME("urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name", "rfc822Name") {
-		public RFC822NameValue of(Object v, Object... params) {
-			if (v instanceof String) {
-				return RFC822NameValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return RFC822NameValue.of(((StringValue) v).get());
-			}
-			if (v instanceof RFC822Name) {
-				return RFC822NameValue.of((RFC822Name) v);
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public RFC822Name ofAny(Object v, Object... params) {
+			return RFC822Name
+					.ofAny(v, params);
 		}
 	},
 	TIME("http://www.w3.org/2001/XMLSchema#time", "time") {
-		public TimeValue of(Object v, Object... params) {
-			if (v instanceof String) {
-				return TimeValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return TimeValue.of(((StringValue) v).get());
-			}
-			if (v instanceof ZonedDateTime) {
-				return TimeValue.of(GregorianCalendar
-						                    .from((ZonedDateTime) v));
-			}
-			if (v instanceof XMLGregorianCalendar) {
-				return TimeValue.of((XMLGregorianCalendar) v);
-			}
-			if (v instanceof Calendar) {
-				return TimeValue.of((Calendar) v);
-			}
-			if (v instanceof TimeValue) {
-				return (TimeValue)v;
-			}
-			if (v instanceof Time) {
-				return TimeValue.of((Time) v);
-			}
-			if (v instanceof Instant) {
-				return TimeValue.of((Time) v);
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public ISO8601Time ofAny(Object v, Object... params) {
+			return ISO8601Time
+					.ofAny(v, params);
 		}
 	},
 	X500NAME("urn:oasis:names:tc:xacml:1.0:data-type:x500Name", "x500Name") {
-		public X500NameValue of(Object v, Object... params) {
-			if (v instanceof String) {
-				return X500NameValue.of(String.class.cast(v));
-			}
-			if (v instanceof X500NameValue) {
-				return X500NameValue.class.cast(v);
-			}
-			if (v instanceof StringValue) {
-				return X500NameValue.of(((StringValue) v).get());
-			}
-			if (v instanceof X500Principal) {
-				return X500NameValue.of((X500Principal) v);
-			}
-			throw SyntaxException
-					.invalidAttributeValue(v, this);
+		public X500Name ofAny(Object v, Object... params) {
+			return X500Name
+					.ofAny(v, params);
 		}
 	},
 	XPATH("urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression",
 			"xpathExpression", "urn:oasis:names:tc:xacml:2.0:data-type:xpathExpression",
 			"urn:oasis:names:tc:xacml:2.0:data-type:xpath-expression") {
-		public PathValue of(Object v, Object... params) {
-			CategoryId categoryId = getCategory(params).orElse(CategoryId.RESOURCE);
-			Optional<PathValue> a = Optional.empty();
-			if (v instanceof String) {
-				a = Optional.of(
-						PathValue.of(
-								Path.of(
-										(String) v,
-										categoryId,
-										Content.PathType.XPATH)));
-			}
-			if (v instanceof XPathExpression) {
-				a = Optional.of(
-						PathValue.of(
-								Path.of(
-										(String) v,
-										categoryId,
-										Content.PathType.XPATH)));
-			}
-			if (v instanceof Path &&
-					(((Path) v).getType() == Content.PathType.XPATH)) {
-				a = Optional.of(
-						PathValue.of(
-								(Path) v));
-			}
-			return a.orElseThrow(
-					() -> SyntaxException
-							.invalidAttributeValue(v, this));
+		public Path ofAny(Object v, Object... params) {
+			return Path
+					.xpath(v, params);
 		}
 	},
 	JPATH("urn:oasis:names:tc:xacml:3.0:data-type:jsonPathExpression",
 			"jsonPathExpression") {
-		public PathValue of(Object v, Object... params) {
-			CategoryId categoryId = getCategory(params)
-					.orElse(CategoryId.RESOURCE);
-			Optional<PathValue> a = Optional.empty();
-			if (v instanceof String) {
-				a = Optional.of(
-						PathValue.of(
-								Path.of(
-										(String) v,
-										categoryId,
-										Content.PathType.JPATH)));
-			}
-			if ((v instanceof Path) &&
-					((Path) v).getType() == Content.PathType.JPATH) {
-				a = Optional.of(
-						PathValue.of(
-								(Path) v));
-			}
-			return a.orElseThrow(
-					() -> SyntaxException
-							.invalidAttributeValue(
-									v, this));
+		public Path ofAny(Object v, Object... params) {
+			return Path
+					.jpath(v, params);
 		}
 	},
 	YEARMONTHDURATION("http://www.w3.org/2001/XMLSchema#yearMonthDuration",
 			"yearMonthDuration", "http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration") {
-		public YearMonthDurationValue of(Object v, Object... params) {
-			if (v instanceof String) {
-				return YearMonthDurationValue.of((String) v);
-			}
-			if (v instanceof StringValue) {
-				return YearMonthDurationValue.of(((StringValue) v).get());
-			}
-			if (v instanceof Duration) {
-				return YearMonthDurationValue.of((Duration) v);
-			}
-			return YearMonthDurationValue.of((YearMonthDuration) v);
+		public ISO8601YearMonthDuration ofAny(Object v, Object... params) {
+			return ISO8601YearMonthDuration
+					.ofAny(v, params);
 		}
 	},
 	ENTITY("urn:oasis:names:tc:xacml:3.0:data-type:entity", "entity") {
-		public EntityValue of(Object v, Object... params) {
-			if (v instanceof Value) {
-				Entity.Builder b = Entity.builder();
-				if (params != null || params.length > 0) {
-					b.attributes(
-							Arrays.stream(params)
-									.filter(p -> p != null && p instanceof Attribute)
-									.map(a -> (Attribute) a).collect(Collectors.toList()));
-				}
-				return EntityValue.of(b.build());
-			}
-			return EntityValue.of((Entity) v);
+		public Entity ofAny(Object v, Object... params) {
+			return Entity
+					.ofAny(v, params);
 		}
 	};
 
 
-
-	private String typeId;
-	private String shortTypeId;
-	private Set<String> aliases;
+	private java.lang.String typeId;
+	private java.lang.String shortTypeId;
+	private Set<java.lang.String> aliases;
 	private BagOfValuesType bagType;
 
 
-	XacmlTypes(String typeId, String shortTypeId, String... aliases) {
+	XacmlTypes(java.lang.String typeId, java.lang.String shortTypeId, java.lang.String... aliases) {
 		this.typeId = typeId;
 		this.shortTypeId = shortTypeId;
 		this.bagType = new BagOfValuesType(this);
-		this.aliases = (aliases == null) ? ImmutableSet.<String>of() : ImmutableSet
-				.<String>builder()
+		this.aliases = (aliases == null) ? ImmutableSet.<java.lang.String>of() : ImmutableSet
+				.<java.lang.String>builder()
 				.add(shortTypeId)
 				.add(aliases)
 				.build();
@@ -392,14 +182,14 @@ public enum XacmlTypes implements ValueType
 	 * Gets type via type identifier or alias
 	 *
 	 * @param typeId a type identifier, supported type identifiers:
-	 * {@link String}, {@link URI}, {@link URI}
+	 * {@link java.lang.String}, {@link URI}, {@link URI}
 	 * @return {@link Optional} with resolved type
 	 */
 	public static Optional<ValueType> getType(Object typeId){
 		if(typeId instanceof ValueType){
 			return Optional.of((ValueType)typeId);
 		}
-		if(typeId instanceof String){
+		if(typeId instanceof java.lang.String){
 			return systemTypes.forType(typeId.toString());
 		}
 		if(typeId instanceof URI){
@@ -424,21 +214,21 @@ public enum XacmlTypes implements ValueType
 	}
 
 	@Override
-	public final String getTypeId() {
+	public final java.lang.String getTypeId() {
 		return typeId;
 	}
 
 	@Override
-	public final String getShortTypeId() {
+	public final java.lang.String getShortTypeId() {
 		return shortTypeId;
 	}
 
-	public Set<String> getTypeIdAliases(){
+	public Set<java.lang.String> getTypeIdAliases(){
 		return aliases;
 	}
 
 	@Override
-	public String toString(){
+	public java.lang.String toString(){
 		return shortTypeId;
 	}
 

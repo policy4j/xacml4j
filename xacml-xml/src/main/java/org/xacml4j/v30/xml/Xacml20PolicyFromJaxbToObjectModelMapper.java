@@ -71,7 +71,7 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
-import org.xacml4j.v30.Value;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.marshal.PolicyUnmarshallerSupport;
 import org.xacml4j.v30.policy.Apply;
 import org.xacml4j.v30.policy.AttributeAssignmentExpression;
