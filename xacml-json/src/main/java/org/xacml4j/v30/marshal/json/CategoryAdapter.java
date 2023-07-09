@@ -27,11 +27,8 @@ import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.Attribute;
-import org.xacml4j.v30.Category;
-import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.*;
 import org.xacml4j.v30.types.Entity;
-import org.xacml4j.v30.SyntaxException;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.JsonDeserializationContext;
@@ -86,8 +83,8 @@ class CategoryAdapter implements JsonDeserializer<Category>, JsonSerializer<Cate
 		}
 		Entity e = src.getEntity();
 		o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategoryId().getAbbreviatedId());
-		o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.find()));
-		String content = e.getContent().map(v-> v.asString()).orElse(null);
+		o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.attributes()));
+		String content = e.getContent().map(Content::asString).orElse(null);
 		if(content != null){
 			LOG.debug("Content size={} content={}", content.length(), content);
 			o.addProperty(JsonProperties.CONTENT_PROPERTY, content);

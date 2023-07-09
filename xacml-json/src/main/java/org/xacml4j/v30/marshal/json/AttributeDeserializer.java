@@ -66,15 +66,15 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 				.build();
 	}
 
-	private Collection<Value> deserializeValue(JsonDeserializationContext context, JsonObject o) {
+	private Collection<Value<?>> deserializeValue(JsonDeserializationContext context, JsonObject o) {
 		ValueType type = getDataType(o);
 		JsonElement jsonValue = o.get(VALUE_PROPERTY);
 		checkArgument(jsonValue != null, "Property '%s' is mandatory.", 
 				VALUE_PROPERTY);
-		Collection<Value> values = null;
+		Collection<Value<?>> values = null;
 		if (jsonValue.isJsonArray()) {
 			JsonArray jsonArray = jsonValue.getAsJsonArray();
-			ImmutableList.Builder<Value> valuesBuilder = ImmutableList.builder();
+			ImmutableList.Builder<Value<?>> valuesBuilder = ImmutableList.builder();
 			for (int i = 0; i < jsonArray.size(); i++) {
 				valuesBuilder.add(deserializeValue(type, jsonArray.get(i), context));
 			}
@@ -87,7 +87,7 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 		return values;
 	}
 
-	private Value deserializeValue(
+	private Value<?> deserializeValue(
 			ValueType type, JsonElement jsonValue,
 			JsonDeserializationContext ctx) {
 		java.util.Optional<TypeToGSon> toGson = TypeToGSon.forType(type);

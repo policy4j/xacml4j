@@ -54,7 +54,7 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 		if (src.getIssuer() != null) {
 			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		}
-		Collection<Value> values = src.values();
+		Collection<Value<?>> values = src.values();
 		serializeValue(context, o, values);
 		// OMIT property if value is "false"
 		if(src.isIncludeInResult()){
@@ -64,18 +64,18 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 	}
 
 	private void serializeValue(JsonSerializationContext context, JsonObject o, 
-			Collection<Value> values) {
+			Collection<Value<?>> values) {
 		checkArgument(values != null && !values.isEmpty(), "Attribute value is mandatory.");
-		Value firstValue = Iterables.getFirst(values, null);
-		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getEvaluatesTo().getShortTypeId());
-		Optional<TypeToGSon> toGson = TypeToGSon.forType(firstValue.getEvaluatesTo());
+		Value<?> firstValue = Iterables.getFirst(values, null);
+		o.addProperty(DATA_TYPE_PROPERTY, firstValue.getEvaluatesTo().getValueType().getShortTypeId());
+		Optional<TypeToGSon> toGson = TypeToGSon.forType(firstValue.getEvaluatesTo().getValueType());
 		checkState(toGson.isPresent());
 		if(values.size() == 1){
 			o.add(VALUE_PROPERTY, toGson.get().toJson(firstValue, context));
 			return;
 		}
 		JsonArray array = new JsonArray();
-		for(Value a : values){
+		for(Value<?> a : values){
 			checkArgument(firstValue.getEvaluatesTo().equals(a.getEvaluatesTo()));
 			array.add(toGson.get().toJson(a, context));
 		}

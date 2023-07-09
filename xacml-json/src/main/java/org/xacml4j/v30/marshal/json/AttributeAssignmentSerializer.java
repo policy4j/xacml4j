@@ -47,11 +47,11 @@ public class AttributeAssignmentSerializer implements JsonSerializer<AttributeAs
 	{
 		JsonObject o = new JsonObject();
 		o.addProperty(ATTRIBUTE_ID_PROPERTY, src.getAttributeId());
-		Value value = src.getAttribute();
-		Optional<TypeToGSon> toGson = TypeToGSon.forType(value.getEvaluatesTo());
+		Value<?> value = src.getAttribute();
+		Optional<TypeToGSon> toGson = TypeToGSon.forType(value.getEvaluatesTo().getValueType());
 		Preconditions.checkState(toGson.isPresent());
 		o.add(VALUE_PROPERTY, toGson.get().toJson(value, context));
-		o.addProperty(DATA_TYPE_PROPERTY, value.getEvaluatesTo().getShortTypeId());
+		o.addProperty(DATA_TYPE_PROPERTY, value.getEvaluatesTo().getValueType().getShortTypeId());
 		o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		src.getCategory().ifPresent(c->o.addProperty("Category", c.getAbbreviatedId()));
 		return o;

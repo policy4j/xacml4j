@@ -110,7 +110,7 @@ public class JsonEntityMarshallingTest
 				.category(CategoryId.SUBJECT_ACCESS)
 				.entity(Entity.builder()
 				              .attribute(Attribute.builder("testId")
-				                                  .entity(entity1)
+				                                  .value(entity1)
 				                                  .build())
 				              .build())
 				.build();
@@ -119,7 +119,7 @@ public class JsonEntityMarshallingTest
 				.category(CategoryId.SUBJECT_ACCESS)
 				.entity(Entity.builder()
 				              .attribute(Attribute.builder("testId")
-				                                  .entity(entity2)
+				                                  .value(entity2)
 				                                  .build())
 				              .build())
 				.build();
