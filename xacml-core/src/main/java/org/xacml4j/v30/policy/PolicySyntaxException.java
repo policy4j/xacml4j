@@ -85,6 +85,12 @@ public class PolicySyntaxException extends SyntaxException
 				funcSpec.id(), param.typeId(), functionMethod.getName()));
 	}
 
+	public static PolicySyntaxException invalidFunctionParameter(XacmlFuncSpec funcSpec, XacmlFuncParamOptional param, int index, Method functionMethod){
+		return new PolicySyntaxException(format(
+				"Invalid XACML function=\"%s\", parameter=\"%s\" at index=\"%d\" method=\"%s\"",
+				funcSpec.id(), param.typeId(), index, functionMethod.getName()));
+	}
+
 	public static PolicySyntaxException invalidFunctionParameter(XacmlFuncSpec funcSpec,
 	                                                             XacmlFuncParamVarArg param, Method functionMethod){
 		return new PolicySyntaxException(format(

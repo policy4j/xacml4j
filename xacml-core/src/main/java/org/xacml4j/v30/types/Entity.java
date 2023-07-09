@@ -65,7 +65,7 @@ public final class Entity extends Value.SelfValue<Entity>
 		return new Builder();
 	}
 
-	public <T extends Value<T>> Collection<T> findValues(String id, ValueType type, String issuer){
+	public <T extends Value<?>> Collection<T> findValues(String id, ValueType type, String issuer){
 		return attributeIndex.findValues(id, issuer, type);
 	}
 
@@ -83,6 +83,9 @@ public final class Entity extends Value.SelfValue<Entity>
 
 	public boolean hasAttributes(){
 		return !attributeIndex.isEmpty();
+	}
+	public boolean hasContent(Content.Type type){
+		return content != null && content.getType().equals(type);
 	}
 
 	public Collection<Attribute> find(Predicate<Attribute> predicate){
@@ -105,20 +108,20 @@ public final class Entity extends Value.SelfValue<Entity>
 		return attributeIndex.find(id, issuer);
 	}
 
-	public <T extends Value<T>> Optional<T> findValue(String id, ValueType type, String issuer){
+	public <T extends Value<?>> Optional<T> findValue(String id, ValueType type, String issuer){
 		return attributeIndex.findValue(id, type, issuer, v->true);
 	}
 
-	public <T extends Value<T>> Optional<T> findValue(String id, ValueType type){
+	public <T extends Value<?>> Optional<T> findValue(String id, ValueType type){
 		return findValue(id, type, null);
 	}
 
-	public <T extends Value<T>> Optional<T> findValue(String id, ValueType type,
-													  String issuer, Predicate<T> predicate){
-		return attributeIndex.findValue(id, type, issuer, predicate);
+	public <T extends Value<?>> Optional<T> findValue(String id, ValueType type,
+													  String issuer, Predicate<Value<?>> predicate){
+		return (Optional<T>) attributeIndex.findValue(id, type, issuer, predicate);
 	}
 
-	public <T extends Value<T>> Collection<T> findValues(String id, ValueType type){
+	public <T extends Value<?>> Collection<T> findValues(String id, ValueType type){
 		return findValues(id, type, null);
 	}
 
@@ -159,6 +162,10 @@ public final class Entity extends Value.SelfValue<Entity>
 		return new Entity(content, index);
 	}
 
+	public static Entity of(Content content){
+		return new Entity(content, AttributeIndex.empty());
+	}
+
 	public static Entity ofAny(Object v, Object... params)
 	{
 		Entity.Builder builder = Entity.builder();
@@ -190,23 +197,21 @@ public final class Entity extends Value.SelfValue<Entity>
 		return fromParams(Arrays.asList(params));
 
 	}
+	public java.util.Optional<BagOfValues> resolve(String id, ValueType type){
+		return resolve(id,type,null);
+	}
 
-	public java.util.Optional<BagOfValues> resolve(AttributeDesignatorKey designatorKey)
+	public java.util.Optional<BagOfValues> resolve(String id, ValueType type, String issuer)
     {
-		Collection<Value> v = attributeIndex.findValues(designatorKey.getAttributeId(),
-		                                         designatorKey.getIssuer(), designatorKey.getDataType());
+		Collection<Value<?>> v = attributeIndex.findValues(id, issuer, type);
 		if(v.isEmpty()){
 			return java.util.Optional.empty();
 		}
-		return java.util.Optional.of(designatorKey
-				.getDataType()
-				.bagBuilder()
-				.attributes(v)
-				.build());
+		return Optional.of(type.bagType().builder().attributes(v).build());
 	}
 
-	public java.util.Optional<BagOfValues> resolve(AttributeSelectorKey selector){
-		return content != null? content.resolve(selector, ()->this)
+	public java.util.Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
+		return content != null? content.resolve(selectorKey, ()->this)
 		                      :Optional.empty();
 	}
 

@@ -27,6 +27,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import com.google.common.truth.Truth8;
 import org.junit.Before;
 import org.junit.Test;
 import org.xacml4j.v30.types.Entity;
@@ -107,25 +108,15 @@ public class   EntityTest
 								.build())
 				.build();
 
-		assertEquals(XacmlTypes.STRING.bagBuilder().value(XacmlTypes.STRING.ofAny("a"), XacmlTypes.STRING.ofAny("bb")).build(),
-		             entity.resolve(AttributeDesignatorKey.builder()
-		                                                  .attributeId("testId1")
-		                                                  .dataType(XacmlTypes.STRING)
-		                                                  .category(CategoryId.SUBJECT_ACCESS)
-		                                                  .build()).get());
-		assertEquals(XacmlTypes.INTEGER.bagBuilder().value(10).build(),
-		             entity.resolve(AttributeDesignatorKey.builder()
-		                                                  .attributeId("testId3")
-		                                                  .dataType(XacmlTypes.INTEGER)
-		                                                  .category(CategoryId.SUBJECT_ACCESS)
-		                                                  .build()).get());
+		Truth8.assertThat(entity.resolve("testId1", XacmlTypes.STRING))
+				.hasValue(XacmlTypes.STRING.bagBuilder()
+						.value(StringVal.of("a"), StringVal.of("bb")).build());
 
-		assertEquals(XacmlTypes.DOUBLE.bagBuilder().value(0.1).build(),
-		             entity.resolve(AttributeDesignatorKey.builder()
-		                                                  .attributeId("testId3")
-		                                                  .dataType(XacmlTypes.DOUBLE)
-		                                                  .category(CategoryId.SUBJECT_ACCESS)
-		                                                  .build()).get());
+		Truth8.assertThat(entity.resolve("testId3", XacmlTypes.INTEGER))
+				.hasValue(XacmlTypes.INTEGER.bagBuilder().value(10).build());
+
+		Truth8.assertThat(entity.resolve("testId3", XacmlTypes.DOUBLE))
+				.hasValue(XacmlTypes.DOUBLE.bagBuilder().value(0.1).build());
 
 	}
 

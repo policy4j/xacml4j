@@ -22,14 +22,13 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
+
+import static org.junit.Assert.*;
 
 public class ISO8601DayTimeDurationTest
 {
@@ -48,24 +47,24 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
 		assertEquals(0, v1.getSeconds());
-		assertEquals("P3DT10H30M", v1.toXacmlString());
+		assertEquals("P3DT10H30M0S", v1.toXacmlString());
 		ISO8601DayTimeDuration v2 = ISO8601DayTimeDuration.of("PT10H10S");
 		assertEquals(0, v2.getDays());
 		assertEquals(10, v2.getHours());
 		assertEquals(0, v2.getMinutes());
 		assertEquals(10, v2.getSeconds());
-		assertEquals("PT10H10S", v2.toXacmlString());
+		assertEquals("P0DT10H0M10S", v2.toXacmlString());
 	}
 
 	@Test
 	public void testCreateValidDurationViaExplicitCtor()
 	{
-		ISO8601DayTimeDuration v1 = ISO8601DayTimeDuration.of(3, 10, 30, 0);
+		ISO8601DayTimeDuration v1 = ISO8601DayTimeDuration.of(true,3, 10, 30, 0);
 		assertEquals(3, v1.getDays());
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
 		assertEquals(0, v1.getSeconds());
-		assertTrue(v1.isPositive());
+		assertFalse(v1.isNegative());
 		ISO8601DayTimeDuration v2 = ISO8601DayTimeDuration.of("P3DT10H30M");
 		assertEquals(v1, v2);
 	}
@@ -80,7 +79,7 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(20, v3.getHours());
 		assertEquals(30, v3.getMinutes());
 		assertEquals(10, v3.getSeconds());
-		assertEquals("P3DT10H30M", v1.toXacmlString());
+		assertEquals("P3DT10H30M0S", v1.toXacmlString());
 	}
 
 	@Test
@@ -116,9 +115,8 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
 		assertEquals(0, v1.getSeconds());
-		TypeToString toString = TypeToString.forType(XacmlTypes.DAYTIMEDURATION).get();
-		assertEquals("P3DT10H30M", toString.toString(v1));
-		v1 = (ISO8601DayTimeDuration)toString.fromString("P3DT10H30M10S");
+		assertEquals("P3DT10H30M0S", v1.toXacmlString());
+		v1 = ISO8601DayTimeDuration.of("P3DT10H30M10S");
 		assertEquals(3, v1.getDays());
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());

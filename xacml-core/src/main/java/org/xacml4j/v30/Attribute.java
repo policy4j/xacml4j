@@ -29,10 +29,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
-import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -49,7 +47,7 @@ import com.google.common.collect.ImmutableList;
 public class Attribute implements Serializable
 {
 	private final String attributeId;
-	private final List<Value> values;
+	private final List<Value<?>> values;
 	private final boolean includeInResult;
 	private final String issuer;
 
@@ -103,7 +101,7 @@ public class Attribute implements Serializable
 	 * @return collection of {@link Value}
 	 * instances
 	 */
-	public Collection<Value> getValues(){
+	public Collection<Value<?>> values(){
 		return values;
 	}
 
@@ -113,7 +111,7 @@ public class Attribute implements Serializable
 	 * @param type an attribute type
 	 * @return a collection of {@link Value} of given type
 	 */
-	public <T extends Value<T>> Collection<T> getValuesByType(final ValueType... type) {
+	public <T extends Value<?>> Collection<T> getValuesByType(final ValueType... type) {
 		if(type == null || type.length == 0){
 			return Collections.emptyList();
 		}
@@ -159,7 +157,7 @@ public class Attribute implements Serializable
 		private String attributeId;
 		private String issuer;
 		private boolean includeInResult;
-		private ImmutableList.Builder<Value> valueBuilder;
+		private ImmutableList.Builder<Value<?>> valueBuilder;
 
 		private Builder(String attributeId){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(attributeId));
@@ -182,17 +180,17 @@ public class Attribute implements Serializable
 			return this;
 		}
 
-		public Builder value(Value...values){
+		public Builder value(Value<?>...values){
 			Preconditions.checkNotNull(values);
-			for(Value v : values){
+			for(Value<?> v : values){
 				valueBuilder.add(v);
 			}
 			return this;
 		}
 
-		public Builder values(Iterable<Value> values){
+		public Builder values(Iterable<Value<?>> values){
 			Preconditions.checkNotNull(values);
-			for(Value v : values){
+			for(Value<?> v : values){
 				valueBuilder.add(v);
 			}
 			return this;

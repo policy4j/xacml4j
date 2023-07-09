@@ -145,8 +145,8 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 		Attribute selector1 = r1.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
 		Set<Value> valueSet = ImmutableSet.<Value>builder()
-		                                  .addAll(selector0.getValues())
-		                                  .addAll(selector1.getValues())
+		                                  .addAll(selector0.values())
+		                                  .addAll(selector1.values())
 
 		                                  .build();
 
@@ -235,14 +235,14 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 		Attribute selector31 = r3.getAttribute(CategoryId.SUBJECT_ACCESS, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
 		Set<Value> valueSet = ImmutableSet.<Value>builder()
-		                                  .addAll(selector00.getValues())
-		                                  .addAll(selector01.getValues())
-		                                  .addAll(selector10.getValues())
-		                                  .addAll(selector11.getValues())
-		                                  .addAll(selector20.getValues())
-		                                  .addAll(selector21.getValues())
-		                                  .addAll(selector30.getValues())
-		                                  .addAll(selector31.getValues())
+		                                  .addAll(selector00.values())
+		                                  .addAll(selector01.values())
+		                                  .addAll(selector10.values())
+		                                  .addAll(selector11.values())
+		                                  .addAll(selector20.values())
+		                                  .addAll(selector21.values())
+		                                  .addAll(selector30.values())
+		                                  .addAll(selector31.values())
 		                                  .build();
 		assertEquals(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE), XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE));
 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]", CategoryId.RESOURCE)));

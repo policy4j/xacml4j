@@ -1,8 +1,31 @@
 package org.xacml4j.util;
 
+/*
+ * #%L
+ * Xacml4J Core Engine Implementation
+ * %%
+ * Copyright (C) 2009 - 2023 Xacml4J.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.types.ISO8601DayTimeDuration;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -13,34 +36,67 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Optional;
 
-public class DateTimeDurationUtils
-{
+public class DateTimeDurationUtils {
     private final static Logger LOG = LoggerFactory.getLogger(DateTimeDurationUtils.class);
 
-    private static DatatypeFactory DF_FACTORY = null;
+    static DatatypeFactory DF_FACTORY = null;
 
-    static{
-        try{
+    static {
+        try {
             DF_FACTORY = DatatypeFactory.newInstance();
-        }catch(DatatypeConfigurationException e){
+        } catch (DatatypeConfigurationException e) {
             LOG.error(e.getMessage(), e);
         }
     }
 
-    public static OffsetDateTime toISO860DateTime(XMLGregorianCalendar c){
-        if(c == null){
+    public static Duration of(boolean positive, int days, int hours, int mins, int seconds){
+        assert DF_FACTORY != null;
+        return DF_FACTORY.newDurationDayTime(positive, days, hours, mins, seconds);
+    }
+
+    public static Duration of(boolean positive, int hours, int mins, int seconds){
+        assert DF_FACTORY != null;
+        return DF_FACTORY.newDurationDayTime(positive, DatatypeConstants.FIELD_UNDEFINED, hours, mins, seconds);
+    }
+
+    public static Duration of(boolean positive, int mins, int seconds){
+        assert DF_FACTORY != null;
+        return DF_FACTORY.newDurationDayTime(positive, DatatypeConstants.FIELD_UNDEFINED, DatatypeConstants.FIELD_UNDEFINED, mins, seconds);
+    }
+
+    public static boolean isZero(Duration d){
+        assert DF_FACTORY != null;
+        return isUndefinedOrZero(d.getYears()) &&
+                isUndefinedOrZero(d.getMonths()) &&
+                isUndefinedOrZero(d.getDays()) &&
+                isUndefinedOrZero(d.getHours()) &&
+                isUndefinedOrZero(d.getMinutes()) &&
+                isUndefinedOrZero(d.getSeconds());
+
+    }
+
+    private static  boolean isUndefinedOrZero(int v){
+        return v == 0 || v == DatatypeConstants.FIELD_UNDEFINED;
+    }
+
+    public static OffsetDateTime toISO860DateTime(XMLGregorianCalendar c) {
+        if (c == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.DATETIME);
         }
-        if(c.getXMLSchemaType() != DatatypeConstants.DATETIME){
+        if (c.getXMLSchemaType() != DatatypeConstants.DATETIME) {
             throw SyntaxException
                     .invalidAttributeValue(c, XacmlTypes.DATETIME);
         }
-        ZoneOffset offset = c.getTimezone() != DatatypeConstants.FIELD_UNDEFINED?
-                ZoneOffset.ofTotalSeconds(c.getTimezone() * 60):ZoneOffset.UTC;
+        ZoneOffset offset = c.getTimezone() != DatatypeConstants.FIELD_UNDEFINED ?
+                ZoneOffset.ofTotalSeconds(c.getTimezone() * 60) : ZoneOffset.UTC;
         BigDecimal fractionalSecond = c.getFractionalSecond();
         int nanos = fractionalSecond != null
                 ? fractionalSecond.multiply(BigDecimal.valueOf(1_000_000_000)).intValueExact()
@@ -49,13 +105,13 @@ public class DateTimeDurationUtils
                 c.getHour(), c.getMinute(), c.getSecond(), nanos, offset);
     }
 
-    public static LocalDate toISO860Date(XMLGregorianCalendar v){
-        if(v == null){
+    public static LocalDate toISO860Date(XMLGregorianCalendar v) {
+        if (v == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.DATE);
         }
-        if(!(v.getXMLSchemaType() == DatatypeConstants.DATE ||
-                v.getXMLSchemaType() == DatatypeConstants.DATETIME)){
+        if (!(v.getXMLSchemaType() == DatatypeConstants.DATE ||
+                v.getXMLSchemaType() == DatatypeConstants.DATETIME)) {
             throw SyntaxException
                     .invalidAttributeValue(v, XacmlTypes.DATE);
         }
@@ -64,18 +120,18 @@ public class DateTimeDurationUtils
                 v.getDay());
     }
 
-    public static OffsetTime toISO860Time(XMLGregorianCalendar c){
-        if(c == null){
+    public static OffsetTime toISO860Time(XMLGregorianCalendar c) {
+        if (c == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.TIME);
         }
-        if(!(c.getXMLSchemaType().equals(DatatypeConstants.DATETIME) ||
-                c.getXMLSchemaType().equals(DatatypeConstants.TIME))){
+        if (!(c.getXMLSchemaType().equals(DatatypeConstants.DATETIME) ||
+                c.getXMLSchemaType().equals(DatatypeConstants.TIME))) {
             throw SyntaxException
                     .invalidAttributeValue(c, XacmlTypes.TIME);
         }
-        ZoneOffset offset = c.getTimezone() != DatatypeConstants.FIELD_UNDEFINED?
-                ZoneOffset.ofTotalSeconds(c.getTimezone() * 60):ZoneOffset.UTC;
+        ZoneOffset offset = c.getTimezone() != DatatypeConstants.FIELD_UNDEFINED ?
+                ZoneOffset.ofTotalSeconds(c.getTimezone() * 60) : ZoneOffset.UTC;
         BigDecimal fractionalSecond = c.getFractionalSecond();
         int nanos = fractionalSecond != null
                 ? fractionalSecond.multiply(BigDecimal.valueOf(1_000_000_000)).intValueExact()
@@ -84,22 +140,8 @@ public class DateTimeDurationUtils
     }
 
 
-    public static Period toYearMonthPeriod(String v){
-        assert DF_FACTORY != null;
-        Duration duration = DF_FACTORY.newDuration(v);
-        if(duration.getXMLSchemaType() != DatatypeConstants.DURATION_YEARMONTH){
-            throw SyntaxException
-                    .invalidAttributeValue(v, XacmlTypes.YEARMONTHDURATION);
-        }
-        Period p = Period.of(duration.getYears(),
-                duration.getMonths(),
-                duration.getDays());
-        return duration.getSign() > 0?p:p.negated();
-    }
-
-
-    public static LocalDate toISO860Date(GregorianCalendar v){
-        if(v == null){
+    public static LocalDate toISO860Date(GregorianCalendar v) {
+        if (v == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.DATE);
         }
@@ -108,51 +150,24 @@ public class DateTimeDurationUtils
                 v.get(Calendar.DAY_OF_MONTH));
     }
 
-    public static LocalDate toISO860Date(Instant v){
-        if(v == null){
-            throw SyntaxException
-                    .invalidAttributeValue(null, XacmlTypes.DATE);
-        }
-        return v.atOffset(ZoneOffset.UTC)
-                .toLocalDate();
-    }
-
-    public static LocalDate toISO860Date(String v){
-        assert DF_FACTORY != null;
-        if(v == null){
-            throw SyntaxException
-                    .invalidAttributeValue(null, XacmlTypes.DATE);
-        }
-        XMLGregorianCalendar d = DF_FACTORY.newXMLGregorianCalendar(v);
-        if(d.getXMLSchemaType() != DatatypeConstants.DATE){
-            throw SyntaxException
-                    .invalidAttributeValue(v, XacmlTypes.DATE);
-        }
-        try{
-            return toISO860Date(d);
-        }catch (Exception e){
-            throw new SyntaxException(e);
-        }
-    }
-
-    public static OffsetDateTime toISO860DateTime(Instant v){
-        if(v == null){
+    public static OffsetDateTime toISO860DateTime(Instant v) {
+        if (v == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.DATETIME);
         }
         return v.atOffset(ZoneOffset.UTC);
     }
 
-    public static OffsetTime toISO860Time(Instant v){
-        if(v == null){
+    public static OffsetTime toISO860Time(Instant v) {
+        if (v == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.TIME);
         }
         return v.atOffset(ZoneOffset.UTC).toOffsetTime();
     }
 
-    public static OffsetTime toISO860Time(GregorianCalendar calendar){
-        if(calendar == null){
+    public static OffsetTime toISO860Time(GregorianCalendar calendar) {
+        if (calendar == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.TIME);
         }
@@ -161,8 +176,8 @@ public class DateTimeDurationUtils
                 .toOffsetTime();
     }
 
-    public static OffsetDateTime toISO860DateTime(GregorianCalendar calendar){
-        if(calendar == null){
+    public static OffsetDateTime toISO860DateTime(GregorianCalendar calendar) {
+        if (calendar == null) {
             throw SyntaxException
                     .invalidAttributeValue(null, XacmlTypes.DATETIME);
         }
@@ -171,109 +186,114 @@ public class DateTimeDurationUtils
     }
 
 
-    public static OffsetTime parseISO860Time(String v) throws SyntaxException{
-        if(StringUtils.isNullOrEmpty(v)){
+    public static OffsetTime parseISO860Time(String v) throws SyntaxException {
+        if (StringUtils.isNullOrEmpty(v)) {
             throw SyntaxException
                     .invalidAttributeValue(v, XacmlTypes.TIME);
         }
         XMLGregorianCalendar c = DF_FACTORY.newXMLGregorianCalendar(v);
-        if(c.getXMLSchemaType() != DatatypeConstants.TIME){
+        if (c.getXMLSchemaType() != DatatypeConstants.TIME) {
             throw SyntaxException
                     .invalidAttributeValue(v, XacmlTypes.DATE);
         }
         return toISO860Time(c);
     }
 
-    public static OffsetDateTime parseISO860DateTime(String v) throws SyntaxException{
-        if(StringUtils.isNullOrEmpty(v)){
+    public static OffsetDateTime parseISO860DateTime(String v) throws SyntaxException {
+        if (StringUtils.isNullOrEmpty(v)) {
             throw SyntaxException
                     .invalidAttributeValue(v, XacmlTypes.DATETIME);
         }
-       return toISO860DateTime(DF_FACTORY.newXMLGregorianCalendar(v));
+        return toISO860DateTime(DF_FACTORY.newXMLGregorianCalendar(v));
     }
 
-    public static java.time.Duration toISO8601DayTimeDuration(Duration v){
-        Duration d = DF_FACTORY.newDurationDayTime(v.getSign() > 0,
+    public static java.time.Duration toISO8601DayTimeDuration(Duration v) {
+        Duration d = DF_FACTORY.newDurationDayTime(v.getSign() >= 0,
                 v.getDays(), v.getHours(), v.getMinutes(), v.getSeconds());
         java.time.Duration duration = null;
-        if(d.getDays() != DatatypeConstants.FIELD_UNDEFINED){
+        if (d.getDays() != DatatypeConstants.FIELD_UNDEFINED) {
             duration = java.time.Duration.ofDays(d.getDays());
         }
-        if(d.getHours() != DatatypeConstants.FIELD_UNDEFINED){
-            duration = duration != null?duration.plusHours(d.getHours()):
+        if (d.getHours() != DatatypeConstants.FIELD_UNDEFINED) {
+            duration = duration != null ? duration.plusHours(d.getHours()) :
                     java.time.Duration.ofHours(d.getHours());
         }
-        if(d.getMinutes() != DatatypeConstants.FIELD_UNDEFINED){
-            duration = duration != null?duration.plusMinutes(d.getMinutes()):
+        if (d.getMinutes() != DatatypeConstants.FIELD_UNDEFINED) {
+            duration = duration != null ? duration.plusMinutes(d.getMinutes()) :
                     java.time.Duration.ofMinutes(d.getMinutes());
         }
-        if(d.getSeconds() != DatatypeConstants.FIELD_UNDEFINED){
-            duration = duration != null?duration.plusSeconds(d.getSeconds()):
+        if (d.getSeconds() != DatatypeConstants.FIELD_UNDEFINED) {
+            duration = duration != null ? duration.plusSeconds(d.getSeconds()) :
                     java.time.Duration.ofSeconds(d.getSeconds());
         }
-        if(duration == null){
+        if (duration == null) {
             throw SyntaxException
                     .invalidAttributeValue(v, XacmlTypes.DAYTIMEDURATION);
         }
-        return d.getSign() > 0?duration:duration.negated();
+        return d.getSign() > 0 ? duration : duration.negated();
     }
 
-    public static java.time.Duration parseISO8601DayTimeDuration(String v){
-        assert DF_FACTORY != null;
-        return toISO8601DayTimeDuration(DF_FACTORY.newDuration(v));
-
-    }
-
-    public static Period toISO8601YearMonthDuration(Duration v){
-        assert DF_FACTORY != null;
-        Duration d = DF_FACTORY.newDurationYearMonth(v.getSign() > 0, v.getYears(), v.getMonths());
-        Period p = null;
-        if(d.getYears() != DatatypeConstants.FIELD_UNDEFINED){
-            p = Period.ofYears(d.getYears());
+    public static Period toISO8601YearsMonthsPeriod(Duration v) {
+        Duration d = DF_FACTORY.newDurationYearMonth(v.getSign() >= 0,
+                v.getYears(), v.getMonths());
+        Period period = Period.ZERO;
+        if (d.getYears() != DatatypeConstants.FIELD_UNDEFINED) {
+            period = Period.ofYears(d.getYears());
         }
-        if(d.getMonths() != DatatypeConstants.FIELD_UNDEFINED){
-            p = p != null?p.plusMonths(d.getMonths()):Period.ofMonths(d.getMonths());
+        if (d.getMonths() != DatatypeConstants.FIELD_UNDEFINED) {
+            period = period != null ? period.plusMonths(v.getMonths()) : period;
         }
-        if(p == null){
-            throw SyntaxException.invalidAttributeValue(v, XacmlTypes.YEARMONTHDURATION);
+        return d.getSign() > 0 ? period : period.negated();
+    }
+
+    public static Duration parseISO8601DayTimeDuration(String v) {
+        assert DF_FACTORY != null;
+        Duration duration = null;
+        try{
+            duration = DF_FACTORY.newDuration(v);
+        }catch (IllegalArgumentException e){
+            LOG.debug(e.getMessage(), e);
+            duration = parseAsJDKDuration(v);
         }
-        return d.getSign() > 0?p:p.negated();
+        return DF_FACTORY.newDurationDayTime(duration.getSign() >= 0,
+                duration.getDays(), duration.getHours(), duration.getMinutes(), duration.getSeconds());
     }
 
-    public static Period parseISO8601YearMonthDuration(String v){
+    private static Duration parseAsJDKDuration(String v){
+        try {
+            return toXmlDayTimeDuration(java.time.Duration.parse(v));
+        }catch (DateTimeParseException e){
+            LOG.debug(e.getMessage(), e);
+            throw new SyntaxException(v, XacmlTypes.DAYTIMEDURATION);
+        }
+    }
+
+    private static Duration parseAsJDKPeriod(String v){
+        try {
+            return toXmlYearsMonthsDuration(java.time.Period.parse(v));
+        }catch (DateTimeParseException e){
+            throw new SyntaxException(v, XacmlTypes.YEARMONTHDURATION);
+        }
+    }
+
+    public static Duration parseISO8601YearMonthDuration(String v) {
         assert DF_FACTORY != null;
-        return toISO8601YearMonthDuration(DF_FACTORY.newDuration(v));
+        Duration duration;
+        try{
+            duration = DF_FACTORY.newDuration(v);
+        }catch (IllegalArgumentException e){
+            duration = parseAsJDKPeriod(v);
+        }
+        return DF_FACTORY.newDurationYearMonth(duration.getSign() >= 0,
+                duration.getYears(), duration.getMonths());
     }
 
-    public static Duration toXmlDayTimeDuration(java.time.Duration d)
-    {
-        BigInteger seconds = BigDecimal.valueOf(d.toSecondsPart())
-                .add(BigDecimal.valueOf(d.getNano(), 9))
-                .stripTrailingZeros().toBigInteger();
-        return DF_FACTORY.newDurationDayTime(
-                !d.isNegative(),
-                d.toDays() == 0?null:BigInteger.valueOf(d.toDays()),
-                d.toHoursPart() == 0?null:BigInteger.valueOf(d.toHoursPart()),
-                d.toMinutesPart() == 0?null:BigInteger.valueOf(d.toMinutesPart()),
-                seconds.equals(BigInteger.ZERO)?null:seconds);
+    public static Duration toXmlDayTimeDuration(java.time.Duration d) {
+        return DF_FACTORY.newDurationDayTime(!d.isNegative(), Long.valueOf(d.toDaysPart()).intValue(), d.toHoursPart(), d.toMinutesPart(), d.toSecondsPart());
     }
 
-    public static Duration toXmlYearMonthDuration(Period v)
-    {
-        assert DF_FACTORY != null;
-        return DF_FACTORY.newDurationYearMonth(!v.isNegative(),
-                v.getYears() == 0?null:BigInteger.valueOf(Math.abs(v.getYears())),
-                v.getMonths() == 0?null:BigInteger.valueOf(Math.abs(v.getMonths())));
-    }
-
-
-    public XMLGregorianCalendar toXmlCalendar(OffsetTime v){
-        assert DF_FACTORY != null;
-        return DF_FACTORY.newXMLGregorianCalendarTime(
-                v.getHour(),
-                v.getMinute(),
-                v.getSecond(),
-                v.getOffset().getTotalSeconds() / 60);
+    public static Duration toXmlYearsMonthsDuration(Period p) {
+        return DF_FACTORY.newDurationYearMonth(!p.isNegative(), p.getYears(), p.getMonths());
     }
 
 }

@@ -90,7 +90,7 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testMapWithValidArguments() throws EvaluationException
 	{
-		Collection<Value> v = new LinkedList<Value>();
+		Collection<Value<?>> v = new LinkedList<>();
 		v.add(XacmlTypes.INTEGER.ofAny(10));
 		v.add(XacmlTypes.INTEGER.ofAny(20));
 		v.add(XacmlTypes.INTEGER.ofAny(30));
@@ -109,7 +109,7 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAnyOf() throws EvaluationException
 	{
-		Collection<Value> v = new LinkedList<Value>();
+		Collection<Value<?>> v = new LinkedList<>();
 		v.add(XacmlTypes.INTEGER.ofAny(10));
 		v.add(XacmlTypes.INTEGER.ofAny(20));
 		v.add(XacmlTypes.INTEGER.ofAny(30));
@@ -126,11 +126,11 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAllOfAny() throws EvaluationException
 	{
-		Collection<Value> a = new LinkedList<Value>();
+		Collection<Value<?>> a = new LinkedList<>();
 		a.add(XacmlTypes.INTEGER.ofAny(10));
 		a.add(XacmlTypes.INTEGER.ofAny(20));
 
-		Collection<Value> b = new LinkedList<Value>();
+		Collection<Value<?>> b = new LinkedList<>();
 		b.add(XacmlTypes.INTEGER.ofAny(1));
 		b.add(XacmlTypes.INTEGER.ofAny(3));
 		b.add(XacmlTypes.INTEGER.ofAny(5));
@@ -148,11 +148,11 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAnyOfAll() throws EvaluationException
 	{
-		Collection<Value> a = new LinkedList<Value>();
+		Collection<Value<?>> a = new LinkedList<>();
 		a.add(XacmlTypes.INTEGER.ofAny(3));
 		a.add(XacmlTypes.INTEGER.ofAny(5));
 
-		Collection<Value> b = new LinkedList<Value>();
+		Collection<Value<?>> b = new LinkedList<>();
 		b.add(XacmlTypes.INTEGER.ofAny(1));
 		b.add(XacmlTypes.INTEGER.ofAny(2));
 		b.add(XacmlTypes.INTEGER.ofAny(3));
@@ -172,11 +172,11 @@ public class HigherOrderFunctionsTest
 	public void testAnyOfAllIIC168() throws EvaluationException
 	{
 
-		Collection<Value> a = new LinkedList<Value>();
+		Collection<Value<?>> a = new LinkedList<>();
 		a.add(XacmlTypes.STRING.ofAny("   This  is n*o*t* *IT!  "));
 		a.add(XacmlTypes.STRING.ofAny("   This is not a match to IT!  "));
 
-		Collection<Value> b = new LinkedList<Value>();
+		Collection<Value<?>> b = new LinkedList<>();
 		b.add(XacmlTypes.STRING.ofAny("   This  is IT!  "));
 		b.add(XacmlTypes.STRING.ofAny("   This  is not IT!  "));
 
@@ -192,11 +192,11 @@ public class HigherOrderFunctionsTest
 	@Test
 	public void testAllOfAll() throws EvaluationException
 	{
-		Collection<Value> a = new LinkedList<Value>();
+		Collection<Value<?>> a = new LinkedList<>();
 		a.add(XacmlTypes.INTEGER.ofAny(5));
 		a.add(XacmlTypes.INTEGER.ofAny(6));
 
-		Collection<Value> b = new LinkedList<Value>();
+		Collection<Value<?>> b = new LinkedList<>();
 		b.add(XacmlTypes.INTEGER.ofAny(1));
 		b.add(XacmlTypes.INTEGER.ofAny(2));
 		b.add(XacmlTypes.INTEGER.ofAny(3));

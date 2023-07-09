@@ -163,7 +163,7 @@ public final class Xacml20ResponseContextMarshaller
 			Collection<Attribute> attrs = resource.getEntity().get(RESOURCE_ID);
 			if(attrs.size() == 1){
 				Attribute resourceId = Iterables.getOnlyElement(attrs);
-				Value v =  Iterables.getOnlyElement(resourceId.getValues());
+				Value v =  Iterables.getOnlyElement(resourceId.values());
 				java.util.Optional<TypeToString> toString = TypeToString.forType(v.getEvaluatesTo());
 				Preconditions.checkState(toString.isPresent());
 				return toString.get().toString(v);

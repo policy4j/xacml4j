@@ -143,10 +143,10 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
     }
 
     public ISO8601Date plus(ISO8601YearMonthDuration duration){
-        return ISO8601Date.of(value.plus(duration.value));
+        return ISO8601Date.of(value.plus(duration.toDuration()));
     }
 
     public ISO8601Date minus(ISO8601YearMonthDuration duration){
-        return ISO8601Date.of(value.minus(duration.value));
+        return ISO8601Date.of(value.minus(duration.toDuration()));
     }
 }

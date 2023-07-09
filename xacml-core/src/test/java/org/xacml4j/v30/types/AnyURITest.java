@@ -49,8 +49,8 @@ public class AnyURITest
 	
 	@Test
 	public void testBagOf(){
-		Value v0 = XacmlTypes.ANYURI.ofAny("http://www.test.org");
-		Value v1 = XacmlTypes.ANYURI.ofAny("http://www.test1.org");
+		AnyURI v0 = XacmlTypes.ANYURI.ofAny("http://www.test.org");
+		AnyURI v1 = XacmlTypes.ANYURI.ofAny("http://www.test1.org");
 		BagOfValues b0 = XacmlTypes.ANYURI.bagBuilder().attribute(v0, v1).build();
 		BagOfValues b1 = XacmlTypes.ANYURI.bagBuilder().attributes(ImmutableList.of(v0, v1)).build();
 		BagOfValues b2 = XacmlTypes.ANYURI.bagBuilder().value("http://www.test.org", "http://www.test1.org").build();

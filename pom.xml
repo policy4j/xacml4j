@@ -28,7 +28,7 @@
 	</modules>
 
 	<properties>
-		<junit.version>4.11</junit.version>
+		<junit.version>5.9.1</junit.version>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.14.0</log4j.version>
 		<easymock.version>5.1.0</easymock.version>
@@ -81,8 +81,8 @@
 	</issueManagement>
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -127,6 +127,13 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
+
+			<dependency>
+				<groupId>org.junit.vintage</groupId>
+				<artifactId>junit-vintage-engine</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<dependency>
 				<groupId>com.google.protobuf</groupId>
 				<artifactId>protobuf-java</artifactId>
@@ -213,12 +220,6 @@
 				<groupId>de.benediktmeurer.eui4j</groupId>
 				<artifactId>eui4j-core</artifactId>
 				<version>${euij4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.easymock</groupId>

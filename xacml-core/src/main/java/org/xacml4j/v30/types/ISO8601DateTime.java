@@ -24,6 +24,7 @@ package org.xacml4j.v30.types;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -155,24 +156,54 @@ public final class ISO8601DateTime
         return new ISO8601DateTime(get().plus(v));
     }
     public ISO8601DateTime plus(ISO8601YearMonthDuration v){
-        return new ISO8601DateTime(get().plus(v.value));
+        return v.isNegative()?
+            ISO8601DateTime.of(value.minus(v.getYears(),
+                            ChronoUnit.YEARS)
+                    .minus(v.getMonths(),
+                            ChronoUnit.MONTHS)):
+            ISO8601DateTime.of(value.plus(v.getYears(),
+                        ChronoUnit.YEARS)
+                .plus(v.getMonths(),
+                        ChronoUnit.MONTHS));
+
     }
+
     public ISO8601DateTime plus(ISO8601DayTimeDuration v){
-        return new ISO8601DateTime(get().plus(v.value));
+        return !v.isNegative()?
+                ISO8601DateTime.of(value.plus(v.getDays(), ChronoUnit.DAYS)
+                        .plus(v.getHours(), ChronoUnit.HOURS)
+                        .plus(v.getMinutes(), ChronoUnit.MINUTES)
+                        .plus(v.getSeconds(), ChronoUnit.SECONDS)) :
+                ISO8601DateTime.of(value.minus(v.getDays(), ChronoUnit.DAYS)
+                .minus(v.getHours(), ChronoUnit.HOURS)
+                .minus(v.getMinutes(), ChronoUnit.MINUTES)
+                .minus(v.getSeconds(), ChronoUnit.SECONDS));
     }
     public ISO8601DateTime minus(ISO8601YearMonthDuration v){
-        return new ISO8601DateTime(get().minus(v.value));
+        return v.isNegative()?
+                ISO8601DateTime.of(value.plus(v.getYears(), ChronoUnit.YEARS)
+                        .plus(v.getMonths(), ChronoUnit.MONTHS)):
+                ISO8601DateTime.of(value.minus(v.getYears(), ChronoUnit.YEARS)
+                                .minus(v.getMonths(), ChronoUnit.MONTHS));
+
     }
     public ISO8601DateTime minus(ISO8601DayTimeDuration v){
-        return new ISO8601DateTime(get().minus(v.value));
+        return v.isNegative()?new ISO8601DateTime(value.minus(v.getDays(), ChronoUnit.DAYS)
+                .minus(v.getHours(), ChronoUnit.HOURS)
+                .minus(v.getMinutes(), ChronoUnit.MINUTES)
+                .minus(v.getSeconds(), ChronoUnit.SECONDS)):
+                new ISO8601DateTime(value.plus(v.getDays(), ChronoUnit.DAYS)
+                        .plus(v.getHours(), ChronoUnit.HOURS)
+                        .plus(v.getMinutes(), ChronoUnit.MINUTES)
+                        .plus(v.getSeconds(), ChronoUnit.SECONDS));
     }
 
     public ISO8601DateTime minus(Duration v){
         return new ISO8601DateTime(get().minus(v));
     }
 
-    public boolean isInRange(ISO8601DateTime a, ISO8601DateTime b){
-        return a.compareTo(this) >= 0 && b.compareTo(this) <= 0;
+    public boolean isInRange(Range<ISO8601DateTime> range){
+        return range.contains(this);
     }
 
 }

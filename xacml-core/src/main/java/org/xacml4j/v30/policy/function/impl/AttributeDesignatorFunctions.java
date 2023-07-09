@@ -51,42 +51,28 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI attributeId,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI dataType,
 			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#boolean", value={"false"}) BooleanVal mustBePresent,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") String issuer)
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal issuer)
 	{
 		Preconditions.checkArgument(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY) ||
 				categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI));
 		LOG.debug("CategoryOrEntity=\"{}\" attributeId=\"{}\" " +
 				          "dataType=\"{}\" mustBePresent=\"{}\" issuer=\"{}\"", categoryOrEntity, attributeId, dataType, mustBePresent, issuer);
-
-		AttributeDesignatorKey.Builder designatorKeyBuilder =
-				AttributeDesignatorKey
-						.builder()
-						.dataType(dataType)
-						.attributeId(attributeId.get().toString());
-		if(issuer != null){
-			designatorKeyBuilder.issuer(issuer);
+		ValueType valueType = XacmlTypes.getType(dataType).orElseThrow(()->SyntaxException.invalidDataTypeId(dataType));
+		Entity entity = categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY)?(Entity)
+				categoryOrEntity:context.resolveEntity( CategoryId.of(categoryOrEntity.get().toString())).orElse(null);
+		if(entity == null){
+			throw new EvaluationException(Status.processingError().build(), "Entity is null");
 		}
-		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
-			designatorKeyBuilder.category(categoryOrEntity).build();
-		}
-		AttributeDesignatorKey designatorKey = designatorKeyBuilder.build();
-		Optional<BagOfValues> v = Optional.empty();
-		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY)){
-			v = ((Entity)categoryOrEntity).resolve(designatorKey);
-		}
-		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
-			v = context.resolve(designatorKey);
-		}
+		Optional<BagOfValues> v = entity.resolve(attributeId.toString(), valueType, Optional.ofNullable(issuer)
+				.map(StringVal::get)
+				.orElse(null));
 		if(!v.isPresent()){
 			if(mustBePresent.get()){
-				throw AttributeReferenceEvaluationException
-						.forDesignator(designatorKey,
-								()->"Designator.MustBePresent=\"true\", but value is absent");
+				throw new EvaluationException(Status.missingAttribute(attributeId.toString())
+						.build(), "Must be present");
 			}
 		}
-		return v.orElse(designatorKey
-						.getDataType()
-						.emptyBag());
+		return v.orElse(valueType.emptyBag());
 	}
 
 

@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.Entity;
+
 import java.time.Clock;
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -342,16 +344,18 @@ public interface EvaluationContext
 		throws EvaluationException;
 
 	/**
-	 * Resolves {@link CategoryId} and {@link Content.Type}
-	 * to optional content of the given category and type
+	 * Resolves {@link CategoryId} to a related entity
 	 *
 	 * @param categoryId an optional category identifier
-	 * @param type a content type
-	 * @param <C>
-	 * @return optional content {@link Content} of the given category and type
+	 * @return optional content {@link Entity} of the given category and type
 	 */
-	<C extends Content> Optional<C> resolve(CategoryId categoryId, Content.Type type);
+	Optional<Entity> resolveEntity(CategoryId categoryId);
 
+	default Optional<Content> resolveContent(CategoryId categoryId, Content.Type type){
+		return resolveEntity(categoryId)
+				.filter(e->e.hasContent(type))
+				.flatMap(Entity::getContent);
+	}
 
 	default Collection<CompositeDecisionRuleIDReference> getReferencedCompositeDecisionRules(){
 		return getReferencedCompositeDecisionRules(this, new LinkedList<>());

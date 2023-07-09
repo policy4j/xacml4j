@@ -94,7 +94,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 								Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
 								.issuer(attr.getIssuer())
 								.includeInResult(attr.isIncludeInResult())
-								.values(attr.getValues())
+								.values(attr.values())
 								.build();
 						resourceAttr.add(selector);
 						continue;

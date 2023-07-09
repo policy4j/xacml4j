@@ -261,7 +261,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		attr.setAttributeId(a.getAttributeId());
 		attr.setIssuer(a.getIssuer());
 		attr.setIncludeInResult(a.isIncludeInResult());
-		for(Value v : a.getValues()){
+		for(Value v : a.values()){
 			TypeToXacml30 m = TypeToXacml30
 					.forType(v.getEvaluatesTo())
 					.orElseThrow(

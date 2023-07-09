@@ -30,6 +30,7 @@ import java.util.Optional;
 import org.xacml4j.util.StringUtils;
 
 import com.google.common.base.MoreObjects;
+import org.xacml4j.v30.types.Path;
 
 /**
  * Represents XACML status
@@ -109,10 +110,22 @@ public final class Status
 				.message(key.getAttributeId());
 	}
 
+	public static Builder missingAttribute(String attributeId){
+		return new Builder()
+				.status(StatusCode.missingAttributeError())
+				.message(attributeId);
+	}
+
 	public static Builder missingAttribute(AttributeSelectorKey key){
 		return new Builder()
 				.status(StatusCode.missingAttributeError())
 				.message(key.getPath());
+	}
+
+	public static Builder missingAttribute(Path path){
+		return new Builder()
+				.status(StatusCode.missingAttributeError())
+				.message(path.getPath());
 	}
 
 	public boolean hasDetails(){

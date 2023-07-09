@@ -162,7 +162,7 @@ class JavaMethodToFunctionSpecConverter
 					LOG.error("Expecting bag at index=\"{}\", actual type type=\"{}\"",
 					          i, types[i].getName());
 					throw PolicySyntaxException
-							.invalidFunctionParameter(funcId, param, m);
+							.invalidFunctionParameter(funcId, param, i, m);
 				}
 				if (!param.isBag()
 						&& !Expression.class.isAssignableFrom(types[i])) {
@@ -317,7 +317,7 @@ class JavaMethodToFunctionSpecConverter
 														   "default values in annotation",
 					type.getTypeId()));
 		}
-		List<Value> defaultValues = new ArrayList<Value>(values.length);
+		List<Value<?>> defaultValues = new ArrayList<>(values.length);
 		for(String v : values){
 			defaultValues.add(fromString.get().fromString(v));
 		}

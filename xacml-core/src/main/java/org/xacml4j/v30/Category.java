@@ -77,7 +77,7 @@ public final class Category implements Serializable
 		if(!key.getCategory().equals(getCategoryId())){
 			return java.util.Optional.empty();
 		}
-		return entity.resolve(key);
+		return entity.resolve(key.getAttributeId(), key.getDataType(), key.getIssuer());
 	}
 
 	/**

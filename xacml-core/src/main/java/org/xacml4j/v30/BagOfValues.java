@@ -55,12 +55,12 @@ import org.xacml4j.v30.types.ValueType;
  * @author Giedrius Trumpickas
  */
 public final class BagOfValues
-		implements ValueExp, Serializable, Iterable<Value>
+		implements ValueExp, Serializable, Iterable<Value<?>>
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 
 	private final BagOfValuesType type;
-	private final Multiset<Value> values;
+	private final Multiset<Value<?>> values;
 	private int hashCode;
 	
 	/**
@@ -74,26 +74,26 @@ public final class BagOfValues
 	}
 
 	@Override
-	public Iterator<Value> iterator() {
+	public Iterator<Value<?>> iterator() {
 		return values.iterator();
 	}
 
 	@Override
-	public void forEach(Consumer<? super Value> action) {
+	public void forEach(Consumer<? super Value<?>> action) {
 		values.forEach(action);
 	}
 
 	@Override
-	public Spliterator<Value> spliterator() {
+	public Spliterator<Value<?>> spliterator() {
 		return values.spliterator();
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends Value> Collection<T> values() {
-		return (Collection<T>)values;
+	public Collection<Value<?>> values() {
+		return values;
 	}
 
-	public Stream<Value> stream(){
+	public Stream<Value<?>> stream(){
 		return values.stream();
 	}
 
@@ -119,12 +119,12 @@ public final class BagOfValues
 	 * defaultProvider in this bag
 	 * @exception NoSuchElementException if bag is empty
 	 */
-	public <T extends Value> T value(){
+	public <T extends Value<?>> T value(){
 		return (T)values.iterator().next();
 	}
 
-	public <T extends Value> Optional<T> single() {
-		return Optional.ofNullable(Iterables.getFirst(this.<T>values(), null));
+	public Optional<Value<?>> single() {
+		return Optional.ofNullable(Iterables.getFirst(this.values(), null));
 	}
 
 	/**
@@ -153,7 +153,7 @@ public final class BagOfValues
 	 * @param attr an attribute
 	 * @return {@code true} if bag contains given attribute
 	 */
-	public boolean contains(Value attr){
+	public boolean contains(Value<?> attr){
 		return values.contains(attr);
 	}
 
@@ -258,8 +258,8 @@ public final class BagOfValues
 	 * @return a single value or {@code null}
 	 * if a given bag is {@code null} or empty
 	 */
-	public static <T extends Value> T value(BagOfValues v){
-		return v.<T>single().orElse(null);
+	public static Value<?>  value(BagOfValues v){
+		return v.single().orElse(null);
 	}
 
 	@Override
@@ -291,7 +291,7 @@ public final class BagOfValues
 	{
 
 		private BagOfValuesType bagType;
-		private ImmutableMultiset.Builder<Value> valuesBuilder = ImmutableMultiset.builder();
+		private final ImmutableMultiset.Builder<Value<?>> valuesBuilder = ImmutableMultiset.builder();
 
 		public Builder(BagOfValuesType type){
 			this.bagType = Preconditions.checkNotNull(type);
@@ -316,16 +316,16 @@ public final class BagOfValues
 			return this;
 		}
 
-		public Builder attributes(Iterable<Value> values){
-			for (Value v : values) {
+		public Builder attributes(Iterable<? extends Value<?>> values){
+			for (Value<?> v : values) {
 				assertExpressionType(v, bagType);
 			}
 			this.valuesBuilder.addAll(values);
 			return this;
 		}
 
-		public Builder attribute(Value...values){
-			for(Value v : values){
+		public Builder attribute(Value<?>...values){
+			for(Value<?> v : values){
 				assertExpressionType(v, bagType);
 				this.valuesBuilder.add(v);
 			}

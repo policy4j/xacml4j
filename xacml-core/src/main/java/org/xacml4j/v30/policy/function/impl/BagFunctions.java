@@ -75,7 +75,7 @@ public final class BagFunctions
 	 * @param bag a bag of values
 	 * @return {@link Value} one and only one value
 	 */
-	static <T extends Value> T oneAndOnlyImpl(
+	static <T extends Value<?>> T oneAndOnlyImpl(
 			BagOfValues bag){
 		Preconditions.checkArgument(!bag.isEmpty(), "Bag is empty");
 		Preconditions.checkArgument(!(bag.size() > 1), "Bag has more than one value");

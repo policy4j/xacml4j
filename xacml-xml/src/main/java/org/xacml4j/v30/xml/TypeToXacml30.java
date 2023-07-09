@@ -544,7 +544,7 @@ public interface TypeToXacml30 extends TypeCapability
 			xacml30.setAttributeId(a.getAttributeId());
 			xacml30.setIssuer(a.getIssuer());
 			xacml30.setIncludeInResult(a.isIncludeInResult());
-			for(Value v : a.getValues()){
+			for(Value v : a.values()){
 				java.util.Optional<TypeToXacml30> toXacml30 = forType(v.getEvaluatesTo());
 				Preconditions.checkState(toXacml30.isPresent());
 				xacml30.getAttributeValue().add(toXacml30.get().toXacml30(v));

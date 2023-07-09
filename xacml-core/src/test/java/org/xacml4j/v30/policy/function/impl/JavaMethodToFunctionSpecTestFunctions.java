@@ -62,8 +62,8 @@ public class JavaMethodToFunctionSpecTestFunctions
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal optionalParametersTest(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#boolean") BooleanVal a,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, value={"false", "true"}) String b,
-			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", value="false") String c){
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", isBag=true, value={"false", "true"}) StringVal b,
+			@XacmlFuncParamOptional(typeId="http://www.w3.org/2001/XMLSchema#string", value="false") StringVal c){
 		return null;
 	}
 

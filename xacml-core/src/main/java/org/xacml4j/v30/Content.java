@@ -44,6 +44,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.net.MediaType;
 import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -64,22 +65,21 @@ public interface Content
     Type getType();
 
     /**
-     * Tries to resolve given {@Link AttributeSelectorKey} to a {@link BagOfValues}
+     * Tries to resolve given {@Link Path} to a {@link BagOfValues}
      *
-     * @param selectorKey an attribute selector
-     * @return {@link Optional}
+     * @param path an attribute selector
+     * @return {@link Optional<BagOfValues>}
      */
-    default Optional<BagOfValues> resolve(
-            AttributeSelectorKey selectorKey){
+    default Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
         return resolve(selectorKey, ()->null);
     }
 
     /**
-     * Tries to resolve given {@Link AttributeSelectorKey} to a {@link BagOfValues}
+     * Tries to resolve given {@Link Path} to a {@link BagOfValues}
      *
-     * @param selectorKey an attribute selector for this content
-     * @param attributeCallback an attribute callback
-     * @return {@link Optional}
+     * @param path an attribute path
+     * @param entitySupplier an entity supplier
+     * @return {@link Optional<BagOfValues>}
      */
     Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey,
                                   Supplier<Entity> entitySupplier);

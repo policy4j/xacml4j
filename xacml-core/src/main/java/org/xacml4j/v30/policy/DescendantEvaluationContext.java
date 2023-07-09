@@ -40,7 +40,6 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
@@ -53,6 +52,7 @@ import org.xacml4j.v30.XPathVersion;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.types.Entity;
 
 /**
  * An implementation of {@link EvaluationContext} which
@@ -70,6 +70,11 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 			EvaluationContext context){
 		Preconditions.checkNotNull(context);
 		this.parent = context;
+	}
+
+	@Override
+	public Optional<Entity> resolveEntity(CategoryId categoryId) {
+		return parent.resolveEntity(categoryId);
 	}
 
 	@Override
@@ -219,11 +224,6 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 			AttributeReferenceKey ref)
 			throws EvaluationException {
 		return parent.resolve(ref);
-	}
-
-	@Override
-	public <C extends Content> Optional<C> resolve(CategoryId categoryId, Content.Type type) {
-		return parent.resolve(categoryId, type);
 	}
 
 	@Override

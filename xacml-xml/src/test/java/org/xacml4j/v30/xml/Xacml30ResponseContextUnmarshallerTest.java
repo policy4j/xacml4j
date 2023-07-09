@@ -102,8 +102,8 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		assertEquals(1, attrs.find().size());
 		Collection<Attribute> attr1 = attrs.get("urn:test:attribute1");
 		assertEquals(1, attr1.size());
-		assertEquals(1, attr1.iterator().next().getValues().size());
-		assertEquals(XacmlTypes.STRING.ofAny("value"), attr1.iterator().next().getValues().iterator().next());
+		assertEquals(1, attr1.iterator().next().values().size());
+		assertEquals(XacmlTypes.STRING.ofAny("value"), attr1.iterator().next().values().iterator().next());
 
 		// Test policy references
 		assertEquals(2, r1.getPolicyIdentifiers().size());

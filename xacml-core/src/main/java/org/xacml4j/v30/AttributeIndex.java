@@ -147,7 +147,7 @@ public final class AttributeIndex
 	/**
 	 * @see AttributeIndex#findValues(String, String, ValueType)
 	 */
-	public <T extends Value<T>> Collection<T> findValues(
+	public <T extends Value<?>> Collection<T> findValues(
 			String attributeId,
 			ValueType dataType){
 		return findValues(attributeId, null, dataType);
@@ -162,7 +162,7 @@ public final class AttributeIndex
 	 * @param type an attribute value data type
 	 * @return a collection of {@link Value} instances
 	 */
-	public <T extends Value<T>> Collection<T> findValues(
+	public <T extends Value<?>> Collection<T> findValues(
 			String attributeId, String issuer, final ValueType type){
 		Preconditions.checkNotNull(type);
 		Collection<Attribute> found = find(attributeId, issuer);
@@ -188,7 +188,7 @@ public final class AttributeIndex
 		return false;
 	}
 
-	public <T extends Value<T>> Optional<T> findValue(
+	public <T extends Value<?>> Optional<T> findValue(
 			String attributeId, final ValueType type, String issuer, Predicate<T>  filter){
 		Preconditions.checkNotNull(type);
 		Collection<Attribute> found = find(attributeId, issuer);

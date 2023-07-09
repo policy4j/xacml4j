@@ -23,6 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
@@ -49,8 +50,8 @@ public class ISO8601YearMonthDurationTest
 		ISO8601YearMonthDuration v2 = ISO8601YearMonthDuration.of("-P1Y2M");
 		assertEquals("-P1Y2M", v1.toXacmlString());
 		assertEquals(v1, v2);
-		assertEquals(-1, v1.getYears());
-		assertEquals(-2, v1.getMonths());
+		assertEquals(1, v1.getYears());
+		assertEquals(2, v1.getMonths());
 	}
 
 	@Test
@@ -58,14 +59,13 @@ public class ISO8601YearMonthDurationTest
 	{
 		Duration d = df.newDuration("-P1Y2M");
 		ISO8601YearMonthDuration v1 = ISO8601YearMonthDuration.of(d);
-		assertEquals(-1, v1.getYears());
-		assertEquals(-2, v1.getMonths());
+		assertEquals(1, v1.getYears());
+		assertEquals(2, v1.getMonths());
+		assertTrue(v1.isNegative());
 		ISO8601YearMonthDuration v2 = ISO8601YearMonthDuration.of("-P1Y2M");
-		assertEquals(-1, v2.getYears());
-		assertEquals(-2, v2.getMonths());
+		assertEquals(1, v2.getYears());
+		assertEquals(2, v2.getMonths());
 		assertEquals(v1, v2);
-		assertEquals(-1, v1.getYears());
-		assertEquals(-2, v1.getMonths());
 	}
 
 	@Test

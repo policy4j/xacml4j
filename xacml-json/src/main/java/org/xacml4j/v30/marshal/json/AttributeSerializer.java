@@ -54,7 +54,7 @@ class AttributeSerializer implements JsonSerializer<Attribute>
 		if (src.getIssuer() != null) {
 			o.addProperty(ISSUER_PROPERTY, src.getIssuer());
 		}
-		Collection<Value> values = src.getValues();
+		Collection<Value> values = src.values();
 		serializeValue(context, o, values);
 		// OMIT property if value is "false"
 		if(src.isIncludeInResult()){

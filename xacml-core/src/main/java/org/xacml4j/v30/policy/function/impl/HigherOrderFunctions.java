@@ -175,12 +175,13 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues bag)
 		throws EvaluationException
 	{
-		Collection<Value> values = new ArrayList<Value>(bag.size());
-		for(Value v : bag.values()){
-			values.add((Value)ref.invoke(context, v));
+		Collection<Value<?>> values = new ArrayList<>(bag.size());
+		for(Value<?> v : bag.values()){
+			values.add(ref.invoke(context, v));
 		}
-		ValueType type = (ValueType)ref.getEvaluatesTo();
-		return type.bagBuilder()
+		return ref.getEvaluatesTo()
+				.getValueType()
+				.bagBuilder()
 				.attributes(values)
 				.build();
 	}

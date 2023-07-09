@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
 
 import java.io.Serializable;
@@ -53,4 +54,5 @@ public interface ValueExpTypeInfo extends Serializable
 	 * @return bag type
 	 */
 	<T extends ValueExpTypeInfo> T toBagType();
+
 }

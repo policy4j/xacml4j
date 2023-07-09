@@ -33,10 +33,5 @@
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 </project>

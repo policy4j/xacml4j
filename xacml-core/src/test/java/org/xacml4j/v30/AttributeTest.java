@@ -41,12 +41,12 @@ import com.google.common.collect.ImmutableSet;
 
 public class AttributeTest
 {
-	private Collection<Value> values;
+	private Collection<Value<?>> values;
 
 	@Before
 	public void init()
 	{
-		this.values = new LinkedList<Value>();
+		this.values = new LinkedList<>();
 		values.add(XacmlTypes.INTEGER.ofAny(1));
 		values.add(XacmlTypes.INTEGER.ofAny(1));
 		values.add(XacmlTypes.INTEGER.ofAny(3));
@@ -65,9 +65,9 @@ public class AttributeTest
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertEquals(values.size(), attr.values().size());
+		assertTrue(attr.values().containsAll(values));
+		assertTrue(values.containsAll(attr.values()));
 	}
 
 	@Test
@@ -80,15 +80,15 @@ public class AttributeTest
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
-		assertEquals(2, attr.getValues().size());
-		assertTrue(attr.getValues().contains(XacmlTypes.STRING.ofAny("value1")));
-		assertTrue(attr.getValues().contains(XacmlTypes.STRING.ofAny("value2")));
+		assertEquals(2, attr.values().size());
+		assertTrue(attr.values().contains(XacmlTypes.STRING.ofAny("value1")));
+		assertTrue(attr.values().contains(XacmlTypes.STRING.ofAny("value2")));
 	}
 
 	@Test
 	public void testCreateWithTheSameValues()
 	{
-		Collection<Value> values = new LinkedList<Value>();
+		Collection<Value<?>> values = new LinkedList<>();
 		values.add(XacmlTypes.INTEGER.ofAny(1));
 		values.add(XacmlTypes.INTEGER.ofAny(1));
 		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
@@ -99,9 +99,9 @@ public class AttributeTest
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertEquals(values.size(), attr.values().size());
+		assertTrue(attr.values().containsAll(values));
+		assertTrue(values.containsAll(attr.values()));
 		assertFalse(attr.equals(attr1));
 		assertFalse(attr.equals(attr2));
 		assertTrue(attr.equals(attr3));
@@ -121,15 +121,15 @@ public class AttributeTest
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertEquals(values.size(), attr.values().size());
+		assertTrue(attr.values().containsAll(values));
+		assertTrue(values.containsAll(attr.values()));
 	}
 
 	@Test
 	public void testBuilder()
 	{
-		Iterable<Value> a = ImmutableSet.of(XacmlTypes.STRING.ofAny("test1"), XacmlTypes.STRING.ofAny("test2"));
+		Iterable<Value<?>> a = ImmutableSet.of(XacmlTypes.STRING.ofAny("test1"), XacmlTypes.STRING.ofAny("test2"));
 		Attribute.builder("testId")
 		.values(a)
 		.value(XacmlTypes.STRING.ofAny("test2"), XacmlTypes.STRING.ofAny("test3"))

@@ -193,7 +193,7 @@ final class DefaultEvaluationContextHandler
 		}
 	}
 
-	public <C extends Content> Optional<C> getContent(CategoryId id){
+	public <C extends Content> Optional<C> getEntity(CategoryId id){
 		return requestCallback
 				.getEntity(id)
 				.flatMap((

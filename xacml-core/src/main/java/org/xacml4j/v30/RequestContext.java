@@ -214,12 +214,7 @@ public class RequestContext
 	public Collection<Entity> getEntities(CategoryId c) {
 		return Collections2.transform(
 				getCategory(c),
-				new Function<Category, Entity>() {
-					@Override
-					public Entity apply(Category input) {
-						return input.getEntity();
-					}
-				});
+				input -> input.getEntity());
 	}
 
 	public Stream<Category> stream(){
@@ -315,10 +310,10 @@ public class RequestContext
 	 * @param issuer an attribute issuer
 	 * @return a collection of {@link Value} instances
 	 */
-	public <T extends Value<T>> Collection<T> getAttributeValues(CategoryId categoryId,
+	public Collection<Value<?>> getAttributeValues(CategoryId categoryId,
 	                                            String attributeId, ValueType dataType, String issuer)
 	{
-		ImmutableList.Builder<T> found = ImmutableList.builder();
+		ImmutableList.Builder<Value<?>> found = ImmutableList.builder();
 		for(Category a : entities.get(categoryId)){
 			Entity e = a.getEntity();
 			found.addAll(e.findValues(attributeId, dataType, issuer));

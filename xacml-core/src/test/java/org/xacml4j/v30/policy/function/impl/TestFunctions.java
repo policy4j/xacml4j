@@ -105,9 +105,9 @@ public final class TestFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer", isBag=true) BagOfValues bag)
 		throws EvaluationException
 	{
-		Collection<Value> attributes = new LinkedList<Value>();
-		for(Value attr : bag.values()){
-			Value v = function.invoke(context, attr);
+		Collection<Value<?>> attributes = new LinkedList<>();
+		for(Value<?> attr : bag.values()){
+			Value<?> v = function.invoke(context, attr);
 			attributes.add(v);
 
 		}

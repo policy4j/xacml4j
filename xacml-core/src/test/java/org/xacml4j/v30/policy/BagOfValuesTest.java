@@ -40,6 +40,8 @@ import org.junit.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.types.IntegerVal;
+import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -79,7 +81,7 @@ public class BagOfValuesTest
 				XacmlTypes.STRING.ofAny("1"),
 				XacmlTypes.STRING.ofAny("aaa"),
 				XacmlTypes.STRING.ofAny("BB")).build();
-		Value v = b.value();
+		StringVal v = b.value();
 		assertEquals(XacmlTypes.STRING.ofAny("1"), v);
 	}
 	
@@ -107,13 +109,13 @@ public class BagOfValuesTest
 	@Test
 	public void testEqualsWithElementsInTheSameOrder()
 	{
-		Collection<Value> content1 = new LinkedList<Value>();
+		Collection<Value<?>> content1 = new LinkedList<>();
 		content1.add(INTEGER.ofAny(1));
 		content1.add(INTEGER.ofAny(2));
 		content1.add(INTEGER.ofAny(3));
 		BagOfValues bag1 = INTEGER.bagBuilder().attributes(content1).build();
 
-		Collection<Value> content2 = new LinkedList<Value>();
+		Collection<Value<?>> content2 = new LinkedList<>();
 		content2.add(INTEGER.ofAny(1));
 		content2.add(INTEGER.ofAny(2));
 		content2.add(INTEGER.ofAny(3));
@@ -121,14 +123,14 @@ public class BagOfValuesTest
 
 		assertEquals(bag1, bag2);
 
-		Collection<Value> content3 = new LinkedList<Value>();
+		Collection<Value<?>> content3 = new LinkedList<>();
 		content3.add(INTEGER.ofAny(1));
 		content3.add(INTEGER.ofAny(3));
 		content3.add(INTEGER.ofAny(2));
 		BagOfValues bag3 = INTEGER.bagBuilder().attributes(content3).build();
 
-		assertTrue(bag1.equals(bag3));
-		assertTrue(bag2.equals(bag3));
+		assertEquals(bag1, bag3);
+		assertEquals(bag2, bag3);
 	}
 
 
@@ -136,7 +138,7 @@ public class BagOfValuesTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testCreateWithDifferentAttributeTypes()
 	{
-		Collection<Value> attr = new LinkedList<Value>();
+		Collection<Value<?>> attr = new LinkedList<>();
 		attr.add(INTEGER.ofAny(1));
 		attr.add(XacmlTypes.STRING.ofAny("aaa"));
 		INTEGER.bagBuilder().attributes(attr).build();
@@ -145,7 +147,7 @@ public class BagOfValuesTest
 	@Test
 	public void testEvaluateBag() throws EvaluationException
 	{
-		Collection<Value> content2 = new LinkedList<Value>();
+		Collection<Value<?>> content2 = new LinkedList<>();
 		content2.add(INTEGER.ofAny(3));
 		content2.add(INTEGER.ofAny(4));
 		content2.add(INTEGER.ofAny(5));
@@ -216,7 +218,7 @@ public class BagOfValuesTest
 				INTEGER.ofAny(2),
 				INTEGER.ofAny(1),
 				INTEGER.ofAny(3)).build();
-		Iterable<Value> values = ImmutableList.<Value>of(
+		Iterable<IntegerVal> values = ImmutableList.of(
 				INTEGER.ofAny(2),
 				INTEGER.ofAny(1),
 				INTEGER.ofAny(3));

@@ -272,7 +272,7 @@ final class Xacml30PolicyFromObjectModelToJaxbMapper
 		jaxbAttr.setAttributeId(a.getAttributeId());
 		jaxbAttr.setIncludeInResult(a.isIncludeInResult());
 		jaxbAttr.setIssuer(a.getIssuer());
-		for(Value v : a.getValues()){
+		for(Value v : a.values()){
 			jaxbAttr.getAttributeValue().add(toJaxb(v));
 		}
 		return jaxbAttr;

@@ -34,14 +34,16 @@ import java.time.Period;
  * for {@link XacmlTypes#YEARMONTHDURATION} type.
  */
 public final class ISO8601YearMonthDuration
-        extends Value.OtherValue<Period>
+        extends ISO8601Duration<ISO8601YearMonthDuration>
 {
     private static final long serialVersionUID = 6510264772808336009L;
-
-    private transient String formatted;
-
-    ISO8601YearMonthDuration(Period value) {
+    private ISO8601YearMonthDuration(Duration value) {
        super(XacmlTypes.YEARMONTHDURATION, value);
+    }
+
+    private ISO8601YearMonthDuration(Period period) {
+        super(XacmlTypes.YEARMONTHDURATION,
+                DateTimeDurationUtils.toXmlYearsMonthsDuration(period));
     }
 
     public static ISO8601YearMonthDuration ofAny(Object v, Object ...params){
@@ -58,7 +60,7 @@ public final class ISO8601YearMonthDuration
             return of((Period) v);
         }
         throw SyntaxException
-                .invalidAttributeValue(v, XacmlTypes.DAYTIMEDURATION);
+                .invalidAttributeValue(v, XacmlTypes.YEARMONTHDURATION);
     }
 
     public static ISO8601YearMonthDuration of(String v){
@@ -66,40 +68,18 @@ public final class ISO8601YearMonthDuration
     }
 
     public static ISO8601YearMonthDuration of(Duration v){
-        Period p = Period.of(v.getYears(), v.getMonths(), v.getDays());
-        return new ISO8601YearMonthDuration(v.getSign() > 0?p:p.negated());
+        return new ISO8601YearMonthDuration(v);
     }
 
     public static ISO8601YearMonthDuration of(StringVal v){
-        return new ISO8601YearMonthDuration(Period.parse(v.get()));
+        return new ISO8601YearMonthDuration(DateTimeDurationUtils.parseISO8601YearMonthDuration(v.get()));
     }
     public static ISO8601YearMonthDuration of(Period v){
         return new ISO8601YearMonthDuration(v);
     }
 
-    public StringVal toStringVal(){
-        return StringVal.of(toXacmlString());
+    @Override
+    protected ISO8601YearMonthDuration build(Duration d) {
+        return new ISO8601YearMonthDuration(d);
     }
-
-
-    public String toXacmlString(){
-        if(formatted == null){
-            formatted = DateTimeDurationUtils
-                    .toXmlYearMonthDuration(get()).toString();
-        }
-        return formatted;
-    }
-
-    public int getYears(){
-        return value.getYears();
-    }
-
-    public int getMonths(){
-        return value.getMonths();
-    }
-
-    public int getDays(){
-        return value.getDays();
-    }
-
 }

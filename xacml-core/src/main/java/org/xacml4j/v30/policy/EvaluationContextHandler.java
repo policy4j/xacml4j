@@ -34,6 +34,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.types.Entity;
 
 public interface EvaluationContextHandler
 {
@@ -42,7 +43,7 @@ public interface EvaluationContextHandler
 	 *
 	 * @param context an evaluation context
 	 * @param key an attribute key
-	 * @return {@link Optional< BagOfValues >}
+	 * @return {@link Optional<BagOfValues>}
 	 * @throws EvaluationException if an error occurs while resolving attribute
 	 */
 	Optional<BagOfValues> resolve(
@@ -50,13 +51,12 @@ public interface EvaluationContextHandler
 			AttributeReferenceKey key);
 
 	/**
-	 * Resolves content for the given {@link CategoryId}
+	 * Resolves entity for the given {@link CategoryId}
 	 *
 	 * @param id a category id
-	 * @param <C>
-	 * @return optional with resolved content
+	 * @return optional with resolved entity
 	 */
-	<C extends Content>Optional<C> getContent(CategoryId id);
+	Optional<Entity> getEntity(CategoryId id);
 
 	Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators();
 	Map<AttributeSelectorKey, BagOfValues> getResolvedSelectors();

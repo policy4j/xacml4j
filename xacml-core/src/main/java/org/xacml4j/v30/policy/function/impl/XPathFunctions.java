@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.function.*;
@@ -61,14 +62,11 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path)
 	{
 		try{
-			return XacmlTypes.INTEGER.ofAny(context
-							.resolve(
-									 path.getCategory().orElse(null),
-									 path.getPathType().getContentType())
-							.map(
-									c -> c.evaluateToNodeSet(
-											path.getPath())
-											.size())
+			Optional<Content> c  = context
+					.resolveEntity(path.getCategory().orElse(null))
+					.flatMap(Entity::getContent);
+			return XacmlTypes.INTEGER.ofAny(c.filter(v->v.getType().equals(path.getContentType()))
+					.map(v->v.evaluateToNodeSet(path.getPath()).size())
 					.orElse(0));
 		}catch(EvaluationException e){
 			return XacmlTypes.INTEGER.ofAny(0);
@@ -218,8 +216,8 @@ public class XPathFunctions
 	static Optional<List<Node>> getNodes(org.xacml4j.v30.EvaluationContext context,
                                          Path path){
 		return context
-				.<XmlContent>resolve(
-						path.getCategory().orElse(null), path.getContentType())
+				.resolveContent(path.getCategory()
+						.orElse(null), path.getPathType().getContentType())
 				.map(c->c.evaluateToNodeSet(path.getPath()));
 	}
 }

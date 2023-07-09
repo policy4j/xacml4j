@@ -135,10 +135,9 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 * @return {@link BagOfValues}s
 	 */
 	default BagOfValues bagOf(
-			Value...values){
+			Value<?>...values){
 		return bagBuilder()
-				.attribute(
-						values)
+				.attribute(values)
 				.build();
 	}
 

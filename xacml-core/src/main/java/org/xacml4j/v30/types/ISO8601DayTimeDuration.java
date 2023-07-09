@@ -26,6 +26,8 @@ import org.xacml4j.util.DateTimeDurationUtils;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -33,20 +35,23 @@ import java.time.OffsetDateTime;
 * Implementation an XACML {@link Expression}
 * for {@link XacmlTypes#DAYTIMEDURATION} type.
 */
-public final class ISO8601DayTimeDuration extends Value.OtherValue<Duration>
-        implements Comparable<ISO8601DayTimeDuration>
+public final class ISO8601DayTimeDuration extends ISO8601Duration<ISO8601DayTimeDuration>
 {
     private static final long serialVersionUID = -3264977978603429807L;
 
-    private ISO8601DayTimeDuration(java.time.Duration value) {
-        super(XacmlTypes.DAYTIMEDURATION, value);
+    private ISO8601DayTimeDuration(javax.xml.datatype.Duration d) {
+        super(XacmlTypes.DAYTIMEDURATION, d);
     }
-
-    private transient String formatted;
+    private ISO8601DayTimeDuration(Duration d) {
+        super(XacmlTypes.DAYTIMEDURATION, DateTimeDurationUtils.toXmlDayTimeDuration(d));
+    }
 
     public static ISO8601DayTimeDuration ofAny(Object v, Object ...params){
         if(v instanceof String){
             return of((String)v);
+        }
+        if(v instanceof StringVal){
+            return of((StringVal) v);
         }
         if(v instanceof Duration){
             return of((Duration) v);
@@ -69,96 +74,25 @@ public final class ISO8601DayTimeDuration extends Value.OtherValue<Duration>
         return new ISO8601DayTimeDuration(v);
     }
 
-    public static ISO8601DayTimeDuration of(long days){
-        return new ISO8601DayTimeDuration(Duration
-                .ofDays(days));
-    }
 
-    public static ISO8601DayTimeDuration of(long days, int hours){
-        return new ISO8601DayTimeDuration(Duration
-                .ofDays(days)
-                .plusHours(hours));
-    }
-
-    public static ISO8601DayTimeDuration of(long days, int hours, int mins){
-        return new ISO8601DayTimeDuration(Duration
-                .ofDays(days)
-                .plusHours(hours)
-                .plusMinutes(mins));
-    }
 
     public static ISO8601DayTimeDuration of(javax.xml.datatype.Duration duration){
-        return ISO8601DayTimeDuration.of(
-                DateTimeDurationUtils.toISO8601DayTimeDuration(duration));
+        return new ISO8601DayTimeDuration(duration);
     }
 
-    public static ISO8601DayTimeDuration of(long days, int hours, int mins, int seconds){
-        return new ISO8601DayTimeDuration(Duration.ofDays(days)
-                .plusHours(hours)
-                .plusMinutes(mins)
-                .plusSeconds(seconds));
+    public static ISO8601DayTimeDuration of(boolean positive, int days, int hours, int mins, int seconds){
+        return new ISO8601DayTimeDuration(
+                DateTimeDurationUtils.of(positive, days, hours, mins, seconds));
     }
 
-    public static ISO8601DayTimeDuration of(int hours, int mins, int seconds){
-        return new ISO8601DayTimeDuration(Duration.ofHours(hours)
-                .plusMinutes(mins)
-                .plusSeconds(seconds));
+    public static ISO8601DayTimeDuration of(boolean positive, int hours, int mins, int seconds){
+        return new ISO8601DayTimeDuration(
+                DateTimeDurationUtils.of(positive, DatatypeConstants.FIELD_UNDEFINED, hours, mins, seconds));
     }
 
-
-    public long getDays(){
-        return get().toDaysPart();
-    }
-
-    public int getHours(){
-        return get().toHoursPart();
-    }
-
-    public int getMinutes(){
-        return get().toMinutesPart();
-    }
-
-    public int getSeconds(){
-        return get().toSecondsPart();
-    }
-
-    public boolean isPositive(){
-        return !value.isNegative();
-    }
-
-    public boolean isZero(){
-        return value.isZero();
-    }
-
-    public StringVal toStringVal(){
-        return StringVal.of(toXacmlString());
-    }
-
-    public String toXacmlString(){
-        if(formatted == null){
-            formatted = DateTimeDurationUtils.toXmlDayTimeDuration(value).toString();
-        }
-        return formatted;
-    }
 
     @Override
-    protected java.lang.String formatVal(Duration v){
-        return toXacmlString();
-    }
-
-    public ISO8601DayTimeDuration plus(ISO8601DayTimeDuration duration){
-        return ISO8601DayTimeDuration.of(value.plus(duration.value));
-    }
-
-    public ISO8601DayTimeDuration minus(ISO8601DayTimeDuration duration){
-        return ISO8601DayTimeDuration.of(value.minus(duration.value));
-    }
-    public ISO8601DayTimeDuration negated(){
-        return ISO8601DayTimeDuration.of(value.negated());
-    }
-
-    @Override
-    public int compareTo(ISO8601DayTimeDuration o) {
-        return value.compareTo(o.value);
+    protected ISO8601DayTimeDuration build(javax.xml.datatype.Duration d) {
+        return new ISO8601DayTimeDuration(d);
     }
 }

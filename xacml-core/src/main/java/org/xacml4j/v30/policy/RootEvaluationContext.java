@@ -43,7 +43,6 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
-import org.xacml4j.v30.Content;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.DecisionRuleResponse;
@@ -59,6 +58,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
+import org.xacml4j.v30.types.Entity;
 
 
 public final class RootEvaluationContext implements EvaluationContext
@@ -227,8 +227,10 @@ public final class RootEvaluationContext implements EvaluationContext
 		}
 	}
 
-
-
+	@Override
+	public Optional<Entity> resolveEntity(CategoryId categoryId) {
+		return contextHandler.getEntity(categoryId);
+	}
 
 	@Override
 	public void addObligations(Decision d, Iterable<Obligation> obligations)
@@ -260,13 +262,6 @@ public final class RootEvaluationContext implements EvaluationContext
 	public Optional<BagOfValues> resolve(AttributeReferenceKey ref)
 			throws EvaluationException {
 		return contextHandler.resolve(this, ref);
-	}
-
-	@Override
-	public <C extends Content> Optional<C> resolve(CategoryId categoryId, Content.Type type) {
-		return contextHandler.<C>getContent(
-					                     categoryId)
-		                     .filter(c -> c.getType().equals(type));
 	}
 
 	/**
@@ -329,15 +324,15 @@ public final class RootEvaluationContext implements EvaluationContext
 			throws PolicyResolutionException
 	{
 		if(ref instanceof PolicyIDReference){
-			return resolve((PolicyIDReference)ref);
+			return resolveEntity((PolicyIDReference)ref);
 		}
 		if(ref instanceof PolicySetIDReference){
-			return resolve((PolicySetIDReference)ref);
+			return resolveEntity((PolicySetIDReference)ref);
 		}
 		throw new PolicyResolutionException(this);
 	}
 
-	private Policy resolve(PolicyIDReference ref)
+	private Policy resolveEntity(PolicyIDReference ref)
 		throws PolicyResolutionException {
 		Policy p =	resolver.resolve(ref);
 		if(LOG.isDebugEnabled()){
@@ -350,7 +345,7 @@ public final class RootEvaluationContext implements EvaluationContext
 		return p;
 	}
 
-	private PolicySet resolve(PolicySetIDReference ref)
+	private PolicySet resolveEntity(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		PolicySet p = resolver.resolve(ref);
 		if(LOG.isDebugEnabled()){
