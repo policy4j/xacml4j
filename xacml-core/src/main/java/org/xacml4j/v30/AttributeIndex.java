@@ -24,7 +24,7 @@ package org.xacml4j.v30;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Collections2;
+import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Multimap;
@@ -32,7 +32,6 @@ import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -103,7 +102,7 @@ public final class AttributeIndex
 	 * @return a collection of attributes with a given identifier
 	 * and given issuer
 	 */
-	public Collection<Attribute> find(final String attributeId, final String issuer){
+	public Collection<Attribute> findByIssuer(final String attributeId, final String issuer){
 		return attributes.get(attributeId)
 				          .stream()
 				         .filter(a -> issuer!= null?
@@ -150,7 +149,7 @@ public final class AttributeIndex
 	public <T extends Value<?>> Collection<T> findValues(
 			String attributeId,
 			ValueType dataType){
-		return findValues(attributeId, null, dataType);
+		return findValues(attributeId, dataType, null);
 	}
 
 	/**
@@ -158,14 +157,14 @@ public final class AttributeIndex
 	 * contained in this attributes defaultProvider
 	 *
 	 * @param attributeId an attribute id
-	 * @param issuer an attribute issuer
 	 * @param type an attribute value data type
+	 * @param issuer an attribute issuer
 	 * @return a collection of {@link Value} instances
 	 */
 	public <T extends Value<?>> Collection<T> findValues(
-			String attributeId, String issuer, final ValueType type){
+			String attributeId, final ValueType type, String issuer){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> found = find(attributeId, issuer);
+		Collection<Attribute> found = findByIssuer(attributeId, issuer);
 		ImmutableList.Builder<T> b = ImmutableList.builder();
 		for(Attribute a : found){
 			b.addAll(a.getValuesByType(type));
@@ -174,9 +173,9 @@ public final class AttributeIndex
 	}
 
 	public boolean hasValues(
-			String attributeId, String issuer, final ValueType type){
+			final String attributeId, final ValueType type, final String issuer){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> found = find(attributeId, issuer);
+		Collection<Attribute> found = findByIssuer(attributeId, issuer);
 		if(found.isEmpty()){
 			return false;
 		}
@@ -187,11 +186,15 @@ public final class AttributeIndex
 		}
 		return false;
 	}
+	public <T extends Value<?>> Optional<T> findValue(
+			String attributeId, final ValueType type, String issuer){
+		return findValue(attributeId, type, issuer, a->true);
+	}
 
 	public <T extends Value<?>> Optional<T> findValue(
 			String attributeId, final ValueType type, String issuer, Predicate<T>  filter){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> found = find(attributeId, issuer);
+		Collection<Attribute> found = findByIssuer(attributeId, issuer);
 		for(Attribute a : found){
 			Collection<T> values = a.getValuesByType(type);
 			Optional<T> v = values.stream()

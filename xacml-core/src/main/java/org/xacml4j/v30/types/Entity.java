@@ -28,6 +28,8 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
 import com.google.common.base.MoreObjects;
@@ -42,6 +44,7 @@ import org.xacml4j.v30.*;
  */
 public final class Entity extends Value.SelfValue<Entity>
 {
+	private final static Logger LOG = LoggerFactory.getLogger(Entity.class);
 	private static final long serialVersionUID = 6188174758603655643L;
 
 	private final Content content;
@@ -66,14 +69,14 @@ public final class Entity extends Value.SelfValue<Entity>
 	}
 
 	public <T extends Value<?>> Collection<T> findValues(String id, ValueType type, String issuer){
-		return attributeIndex.findValues(id, issuer, type);
+		return attributeIndex.findValues(id, type, issuer);
 	}
 
 	public boolean hasValues(String id, ValueType type, String issuer){
-		return attributeIndex.hasValues(id, issuer, type);
+		return attributeIndex.hasValues(id, type, issuer);
 	}
 	public boolean hasValues(String id, ValueType type){
-		return attributeIndex.hasValues(id, null, type);
+		return attributeIndex.hasValues(id, type, null);
 	}
 
 
@@ -93,7 +96,7 @@ public final class Entity extends Value.SelfValue<Entity>
 	}
 
 	public Collection<Attribute> find(String id){
-		return attributeIndex.find(id, (String) null);
+		return attributeIndex.findByIssuer(id, (String) null);
 	}
 
 	public Optional<Attribute> findFirst(Predicate<Attribute> predicate){
@@ -105,7 +108,7 @@ public final class Entity extends Value.SelfValue<Entity>
 	}
 
 	public Collection<Attribute> find(String id, String issuer){
-		return attributeIndex.find(id, issuer);
+		return attributeIndex.findByIssuer(id, issuer);
 	}
 
 	public <T extends Value<?>> Optional<T> findValue(String id, ValueType type, String issuer){
@@ -203,7 +206,8 @@ public final class Entity extends Value.SelfValue<Entity>
 
 	public java.util.Optional<BagOfValues> resolve(String id, ValueType type, String issuer)
     {
-		Collection<Value<?>> v = attributeIndex.findValues(id, issuer, type);
+		Collection<Value<?>> v = attributeIndex.findValues(id, type, issuer);
+		LOG.debug("attributeId={} type={} issuer={} values={}", id, type, issuer, v);
 		if(v.isEmpty()){
 			return java.util.Optional.empty();
 		}

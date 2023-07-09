@@ -55,7 +55,7 @@ import org.xacml4j.v30.types.ValueType;
  * @author Giedrius Trumpickas
  */
 public final class BagOfValues
-		implements ValueExp, Serializable, Iterable<Value<?>>
+		implements ValueExp, Serializable
 {
 	private static final long serialVersionUID = -8197446176793438616L;
 
@@ -73,28 +73,13 @@ public final class BagOfValues
 		this.values = b.valuesBuilder.build();
 	}
 
-	@Override
-	public Iterator<Value<?>> iterator() {
-		return values.iterator();
-	}
-
-	@Override
-	public void forEach(Consumer<? super Value<?>> action) {
-		values.forEach(action);
-	}
-
-	@Override
-	public Spliterator<Value<?>> spliterator() {
-		return values.spliterator();
-	}
-
 	@SuppressWarnings("unchecked")
-	public Collection<Value<?>> values() {
-		return values;
+	public <T extends Value<?>> Collection<T> values() {
+		return (Collection<T>) values;
 	}
 
-	public Stream<Value<?>> stream(){
-		return values.stream();
+	public <T extends Value<?>> Stream<T> stream(){
+		return (Stream<T>) values.stream();
 	}
 
 	/**
@@ -123,7 +108,7 @@ public final class BagOfValues
 		return (T)values.iterator().next();
 	}
 
-	public Optional<Value<?>> single() {
+	public <T extends Value<?>> Optional<T> single() {
 		return Optional.ofNullable(Iterables.getFirst(this.values(), null));
 	}
 

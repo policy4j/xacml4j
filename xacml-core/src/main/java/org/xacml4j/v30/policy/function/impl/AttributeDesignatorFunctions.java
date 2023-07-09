@@ -60,12 +60,14 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 		ValueType valueType = XacmlTypes.getType(dataType).orElseThrow(()->SyntaxException.invalidDataTypeId(dataType));
 		Entity entity = categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ENTITY)?(Entity)
 				categoryOrEntity:context.resolveEntity( CategoryId.of(categoryOrEntity.get().toString())).orElse(null);
+		LOG.debug("Resolved entity={}", entity);
 		if(entity == null){
 			throw new EvaluationException(Status.processingError().build(), "Entity is null");
 		}
-		Optional<BagOfValues> v = entity.resolve(attributeId.toString(), valueType, Optional.ofNullable(issuer)
+		String issuerString = Optional.ofNullable(issuer)
 				.map(StringVal::get)
-				.orElse(null));
+				.orElse(null);
+		Optional<BagOfValues> v = entity.resolve(attributeId.toXacmlString(), valueType, issuerString);
 		if(!v.isPresent()){
 			if(mustBePresent.get()){
 				throw new EvaluationException(Status.missingAttribute(attributeId.toString())

@@ -30,6 +30,7 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Optional;
 
+import com.google.common.truth.Truth8;
 import org.easymock.Capture;
 import org.easymock.IMocksControl;
 import org.junit.Before;
@@ -44,6 +45,7 @@ import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 public class AttributeDesignatorFunctionTest
@@ -59,59 +61,42 @@ public class AttributeDesignatorFunctionTest
 			"</md:record>";
 
 	private EvaluationContext context;
-	private static FunctionProvider provider = FunctionProviderBuilder.builder().withDefaultFunctions().build();
 	private IMocksControl c;
 	private Entity entity;
-	private FunctionSpec func;
 
 	@Before
 	public void init() throws Exception{
 		this.c = createControl();
-		this.func = provider.getFunction("urn:oasis:names:tc:xacml:3.0:function:attribute-designator").orElse(null);
-		assertNotNull(func);
 		this.context = c.createMock(EvaluationContext.class);
 
-		this.entity = XacmlTypes.ENTITY.ofAny(
-				Entity.builder()
+		this.entity = Entity.builder()
 				      .content(XmlContent.of(XmlContent.fromString(TEST_XML)))
 				      .attribute(Attribute
 						.builder("testId")
 						.value(XacmlTypes.STRING.ofAny("aaaa"))
-						.build())
-				      .build());
+						.build()).build();
 	}
 
 	@Test
-	public void testDesignatorFunctionWithCategoryId(){
-
-		AttributeDesignatorKey key = AttributeDesignatorKey
-				.builder()
-				.category(CategoryId.SUBJECT_ACCESS)
-				.dataType(XacmlTypes.STRING)
-				.attributeId("testId")
-				.build();
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		Capture<AttributeDesignatorKey> keyCapture = Capture.newInstance();
-		expect(context.resolve(capture(keyCapture)))
-				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("aaaa")
-				                                        .toBag()));
+	public void testDesignatorFunctionWithCategoryId()
+	{
+		expect(context.resolveEntity(CategoryId.SUBJECT_ACCESS)).andReturn(Optional.of(entity));
 		c.replay();
-		BagOfValues v = func.invoke(context,
+		BagOfValues v = AttributeDesignatorFunctions.designator(context,
 		                            XacmlTypes.ANYURI.ofAny(CategoryId.SUBJECT_ACCESS.getId()),
 		                            XacmlTypes.ANYURI.ofAny("testId"),
 		                            XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
 		                            XacmlTypes.BOOLEAN.ofAny(false),
 		                            null);
 		assertEquals(XacmlTypes.STRING.ofAny("aaaa").toBag(), v);
-		assertEquals(key, keyCapture.getValue());
 		c.verify();
 	}
 
 	@Test
 	public void testDesignatorFunctionWithEntity(){
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
 		c.replay();
-		BagOfValues v = func.invoke(context,
+		Truth8.assertThat(entity.resolve("testId", XacmlTypes.STRING, null)).hasValue(StringVal.of("aaaa").toBag());
+		BagOfValues v = AttributeDesignatorFunctions.designator(context,
 		                            entity,
 		                            XacmlTypes.ANYURI.ofAny("testId"),
 		                            XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
