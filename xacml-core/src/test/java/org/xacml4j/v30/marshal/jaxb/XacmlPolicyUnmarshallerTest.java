@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

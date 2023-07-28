@@ -22,7 +22,7 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.XacmlSyntaxException;

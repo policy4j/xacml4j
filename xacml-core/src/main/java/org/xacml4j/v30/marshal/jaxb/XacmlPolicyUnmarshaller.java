@@ -22,8 +22,8 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.XacmlSyntaxException;

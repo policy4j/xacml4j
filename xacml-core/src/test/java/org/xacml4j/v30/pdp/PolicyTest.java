@@ -86,11 +86,13 @@ public class PolicyTest
 		this.denyObligationAttributeExp = c.createMock(Expression.class);
 		this.permitObligationAttributeExp = c.createMock(Expression.class);
 
+
+
 		this.policy = Policy.builder("TestPolicy")
 				.version("1.0")
 				.target(target)
 				.condition(condition)
-				.rule(c.createMock(Rule.class))
+				.rule((Rule)c.createMock(Rule.class))
 				.combiningAlgorithm(combingingAlg)
 				.obligation(ObligationExpression
 						.builder("denyObligation", Effect.DENY)
@@ -187,8 +189,8 @@ public class PolicyTest
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
-		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
+		Capture<List<Rule>> ruleCapture = Capture.newInstance();
+		Capture<EvaluationContext> contextCapture = Capture.newInstance();
 		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.NOT_APPLICABLE);
 		c.replay();
@@ -200,8 +202,8 @@ public class PolicyTest
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
-		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
+		Capture<List<Rule>> ruleCapture = Capture.newInstance();
+		Capture<EvaluationContext> contextCapture = Capture.newInstance();
 		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
 		c.replay();
@@ -214,8 +216,8 @@ public class PolicyTest
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
-		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
+		Capture<List<Rule>> ruleCapture = Capture.newInstance();
+		Capture<EvaluationContext> contextCapture = Capture.newInstance();
 		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
 		c.replay();
@@ -228,8 +230,8 @@ public class PolicyTest
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
-		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
+		Capture<List<Rule>> ruleCapture = Capture.newInstance();
+		Capture<EvaluationContext> contextCapture = Capture.newInstance();
 		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
 		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.INDETERMINATE);
 		c.replay();
@@ -243,8 +245,8 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 
-		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
-		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
+		Capture<EvaluationContext> contextCapture = Capture.newInstance();
+		Capture<List<Rule>> ruleCapture = Capture.newInstance();
 
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
@@ -269,8 +271,8 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 
-		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
-		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
+		Capture<EvaluationContext> contextCapture = Capture.newInstance();
+		Capture<List<Rule>> ruleCapture = Capture.newInstance();
 
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
@@ -293,8 +295,8 @@ public class PolicyTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 
-		Capture<EvaluationContext> contextCapture = new Capture<EvaluationContext>();
-		Capture<List<Rule>> ruleCapture = new Capture<List<Rule>>();
+		Capture<EvaluationContext> contextCapture = Capture.newInstance();
+		Capture<List<Rule>> ruleCapture = Capture.newInstance();
 
 		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
 		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
