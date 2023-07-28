@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xacml4j.util.CglibInvocationFactory;
+import org.xacml4j.util.DefaultInvocationFactory;
 import org.xacml4j.util.Invocation;
 import org.xacml4j.util.InvocationFactory;
 import org.xacml4j.util.Reflections;
@@ -57,7 +57,7 @@ class AnnotatedDecisionCombiningAlgorithmProviderFactory
 	}
 
 	public AnnotatedDecisionCombiningAlgorithmProviderFactory(){
-		this(new CglibInvocationFactory());
+		this(new DefaultInvocationFactory());
 	}
 
 	/**

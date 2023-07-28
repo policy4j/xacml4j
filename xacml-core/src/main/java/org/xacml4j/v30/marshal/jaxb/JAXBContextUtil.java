@@ -22,8 +22,8 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 
 import com.google.common.base.Preconditions;
 

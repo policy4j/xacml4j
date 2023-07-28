@@ -25,13 +25,13 @@
 	</modules>
 
 	<properties>
-		<junit.version>4.13.1</junit.version>
-		<slf4j.version>1.7.32</slf4j.version>
-		<logback.version>1.2.8</logback.version>
-		<easymock.version>3.1</easymock.version>
-		<guava.version>32.0.0-jre</guava.version>
+		<junit.version>4.13.2</junit.version>
+		<slf4j.version>2.0.7</slf4j.version>
+		<logback.version>1.4.8</logback.version>
+		<easymock.version>5.1.0</easymock.version>
+		<guava.version>32.1.0-jre</guava.version>
 		<xml.resolver.version>1.2</xml.resolver.version>
-		<yammer.metrics.version>3.0.2</yammer.metrics.version>
+		<dropwizard-metrics.version>4.2.19</dropwizard-metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.licenseName>lgpl_v3</license.licenseName>
 	</properties>
@@ -88,17 +88,17 @@
 			<artifactId>easymock</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-			    <groupId>com.codahale.metrics</groupId>
-			    <artifactId>metrics-core</artifactId>
-			    <version>${yammer.metrics.version}</version>
-   			</dependency>
+				<groupId>io.dropwizard.metrics</groupId>
+				<artifactId>metrics-core</artifactId>
+				<version>${dropwizard-metrics.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>xml-resolver</groupId>
 				<artifactId>xml-resolver</artifactId>
@@ -135,20 +135,15 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>2.2</version>
-			</dependency>
-			<dependency>
 				<groupId>jakarta.xml.bind</groupId>
 				<artifactId>jakarta.xml.bind-api</artifactId>
-				<version>2.3.3</version>
+				<version>4.0.0</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.sun.xml.bind</groupId>
 				<artifactId>jaxb-impl</artifactId>
-				<version>2.3.8</version>
+				<version>4.0.3</version>
 				<scope>runtime</scope>
 			</dependency>
 		</dependencies>
@@ -160,18 +155,17 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.2.0</version>
+					<version>3.5.0</version>
 					<inherited>true</inherited>
 				</plugin>
 				<plugin>
 					<inherited>true</inherited>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>3.11.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
 		<plugins>
 			<plugin>
 				<inherited>true</inherited>
@@ -185,7 +179,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.4</version>
+				<version>3.1.2</version>
 				<configuration>
 					<excludes>
 						<exclude>**/*TestCase.java</exclude>
@@ -193,9 +187,16 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.4.5</version>
+			</plugin>
+			<!-- TODO: Find a replacement code coverage reporting tool -->
+			<!--
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.2</version>
+				<version>2.7</version>
 				<inherited>true</inherited>
 				<configuration>
 					<formats>
@@ -211,10 +212,11 @@
 					</execution>
 				</executions>
 			</plugin>
+			-->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>1.7</version>
+				<version>2.2.0</version>
 				<configuration>
 				</configuration>
 				<executions>
@@ -234,7 +236,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.3.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -242,12 +243,14 @@
 				<inherited>true</inherited>
 			</plugin>
 			<!-- Coverage Report -->
+			<!-- TODO: Find a replacement code coverage reporting tool -->
+			<!--
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.2</version>
 				<inherited>true</inherited>
 			</plugin>
+			-->
 		</plugins>
 	</reporting>
 

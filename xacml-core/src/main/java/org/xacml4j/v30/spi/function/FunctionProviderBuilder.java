@@ -25,7 +25,7 @@ package org.xacml4j.v30.spi.function;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.xacml4j.util.CglibInvocationFactory;
+import org.xacml4j.util.DefaultInvocationFactory;
 import org.xacml4j.util.InvocationFactory;
 import org.xacml4j.v30.policy.function.ArithmeticFunctions;
 import org.xacml4j.v30.policy.function.BagFunctions;
@@ -58,7 +58,7 @@ public final class FunctionProviderBuilder
 	}
 
 	private FunctionProviderBuilder(){
-		this(new CglibInvocationFactory());
+		this(new DefaultInvocationFactory());
 	}
 
 	public static FunctionProviderBuilder builder(){

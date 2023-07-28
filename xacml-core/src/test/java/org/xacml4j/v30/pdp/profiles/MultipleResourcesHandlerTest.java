@@ -110,10 +110,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 						Result.ok(Decision.DENY).build());
@@ -148,10 +148,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.PERMIT).build());
 
@@ -187,10 +187,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 				Result.ok(Decision.NOT_APPLICABLE).build());
@@ -230,10 +230,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
-		Capture<RequestContext> c1 = new Capture<RequestContext>();
-		Capture<RequestContext> c2 = new Capture<RequestContext>();
-		Capture<RequestContext> c3 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
+		Capture<RequestContext> c1 = Capture.newInstance();
+		Capture<RequestContext> c2 = Capture.newInstance();
+		Capture<RequestContext> c3 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
 
@@ -267,7 +267,7 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, resource0)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());
@@ -291,7 +291,7 @@ public class MultipleResourcesHandlerTest
 				.combineDecision(true)
 				.build();
 
-		Capture<RequestContext> c0 = new Capture<RequestContext>();
+		Capture<RequestContext> c0 = Capture.newInstance();
 
 		expect(context.requestDecision(capture(c0))).andReturn(
 				Result.indeterminate(Status.processingError().build()).build());
