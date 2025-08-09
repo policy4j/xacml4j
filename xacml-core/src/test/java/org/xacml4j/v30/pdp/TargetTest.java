@@ -59,8 +59,8 @@ public class TargetTest
 		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
 		matches.add(m1);
 		matches.add(m2);
-		Capture<EvaluationContext> c1 = new Capture<EvaluationContext>();
-		Capture<EvaluationContext> c2 = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> c1 = Capture.newInstance();
+		Capture<EvaluationContext> c2 = Capture.newInstance();
 		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
 		expect(m2.match(capture(c2))).andReturn(MatchResult.MATCH);
 		c.replay();
@@ -88,8 +88,8 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		Capture<EvaluationContext> c1 = new Capture<EvaluationContext>();
-		Capture<EvaluationContext> c2 = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> c1 = Capture.newInstance();
+		Capture<EvaluationContext> c2 = Capture.newInstance();
 		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
 		expect(m2.match(capture(c2))).andReturn(MatchResult.NOMATCH);
 		c.replay();
@@ -107,8 +107,8 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		Capture<EvaluationContext> c1 = new Capture<EvaluationContext>();
-		Capture<EvaluationContext> c2 = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> c1 = Capture.newInstance();
+		Capture<EvaluationContext> c2 = Capture.newInstance();
 		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
 		expect(m2.match(capture(c2))).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
@@ -126,7 +126,7 @@ public class TargetTest
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		Capture<EvaluationContext> c1 = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> c1 = Capture.newInstance();
 		expect(m1.match(capture(c1))).andReturn(MatchResult.NOMATCH);
 		c.replay();
 		Target t = Target.builder().anyOf(matches).build();
@@ -141,7 +141,7 @@ public class TargetTest
 		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
 		matches.add(m1);
 		matches.add(m2);
-		Capture<EvaluationContext> c1 = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> c1 = Capture.newInstance();
 		expect(m1.match(capture(c1))).andReturn(MatchResult.INDETERMINATE);
 		c.replay();
 		Target t = Target.builder().anyOf(matches).build();

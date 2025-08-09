@@ -22,7 +22,7 @@ package org.xacml4j.v30.marshal.jaxb;
  * #L%
  */
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
 import org.oasis.xacml.v30.jaxb.AttributeType;

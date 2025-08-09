@@ -26,11 +26,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.ValidationEvent;
+import jakarta.xml.bind.ValidationEventHandler;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Source;
 
@@ -61,7 +61,7 @@ public abstract class BaseJAXBUnmarshaller <T>
 	{
 		Preconditions.checkNotNull(source);
 		try{
-			javax.xml.bind.Unmarshaller u = context.createUnmarshaller();
+			jakarta.xml.bind.Unmarshaller u = context.createUnmarshaller();
 			u.setEventHandler(new ValidationEventHandler() {
 				@Override
 				public boolean handleEvent(ValidationEvent event) {

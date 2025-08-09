@@ -61,7 +61,7 @@ public class AttributeSelectorTest
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(DateExp.of("1992-03-21").toBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -80,7 +80,7 @@ public class AttributeSelectorTest
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(DateExp.of("1992-03-21").toBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -99,7 +99,7 @@ public class AttributeSelectorTest
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(XacmlTypes.DATE.emptyBag());
 		replay(context);
 		ref.evaluate(context);
@@ -116,7 +116,7 @@ public class AttributeSelectorTest
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(XacmlTypes.DATE.emptyBag());
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -136,7 +136,7 @@ public class AttributeSelectorTest
 				.mustBePresent(false)
 				.build();
 
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(
 				new AttributeReferenceEvaluationException(ref.getReferenceKey()));
 		replay(context);
@@ -156,7 +156,7 @@ public class AttributeSelectorTest
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		Expression v = ref.evaluate(context);
@@ -175,7 +175,7 @@ public class AttributeSelectorTest
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
 		replay(context);
 		ref.evaluate(context);
@@ -192,7 +192,7 @@ public class AttributeSelectorTest
 				.dataType(XacmlTypes.DATE)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = new Capture<AttributeSelectorKey>();
+		Capture<AttributeSelectorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(
 				new AttributeReferenceEvaluationException(ref.getReferenceKey()));
 		replay(context);

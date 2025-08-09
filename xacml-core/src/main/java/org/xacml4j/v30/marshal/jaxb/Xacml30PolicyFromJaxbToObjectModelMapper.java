@@ -30,7 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v30.jaxb.AdviceExpressionType;
 import org.oasis.xacml.v30.jaxb.AdviceExpressionsType;

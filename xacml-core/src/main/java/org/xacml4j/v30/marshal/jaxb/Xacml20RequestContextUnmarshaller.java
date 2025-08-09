@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Map;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v20.jaxb.context.ActionType;
 import org.oasis.xacml.v20.jaxb.context.AttributeType;

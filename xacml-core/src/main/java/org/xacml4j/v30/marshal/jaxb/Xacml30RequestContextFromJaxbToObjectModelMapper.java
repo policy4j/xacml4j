@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v30.jaxb.AdviceType;
 import org.oasis.xacml.v30.jaxb.AssociatedAdviceType;

@@ -151,7 +151,7 @@ public class PolicySetIDReferenceTest
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicySet);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> refContext = Capture.newInstance();
 		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
 			@Override
 			public EvaluationContext answer() throws Throwable {
@@ -187,7 +187,7 @@ public class PolicySetIDReferenceTest
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
 		expect(context.resolve(ref)).andReturn(refPolicySet);
-		Capture<EvaluationContext> refContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> refContext = Capture.newInstance();
 		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
 			@Override
 			public EvaluationContext answer() throws Throwable {

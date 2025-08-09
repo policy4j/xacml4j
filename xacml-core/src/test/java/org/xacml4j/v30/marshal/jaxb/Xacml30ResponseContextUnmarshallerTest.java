@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNull;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.junit.Test;
 import org.oasis.xacml.v30.jaxb.ResponseType;

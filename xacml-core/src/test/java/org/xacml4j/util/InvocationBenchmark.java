@@ -49,22 +49,6 @@ public class InvocationBenchmark
 	}
 
 	@Test
-	public void testCglibStaticInvocationPerformance() throws Exception
-	{
-		InvocationFactory f = new CglibInvocationFactory();
-		Invocation<String> invoke = f.create(null, TestObject.class.getMethod("testStatic", String.class));
-		System.out.println("CGLIB static - " + performBenchmark(1000000, invoke, "aaa"));
-	}
-
-	@Test
-	public void testCglibInvocationPerformance() throws Exception
-	{
-		InvocationFactory f = new CglibInvocationFactory();
-		Invocation<String> invoke = f.create(instance, TestObject.class.getMethod("test", String.class));
-		System.out.println("CGLIB instance - " + performBenchmark(1000000, invoke, "aaa"));
-	}
-
-	@Test
 	public void testDefaultStaticInvocationPerformance() throws Exception
 	{
 		InvocationFactory f = new DefaultInvocationFactory();

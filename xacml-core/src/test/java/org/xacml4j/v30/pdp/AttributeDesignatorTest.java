@@ -64,7 +64,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(XacmlTypes.INTEGER.emptyBag());
 		replay(context);
 		try{
@@ -89,7 +89,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
 		try{
@@ -114,7 +114,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(
 				XacmlTypes.INTEGER.bagOf(
 						IntegerExp.of(1), IntegerExp.of(2)));
@@ -137,7 +137,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(XacmlTypes.INTEGER.emptyBag());
 		replay(context);
 		Expression v = desig.evaluate(context);
@@ -158,7 +158,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andReturn(null);
 		replay(context);
 		Expression v = desig.evaluate(context);
@@ -179,7 +179,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(desig.getReferenceKey(), "Errror"));
 		replay(context);
 		desig.evaluate(context);
@@ -197,7 +197,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(
 				desig.getReferenceKey(), "Errror"));
 		replay(context);
@@ -219,7 +219,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);
 		desig.evaluate(context);
@@ -237,7 +237,7 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = new Capture<AttributeDesignatorKey>();
+		Capture<AttributeDesignatorKey> c = Capture.newInstance();
 		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
 		replay(context);
 		Expression v = desig.evaluate(context);

@@ -91,18 +91,18 @@ public class DefaultPolicyDecisionPointTest
 				.returnPolicyIdList(false)
 				.build();
 
-		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
+		Capture<PolicyRepositoryListener> c = Capture.newInstance();
 		repository.addPolicyRepositoryListener(capture(c));
 
 		expect(decisionCache.getDecision(req)).andReturn(null);
-		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> rootContext = Capture.newInstance();
 		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
-		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> policyContext = Capture.newInstance();
 		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.PERMIT);
-		Capture<Result> result0 = new Capture<Result>();
-		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
+		Capture<Result> result0 = Capture.newInstance();
+		Capture<PolicyDecisionPoint> pdp1 = Capture.newInstance();
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
-		Capture<Result> result1 = new Capture<Result>();
+		Capture<Result> result1 = Capture.newInstance();
 		decisionCache.putDecision(eq(req), capture(result1), eq(10));
 
 		control.replay();
@@ -124,20 +124,20 @@ public class DefaultPolicyDecisionPointTest
 				.returnPolicyIdList(false)
 				.build();
 
-		Capture<PolicyRepositoryListener> c = new Capture<PolicyRepositoryListener>();
+		Capture<PolicyRepositoryListener> c = Capture.newInstance();
 		repository.addPolicyRepositoryListener(capture(c));
 
 		expect(decisionCache.getDecision(req)).andReturn(null);
-		Capture<EvaluationContext> rootContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> rootContext = Capture.newInstance();
 		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
-		Capture<EvaluationContext> policyContext = new Capture<EvaluationContext>();
+		Capture<EvaluationContext> policyContext = Capture.newInstance();
 		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.DENY);
 
-		Capture<Result> result0 = new Capture<Result>();
-		Capture<PolicyDecisionPoint> pdp1 = new Capture<PolicyDecisionPoint>();
+		Capture<Result> result0 = Capture.newInstance();
+		Capture<PolicyDecisionPoint> pdp1 = Capture.newInstance();
 
 		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
-		Capture<Result> result1 = new Capture<Result>();
+		Capture<Result> result1 = Capture.newInstance();
 		decisionCache.putDecision(eq(req), capture(result1), eq(10));
 
 		control.replay();

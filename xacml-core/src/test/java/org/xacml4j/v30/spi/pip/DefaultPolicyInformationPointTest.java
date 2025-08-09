@@ -146,13 +146,13 @@ public class DefaultPolicyInformationPointTest
 
 		expect(context.resolve(eq(k))).andReturn(StringExp.of("testUser").toBag());
 
-		Capture<ResolverContext> resolverContext1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
+		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+		Capture<ResolverContext> ctx = Capture.newInstance();
 
 		expect(cache.getAttributes(capture(resolverContext1))).andReturn(null);
 		expect(resolver1.resolve(capture(ctx))).andReturn(result);
 
-		Capture<ResolverContext> resolverContext2 = new Capture<ResolverContext>();
+		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
 
 		cache.putAttributes(capture(resolverContext2), eq(result));
 
@@ -191,11 +191,11 @@ public class DefaultPolicyInformationPointTest
 		expect(context.resolve(key.build()))
 		.andReturn(StringExp.of("testUser").toBag());
 
-		Capture<ResolverContext> ctx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> ctx2 = new Capture<ResolverContext>();
+		Capture<ResolverContext> ctx1 = Capture.newInstance();
+		Capture<ResolverContext> ctx2 = Capture.newInstance();
 
-		Capture<ResolverContext> cacheCtx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> cacheCtx2 = new Capture<ResolverContext>();
+		Capture<ResolverContext> cacheCtx1 = Capture.newInstance();
+		Capture<ResolverContext> cacheCtx2 = Capture.newInstance();
 
 		expect(cache.getAttributes(capture(cacheCtx1))).andReturn(null);
 		expect(resolver1.resolve(capture(ctx1))).andReturn(result1);
@@ -207,7 +207,7 @@ public class DefaultPolicyInformationPointTest
 		expect(cache.getAttributes(capture(cacheCtx2))).andReturn(null);
 		expect(resolver2.resolve(capture(ctx2))).andReturn(result2);
 
-		Capture<ResolverContext> cacheCtx3 = new Capture<ResolverContext>();
+		Capture<ResolverContext> cacheCtx3 = Capture.newInstance();
 
 		cache.putAttributes(capture(cacheCtx3), eq(result2));
 		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferredCacheTTL());
@@ -231,11 +231,11 @@ public class DefaultPolicyInformationPointTest
 				ImmutableList.of(resolver1, resolver2));
 
 
-		Capture<ResolverContext> ctx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> ctx2 = new Capture<ResolverContext>();
+		Capture<ResolverContext> ctx1 = Capture.newInstance();
+		Capture<ResolverContext> ctx2 = Capture.newInstance();
 
-		Capture<ResolverContext> cacheCtx1 = new Capture<ResolverContext>();
-		Capture<ResolverContext> cacheCtx2 = new Capture<ResolverContext>();
+		Capture<ResolverContext> cacheCtx1 = Capture.newInstance();
+		Capture<ResolverContext> cacheCtx2 = Capture.newInstance();
 
 		AttributeSet result2 = AttributeSet
 				.builder(descriptor1WithIssuer)
@@ -258,7 +258,7 @@ public class DefaultPolicyInformationPointTest
 
 		expect(resolver2.resolve(capture(ctx2))).andReturn(result2);
 
-		Capture<ResolverContext> ctx3 = new Capture<ResolverContext>();
+		Capture<ResolverContext> ctx3 = Capture.newInstance();
 		cache.putAttributes(capture(ctx3), eq(result2));
 
 		context.setDecisionCacheTTL(descriptor1WithIssuer.getPreferredCacheTTL());
@@ -287,7 +287,7 @@ public class DefaultPolicyInformationPointTest
 		expect(context.resolve(k))
 				.andReturn(StringExp.of("testUser").toBag());
 
-		Capture<ResolverContext> ctx = new Capture<ResolverContext>();
+		Capture<ResolverContext> ctx = Capture.newInstance();
 
 		AttributeSet result = AttributeSet
 				.builder(descriptor1WithNoCache)

@@ -68,7 +68,7 @@ public class DefaultPolicyReferenceResolverTest
 	@Test
 	public void testResolvePolicyIDReference() throws Exception
 	{
-		Capture<PolicyRepositoryListener> listener = new Capture<PolicyRepositoryListener>();
+		Capture<PolicyRepositoryListener> listener = Capture.newInstance();
 		repository.addPolicyRepositoryListener(capture(listener));
 		expect(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
 		c.replay();
@@ -85,7 +85,7 @@ public class DefaultPolicyReferenceResolverTest
 	@Test
 	public void testResolvePolicySetIDReference() throws Exception
 	{
-		Capture<PolicyRepositoryListener> listener = new Capture<PolicyRepositoryListener>();
+		Capture<PolicyRepositoryListener> listener = Capture.newInstance();
 		repository.addPolicyRepositoryListener(capture(listener));
 		expect(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
 		c.replay();

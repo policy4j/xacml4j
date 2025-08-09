@@ -15,10 +15,6 @@
 			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
 		</dependency>
@@ -30,9 +26,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.7.4</version>
+				<groupId>com.helger.maven</groupId>
+				<artifactId>jaxb30-maven-plugin</artifactId>
+				<version>0.16.1</version>
 				<executions>
 					<execution>
 						<goals>
