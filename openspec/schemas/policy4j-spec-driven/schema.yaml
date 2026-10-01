@@ -1,0 +1,188 @@
+name: policy4j-spec-driven
+version: 1
+description: policy4j workflow - proposal → research → specs → design → tasks → evidence, with test-first implementation, retained evidence, and review, test, and benchmark gates
+artifacts:
+  - id: proposal
+    generates: proposal.md
+    description: Why the change is needed, its capability boundary, and how it will be proven done
+    template: proposal.md
+    instruction: |
+      Create the proposal that establishes WHY this change is needed.
+
+      Before drafting, read AGENTS.md and docs/ai/OPENSPEC.md, list current specs
+      (openspec list --specs), and inspect the live code the change touches
+      (ripwire . --for="<goal>", then open the files). Name only APIs you have
+      seen in source.
+
+      Sections:
+      - **Why**: 1-3 sentences: the problem or opportunity, and why now.
+      - **What Changes**: specific additions, modifications, removals. Mark
+        breaking public API or artifact changes with **BREAKING**.
+      - **Capabilities**: the contract with the specs phase.
+        - **New Capabilities**: each becomes specs/<name>/spec.md (kebab-case).
+        - **Modified Capabilities**: existing openspec/specs/<name> whose
+          requirements change. Leave empty if only implementation changes.
+      - **Research Questions**: external facts that could change scope or
+        design (XACML spec sections, JEPs, JDK early-access behavior, library
+        versions). Write "None" when live source and specs suffice.
+      - **Verification**: what proves the change done: unit tests, the OASIS
+        and RSA conformance suites, JMH results, build on which JDK.
+      - **Impact**: modules, public APIs, dependencies, generated code,
+        vendored files (read-only), docs, CI.
+      - **Tracking**: the beads epic id once created (see docs/ai/BEADS.md).
+
+      Keep it to 1-2 pages. Implementation detail belongs in design.md. Use
+      repository-relative paths; never a user home or checkout path.
+    requires: []
+
+  - id: research
+    generates: research/README.md
+    description: Research decision, sources, and lane reports for this change
+    template: research.md
+    instruction: |
+      Create research/README.md. It is required for every change, even when
+      no research is needed.
+
+      - Record `Status: NOT REQUIRED` with one line of reasoning when live
+        source, accepted specs, and tests answer every question.
+      - Otherwise record `Status: REQUIRED` and, per proposal research
+        question: the answer, primary sources (XACML 2.0/3.0 section numbers,
+        JEP numbers, official docs with retrieval date), confidence, and open
+        disagreement.
+      - Swarm research lanes (docs/ai/SWARMS.md) write one report each under
+        research/, named <lane>-<topic>.md. List every lane, including failed
+        ones, with profile, model, and status. Add research/synthesis.md when
+        more than one report informs a decision; design.md cites it.
+      - Separate sourced facts from inference. Never store secrets, private
+        source excerpts, personal data, or machine-specific paths.
+    requires:
+      - proposal
+
+  - id: specs
+    generates: specs/**/*.md
+    description: Normative, testable requirement deltas per capability
+    template: spec.md
+    instruction: |
+      Create one spec file per capability in the proposal:
+      - New capability: specs/<capability>/spec.md with the proposal's name.
+      - Modified capability: the existing openspec/specs/<capability>/ name.
+
+      Delta sections (## headers): ADDED, MODIFIED, REMOVED, RENAMED
+      Requirements. MODIFIED copies the complete existing requirement block
+      and all its scenarios, then edits it. REMOVED includes **Reason** and
+      **Migration**. RENAMED uses FROM:/TO:.
+
+      Format:
+      - `### Requirement: <name>` followed by a SHALL/MUST statement.
+      - At least one `#### Scenario: <name>` per requirement (exactly four
+        hashtags), written as GIVEN/WHEN/THEN bullets.
+      - Cite the XACML 2.0/3.0 section when the behavior comes from the
+        standard. State Indeterminate, NotApplicable, empty-bag, type-error,
+        and boundary behavior explicitly where it applies.
+      - Every scenario must be checkable by a named test or conformance case.
+
+      Keep tools, agents, and implementation detail out of requirements.
+    requires:
+      - proposal
+
+  - id: design
+    generates: design.md
+    description: How the change is built, tested, measured, and rolled out
+    template: design.md
+    instruction: |
+      Create design.md. It is required for cross-module work, public API or
+      type-system changes, new dependencies, build or JDK changes, performance
+      work, or real design choices; otherwise keep it to Context and Decisions.
+
+      Sections:
+      - **Context**: current state with source anchors (path:line).
+      - **Goals / Non-Goals**.
+      - **Research Basis**: cite research/README.md or research/synthesis.md;
+        separate sourced constraints from design inference.
+      - **Decisions**: numbered D1..Dn, each with alternatives and the reason
+        for the choice.
+      - **Test Strategy**: which requirements get unit, parameterized,
+        conformance, or characterization tests (docs/ai/TESTING.md).
+      - **Benchmark Plan**: JMH applicability with a reason; when applicable,
+        the benchmarks and the baseline (docs/ai/BENCHMARKS.md).
+      - **Code Intelligence Plan**: for cross-file or rename work, the
+        ripwire, ast-grep, Serena, rtk rg, and compile checks that prove the
+        change complete (AGENTS.md "Code Intelligence Tools").
+      - **Execution Plan**: task lanes for swarms: which tasks can run in
+        parallel, file ownership per lane, and reviewer lanes
+        (docs/ai/SWARMS.md).
+      - **Risks / Trade-offs**: `[Risk] → Mitigation`.
+      - **Migration and Rollback**: when applicable.
+      - **Open Questions**: only real approval blockers.
+    requires:
+      - proposal
+      - research
+
+  - id: tasks
+    generates: tasks.md
+    description: Dependency-ordered, verifiable checklist mapped one-to-one to beads issues
+    template: tasks.md
+    instruction: |
+      Create tasks.md. The apply phase parses `- [ ] X.Y` checkboxes; any
+      other format is not tracked.
+
+      - Start with a header naming the beads epic and the default gate
+        command (docs/ai/TESTING.md).
+      - Group related work under numbered `## N. <name>` headings, ordered by
+        dependency. Each task is one reviewable unit of work (one session),
+        maps to beads issue `<epic>.N.M`, and names its check: the test class,
+        conformance suite, Maven command, or evidence path.
+      - For behavioral changes, the first task of a group writes a failing
+        test or a characterization test.
+      - End every substantive group with a gate task covering: code review
+        (at least one independent reviewer lane), focused and module tests,
+        conformance when behavior can change, the JMH decision (run or
+        "not applicable: <reason>"), and docs/spec consistency. Each gate
+        names its evidence path under evidence/.
+      - Tasks that need the maintainer (git branch or history changes,
+        dependency or JDK upgrades, public API breaks) say so.
+      - Finish with: openspec validate <change> --strict, a
+        requirement → task → test → evidence audit, and beads closure.
+    requires:
+      - specs
+      - design
+
+  - id: evidence
+    generates: evidence/README.md
+    description: Evidence index mapping requirements and tasks to retained proof
+    template: evidence.md
+    instruction: |
+      Create evidence/README.md before implementation starts, following
+      docs/ai/OPENSPEC.md "Evidence".
+
+      - Map every requirement/scenario to the test or conformance case that
+        proves it, and every gate task to its evidence path.
+      - Layout: evidence/tests/, evidence/reviews/<lane>/, evidence/benchmarks/jmh/,
+        evidence/builds/, evidence/final/. One directory per run, named
+        <NNN>-<scope> (reviews: rvNNN-<scope>-<lane>); never overwrite a run.
+      - Each run keeps summary.md (what ran, result, counts), command.txt
+        (exact portable command), and the relevant raw output (Surefire
+        summary lines, JMH JSON, review report). Do not commit whole
+        target/ trees, per-suite XML trees, or tool caches.
+      - Record failed, cancelled, or empty review lanes too, with the reason.
+      - A checked task without an indexed run is not done. Write
+        "NOT APPLICABLE: <reason>" instead of inventing evidence.
+      - Repository-relative paths only; no secrets.
+    requires:
+      - tasks
+
+apply:
+  requires:
+    - tasks
+    - evidence
+  tracks: tasks.md
+  instruction: |
+    Before editing, read AGENTS.md, openspec/config.yaml, and the change's
+    proposal, design, tasks, and evidence/README.md. Claim the matching beads
+    issue (docs/ai/BEADS.md). Work one task group at a time: failing or
+    characterization test first, then the implementation, then the group's
+    gate (reviews, tests, conformance, JMH decision). Record each run under
+    evidence/ and index it in evidence/README.md before you check the task
+    and close the beads issue. Never check a task whose proof is missing.
+    Stop and ask on real blockers: failing conformance you cannot explain,
+    required git or dependency changes, or scope growth.

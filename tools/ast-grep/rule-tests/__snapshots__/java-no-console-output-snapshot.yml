@@ -1,0 +1,35 @@
+id: java-no-console-output
+snapshots:
+  ? |
+    class A {
+      void f() {
+        System.err.printf("%s%n", "decision");
+      }
+    }
+  : labels:
+    - source: System.err.printf("%s%n", "decision")
+      style: primary
+      start: 27
+      end: 64
+  ? |
+    class A {
+      void f() {
+        System.out.println("decision");
+      }
+    }
+  : labels:
+    - source: System.out.println("decision")
+      style: primary
+      start: 27
+      end: 57
+  ? |
+    class A {
+      void f(Exception e) {
+        e.printStackTrace();
+      }
+    }
+  : labels:
+    - source: e.printStackTrace()
+      style: primary
+      start: 38
+      end: 57

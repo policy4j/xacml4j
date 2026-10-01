@@ -1,0 +1,16 @@
+# Run from the donor checkout (branch feature_xacml_20). B = backup dir outside the repo.
+git diff --cached --binary > "$B/staged.patch"
+git diff --binary > "$B/unstaged.patch"
+git ls-files --others --exclude-standard -z > "$B/untracked.lst"
+tar -czf "$B/untracked.tar.gz" --null -T "$B/untracked.lst"
+T1=$(git write-tree)
+C1=$(git commit-tree "$T1" -p HEAD -m "WIP donor: staged snapshot of feature_xacml_20 (preserved 2026-10-01)")
+GIT_INDEX_FILE="$TMPIDX" git read-tree "$T1"
+GIT_INDEX_FILE="$TMPIDX" git add -A
+T2=$(GIT_INDEX_FILE="$TMPIDX" git write-tree)
+C2=$(git commit-tree "$T2" -p "$C1" -m "WIP donor: unstaged and untracked work of feature_xacml_20 (preserved 2026-10-01)")
+git update-ref refs/heads/wip/feature_xacml_20-donor "$C2" ""
+# Verification
+git rev-parse HEAD; git write-tree; git status --porcelain=v1 | wc -l
+GIT_INDEX_FILE="$TMPIDX2" git read-tree "$T1"; GIT_INDEX_FILE="$TMPIDX2" git add -A; GIT_INDEX_FILE="$TMPIDX2" git write-tree
+cmp <(git diff --binary HEAD wip/feature_xacml_20-donor~1) "$B/staged.patch"

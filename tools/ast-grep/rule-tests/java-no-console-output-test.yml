@@ -1,0 +1,27 @@
+id: java-no-console-output
+valid:
+  - |
+    class A {
+      void f(org.slf4j.Logger log, Exception e) {
+        log.error("Evaluation failed", e);
+      }
+    }
+invalid:
+  - |
+    class A {
+      void f() {
+        System.out.println("decision");
+      }
+    }
+  - |
+    class A {
+      void f() {
+        System.err.printf("%s%n", "decision");
+      }
+    }
+  - |
+    class A {
+      void f(Exception e) {
+        e.printStackTrace();
+      }
+    }

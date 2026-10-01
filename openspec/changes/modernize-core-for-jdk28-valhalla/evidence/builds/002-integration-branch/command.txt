@@ -1,0 +1,5 @@
+git worktree add -b integration/modernize-core-jdk28-valhalla <checkouts>/xacml4j-worktrees/policy4j a8a90d46
+br where
+br sync --import-only --json
+br doctor --quick
+br ready --json

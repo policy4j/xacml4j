@@ -57,3 +57,8 @@
 
 .java-version
 /target/
+
+# Agent tooling (local state)
+/.tgrep/
+/.serena/
+/outputs/
