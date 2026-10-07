@@ -23,7 +23,9 @@ package org.xacml4j.v30.policy;
  */
 
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
@@ -42,6 +44,7 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -276,8 +279,11 @@ public class AttributeSelectorTest
 		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
 		when(context.resolve(c.capture())).thenThrow(new NullPointerException());
 		InOrder order = inOrder(context);
-		Expression v = ref.evaluate(context);
-		assertEquals(v, XacmlTypes.DATE.bagBuilder().build());
+		// MustBePresent=false does not turn a resolution failure into an empty bag
+		// (fail closed; ruling 2026-10-07, run 061 D3).
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+		assertTrue(e.getStatus().getStatusCode().isProcessingError());
 		assertEquals(ref.getReferenceKey(), c.getValue());
 		order.verify(context).resolve(c.capture());
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
@@ -304,7 +310,10 @@ public class AttributeSelectorTest
 		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
 		when(context.resolve(c.capture())).thenThrow(new NullPointerException());
 		InOrder order = inOrder(context);
-		assertThrows(AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+		// A resolution failure is a processing error, not a missing attribute.
+		assertTrue(e.getStatus().getStatusCode().isProcessingError());
 		order.verify(context).resolve(c.capture());
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(1)).resolve(c.capture());
@@ -340,5 +349,127 @@ public class AttributeSelectorTest
 		order.verifyNoMoreInteractions();
 		verifyNoMoreInteractions(context);
 		assertEquals(refKey, c.getValue());
+	}
+
+	@Test
+	public void xpathEvaluationErrorIsProcessingErrorWhenNotMustBePresent()
+	{
+		assertXPathEvaluationErrorIsProcessingError(false);
+	}
+
+	@Test
+	public void xpathEvaluationErrorIsProcessingErrorWhenMustBePresent()
+	{
+		assertXPathEvaluationErrorIsProcessingError(true);
+	}
+
+	/**
+	 * XACML 3.0 section 5.30 and 7.3.7: an XPath evaluation error is not an
+	 * empty selection. Maintainer ruling 2026-10-07 (run 061 D18): it is
+	 * Indeterminate with processing-error whatever MustBePresent is.
+	 */
+	private void assertXPathEvaluationErrorIsProcessingError(boolean mustBePresent)
+	{
+		AttributeSelectorKey refKey = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(XacmlTypes.DATE)
+				.build();
+		AttributeSelector ref = AttributeSelector.builder()
+				.key(refKey)
+				.mustBePresent(mustBePresent)
+				.build();
+		PathEvaluationException failure = PathEvaluationException.invalidXpath(
+				refKey.getPath(), new IllegalStateException("engine text: evaluation failed"));
+		when(context.resolve(refKey)).thenThrow(failure);
+
+		AttributeReferenceEvaluationException thrown = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+
+		assertSame(failure, thrown.getCause());
+		assertTrue(thrown.getStatus().getStatusCode().isProcessingError());
+		// The status message goes into the response: it does not carry the engine's error text.
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				thrown.getStatus().getMessage());
+		verify(context, times(1)).resolve(refKey);
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void xpathSyntaxErrorKeepsSyntaxErrorStatusWhateverMustBePresentIs()
+	{
+		AttributeSelectorKey refKey = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(XacmlTypes.DATE)
+				.build();
+		PathEvaluationException syntax = PathEvaluationException.invalidXpath(
+				refKey.getPath(), Status.syntaxError().message("engine text: unexpected token").build(), null);
+		when(context.resolve(refKey)).thenThrow(syntax);
+
+		for (boolean mustBePresent : new boolean[] {false, true}) {
+			AttributeSelector ref = AttributeSelector.builder().key(refKey).mustBePresent(mustBePresent).build();
+			AttributeReferenceEvaluationException thrown = assertThrows(
+					AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+			assertSame(syntax, thrown.getCause());
+			assertTrue(thrown.getStatus().getStatusCode().isSyntaxError());
+			// The status code stays; the response message is the fixed text, not the engine's.
+			assertEquals(Optional.of(AttributeReferenceEvaluationException.INVALID_REFERENCE_MESSAGE),
+					thrown.getStatus().getMessage());
+		}
+		verify(context, times(2)).resolve(refKey);
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void failureWithAThrowingMessageIsStillAProcessingError()
+	{
+		AttributeSelectorKey refKey = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(XacmlTypes.DATE)
+				.build();
+		// rv079 round 4: getMessage() of the failure throws a missing-attribute exception.
+		// MustBePresent=false must not turn it into an empty bag.
+		@SuppressWarnings("serial")
+		RuntimeException throwingMessage = new RuntimeException() {
+			@Override
+			public String getMessage() {
+				throw AttributeReferenceEvaluationException.forSelector(refKey);
+			}
+		};
+		when(context.resolve(refKey)).thenThrow(throwingMessage);
+
+		AttributeReferenceEvaluationException thrown = assertThrows(
+				AttributeReferenceEvaluationException.class,
+				() -> AttributeSelector.builder().key(refKey).mustBePresent(false).build().evaluate(context));
+
+		assertSame(throwingMessage, thrown.getCause());
+		assertTrue(thrown.getStatus().getStatusCode().isProcessingError());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				thrown.getStatus().getMessage());
+	}
+
+	@Test
+	public void emptySelectionStillFollowsMustBePresent()
+	{
+		AttributeSelectorKey refKey = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(XacmlTypes.DATE)
+				.build();
+		when(context.resolve(refKey)).thenReturn(Optional.empty());
+
+		assertEquals(XacmlTypes.DATE.bagBuilder().build(),
+				AttributeSelector.builder().key(refKey).mustBePresent(false).build().evaluate(context));
+		AttributeReferenceEvaluationException missing = assertThrows(
+				AttributeReferenceEvaluationException.class,
+				() -> AttributeSelector.builder().key(refKey).mustBePresent(true).build().evaluate(context));
+
+		assertTrue(missing.getStatus().getStatusCode().isMissingAttributeError());
+		verify(context, times(2)).resolve(refKey);
+		// Only the MustBePresent=true evaluation records the missing-attribute status.
+		verify(context, times(1)).setEvaluationStatusIfAbsent(any());
+		verifyNoMoreInteractions(context);
 	}
 }

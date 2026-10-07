@@ -32,7 +32,6 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.types.ValueType;
@@ -123,24 +122,38 @@ public abstract class AttributeReference implements Expression
 	{
 		try{
 			return doContextResolve(context);
-		}catch(AttributeReferenceEvaluationException e){
-			LOG.debug(e.getMessage(), e);
-			if(isMustBePresent()){
-				throw e;
+		}catch(EvaluationException e){
+			// Only a missing attribute follows MustBePresent (XACML 3.0 7.3.5).
+			if(e.getStatus().getStatusCode().isMissingAttributeError()){
+				if(isMustBePresent()){
+					throw e;
+				}
+				return Optional.empty();
 			}
-			return Optional.empty();
-		}catch(Exception e){
-			if(e instanceof PathEvaluationException &&
-					((PathEvaluationException)e).getStatus().getStatusCode().isSyntaxError()){
-				throw (PathEvaluationException)e;
+			if(e.getStatus().getStatusCode().isSyntaxError()){
+				// The status code stays; the response message is a fixed text.
+				throw logged(AttributeReferenceEvaluationException
+						.forSyntaxError(getReferenceKey(), e));
 			}
-			LOG.debug(e.getMessage(), e);
-			if(isMustBePresent()){
-				throw AttributeReferenceEvaluationException
-						.forMissingRef(getReferenceKey());
-			}
-			return Optional.empty();
+			// An XPath evaluation error or a resolver failure is a processing
+			// error with a fixed response message, whatever MustBePresent is.
+			throw logged(AttributeReferenceEvaluationException
+					.forResolverFailure(getReferenceKey(), e));
+		}catch(RuntimeException e){
+			throw logged(AttributeReferenceEvaluationException
+					.forResolverFailure(getReferenceKey(), e));
 		}
+	}
+
+	/**
+	 * Logs a mapped failure by its own message. The cause is not given to
+	 * the logger: it is foreign code, and an exception from its
+	 * {@code getMessage()} must not replace the mapped failure.
+	 */
+	private static AttributeReferenceEvaluationException logged(AttributeReferenceEvaluationException failure)
+	{
+		LOG.debug("{}", failure.getMessage());
+		return failure;
 	}
 
 	protected abstract Optional<BagOfValues> doContextResolve(EvaluationContext context);

@@ -35,6 +35,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
@@ -42,6 +43,7 @@ import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
@@ -143,6 +145,31 @@ public class DefaultEvaluationContextHandlerTest
 				() -> handler.resolve(context, selector));
 		assertEquals(StatusCodeId.SYNTAX_ERROR,
 				exception.getStatus().getStatusCode().getValue());
+		// The handler reports the engine's syntax error with the fixed response message.
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.INVALID_REFERENCE_MESSAGE),
+				exception.getStatus().getMessage());
+	}
+
+	@Test
+	public void testSelectorPathEvaluationErrorOnRequestContentIsProcessingErrorWithFixedMessage()
+	{
+		// Run 061 D18: an XPath evaluation error is a processing error. The handler maps it, so a
+		// caller that does not go through AttributeSelector (the attribute-selector function) gets
+		// the same status and no XPath engine text.
+		AttributeSelectorKey malformed = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).xpath("///").dataType(XacmlTypes.INTEGER).build();
+		Entity withContent = Entity.builder().content(content).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(withContent));
+
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> handler.resolve(context, malformed));
+
+		assertEquals(true, e.isResolverFailure());
+		assertEquals(true, e.getCause() instanceof PathEvaluationException);
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				e.getStatus().getMessage());
+		Mockito.verifyNoInteractions(pip);
 	}
 
 	@Test
@@ -234,15 +261,28 @@ public class DefaultEvaluationContextHandlerTest
 	@Test
 	public void testExplicitMissingContextSelectorIsRejected()
 	{
-		assertThrows(PathEvaluationException.class, () -> {
-			AttributeSelectorKey selector = AttributeSelectorKey.builder()
-					.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId("missing-selector")
-					.xpath("/md:record/md:patient/md:patient-number/text()")
-					.dataType(XacmlTypes.INTEGER).build();
-			when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId("missing-selector")
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
 
-			handler.resolve(context, selector);
-		});
+		assertPathErrorIsProcessingErrorWithFixedMessage(selector);
+	}
+
+	/**
+	 * The handler reports a path error of the engine as processing-error with
+	 * the fixed response message and keeps the path exception as the cause.
+	 */
+	private void assertPathErrorIsProcessingErrorWithFixedMessage(AttributeSelectorKey ref)
+	{
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+		assertEquals(true, e.getCause() instanceof PathEvaluationException);
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				e.getStatus().getMessage());
 	}
 
 	@Test
@@ -359,8 +399,7 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
-		assertThrows(PathEvaluationException.class, () -> handler.resolve(context, ref));
-		// The baseline status expectation was unreachable after the throw.
+		assertPathErrorIsProcessingErrorWithFixedMessage(ref);
 		Mockito.verify(requestContextCallback).getEntity(CategoryId.SUBJECT_RECIPIENT);
 	}
 	@Test
@@ -373,8 +412,7 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.DATE)
 				.build();
 		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
-		assertThrows(PathEvaluationException.class, () -> handler.resolve(context, ref));
-		// The baseline status expectation was unreachable after the throw.
+		assertPathErrorIsProcessingErrorWithFixedMessage(ref);
 		Mockito.verify(requestContextCallback).getEntity(CategoryId.SUBJECT_RECIPIENT);
 	}
 
@@ -388,8 +426,7 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.DATE)
 				.build();
 		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
-		assertThrows(PathEvaluationException.class, () -> handler.resolve(context, ref));
-		// The baseline status expectation was unreachable after the throw.
+		assertPathErrorIsProcessingErrorWithFixedMessage(ref);
 		Mockito.verify(requestContextCallback).getEntity(CategoryId.SUBJECT_RECIPIENT);
 	}
 
@@ -423,8 +460,10 @@ public class DefaultEvaluationContextHandlerTest
 		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
 
 		when(pip.resolve(context, ref)).thenThrow(new RuntimeException());
-		Optional<BagOfValues> v = handler.resolve(context, ref);
-		assertFalse(v.isPresent());
+		// A PIP failure is a processing error, not a missing value (ruling 2026-10-07, run 061 D3).
+		EvaluationException e = assertThrows(EvaluationException.class, () -> handler.resolve(context, ref));
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
 	}
 	
 	@Test
@@ -458,8 +497,327 @@ public class DefaultEvaluationContextHandlerTest
 
 		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
 		when(pip.resolve(context, ref)).thenThrow(new RuntimeException());
-		Optional<BagOfValues> v = handler.resolve(context, ref);
-		assertFalse(v.isPresent());
+		// A PIP failure is a processing error, not a missing value (ruling 2026-10-07, run 061 D3).
+		EvaluationException e = assertThrows(EvaluationException.class, () -> handler.resolve(context, ref));
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
+	}
+
+	@Test
+	public void testDesignatorPipFailureIsNotCachedAndDoesNotLookLikeACycle()
+	{
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.RESOURCE)
+				.attributeId("testId")
+				.dataType(XacmlTypes.ANYURI)
+				.build();
+		BagOfValues value = XacmlTypes.ANYURI.ofAny("testValue").toBag();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		when(pip.resolve(context, ref))
+				.thenThrow(new RuntimeException("first call fails"))
+				.thenReturn(Optional.of(value));
+
+		assertThrows(EvaluationException.class, () -> handler.resolve(context, ref));
+		// The resolution stack is clean after the failure, and the failure is not remembered.
+		assertEquals(Optional.of(value), handler.resolve(context, ref));
+		Mockito.verify(pip, Mockito.times(2)).resolve(context, ref);
+	}
+
+	@Test
+	public void testDesignatorPipStatusIsNormalizedToProcessingError()
+	{
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.RESOURCE)
+				.attributeId("testId")
+				.dataType(XacmlTypes.ANYURI)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		when(pip.resolve(context, ref)).thenThrow(new EvaluationException(
+				Status.syntaxError().message("backend detail").build(), "backend detail"));
+
+		EvaluationException e = assertThrows(EvaluationException.class, () -> handler.resolve(context, ref));
+
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				e.getStatus().getMessage());
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
+	}
+
+	@Test
+	public void testDesignatorPipProcessingErrorMessageIsNotPassedOn()
+	{
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.RESOURCE)
+				.attributeId("testId")
+				.dataType(XacmlTypes.ANYURI)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		// The same exception class and status code as a mapped failure, but with the resolver's text.
+		when(pip.resolve(context, ref)).thenThrow(new AttributeReferenceEvaluationException(
+				Status.processingError().build(), ref, "backend detail"));
+
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+		assertEquals(true, e.isResolverFailure());
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				e.getStatus().getMessage());
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
+	}
+
+	@Test
+	public void testSelectorPipPathExceptionWithMissingAttributeStatusIsAFailure()
+	{
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+		when(pip.resolve(context, ref)).thenThrow(PathEvaluationException.invalidXpath(
+				ref.getPath(), Status.missingAttribute(ref).build(), null));
+
+		// MustBePresent=false must not be able to turn this into an empty bag.
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+		assertEquals(true, e.isResolverFailure());
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
+	}
+
+	@Test
+	public void testSelectorPipCannotChooseSyntaxErrorOrTheResponseMessage()
+	{
+		// rv079 and rv080 round 3: a path exception thrown by the information point is not the
+		// engine's own syntax error. Only the engine's evaluation of a path reports syntax-error.
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+		when(pip.resolve(context, ref)).thenThrow(PathEvaluationException.invalidXpath(
+				ref.getPath(), Status.syntaxError().message("backend detail").build(), null));
+
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+		assertEquals(true, e.isResolverFailure());
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				e.getStatus().getMessage());
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
+	}
+
+	/**
+	 * A failure type of an information point that extends the type of the
+	 * engine's mapped failure and carries a status of its own choice.
+	 */
+	@SuppressWarnings("serial")
+	private static final class SubclassedFailure extends AttributeReferenceEvaluationException
+	{
+		SubclassedFailure(Status status, org.xacml4j.v30.AttributeReferenceKey key) {
+			super(status, key, "backend detail");
+		}
+	}
+
+	@Test
+	public void testDesignatorPipSubclassOfTheMappedFailureCannotKeepItsStatus()
+	{
+		// rv079 round 3, finding 1: only the factory marks a mapped failure. A subclass can not
+		// claim the mark, so MustBePresent=false can not turn its missing-attribute into an empty bag.
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.RESOURCE)
+				.attributeId("testId")
+				.dataType(XacmlTypes.ANYURI)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		Status[] chosen = {
+				Status.missingAttribute(ref).message("backend detail").build(),
+				Status.syntaxError().message("backend detail").build()};
+		when(pip.resolve(context, ref))
+				.thenThrow(new SubclassedFailure(chosen[0], ref))
+				.thenThrow(new SubclassedFailure(chosen[1], ref));
+		for (int i = 0; i < chosen.length; i++) {
+			AttributeReferenceEvaluationException e = assertThrows(
+					AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+			assertEquals(false, e instanceof SubclassedFailure);
+			assertEquals(true, e.isResolverFailure());
+			assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+			assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+					e.getStatus().getMessage());
+		}
+		Mockito.verify(pip, Mockito.times(2)).resolve(context, ref);
+	}
+
+	@Test
+	public void testSelectorPipSubclassOfTheMappedFailureCannotKeepItsStatus()
+	{
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+		Status[] chosen = {
+				Status.missingAttribute(ref).message("backend detail").build(),
+				Status.syntaxError().message("backend detail").build()};
+		when(pip.resolve(context, ref))
+				.thenThrow(new SubclassedFailure(chosen[0], ref))
+				.thenThrow(new SubclassedFailure(chosen[1], ref));
+		for (int i = 0; i < chosen.length; i++) {
+			AttributeReferenceEvaluationException e = assertThrows(
+					AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+			assertEquals(false, e instanceof SubclassedFailure);
+			assertEquals(true, e.isResolverFailure());
+			assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+			assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+					e.getStatus().getMessage());
+		}
+		Mockito.verify(pip, Mockito.times(2)).resolve(context, ref);
+	}
+
+	/**
+	 * A failure whose {@code getMessage()} throws an exception with a status
+	 * of its own choice (rv079 round 4). The handler maps the failure before
+	 * it reads or logs anything of it.
+	 */
+	@SuppressWarnings("serial")
+	private static final class ThrowingMessageFailure extends RuntimeException
+	{
+		private final RuntimeException thrownByGetMessage;
+
+		ThrowingMessageFailure(RuntimeException thrownByGetMessage) {
+			this.thrownByGetMessage = thrownByGetMessage;
+		}
+
+		@Override
+		public String getMessage() {
+			throw thrownByGetMessage;
+		}
+	}
+
+	/** Throws a checked exception from a method that does not declare it. */
+	@SuppressWarnings("unchecked")
+	private static <E extends Throwable> RuntimeException sneakyThrow(Throwable t) throws E
+	{
+		throw (E) t;
+	}
+
+	/**
+	 * rv079 round 5: {@code getMessage()} of the failure throws a checked
+	 * exception whose cause carries a status and a text of its own choice.
+	 */
+	@SuppressWarnings("serial")
+	private static final class CheckedThrowingMessageFailure extends RuntimeException
+	{
+		private final EvaluationException chosen;
+
+		CheckedThrowingMessageFailure(EvaluationException chosen) {
+			this.chosen = chosen;
+		}
+
+		@Override
+		public String getMessage() {
+			throw DefaultEvaluationContextHandlerTest.<RuntimeException>sneakyThrow(
+					new Exception("checked", chosen));
+		}
+	}
+
+	@Test
+	public void testPipFailureWhoseMessageThrowsACheckedExceptionIsStillMapped()
+	{
+		AttributeDesignatorKey designator = AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.RESOURCE)
+				.attributeId("testId")
+				.dataType(XacmlTypes.ANYURI)
+				.build();
+		AttributeSelectorKey selector = AttributeSelectorKey
+				.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+		when(pip.resolve(context, designator)).thenThrow(new CheckedThrowingMessageFailure(
+				new EvaluationException(Status.missingAttribute(designator).build(), "backend detail")));
+		when(pip.resolve(context, selector)).thenThrow(new CheckedThrowingMessageFailure(
+				PathEvaluationException.invalidXpath(selector.getPath(),
+						Status.syntaxError().message("backend detail").build(), null)));
+
+		for (org.xacml4j.v30.AttributeReferenceKey ref : java.util.List.of(designator, selector)) {
+			AttributeReferenceEvaluationException e = assertThrows(
+					AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+			assertEquals(true, e.isResolverFailure());
+			assertEquals(true, e.getCause() instanceof CheckedThrowingMessageFailure);
+			assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+			assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+					e.getStatus().getMessage());
+		}
+	}
+
+	@Test
+	public void testDesignatorPipFailureWithAThrowingMessageIsStillMapped()
+	{
+		AttributeDesignatorKey ref = AttributeDesignatorKey
+				.builder()
+				.category(CategoryId.RESOURCE)
+				.attributeId("testId")
+				.dataType(XacmlTypes.ANYURI)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		// MustBePresent=false would turn this missing-attribute into an empty bag.
+		when(pip.resolve(context, ref)).thenThrow(new ThrowingMessageFailure(
+				new EvaluationException(Status.missingAttribute(ref).build(), "backend detail")));
+
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+		assertEquals(true, e.isResolverFailure());
+		assertEquals(true, e.getCause() instanceof ThrowingMessageFailure);
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				e.getStatus().getMessage());
+		assertEquals(false, e.getMessage().contains("backend detail"));
+	}
+
+	@Test
+	public void testSelectorPipFailureWithAThrowingMessageIsStillMapped()
+	{
+		AttributeSelectorKey ref = AttributeSelectorKey
+				.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER)
+				.build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+		// The information point must not be able to make this look like the engine's syntax error.
+		when(pip.resolve(context, ref)).thenThrow(new ThrowingMessageFailure(
+				PathEvaluationException.invalidXpath(ref.getPath(),
+						Status.syntaxError().message("backend detail").build(), null)));
+
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> handler.resolve(context, ref));
+
+		assertEquals(true, e.isResolverFailure());
+		assertEquals(true, e.getCause() instanceof ThrowingMessageFailure);
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE),
+				e.getStatus().getMessage());
 	}
 
 	@Test

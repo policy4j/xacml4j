@@ -32,6 +32,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -119,10 +120,21 @@ final class DefaultEvaluationContextHandler
 	{
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
 		AttributeSelectorKey selectorKey = (AttributeSelectorKey)ref;
-		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
-		                                         .flatMap(e-> resolveSelector(e, selectorKey))
-		                                         .or(()->doPipResolve(context, selectorKey));
-		return v;
+		try{
+			return requestCallback.getEntity(ref.getCategory())
+			                      .flatMap(e-> resolveSelector(e, selectorKey))
+			                      .or(()->doPipResolve(context, selectorKey));
+		}catch(PathEvaluationException e){
+			// The outcome of the engine's own evaluation of the selector path
+			// on request content or on a resolved entity. The status message is
+			// visible in the response, so the text of the XPath engine is not
+			// passed on: a syntax error keeps its status code, and every other
+			// path error is a processing error, whatever MustBePresent is.
+			if(e.getStatus().getStatusCode().isSyntaxError()){
+				throw logged(AttributeReferenceEvaluationException.forSyntaxError(selectorKey, e));
+			}
+			throw failed(selectorKey, e);
+		}
 	}
 
 	private Optional<BagOfValues> resolveSelector(Entity entity, AttributeSelectorKey selectorKey)
@@ -158,8 +170,10 @@ final class DefaultEvaluationContextHandler
 			return v;
 
 		}catch(Exception e){
-			LOG.debug(e.getMessage(), e);
-			return Optional.empty();
+			// A failure of the information point is never a missing attribute.
+			// Its own status and message are not passed on, because a status
+			// message is visible in the response.
+			throw failed(key, e);
 		}finally{
 			designatorResolutionStack.pop();
 		}
@@ -176,7 +190,7 @@ final class DefaultEvaluationContextHandler
 		try
 		{
 			selectorResolutionStack.push(ref);
-			Optional<BagOfValues> v = pip.resolve(context, ref);
+			Optional<BagOfValues> v = resolveViaPip(context, ref);
 			if(!v.isPresent() &&
 					ref.getContextSelectorId() != null){
 				AttributeDesignatorKey entitySelector =
@@ -195,19 +209,49 @@ final class DefaultEvaluationContextHandler
 			return v;
 		}
 		catch(PathEvaluationException e){
-			if(e.getStatus().getStatusCode().isSyntaxError()){
-				throw e;
-			}
-			LOG.debug(e.getMessage(), e);
-			return Optional.empty();
+			// Only the engine's own evaluation of the selector on a resolved
+			// entity arrives here, because resolveViaPip maps every exception
+			// of the information point. doSelectorResolve maps it.
+			throw e;
 		}
 		catch(Exception e){
-			LOG.debug(e.getMessage(), e);
-			return Optional.empty();
+			// A failure is never a missing attribute.
+			throw failed(ref, e);
 		}
 		finally {
 			selectorResolutionStack.pop();
 		}
+	}
+
+	/**
+	 * The boundary to the information point for a selector. Every exception
+	 * is a resolver failure: the information point can not choose the status
+	 * code or the status message, because both are visible in the response.
+	 */
+	private Optional<BagOfValues> resolveViaPip(EvaluationContext context, AttributeSelectorKey ref)
+	{
+		try{
+			return pip.resolve(context, ref);
+		}catch(Exception e){
+			throw failed(ref, e);
+		}
+	}
+
+	/**
+	 * Maps a failure to a processing error and logs it. Nothing is called
+	 * on the cause before the mapped failure exists, and the cause is not
+	 * given to the logger: it is foreign code, and an exception from its
+	 * {@code getMessage()} must not replace the mapped failure.
+	 */
+	private static AttributeReferenceEvaluationException failed(AttributeReferenceKey ref, Throwable cause)
+	{
+		return logged(AttributeReferenceEvaluationException.forResolverFailure(ref, cause));
+	}
+
+	private static AttributeReferenceEvaluationException logged(AttributeReferenceEvaluationException failure)
+	{
+		LOG.debug("{}", failure.getMessage());
+		return failure;
 	}
 
 	@Override

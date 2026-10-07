@@ -14,7 +14,7 @@ task 1.6.
 
 | Capability | Proof (planned) | Run |
 | --- | --- | --- |
-| attribute-resolution | attribute-resolution tests (task 4.1); conformance | - |
+| attribute-resolution | attribute-resolution tests (task 4.1); resolver and path failures (4.34); conformance | 071, rv079, rv080 |
 | condition-evaluation | condition tests (task 4.2); conformance | - |
 | function-semantics | function tests (task 4.3); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6) |
 | datatype-registry | registry tests (task 4.4) | - |
@@ -191,6 +191,9 @@ task 1.6.
 | `tests/024-bugs-string-functions/review-rv038-rv039` | rv038/rv039 fixes (AnyURI lexical form, PermitOverrides flag) | red then green; full reactor clean verify | PASS: 5,660 tests, 0 failures; conformance 859 pass (IIIA030/IIIA330 re-enabled); verification pending |
 | `tests/030-harness-comparators/review-rv042-rv044` | rv042/rv044 harness fixes | comparator tests red then green | PASS (same gate); verification pending |
 | `builds/070-maintainer-rulings` | maintainer rulings on the run 061 decisions, 2026-10-07 | conversation receipt (see command.txt) | RECORDED: D3-D9 and D11-D18 accepted as recommended; D1, D2, D10 stand as ruled in rv077 (D2 is IEEE equality, not the run 061 recommendation); 13 beads carry the ruling; no code changed; gate 4.7 stays open |
+| `tests/071-resolver-failure-fail-closed` | beads policy4j-the.4.34 and policy4j-the.11 (rulings D3, D18), 2026-10-07 | tests red then green; six full reactor gates on JDK 21; red runs for the round-4 and round-5 review fixes (see command.txt) | PASS: a resolver, PIP, or XPath evaluation failure is Indeterminate processing-error for both MustBePresent values; fixed status messages; a resolver without a value does not end the search; gate 6: 7,695 tests, 0 failures, 24 skipped (run 074 was in the tree; gate 5 without it: 7,638); conformance 927 with 14 skipped, unchanged |
+| `reviews/code/rv079-rulings-codex` | review runs 071, 072, 073 | Codex, adversarial, six rounds on the full diff | APPROVE in round 6; rounds 1-5 REQUEST_CHANGES, all findings fixed |
+| `reviews/code/rv080-rulings-grok` | review runs 071, 072, 073 | Grok grok-4.7, adversarial, five rounds (round 1 stopped without a report) | APPROVE in rounds 4 and 5; did not see the round-5 fix, which Codex verified |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and

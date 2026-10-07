@@ -42,4 +42,4 @@ and beads the.4.53 and the.4.54 are done.
 
 Each bead above carries a comment that names its ruling and this run.
 
-Recorded by Claude Code (claude-opus-5-5) on the maintainer's instruction.
+Recorded on the maintainer's instruction.

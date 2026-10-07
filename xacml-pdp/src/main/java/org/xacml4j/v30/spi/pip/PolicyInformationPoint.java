@@ -51,11 +51,15 @@ public interface PolicyInformationPoint
 
 	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
+	 * <p>
+	 * An empty result means "no value". Every exception is a resolution
+	 * failure: the engine reports it as status processing-error with a fixed
+	 * message, whatever status and message the exception carries.
 	 *
 	 * @param context an evaluation context
 	 * @param ref an attribute designator
 	 * @return {@link BagOfValues}
-	 * @throws Exception if an error occurs
+	 * @throws RuntimeException if an error occurs
 	 */
 	Optional<BagOfValues> resolve(
 			EvaluationContext context,
@@ -66,12 +70,18 @@ public interface PolicyInformationPoint
 	}
 
 	/**
-	 * Resolves a content for a given attribute selector
+	 * Resolves a given {@link AttributeSelectorKey} on content that this
+	 * information point supplies
+	 * <p>
+	 * An empty result means "no content" or "no selected node". Every
+	 * exception is a resolution failure: the engine reports it as status
+	 * processing-error with a fixed message, whatever status and message
+	 * the exception carries.
 	 *
 	 * @param context an evaluation context
 	 * @param selectorKey content selector
-	 * @return {@link Node} or {@code null}
-	 * @throws Exception if an error occurs
+	 * @return {@link BagOfValues}
+	 * @throws RuntimeException if an error occurs
 	 */
 	Optional<BagOfValues> resolve(
 			EvaluationContext context,

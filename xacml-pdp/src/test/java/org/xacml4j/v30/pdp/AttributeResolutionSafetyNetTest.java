@@ -33,22 +33,25 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.policy.Apply;
 import org.xacml4j.v30.policy.AttributeDesignator;
@@ -81,8 +84,9 @@ class AttributeResolutionSafetyNetTest
 				Arguments.of("present-must-be-present-true", true, false, Decision.PERMIT, StatusCodeId.OK),
 				Arguments.of("missing-must-be-present-false", false, false, Decision.NOT_APPLICABLE, StatusCodeId.OK),
 				Arguments.of("missing-must-be-present-true", true, false, Decision.INDETERMINATE_P, StatusCodeId.MISSING_ATTRIBUTE),
-				Arguments.of("resolver-failure-must-be-present-false-current", false, true, Decision.NOT_APPLICABLE, StatusCodeId.OK),
-				Arguments.of("resolver-failure-must-be-present-true-current", true, true, Decision.INDETERMINATE_P, StatusCodeId.MISSING_ATTRIBUTE));
+				// Maintainer ruling 2026-10-07 (run 061 D3): a resolver failure fails closed.
+				Arguments.of("resolver-failure-must-be-present-false", false, true, Decision.INDETERMINATE_P, StatusCodeId.STATUS_PROCESSING_ERROR),
+				Arguments.of("resolver-failure-must-be-present-true", true, true, Decision.INDETERMINATE_P, StatusCodeId.STATUS_PROCESSING_ERROR));
 	}
 
 	@ParameterizedTest(name = "{0}")
@@ -156,19 +160,57 @@ class AttributeResolutionSafetyNetTest
 		Result result = pdp(stringIsIn(selector), Effect.PERMIT, pip)
 				.decide(RequestContext.builder().build()).getResults().stream().findFirst().orElseThrow();
 
-		assertDecisionAndStatus(result, Decision.INDETERMINATE_P, StatusCodeId.MISSING_ATTRIBUTE);
+		assertDecisionAndStatus(result, Decision.INDETERMINATE_P, StatusCodeId.STATUS_PROCESSING_ERROR);
+		// The response message is the fixed text, not "selector resolver failed".
+		assertThat(result.getStatus().getMessage().orElse(null))
+				.isEqualTo(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE);
 		verify(pip, times(1)).resolve(any(), any(AttributeSelectorKey.class));
 		verifyNoMoreInteractions(pip);
 	}
 
-	@Disabled("policy4j-the.4.34: resolver retrieval failures with MustBePresent=false must fail closed as processing-error")
+	@Test
+	void selectorResolverFailureIsProcessingErrorWhenNotMustBePresent()
+	{
+		PolicyInformationPoint pip = mock(PolicyInformationPoint.class);
+		when(pip.resolve(any(), any(AttributeSelectorKey.class)))
+				.thenThrow(new IllegalStateException("selector resolver failed"));
+		AttributeSelector selector = AttributeSelector.builder()
+				.key(AttributeSelectorKey.builder().category(CategoryId.RESOURCE)
+						.dataType(XacmlTypes.STRING).xpath("/missing").build())
+				.mustBePresent(false).build();
+
+		Result result = pdp(stringIsIn(selector), Effect.PERMIT, pip)
+				.decide(RequestContext.builder().build()).getResults().stream().findFirst().orElseThrow();
+
+		assertDecisionAndStatus(result, Decision.INDETERMINATE_P, StatusCodeId.STATUS_PROCESSING_ERROR);
+		// The response message is the fixed text, not "selector resolver failed".
+		assertThat(result.getStatus().getMessage().orElse(null))
+				.isEqualTo(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE);
+		verify(pip, times(1)).resolve(any(), any(AttributeSelectorKey.class));
+		verifyNoMoreInteractions(pip);
+	}
+
+	@Test
+	void denyRuleStaysIndeterminateWhenItsResolverFails()
+	{
+		// The fail-open risk of bead 4.34: a Deny rule must not stop applying when its PIP fails.
+		PolicyInformationPoint pip = mock(PolicyInformationPoint.class);
+		stubResolver(pip, true);
+
+		Result result = pdp(stringIsIn(designator(false, null)), Effect.DENY, pip)
+				.decide(RequestContext.builder().build()).getResults().stream().findFirst().orElseThrow();
+
+		assertDecisionAndStatus(result, Decision.INDETERMINATE_D, StatusCodeId.STATUS_PROCESSING_ERROR);
+		verify(pip, times(1)).resolve(any(), any(AttributeDesignatorKey.class));
+		verifyNoMoreInteractions(pip);
+	}
+
 	@Test
 	void resolverFailureMustBeIndeterminateWithProcessingErrorWhenNotMustBePresent()
 	{
 		assertResolverFailureIsProcessingError(false);
 	}
 
-	@Disabled("policy4j-the.4.34: resolver retrieval failures with MustBePresent=true must fail closed as processing-error")
 	@Test
 	void resolverFailureMustBeIndeterminateWithProcessingErrorWhenMustBePresent()
 	{
@@ -182,6 +224,55 @@ class AttributeResolutionSafetyNetTest
 		assertThat(result.getDecision()).isEqualTo(Decision.INDETERMINATE_P);
 		assertThat(result.getStatus().getStatusCode().getValue())
 				.isEqualTo(org.xacml4j.v30.StatusCodeId.STATUS_PROCESSING_ERROR);
+		// The status message goes into the response: it is a fixed text, not the resolver's message.
+		assertThat(result.getStatus().getMessage().orElse(null))
+				.isEqualTo(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE);
+	}
+
+	@ParameterizedTest(name = "mustBePresent={0}")
+	@ValueSource(booleans = {false, true})
+	void designatorResolverCannotChooseTheStatusOrTheResponseMessage(boolean mustBePresent)
+	{
+		// A resolver's own syntax-error is still a retrieval failure (run 061 D3), and its
+		// message can hold back-end details.
+		PolicyInformationPoint pip = mock(PolicyInformationPoint.class);
+		when(pip.resolve(any(), any(AttributeDesignatorKey.class)))
+				.thenThrow(new EvaluationException(
+						Status.syntaxError().message("backend query: secret").build(),
+						"backend query: secret"));
+
+		Result result = pdp(stringIsIn(designator(mustBePresent, null)), Effect.PERMIT, pip)
+				.decide(RequestContext.builder().build()).getResults().stream().findFirst().orElseThrow();
+
+		assertDecisionAndStatus(result, Decision.INDETERMINATE_P, StatusCodeId.STATUS_PROCESSING_ERROR);
+		assertThat(result.getStatus().getMessage().orElse("")).doesNotContain("secret");
+		verify(pip, times(1)).resolve(any(), any(AttributeDesignatorKey.class));
+		verifyNoMoreInteractions(pip);
+	}
+
+	@ParameterizedTest(name = "mustBePresent={0}")
+	@ValueSource(booleans = {false, true})
+	void selectorResolverCannotChooseTheStatusOrTheResponseMessage(boolean mustBePresent)
+	{
+		// rv079 and rv080 round 3: a path exception with status syntax-error from the information
+		// point is a retrieval failure too. Only the engine's own path evaluation reports syntax-error.
+		PolicyInformationPoint pip = mock(PolicyInformationPoint.class);
+		when(pip.resolve(any(), any(AttributeSelectorKey.class)))
+				.thenThrow(org.xacml4j.v30.PathEvaluationException.invalidXpath("/missing",
+						Status.syntaxError().message("backend query: secret").build(), null));
+		AttributeSelector selector = AttributeSelector.builder()
+				.key(AttributeSelectorKey.builder().category(CategoryId.RESOURCE)
+						.dataType(XacmlTypes.STRING).xpath("/missing").build())
+				.mustBePresent(mustBePresent).build();
+
+		Result result = pdp(stringIsIn(selector), Effect.PERMIT, pip)
+				.decide(RequestContext.builder().build()).getResults().stream().findFirst().orElseThrow();
+
+		assertDecisionAndStatus(result, Decision.INDETERMINATE_P, StatusCodeId.STATUS_PROCESSING_ERROR);
+		assertThat(result.getStatus().getMessage().orElse(null))
+				.isEqualTo(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE);
+		verify(pip, times(1)).resolve(any(), any(AttributeSelectorKey.class));
+		verifyNoMoreInteractions(pip);
 	}
 
 	@Test

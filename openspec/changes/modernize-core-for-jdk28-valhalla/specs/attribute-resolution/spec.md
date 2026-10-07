@@ -44,11 +44,69 @@ same status code for this case.
 A failure of an attribute resolver (PIP) or content resolver while
 resolving a designator or selector SHALL make the evaluation Indeterminate
 with status code `urn:oasis:names:tc:xacml:1.0:status:processing-error`,
-regardless of `MustBePresent`. It SHALL NOT be converted to an empty bag.
+regardless of `MustBePresent`. It SHALL NOT be converted to an empty bag or
+to a missing-attribute status. When several resolvers match a reference,
+they SHALL be asked in registration order until one yields a value for the
+reference, and that value SHALL be used. A resolver that returns nothing,
+that returns attributes without the requested attribute, or that returns
+content in which the selector selects no node has not yielded a value.
+When no resolver yields a value and at least one resolver fails, the
+evaluation SHALL be Indeterminate with status processing-error.
+
+An XPath evaluation error of a selector that is not a syntax error SHALL
+also make the evaluation Indeterminate with status processing-error,
+regardless of `MustBePresent`. An XPath syntax error that the engine finds
+SHALL keep status `urn:oasis:names:tc:xacml:1.0:status:syntax-error`. Status
+missing-attribute SHALL be used only when the selection or lookup succeeds
+and yields no value.
+
+A resolver or a policy information point SHALL NOT be able to choose the
+status of its failure: every exception from it SHALL be reported with status
+processing-error, whatever status the exception carries. The status message
+of a processing-error or syntax-error caused by attribute resolution SHALL
+be a fixed text of the engine. It SHALL NOT contain text from a resolver, a
+back end, or the XPath engine, because the status message is returned in the
+response.
 
 #### Scenario: PIP throws with MustBePresent false
 - **WHEN** the attribute resolver throws while resolving a designator with `MustBePresent="false"`
 - **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: PIP throws with MustBePresent true
+- **WHEN** the attribute resolver throws while resolving a designator with `MustBePresent="true"`
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, not missing-attribute
+
+#### Scenario: Deny rule keeps applying when its resolver fails
+- **WHEN** the condition of a Deny rule uses a designator whose resolver throws
+- **THEN** the rule evaluates to Indeterminate{D}, not NotApplicable
+
+#### Scenario: A failed resolver and a resolver with a value
+- **WHEN** two resolvers match a designator, one throws, and the other returns a value
+- **THEN** the designator evaluates to a bag with that value
+
+#### Scenario: A failed resolver and a resolver without a value
+- **WHEN** two resolvers match a designator, one throws, and the other returns no value
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: XPath evaluation error in a selector
+- **WHEN** the XPath of a selector fails to evaluate for a reason other than its syntax
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error` for `MustBePresent` true and false
+
+#### Scenario: A failed resolver and a resolver without the requested attribute
+- **WHEN** two resolvers match a designator, one throws, and the other returns attributes that do not include the requested attribute
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A failed content resolver and content without the selected node
+- **WHEN** two content resolvers match a selector, one throws, and the selector selects no node in the content of the other
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, in either order of the two resolvers
+
+#### Scenario: A resolver chooses a status and a message
+- **WHEN** a resolver or a policy information point throws an exception that carries status syntax-error or missing-attribute and a message with back-end details
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and the status message in the response is the fixed text of the engine
+
+#### Scenario: Syntax error status message
+- **WHEN** the engine finds a syntax error while it evaluates the path of a selector
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:syntax-error`, and the status message in the response is the fixed text of the engine
 
 ### Requirement: Issuer matching
 A designator without an `Issuer` SHALL match request attributes from any

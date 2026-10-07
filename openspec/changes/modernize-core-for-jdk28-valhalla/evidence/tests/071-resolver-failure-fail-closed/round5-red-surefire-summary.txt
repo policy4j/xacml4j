@@ -1,0 +1,12 @@
+Red run for the round-5 review fix (rv079 round 5), JDK 21.
+Tree: the tree of gate 6 with the round-4 `messageOf` body (getMessage() inside
+try/catch RuntimeException) put back in AttributeReferenceEvaluationException.
+Test class: DefaultEvaluationContextHandlerTest.
+
+[ERROR] Tests run: 31, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.202 s <<< FAILURE! - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[ERROR] org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testPipFailureWhoseMessageThrowsACheckedExceptionIsStillMapped  Time elapsed: 0.008 s  <<< FAILURE!
+[ERROR]   DefaultEvaluationContextHandlerTest.testPipFailureWhoseMessageThrowsACheckedExceptionIsStillMapped:762 Unexpected exception type thrown, expected: <org.xacml4j.v30.AttributeReferenceEvaluationException> but was: <java.lang.Exception>
+[ERROR] Tests run: 31, Failures: 1, Errors: 0, Skipped: 0
+
+After the run the file was restored; `git diff` had the same SHA-256 before the
+change and after the restore.

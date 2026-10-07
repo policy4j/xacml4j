@@ -29,6 +29,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
+import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
@@ -66,6 +68,7 @@ final class DefaultPolicyInformationPoint
 			AttributeDesignatorKey designatorKey)
 	{
 		Collection<AttributeResolverDescriptor> matched = registry.getMatchingAttributeResolver(context, designatorKey);
+		AttributeReferenceEvaluationException failure = null;
 		for(AttributeResolverDescriptor d : matched){
 			LOG.debug("Processing resolverId={} for key={}", d.getId(), designatorKey);
 			try{
@@ -84,11 +87,48 @@ final class DefaultPolicyInformationPoint
 					Optional<BagOfValues> r = value.flatMap(v->v.get(designatorKey
 							                              .getAttributeId()));
 					LOG.debug("Resolved key={} value={} via resolverId={}", designatorKey, r, d.getId());
-					return r;
+					if(r.isPresent()){
+						return r;
+					}
+					// A set without this attribute is "no value" from this
+					// resolver: the next resolver is asked, and an earlier
+					// failure is not dropped.
 				}
 			}catch (Exception e){
-				LOG.debug(e.getMessage(), e);
+				failure = firstFailure(failure, d.getId(), designatorKey, e);
 			}
+		}
+		return emptyUnlessFailed(failure);
+	}
+
+	/**
+	 * Maps the failure of a resolver and keeps the first one. Nothing is
+	 * called on the exception of the resolver before it is mapped, and it is
+	 * not given to the logger: an exception from its {@code getMessage()}
+	 * must not replace the mapped failure.
+	 */
+	private static AttributeReferenceEvaluationException firstFailure(
+			AttributeReferenceEvaluationException first,
+			String resolverId, AttributeReferenceKey key, Exception e)
+	{
+		AttributeReferenceEvaluationException mapped = AttributeReferenceEvaluationException
+				.forResolverFailure(key, e);
+		LOG.debug("resolverId={} failed: {}", resolverId, mapped.getMessage());
+		return first != null?first:mapped;
+	}
+
+	/**
+	 * Reports "no value" only when no resolver failed. The matching resolvers
+	 * are asked in registration order until one yields a value for the
+	 * reference. When none did and at least one failed, the first failure is
+	 * thrown, so a retrieval error is not mistaken for a missing attribute.
+	 * The failure is a processing error with a fixed status message: the
+	 * status and the message that a resolver chose are not passed on.
+	 */
+	private static Optional<BagOfValues> emptyUnlessFailed(AttributeReferenceEvaluationException failure)
+	{
+		if(failure != null){
+			throw failure;
 		}
 		return Optional.empty();
 	}
@@ -98,33 +138,45 @@ final class DefaultPolicyInformationPoint
 	                                 AttributeSelectorKey selectorKey)
 	{
 		Collection<ContentResolverDescriptor> matched = registry.getMatchingContentResolver(context, selectorKey);
+		AttributeReferenceEvaluationException failure = null;
 		for(ContentResolverDescriptor d : matched)
 		{
 			LOG.debug("Processing resolverId={} for key={}", d.getId(), selectorKey);
-			ResolverContext resolverContext = ResolverContext.createContext(context, d);
+			Optional<ContentRef> value;
 			try
 			{
-				Optional<ContentRef> value = resolverContext.isCacheable()?
-				                             cache.getContent(resolverContext)
-				                                  .or(()->d.getResolverFunction().apply(resolverContext)):
-				                             d.getResolverFunction().apply(resolverContext);
+				ResolverContext resolverContext = ResolverContext.createContext(context, d);
+				value = resolverContext.isCacheable()?
+				        cache.getContent(resolverContext)
+				             .or(()->d.getResolverFunction().apply(resolverContext)):
+				        d.getResolverFunction().apply(resolverContext);
 				LOG.debug("Resolved key={} content={}", selectorKey, value);
-				if(value != null && value.isPresent()){
-					if(resolverContext.isCacheable()){
-						LOG.debug("Caching key={} content={}", selectorKey, value);
-						cache.putContent(resolverContext, value.get());
-					}
-					Optional<BagOfValues> r = value.flatMap(c->c.getContent()
-					                         .resolve(selectorKey));
-					LOG.debug("Resolved key={} value={} via resolverId={}", selectorKey, r, d.getId());
-					return r;
+				if(value != null && value.isPresent() && resolverContext.isCacheable()){
+					LOG.debug("Caching key={} content={}", selectorKey, value);
+					cache.putContent(resolverContext, value.get());
 				}
 			}catch (Exception e){
-				LOG.debug("Error while resolverId={} key={}", d.getId(), selectorKey, e);
+				// A failure of the resolver, whatever exception type and
+				// status it chose.
+				failure = firstFailure(failure, d.getId(), selectorKey, e);
+				continue;
+			}
+			if(value != null && value.isPresent()){
+				// The selector path is evaluated on the supplied content outside
+				// the resolver boundary: a path error is thrown at once and is
+				// not the failure of one resolver.
+				Optional<BagOfValues> r = value.flatMap(c->c.getContent()
+				                         .resolve(selectorKey));
+				LOG.debug("Resolved key={} value={} via resolverId={}", selectorKey, r, d.getId());
+				if(r.isPresent()){
+					return r;
+				}
+				// Content without a selected node is "no value" from this
+				// resolver: the next resolver is asked, and an earlier failure
+				// is not dropped.
 			}
 		}
-		return Optional.empty();
-
+		return emptyUnlessFailed(failure);
 	}
 
 	public static Builder builder(String id){

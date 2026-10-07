@@ -1,0 +1,74 @@
+JDK 21 full reactor, `mvn -Dlicense.skipUpdateLicense=true verify` from <repo>.
+
+== Gate 1: beads the.4.34 and the.11 only (before the review fixes) ==
+xacml-core                 Tests run: 6200, Failures: 0, Errors: 0, Skipped: 10
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 104, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 927, Failures: 0, Errors: 0, Skipped: 14
+BUILD SUCCESS. Total: 7,598 tests, 0 failures, 0 errors, 28 skipped.
+
+== Gate 2: final tree (review fixes; also runs 072 and 073) ==
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-core ---
+[WARNING] Tests run: 6209, Failures: 0, Errors: 0, Skipped: 6
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-xml ---
+[INFO] Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-json ---
+[WARNING] Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-pdp ---
+[WARNING] Tests run: 110, Failures: 0, Errors: 0, Skipped: 3
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-test ---
+[INFO] Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-conformance-tests ---
+[WARNING] Tests run: 927, Failures: 0, Errors: 0, Skipped: 14
+[INFO] BUILD SUCCESS
+
+Total: 7,613 tests, 0 failures, 0 errors, 24 skipped.
+Baseline (run 069): 7,589 tests, 0 failures, 30 skipped; conformance 927 with 14 skipped.
+
+== Gate 3: after the round-2 review fixes ==
+xacml-core                 Tests run: 6214, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 116, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 927, Failures: 0, Errors: 0, Skipped: 14
+BUILD SUCCESS. Total: 7,624 tests, 0 failures, 0 errors, 24 skipped.
+
+== Gate 4: after the round-3 review fixes ==
+xacml-core                 Tests run: 6214, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 126, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 927, Failures: 0, Errors: 0, Skipped: 14
+BUILD SUCCESS. Total: 7,634 tests, 0 failures, 0 errors, 24 skipped.
+
+Between gate 3 and gate 4 one run failed and is not a gate: the first
+round-3 edit left four handler tests that expected the old exception type
+and two new tests that re-stubbed a throwing mock (xacml-pdp: 126 run,
+4 failures, 2 errors). The tests were corrected; production code did not
+change between that run and gate 4.
+
+== Gate 5: after the round-4 review fix ==
+xacml-core                 Tests run: 6215, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 129, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 927, Failures: 0, Errors: 0, Skipped: 14
+BUILD SUCCESS. Total: 7,638 tests, 0 failures, 0 errors, 24 skipped.
+Red run for this fix: round4-red-surefire-summary.txt (4 failures with the old calls).
+
+== Gate 6: after the round-5 review fix ==
+xacml-core                 Tests run: 6271, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 130, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 927, Failures: 0, Errors: 0, Skipped: 14
+BUILD SUCCESS. Total: 7,695 tests, 0 failures, 0 errors, 24 skipped.
+This run also held the uncommitted change of bead the.4.12 (run 074): 56 of the
+xacml-core tests are its LaterDecidingOperandTest. Gate 5 is the last run without it.
+Red run for the round-5 fix: round5-red-surefire-summary.txt (1 failure with the round-4 code).

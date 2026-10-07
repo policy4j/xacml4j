@@ -24,6 +24,7 @@ package org.xacml4j.v30.policy;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
@@ -257,7 +258,10 @@ public class AttributeDesignatorTest
 		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
 		when(context.resolve(c.capture())).thenThrow(new NullPointerException("Null"));
 		InOrder order = inOrder(context);
-		assertThrows(AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
+		// A resolution failure is a processing error, not a missing attribute (ruling 2026-10-07, run 061 D3).
+		assertTrue(e.getStatus().getStatusCode().isProcessingError());
 		order.verify(context).resolve(c.capture());
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(1)).resolve(c.capture());
@@ -277,10 +281,10 @@ public class AttributeDesignatorTest
 		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
 		when(context.resolve(c.capture())).thenThrow(new NullPointerException("Null"));
 		InOrder order = inOrder(context);
-		Expression v = desig.evaluate(context);
-		assertNotNull(v);
-		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
-		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
+		// MustBePresent=false does not turn a resolution failure into an empty bag (fail closed).
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
+		assertTrue(e.getStatus().getStatusCode().isProcessingError());
 		order.verify(context).resolve(c.capture());
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(1)).resolve(c.capture());
