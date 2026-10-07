@@ -37,6 +37,51 @@ equal `-0.0`.
 - **WHEN** `double-equal` is applied to `NaN` and `NaN`
 - **THEN** the result is `false`
 
+### Requirement: Rounding and conversion of special double values
+`round` SHALL round to the nearest integral double as IEEE 754
+round-to-nearest does: `NaN` SHALL stay `NaN`, an infinity SHALL stay that
+infinity, and a tie SHALL go to the even integer. `floor` SHALL also keep
+`NaN` and the infinities. `double-to-integer` SHALL evaluate to
+Indeterminate with status `processing-error` for `NaN`, for an infinity,
+and for a finite value outside the `xs:integer` range of the engine.
+
+#### Scenario: Round of NaN
+- **WHEN** `round` is applied to `NaN`
+- **THEN** the result is `NaN`
+
+#### Scenario: Round of a tie
+- **WHEN** `round` is applied to `0.5`, `1.5`, and `2.5`
+- **THEN** the results are `0.0`, `2.0`, and `2.0`
+
+#### Scenario: Conversion of NaN or an infinity
+- **WHEN** `double-to-integer` is applied to `NaN`, `INF`, or `-INF`
+- **THEN** evaluation is Indeterminate with status `processing-error`
+
+### Requirement: x500Name-match compares RDN sequences
+`x500Name-match` SHALL return `true` if and only if the relative
+distinguished names (RDNs) of the first argument are a terminal sequence of
+the RDNs of the second argument, with each pair of RDNs compared as
+`x500Name-equal` compares names. A multi-valued RDN SHALL match only an
+equal multi-valued RDN; a string suffix of the name SHALL NOT be enough.
+
+#### Scenario: Terminal sequence
+- **WHEN** `x500Name-match` is applied to `O=Medico Corp,C=US` and `cn=John Smith,o=Medico Corp,c=US`
+- **THEN** the result is `true`
+
+#### Scenario: Part of a multi-valued RDN
+- **WHEN** `x500Name-match` is applied to `OU=Engineering,C=US` and `O=Acme+OU=Engineering,C=US`
+- **THEN** the result is `false`
+
+### Requirement: ipAddress set functions are extensions
+The functions `ipAddress-intersection`, `ipAddress-union`,
+`ipAddress-subset`, `ipAddress-at-least-one-member-of`, and
+`ipAddress-set-equals` under `urn:oasis:names:tc:xacml:1.0:function:` SHALL
+stay registered as engine extensions. They are not standard XACML functions.
+
+#### Scenario: Extension lookup
+- **WHEN** a policy refers to `urn:oasis:names:tc:xacml:1.0:function:ipAddress-union`
+- **THEN** the function resolves
+
 ### Requirement: Set functions remove duplicates
 `type-union` (two or more bags) and `type-intersection` SHALL return bags
 that contain no duplicates as determined by `type-equal` (XACML 3.0

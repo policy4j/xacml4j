@@ -135,7 +135,9 @@ public final class ArithmeticFunctions
 	public static DoubleVal round(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal v)
 	{
-		return DoubleVal.of(Math.round(v.get()));
+		// IEEE 754 round-to-nearest: NaN and the infinities stay, a tie goes to
+		// the even integer. Math.round would return a long (NaN -> 0).
+		return DoubleVal.of(Math.rint(v.get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subtract", shortId = "double-subtract")

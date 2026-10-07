@@ -16,7 +16,7 @@ task 1.6.
 | --- | --- | --- |
 | attribute-resolution | attribute-resolution tests (task 4.1); resolver and path failures (4.34); conformance | 071, rv079, rv080 |
 | condition-evaluation | condition tests (task 4.2); conformance | - |
-| function-semantics | function tests (task 4.3); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6) |
+| function-semantics | function tests (task 4.3); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6); 072, rv079, rv080 (rulings D5-D9) |
 | datatype-registry | registry tests (task 4.4) | - |
 | combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
 | conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6) | 015, 023 |
@@ -194,6 +194,7 @@ task 1.6.
 | `tests/071-resolver-failure-fail-closed` | beads policy4j-the.4.34 and policy4j-the.11 (rulings D3, D18), 2026-10-07 | tests red then green; six full reactor gates on JDK 21; red runs for the round-4 and round-5 review fixes (see command.txt) | PASS: a resolver, PIP, or XPath evaluation failure is Indeterminate processing-error for both MustBePresent values; fixed status messages; a resolver without a value does not end the search; gate 6: 7,695 tests, 0 failures, 24 skipped (run 074 was in the tree; gate 5 without it: 7,638); conformance 927 with 14 skipped, unchanged |
 | `reviews/code/rv079-rulings-codex` | review runs 071, 072, 073 | Codex, adversarial, six rounds on the full diff | APPROVE in round 6; rounds 1-5 REQUEST_CHANGES, all findings fixed |
 | `reviews/code/rv080-rulings-grok` | review runs 071, 072, 073 | Grok grok-4.7, adversarial, five rounds (round 1 stopped without a report) | APPROVE in rounds 4 and 5; did not see the round-5 fix, which Codex verified |
+| `tests/072-function-rulings` | bead policy4j-the.4.44 and decisions C4, C5, C7 (rulings D5, D6, D8, D9), 2026-10-07 | red then green; gate of run 071 | PASS: x500Name-match compares RDN sequences; round uses IEEE ties-to-even and keeps NaN and infinities; double-to-integer of NaN or an infinity is Indeterminate; ipAddress set functions pinned as extensions; FunctionSafetyNet43Test 122 tests, 2 skipped (C3, task 5.4); JMH unmeasured for x500Name-match |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and

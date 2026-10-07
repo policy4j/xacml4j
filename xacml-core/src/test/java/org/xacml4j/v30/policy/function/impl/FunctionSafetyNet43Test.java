@@ -66,7 +66,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 /**
  * Table B of run 037, resolved by URN through the default function provider.
  * XACML 3.0 Core OS (22 January 2013), Appendix A.3.
- * Remaining decision rows stay disabled: C1, C3/5.4, C4, C5, C7, C8/4.44.
+ * The two rows of decision C3 stay disabled until task 5.4.
  */
 @ExtendWith(MockitoExtension.class)
 public class FunctionSafetyNet43Test
@@ -181,12 +181,21 @@ public class FunctionSafetyNet43Test
 				XacmlTypes.DOUBLE.ofAny(9223372036854775808.0d));
 	}
 
-	@Disabled("C5")
+	// Decision C5, maintainer ruling 2026-10-07 (run 061 D6): NaN and the infinities have no xs:integer.
 	@Test
-	public void row12DoubleToIntegerOfNaNIsUndecided()
+	public void row12DoubleToIntegerOfNaNIsIndeterminate()
 	{
 		assertIndeterminate(StatusCodeId.STATUS_PROCESSING_ERROR,
 				F + "1.0:function:double-to-integer", XacmlTypes.DOUBLE.ofAny(Double.NaN));
+	}
+
+	@Test
+	public void row12DoubleToIntegerOfAnInfinityIsIndeterminate()
+	{
+		assertIndeterminate(StatusCodeId.STATUS_PROCESSING_ERROR,
+				F + "1.0:function:double-to-integer", XacmlTypes.DOUBLE.ofAny(Double.POSITIVE_INFINITY));
+		assertIndeterminate(StatusCodeId.STATUS_PROCESSING_ERROR,
+				F + "1.0:function:double-to-integer", XacmlTypes.DOUBLE.ofAny(Double.NEGATIVE_INFINITY));
 	}
 
 	@Test
@@ -725,19 +734,144 @@ public class FunctionSafetyNet43Test
 						XacmlTypes.X500NAME.ofAny("cn=John Smith,o=Medico Corp,c=US")));
 	}
 
-	@Disabled("C8 policy4j-the.4.44")
+	/*
+	 * Bead policy4j-the.4.44, maintainer ruling 2026-10-07 (run 061 D9, decision C8): the
+	 * first name matches when its RDNs are a terminal sequence of the RDNs of the second
+	 * name, each compared as x500Name-equal compares them. A string suffix is not enough.
+	 */
 	@Test
-	public void multiValuedTerminalRdnNeedsDecisionC8()
+	public void x500NameMatchRejectsAPartOfAMultiValuedTerminalRdn()
 	{
-		fail("C8: x500Name-match on a multi-valued terminal RDN is undecided");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("OU=Engineering,C=US"),
+						XacmlTypes.X500NAME.ofAny("O=Acme+OU=Engineering,C=US")));
 	}
 
-	@Disabled("C7")
 	@Test
-	public void ipAddressSetFunctionsNeedDecisionC7()
+	public void x500NameMatchAcceptsAnEqualMultiValuedTerminalRdn()
 	{
-		assertTrue(FUNCTIONS.getFunction(F + "1.0:function:ipAddress-intersection").isPresent());
-		fail("C7: the 1.0 ipAddress set functions are an undecided extension");
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("O=Acme+OU=Engineering,C=US"),
+						XacmlTypes.X500NAME.ofAny("CN=John Smith,O=Acme+OU=Engineering,C=US")));
+	}
+
+	@Test
+	public void x500NameMatchComparesRdnsAsX500NameEqualDoes()
+	{
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("o=medico corp, c=us"),
+						XacmlTypes.X500NAME.ofAny("CN=John Smith,O=Medico Corp,C=US")));
+		// x500Name-equal ignores the order of the values of a multi-valued RDN.
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-equal",
+						XacmlTypes.X500NAME.ofAny("OU=Engineering+O=Acme,C=US"),
+						XacmlTypes.X500NAME.ofAny("O=Acme+OU=Engineering,C=US")));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("OU=Engineering+O=Acme,C=US"),
+						XacmlTypes.X500NAME.ofAny("CN=John Smith,O=Acme+OU=Engineering,C=US")));
+	}
+
+	@Test
+	public void x500NameMatchKeepsTheValueEncodingThatX500NameEqualKeeps()
+	{
+		// #1e020041 is the BMPString "A". x500Name-equal does not equate it with the printable "A".
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				invoke(F + "1.0:function:x500Name-equal",
+						XacmlTypes.X500NAME.ofAny("CN=#1e020041"),
+						XacmlTypes.X500NAME.ofAny("CN=A")));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("CN=#1e020041"),
+						XacmlTypes.X500NAME.ofAny("CN=A")));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("CN=#1e020041"),
+						XacmlTypes.X500NAME.ofAny("CN=#1e020041")));
+	}
+
+	@Test
+	public void x500NameMatchDoesNotSplitAnRdnAtAnEscapedComma()
+	{
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("CN=b,O=x"),
+						XacmlTypes.X500NAME.ofAny("CN=a\\,b,O=x")));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("O=x"),
+						XacmlTypes.X500NAME.ofAny("CN=a\\,b,O=x")));
+	}
+
+	@Test
+	public void x500NameMatchAgreesWithX500NameEqualOnNamesOfTheSameLength()
+	{
+		// For two names with the same number of RDNs, "terminal sequence" means "equal".
+		String[][] pairs = {
+				{"2.5.4.10=Acme,C=US", "O=Acme,C=US"},
+				{"O=Acme,C=US", "O=acme , c=us"},
+				{"CN=a\\,b,O=x", "CN=a\\,b,O=x"},
+				{"CN=a\\,b,O=x", "CN=a,O=x"},
+				{"OU=Engineering+O=Acme,C=US", "O=Acme+OU=Engineering,C=US"},
+				{"OU=Engineering,C=US", "O=Acme+OU=Engineering,C=US"},
+				{"CN=#1e020041", "CN=A"},
+				{"", ""}};
+		for (String[] pair : pairs) {
+			assertEquals(
+					invoke(F + "1.0:function:x500Name-equal",
+							XacmlTypes.X500NAME.ofAny(pair[0]), XacmlTypes.X500NAME.ofAny(pair[1])),
+					invoke(F + "1.0:function:x500Name-match",
+							XacmlTypes.X500NAME.ofAny(pair[0]), XacmlTypes.X500NAME.ofAny(pair[1])),
+					pair[0] + " vs " + pair[1]);
+		}
+	}
+
+	@Test
+	public void x500NameMatchAcceptsAnEmptyFirstName()
+	{
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny(""),
+						XacmlTypes.X500NAME.ofAny("O=Medico Corp,C=US")));
+	}
+
+	@Test
+	public void x500NameMatchAcceptsEqualNamesAndRejectsALongerFirstName()
+	{
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("O=Medico Corp,C=US"),
+						XacmlTypes.X500NAME.ofAny("o=Medico Corp,c=US")));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("CN=John Smith,O=Medico Corp,C=US"),
+						XacmlTypes.X500NAME.ofAny("O=Medico Corp,C=US")));
+	}
+
+	@Test
+	public void x500NameMatchRejectsADifferentRdnValueOrANonTerminalSequence()
+	{
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("O=Corp,C=US"),
+						XacmlTypes.X500NAME.ofAny("CN=John Smith,O=Medico Corp,C=US")));
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				invoke(F + "1.0:function:x500Name-match",
+						XacmlTypes.X500NAME.ofAny("CN=John Smith,O=Medico Corp"),
+						XacmlTypes.X500NAME.ofAny("CN=John Smith,O=Medico Corp,C=US")));
+	}
+
+	// Decision C7, maintainer ruling 2026-10-07 (run 061 D8): the 1.0 ipAddress set functions stay as extensions.
+	@Test
+	public void ipAddressSetFunctionsStayRegisteredAsExtensions()
+	{
+		for (String name : new String[] {"intersection", "union", "subset",
+				"at-least-one-member-of", "set-equals"}) {
+			assertTrue(FUNCTIONS.getFunction(F + "1.0:function:ipAddress-" + name).isPresent(), name);
+		}
 	}
 
 	@Test
@@ -777,11 +911,64 @@ public class FunctionSafetyNet43Test
 				invoke(F + "1.0:function:floor", XacmlTypes.DOUBLE.ofAny(Double.NaN)));
 	}
 
-	@Disabled("C4")
+	/*
+	 * Decision C4, maintainer ruling 2026-10-07 (run 061 D5): round follows IEEE 754
+	 * round-to-nearest. NaN stays NaN, an infinity stays that infinity, and a tie goes
+	 * to the even integer.
+	 */
 	@Test
-	public void row60RoundOfNaNIsUndecided()
+	public void row60RoundOfNaNStaysNaN()
 	{
-		fail("C4: round(NaN) is undecided between IEEE NaN and Math.round 0");
+		assertEquals(XacmlTypes.DOUBLE.ofAny(Double.NaN),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(Double.NaN)));
+	}
+
+	@Test
+	public void row60RoundOfAnInfinityStaysThatInfinity()
+	{
+		assertEquals(XacmlTypes.DOUBLE.ofAny(Double.POSITIVE_INFINITY),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(Double.POSITIVE_INFINITY)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(Double.NEGATIVE_INFINITY),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(Double.NEGATIVE_INFINITY)));
+	}
+
+	@Test
+	public void row60RoundSendsATieToTheEvenInteger()
+	{
+		assertEquals(XacmlTypes.DOUBLE.ofAny(0.0d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(0.5d)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(2.0d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(1.5d)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(2.0d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(2.5d)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(-2.0d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(-2.5d)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(-2.0d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(-1.5d)));
+		// The tie between -1 and 0 goes to zero; IEEE 754 keeps the sign.
+		assertEquals(Double.doubleToRawLongBits(-0.0d), Double.doubleToRawLongBits(
+				((org.xacml4j.v30.types.DoubleVal) invoke(F + "1.0:function:round",
+						XacmlTypes.DOUBLE.ofAny(-0.5d))).get()));
+	}
+
+	@Test
+	public void row60RoundKeepsOrdinaryNearestRounding()
+	{
+		assertEquals(XacmlTypes.DOUBLE.ofAny(3.0d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(2.6d)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(-3.0d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(-2.6d)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(9.007199254740993E15d),
+				invoke(F + "1.0:function:round", XacmlTypes.DOUBLE.ofAny(9.007199254740993E15d)));
+	}
+
+	@Test
+	public void floorOfAnInfinityStaysThatInfinity()
+	{
+		assertEquals(XacmlTypes.DOUBLE.ofAny(Double.POSITIVE_INFINITY),
+				invoke(F + "1.0:function:floor", XacmlTypes.DOUBLE.ofAny(Double.POSITIVE_INFINITY)));
+		assertEquals(XacmlTypes.DOUBLE.ofAny(Double.NEGATIVE_INFINITY),
+				invoke(F + "1.0:function:floor", XacmlTypes.DOUBLE.ofAny(Double.NEGATIVE_INFINITY)));
 	}
 
 	private ValueExp invoke(String functionId, Expression... arguments)

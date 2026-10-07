@@ -28,6 +28,9 @@ import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.security.auth.x500.X500Principal;
 
 
@@ -52,8 +55,46 @@ public final class SpecialMatchFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500Name a,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:x500Name") X500Name b)
 	{
-		 java.lang.String n0 = a.get().getName(X500Principal.CANONICAL);
-		 java.lang.String n1 = b.get().getName(X500Principal.CANONICAL);
-		 return XacmlTypes.BOOLEAN.ofAny(n1.endsWith(n0));
+		List<String> first = canonicalRdns(a);
+		List<String> second = canonicalRdns(b);
+		int offset = second.size() - first.size();
+		if(offset < 0){
+			return XacmlTypes.BOOLEAN.ofAny(false);
+		}
+		// The first RDN of a name is the most specific one, so a terminal
+		// sequence of the second name is the end of its list.
+		return XacmlTypes.BOOLEAN.ofAny(
+				first.equals(second.subList(offset, second.size())));
+	}
+
+	/**
+	 * Splits the canonical form of a name into its RDNs. x500Name-equal
+	 * compares the canonical forms of two names, and the canonical form of a
+	 * name is the list of the canonical forms of its RDNs joined by commas.
+	 * Two RDNs are therefore equal under x500Name-equal exactly when their
+	 * parts of the canonical form are equal: a multi-valued RDN stays one
+	 * part, and a value keeps the encoding that the canonical form keeps.
+	 */
+	private static List<String> canonicalRdns(X500Name name)
+	{
+		String canonical = name.get().getName(X500Principal.CANONICAL);
+		List<String> rdns = new ArrayList<>();
+		if(canonical.isEmpty()){
+			return rdns;
+		}
+		StringBuilder rdn = new StringBuilder();
+		boolean escaped = false;
+		for(int i = 0; i < canonical.length(); i++){
+			char c = canonical.charAt(i);
+			if(!escaped && c == ','){
+				rdns.add(rdn.toString());
+				rdn.setLength(0);
+				continue;
+			}
+			escaped = !escaped && c == '\\';
+			rdn.append(c);
+		}
+		rdns.add(rdn.toString());
+		return rdns;
 	}
 }

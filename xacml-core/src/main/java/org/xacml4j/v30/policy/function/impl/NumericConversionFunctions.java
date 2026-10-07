@@ -49,9 +49,10 @@ public final class NumericConversionFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal v)
 	{
 		double value = v.get();
-		// C5: NaN and infinity keep the historical intValue saturation.
+		// NaN and the infinities have no xs:integer value.
 		if(Double.isNaN(value) || Double.isInfinite(value)){
-			return IntegerVal.of((int) value);
+			throw new EvaluationException(Status.processingError().build(),
+					"double-to-integer value is not a finite number");
 		}
 		// Signed long is [-2^63, 2^63). 2^63 is not a long.
 		if(value >= 9223372036854775808.0d || value < -9223372036854775808.0d){

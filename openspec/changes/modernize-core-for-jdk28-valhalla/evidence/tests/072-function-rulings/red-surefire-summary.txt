@@ -1,0 +1,20 @@
+Red runs: tests changed to the ruled behavior, production code unchanged.
+Module xacml-core, class org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test.
+
+== x500Name-match (bead the.4.44, decision C8, run 061 D9) ==
+Tests run: 113, Failures: 1, Errors: 0, Skipped: 5 <<< FAILURE!
+x500NameMatchRejectsAPartOfAMultiValuedTerminalRdn  <<< FAILURE!
+(The four other new x500Name-match tests pass on the old code; they pin behavior that must stay.)
+
+== round and double-to-integer (decisions C4 and C5, run 061 D5 and D6) ==
+Tests run: 118, Failures: 5, Errors: 0, Skipped: 2 <<< FAILURE!
+row60RoundOfNaNStaysNaN                              <<< FAILURE!
+row60RoundOfAnInfinityStaysThatInfinity              <<< FAILURE!
+row60RoundSendsATieToTheEvenInteger                  <<< FAILURE!
+row12DoubleToIntegerOfAnInfinityIsIndeterminate      <<< FAILURE!
+row12DoubleToIntegerOfNaNIsIndeterminate             <<< FAILURE!
+
+== Green ==
+Tests run: 118, Failures: 0, Errors: 0, Skipped: 2
+The two skips are the integer-overflow rows of task 5.4 (decision C3).
+Full reactor: see tests/071-resolver-failure-fail-closed/surefire-summary.txt, gate 2.
