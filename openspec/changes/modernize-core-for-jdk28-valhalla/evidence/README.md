@@ -16,7 +16,7 @@ task 1.6.
 | --- | --- | --- |
 | attribute-resolution | attribute-resolution tests (task 4.1); resolver and path failures (4.34); conformance | 071, rv079, rv080 |
 | condition-evaluation | condition tests (task 4.2); conformance | - |
-| function-semantics | function tests (task 4.3); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6); 072, rv079, rv080 (rulings D5-D9) |
+| function-semantics | function tests (task 4.3); zero-argument bags (4.53); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6); 072, rv079, rv080 (rulings D5-D9) |
 | datatype-registry | registry tests (task 4.4) | - |
 | combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
 | conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6); adjudicated dispositions | 015, 023, 073, 075 |
@@ -198,6 +198,8 @@ task 1.6.
 | `builds/073-manifest-dispositions` | beads policy4j-the.4.18, policy4j-the.4.20, policy4j-the.3.9 (rulings D13, D14, D15), 2026-10-07 | reason column of 12 manifest rows; gate of run 071 | DONE: IIIC002/003 and IIIG001-005 named unsupported features; IIIG300, IIA023, IID029 named adjudications; no id, disposition, or fixture changed; conformance 927 with 14 skipped |
 | `tests/075-request-syntax-error-iia005` | bead policy4j-the.4.17 (ruling D12), 2026-10-07 | harness test red then green; full reactor on JDK 21 (see command.txt) | PASS: oasis20/IIA005 and oasis30/IIA005 run and pass through the harness mapping (special-harness); only the named request syntax error is mapped and the response is still compared; 7,735 tests, 0 failures, 22 skipped; conformance 937 tests with 12 skipped (before 927 with 14) |
 | `reviews/code/rv083-request-syntax-error-codex` | review run 075 | Codex, adversarial | APPROVE (no defect; two suggested tightenings applied after the review and not reviewed again) |
+| `tests/076-zero-argument-bags` | bead policy4j-the.4.53 (rv078 follow-up), 2026-10-07 | registry test red then green; A.3.10 text from the OASIS copy of run 074; full reactor on JDK 21 (see command.txt) | PASS: 18 type-bag ids that failed with a NullPointerException for a call without arguments return an empty bag of their type (double-bag already did); a variadic parameter with a minimum still gets null, so integer-add() still fails; 7,745 tests, 0 failures, 22 skipped |
+| `reviews/code/rv084-zero-argument-bags-codex` | review run 076 | Codex, adversarial, two rounds | APPROVE in both rounds; the fix was narrowed by the author between them |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and

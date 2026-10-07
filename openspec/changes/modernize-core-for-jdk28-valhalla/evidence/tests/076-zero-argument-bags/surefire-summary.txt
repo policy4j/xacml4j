@@ -1,0 +1,10 @@
+JDK 21 full reactor, mvn -Dlicense.skipUpdateLicense=true verify from <repo>. Final tree of runs 074 and 076.
+
+xacml-core                 Tests run: 6304, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 137, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,745 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,304 holds ZeroArgumentBagRegistryTest (22 tests). Conformance 937 with 12 skipped, the counts of run 075.

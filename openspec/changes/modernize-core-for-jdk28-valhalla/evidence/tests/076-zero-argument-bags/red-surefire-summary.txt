@@ -1,0 +1,42 @@
+Red run, JDK 21: ZeroArgumentBagRegistryTest before the production change (20 tests at that time: 19 bag ids and one Apply test; only double-bag passes).
+
+138[ERROR] Tests run: 20, Failures: 0, Errors: 19, Skipped: 0, Time elapsed: 0.674 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[1]  Time elapsed: 0.268 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[2]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[3]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[5]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[6]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[7]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[8]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[9]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[10]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[11]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[12]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[13]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[14]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[15]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[16]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[17]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[18]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType(String)[19]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.ZeroArgumentBagRegistryTest.applyOfABagFunctionWithoutArgumentsReturnsAnEmptyBag  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR]   ZeroArgumentBagRegistryTest.applyOfABagFunctionWithoutArgumentsReturnsAnEmptyBag:111 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR]   ZeroArgumentBagRegistryTest.bagFunctionWithoutArgumentsReturnsAnEmptyBagOfItsType:92 » FunctionInvocation
+[ERROR] Tests run: 20, Failures: 0, Errors: 19, Skipped: 0

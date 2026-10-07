@@ -125,8 +125,19 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 						          varArgArray.length, Arrays.deepToString(varArgArray));
 					}
 				}
-				params[params.length - 1] = (varArgArray != null && varArgArray.length == 1 &&
-						varArgArray[0] == null)?null:varArgArray;
+				if(varArgArray == null ||
+						(varArgArray.length == 1 && varArgArray[0] == null)){
+					// No argument for the variadic parameter; the normalized
+					// argument list marks that with a single null. A parameter
+					// that allows zero arguments gets an empty array of its
+					// type, as a direct Java call passes. A parameter with a
+					// minimum keeps null, so a call with too few arguments
+					// fails as before and does not compute a value.
+					varArgArray = (varArgComponentType != null &&
+							spec.getParamSpecAt(numOfParms - 1).isOptional())?
+							(Object[])Array.newInstance(varArgComponentType, 0):null;
+				}
+				params[params.length - 1] = varArgArray;
 			}
 			if(LOG.isDebugEnabled()){
 				LOG.debug("Params={}", Arrays.deepToString(params));
