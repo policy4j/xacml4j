@@ -103,6 +103,10 @@ class JavaMethodToFunctionSpecConverter
 		FunctionSpecBuilder b = FunctionSpecBuilder
 				.builder(funcId.id(),
 				         (legacyFuncId == null) ? null : legacyFuncId.id());
+		if (!funcId.evaluateArguments()) {
+			// The function evaluates its arguments itself, in its own order.
+			b.lazyArgEval();
+		}
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
 		Class<?> varArgComponentType = m.isVarArgs() ? types[types.length - 1].getComponentType() : null;

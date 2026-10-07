@@ -22,9 +22,12 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
-import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.IntegerVal;
@@ -50,6 +53,9 @@ public final class LogicalFunctions
 	 * The order of evaluation SHALL be from first argument to last.
 	 * The evaluation SHALL stop with a result of "False" if any argument
 	 * evaluates to "False", leaving the rest of the arguments unevaluated.
+	 * An argument that evaluates to "False" decides the result even when an
+	 * argument before it failed. When no argument is "False" and one failed,
+	 * the result is Indeterminate with the status of the first failure.
 	 *
 	 * @param context evaluation context
 	 * @param values function parameters
@@ -63,14 +69,19 @@ public final class LogicalFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression ...values)
 		throws EvaluationException
 	{
-		java.lang.Boolean r = java.lang.Boolean.TRUE;
-		for(Expression e : values){
-			r &= ((BooleanVal) e.evaluate(context)).get();
-			if(!r){
-				break;
-			}
-		}
-		return XacmlTypes.BOOLEAN.ofAny(r);
+		return XacmlTypes.BOOLEAN.ofAny(
+				DecidingOperands.allTrue(operands(values), e -> isTrue(context, e)));
+	}
+
+	private static boolean isTrue(org.xacml4j.v30.EvaluationContext context, Expression e)
+	{
+		return ((BooleanVal)e.evaluate(context)).get();
+	}
+
+	/** The invocation passes {@code null} for a variadic parameter without arguments. */
+	private static List<Expression> operands(Expression[] values)
+	{
+		return values == null?Collections.<Expression>emptyList():Arrays.asList(values);
 	}
 
 
@@ -88,6 +99,9 @@ public final class LogicalFunctions
 	 * The order of evaluation SHALL be from first argument to last.
 	 * The evaluation SHALL stop with a result of "True" if any argument
 	 * evaluates to "True", leaving the rest of the arguments unevaluated.
+	 * An argument that evaluates to "True" decides the result even when an
+	 * argument before it failed. When no argument is "True" and one failed,
+	 * the result is Indeterminate with the status of the first failure.
 	 *
 	 * @param context evaluation context
 	 * @param values function parameters
@@ -101,15 +115,8 @@ public final class LogicalFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression...values)
 		throws EvaluationException
 	{
-		java.lang.Boolean r = java.lang.Boolean.FALSE;
-		for(Expression e : values){
-			java.lang.Boolean v = ((BooleanVal)e.evaluate(context)).get();
-			r |= v;
-			if(r){
-				break;
-			}
-		}
-		return XacmlTypes.BOOLEAN.ofAny(r);
+		return XacmlTypes.BOOLEAN.ofAny(
+				DecidingOperands.anyTrue(operands(values), e -> isTrue(context, e)));
 	}
 
 
@@ -126,6 +133,10 @@ public final class LogicalFunctions
 	 * if the specified number of arguments evaluate to "True".
 	 * The evaluation of arguments SHALL stop if it is determined that evaluating
 	 * the remaining arguments will not satisfy the requirement.
+	 * An argument that failed counts as possibly "True": the result is
+	 * "True" when enough other arguments are "True", "False" when the
+	 * number can not be reached even with the failed arguments, and
+	 * Indeterminate with the status of the first failure otherwise.
 	 *
 	 * @param context evaluation context
 	 * @param n minimum number of parameters
@@ -133,40 +144,32 @@ public final class LogicalFunctions
 	 * @return {@link BooleanVal} representing function evaluation result
 	 * @throws EvaluationException if an error occurs during evaluation
 	 */
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:n-of")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:n-of", evaluateArguments=false)
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal nof(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
-			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal n,
+			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") Expression n,
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression...values)
 		throws EvaluationException
 	{
-		if(values.length < n.get()){
+		// The integer is evaluated first, then the other arguments one by one.
+		IntegerVal min = n.evaluate(context);
+		List<Expression> operands = operands(values);
+		if(operands.size() < min.get()){
 			throw new IllegalArgumentException(String.format(
 					"Number of arguments=\"%s\" is less " +
 					"than minimum required number=\"%s\"",
-					values.length, n.get()));
+					operands.size(), min.get()));
 		}
-		if(n.get() > java.lang.Integer.MAX_VALUE){
+		if(min.get() > java.lang.Integer.MAX_VALUE){
 			throw new IllegalArgumentException(String.format(
 					"First parameter=\"%s\" is bigger than=\"%d\"",
-					n, java.lang.Integer.MAX_VALUE));
+					min, java.lang.Integer.MAX_VALUE));
 		}
-		BooleanVal TRUE = XacmlTypes.BOOLEAN.ofAny(true);
-		if(n.get() == 0){
-			return TRUE;
+		if(min.get() == 0){
+			return XacmlTypes.BOOLEAN.ofAny(true);
 		}
-		int count = 0;
-		int num = n.get().intValue();
-		for (Expression value : values) {
-			ValueExp v = value.evaluate(context);
-			if (v.equals(TRUE)) {
-				count++;
-				if (num == count) {
-					return TRUE;
-				}
-			}
-		}
-		return XacmlTypes.BOOLEAN.ofAny(false);
+		return XacmlTypes.BOOLEAN.ofAny(DecidingOperands.atLeast(
+				min.get().intValue(), operands, e -> isTrue(context, e)));
 	}
 }

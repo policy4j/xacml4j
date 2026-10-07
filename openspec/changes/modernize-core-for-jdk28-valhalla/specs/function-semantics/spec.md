@@ -82,6 +82,53 @@ stay registered as engine extensions. They are not standard XACML functions.
 - **WHEN** a policy refers to `urn:oasis:names:tc:xacml:1.0:function:ipAddress-union`
 - **THEN** the function resolves
 
+### Requirement: A deciding argument wins over a failed argument
+The `or`, `and`, and `n-of` functions SHALL evaluate their arguments one by
+one, from first to last, and SHALL stop when the result is decided. `or`
+SHALL return true when an argument evaluates to true, `and` SHALL return
+false when an argument evaluates to false, and `n-of` SHALL return true when
+the required number of arguments evaluate to true, even when an argument
+before the deciding one could not be evaluated. `n-of` SHALL return false
+when the required number cannot be reached even if every argument that
+failed were true. When no argument decides the result and at least one
+argument could not be evaluated, the result SHALL be Indeterminate with the
+status of the first argument that failed. `or` without arguments SHALL
+return false, and `and` without arguments SHALL return true.
+
+The higher-order functions SHALL combine the results of their predicate in
+the same way: `any-of` and `any-of-any` as `or`; `all-of` and `all-of-all`
+as `and`; `all-of-any` as `and` over the `any-of` result for each value of
+the first bag; `any-of-all` as `and` over the `any-of` result for each value
+of the second bag.
+
+#### Scenario: or with a failed argument before a true argument
+- **WHEN** `or` is evaluated, its first argument fails, and its second argument evaluates to true
+- **THEN** the result is true
+
+#### Scenario: or stops at the first true argument
+- **WHEN** the first argument of `or` evaluates to true and the second argument would fail
+- **THEN** the result is true and the second argument is not evaluated
+
+#### Scenario: and with a failed argument before a false argument
+- **WHEN** `and` is evaluated, its first argument fails, and its second argument evaluates to false
+- **THEN** the result is false
+
+#### Scenario: No argument decides
+- **WHEN** `or` is evaluated, one argument fails, and every other argument evaluates to false
+- **THEN** the result is Indeterminate with the status of the argument that failed
+
+#### Scenario: n-of with a failed argument
+- **WHEN** `n-of` is evaluated with 2 as its first argument and three more arguments, and the first of them fails
+- **THEN** the result is true when the other two are true, false when the other two are false, and Indeterminate when one is true and one is false
+
+#### Scenario: any-of with a predicate that fails for one value
+- **WHEN** `any-of` applies a predicate that fails for the first value of the bag and returns true for a later value
+- **THEN** the result is true
+
+#### Scenario: all-of-all with a predicate that fails for one pair
+- **WHEN** `all-of-all` applies a predicate that fails for one pair of values and returns false for a later pair
+- **THEN** the result is false
+
 ### Requirement: Set functions remove duplicates
 `type-union` (two or more bags) and `type-intersection` SHALL return bags
 that contain no duplicates as determined by `type-equal` (XACML 3.0

@@ -69,14 +69,18 @@ public final class HigherOrderFunctions
 		int bagIndex = singleBagIndex(arguments);
 		BagOfValues bag = (BagOfValues)arguments[bagIndex];
 		Expression[] parameters = arguments.clone();
-		for(Value valueFromBag : bag.values()){
+		// Combined with "or": a True for a later element wins over an error.
+		return BooleanVal.of(DecidingOperands.<Value<?>>anyTrue(bag.values(), valueFromBag -> {
 			parameters[bagIndex] = valueFromBag;
-			BooleanVal r = ref.invoke(context, parameters);
-			if(r.get()){
-				return BooleanVal.of(true);
-			}
-		}
-		return BooleanVal.of(false);
+			return isTrue(context, ref, parameters);
+		}));
+	}
+
+	private static boolean isTrue(org.xacml4j.v30.EvaluationContext context,
+			FunctionReference ref, Expression... parameters)
+	{
+		BooleanVal r = ref.invoke(context, parameters);
+		return r.get();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:all-of")
@@ -93,14 +97,11 @@ public final class HigherOrderFunctions
 		int bagIndex = singleBagIndex(arguments);
 		BagOfValues bag = (BagOfValues)arguments[bagIndex];
 		Expression[] parameters = arguments.clone();
-		for(Value valueFromBag : bag.values()){
+		// Combined with "and": a False for a later element wins over an error.
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(bag.values(), valueFromBag -> {
 			parameters[bagIndex] = valueFromBag;
-			BooleanVal r = ref.invoke(context, parameters);
-			if(!r.get()){
-				return BooleanVal.of(false);
-			}
-		}
-		return BooleanVal.of(true);
+			return isTrue(context, ref, parameters);
+		}));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:any-of-any")
@@ -126,14 +127,9 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues b)
 		throws EvaluationException
 	{
-		boolean result = true;
-		for(Value v : a.values()){
-			result  &= anyOf(context, ref, v, b).get();
-			if(!result){
-				break;
-			}
-		}
-		return BooleanVal.of(result);
+		// any-of for each value of the first bag, combined with "and".
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a.values(),
+				v -> anyOf(context, ref, v, b).get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
@@ -145,13 +141,9 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues b)
 		throws EvaluationException
 	{
-		for(Value vb : b.values())
-		{
-			if(!anyOf(context, ref, a, vb).get()){
-				return BooleanVal.of(false);
-			}
-		}
-		return BooleanVal.of(true);
+		// any-of for each value of the second bag, combined with "and".
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(b.values(),
+				vb -> anyOf(context, ref, a, vb).get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
@@ -163,16 +155,10 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues b)
 		throws EvaluationException
 	{
-		for(Value aValue : a.values())
-		{
-			for(Value bValue : b.values()){
-				BooleanVal r = ref.invoke(context, aValue, bValue);
-				if(!r.get()){
-					return BooleanVal.of(false);
-				}
-			}
-		}
-		return BooleanVal.of(true);
+		// Every pair, combined with "and".
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a.values(),
+				aValue -> DecidingOperands.<Value<?>>allTrue(b.values(),
+						bValue -> isTrue(context, ref, aValue, bValue))));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:map")
@@ -216,17 +202,14 @@ public final class HigherOrderFunctions
 		throws EvaluationException
 	{
 		if(index == arguments.length){
-			BooleanVal result = ref.invoke(context, parameters);
-			return result.get();
+			return isTrue(context, ref, parameters);
 		}
 		if(arguments[index] instanceof BagOfValues){
-			for(Value value : ((BagOfValues)arguments[index]).values()){
+			// Every tuple, combined with "or".
+			return DecidingOperands.<Value<?>>anyTrue(((BagOfValues)arguments[index]).values(), value -> {
 				parameters[index] = value;
-				if(anyOfAny(context, ref, arguments, parameters, index + 1)){
-					return true;
-				}
-			}
-			return false;
+				return anyOfAny(context, ref, arguments, parameters, index + 1);
+			});
 		}
 		parameters[index] = arguments[index];
 		return anyOfAny(context, ref, arguments, parameters, index + 1);
