@@ -1,0 +1,87 @@
+JDK 21 full reactor, mvn -Dlicense.skipUpdateLicense=true verify from <repo>. Run 077 (bead the.4.50) also in the tree.
+
+xacml-core                 Tests run: 6312, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 149, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,765 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,312 holds RegExpLimitsTest (8 tests). Conformance 937 with 12 skipped, unchanged.
+
+== Gate 2: after the round-1 review fix (repetition bound, compile time in the budget); run 079 also in the tree ==
+
+xacml-core                 Tests run: 6319, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,774 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,319 holds RegExpLimitsTest (10 tests).
+
+== Gate 3: after the scanner was split into a class and comments mode is rejected; run 079 also in the tree ==
+
+xacml-core                 Tests run: 6320, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,775 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,320 holds RegExpLimitsTest (11 tests).
+
+== Gate 4: clean build (clean verify) of the same tree as gate 3 ==
+
+xacml-core                 Tests run: 6320, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,775 tests, 0 failures, 0 errors, 22 skipped.
+OASIS 3.0 suite 488 tests with 5 skipped; OASIS 2.0 suite 375 tests with 7 skipped.
+
+== Gate 5: clean build after review round 2 (scanner hardened; late results discarded) ==
+
+xacml-core                 Tests run: 6326, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,781 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,326 holds RegExpLimitsTest (17 tests). Run 079 also in the tree.
+
+== Gate 6: clean build after review round 3 (quantifiers next to each other; clock overload) ==
+
+xacml-core                 Tests run: 6328, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,783 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,328 holds RegExpLimitsTest (19 tests). Run 079 is committed (e2b60578).
+
+== Gate 7: clean build after review round 4 (largest weight always rejected; cache size checked) ==
+
+xacml-core                 Tests run: 6329, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,784 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,329 holds RegExpLimitsTest (20 tests).
+
+== Gate 8: clean build after review round 5 (largest configurable cache size and pattern length) ==
+
+xacml-core                 Tests run: 6330, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,785 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,330 holds RegExpLimitsTest (21 tests).

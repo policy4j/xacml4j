@@ -1,0 +1,36 @@
+Red run, JDK 21: RegExpLimitsTest with the limits declared but not enforced. The time-limit test used the pattern (a+)+$ in this run; see summary.md.
+
+[ERROR] Tests run: 8, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.625 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.RegExpLimitsTest
+[ERROR] org.xacml4j.v30.policy.function.impl.RegExpLimitsTest.inputLongerThanTheLimitIsIndeterminate  Time elapsed: 0.245 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.RegExpLimitsTest.catastrophicBacktrackingIsStoppedByTheTimeLimit  Time elapsed: 0.003 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.RegExpLimitsTest.patternCacheKeepsTheMostRecentlyUsedPatterns  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.RegExpLimitsTest.registeredFunctionIsIndeterminateBeyondTheInputLimit  Time elapsed: 0.359 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.RegExpLimitsTest.patternLongerThanTheLimitIsIndeterminate  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.RegExpLimitsTest.limitsMustBePositive  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR]   RegExpLimitsTest.lambda$catastrophicBacktrackingIsStoppedByTheTimeLimit$1:87 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   RegExpLimitsTest.inputLongerThanTheLimitIsIndeterminate:98 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   RegExpLimitsTest.limitsMustBePositive:114 Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+[ERROR]   RegExpLimitsTest.patternCacheKeepsTheMostRecentlyUsedPatterns:150 expected: <2> but was: <3>
+[ERROR]   RegExpLimitsTest.patternLongerThanTheLimitIsIndeterminate:107 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   RegExpLimitsTest.registeredFunctionIsIndeterminateBeyondTheInputLimit:127 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR] Tests run: 8, Failures: 6, Errors: 0, Skipped: 0
+
+Red run 2, JDK 21: the tests of review round 2 against the code that round 2 reviewed.
+Two shims made that code compile against the tests: withoutQuoting returned its argument,
+Limits.from returned the default limits. The two property tests and the quoting test fail
+because of the shims; the other two failures show the defects of review round 2.
+
+Tests run: 17, Failures: 5, Errors: 0, Skipped: 0
+  propertyThatIsNotAPositiveNumberIsRejected: 0 ==> Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+  bracesInACharacterClassAreNotARepetition: expected: <1> but was: <1000001>
+  repetitionsCanNotBeHiddenFromTheBound: execution timed out after 20000 ms
+  patternWithoutQuotingMeansTheSame: expected: <x{3}> but was: <x\Q\E{3}>
+  limitsAreReadFromProperties: Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+
+resultThatComesAfterTheTimeLimitIsNotUsed passed in that run, so its first version did not
+show the defect. It used a 1 ms limit; the check after the compilation probably fired first
+(not confirmed). It was rewritten (limit = a quarter of the measured match time) and run alone
+against the same code:
+
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0
+  resultThatComesAfterTheTimeLimitIsNotUsed: match 409 ms, limit 102 ms ==> Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.

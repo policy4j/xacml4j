@@ -16,12 +16,12 @@ task 1.6.
 | --- | --- | --- |
 | attribute-resolution | attribute-resolution tests (task 4.1); resolver and path failures (4.34); conformance | 071, rv079, rv080 |
 | condition-evaluation | condition tests (task 4.2); conformance | - |
-| function-semantics | function tests (task 4.3); zero-argument bags (4.53); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6); 072, rv079, rv080 (rulings D5-D9); 074, rv081, rv082 (ruling D11) |
+| function-semantics | function tests (task 4.3); zero-argument bags (4.53); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6); 072, rv079, rv080 (rulings D5-D9); 074, rv081, rv082 (ruling D11); 076, rv084 (bead 4.53) |
 | datatype-registry | registry tests (task 4.4) | - |
 | combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6, 4.54); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
 | conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6); adjudicated dispositions | 015, 023, 073, 075 |
 | test-framework | per-module test counts; no JUnit 4 or EasyMock imports (task 2.7) | 009, 010, 011, 012, 013, 017 |
-| request-limits | expansion-limit and regular-expression limit tests (beads 4.50, 4.51) | 077, rv085, rv086 |
+| request-limits | expansion-limit and regular-expression limit tests (beads 4.50, 4.51) | 077, rv085, rv086; 078, rv087 |
 | jdk28-valhalla-build | JDK 28 reactor build and CI job (tasks 8.1-8.5); JMH before/after per value-class family (tasks 9.2-9.4) | - |
 
 ## Gate tasks to proof
@@ -32,7 +32,7 @@ task 1.6.
 | 2.7 test-stack removal gate | `tests/017-legacy-stack-removed`, `tests/023-conformance-manifest` (step 15), `reviews/code/rv026-g2-legacy-removal-agy` | done |
 | 3.6 conformance gate | `tests/023-conformance-manifest`, `reviews/code/rv034-g3-conformance-manifest-agy`, `reviews/code/rv035-g3-conformance-manifest-grok` | done: 836 enabled cases pass on JDK 21 (baseline); 44 disabled with bug ids |
 | 4.6 numeric and combining decisions | `tests/069-task46-spec-compliance`, `reviews/code/rv078-task46-spec-compliance` | done: reactor green and independent reviews APPROVE; separate spec addendum approved |
-| 4.7 safety-net gate | `tests/069-task46-spec-compliance` is a partial checkpoint | pending: remaining semantics and applicable JMH; zero-argument bags 4.53 and nested failure/reference proof 4.54 block closure |
+| 4.7 safety-net gate | `tests/069-task46-spec-compliance` and runs 071 to 079 are checkpoints; last full reactor in `tests/078-regexp-limits` (7,785 tests, 0 failures, 22 skipped; conformance 937 with 12 skipped) | pending: bugs policy4j-the.4.56 (function arguments not validated at policy load), policy4j-the.4.57 (repeated-categories expansion unbounded) and policy4j-the.4.58 (a regular expression that works without reading the input is not stopped) wait for a maintainer decision; JMH is unmeasured for runs 072, 074, 078 (no JMH module before task 9.2); the two C3 rows stay disabled until task 5.4 |
 | 5.5, 6.7, 7.4 refactor gates | - | pending |
 | 8.4 JDK 28 gate | - | pending |
 | 9.3, 9.4 value-class gates (JMH) | - | pending |
@@ -207,6 +207,8 @@ task 1.6.
 | `tests/077-multiple-xpath-expansion-limit` | bead policy4j-the.4.50 (ruling D16, security), 2026-10-07 | test red then green; Multiple Decision Profile text fetched; full reactor on JDK 21 (see command.txt) | PASS: limits of 100 node paths per category and 100 individual requests, configurable; beyond a limit one Indeterminate processing-error and no individual request; an empty selection is not a violation; 7,774 tests, 0 failures, 22 skipped; conformance unchanged; the repeated-categories handler is still unbounded (policy4j-the.4.57) |
 | `reviews/code/rv085-multiple-xpath-limit-codex` | review run 077 | Codex, adversarial, two rounds | APPROVE in round 2 (round 1: an empty selection after large ones was rejected; fixed) |
 | `reviews/code/rv086-multiple-xpath-limit-grok` | review run 077 | Grok grok-4.7, adversarial | APPROVE (no finding; one test added afterwards) |
+| `tests/078-regexp-limits` | bead policy4j-the.4.51 (ruling D17, security), 2026-10-07 | tests red then green (two red runs); five stand-alone probes; clean full reactor on JDK 21 (see command.txt) | PASS with one open item: limits on pattern length, input length, time per match (compilation included; a late result is discarded) and nested counted repetitions (defaults 10,000 / 100,000 / 1,000 ms / 1,000,000, proposed by the run), LRU pattern cache of 256; beyond a limit Indeterminate processing-error; 7,785 tests, 0 failures, 22 skipped; conformance unchanged; JMH unmeasured. OPEN: a pattern that works without reading the input in another way than through counted repetitions is not stopped (policy4j-the.4.58) |
+| `reviews/code/rv087-regexp-limits-codex` | review run 078 | Codex, adversarial, six rounds | APPROVE in round 6 (rounds 1-5 REQUEST_CHANGES: ways to hide a repetition from the bound, a wrong multiplication, limits that could be switched off at the top of their range; all fixed except the item filed as policy4j-the.4.58, whose deferral the reviewer accepted in round 3) |
 | `tests/079-nested-response-staging` | bead policy4j-the.4.54 (rv078 follow-up), 2026-10-07 | six new tests with real policies, sets, algorithms, contexts, and a policy repository; mutation check of the staging; clean full reactor on JDK 21 (see command.txt) | PASS: the five named scenarios hold (Indeterminate-target child, failing obligation expression, policy and policy-set references, rule response for another effect, four nested policy sets); scenarios 1, 2 and 4 fail when the staging is removed; no production change; 7,781 tests, 0 failures, 22 skipped (run 078 also in the tree) |
 | `reviews/code/rv088-nested-response-staging-grok` | review run 079 | Grok grok-4.7, adversarial test review | APPROVE in round 2 (round 1: five assertions missing, all added; its claim that scenario 1 does not depend on staging was refuted by a mutation check) |
 

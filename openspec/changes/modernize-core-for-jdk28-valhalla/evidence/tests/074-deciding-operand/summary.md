@@ -128,5 +128,12 @@ decision belongs to gate 4.7.
   directly must be compiled again; calls through the registry are not
   affected.
 - `map` still fails on the first element that fails.
-- No exception type is exempt from the rule. A future evaluation limit
-  (bead the.4.50) must not be an exception that `or` can defer.
+- No exception type is exempt from the rule. The regular-expression limit
+  of run 078 (bead the.4.51) is such an exception: `or(regexp-match(slow),
+  true)` is true after at most one time limit when the slow match reads
+  its input; a match that works without reading it is not stopped (bug
+  policy4j-the.4.58) and delays the `or` as long as it runs. The
+  expansion limit of run
+  077 (bead the.4.50) is applied by the request handler, outside
+  expression evaluation, and is not affected. (An earlier version of this
+  note named the.4.50 for the first case.)

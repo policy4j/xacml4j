@@ -25,14 +25,19 @@ package org.xacml4j.v30.policy.function.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+
+import com.google.common.base.Preconditions;
 
 @XacmlFunctionProvider(description="XACML regular expression functions")
 public final class RegExpFunctions
@@ -122,26 +127,549 @@ public final class RegExpFunctions
 
 	}
 
-	private final static ThreadLocal<Map<java.lang.String, Pattern>> REGEXP_CACHE  = ThreadLocal.withInitial(()->new HashMap<>());
+	/**
+	 * Default limits of one match (maintainer ruling 2026-10-07, run 061
+	 * D17). Each can be set with a system property named after this class:
+	 * {@code .maxPatternLength}, {@code .maxInputLength},
+	 * {@code .maxMatchMillis}, {@code .maxRepetition}, {@code .cacheSize}.
+	 */
+	static final int DEFAULT_MAX_PATTERN_LENGTH = 10_000;
+	static final int DEFAULT_MAX_INPUT_LENGTH = 100_000;
+	static final long DEFAULT_MAX_MATCH_MILLIS = 1_000;
+	static final long DEFAULT_MAX_REPETITION = 1_000_000;
+	static final int DEFAULT_CACHE_SIZE = 256;
+
+	/**
+	 * The largest values that can be configured. A pattern is rewritten
+	 * before it is compiled, which can make it up to four times as long,
+	 * so its length limit stays far below {@link Integer#MAX_VALUE}. The
+	 * cache evicts when its size is above its limit, so that limit must be
+	 * below the largest size.
+	 */
+	static final int LARGEST_MAX_PATTERN_LENGTH = java.lang.Integer.MAX_VALUE / 8;
+	static final int LARGEST_CACHE_SIZE = java.lang.Integer.MAX_VALUE - 1;
+
+	/** The status message when a limit is exceeded. It names neither the pattern nor the input. */
+	static final java.lang.String LIMIT_EXCEEDED_MESSAGE = "Regular expression evaluation limit exceeded";
+
+	private final static java.lang.String PROPERTY_PREFIX = RegExpFunctions.class.getName();
+
+	private final static Limits LIMITS = Limits.from(System::getProperty);
+
+	private final static int CACHE_SIZE = cacheSize(System::getProperty);
+
+	private final static ThreadLocal<PatternCache> REGEXP_CACHE =
+			ThreadLocal.withInitial(()->new PatternCache(CACHE_SIZE));
 
 	private final static java.lang.Boolean CACHE_REGXP = java.lang.Boolean.parseBoolean(
-					System.getProperty(RegExpFunctions.class.getName() + ".cacheRegExps"));
+					System.getProperty(PROPERTY_PREFIX + ".cacheRegExps"));
+
+	/**
+	 * Reads the size of the pattern cache from the property
+	 * {@code .cacheSize}, as {@link Limits#from} reads the limits.
+	 *
+	 * @param properties gives the value of a property by its name
+	 * @return the number of patterns that one thread caches
+	 * @throws IllegalArgumentException if the value is not a positive number
+	 */
+	static int cacheSize(java.util.function.Function<java.lang.String, java.lang.String> properties){
+		return (int)Limits.number(properties, ".cacheSize", DEFAULT_CACHE_SIZE, LARGEST_CACHE_SIZE);
+	}
+
+	/** Limits of one regular expression match. */
+	static final class Limits
+	{
+		private final int maxPatternLength;
+		private final int maxInputLength;
+		private final long maxMatchNanos;
+		private final long maxRepetition;
+
+		Limits(int maxPatternLength, int maxInputLength, long maxMatchMillis){
+			this(maxPatternLength, maxInputLength, maxMatchMillis, DEFAULT_MAX_REPETITION);
+		}
+
+		/**
+		 * @param maxPatternLength the largest pattern, in characters
+		 * @param maxInputLength the largest input, in characters
+		 * @param maxMatchMillis the time for compiling the pattern and for
+		 * one match
+		 * @param maxRepetition the largest product of the minimum counts
+		 * of nested counted repetitions ({@code {n}}, {@code {n,}},
+		 * {@code {n,m}}) in a pattern
+		 */
+		Limits(int maxPatternLength, int maxInputLength, long maxMatchMillis, long maxRepetition){
+			Preconditions.checkArgument(maxPatternLength > 0 && maxPatternLength <= LARGEST_MAX_PATTERN_LENGTH,
+					"maxPatternLength must be between 1 and %s", LARGEST_MAX_PATTERN_LENGTH);
+			Preconditions.checkArgument(maxInputLength > 0, "maxInputLength must be positive");
+			Preconditions.checkArgument(maxMatchMillis > 0, "maxMatchMillis must be positive");
+			Preconditions.checkArgument(maxRepetition > 0, "maxRepetition must be positive");
+			this.maxPatternLength = maxPatternLength;
+			this.maxInputLength = maxInputLength;
+			this.maxMatchNanos = TimeUnit.MILLISECONDS.toNanos(maxMatchMillis);
+			this.maxRepetition = maxRepetition;
+		}
+
+		/**
+		 * Reads the limits from properties named after this class. A
+		 * property that is not set gives the default.
+		 *
+		 * @param properties gives the value of a property by its name
+		 * @return the limits
+		 * @throws IllegalArgumentException if a value is not a positive number
+		 */
+		static Limits from(java.util.function.Function<java.lang.String, java.lang.String> properties){
+			return new Limits(
+					(int)number(properties, ".maxPatternLength", DEFAULT_MAX_PATTERN_LENGTH, LARGEST_MAX_PATTERN_LENGTH),
+					(int)number(properties, ".maxInputLength", DEFAULT_MAX_INPUT_LENGTH, java.lang.Integer.MAX_VALUE),
+					number(properties, ".maxMatchMillis", DEFAULT_MAX_MATCH_MILLIS, java.lang.Integer.MAX_VALUE),
+					number(properties, ".maxRepetition", DEFAULT_MAX_REPETITION, java.lang.Long.MAX_VALUE));
+		}
+
+		private static long number(java.util.function.Function<java.lang.String, java.lang.String> properties,
+				java.lang.String suffix, long defaultValue, long max){
+			java.lang.String name = PROPERTY_PREFIX + suffix;
+			java.lang.String value = properties.apply(name);
+			if(value == null){
+				return defaultValue;
+			}
+			long number;
+			try{
+				number = java.lang.Long.parseLong(value.trim());
+			}catch(NumberFormatException e){
+				throw new IllegalArgumentException(name + " must be a number");
+			}
+			Preconditions.checkArgument(number > 0 && number <= max,
+					"%s must be between 1 and %s", name, max);
+			return number;
+		}
+	}
+
+	/**
+	 * Compiled patterns by their Java syntax, least recently used first.
+	 * One instance per thread; it holds at most {@code maxSize} patterns.
+	 */
+	static final class PatternCache
+	{
+		private final LinkedHashMap<java.lang.String, Pattern> patterns;
+
+		PatternCache(final int maxSize){
+			Preconditions.checkArgument(maxSize > 0 && maxSize <= LARGEST_CACHE_SIZE,
+					"maxSize must be between 1 and %s", LARGEST_CACHE_SIZE);
+			this.patterns = new LinkedHashMap<java.lang.String, Pattern>(16, 0.75f, true){
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected boolean removeEldestEntry(Map.Entry<java.lang.String, Pattern> eldest){
+					return size() > maxSize;
+				}
+			};
+		}
+
+		Pattern get(java.lang.String regexp){
+			Pattern p = patterns.get(regexp);
+			if(p == null){
+				p = Pattern.compile(regexp);
+				patterns.put(regexp, p);
+			}
+			return p;
+		}
+
+		/** The cached pattern without making it the most recently used one. */
+		Pattern peek(java.lang.String regexp){
+			for(Map.Entry<java.lang.String, Pattern> e : patterns.entrySet()){
+				if(e.getKey().equals(regexp)){
+					return e.getValue();
+				}
+			}
+			return null;
+		}
+
+		int size(){
+			return patterns.size();
+		}
+	}
+
+	/**
+	 * The input of one match. {@code java.util.regex} reads the input one
+	 * character at a time, also while it backtracks, so the deadline is
+	 * checked here. The clock is read once per {@value #CLOCK_INTERVAL}
+	 * characters.
+	 */
+	private static final class DeadlineCharSequence implements CharSequence
+	{
+		private static final int CLOCK_INTERVAL = 1024;
+
+		private final CharSequence value;
+		private final long deadlineNanos;
+		private final java.util.function.LongSupplier clock;
+		private int untilClock = CLOCK_INTERVAL;
+
+		DeadlineCharSequence(CharSequence value, long deadlineNanos, java.util.function.LongSupplier clock){
+			this.value = value;
+			this.deadlineNanos = deadlineNanos;
+			this.clock = clock;
+		}
+
+		@Override
+		public char charAt(int index){
+			if(--untilClock <= 0){
+				untilClock = CLOCK_INTERVAL;
+				if(clock.getAsLong() - deadlineNanos > 0){
+					throw new MatchDeadlineExceededException();
+				}
+			}
+			return value.charAt(index);
+		}
+
+		@Override
+		public int length(){
+			return value.length();
+		}
+
+		@Override
+		public CharSequence subSequence(int start, int end){
+			return new DeadlineCharSequence(value.subSequence(start, end), deadlineNanos, clock);
+		}
+
+		@Override
+		public java.lang.String toString(){
+			return value.toString();
+		}
+	}
+
+	@SuppressWarnings("serial")
+	private static final class MatchDeadlineExceededException extends RuntimeException
+	{
+		MatchDeadlineExceededException(){
+			super(null, null, false, false);
+		}
+	}
 
 	public static boolean matches(java.lang.String regExp, java.lang.String value)
 	{
+		return matches(regExp, value, LIMITS);
+	}
+
+	static boolean matches(java.lang.String regExp, java.lang.String value, Limits limits)
+	{
+		return matches(regExp, value, limits, System::nanoTime);
+	}
+
+	/**
+	 * @param clock the time in nanoseconds, as {@link System#nanoTime()}
+	 * gives it. It is read at the start, after the compilation of the
+	 * pattern, once per {@value DeadlineCharSequence#CLOCK_INTERVAL} reads
+	 * of the input, and after the match.
+	 */
+	static boolean matches(java.lang.String regExp, java.lang.String value, Limits limits,
+			java.util.function.LongSupplier clock)
+	{
+		if(regExp.length() > limits.maxPatternLength ||
+				value.length() > limits.maxInputLength){
+			throw limitExceeded();
+		}
+		// The time for rewriting and compiling the pattern counts too. It can
+		// not be interrupted, so it is checked when it is over; the pattern
+		// length limit bounds it.
+		long deadlineNanos = clock.getAsLong() + limits.maxMatchNanos;
 		java.lang.String jdk = covertXacmlToJavaSyntax(regExp);
-		if(!CACHE_REGXP){
+		// The largest weight stands for "does not fit" and "can not be scanned";
+		// it is beyond every limit, also beyond a limit of Long.MAX_VALUE.
+		long weight = repetitionWeight(jdk);
+		if(weight == java.lang.Long.MAX_VALUE || weight > limits.maxRepetition){
+			throw limitExceeded();
+		}
+		Pattern p = CACHE_REGXP?REGEXP_CACHE.get().get(jdk):Pattern.compile(jdk);
+		if(clock.getAsLong() - deadlineNanos > 0){
+			throw limitExceeded();
+		}
+		boolean found;
+		try{
 			// XF 7.6.2 fn:matches succeeds when any substring matches.
-			return Pattern.compile(jdk).matcher(value).find();
+			found = p.matcher(new DeadlineCharSequence(value, deadlineNanos, clock)).find();
+		}catch(MatchDeadlineExceededException e){
+			throw limitExceeded();
 		}
-		Map<java.lang.String, Pattern> cache = REGEXP_CACHE.get();
-		Pattern p = cache.get(jdk);
-		if(p == null){
-			p = Pattern.compile(jdk);
-			cache.putIfAbsent(jdk, p);
+		// The deadline is seen when the matcher reads the input. A match that
+		// worked without a read was not stopped; its late result is not used.
+		if(clock.getAsLong() - deadlineNanos > 0){
+			throw limitExceeded();
 		}
-		return p.matcher(value)
-				.find();
+		return found;
+	}
+
+	/**
+	 * The largest product of the minimum counts of counted repetitions
+	 * that are nested in each other. {@code (?:(?:){1000}){1000}} gives
+	 * 1,000,000. A group that can match the empty string is repeated its
+	 * minimum count without a read of the input, so the deadline of
+	 * {@link DeadlineCharSequence} does not see that work; this number
+	 * bounds it. Repetitions with {@code *}, {@code +} and {@code ?} have a
+	 * minimum of 0 or 1 and do not count.
+	 * <p>
+	 * This bounds counted repetitions only. A pattern can also make the
+	 * matcher work without a read of the input in other ways (many groups
+	 * with more than one alternative that matches the empty string); that
+	 * work is not bounded here.
+	 *
+	 * @param regexp a pattern in {@code java.util.regex} syntax
+	 * @return the weight, at least 1; {@link Long#MAX_VALUE} when it is
+	 * larger than a {@code long} or when the pattern can not be scanned.
+	 * Such a pattern is rejected whatever the limit is
+	 */
+	static long repetitionWeight(java.lang.String regexp)
+	{
+		return new RepetitionScanner(withoutQuoting(regexp)).weight();
+	}
+
+	/**
+	 * Replaces quoted text ({@code \Q..\E}) by escaped characters, in the
+	 * way {@code java.util.regex} does it before it parses a pattern (its
+	 * private method {@code Pattern.RemoveQEQuoting}). An empty quote
+	 * disappears, so that a quantifier after it belongs to the atom before
+	 * it.
+	 *
+	 * @param regexp a pattern in {@code java.util.regex} syntax
+	 * @return the pattern without quoted text
+	 */
+	static java.lang.String withoutQuoting(java.lang.String regexp)
+	{
+		int length = regexp.length();
+		int i = 0;
+		while(i < length - 1 && (regexp.charAt(i) != '\\' || regexp.charAt(i + 1) != 'Q')){
+			i += (regexp.charAt(i) == '\\')?2:1;
+		}
+		if(i >= length - 1){
+			return regexp;
+		}
+		StringBuilder out = new StringBuilder(length).append(regexp, 0, i);
+		i += 2;
+		boolean inQuote = true;
+		boolean beginQuote = true;
+		while(i < length){
+			char c = regexp.charAt(i++);
+			char next = (i < length)?regexp.charAt(i):0;
+			if(c > 127 || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')){
+				out.append(c);
+			}else if(c >= '0' && c <= '9'){
+				// A digit at the start of a quote must not join an escape before the quote.
+				out.append(beginQuote?"\\x3":"").append(c);
+			}else if(c != '\\'){
+				out.append(inQuote?"\\":"").append(c);
+			}else if(inQuote && next == 'E'){
+				i++;
+				inQuote = false;
+			}else if(inQuote){
+				out.append("\\\\");
+			}else if(next == 'Q'){
+				i++;
+				inQuote = true;
+				beginQuote = true;
+				continue;
+			}else{
+				out.append(c);
+				if(i < length){
+					out.append(next);
+					i++;
+				}
+			}
+			beginQuote = false;
+		}
+		return out.toString();
+	}
+
+	/**
+	 * Reads a pattern without quoted text far enough to find its groups,
+	 * character classes and counted quantifiers. It is not a parser of the
+	 * whole syntax. Where it can not follow the pattern (comments mode) it
+	 * reports the largest weight, so that a quantifier can not be hidden
+	 * from it.
+	 */
+	private static final class RepetitionScanner
+	{
+		private final java.lang.String regexp;
+		private final int length;
+		private int at;
+
+		RepetitionScanner(java.lang.String regexp){
+			this.regexp = regexp;
+			this.length = regexp.length();
+		}
+
+		long weight()
+		{
+			// One entry per open group: the largest weight in the enclosing group so far.
+			java.util.ArrayDeque<java.lang.Long> open = new java.util.ArrayDeque<>();
+			long inside = 1;
+			// The weight of what a counted quantifier at this place repeats: the
+			// group that was just closed, or 1. It is 1 at the start of a group
+			// and after a quantifier too: java.util.regex repeats an empty atom there.
+			long atom = 1;
+			while(at < length){
+				char c = regexp.charAt(at);
+				if(c == '{'){
+					inside = Math.max(inside, repeated(atom));
+					atom = 1;
+				}else if(c == '('){
+					if(turnsOnCommentsMode()){
+						return java.lang.Long.MAX_VALUE;
+					}
+					open.push(inside);
+					inside = 1;
+					atom = 1;
+					at++;
+				}else if(c == ')'){
+					atom = inside;
+					inside = Math.max(atom, open.isEmpty()?1:open.pop());
+					at++;
+				}else{
+					skipAtom(c);
+					atom = 1;
+				}
+			}
+			while(!open.isEmpty()){
+				inside = Math.max(inside, open.pop());
+			}
+			return inside;
+		}
+
+		/**
+		 * Moves past the brace that starts here.
+		 *
+		 * @return the weight of the repetition when the brace starts a
+		 * counted quantifier, 1 when it does not
+		 */
+		private long repeated(long atom)
+		{
+			long min = countedMinimum();
+			if(min < 0){
+				at++;
+				return 1;
+			}
+			at = regexp.indexOf('}', at) + 1;
+			return saturatedMultiply(atom, Math.max(1, min));
+		}
+
+		private void skipAtom(char c)
+		{
+			if(c == '['){
+				skipCharacterClass();
+			}else if(c == '\\'){
+				skipEscape();
+			}else{
+				at++;
+			}
+		}
+
+		/**
+		 * Tells whether the group that starts here is a flag group with
+		 * {@code x}, as in {@code (?x)} or {@code (?ix:}. In comments mode
+		 * a {@code #} hides the rest of a line from the pattern, which
+		 * this scanner does not follow.
+		 */
+		private boolean turnsOnCommentsMode()
+		{
+			if(at + 1 >= length || regexp.charAt(at + 1) != '?'){
+				return false;
+			}
+			for(int i = at + 2; i < length && Character.isLetter(regexp.charAt(i)); i++){
+				if(regexp.charAt(i) == 'x'){
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/**
+		 * Moves past the escape that starts here. The character after
+		 * {@code \c}, the braces of {@code \p{..}}, {@code \P{..}},
+		 * {@code \x{..}}, {@code \N{..}} and the brackets of
+		 * {@code \k<..>} belong to the escape.
+		 */
+		private void skipEscape()
+		{
+			char escaped = (at + 1 < length)?regexp.charAt(at + 1):0;
+			at = Math.min(length, at + ((escaped == 'c')?3:2));
+			char close = 0;
+			if(at < length && regexp.charAt(at) == '{' && "pPxN".indexOf(escaped) >= 0){
+				close = '}';
+			}else if(at < length && regexp.charAt(at) == '<' && escaped == 'k'){
+				close = '>';
+			}
+			if(close != 0){
+				int end = regexp.indexOf(close, at);
+				at = (end < 0)?length:end + 1;
+			}
+		}
+
+		/**
+		 * Moves past the character class that starts here, with the classes
+		 * nested in it. As in {@code java.util.regex}, a {@code ]} that is
+		 * the first character of a class (after {@code [} or {@code [^})
+		 * is a literal and does not close the class.
+		 */
+		private void skipCharacterClass()
+		{
+			int depth = 0;
+			boolean first = false;
+			do{
+				char c = regexp.charAt(at);
+				if(c == '\\'){
+					skipEscape();
+					first = false;
+				}else if(c == '['){
+					depth++;
+					at++;
+					if(at < length && regexp.charAt(at) == '^'){
+						at++;
+					}
+					first = true;
+				}else{
+					if(c == ']' && !first){
+						depth--;
+					}
+					first = false;
+					at++;
+				}
+			}while(depth > 0 && at < length);
+		}
+
+		/** The minimum count of the counted quantifier that starts here, or -1 when there is none. */
+		private long countedMinimum()
+		{
+			int i = at + 1;
+			long min = 0;
+			int digits = 0;
+			for(; i < length && isDigit(regexp.charAt(i)); i++, digits++){
+				// A count above Integer.MAX_VALUE is not valid; it only has to stay large.
+				min = (min > java.lang.Integer.MAX_VALUE)?min:min * 10 + (regexp.charAt(i) - '0');
+			}
+			if(digits == 0){
+				return -1;
+			}
+			if(i < length && regexp.charAt(i) == ','){
+				for(i++; i < length && isDigit(regexp.charAt(i)); i++){
+					// the maximum count does not matter
+				}
+			}
+			return (i < length && regexp.charAt(i) == '}')?min:-1;
+		}
+
+		private static boolean isDigit(char c)
+		{
+			return c >= '0' && c <= '9';
+		}
+
+		private static long saturatedMultiply(long a, long b)
+		{
+			return (a > java.lang.Long.MAX_VALUE / b)?java.lang.Long.MAX_VALUE:a * b;
+		}
+	}
+
+	private static EvaluationException limitExceeded(){
+		return new EvaluationException(
+				Status.processingError().message(LIMIT_EXCEEDED_MESSAGE).build(),
+				LIMIT_EXCEEDED_MESSAGE);
 	}
 
 	/*

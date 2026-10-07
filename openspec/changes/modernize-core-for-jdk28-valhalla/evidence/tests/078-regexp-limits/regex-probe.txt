@@ -1,0 +1,93 @@
+Stand-alone probe, JDK 21.0.6 (Oracle GraalVM), 2026-10-07.
+Each row: Pattern.compile(pattern).matcher(input).find() in its own thread, waited for at most 3 seconds.
+Inputs: "a" x 40 + "!" for the patterns with a; "x" x 30 for (x+x+)+y.
+Patterns are in java.util.regex syntax (\z is what the XACML "$" is rewritten to).
+
+pattern          result          time
+(a+)+\z          false               1 ms
+(a|aa)+\z        false               0 ms
+(a|a)+\z         false               0 ms
+(x+x+)+y         false               0 ms
+(.*a){20}\z      TIMEOUT(>3s)     3002 ms
+([a-z]+)*\z      true                0 ms
+(a*)*\z          true                0 ms
+
+Reading: on this JDK the textbook patterns return at once; (.*a){20}\z does not
+return within 3 seconds. RegExpLimitsTest uses the XACML form "(.*a){20}$".
+
+Second probe (after review round 1): counted repetitions of sub-patterns that match
+the empty string. Same JDK, same 3 second cap, input "" unless noted.
+
+pattern                              result                      time
+(?:(?:){2147483647}){2147483647}     TIMEOUT(>3s)                3005 ms
+(?:){2147483647}                     true                          43 ms
+(?:(?:){1000}){1000}                 true                           7 ms
+(?:(?:(?:){1000}){1000}){1000}       true                        1069 ms
+(){100000}                           true                           1 ms
+(a?){2147483647}                     true                           0 ms
+(?:a*){2147483647}                   true                           0 ms
+(?:){5,2147483647}                   true                           0 ms
+a{2147483647}   (input "aaaa")       false                          0 ms
+
+Reading: nested minimum counts multiply (10^9 empty iterations take about one
+second); a minimum of 0 or 1 costs nothing; the maximum count does not matter.
+
+Third probe: the worst case that the repetition bound still allows. The weight is the
+largest product of nested minimum counts, so repetitions next to each other do not add
+up. Pattern: 700 times "(?:){1000}" inside "(?:...){1000}" (weight 1,000,000, length
+7,010), input "". Result: true in 48 ms.
+
+Fourth probe (review rv087 round 2): how java.util.regex reads the constructs of that
+review. Small = outer count 3, large = outer count 3,000; inner count 3,000. Cap 5 s.
+
+control escape before a group          small: true 1 ms              large: true 16 ms
+empty quote before a quantifier        small: true 0 ms              large: true 56 ms
+quantifier directly after '('          small: true 0 ms              large: true 13 ms
+quantifier directly after '|'          small: true 0 ms              large: true 0 ms
+class with a leading ']' and a '('     small: true 0 ms              large: true 0 ms
+stacked quantifiers                    small: true 0 ms              large: true 2 ms
+quantifier after a flag group          small: true 0 ms              large: true 14 ms
+harmless class []a{1000001}] on "a"    true 0 ms
+26 zero-width two-way groups           false 2092 ms
+26 groups (a*|b*) then c               false 0 ms
+
+Reading: every construct compiles. Five of the seven are slower with the large count, so
+they repeat an empty atom. Two rows show 0 ms for both counts; their groups hold an
+alternative or an optional part, and why they do not multiply was not established (the fifth
+probe repeats the class case with {0} in place of ?). "[]a{1000001}]" is one class. 26
+groups with two zero-width alternatives each take two seconds on an empty input (2^26
+paths).
+
+
+Fifth probe: a lone \E, a class with a leading "]" in a deterministic group, and the
+time of empty repetitions. Cap 8 s.
+
+lone \E after an atom                    syntax error (Illegal/unsupported escape sequence) 1 ms
+lone \E before a quantifier              syntax error (Illegal/unsupported escape sequence) 0 ms
+class with leading ']', small            true 0 ms
+class with leading ']', large            true 30 ms
+negated class with leading ']'           true 0 ms
+empty repetitions 1,000 x 1,000          true 5 ms
+empty repetitions 10,000 x 10,000        true 171 ms
+empty repetitions, same again (warm)     true 121 ms
+quote of a digit after a brace           syntax error (Unclosed counted closure) 0 ms
+quote in a class                         true 0 ms
+
+Reading: a lone \E is a syntax error. With a deterministic body ({0}) the class with a
+leading "]" multiplies (30 ms). 10^8 empty iterations take 0.12 to 0.17 s.
+
+Sixth probe (review rv087 round 3): counted quantifiers that stand next to each other.
+Input "". Cap 8 s.
+
+nested, 30,000 x 30,000 (reference)    (?:(?:){30000}){30000}       true 34 ms
+next to each other, group              (?:){30000}{30000}           true 1 ms
+next to each other, lazy first         (?:){30000}?{30000}          true 1 ms
+next to each other, literal            a{0}{30000}{30000}           true 0 ms
+three next to each other               (?:){30000}{30000}{30000}    true 0 ms
+
+Reading: the nested reference returned in 34 ms although it stands for 9 x 10^8 empty
+iterations, while 10^8 took 121 to 171 ms in the fifth probe. On this JVM the time of empty
+repetitions is not proportional to their count. Times are therefore no proof of how a pattern
+is read; the test scannerRulesAreTheRulesOfJavaUtilRegex shows the rules by what a pattern
+matches. The repetition bound stays: 2^31 x 2^31 did not return in 3 s (second probe).
+

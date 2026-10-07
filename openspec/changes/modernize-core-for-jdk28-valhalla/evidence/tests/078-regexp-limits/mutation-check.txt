@@ -1,0 +1,27 @@
+Mutation check after review round 3, JDK 21, 2026-10-07. Test class: RegExpLimitsTest (19 tests).
+File mutated for the run only: RegExpFunctions.java. After the three runs the file was put back
+(cmp against the saved copy).
+
+M1: the clock is not checked after find()
+  Tests run: 19, Failures: 1, Errors: 0
+  resultThatComesAfterTheTimeLimitIsNotUsed: expected: <3> but was: <2>
+
+M2: a counted quantifier after a quantifier multiplies (the rule of round 3)
+  Tests run: 19, Failures: 1, Errors: 0
+  quantifiersNextToEachOtherDoNotMultiply: expected: <1001> but was: <1001000>
+
+M3: the character after \c is not part of the escape (the rule of round 2)
+  Tests run: 19, Failures: 1, Errors: 0
+  repetitionsCanNotBeHiddenFromTheBound: execution timed out after 20000 ms
+
+Mutation check after review round 4 (20 tests; made before the cache-size property was
+moved to the same check as the limits).
+
+M4: the largest weight is compared with the limit like any other weight
+  Tests run: 20, Failures: 1, Errors: 0
+  weightThatDoesNotFitIsBeyondEveryLimit: execution timed out after 20000 ms
+
+M5: the property .maxMatchMillis is not read
+  Tests run: 20, Failures: 1, Errors: 1
+  propertyThatIsNotAPositiveNumberIsRejected: 0 ==> Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+  limitsAreReadFromProperties: Regular expression evaluation limit exceeded
