@@ -1,0 +1,67 @@
+{
+  "result": "PASS",
+  "task_start_existing_files": 3547,
+  "task_end_files": 3550,
+  "unchanged_existing_files": 3541,
+  "modified_existing_files": [
+    "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/conformance-blockers.md",
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java",
+    "xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java",
+    "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java"
+  ],
+  "new_java_files": [
+    "xacml-core/src/test/java/org/xacml4j/v30/types/BooleanLexicalTest.java",
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/BooleanRequestLexicalTest.java",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanRequestLexicalTest.java"
+  ],
+  "source_bytes_stable_during_both_gates": true,
+  "license_headers": [
+    {
+      "file": "xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java",
+      "unchanged_header": true,
+      "reference": "task-start source"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/types/BooleanLexicalTest.java",
+      "unchanged_header": true,
+      "reference": "xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java",
+      "unchanged_header": true,
+      "reference": "task-start source"
+    },
+    {
+      "file": "xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java",
+      "unchanged_header": true,
+      "reference": "task-start source"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/BooleanRequestLexicalTest.java",
+      "unchanged_header": true,
+      "reference": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonRequestUnmarshallerTest.java"
+    },
+    {
+      "file": "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+      "unchanged_header": true,
+      "reference": "task-start source"
+    },
+    {
+      "file": "xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanRequestLexicalTest.java",
+      "unchanged_header": true,
+      "reference": "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestContentTest.java"
+    }
+  ],
+  "BooleanValTest_methods_preserved": [
+    "testValueOf",
+    "fromToXacmlString",
+    "toXacmlString",
+    "testEquals",
+    "testBagOf"
+  ],
+  "manifest_changed_rows": 9,
+  "manifest_inventory": 880,
+  "run030_change_limited_to_two_bug_ids": true
+}

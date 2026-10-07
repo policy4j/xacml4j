@@ -1,0 +1,134 @@
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+@@ -34,6 +34,8 @@
+ 
+ import java.util.Collection;
+ import java.util.Iterator;
++import java.util.concurrent.CountDownLatch;
++import java.util.concurrent.TimeUnit;
+ 
+ import org.easymock.IMocksControl;
+ import org.junit.Before;
+@@ -44,6 +46,7 @@
+ import org.xacml4j.v30.marshal.PolicyUnmarshaller;
+ import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
+ import org.xacml4j.v30.policy.Policy;
++import org.xacml4j.v30.policy.PolicySet;
+ import org.xacml4j.v30.policy.Rule;
+ import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+ import org.xacml4j.v30.policy.function.FunctionProvider;
+@@ -86,7 +89,34 @@
+ 		this.p1v4 =  Policy.builder("id1").version("2.0.1").combiningAlgorithm(algorithm).build();
+ 		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms);
+ 		this.l = c.createMock(PolicyRepositoryListener.class);
+-		this.r.addPolicyRepositoryListener(l);
++	}
++
++	private CountDownLatch listenerCallbacks(int expected)
++	{
++		final CountDownLatch callbacks = new CountDownLatch(expected);
++		r.addPolicyRepositoryListener(new PolicyRepositoryListener(){
++			@Override
++			public void policyAdded(Policy p){
++				l.policyAdded(p);
++				callbacks.countDown();
++			}
++			@Override
++			public void policyRemoved(Policy p){
++				l.policyRemoved(p);
++				callbacks.countDown();
++			}
++			@Override
++			public void policySetAdded(PolicySet p){
++				l.policySetAdded(p);
++				callbacks.countDown();
++			}
++			@Override
++			public void policySetRemoved(PolicySet p){
++				l.policySetRemoved(p);
++				callbacks.countDown();
++			}
++		});
++		return callbacks;
+ 	}
+ 
+ 	@Test
+@@ -106,6 +136,7 @@
+ 		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
+ 		l.policyAdded(p1v4);
+ 
++		CountDownLatch callbacks = listenerCallbacks(4);
+ 		c.replay();
+ 
+ 		r.add(p1v1);
+@@ -140,6 +171,7 @@
+ 		Policy policy = r.getPolicy("id1", null, null, null);
+ 		assertEquals(Version.parse("2.0.1"), policy.getVersion());
+ 
++		assertTrue("Timed out waiting for four policy-added callbacks", callbacks.await(5, TimeUnit.SECONDS));
+ 		c.verify();
+ 	}
+ 
+@@ -150,6 +182,7 @@
+ 		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
+ 		l.policyAdded(p1v2);
+ 		l.policyRemoved(p1v2);
++		CountDownLatch callbacks = listenerCallbacks(2);
+ 		c.replay();
+ 
+ 		r.add(p1v2);
+@@ -163,23 +196,26 @@
+ 		Collection<Policy> found = r.getPolicies("id1", VersionMatch.parse("1.+"));
+ 		assertEquals(0, found.size());
+ 
+-		c.verify();
+-	}
+-
+-	@Test
+-	public void testAddPolicyWithTheSameIdAndSameVersion()
+-	{
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
+-		l.policyAdded(p1v2);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		assertTrue("Timed out waiting for policy-added and policy-removed callbacks", callbacks.await(5, TimeUnit.SECONDS));
++		c.verify();
++	}
++
++	@Test
++	public void testAddPolicyWithTheSameIdAndSameVersion() throws Exception
++	{
++		expect(algorithm.getId()).andReturn("testId");
++		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		l.policyAdded(p1v2);
++		expect(algorithm.getId()).andReturn("testId");
++		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		CountDownLatch callbacks = listenerCallbacks(1);
+ 		c.replay();
+ 		assertTrue(r.add(p1v2));
+ 		assertFalse(r.add(p1v2DiffInstance));
+ 		Policy p = (Policy)r.get("id1", Version.parse("1.1"));
+ 		assertSame(p1v2, p);
+ 		assertNotSame(p1v2DiffInstance, p);
++		assertTrue("Timed out waiting for one policy-added callback", callbacks.await(5, TimeUnit.SECONDS));
+ 		c.verify();
+ 	}
+ 
+@@ -200,6 +236,7 @@
+ 		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
+ 		l.policyAdded(p1v4);
+ 
++		CountDownLatch callbacks = listenerCallbacks(4);
+ 		c.replay();
+ 
+ 		r.add(p1v2);
+@@ -216,7 +253,7 @@
+ 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
+ 		assertEquals(Version.parse("2.0.1"), it.next().getVersion());
+ 
++		assertTrue("Timed out waiting for four policy-added callbacks", callbacks.await(5, TimeUnit.SECONDS));
+ 		c.verify();
+ 	}
+ }
+-

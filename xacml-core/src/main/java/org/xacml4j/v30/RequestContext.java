@@ -23,6 +23,7 @@ package org.xacml4j.v30;
  */
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -72,9 +73,14 @@ public class RequestContext
 		this.combinedDecision = b.combinedDecision;
 		this.entities = b.attrBuilder.build();
 		ImmutableMap.Builder<String, Category> attributesByXmlIdBuilder = ImmutableMap.builder();
+		Set<String> attributeXmlIds = new HashSet<>();
 		for(Category attr : entities.values()){
-			attr.getReferenceId()
-			    .ifPresent(id->attributesByXmlIdBuilder.put(id, attr));
+			attr.getReferenceId().ifPresent(id -> {
+				if(!attributeXmlIds.add(id)){
+					throw new SyntaxException("Duplicate Attributes xml:id: " + id);
+				}
+				attributesByXmlIdBuilder.put(id, attr);
+			});
 		}
 		this.attributesByXmlId = attributesByXmlIdBuilder.build();
 		this.cachedHashCode = Objects.hashCode(
@@ -338,6 +344,7 @@ public class RequestContext
 			if(!includeInResult.isEmpty()){
 				resultAttr.add(Category
 						.builder(a.getCategoryId())
+						.id(a.getReferenceId().orElse(null))
 						.entity(Entity.builder().attributes(a.getIncludeInResultAttributes()).build())
 						.build());
 			}
@@ -379,7 +386,7 @@ public class RequestContext
 		RequestContext r = (RequestContext)o;
 		return returnPolicyIdList == r.returnPolicyIdList &&
 				combinedDecision == r.combinedDecision &&
-				entities.equals(entities) &&
+				entities.equals(r.entities) &&
 				requestReferences.equals(r.requestReferences) &&
 				Objects.equal(requestDefaults, r.requestDefaults);
 	}

@@ -23,19 +23,18 @@ package org.xacml4j.v30.pdp.request;
  */
 
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
@@ -58,13 +57,11 @@ public class MultipleResourcesHandlerTest
 	private Category resource1;
 	private Category subject0;
 	private Category subject1;
-	private IMocksControl c;
 
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createStrictControl();
-		this.context = c.mock(PolicyDecisionPointContext.class);
+		this.context = Mockito.mock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesHandler();
 
 		this.resource0 = Category.builder(CategoryId.RESOURCE)
@@ -111,23 +108,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
-		Capture<RequestContext> c2 = Capture.newInstance();
-		Capture<RequestContext> c3 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(context.requestDecision(capture(c0))).andReturn(
-						Result.ok(Decision.DENY).build());
-
-		expect(context.requestDecision(capture(c1))).andReturn(Result.ok(Decision.DENY).build());
-
-		expect(context.requestDecision(capture(c2))).andReturn(Result.ok(Decision.DENY).build());
-
-		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.DENY).build());
-
-		c.replay();
+		when(context.requestDecision(Mockito.any())).thenReturn(Result.ok(Decision.DENY).build());
 		Collection<Result> results = profile.handle(request, context);
-		c.verify();
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
 
@@ -137,6 +121,9 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
+		InOrder order = Mockito.inOrder(context);
+		order.verify(context, Mockito.times(4)).requestDecision(requests.capture());
+		Mockito.verifyNoMoreInteractions(context);
 
 	}
 
@@ -150,22 +137,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
-		Capture<RequestContext> c2 = Capture.newInstance();
-		Capture<RequestContext> c3 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.PERMIT).build());
-
-		expect(context.requestDecision(capture(c1))).andReturn(Result.ok(Decision.PERMIT).build());
-
-		expect(context.requestDecision(capture(c2))).andReturn(Result.ok(Decision.PERMIT).build());
-
-		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.PERMIT).build());
-
-		c.replay();
+		when(context.requestDecision(Mockito.any())).thenReturn(Result.ok(Decision.PERMIT).build());
 		Collection<Result> results = profile.handle(request, context);
-		c.verify();
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
 
@@ -175,6 +150,9 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
+		InOrder order = Mockito.inOrder(context);
+		order.verify(context, Mockito.times(4)).requestDecision(requests.capture());
+		Mockito.verifyNoMoreInteractions(context);
 
 	}
 
@@ -189,24 +167,10 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
-		Capture<RequestContext> c2 = Capture.newInstance();
-		Capture<RequestContext> c3 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(context.requestDecision(capture(c0))).andReturn(
+		when(context.requestDecision(Mockito.any())).thenReturn(
 				Result.ok(Decision.NOT_APPLICABLE).build());
-
-		expect(context.requestDecision(capture(c1))).andReturn(
-				Result.ok(Decision.NOT_APPLICABLE).build());
-
-		expect(context.requestDecision(capture(c2))).andReturn(
-				Result.ok(Decision.NOT_APPLICABLE).build());
-
-		expect(context.requestDecision(capture(c3))).andReturn(
-				Result.ok(Decision.NOT_APPLICABLE).build());
-
-		c.replay();
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
@@ -217,7 +181,9 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
-		c.verify();
+		InOrder order = Mockito.inOrder(context);
+		order.verify(context, Mockito.times(4)).requestDecision(requests.capture());
+		Mockito.verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -232,20 +198,9 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, subject1, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
-		Capture<RequestContext> c2 = Capture.newInstance();
-		Capture<RequestContext> c3 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
-
-		expect(context.requestDecision(capture(c1))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
-
-		expect(context.requestDecision(capture(c2))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
-
-		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
-
-		c.replay();
+		when(context.requestDecision(Mockito.any())).thenReturn(Result.ok(Decision.NOT_APPLICABLE).build());
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(1, results.size());
 		Result r = results.iterator().next();
@@ -256,7 +211,9 @@ public class MultipleResourcesHandlerTest
 		assertEquals(0, r.getIncludeInResultAttributes().size());
 		assertEquals(0, r.getObligations().size());
 		assertEquals(0, r.getAssociatedAdvice().size());
-		c.verify();
+		InOrder order = Mockito.inOrder(context);
+		order.verify(context, Mockito.times(4)).requestDecision(requests.capture());
+		Mockito.verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -269,19 +226,19 @@ public class MultipleResourcesHandlerTest
 				.attributes(subject0, resource0)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(context.requestDecision(capture(c0))).andReturn(
+		when(context.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		c.replay();
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
-		RequestContext r0 = c0.getValue();
+		InOrder order = Mockito.inOrder(context);
+		order.verify(context).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(context);
+		RequestContext r0 = c0.getAllValues().get(0);
 		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject0));
 		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0));
-		c.verify();
 	}
 
 	@Test
@@ -293,18 +250,16 @@ public class MultipleResourcesHandlerTest
 				.combineDecision(true)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(context.requestDecision(capture(c0))).andReturn(
+		when(context.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		c.replay();
 		Collection<Result> results = profile.handle(request, context);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
-		assertSame(request, c0.getValue());
-		c.verify();
+		InOrder order = Mockito.inOrder(context);
+		order.verify(context).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(context);
+		assertSame(request, c0.getAllValues().get(0));
 	}
 }
-
-

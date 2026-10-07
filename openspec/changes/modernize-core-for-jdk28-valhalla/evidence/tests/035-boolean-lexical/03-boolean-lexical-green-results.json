@@ -1,0 +1,62 @@
+{
+  "xacml-core": {
+    "counts": {
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.types.BooleanLexicalTest": {
+        "tests": 27,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.BooleanValTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [],
+    "disabled": []
+  },
+  "xacml-xml": {
+    "counts": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.xml.BooleanRequestLexicalTest": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [],
+    "disabled": []
+  },
+  "xacml-json": {
+    "counts": {
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [],
+    "disabled": []
+  }
+}

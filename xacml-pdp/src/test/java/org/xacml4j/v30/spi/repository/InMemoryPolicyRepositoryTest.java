@@ -23,27 +23,31 @@ package org.xacml4j.v30.spi.repository;
  */
 
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Policy;
+import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.policy.Rule;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.policy.function.FunctionProvider;
@@ -60,7 +64,6 @@ public class InMemoryPolicyRepositoryTest
 	private PolicyRepository r;
 	private DecisionCombiningAlgorithm<Rule> algorithm;
 
-	private IMocksControl c;
 	private PolicyRepositoryListener l;
 
 	private FunctionProvider functions;
@@ -70,14 +73,13 @@ public class InMemoryPolicyRepositoryTest
 	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
-		this.c = createControl();
-		this.algorithm = c.createMock(DecisionCombiningAlgorithm.class);
-		this.functions = c.createMock(FunctionProvider.class);
-		this.unmarshaller = c.createMock(PolicyUnmarshaller.class);
-		this.decisionAlgorithms = c.createMock(DecisionCombiningAlgorithmProvider.class);
+		this.algorithm = Mockito.mock(DecisionCombiningAlgorithm.class);
+		this.functions = Mockito.mock(FunctionProvider.class);
+		this.unmarshaller = Mockito.mock(PolicyUnmarshaller.class);
+		this.decisionAlgorithms = Mockito.mock(DecisionCombiningAlgorithmProvider.class);
 
 		this.p1v1 = Policy.builder("id1").version("1").combiningAlgorithm(algorithm).build();
 		this.p1v2 = Policy.builder("id1").version("1.1").combiningAlgorithm(algorithm).build();
@@ -85,28 +87,51 @@ public class InMemoryPolicyRepositoryTest
 		this.p1v3 =  Policy.builder("id1").version("1.2.1").combiningAlgorithm(algorithm).build();
 		this.p1v4 =  Policy.builder("id1").version("2.0.1").combiningAlgorithm(algorithm).build();
 		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms);
-		this.l = c.createMock(PolicyRepositoryListener.class);
-		this.r.addPolicyRepositoryListener(l);
+		this.l = Mockito.mock(PolicyRepositoryListener.class);
+	}
+
+	private CountDownLatch listenerCallbacks(int expected)
+	{
+		final CountDownLatch callbacks = new CountDownLatch(expected);
+		r.addPolicyRepositoryListener(new PolicyRepositoryListener(){
+			@Override
+			public void policyAdded(Policy p){
+				l.policyAdded(p);
+				callbacks.countDown();
+			}
+			@Override
+			public void policyRemoved(Policy p){
+				l.policyRemoved(p);
+				callbacks.countDown();
+			}
+			@Override
+			public void policySetAdded(PolicySet p){
+				l.policySetAdded(p);
+				callbacks.countDown();
+			}
+			@Override
+			public void policySetRemoved(PolicySet p){
+				l.policySetRemoved(p);
+				callbacks.countDown();
+			}
+		});
+		return callbacks;
 	}
 
 	@Test
 	public void testOnePolicyDifferentVersion() throws Exception
 	{
 
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v1);
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v2);
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v3);
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v4);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
 
-		c.replay();
+		CountDownLatch callbacks = listenerCallbacks(4);
 
 		r.add(p1v1);
 		r.add(p1v2);
@@ -140,17 +165,22 @@ public class InMemoryPolicyRepositoryTest
 		Policy policy = r.getPolicy("id1", null, null, null);
 		assertEquals(Version.parse("2.0.1"), policy.getVersion());
 
-		c.verify();
+		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for four policy-added callbacks");
+		Mockito.verify(algorithm, times(4)).getId();
+		Mockito.verify(decisionAlgorithms, times(4)).isRuleAlgorithmProvided("testId");
+		verify(l).policyAdded(p1v1);
+		verify(l).policyAdded(p1v2);
+		verify(l).policyAdded(p1v3);
+		verify(l).policyAdded(p1v4);
+		Mockito.verifyNoMoreInteractions(l);
 	}
 
 	@Test
 	public void testAddRemove() throws Exception
 	{
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v2);
-		l.policyRemoved(p1v2);
-		c.replay();
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		CountDownLatch callbacks = listenerCallbacks(2);
 
 		r.add(p1v2);
 
@@ -163,44 +193,70 @@ public class InMemoryPolicyRepositoryTest
 		Collection<Policy> found = r.getPolicies("id1", VersionMatch.parse("1.+"));
 		assertEquals(0, found.size());
 
-		c.verify();
+		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for policy-added and policy-removed callbacks");
+		Mockito.verify(algorithm).getId();
+		Mockito.verify(decisionAlgorithms).isRuleAlgorithmProvided("testId");
+		verify(l).policyAdded(p1v2);
+		verify(l).policyRemoved(p1v2);
+		Mockito.verifyNoMoreInteractions(l);
 	}
 
 	@Test
-	public void testAddPolicyWithTheSameIdAndSameVersion()
+	public void testAddRemovePolicySetNotifiesMatchingCallbacks() throws Exception
 	{
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v2);
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		c.replay();
+		@SuppressWarnings("unchecked")
+		DecisionCombiningAlgorithm<CompositeDecisionRule> policySetAlgorithm = Mockito.mock(DecisionCombiningAlgorithm.class);
+		PolicySet policySet = PolicySet.builder("set1")
+				.version("1.0")
+				.withCombiningAlgorithm(policySetAlgorithm)
+				.build();
+		when(policySetAlgorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isPolicyAlgorithmProvided("testId")).thenReturn(true);
+		CountDownLatch callbacks = listenerCallbacks(2);
+
+		r.add(policySet);
+		r.remove(policySet);
+
+		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for policy-set-added and policy-set-removed callbacks");
+		verify(l, times(1)).policySetAdded(policySet);
+		verify(l, times(1)).policySetRemoved(policySet);
+		Mockito.verifyNoMoreInteractions(l);
+	}
+
+	@Test
+	public void testAddPolicyWithTheSameIdAndSameVersion() throws Exception
+	{
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		CountDownLatch callbacks = listenerCallbacks(1);
 		assertTrue(r.add(p1v2));
 		assertFalse(r.add(p1v2DiffInstance));
 		Policy p = (Policy)r.get("id1", Version.parse("1.1"));
 		assertSame(p1v2, p);
 		assertNotSame(p1v2DiffInstance, p);
-		c.verify();
+		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for one policy-added callback");
+		Mockito.verify(algorithm, times(2)).getId();
+		Mockito.verify(decisionAlgorithms, times(2)).isRuleAlgorithmProvided("testId");
+		verify(l).policyAdded(p1v2);
+		Mockito.verifyNoMoreInteractions(l);
 	}
 
 
 	@Test
 	public void testFindAllPoliciesWithTheSameId() throws Exception
 	{
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v2);
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v1);
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v3);
-		expect(algorithm.getId()).andReturn("testId");
-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
-		l.policyAdded(p1v4);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+		when(algorithm.getId()).thenReturn("testId");
+		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
 
-		c.replay();
+		CountDownLatch callbacks = listenerCallbacks(4);
 
 		r.add(p1v2);
 		r.add(p1v1);
@@ -216,7 +272,13 @@ public class InMemoryPolicyRepositoryTest
 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
 		assertEquals(Version.parse("2.0.1"), it.next().getVersion());
 
-		c.verify();
+		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for four policy-added callbacks");
+		Mockito.verify(algorithm, times(4)).getId();
+		Mockito.verify(decisionAlgorithms, times(4)).isRuleAlgorithmProvided("testId");
+		verify(l).policyAdded(p1v2);
+		verify(l).policyAdded(p1v1);
+		verify(l).policyAdded(p1v3);
+		verify(l).policyAdded(p1v4);
+		Mockito.verifyNoMoreInteractions(l);
 	}
 }
-

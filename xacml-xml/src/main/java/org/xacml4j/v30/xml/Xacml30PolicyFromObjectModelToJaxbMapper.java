@@ -259,7 +259,7 @@ final class Xacml30PolicyFromObjectModelToJaxbMapper
 			jaxbIssuer.getContent().getContent()
 					.add(issuer.getContent().map(v->v.toNode()).get());
 		}
-		for(Attribute a : issuer.find()){
+		for(Attribute a : issuer.attributes()){
 			jaxbIssuer.getAttribute().add(toJaxb(a));
 		}
 		return jaxbIssuer;
@@ -281,7 +281,7 @@ final class Xacml30PolicyFromObjectModelToJaxbMapper
 	private AttributeValueType toJaxb(Value a)
 	{
 		Preconditions.checkNotNull(a);
-		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.forType(a.getEvaluatesTo());
+		Optional<TypeToXacml30> toXacml30 = TypeToXacml30.forType(a.getEvaluatesTo().getValueType());
 		Preconditions.checkState(toXacml30.isPresent());
 		return toXacml30.get().toXacml30(a);
 	}

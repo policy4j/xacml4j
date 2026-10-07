@@ -23,14 +23,16 @@ package org.xacml4j.util;
  */
 
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.types.ISO8601DayTimeDuration;
 import org.xacml4j.v30.types.ISO8601YearMonthDuration;
 
 import javax.xml.datatype.Duration;
+
 import java.time.Period;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ISO8601DurationTest
 {

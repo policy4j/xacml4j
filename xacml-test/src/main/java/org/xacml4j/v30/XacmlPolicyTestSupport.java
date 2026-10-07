@@ -22,8 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.marshal.MediaType;
@@ -51,6 +51,7 @@ import org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshaller;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Supplier;
 import com.google.common.io.Closeables;
+import com.google.common.collect.ImmutableMultiset;
 
 public class XacmlPolicyTestSupport {
 	protected final Logger log = LoggerFactory.getLogger(XacmlPolicyTestSupport.class);
@@ -60,7 +61,7 @@ public class XacmlPolicyTestSupport {
 	private Xacml20ResponseContextUnmarshaller xacml20ResponseUnmarshaller;
 	private Xacml20RequestContextUnmarshaller xacml20RequestUnmarshaller;
 
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		this.requestUnmarshaller = new Xacml30RequestContextUnmarshaller();
 		this.responseUnmarshaller = new Xacml30ResponseContextUnmarshaller();
@@ -94,9 +95,9 @@ public class XacmlPolicyTestSupport {
 			String xacmlRequestResource,
 			String expectedXacmlResponseResource) throws Exception {
 		RequestContext req = getXacml20Request(xacmlRequestResource);
-		assertNotNull(xacmlRequestResource, req);
+		assertNotNull(req, xacmlRequestResource);
 		ResponseContext expectedResponse = getXacml20Response(expectedXacmlResponseResource);
-		assertNotNull(expectedXacmlResponseResource, expectedResponse);
+		assertNotNull(expectedResponse, expectedXacmlResponseResource);
 		ResponseContext resp = pdp.decide(req);
 		log.debug("Expected XACML 2.0 response=\"{}\"", expectedResponse);
 		log.debug("Received XACML 2.0 response=\"{}\"", resp);
@@ -185,7 +186,7 @@ public class XacmlPolicyTestSupport {
 	private static void assertResult(Result r1, Result r2) {
 		assertEquals(r1.getDecision(), r2.getDecision());
 		assertEquals(r1.getStatus(), r2.getStatus());
-		assertObligations(r1.getObligations(), r2.getObligations());
+		assertObligations(obligationsForDecision(r1), obligationsForDecision(r2));
 		assertAssociatedAdvices(r1.getAssociatedAdvice(),
 				r2.getAssociatedAdvice());
 		assertAttributes(r1.getIncludeInResultAttributes(), r2.getIncludeInResultAttributes());
@@ -197,12 +198,23 @@ public class XacmlPolicyTestSupport {
 		boolean matches(T o1, T o2);
 	}
 
+	private static Collection<Obligation> obligationsForDecision(Result result) {
+		Effect effect = result.getDecision() == Decision.PERMIT ? Effect.PERMIT
+				: result.getDecision() == Decision.DENY ? Effect.DENY : null;
+		// XACML 3.0 response obligations omit FulfillOn and use the enclosing result's decision.
+		return result.getObligations().stream().map(o -> o.getFulfillOn() == null && effect != null
+				? Obligation.builder(o.getId(), effect).attributes(o.getAttributes()).build() : o).toList();
+	}
+
 	private static void assertObligations(Collection<Obligation> o1,
 			Collection<Obligation> o2) {
 		assertArrayEquals(o1, o2, new Matcher<Obligation>() {
 			@Override
 			public boolean matches(Obligation o1, Obligation o2) {
-				return o1.getId().equals(o2.getId());
+				// AttributeAssignment.equals compares type, value, category, issuer and id.
+				return o1.getId().equals(o2.getId()) && o1.getFulfillOn() == o2.getFulfillOn()
+						&& ImmutableMultiset.copyOf(o1.getAttributes())
+						.equals(ImmutableMultiset.copyOf(o2.getAttributes()));
 			}
 		});
 	}
@@ -241,14 +253,18 @@ public class XacmlPolicyTestSupport {
 	protected static <T> void assertArrayEquals(Collection<T> a1,
 			Collection<T> a2, Matcher<T> matcher) {
 		assertEquals(a1.size(), a2.size());
+		Collection<T> remaining = new ArrayList<>(a2);
 		for(T o: a1) {
-			assertEquals(o, findMatchingObject(a2, o, matcher));
+			assertEquals(o, findMatchingObject(remaining, o, matcher));
 		}
 	}
 
 	private static <T> T findMatchingObject(Collection<T> collection, T object, Matcher<T> matcher) {
-		for(T o: collection) {
+		Iterator<T> remaining = collection.iterator();
+		while (remaining.hasNext()) {
+			T o = remaining.next();
 			if (matcher.matches(o, object)) {
+				remaining.remove();
 				return o;
 			}
 		}

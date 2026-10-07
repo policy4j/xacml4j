@@ -62,7 +62,12 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 				categoryOrEntity:context.resolveEntity( CategoryId.of(categoryOrEntity.get().toString())).orElse(null);
 		LOG.debug("Resolved entity={}", entity);
 		if(entity == null){
-			throw new EvaluationException(Status.processingError().build(), "Entity is null");
+			if(mustBePresent.get()){
+				String missingAttributeId = attributeId.toXacmlString();
+				throw new EvaluationException(Status.missingAttribute(missingAttributeId)
+						.build(), missingAttributeId);
+			}
+			return valueType.emptyBag();
 		}
 		String issuerString = Optional.ofNullable(issuer)
 				.map(StringVal::get)
@@ -70,8 +75,9 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 		Optional<BagOfValues> v = entity.resolve(attributeId.toXacmlString(), valueType, issuerString);
 		if(!v.isPresent()){
 			if(mustBePresent.get()){
-				throw new EvaluationException(Status.missingAttribute(attributeId.toString())
-						.build(), "Must be present");
+				String missingAttributeId = attributeId.toXacmlString();
+				throw new EvaluationException(Status.missingAttribute(missingAttributeId)
+						.build(), missingAttributeId);
 			}
 		}
 		return v.orElse(valueType.emptyBag());

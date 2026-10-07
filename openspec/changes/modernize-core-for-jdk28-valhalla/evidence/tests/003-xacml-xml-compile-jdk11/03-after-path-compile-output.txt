@@ -1,0 +1,270 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:[253,51] no suitable method found for find(no arguments)
+    method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:[266,41] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:[514,37] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshaller.java:[129,89] cannot find symbol
+  symbol:   method of(java.lang.String)
+  location: variable STRING of type org.xacml4j.v30.types.XacmlTypes
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java:[262,41] no suitable method found for find(no arguments)
+    method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java:[284,66] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[163,75] method get in class org.xacml4j.v30.types.Value.SelfValue<T> cannot be applied to given types;
+  required: no arguments
+  found: java.lang.String
+  reason: actual and formal argument lists differ in length
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[167,89] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+    method org.xacml4j.v30.types.TypeToString.forType(java.lang.String) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+    method org.xacml4j.v30.types.TypeToString.forType(org.xacml4j.v30.types.ValueType) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[171,73] cannot find symbol
+  symbol:   method findAttributeValues(java.lang.String,org.xacml4j.v30.types.XacmlTypes)
+  location: class org.xacml4j.v30.types.Entity
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[178,71] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+    method org.xacml4j.v30.types.TypeToString.forType(java.lang.String) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+    method org.xacml4j.v30.types.TypeToString.forType(org.xacml4j.v30.types.ValueType) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[227,84] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[100,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[120,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[140,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[161,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[182,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[203,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[224,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[244,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[266,71] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[267,51] cannot find symbol
+  symbol: class EntityValue
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[274,57] no suitable method found for find(no arguments)
+    method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[316,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[337,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[358,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[379,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[400,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[420,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[441,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[497,69] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[548,79] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+    method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+      (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/ExpressionTypeBuilder.java:[96,67] cannot find symbol
+  symbol:   method getTypeId()
+  location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java:[260,49] incompatible types: java.util.Collection<org.xacml4j.v30.types.Value> cannot be converted to java.lang.Iterable<org.xacml4j.v30.types.Value<?>>
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project xacml-xml: Compilation failure: Compilation failure: 
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:[253,51] no suitable method found for find(no arguments)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:[266,41] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:[514,37] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshaller.java:[129,89] cannot find symbol
+[ERROR]   symbol:   method of(java.lang.String)
+[ERROR]   location: variable STRING of type org.xacml4j.v30.types.XacmlTypes
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java:[262,41] no suitable method found for find(no arguments)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java:[284,66] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[163,75] method get in class org.xacml4j.v30.types.Value.SelfValue<T> cannot be applied to given types;
+[ERROR]   required: no arguments
+[ERROR]   found: java.lang.String
+[ERROR]   reason: actual and formal argument lists differ in length
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[167,89] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+[ERROR]     method org.xacml4j.v30.types.TypeToString.forType(java.lang.String) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR]     method org.xacml4j.v30.types.TypeToString.forType(org.xacml4j.v30.types.ValueType) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[171,73] cannot find symbol
+[ERROR]   symbol:   method findAttributeValues(java.lang.String,org.xacml4j.v30.types.XacmlTypes)
+[ERROR]   location: class org.xacml4j.v30.types.Entity
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[178,71] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+[ERROR]     method org.xacml4j.v30.types.TypeToString.forType(java.lang.String) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR]     method org.xacml4j.v30.types.TypeToString.forType(org.xacml4j.v30.types.ValueType) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:[227,84] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[100,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[120,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[140,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[161,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[182,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[203,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[224,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[244,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[266,71] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[267,51] cannot find symbol
+[ERROR]   symbol: class EntityValue
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[274,57] no suitable method found for find(no arguments)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[316,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[337,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[358,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[379,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[400,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[420,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[441,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[497,69] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:[548,79] no suitable method found for forType(org.xacml4j.v30.ValueExpTypeInfo)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(org.xacml4j.v30.types.ValueType) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType)
+[ERROR]     method org.xacml4j.v30.xml.TypeToXacml30.forType(java.lang.String) is not applicable
+[ERROR]       (argument mismatch; org.xacml4j.v30.ValueExpTypeInfo cannot be converted to java.lang.String)
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/ExpressionTypeBuilder.java:[96,67] cannot find symbol
+[ERROR]   symbol:   method getTypeId()
+[ERROR]   location: interface org.xacml4j.v30.ValueExpTypeInfo
+[ERROR] <repo>/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java:[260,49] incompatible types: java.util.Collection<org.xacml4j.v30.types.Value> cannot be converted to java.lang.Iterable<org.xacml4j.v30.types.Value<?>>
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :xacml-xml

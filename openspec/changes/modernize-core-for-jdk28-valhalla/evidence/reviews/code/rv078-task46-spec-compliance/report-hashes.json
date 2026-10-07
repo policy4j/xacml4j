@@ -1,0 +1,38 @@
+{
+  "astra/final-report.md": {
+    "sha256": "3604cd0d4cc7bdd8c0b15809ffba8e51e8038814ee8fc939286239a09fb19bfd",
+    "words": 648
+  },
+  "astra/report.md": {
+    "sha256": "bdbb9a826255a875f84a8204b745909fc971588abd8b59d68d2ec75ab271ac55",
+    "words": 510
+  },
+  "grok/final-report.md": {
+    "sha256": "2a670217daa395d022f58291d1755b1c126cb58dd1585d5544169c174f2870ef",
+    "words": 635
+  },
+  "grok/report.md": {
+    "sha256": "256980725503bf7bb8181772b2948fddc9b167fc0b9a13de3167c937b1a698c0",
+    "words": 741
+  },
+  "grok/traceability-report.md": {
+    "sha256": "791e6a641d422c1bdf9e208a8a7f680e61c7ae6df5d31194cee96b84d731e63f",
+    "words": 245
+  },
+  "grok/wording-report.md": {
+    "sha256": "eda2a9fc70ab805d4678d49ee3c1b34ed58402be99f81727a3ce2098ba53aabe",
+    "words": 119
+  },
+  "opus/final-report.md": {
+    "sha256": "f601eed6f2a12a4ad6726955733fd2d58942c699ba00162adb3c3fa2f9a466b9",
+    "words": 652
+  },
+  "opus/report.md": {
+    "sha256": "2687da87adbad771e3a4e84ecfcca5c12704b6c7359ca5d78093746fefd7cb36",
+    "words": 813
+  },
+  "opus/traceability-report.md": {
+    "sha256": "037f969e768c96a39bbdcd399b5307bbb1fc5be6d363c0a9e12945643d91ca2d",
+    "words": 294
+  }
+}

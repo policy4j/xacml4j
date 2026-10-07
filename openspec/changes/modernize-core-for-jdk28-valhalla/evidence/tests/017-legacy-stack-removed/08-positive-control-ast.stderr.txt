@@ -1,0 +1,3 @@
+Error: 48 error(s) found in code.
+Help: Scan succeeded and found error level diagnostics in the codebase.
+

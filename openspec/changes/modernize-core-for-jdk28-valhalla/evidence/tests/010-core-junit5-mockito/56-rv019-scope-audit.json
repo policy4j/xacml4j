@@ -1,0 +1,32 @@
+{
+  "changed_paths": [
+    "docs/ai/TESTING.md",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java"
+  ],
+  "outside_three_test_files": [
+    "docs/ai/TESTING.md"
+  ],
+  "headers_unchanged": {
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java": true
+  },
+  "methods_unchanged": {
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java": true
+  },
+  "production_unchanged": true,
+  "recorded_shared_change": [
+    {
+      "path": "docs/ai/TESTING.md",
+      "before_sha256": "65c570e3239be9180b512ffb85188cb7aa6a53f7c9c271712f6c14d03b13d3d4",
+      "after_sha256": "62850f9d547fd3f2ec6552681b52cc0ba3433ee3bd5ac4bbe8f9c7ec69213a9e",
+      "authorship": "UNATTRIBUTED",
+      "preserved": true
+    }
+  ],
+  "result": "PASS_CORE_SCOPE_WITH_RECORDED_SHARED_DOC_CHANGE"
+}

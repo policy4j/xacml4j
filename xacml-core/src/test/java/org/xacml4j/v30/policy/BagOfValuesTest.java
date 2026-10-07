@@ -22,21 +22,23 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.xacml4j.v30.types.XacmlTypes.INTEGER;
 import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -48,13 +50,14 @@ import org.xacml4j.v30.types.XacmlTypes;
 import com.google.common.collect.ImmutableList;
 
 
+@ExtendWith(MockitoExtension.class)
 public class BagOfValuesTest
 {
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
@@ -134,14 +137,13 @@ public class BagOfValuesTest
 	}
 
 
-
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithDifferentAttributeTypes()
 	{
 		Collection<Value<?>> attr = new LinkedList<>();
 		attr.add(INTEGER.ofAny(1));
 		attr.add(XacmlTypes.STRING.ofAny("aaa"));
-		INTEGER.bagBuilder().attributes(attr).build();
+		assertThrows(IllegalArgumentException.class, () -> INTEGER.bagBuilder().attributes(attr).build());
 	}
 
 	@Test
@@ -152,9 +154,8 @@ public class BagOfValuesTest
 		content2.add(INTEGER.ofAny(4));
 		content2.add(INTEGER.ofAny(5));
 		BagOfValues bag2 = INTEGER.bagBuilder().attributes(content2).build();
-		replay(context);
 		assertSame(bag2, bag2.evaluate(context));
-		verify(context);
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test

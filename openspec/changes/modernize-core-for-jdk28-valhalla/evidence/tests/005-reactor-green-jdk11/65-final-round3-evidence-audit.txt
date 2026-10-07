@@ -1,0 +1,5 @@
+PASS: fresh JDK 11 reactor 914 tests / 0 failures / 0 errors / 9 existing skips
+PASS: conformance OASIS 347 + 347, RSA 17, examples 2; no configured failures
+PASS: nine authorized project files; 3535 protected hashes unchanged; scoped diff check clean
+PASS: final summary, command, Results, blocker status, exclusions and compiler diagnostics agree
+No commit, staging, br, task tick, issue closure or fixture/expected-result edits

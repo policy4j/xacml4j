@@ -1,0 +1,7 @@
+id: core-test-legacy-stack
+language: Java
+message: Legacy JUnit 4 or EasyMock import remains
+severity: error
+rule:
+  kind: import_declaration
+  regex: 'org\.(easymock|junit\.(Assert|Assume|Test|Before[A-Za-z]*|After[A-Za-z]*|Rule|ClassRule|Ignore|runner|runners|rules))([.;]|$)'

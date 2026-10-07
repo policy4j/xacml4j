@@ -58,7 +58,6 @@
 .java-version
 /target/
 
-# Agent tooling (local state)
+# Agent tooling (local state). `.serena/.gitignore` keeps only project.yml.
 /.tgrep/
-/.serena/
 /outputs/

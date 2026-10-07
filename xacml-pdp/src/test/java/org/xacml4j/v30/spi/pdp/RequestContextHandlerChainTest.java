@@ -22,56 +22,49 @@ package org.xacml4j.v30.spi.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.createStrictMock;
+import static org.mockito.Mockito.mock;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 
 public class RequestContextHandlerChainTest
 {
-	private IMocksControl c;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
 	}
 
 	@Test
 	public void testCreateCompositeHandlerWith1Handler()
 	{
-		RequestContextHandler m0 = c.createMock(RequestContextHandler.class);
-		c.replay();
+		RequestContextHandler m0 = Mockito.mock(RequestContextHandler.class);
 		RequestContextHandlerChain h = new RequestContextHandlerChain(m0);
-		c.verify();
-		c.reset();
-		RequestContextHandler m1 = c.createMock(RequestContextHandler.class);
-		m0.setNext(m1);
-		c.replay();
+		RequestContextHandler m1 = Mockito.mock(RequestContextHandler.class);
 		h.setNext(m1);
-		c.verify();
+		org.mockito.InOrder order = Mockito.inOrder(m0);
+		order.verify(m0).setNext(m1);
+		Mockito.verifyNoMoreInteractions(m0);
 	}
 
 	@Test
 	public void testCreateCompositeHandlerWith4Handlers()
 	{
-		RequestContextHandler m0 = c.createMock(RequestContextHandler.class);
-		RequestContextHandler m1 = c.createMock(RequestContextHandler.class);
-		RequestContextHandler m2 = c.createMock(RequestContextHandler.class);
-		RequestContextHandler m3 = c.createMock(RequestContextHandler.class);
-		m0.setNext(m1);
-		m1.setNext(m2);
-		m2.setNext(m3);
-		c.replay();
+		RequestContextHandler m0 = Mockito.mock(RequestContextHandler.class);
+		RequestContextHandler m1 = Mockito.mock(RequestContextHandler.class);
+		RequestContextHandler m2 = Mockito.mock(RequestContextHandler.class);
+		RequestContextHandler m3 = Mockito.mock(RequestContextHandler.class);
 		RequestContextHandler h = new RequestContextHandlerChain(m0, m1, m2, m3);
-		c.verify();
-		c.reset();
-		RequestContextHandler m4 = createStrictMock(RequestContextHandler.class);
+		RequestContextHandler m4 = mock(RequestContextHandler.class);
 		h.setNext(m4, false);
-		c.replay();
 		h.setNext(m4);
-		c.verify();
+		org.mockito.InOrder order = Mockito.inOrder(m0, m1, m2, m3);
+		order.verify(m0).setNext(m1);
+		order.verify(m1).setNext(m2);
+		order.verify(m2).setNext(m3);
+		order.verify(m3, Mockito.times(2)).setNext(m4);
+		Mockito.verifyNoMoreInteractions(m0, m1, m2, m3);
+		Mockito.verifyNoInteractions(m4);
 	}
 }

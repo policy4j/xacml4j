@@ -22,6 +22,8 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
@@ -42,18 +44,39 @@ public final class NumericConversionFunctions
 	private NumericConversionFunctions() {}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-to-integer")
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerVal doubleToInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal v)
 	{
-		return v.toIntegerValue();
+		double value = v.get();
+		// C5: NaN and infinity keep the historical intValue saturation.
+		if(Double.isNaN(value) || Double.isInfinite(value)){
+			return IntegerVal.of((int) value);
+		}
+		// Signed long is [-2^63, 2^63). 2^63 is not a long.
+		if(value >= 9223372036854775808.0d || value < -9223372036854775808.0d){
+			throw new EvaluationException(Status.processingError().build(),
+					"double-to-integer value is outside the xs:integer range");
+		}
+		return IntegerVal.of((long) value);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-to-double")
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
 	public static DoubleVal integerToDouble(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal v)
 	{
+		long number = v.get();
+		double converted = (double) number;
+		// 2^63 is not a long. A double outside [-2^63, 2^63) saturates
+		// when cast back (JLS 5.1.3), so Long.MAX_VALUE would look exact.
+		// -2^63 is an exact double and stays on the low side of that test.
+		if(converted >= 9223372036854775808.0d
+				|| converted < -9223372036854775808.0d
+				|| (long) converted != number){
+			throw new EvaluationException(Status.processingError().build(),
+					"integer-to-double value is not exactly representable");
+		}
 		return v.toDoubleValue();
 	}
 }

@@ -1,8 +1,10 @@
 ## ADDED Requirements
 
 ### Requirement: Integer division and modulo
-`integer-divide` SHALL return an `xs:integer` equal to the quotient
-truncated toward zero (XACML 3.0 §A.3.2). `integer-mod` SHALL return the
+`integer-divide` SHALL return an `xs:integer` (XACML 3.0 §A.3.2) equal to
+the quotient truncated toward zero. The truncation direction is the
+project's integer-arithmetic interpretation, not an explicit rule in §A.3.2;
+the §7.5 rounding ambiguity is recorded in task 4.6 evidence. `integer-mod` SHALL return the
 remainder of that truncating division, with the sign of the dividend. A
 zero divisor SHALL make either function evaluate to Indeterminate.
 
@@ -89,16 +91,32 @@ SHALL add the magnitude of a negative duration (XACML 3.0 §A.3.7);
 - **WHEN** `dateTime-subtract-dayTimeDuration` is applied to `2002-03-22T08:23:47-05:00` and `-P5DT2H0M0S`
 - **THEN** the result is `2002-03-27T10:23:47-05:00`
 
-### Requirement: XPath function errors are Indeterminate
-When the content or XPath expression of `xpath-node-count`,
-`xpath-node-equal`, or `xpath-node-match` cannot be resolved or evaluated,
-the function SHALL evaluate to Indeterminate; it SHALL NOT return `0` or
-`false`.
+### Requirement: XPath evaluation errors and missing content
+When all referenced categories have `Content` and an XPath expression of `xpath-node-count`, `xpath-node-equal`, or
+`xpath-node-match` cannot be evaluated because of an invalid expression or
+an evaluation failure, the function SHALL evaluate to Indeterminate.
+Missing category `Content` SHALL instead yield `0` for `xpath-node-count`
+and `false` for `xpath-node-equal` and `xpath-node-match`, as required by
+XACML 3.0 §A.3.15.
 
 #### Scenario: Invalid XPath expression
+- **GIVEN** the referenced category has `Content`
 - **WHEN** `xpath-node-count` is applied to a syntactically invalid XPath expression
 - **THEN** evaluation is Indeterminate
 
 #### Scenario: Missing content
 - **WHEN** `xpath-node-match` refers to a category with no `Content`
-- **THEN** evaluation is Indeterminate
+- **THEN** the result is `false`
+
+#### Scenario: Missing content takes precedence over expression evaluation
+- **GIVEN** one argument of `xpath-node-equal` or `xpath-node-match` refers to a category with no `Content`
+- **WHEN** the other argument has an expression that would fail evaluation
+- **THEN** the result is `false` without evaluating the other expression
+
+#### Scenario: Missing content for node count
+- **WHEN** `xpath-node-count` refers to a category with no `Content`
+- **THEN** the result is the integer `0`
+
+#### Scenario: Missing content for node equality
+- **WHEN** either `xpath-node-equal` argument refers to a category with no `Content`
+- **THEN** the result is `false`

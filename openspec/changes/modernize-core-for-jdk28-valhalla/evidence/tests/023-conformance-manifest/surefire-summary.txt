@@ -1,0 +1,544 @@
+01-guard-import-red.log
+
+[xacml-conformance-tests] [ERROR] COMPILATION ERROR : 
+[xacml-conformance-tests] [INFO] BUILD FAILURE
+
+02-guard-import-green.log
+
+[xacml-conformance-tests] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 s - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.561 s - in org.xacml4j.v20.ConformancePolicyImportTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+[xacml-conformance-tests] [INFO] BUILD SUCCESS
+
+03-all-cases-probe.log
+
+[xacml-conformance-tests] [ERROR] COMPILATION ERROR : 
+[xacml-conformance-tests] [INFO] BUILD FAILURE
+
+04-all-cases-probe.log
+
+[xacml-conformance-tests] [INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.08 s - in org.xacml4j.v20.RSA2008InteropTest
+[xacml-conformance-tests] [ERROR] Tests run: 375, Failures: 12, Errors: 1, Skipped: 0, Time elapsed: 1.336 s <<< FAILURE! - in org.xacml4j.v20.Xacml20ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.101 s - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.764 s - in org.xacml4j.v20.VendoredFixtureIntegrityTest
+[xacml-conformance-tests] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v20.ConformancePolicyImportTest
+[xacml-conformance-tests] [ERROR] Tests run: 488, Failures: 30, Errors: 5, Skipped: 0, Time elapsed: 1.43 s <<< FAILURE! - in org.xacml4j.v20.Xacml30ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s - in org.xacml4j.v20.XacmlExampleTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [ERROR] Tests run: 895, Failures: 42, Errors: 6, Skipped: 0
+[xacml-conformance-tests] [INFO] BUILD FAILURE
+
+05-dependencies-guard-red.log
+
+[xacml-conformance-tests] [ERROR] Tests run: 11, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.142 s <<< FAILURE! - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [ERROR] Tests run: 11, Failures: 2, Errors: 0, Skipped: 0
+[xacml-conformance-tests] [INFO] BUILD FAILURE
+
+06-all-cases-after-harness-fixes.log
+
+[xacml-conformance-tests] [INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.947 s - in org.xacml4j.v20.RSA2008InteropTest
+[xacml-conformance-tests] [ERROR] Tests run: 375, Failures: 11, Errors: 1, Skipped: 0, Time elapsed: 1.189 s <<< FAILURE! - in org.xacml4j.v20.Xacml20ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.09 s - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.493 s - in org.xacml4j.v20.VendoredFixtureIntegrityTest
+[xacml-conformance-tests] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v20.ConformancePolicyImportTest
+[xacml-conformance-tests] [ERROR] Tests run: 488, Failures: 29, Errors: 3, Skipped: 0, Time elapsed: 1.072 s <<< FAILURE! - in org.xacml4j.v20.Xacml30ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in org.xacml4j.v20.XacmlExampleTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [ERROR] Tests run: 897, Failures: 40, Errors: 4, Skipped: 0
+[xacml-conformance-tests] [INFO] BUILD FAILURE
+
+07-nested-inventory-guard-red.log
+
+[xacml-conformance-tests] [ERROR] Tests run: 13, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.21 s <<< FAILURE! - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [ERROR] Tests run: 13, Failures: 2, Errors: 0, Skipped: 0
+[xacml-conformance-tests] [INFO] BUILD FAILURE
+
+08-jdk21-conformance-gate.log
+
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.util.JSONUtilTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.267 s - in org.xacml4j.util.DOMUtilTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s - in org.xacml4j.util.ISO8601DurationTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.CategoryIdTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.AttributeTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s - in org.xacml4j.v30.types.ISO8601DateTest
+[xacml-core] [WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.025 s - in org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeToStringCapabilityTest
+[xacml-core] [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.RFC822NameTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.DoubleValTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.XacmlTypesTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.ISO8601TimeTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s - in org.xacml4j.v30.types.DNSNameTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601YearMonthDurationTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.BooleanValTest
+[xacml-core] [INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s - in org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.types.IPAddressTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.BinaryTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.IntegerTypeTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.423 s - in org.xacml4j.v30.types.ISO8601DurationReviewTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.Base64BinaryTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.types.ISO8601DateTimeTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.AnyURITest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.StringValTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.types.EUI48Test
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.PortRangeTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.PathTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.HexTypeTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeCapabilityTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeToStringTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.ISO8601DayTimeDurationTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.AttributeIndexTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.WellKnownAttributeIdsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s - in org.xacml4j.v30.content.JsonContentTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s - in org.xacml4j.v30.content.XmlContentTest
+[xacml-core] [WARNING] Tests run: 4, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.002 s - in org.xacml4j.v30.content.ContentTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.ObligationTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.EntityTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.ContentTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 s - in org.xacml4j.v30.policy.ConditionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.057 s - in org.xacml4j.v30.policy.MatchAllOfTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.BagOfValuesTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.VariableReferenceTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.XPathTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.RootEvaluationContextTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.StatusCodeIdTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.DecisionTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.03 s - in org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[xacml-core] [INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AdviceTest
+[xacml-core] [INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.099 s - in org.xacml4j.v30.policy.RuleTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.ApplyTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.CombinerParameterTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s - in org.xacml4j.v30.policy.TargetTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AttributeAssignmentTest
+[xacml-core] 92[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in org.xacml4j.v30.policy.MatchTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.ResultTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.policy.AttributesTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.03 s - in org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.v30.policy.function.impl.SetFunctionTest
+[xacml-core] [INFO] Tests run: 72, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.153 s - in org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[xacml-core] 385[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.042 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.101 s - in org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.112 s - in org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s - in org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.072 s - in org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.115 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[xacml-core] [INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.15 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s - in org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest
+[xacml-core] [INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest
+[xacml-core] [INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamTypeSequenceTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.policy.PolicyTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.PolicySetIDReferenceTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.MatchAnyOfTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.RequestTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.PolicyDefaultsTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s - in org.xacml4j.v30.policy.PolicySetTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AdviceExpressionTest
+[xacml-core] [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.PolicyIDReferenceTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionMatchTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VariableDefinitionTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.AttributeSelectorTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.AttributeDesignatorTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.VersionTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.ObligationExpressionTest
+[xacml-core] [INFO] Results:
+[xacml-core] [WARNING] Tests run: 760, Failures: 0, Errors: 0, Skipped: 2
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s - in org.xacml4j.v30.xml.ExpressionBuilderTest
+[xacml-xml] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.376 s - in org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s - in org.xacml4j.v30.xml.Xacml30RequestContentTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest
+[xacml-xml] [INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.157 s - in org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.xml.TypeToXacml30Test
+[xacml-xml] [INFO] Results:
+[xacml-xml] [INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.325 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[xacml-json] [WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.008 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[xacml-json] [INFO] Results:
+[xacml-json] [WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.213 s - in org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest
+[xacml-pdp] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.31 s - in org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s - in org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest
+[xacml-pdp] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s - in org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest
+[xacml-pdp] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s - in org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest
+[xacml-pdp] [WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.BaseAttributeResolverTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.spi.pip.AttributeSetTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest
+[xacml-pdp] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest
+[xacml-pdp] [WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.037 s - in org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.08 s - in org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest
+[xacml-pdp] [INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[xacml-pdp] [INFO] Results:
+[xacml-pdp] [WARNING] Tests run: 73, Failures: 0, Errors: 0, Skipped: 3
+[xacml-test] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.463 s - in org.xacml4j.v30.ExpectedAttributeResolverBuilderTest
+[xacml-test] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.369 s - in org.xacml4j.v30.Xacml30SamplePolicyTest
+[xacml-test] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.AttributeResolverTestSupportTest
+[xacml-test] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v20.Xacml30TestUtilityTest
+[xacml-test] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v20.Xacml20SamplePolicyTest
+[xacml-test] [INFO] Results:
+[xacml-test] [INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+[xacml-conformance-tests] [INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.963 s - in org.xacml4j.v20.RSA2008InteropTest
+[xacml-conformance-tests] [WARNING] Tests run: 375, Failures: 0, Errors: 0, Skipped: 12, Time elapsed: 1.17 s - in org.xacml4j.v20.Xacml20ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.108 s - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.531 s - in org.xacml4j.v20.VendoredFixtureIntegrityTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest
+[xacml-conformance-tests] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v20.ConformancePolicyImportTest
+[xacml-conformance-tests] [WARNING] Tests run: 488, Failures: 0, Errors: 0, Skipped: 32, Time elapsed: 1.284 s - in org.xacml4j.v20.Xacml30ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v20.XacmlExampleTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [WARNING] Tests run: 901, Failures: 0, Errors: 0, Skipped: 44
+[xacml-conformance-tests] [INFO] BUILD SUCCESS
+
+09-jdk21-clean-verify.log
+
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.util.JSONUtilTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.284 s - in org.xacml4j.util.DOMUtilTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s - in org.xacml4j.util.ISO8601DurationTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.CategoryIdTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.AttributeTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.types.ISO8601DateTest
+[xacml-core] [WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.026 s - in org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeToStringCapabilityTest
+[xacml-core] [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.RFC822NameTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.DoubleValTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.XacmlTypesTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.ISO8601TimeTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.types.DNSNameTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601YearMonthDurationTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.BooleanValTest
+[xacml-core] [INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s - in org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.types.IPAddressTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.BinaryTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.IntegerTypeTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.341 s - in org.xacml4j.v30.types.ISO8601DurationReviewTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.Base64BinaryTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.ISO8601DateTimeTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.AnyURITest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.StringValTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.types.EUI48Test
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.PortRangeTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.PathTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.HexTypeTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeCapabilityTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeToStringTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.ISO8601DayTimeDurationTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.AttributeIndexTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.WellKnownAttributeIdsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in org.xacml4j.v30.content.JsonContentTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s - in org.xacml4j.v30.content.XmlContentTest
+[xacml-core] [WARNING] Tests run: 4, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.003 s - in org.xacml4j.v30.content.ContentTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.ObligationTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.EntityTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.ContentTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s - in org.xacml4j.v30.policy.ConditionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s - in org.xacml4j.v30.policy.MatchAllOfTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.BagOfValuesTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.VariableReferenceTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.XPathTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.RootEvaluationContextTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.StatusCodeIdTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.DecisionTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[xacml-core] [INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s - in org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.AdviceTest
+[xacml-core] [INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.09 s - in org.xacml4j.v30.policy.RuleTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.ApplyTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.CombinerParameterTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.TargetTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AttributeAssignmentTest
+[xacml-core] 92[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.policy.MatchTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.ResultTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.AttributesTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s - in org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.policy.function.impl.SetFunctionTest
+[xacml-core] [INFO] Tests run: 72, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.132 s - in org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[xacml-core] 385[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.105 s - in org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.109 s - in org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s - in org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s - in org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.101 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[xacml-core] [INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.111 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s - in org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest
+[xacml-core] [INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest
+[xacml-core] [INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.ParamTypeSequenceTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.policy.PolicyTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.policy.PolicySetIDReferenceTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.MatchAnyOfTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.RequestTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.PolicyDefaultsTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s - in org.xacml4j.v30.policy.PolicySetTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AdviceExpressionTest
+[xacml-core] [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.PolicyIDReferenceTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionMatchTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VariableDefinitionTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.AttributeSelectorTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AttributeDesignatorTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.ObligationExpressionTest
+[xacml-core] [INFO] Results:
+[xacml-core] [WARNING] Tests run: 760, Failures: 0, Errors: 0, Skipped: 2
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in org.xacml4j.v30.xml.ExpressionBuilderTest
+[xacml-xml] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.323 s - in org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s - in org.xacml4j.v30.xml.Xacml30RequestContentTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest
+[xacml-xml] [INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.121 s - in org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.xml.TypeToXacml30Test
+[xacml-xml] [INFO] Results:
+[xacml-xml] [INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.299 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[xacml-json] [WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.008 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[xacml-json] [INFO] Results:
+[xacml-json] [WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.199 s - in org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest
+[xacml-pdp] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.315 s - in org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s - in org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest
+[xacml-pdp] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s - in org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest
+[xacml-pdp] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.04 s - in org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest
+[xacml-pdp] [WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.BaseAttributeResolverTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.spi.pip.AttributeSetTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest
+[xacml-pdp] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest
+[xacml-pdp] [WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.049 s - in org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s - in org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.078 s - in org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest
+[xacml-pdp] [INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 s - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[xacml-pdp] [INFO] Results:
+[xacml-pdp] [WARNING] Tests run: 73, Failures: 0, Errors: 0, Skipped: 3
+[xacml-test] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.46 s - in org.xacml4j.v30.ExpectedAttributeResolverBuilderTest
+[xacml-test] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.259 s - in org.xacml4j.v30.Xacml30SamplePolicyTest
+[xacml-test] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.AttributeResolverTestSupportTest
+[xacml-test] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v20.Xacml30TestUtilityTest
+[xacml-test] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s - in org.xacml4j.v20.Xacml20SamplePolicyTest
+[xacml-test] [INFO] Results:
+[xacml-test] [INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+[xacml-conformance-tests] [INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.752 s - in org.xacml4j.v20.RSA2008InteropTest
+[xacml-conformance-tests] [WARNING] Tests run: 375, Failures: 0, Errors: 0, Skipped: 12, Time elapsed: 1.165 s - in org.xacml4j.v20.Xacml20ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.155 s - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.466 s - in org.xacml4j.v20.VendoredFixtureIntegrityTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest
+[xacml-conformance-tests] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v20.ConformancePolicyImportTest
+[xacml-conformance-tests] [WARNING] Tests run: 488, Failures: 0, Errors: 0, Skipped: 32, Time elapsed: 1.158 s - in org.xacml4j.v20.Xacml30ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s - in org.xacml4j.v20.XacmlExampleTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [WARNING] Tests run: 901, Failures: 0, Errors: 0, Skipped: 44
+[xacml-conformance-tests] [INFO] BUILD SUCCESS
+
+15-jdk21-final-clean-verify.log
+
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.util.JSONUtilTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.284 s - in org.xacml4j.util.DOMUtilTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s - in org.xacml4j.util.ISO8601DurationTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.CategoryIdTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.AttributeTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s - in org.xacml4j.v30.types.ISO8601DateTest
+[xacml-core] [WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.03 s - in org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeToStringCapabilityTest
+[xacml-core] [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.RFC822NameTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.DoubleValTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.XacmlTypesTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.ISO8601TimeTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 s - in org.xacml4j.v30.types.DNSNameTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601YearMonthDurationTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.BooleanValTest
+[xacml-core] [INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.048 s - in org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.IPAddressTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.BinaryTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.IntegerTypeTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.358 s - in org.xacml4j.v30.types.ISO8601DurationReviewTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.Base64BinaryTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.ISO8601DateTimeTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.AnyURITest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.StringValTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.types.EUI48Test
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.PortRangeTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.PathTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.HexTypeTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeCapabilityTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeToStringTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.ISO8601DayTimeDurationTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.AttributeIndexTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.WellKnownAttributeIdsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.03 s - in org.xacml4j.v30.content.JsonContentTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s - in org.xacml4j.v30.content.XmlContentTest
+[xacml-core] [WARNING] Tests run: 4, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.003 s - in org.xacml4j.v30.content.ContentTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.ObligationTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.EntityTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.ContentTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s - in org.xacml4j.v30.policy.ConditionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s - in org.xacml4j.v30.policy.MatchAllOfTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.BagOfValuesTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.VariableReferenceTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.XPathTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.RootEvaluationContextTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.StatusCodeIdTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.DecisionTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s - in org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[xacml-core] [INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AdviceTest
+[xacml-core] [INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.094 s - in org.xacml4j.v30.policy.RuleTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.ApplyTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.CombinerParameterTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.TargetTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AttributeAssignmentTest
+[xacml-core] 92[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.policy.MatchTest
+[xacml-core] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.ResultTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.AttributesTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.policy.function.impl.SetFunctionTest
+[xacml-core] [INFO] Tests run: 72, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.146 s - in org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[xacml-core] 385[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.112 s - in org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.113 s - in org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s - in org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.068 s - in org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest
+[xacml-core] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[xacml-core] [INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.122 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s - in org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest
+[xacml-core] [INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.078 s - in org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest
+[xacml-core] [INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest
+[xacml-core] [INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[xacml-core] [INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.ParamTypeSequenceTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.policy.PolicyTest
+[xacml-core] [INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.PolicySetIDReferenceTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.MatchAnyOfTest
+[xacml-core] [INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.RequestTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.PolicyDefaultsTest
+[xacml-core] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s - in org.xacml4j.v30.policy.PolicySetTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AdviceExpressionTest
+[xacml-core] [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.PolicyIDReferenceTest
+[xacml-core] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionMatchTest
+[xacml-core] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VariableDefinitionTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AttributeSelectorTest
+[xacml-core] [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AttributeDesignatorTest
+[xacml-core] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.VersionTest
+[xacml-core] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.ObligationExpressionTest
+[xacml-core] [INFO] Results:
+[xacml-core] [WARNING] Tests run: 765, Failures: 0, Errors: 0, Skipped: 2
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.048 s - in org.xacml4j.v30.xml.ExpressionBuilderTest
+[xacml-xml] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.439 s - in org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s - in org.xacml4j.v30.xml.Xacml30RequestContentTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest
+[xacml-xml] [INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.12 s - in org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest
+[xacml-xml] [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.xml.TypeToXacml30Test
+[xacml-xml] [INFO] Results:
+[xacml-xml] [INFO] Tests run: 35, Failures: 0, Errors: 0, Skipped: 0
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.326 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[xacml-json] [WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.012 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[xacml-json] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[xacml-json] [INFO] Results:
+[xacml-json] [WARNING] Tests run: 6, Failures: 0, Errors: 0, Skipped: 1
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.209 s - in org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest
+[xacml-pdp] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.303 s - in org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s - in org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest
+[xacml-pdp] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.03 s - in org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest
+[xacml-pdp] [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s - in org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest
+[xacml-pdp] [WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.BaseAttributeResolverTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.spi.pip.AttributeSetTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest
+[xacml-pdp] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest
+[xacml-pdp] [WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.036 s - in org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest
+[xacml-pdp] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.078 s - in org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest
+[xacml-pdp] [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.059 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[xacml-pdp] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest
+[xacml-pdp] [INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.062 s - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[xacml-pdp] [INFO] Results:
+[xacml-pdp] [WARNING] Tests run: 74, Failures: 0, Errors: 0, Skipped: 3
+[xacml-test] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.402 s - in org.xacml4j.v30.ExpectedAttributeResolverBuilderTest
+[xacml-test] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.244 s - in org.xacml4j.v30.Xacml30SamplePolicyTest
+[xacml-test] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.AttributeResolverTestSupportTest
+[xacml-test] [INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v20.Xacml30TestUtilityTest
+[xacml-test] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s - in org.xacml4j.v20.Xacml20SamplePolicyTest
+[xacml-test] [INFO] Results:
+[xacml-test] [INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+[xacml-conformance-tests] [INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.731 s - in org.xacml4j.v20.RSA2008InteropTest
+[xacml-conformance-tests] [WARNING] Tests run: 375, Failures: 0, Errors: 0, Skipped: 12, Time elapsed: 1.105 s - in org.xacml4j.v20.Xacml20ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.136 s - in org.xacml4j.v20.ConformanceManifestTest
+[xacml-conformance-tests] [INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.5 s - in org.xacml4j.v20.VendoredFixtureIntegrityTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest
+[xacml-conformance-tests] [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v20.ConformancePolicyImportTest
+[xacml-conformance-tests] [WARNING] Tests run: 488, Failures: 0, Errors: 0, Skipped: 32, Time elapsed: 1.056 s - in org.xacml4j.v20.Xacml30ConformanceTest
+[xacml-conformance-tests] [INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v20.XacmlExampleTest
+[xacml-conformance-tests] [INFO] Results:
+[xacml-conformance-tests] [WARNING] Tests run: 901, Failures: 0, Errors: 0, Skipped: 44
+[xacml-conformance-tests] [INFO] BUILD SUCCESS
+

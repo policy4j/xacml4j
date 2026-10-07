@@ -22,17 +22,18 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
@@ -44,6 +45,7 @@ import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 
 
+@ExtendWith(MockitoExtension.class)
 public class XPathFunctionsTest
 {
 	private String testXml = "<md:record xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
@@ -78,11 +80,11 @@ public class XPathFunctionsTest
 
 	private XmlContent contentDifferent;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 		this.content = XmlContent.of(XmlContent.fromString(testXml));
 		this.contentSame = XmlContent.of(XmlContent.fromString(testXmlSame));
 		this.contentDiff = XmlContent.of(XmlContent.fromString(testXmlDiff));
@@ -95,7 +97,6 @@ public class XPathFunctionsTest
 
 		this.funcF = FunctionProviderBuilder
 				.builder()
-				.fromClass(XPathFunctions.class)
 				.build();
 	}
 
@@ -116,12 +117,18 @@ public class XPathFunctionsTest
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-count").get();
 		Path xpath  = XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_ACCESS);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolveEntity(xpath.getCategory().orElse(null)))
-				.andReturn(Optional.of(Entity.of(content)));
-		replay(context);
-		assertEquals(XacmlTypes.INTEGER.ofAny(1), f.invoke(context, xpath));
-		verify(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(context.resolveEntity(xpath.getCategory().orElse(null)))
+				.thenReturn(Optional.of(Entity.of(content)));
+		InOrder order = inOrder(context);
+		assertEquals(XacmlTypes.INTEGER.ofAny(1), f.<Value>invoke(context, xpath));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(context).resolveEntity(xpath.getCategory().orElse(null));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(context, times(1)).resolveEntity(xpath.getCategory().orElse(null));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -129,12 +136,18 @@ public class XPathFunctionsTest
 	{
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-count").get();
 		StringVal xpath  = XacmlTypes.STRING.ofAny("./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name");
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolveEntity(CategoryId.RESOURCE))
-				.andReturn(Optional.of(Entity.of(contentDifferent)));
-		replay(context);
-		assertEquals(XacmlTypes.INTEGER.ofAny(2), f.invoke(context, xpath));
-		verify(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(context.resolveEntity(CategoryId.RESOURCE))
+				.thenReturn(Optional.of(Entity.of(contentDifferent)));
+		InOrder order = inOrder(context);
+		assertEquals(XacmlTypes.INTEGER.ofAny(2), f.<Value>invoke(context, xpath));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(context).resolveEntity(CategoryId.RESOURCE);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(context, times(1)).resolveEntity(CategoryId.RESOURCE);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -142,10 +155,14 @@ public class XPathFunctionsTest
 	{
 		Path xpath  = XacmlTypes.XPATH.ofAny("/test",
 				CategoryId.SUBJECT_ACCESS);
-		expect(context.resolveEntity(xpath.getCategory().orElse(null))).andReturn(Optional.of(Entity.of(content)));
-		replay(context);
+		when(context.resolveEntity(xpath.getCategory().orElse(null))).thenReturn(Optional.of(Entity.of(content)));
+		InOrder order = inOrder(context);
 		assertEquals(XacmlTypes.INTEGER.ofAny(0), XPathFunctions.xpathCount(context, xpath));
-		verify(context);
+		order.verify(context).resolveEntity(xpath.getCategory().orElse(null));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolveEntity(xpath.getCategory().orElse(null));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -154,12 +171,18 @@ public class XPathFunctionsTest
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:3.0:function:xpath-node-match").get();
 		Path xpath0  = XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_ACCESS);
 		Path xpath1  = XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_ACCESS);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolveContent(xpath0.getCategory().orElse(null), Content.Type.XML_UTF8)).andReturn(Optional.of(content));
-		expect(context.resolveContent(xpath1.getCategory().orElse(null), Content.Type.XML_UTF8)).andReturn(Optional.of(contentSame));
-		replay(context);
-		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), f.invoke(context, xpath0, xpath1));
-		verify(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(context.resolveContent(xpath0.getCategory().orElse(null), Content.Type.XML_UTF8))
+				.thenReturn(Optional.of(content), Optional.of(content));
+		InOrder order = inOrder(context);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), f.<Value>invoke(context, xpath0, xpath1));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(context, times(2)).resolveContent(xpath0.getCategory().orElse(null), Content.Type.XML_UTF8);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(context, times(2)).resolveContent(xpath0.getCategory().orElse(null), Content.Type.XML_UTF8);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -168,12 +191,18 @@ public class XPathFunctionsTest
 		FunctionSpec f = funcF.getFunction("urn:oasis:names:tc:xacml:1.0:function:xpath-node-match").get();
 		StringVal xpath0  = XacmlTypes.STRING.ofAny("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
 		StringVal xpath1  = XacmlTypes.STRING.ofAny("./xacml-context:Resource/xacml-context:ResourceContent/md:record");
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(context.resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8)).andReturn(Optional.of(content));
-		expect(context.resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8)).andReturn(Optional.of(contentSame));
-		replay(context);
-		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), f.invoke(context, xpath0, xpath1));
-		verify(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(context.resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8))
+				.thenReturn(Optional.of(content), Optional.of(content));
+		InOrder order = inOrder(context);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), f.<Value>invoke(context, xpath0, xpath1));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(context, times(2)).resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(context, times(2)).resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 }

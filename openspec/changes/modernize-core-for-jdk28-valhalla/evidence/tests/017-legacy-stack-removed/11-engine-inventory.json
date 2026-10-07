@@ -1,0 +1,68 @@
+[
+  {
+    "module": "xacml-core",
+    "classpath_source": "xacml-core/target/surefire-reports/TEST-org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest.xml",
+    "java_version": "21.0.6",
+    "legacy_classpath_entries": [],
+    "engine_ids": [
+      "junit-jupiter"
+    ],
+    "stdout": "xacml-core TestEngine IDs: [junit-jupiter]\n",
+    "exit_code": 0
+  },
+  {
+    "module": "xacml-pdp",
+    "classpath_source": "xacml-pdp/target/surefire-reports/TEST-org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest.xml",
+    "java_version": "21.0.6",
+    "legacy_classpath_entries": [],
+    "engine_ids": [
+      "junit-jupiter"
+    ],
+    "stdout": "xacml-pdp TestEngine IDs: [junit-jupiter]\n",
+    "exit_code": 0
+  },
+  {
+    "module": "xacml-xml",
+    "classpath_source": "xacml-xml/target/surefire-reports/TEST-org.xacml4j.v30.xml.ExpressionBuilderTest.xml",
+    "java_version": "21.0.6",
+    "legacy_classpath_entries": [],
+    "engine_ids": [
+      "junit-jupiter"
+    ],
+    "stdout": "xacml-xml TestEngine IDs: [junit-jupiter]\n",
+    "exit_code": 0
+  },
+  {
+    "module": "xacml-json",
+    "classpath_source": "xacml-json/target/surefire-reports/TEST-org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest.xml",
+    "java_version": "21.0.6",
+    "legacy_classpath_entries": [],
+    "engine_ids": [
+      "junit-jupiter"
+    ],
+    "stdout": "xacml-json TestEngine IDs: [junit-jupiter]\n",
+    "exit_code": 0
+  },
+  {
+    "module": "xacml-test",
+    "classpath_source": "xacml-test/target/surefire-reports/TEST-org.xacml4j.v20.Xacml20SamplePolicyTest.xml",
+    "java_version": "21.0.6",
+    "legacy_classpath_entries": [],
+    "engine_ids": [
+      "junit-jupiter"
+    ],
+    "stdout": "xacml-test TestEngine IDs: [junit-jupiter]\n",
+    "exit_code": 0
+  },
+  {
+    "module": "xacml-conformance-tests",
+    "classpath_source": "xacml-conformance-tests/target/surefire-reports/TEST-org.xacml4j.v20.Xacml30ConformanceTest.xml",
+    "java_version": "21.0.6",
+    "legacy_classpath_entries": [],
+    "engine_ids": [
+      "junit-jupiter"
+    ],
+    "stdout": "xacml-conformance-tests TestEngine IDs: [junit-jupiter]\n",
+    "exit_code": 0
+  }
+]

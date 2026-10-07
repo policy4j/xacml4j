@@ -22,6 +22,8 @@ package org.xacml4j.v30.marshal.json;
  * #L%
  */
 
+import org.xacml4j.v30.types.BooleanVal;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -38,6 +40,9 @@ class GsonUtil
 		JsonPrimitive v = o.getAsJsonPrimitive(memberName);
 		if(v == null){
 			v = o.getAsJsonPrimitive(memberName.toLowerCase());
+		}
+		if(v != null && v.isString()){
+			return BooleanVal.ofAny(v.getAsString()).get();
 		}
 		return (v != null)?v.getAsBoolean():defaultValue;
 	}

@@ -98,7 +98,7 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleVal a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double") DoubleVal b)
 	{
-		return XacmlTypes.BOOLEAN.ofAny(a.get().equals(b.get()) || a.get() > b.get());
+		return XacmlTypes.BOOLEAN.ofAny(a.get() >= b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than-or-equal")
@@ -107,6 +107,6 @@ public final class NumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal b)
 	{
-		return XacmlTypes.BOOLEAN.ofAny(a.get().equals(b.get()) || a.get() < b.get());
+		return XacmlTypes.BOOLEAN.ofAny(a.get() <= b.get());
 	}
 }

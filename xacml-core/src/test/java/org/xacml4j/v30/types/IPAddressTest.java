@@ -22,11 +22,10 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.util.IPAddressUtils;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class IPAddressTest

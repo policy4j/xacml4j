@@ -46,18 +46,37 @@ public final class BooleanVal extends Value.OtherValue<Boolean>
 
     public static BooleanVal ofAny(Object v, Object ...params){
         if (v instanceof java.lang.String) {
-            return java.lang.Boolean.parseBoolean((java.lang.String)v)?
-                    BooleanVal.TRUE: BooleanVal.FALSE;
+            return fromLexical((java.lang.String)v);
         }
         if (v instanceof StringVal) {
-            return java.lang.Boolean.parseBoolean(((StringVal)v).get()) ?
-                    BooleanVal.TRUE : BooleanVal.FALSE;
+            return fromLexical(((StringVal)v).get());
         }
         if (v instanceof java.lang.Boolean) {
             return (java.lang.Boolean)v? BooleanVal.TRUE: BooleanVal.FALSE;
         }
         throw SyntaxException.invalidAttributeValue(
                 v, XacmlTypes.BOOLEAN);
+    }
+
+    private static BooleanVal fromLexical(String lexical) {
+        // XML Schema boolean uses whiteSpace=collapse; only XML whitespace is removed.
+        int start = 0;
+        int end = lexical.length();
+        while (start < end && isXmlWhitespace(lexical.charAt(start))) {
+            start++;
+        }
+        while (end > start && isXmlWhitespace(lexical.charAt(end - 1))) {
+            end--;
+        }
+        return switch (lexical.substring(start, end)) {
+            case "true", "1" -> TRUE;
+            case "false", "0" -> FALSE;
+            default -> throw SyntaxException.invalidAttributeValue(lexical, XacmlTypes.BOOLEAN);
+        };
+    }
+
+    private static boolean isXmlWhitespace(char value) {
+        return value == ' ' || value == '\t' || value == '\r' || value == '\n';
     }
 
     public BooleanVal and(BooleanVal v){

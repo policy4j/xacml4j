@@ -1,0 +1,9 @@
+Conversation receipt (receipt.json); no shell command supplies a maintainer ruling.
+
+Tracker updates made from the ruling (run from the repository root):
+rtk br comments add <id> --actor claude-code -m "Maintainer ruling 2026-10-07, run 061 <Dn> ..."
+  ids: policy4j-the.4.34, policy4j-the.5.4, policy4j-the.4.44, policy4j-the.4.12,
+       policy4j-the.4.17, policy4j-the.4.18, policy4j-the.4.20, policy4j-the.3.9,
+       policy4j-the.4.50, policy4j-the.4.51, policy4j-the.11, policy4j-the.4.29,
+       policy4j-the.4.7
+rtk br sync --flush-only

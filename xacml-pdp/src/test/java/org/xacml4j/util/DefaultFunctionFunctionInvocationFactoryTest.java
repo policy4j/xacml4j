@@ -21,11 +21,11 @@ package org.xacml4j.util;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
 import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
 
@@ -34,7 +34,7 @@ public class DefaultFunctionFunctionInvocationFactoryTest
 	private FunctionInvocationFactory f;
 	private TestObject instance;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.f = FunctionInvocationFactory.defaultFactory();
 		this.instance = new TestObject();

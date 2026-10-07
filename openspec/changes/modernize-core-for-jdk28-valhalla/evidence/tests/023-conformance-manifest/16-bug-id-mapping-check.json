@@ -1,0 +1,71 @@
+{
+  "mapping": {
+    "oasis20:IIA004": "policy4j-the.3.9",
+    "oasis20:IIA005": "policy4j-the.4.17",
+    "oasis20:IIC012": "policy4j-the.3.9",
+    "oasis20:IIC020": "policy4j-the.4.6",
+    "oasis20:IIIC001": "policy4j-the.4.19",
+    "oasis20:IIIC002": "policy4j-the.4.18",
+    "oasis20:IIIC003": "policy4j-the.4.18",
+    "oasis20:IIIG001": "policy4j-the.4.20",
+    "oasis20:IIIG002": "policy4j-the.4.20",
+    "oasis20:IIIG003": "policy4j-the.4.20",
+    "oasis20:IIIG004": "policy4j-the.4.20",
+    "oasis20:IIIG005": "policy4j-the.4.20",
+    "oasis30:IIA004": "policy4j-the.3.9",
+    "oasis30:IIA005": "policy4j-the.4.17",
+    "oasis30:IIA022": "policy4j-the.4.16",
+    "oasis30:IIA023": "policy4j-the.3.9",
+    "oasis30:IIA024": "policy4j-the.4.16",
+    "oasis30:IIC012": "policy4j-the.3.9",
+    "oasis30:IIC020": "policy4j-the.4.6",
+    "oasis30:IIC300": "policy4j-the.4.15",
+    "oasis30:IIC302": "policy4j-the.4.14",
+    "oasis30:IIC303": "policy4j-the.4.14",
+    "oasis30:IIC310": "policy4j-the.4.15",
+    "oasis30:IIC312": "policy4j-the.4.14",
+    "oasis30:IIC313": "policy4j-the.4.14",
+    "oasis30:IIC320": "policy4j-the.4.15",
+    "oasis30:IIC322": "policy4j-the.4.14",
+    "oasis30:IIC323": "policy4j-the.4.14",
+    "oasis30:IIC330": "policy4j-the.4.14",
+    "oasis30:IIC331": "policy4j-the.4.14",
+    "oasis30:IIC332": "policy4j-the.4.14",
+    "oasis30:IIC333": "policy4j-the.4.14",
+    "oasis30:IIC334": "policy4j-the.4.14",
+    "oasis30:IIC335": "policy4j-the.4.14",
+    "oasis30:IID029": "policy4j-the.3.9",
+    "oasis30:IID300": "policy4j-the.4.21",
+    "oasis30:IIIA340": "policy4j-the.4.16",
+    "oasis30:IIIC002": "policy4j-the.4.18",
+    "oasis30:IIIC003": "policy4j-the.4.18",
+    "oasis30:IIIE301": "policy4j-the.3.7",
+    "oasis30:IIIE302": "policy4j-the.3.7",
+    "oasis30:IIIE303": "policy4j-the.3.7",
+    "oasis30:IIIG300": "policy4j-the.4.22",
+    "oasis30:IIIG301": "policy4j-the.4.22"
+  },
+  "files": {
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv": {
+      "case_ids_verified": 44,
+      "placeholder_replacements": 41,
+      "other_bytes_unchanged": true,
+      "before_sha256": "890aeea2dfa840610498f269948a0c6dbe0e107857cbae42184b1d4b65d07893",
+      "after_sha256": "e3f641e2b1a8fbb4ea154c4f20cdc7cbd686edcbbb1aea9403c9f4053241a1dc"
+    },
+    "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/conformance-blockers.md": {
+      "case_ids_verified": 44,
+      "placeholder_replacements": 41,
+      "other_bytes_unchanged": true,
+      "before_sha256": "934b4e979508e5ae20b95c27550b02c88944dd57e9046aac6c45dfb386f52135",
+      "after_sha256": "4862952cce2d2ff250810997a94a3583ae6ae02e257cffc7fbc40354c2155e5f"
+    },
+    "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/per-case-results.csv": {
+      "case_ids_verified": 44,
+      "placeholder_replacements": 41,
+      "other_bytes_unchanged": true,
+      "before_sha256": "99a223cb1e588ac776cc039144cfd4ebdbbc7b299cc44bab640766c043a6085f",
+      "after_sha256": "371a20d3135dbd68c57754c27e7d7dc11ed95d03fb052264c5ac8f79dccbe7cb"
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "checks": [
+    {
+      "name": "08-legacy-api-rg",
+      "argv": [
+        "rtk",
+        "rg",
+        "-n",
+        "-i",
+        "EasyMock|org\\.easymock|org\\.junit\\.(experimental|internal|runners|runner|rules|Assume|Assert|Test|Before|After|Ignore|Rule|ClassRule)|org\\.hamcrest\\.junit|junit\\.framework",
+        "--glob",
+        "*.java",
+        "xacml-core/src",
+        "xacml-pdp/src",
+        "xacml-xml-jaxb/src",
+        "xacml-xml/src",
+        "xacml-json/src",
+        "xacml-test/src",
+        "xacml-conformance-tests/src"
+      ],
+      "exit_code": 1
+    },
+    {
+      "name": "08-legacy-annotation-rg",
+      "argv": [
+        "rtk",
+        "rg",
+        "-n",
+        "@Before([[:space:]]|\\()|@After([[:space:]]|\\()|@Ignore([[:space:]]|\\()|@Rule([[:space:]]|\\()|@ClassRule([[:space:]]|\\()|@RunWith|@Test[[:space:]]*\\([[:space:]]*expected|ExpectedException|TemporaryFolder",
+        "--glob",
+        "*.java",
+        "xacml-core/src",
+        "xacml-pdp/src",
+        "xacml-xml-jaxb/src",
+        "xacml-xml/src",
+        "xacml-json/src",
+        "xacml-test/src",
+        "xacml-conformance-tests/src"
+      ],
+      "exit_code": 1
+    },
+    {
+      "name": "08-legacy-ast",
+      "argv": [
+        "ast-grep",
+        "scan",
+        "--rule",
+        "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/legacy-test-stack.yml",
+        "--inspect",
+        "summary",
+        "--json=compact",
+        "xacml-core/src",
+        "xacml-pdp/src",
+        "xacml-xml-jaxb/src",
+        "xacml-xml/src",
+        "xacml-json/src",
+        "xacml-test/src",
+        "xacml-conformance-tests/src"
+      ],
+      "exit_code": 0,
+      "matches": 0
+    },
+    {
+      "name": "08-positive-control-ast",
+      "argv": [
+        "ast-grep",
+        "scan",
+        "--rule",
+        "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/legacy-test-stack.yml",
+        "--json=compact",
+        "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/LegacyScanControl.java"
+      ],
+      "exit_code": 1,
+      "matches": 48
+    },
+    {
+      "name": "08-method-annotations-ast",
+      "argv": [
+        "ast-grep",
+        "run",
+        "--lang",
+        "java",
+        "--kind",
+        "marker_annotation, annotation",
+        "--json=compact",
+        "xacml-core/src",
+        "xacml-pdp/src",
+        "xacml-xml-jaxb/src",
+        "xacml-xml/src",
+        "xacml-json/src",
+        "xacml-test/src",
+        "xacml-conformance-tests/src"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "language": "Java",
+  "scope": [
+    "xacml-core/src",
+    "xacml-pdp/src",
+    "xacml-xml-jaxb/src",
+    "xacml-xml/src",
+    "xacml-json/src",
+    "xacml-test/src",
+    "xacml-conformance-tests/src"
+  ],
+  "java_files": 505,
+  "source_test_method_annotations": {
+    "xacml-core": 550,
+    "xacml-pdp": 75,
+    "xacml-xml-jaxb": 0,
+    "xacml-xml": 34,
+    "xacml-json": 5,
+    "xacml-test": 20,
+    "xacml-conformance-tests": 43
+  },
+  "coverage": "SUPPORTED: Java import/identifier/annotation AST; positive control and independent rg."
+}

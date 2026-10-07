@@ -1,0 +1,34 @@
+{
+  "module_totals": {
+    "tests": 5660,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 30
+  },
+  "focused_tests": 115,
+  "case_changes": [
+    {
+      "suite": "oasis30",
+      "case_id": "IIIA030",
+      "before": "skipped",
+      "after": "passed",
+      "cause": "Conductor-reviewed 4.24 XML assignment XPathCategory fix"
+    },
+    {
+      "suite": "oasis30",
+      "case_id": "IIIA330",
+      "before": "skipped",
+      "after": "passed",
+      "cause": "Conductor-reviewed 4.24 XML assignment XPathCategory fix"
+    }
+  ],
+  "local_links": [],
+  "path_leaks": [],
+  "lane_source_files": 10,
+  "conductor_source_files": 14,
+  "manifest_row_changes": [
+    "oasis30/IIIA030",
+    "oasis30/IIIA330"
+  ],
+  "all_other_manifest_rows_unchanged": true
+}

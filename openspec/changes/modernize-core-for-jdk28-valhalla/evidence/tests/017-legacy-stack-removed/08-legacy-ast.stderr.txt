@@ -1,0 +1,3 @@
+sg: summary|project: isProject=true,projectDir=<repo>
+sg: summary|file: scannedFileCount=505,skippedFileCount=0
+sg: summary|rule: effectiveRuleCount=1,skippedRuleCount=0

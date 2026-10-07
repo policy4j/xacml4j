@@ -21,10 +21,9 @@ package org.xacml4j.util;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
+import org.junit.jupiter.api.Disabled;
 
-import org.junit.Ignore;
-
-@Ignore
+@Disabled
 public class TestObject
 {
 	public String test(String v)

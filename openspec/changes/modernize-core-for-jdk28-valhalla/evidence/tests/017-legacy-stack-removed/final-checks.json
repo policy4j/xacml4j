@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "root_pom_changes_exact": true,
+  "core_pom_change_only_vintage": true,
+  "junit_bom_and_jupiter": "5.14.4",
+  "mockito": "5.24.0",
+  "truth": "1.1.5",
+  "hamcrest": "1.3",
+  "plugin_and_startup_agent_configuration_unchanged": true,
+  "source_or_fixture_changes": [],
+  "core_report_classes": 103,
+  "only_jupiter_tested_modules": 6,
+  "dependency_tree_projects": 8,
+  "gate": [
+    934,
+    0,
+    0,
+    6
+  ],
+  "authoritative_log_complete": true,
+  "home_paths_in_evidence": [],
+  "observed_shared_tracking_change": "tasks.md: 2.2/2.3 now checked; no edit by this lane"
+}

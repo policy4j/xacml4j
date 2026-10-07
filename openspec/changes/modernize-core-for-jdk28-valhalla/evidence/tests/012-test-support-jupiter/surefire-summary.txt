@@ -1,0 +1,14 @@
+JDK: 21
+Command goal: -pl xacml-test -am test
+
+xacml-test/src/test:
+  ExpectedAttributeResolverBuilderTest: 2 run, 0 failures, 0 errors, 0 skipped
+  Xacml30SamplePolicyTest: 2 run, 0 failures, 0 errors, 0 skipped
+  AttributeResolverTestSupportTest: 1 run, 0 failures, 0 errors, 0 skipped
+  Xacml30TestUtilityTest: 14 run, 0 failures, 0 errors, 0 skipped
+  Xacml20SamplePolicyTest: 1 run, 0 failures, 0 errors, 0 skipped
+  xacml-test total: 20 run, 0 failures, 0 errors, 0 skipped
+
+The build used maven.test.failure.ignore=true to tolerate the known upstream
+xacml-core EasyMock failures; xacml-test and reactor reported BUILD SUCCESS.
+Raw Maven output: jdk21-test.log.

@@ -1,0 +1,8 @@
+{
+  "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java": "1c12fb2d39fb7b35a7a6233f848ed35815b7148bcf1094b95b7081a1125adfe7",
+  "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java": "83bead28e94e1a1fc75fbd4c429ed365bcaa359825e0ee0863e33cfa4e10e36f",
+  "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java": "a7fb8932243e7975e2a7b9e6df2eb4ffecdd2c130af51c7add7a02b94e0c54cf",
+  "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java": "22e51c905a408d981d297213e7229bad9831de635e9605e9b86484a67efbe82f",
+  "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java": "55c4c37e622fc689d442fc99c2cb90636ce89c1570d3ee12c9485846560d9da0",
+  "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java": "c572ab22135dbf78031612a4ae64cb26cff3309e412bdb8bd422f3edf1015191"
+}

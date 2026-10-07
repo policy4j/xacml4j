@@ -1,0 +1,72 @@
+[
+  {
+    "file": "xacml-core/src/main/java/org/xacml4j/v30/RequestContext.java",
+    "before": "ff4c3d99f5346d5fdafa74aa303876f02da386982593ce8dc898c6afe269cc8a",
+    "after": "c5959e757ce6e2d431c17c61312a09c2d87cb639515934d3cd6db96cf01a6619"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/RequestContextEqualityTest.java",
+    "before": null,
+    "after": "564e838e3c24e2496aa83ca05c6a5030cffa0bd454a67502c0f6fbad6311a72d"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/RequestContextIncludeInResultTest.java",
+    "before": null,
+    "after": "6f9eb4b68cb4615a48660b69fc6e24d3f2ff42e61905ca9a04fb8909ee7738dc"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java",
+    "before": null,
+    "after": "e8c0b46170f9ffb00096bf565973e4287868a14efa20b52638672fe03bd40b5b"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionProviderServiceLoaderTest.java",
+    "before": null,
+    "after": "067c31fc5a05d900abad571ccfab166378efaea319ec95a4393cd1ce04f9d1d9"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/types/TypeRegistryTest.java",
+    "before": null,
+    "after": "908c5f812a0349ed7474e6c402d5fc1ea6c08b5022f634b9ed4145477763e807"
+  },
+  {
+    "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java.orig",
+    "before": "3ed0e57923cd69512f4beb9d713a5efc3fad6cb55c69e82dc501a8029bd1bd19",
+    "after": null
+  },
+  {
+    "file": "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java",
+    "before": "a5bdbdac0e5e4449223f390e575145a2ad3d9695990a116ea882a8e83168111a",
+    "after": "eac07625b53fa8a719ca4e5e1e885785390a9311159054c4c90cd985ad4fe9f8"
+  },
+  {
+    "file": "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java",
+    "before": "6db4e52ba22ec3110363a37c225ffe43930fe9861080e70e8de7c491dfe29219",
+    "after": "09546639d66b6215ded0145623863a71137149cf1292eb0798145e8ef93bab70"
+  },
+  {
+    "file": "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java",
+    "before": "344732abfa5616b01253e890a336d6195b412ca36ea525147b9582fa2c8bd2be",
+    "after": "1d6909251eb6cf07a096ad3ac9418bb0c8ddb315ff7bb3011c9ee64522df14ec"
+  },
+  {
+    "file": "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java",
+    "before": "28e8d7b0f64b782affabceb4ed0695d251528c91d0b113d9b2a4e95a4c0369f2",
+    "after": "55349e589ab9adbf98f605afb39d3c1aef4d3be3dce78ae2018d57ef9e0e14dd"
+  },
+  {
+    "file": "xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java.orig",
+    "before": "dd5f7c224678f6e6580ea5a15a068a69ba5a6b6fbf61fa822d020ca8625a6b5f",
+    "after": null
+  },
+  {
+    "file": "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshallerTest.java",
+    "before": "16e0d4a67db41648c109b42414b341545f70044c1e668598b7acdd8b45f1ba3f",
+    "after": "4a7c822e47d1491136b8a8f26df701f36440c43b5f95b514c07a5ddad5202dbd"
+  },
+  {
+    "file": "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestReferenceMappingTest.java",
+    "before": null,
+    "after": "11f71494e9813608f4a9651901911bfa2f68a25ff6f40f382dc312e8df56d6df"
+  }
+]

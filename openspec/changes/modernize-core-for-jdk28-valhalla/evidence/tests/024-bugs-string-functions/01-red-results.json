@@ -1,0 +1,1757 @@
+{
+  "test_class": "StringFunctionSemanticsTest",
+  "counts": {
+    "tests": 505,
+    "failures": 50,
+    "errors": 241,
+    "skipped": 0
+  },
+  "failures": [
+    {
+      "name": "signaturesRejectWrongArityAndTypes(String)[4]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "signaturesRejectWrongArityAndTypes(String)[5]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "signaturesRejectWrongArityAndTypes(String)[6]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "signaturesRejectWrongArityAndTypes(String)[10]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "signaturesRejectWrongArityAndTypes(String)[11]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[2]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[5]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[8]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[11]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[14]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[17]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[19]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[20]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[22]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[23]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[25]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[26]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[28]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[29]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[31]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[32]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[34]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[35]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[37]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[38]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[40]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[41]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[43]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[44]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[46]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[47]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[49]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[50]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[52]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[53]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[55]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[56]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[58]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[59]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[62]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[65]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[67]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[68]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[70]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[71]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[74]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[77]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[79]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[80]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[82]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[83]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[85]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[86]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[88]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[89]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[92]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[95]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[98]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[101]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[103]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[104]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[106]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[107]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[109]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[110]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[112]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[113]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[116]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[119]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[121]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[122]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[124]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[125]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[128]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[131]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[134]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[137]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[140]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[143]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[146]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[149]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[152]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[155]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[158]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[161]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[164]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[167]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[170]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[173]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[176]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[179]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[182]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[185]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[188]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[191]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[194]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[197]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[200]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[203]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[206]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[209]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[212]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[215]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[217]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[218]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[220]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[221]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[223]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[224]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[226]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[227]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[229]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[230]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[232]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[233]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[236]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[239]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[241]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[242]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[244]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[245]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[247]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[248]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[250]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[251]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[254]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[257]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[260]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[263]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[266]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[269]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[275]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[276]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[277]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[278]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[280]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[281]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[284]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[287]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[289]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[290]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[292]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[293]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[296]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[299]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[301]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[302]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[304]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[305]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[307]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[308]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[310]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[311]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[314]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[317]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[320]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[323]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[325]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[326]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[328]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[329]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[332]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[335]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[338]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[341]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[344]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[347]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[350]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[353]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[356]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[359]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[361]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[362]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[364]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[365]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[368]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[371]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[374]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[377]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[380]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "searchedValueIsMatchedAgainstCandidate(String, String, String, boolean, boolean)[383]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[1]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[2]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[3]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[4]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[5]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[6]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[7]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[8]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[9]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[10]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[11]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[12]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[13]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[14]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[15]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[16]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[17]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[18]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[19]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[20]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[21]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[22]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[23]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[24]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[25]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[26]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[27]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[28]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[29]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[30]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[31]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[32]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[33]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[34]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[35]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[36]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[37]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[38]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[39]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[40]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[41]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[42]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[43]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "outOfRangeSubstringIsIndeterminateWithProcessingError(String, String, long, long, boolean)[44]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[1]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[2]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[3]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[4]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[5]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[6]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[7]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[8]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[9]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[10]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[11]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[12]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[13]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[14]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[15]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[16]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[17]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[18]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[19]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[20]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[21]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[22]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[23]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[24]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[25]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[26]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[27]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[28]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[29]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[30]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[31]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[32]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[33]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[34]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[35]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[36]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[37]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[38]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[39]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[40]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[41]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[42]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[43]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[44]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[45]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[46]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[47]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[48]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[49]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[50]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[51]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[52]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[53]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[54]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[55]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[56]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[57]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[58]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[59]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "substringUsesCharacterIndexesAndExclusiveEnd(String, String, long, long, String, boolean)[60]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "uriSubstringAlsoRejectsInvalidUriSyntax(String, long, long, String, boolean)[1]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "uriSubstringAlsoRejectsInvalidUriSyntax(String, long, long, String, boolean)[2]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "uriSubstringAlsoRejectsInvalidUriSyntax(String, long, long, String, boolean)[3]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "uriSubstringAlsoRejectsInvalidUriSyntax(String, long, long, String, boolean)[4]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "uriSubstringAlsoRejectsInvalidUriSyntax(String, long, long, String, boolean)[5]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    },
+    {
+      "name": "uriSubstringAlsoRejectsInvalidUriSyntax(String, long, long, String, boolean)[6]",
+      "kind": "error",
+      "type": "java.util.NoSuchElementException",
+      "message": "No value present"
+    }
+  ]
+}

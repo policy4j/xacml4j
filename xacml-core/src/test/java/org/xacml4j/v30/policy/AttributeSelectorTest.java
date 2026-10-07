@@ -22,20 +22,20 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.CategoryId;
@@ -48,16 +48,15 @@ import org.xacml4j.v30.types.XacmlTypes;
 import com.google.common.truth.Truth;
 
 
+@ExtendWith(MockitoExtension.class)
 public class AttributeSelectorTest
 {
 	private EvaluationContext context;
-	private IMocksControl control;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
-		this.control = EasyMock.createStrictControl();
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
@@ -75,12 +74,16 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(Optional.of(
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenReturn(Optional.of(
 				XacmlTypes.DATE.ofAny("1992-03-21").toBag()));
-		control.replay();
+		InOrder order = inOrder(context);
 		Expression v = ref.evaluate(context);
-		control.verify();
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 		assertEquals(XacmlTypes.DATE.ofAny("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 
@@ -101,12 +104,16 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(Optional.of(
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenReturn(Optional.of(
 				XacmlTypes.DATE.ofAny("1992-03-21").toBag()));
-		control.replay();
+		InOrder order = inOrder(context);
 		Expression v = ref.evaluate(context);
-		control.verify();
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 		assertEquals(XacmlTypes.DATE.ofAny("1992-03-21").toBag(), v);
 		assertEquals(ref.getReferenceKey(), c.getValue());
 	}
@@ -126,16 +133,21 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(Optional.of(
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenReturn(Optional.of(
 				XacmlTypes.DATE.emptyBag()));
-		control.replay();
+		InOrder order = inOrder(context);
 		Truth.assertThat(ref.evaluate(context)).isEqualTo(XacmlTypes.DATE.emptyBag());
-		control.verify();
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 
+		assertEquals(refKey, c.getValue());
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
+	@Test
 	public void testMustBePresentTrueAndReturnsEmptyOptional() throws EvaluationException
 	{
 		AttributeSelectorKey refKey =
@@ -150,13 +162,21 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(Optional.empty());
-		Capture<Supplier<Status>> status = Capture.newInstance();
-		context.setEvaluationStatusIfAbsent(capture(status));
-		control.replay();
-		ref.evaluate(context);
-		control.verify();
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenReturn(Optional.empty());
+		ArgumentCaptor<Supplier<Status>> status = ArgumentCaptor.forClass(Supplier.class);
+		doNothing().when(context).setEvaluationStatusIfAbsent(status.capture());
+		InOrder order = inOrder(context);
+		assertThrows(AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+		order.verify(context).resolve(c.capture());
+		order.verify(context).setEvaluationStatusIfAbsent(status.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		verify(context, times(1)).setEvaluationStatusIfAbsent(status.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(refKey, c.getValue());
+		assertEquals(org.xacml4j.v30.StatusCodeId.MISSING_ATTRIBUTE, status.getValue().get().getStatusCode().getValue());
 	}
 
 	@Test
@@ -174,15 +194,37 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenReturn(
 				Optional.of(XacmlTypes.DATE.emptyBag()));
-		replay(context);
+		InOrder order = inOrder(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, XacmlTypes.DATE.bagBuilder().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
-		verify(context);
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
+
+	@Test
+	public void testMustBePresentFalseAndNullResolutionHasNoMissingStatus() throws EvaluationException
+	{
+		AttributeSelectorKey key = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT)
+				.xpath("/md:record/md:patient/md:patientDoB/text()")
+				.dataType(XacmlTypes.DATE)
+				.build();
+		AttributeSelector selector = AttributeSelector.builder().key(key).mustBePresent(false).build();
+		when(context.resolve(key)).thenReturn(null);
+
+		assertEquals(XacmlTypes.DATE.emptyBag(), selector.evaluate(context));
+		verify(context).resolve(key);
+		verify(context, never()).setEvaluationStatusIfAbsent(any());
+		verifyNoMoreInteractions(context);
+	}
+
 
 	@Test
 	public void testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
@@ -201,14 +243,18 @@ public class AttributeSelectorTest
 				.mustBePresent(false)
 				.build();
 
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenThrow(
 				AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));
-		replay(context);
+		InOrder order = inOrder(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, XacmlTypes.DATE.bagBuilder().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
-		verify(context);
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -227,16 +273,20 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
-		replay(context);
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenThrow(new NullPointerException());
+		InOrder order = inOrder(context);
 		Expression v = ref.evaluate(context);
 		assertEquals(v, XacmlTypes.DATE.bagBuilder().build());
 		assertEquals(ref.getReferenceKey(), c.getValue());
-		verify(context);
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
+	@Test
 	public void testMustBePresentTrueAndContextThrowsRuntimeException() throws EvaluationException
 	{
 		AttributeSelectorKey refKey =
@@ -251,14 +301,19 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(new NullPointerException());
-		replay(context);
-		ref.evaluate(context);
-		verify(context);
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenThrow(new NullPointerException());
+		InOrder order = inOrder(context);
+		assertThrows(AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(refKey, c.getValue());
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
+	@Test
 	public void testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
 
@@ -274,12 +329,16 @@ public class AttributeSelectorTest
 				.key(refKey)
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeSelectorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(
+		ArgumentCaptor<AttributeSelectorKey> c = ArgumentCaptor.forClass(AttributeSelectorKey.class);
+		when(context.resolve(c.capture())).thenThrow(
 				AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));
-		replay(context);
-		ref.evaluate(context);
-		verify(context);
+		InOrder order = inOrder(context);
+		assertThrows(AttributeReferenceEvaluationException.class, () -> ref.evaluate(context));
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(refKey, c.getValue());
 	}
 }
-

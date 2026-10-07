@@ -22,16 +22,13 @@ package org.xacml4j.v30.content;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xacml4j.util.DOMUtil;
@@ -39,6 +36,11 @@ import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.types.Path;
+import org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctions;
 
 public class XmlContentTest
 {
@@ -102,7 +104,7 @@ public class XmlContentTest
     private XmlContent xml4;
     private XmlContent xml5;
 
-    @Before
+    @BeforeEach
     public void setUp(){
         this.xml1 = XmlContent.of(
                 XmlContent.fromString(testXml1));
@@ -201,14 +203,47 @@ public class XmlContentTest
         assertTrue(values.get().contains(XacmlTypes.INTEGER.ofAny(555555)));
     }
 
-    @Test(expected = PathEvaluationException.class)
-    public void testEntityXPathSyntaxError(){
-        Optional<BagOfValues> values = xml1.resolve(
-                AttributeSelectorKey
-                        .builder()
-                        .xpath("/md:record[?]/md:patient/md:patient-number/text()")
-                        .dataType(XacmlTypes.INTEGER)
-                        .build());
+    @Test
+    public void testEntitySelectorWithoutContextSelectorUsesDocumentNode(){
+        String selectorId = XmlContent.CONTENT_SELECTOR;
+        Entity entity = Entity.builder().content(XmlContent.of(testXml1))
+                .attribute(Attribute.builder(selectorId)
+                        .value(XacmlTypes.XPATH.ofAny("/md:record/md:patient[1]", CategoryId.SUBJECT_RECIPIENT))
+                        .build())
+                .build();
+        Path xpath = XacmlTypes.XPATH.ofAny("md:patient-number/text()", CategoryId.SUBJECT_RECIPIENT);
+        assertEquals(XacmlTypes.INTEGER.emptyBag(), AttributeDesignatorFunctions.selector(
+                null, entity, xpath, XacmlTypes.ANYURI.ofAny(XacmlTypes.INTEGER.getTypeId()),
+                XacmlTypes.BOOLEAN.ofAny(false), null));
+    }
+
+    @Test
+    public void testEntityXPathSyntaxError() {
+		assertThrows(PathEvaluationException.class, () -> {
+			Optional<BagOfValues> values = xml1.resolve(
+					AttributeSelectorKey
+							.builder()
+							.xpath("/md:record[?]/md:patient/md:patient-number/text()")
+							.dataType(XacmlTypes.INTEGER)
+							.build());
+		});
+	}
+
+    @Test
+    public void testXPathExtensionFunctionIsRejected()
+    {
+        XmlContent content = XmlContent.of(
+                "<record xmlns:java=\"http://xml.apache.org/xalan/java\"><value>1</value></record>");
+        PathEvaluationException error = assertThrows(PathEvaluationException.class,
+                () -> content.evaluateToString("java:java.lang.Math.abs(-1)"));
+        assertEquals(org.xacml4j.v30.StatusCodeId.STATUS_PROCESSING_ERROR,
+                error.getStatus().getStatusCode().getValue());
+    }
+
+    @Test
+    public void testXPathFactoryEnablesSecureProcessing()
+    {
+        assertTrue(XPathProvider.DefaultXPathProvider.isSecureProcessingEnabled());
     }
 
     @Test
@@ -240,17 +275,19 @@ public class XmlContentTest
         assertTrue(values.get().contains(XacmlTypes.STRING.ofAny("123456")));
     }
 
-    @Test(expected = PathEvaluationException.class)
+    @Test
     public void testXPathReturnUnsupportedNodeType()
-    {
-        Optional<BagOfValues> values = xml1.resolve(
-                AttributeSelectorKey
-                        .builder()
-                        .xpath("/md:record/")
-                        .dataType(XacmlTypes.INTEGER)
-                        .build());
-        assertFalse(values.isPresent());
-    }
+	{
+		assertThrows(PathEvaluationException.class, () -> {
+			Optional<BagOfValues> values = xml1.resolve(
+					AttributeSelectorKey
+							.builder()
+							.xpath("/md:record/")
+							.dataType(XacmlTypes.INTEGER)
+							.build());
+			assertFalse(values.isPresent());
+		});
+	}
 
     @Test
     public void testWithContentEscaping(){

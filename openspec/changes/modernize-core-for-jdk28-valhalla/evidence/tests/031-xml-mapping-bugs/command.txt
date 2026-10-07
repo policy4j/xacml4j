@@ -1,0 +1,50 @@
+Working directory for every command below: <lane>
+
+JDK check:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Red regression runs (the three manifest entries were temporarily marked executed/true):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/conformance-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml20RequestContextUnmarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/resourceid-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/alias-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=RequestContextIncludeInResultTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/result-id-red.log
+
+Focused green runs:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml20RequestContextUnmarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/resourceid-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/alias-order-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/alias-order-final.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=RequestContextIncludeInResultTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/result-id-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml30RequestReferenceMappingTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/reference-mapping-test.log
+
+Full requested module gates:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/core-full.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/xml-full.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/pdp-full.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/json-full.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/conformance-final.log
+
+The conformance test was rerun while the three temporary manifest entries were still enabled. The manifest was then restored and checked:
+rtk cp ../xmlbugs.base/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+rtk proxy cmp xacml-conformance-tests/src/test/manifest/conformance-manifest.csv ../xmlbugs.base/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+
+Vendored fixture integrity checks:
+rtk proxy diff -qr ../xmlbugs.base/xacml-conformance-tests/src/test/resources xacml-conformance-tests/src/test/resources
+rtk proxy diff -qr ../xmlbugs.base/xacml-xml-jaxb/src/main/resources/xsd xacml-xml-jaxb/src/main/resources/xsd
+
+rv040/rv043 review red runs:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=RequestContextEqualityTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-core-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml30RequestReferenceMappingTest,Xacml20RequestContextUnmarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-xml-red.log
+
+Focused green runs:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=RequestContextEqualityTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-core-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml30RequestReferenceMappingTest,Xacml20RequestContextUnmarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-xml-green.log
+
+Final full gates:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-core-final.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-xml-final.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-pdp-full.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-json-full.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/031-xml-mapping-bugs/review-conformance.log
+
+Surefire count extraction (repeated for each of xacml-core, xacml-xml, xacml-pdp, xacml-json, and xacml-conformance-tests by substituting the module argument):
+rtk python3 -c 'import glob,xml.etree.ElementTree as ET,sys; rows=[ET.parse(p).getroot() for p in glob.glob(sys.argv[1]+"/target/surefire-reports/TEST-*.xml")]; print("tests=%d failures=%d errors=%d skipped=%d"%(sum(int(x.get("tests")) for x in rows),sum(int(x.get("failures")) for x in rows),sum(int(x.get("errors")) for x in rows),sum(int(x.get("skipped")) for x in rows)))' <module>

@@ -1,0 +1,190 @@
+[
+{
+  "text": "ConformanceManifest.cases(\"example\")",
+  "range": {
+    "byteOffset": {
+      "start": 1187,
+      "end": 1223
+    },
+    "start": {
+      "line": 35,
+      "column": 9
+    },
+    "end": {
+      "line": 35,
+      "column": 45
+    }
+  },
+  "file": "xacml-conformance-tests/src/test/java/org/xacml4j/v20/XacmlExampleTest.java",
+  "lines": "\t\treturn ConformanceManifest.cases(\"example\");",
+  "charCount": {
+    "leading": 9,
+    "trailing": 1
+  },
+  "language": "Java",
+  "metaVariables": {
+    "single": {
+      "SUITE": {
+        "text": "\"example\"",
+        "range": {
+          "byteOffset": {
+            "start": 1213,
+            "end": 1222
+          },
+          "start": {
+            "line": 35,
+            "column": 35
+          },
+          "end": {
+            "line": 35,
+            "column": 44
+          }
+        }
+      }
+    },
+    "multi": {},
+    "transformed": {}
+  }
+},
+{
+  "text": "ConformanceManifest.cases(\"oasis30\")",
+  "range": {
+    "byteOffset": {
+      "start": 1208,
+      "end": 1244
+    },
+    "start": {
+      "line": 38,
+      "column": 9
+    },
+    "end": {
+      "line": 38,
+      "column": 45
+    }
+  },
+  "file": "xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java",
+  "lines": "\t\treturn ConformanceManifest.cases(\"oasis30\");",
+  "charCount": {
+    "leading": 9,
+    "trailing": 1
+  },
+  "language": "Java",
+  "metaVariables": {
+    "single": {
+      "SUITE": {
+        "text": "\"oasis30\"",
+        "range": {
+          "byteOffset": {
+            "start": 1234,
+            "end": 1243
+          },
+          "start": {
+            "line": 38,
+            "column": 35
+          },
+          "end": {
+            "line": 38,
+            "column": 44
+          }
+        }
+      }
+    },
+    "multi": {},
+    "transformed": {}
+  }
+},
+{
+  "text": "ConformanceManifest.cases(\"rsa2008\")",
+  "range": {
+    "byteOffset": {
+      "start": 1189,
+      "end": 1225
+    },
+    "start": {
+      "line": 35,
+      "column": 9
+    },
+    "end": {
+      "line": 35,
+      "column": 45
+    }
+  },
+  "file": "xacml-conformance-tests/src/test/java/org/xacml4j/v20/RSA2008InteropTest.java",
+  "lines": "\t\treturn ConformanceManifest.cases(\"rsa2008\");",
+  "charCount": {
+    "leading": 9,
+    "trailing": 1
+  },
+  "language": "Java",
+  "metaVariables": {
+    "single": {
+      "SUITE": {
+        "text": "\"rsa2008\"",
+        "range": {
+          "byteOffset": {
+            "start": 1215,
+            "end": 1224
+          },
+          "start": {
+            "line": 35,
+            "column": 35
+          },
+          "end": {
+            "line": 35,
+            "column": 44
+          }
+        }
+      }
+    },
+    "multi": {},
+    "transformed": {}
+  }
+},
+{
+  "text": "ConformanceManifest.cases(\"oasis20\")",
+  "range": {
+    "byteOffset": {
+      "start": 1208,
+      "end": 1244
+    },
+    "start": {
+      "line": 38,
+      "column": 9
+    },
+    "end": {
+      "line": 38,
+      "column": 45
+    }
+  },
+  "file": "xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java",
+  "lines": "\t\treturn ConformanceManifest.cases(\"oasis20\");",
+  "charCount": {
+    "leading": 9,
+    "trailing": 1
+  },
+  "language": "Java",
+  "metaVariables": {
+    "single": {
+      "SUITE": {
+        "text": "\"oasis20\"",
+        "range": {
+          "byteOffset": {
+            "start": 1234,
+            "end": 1243
+          },
+          "start": {
+            "line": 38,
+            "column": 35
+          },
+          "end": {
+            "line": 38,
+            "column": 44
+          }
+        }
+      }
+    },
+    "multi": {},
+    "transformed": {}
+  }
+}
+]

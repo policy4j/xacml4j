@@ -21,19 +21,18 @@ package org.xacml4j.util;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
 import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
 
-@Ignore
+@Disabled
 public class FunctionInvocationBenchmark
 {
 	private TestObject instance;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.instance = new TestObject();
 	}

@@ -1,0 +1,10 @@
+JDK 21; module: xacml-core
+Full command: JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/034-registry-tests/core-registry-tests.log
+
+New classes:
+TypeRegistryTest: 62 tests, 0 failures, 0 errors, 2 skipped (both BUG-TBD-duplicate-ids)
+DecisionCombiningAlgorithmRegistryTest: 24 tests, 0 failures, 0 errors, 1 skipped (Task 4.6 on-permit-apply-second)
+FunctionProviderServiceLoaderTest: 1 test, 0 failures, 0 errors, 0 skipped
+
+Module total: 4410 tests, 0 failures, 0 errors, 5 skipped; BUILD SUCCESS.
+Other existing skips: ContentTest.testXmlBase64; Xacml20XPathTo30TransformerTest.testXPathTransformationWithFunctions.

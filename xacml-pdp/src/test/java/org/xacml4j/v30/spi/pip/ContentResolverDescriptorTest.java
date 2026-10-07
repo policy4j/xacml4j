@@ -21,10 +21,9 @@ package org.xacml4j.v30.spi.pip;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.CategoryId;
 
 

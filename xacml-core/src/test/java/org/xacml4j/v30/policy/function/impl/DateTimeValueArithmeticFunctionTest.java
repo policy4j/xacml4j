@@ -22,11 +22,11 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.ISO8601DateTime;
@@ -39,7 +39,7 @@ public class DateTimeValueArithmeticFunctionTest
 {
 	private FunctionProvider p;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 		this.p = FunctionProviderBuilder
@@ -60,7 +60,6 @@ public class DateTimeValueArithmeticFunctionTest
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-add-yearMonthDuration").isPresent());
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-dayTimeDuration").isPresent());
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:dateTime-subtract-yearMonthDuration").isPresent());
-
 
 
 		assertTrue(p.getFunction("urn:oasis:names:tc:xacml:3.0:function:date-add-yearMonthDuration").isPresent());

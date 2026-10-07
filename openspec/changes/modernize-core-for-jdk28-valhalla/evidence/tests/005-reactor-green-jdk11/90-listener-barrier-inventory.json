@@ -1,0 +1,34 @@
+[
+  {
+    "test": "testOnePolicyDifferentVersion",
+    "expected_callbacks": 4,
+    "old_verify_line": 143,
+    "await_line": 174,
+    "new_verify_line": 175,
+    "original_body_preserved_except_barrier_and_checked_exception": true
+  },
+  {
+    "test": "testAddRemove",
+    "expected_callbacks": 2,
+    "old_verify_line": 166,
+    "await_line": 199,
+    "new_verify_line": 200,
+    "original_body_preserved_except_barrier_and_checked_exception": true
+  },
+  {
+    "test": "testAddPolicyWithTheSameIdAndSameVersion",
+    "expected_callbacks": 1,
+    "old_verify_line": 183,
+    "await_line": 218,
+    "new_verify_line": 219,
+    "original_body_preserved_except_barrier_and_checked_exception": true
+  },
+  {
+    "test": "testFindAllPoliciesWithTheSameId",
+    "expected_callbacks": 4,
+    "old_verify_line": 219,
+    "await_line": 256,
+    "new_verify_line": 257,
+    "original_body_preserved_except_barrier_and_checked_exception": true
+  }
+]

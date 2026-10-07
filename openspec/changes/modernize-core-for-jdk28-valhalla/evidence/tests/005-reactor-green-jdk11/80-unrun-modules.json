@@ -1,0 +1,5 @@
+{
+  "xacml-test": "NOT RUN; reactor SKIPPED after PDP failure",
+  "xacml-conformance-tests": "NOT RUN; reactor SKIPPED after PDP failure",
+  "conformance_case_totals": "NOT RUN; prior reports are stale and excluded"
+}

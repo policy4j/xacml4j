@@ -47,6 +47,7 @@ public final class FunctionProviderBuilder {
 
 	private List<FunctionProvider> providers;
 	private FunctionInvocationFactory invocationFactory;
+	private FunctionProvider defaultFunctionsProvider;
 
 	FunctionProviderBuilder(
 			FunctionInvocationFactory invocationFactory) {
@@ -61,10 +62,10 @@ public final class FunctionProviderBuilder {
 
 
 	public FunctionProviderBuilder withDiscoveredFunctions() {
-		return providers(ServiceLoader.load(FunctionProvider.class)
-		                              .stream()
-		                              .map(p -> p.get())
-		                              .collect(Collectors.toList()));
+		return discoveredProviders(ServiceLoader.load(FunctionProvider.class)
+		                                    .stream()
+		                                    .map(p -> p.get())
+		                                    .collect(Collectors.toList()));
 
 	}
 
@@ -95,7 +96,14 @@ public final class FunctionProviderBuilder {
 	 * @return {@link FunctionProviderBuilder}
 	 */
 	public FunctionProviderBuilder withDefaultFunctions() {
-		return provider(new XacmlDefaultFunctions(invocationFactory));
+		if (defaultFunctionsProvider == null) {
+			defaultFunctionsProvider = providers.stream()
+					.filter(XacmlDefaultFunctions.class::isInstance)
+					.findFirst()
+					.orElseGet(() -> new XacmlDefaultFunctions(invocationFactory));
+			provider(defaultFunctionsProvider);
+		}
+		return this;
 	}
 
 	/**
@@ -107,9 +115,19 @@ public final class FunctionProviderBuilder {
 	 * @return {@link FunctionProviderBuilder}
 	 */
 	public FunctionProviderBuilder withDiscoveredFunctions(ClassLoader classLoader) {
-		return providers(ServiceLoader.load(FunctionProvider.class, classLoader).stream()
-		                              .map(p -> p.get())
-		                              .collect(Collectors.toList()));
+		return discoveredProviders(ServiceLoader.load(FunctionProvider.class, classLoader).stream()
+		                                    .map(p -> p.get())
+		                                    .collect(Collectors.toList()));
+	}
+
+	private FunctionProviderBuilder discoveredProviders(Collection<FunctionProvider> discovered) {
+		for (FunctionProvider provider : discovered) {
+			if (provider instanceof XacmlDefaultFunctions && defaultFunctionsProvider != null) {
+				continue;
+			}
+			provider(provider);
+		}
+		return this;
 	}
 
 
@@ -159,7 +177,11 @@ public final class FunctionProviderBuilder {
 			providers.forEach((p) -> LOG.debug("Adding FunctionProviderId=\"{}\" description=\"{}\"",
 			                                   p.getId(), p.getDescription()));
 		}
-		this.providers.addAll(providers);
+		for (FunctionProvider provider : providers) {
+			if (this.providers.stream().noneMatch(existing -> existing == provider)) {
+				this.providers.add(provider);
+			}
+		}
 		return this;
 	}
 

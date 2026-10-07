@@ -27,6 +27,7 @@ import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.FunctionInvocationException;
@@ -45,6 +46,7 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 
 	private boolean evalContextRequired;
 	private PolicyToPlatformFunctionInvocation<ValueExp> invocation;
+	private final Class<?> varArgComponentType;
 
 	/**
 	 * Constructs XACML function invoker
@@ -57,8 +59,16 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 			PolicyToPlatformFunctionInvocation<ValueExp> invocation,
 			boolean evalContextRequired)
 	{
+		this(invocation, evalContextRequired, null);
+	}
+
+	DefaultFunctionInvocation(
+			PolicyToPlatformFunctionInvocation<ValueExp> invocation,
+			boolean evalContextRequired, Class<?> varArgComponentType)
+	{
 		this.invocation = Objects.requireNonNull(invocation, "invocation");
 		this.evalContextRequired = evalContextRequired;
+		this.varArgComponentType = varArgComponentType;
 	}
 
 	@Override
@@ -102,7 +112,9 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 						          size, numOfParms - 1);
 					}
 					Expression exp = arguments.get(numOfParms - 1);
-					if(exp == null){
+					if(varArgComponentType != null){
+						varArgArray = (Object[])Array.newInstance(varArgComponentType, size);
+					}else if(exp == null){
 						varArgArray = (Object[])Array.newInstance(Object.class, size);
 					}else {
 						varArgArray = (Object[])Array.newInstance(exp.getClass(), size);
@@ -123,9 +135,24 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 			return invocation.invoke(params);
 		}
 		catch(Exception e){
-			throw new FunctionInvocationException(spec, 
-					Throwables.getRootCause(e));
+			throw new FunctionInvocationException(spec, invocationCause(e));
 		}
+	}
+
+	/**
+	 * The first {@link EvaluationException} in the chain keeps its status.
+	 * A failure with none stays the root cause and becomes processing-error.
+	 */
+	private static Throwable invocationCause(Throwable error){
+		for(Throwable current = error; current != null; current = current.getCause()){
+			if(current instanceof EvaluationException){
+				return current;
+			}
+			if(current.getCause() == current){
+				break;
+			}
+		}
+		return Throwables.getRootCause(error);
 	}
 
 	/**

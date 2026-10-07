@@ -24,6 +24,7 @@ package org.xacml4j.v30.pdp.request;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +44,7 @@ import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestSyntaxException;
-import org.xacml4j.v30.types.PathValue;
+import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableSet;
@@ -56,6 +57,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 	final static String FEATURE_ID= "urn:oasis:names:tc:xacml:3.0:profile:multiple:xpath-expression";
 
 	final static String MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector";
+	private final static String DRAFT_MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:multiple:content-selector";
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 
 	public MultipleResourcesViaXPathExpressionHandler(){
@@ -68,9 +70,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		if(request.containsRepeatingCategories()){
 			return handleNext(request, context);
 		}
-		if(!request.containsAttributeValues(
-				MULTIPLE_CONTENT_SELECTOR,
-				XacmlTypes.XPATH)){
+		if(!containsMultipleContentSelector(request)){
 			if(LOG.isDebugEnabled()){
 				LOG.debug("Request does not have id=\"{}\" of type=\"{}\", " +
 						"passing request to next handler",
@@ -112,19 +112,32 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		}
 	}
 
+	private boolean containsMultipleContentSelector(RequestContext request)
+	{
+		return request.containsAttributeValues(MULTIPLE_CONTENT_SELECTOR, XacmlTypes.XPATH)
+				|| request.containsAttributeValues(DRAFT_MULTIPLE_CONTENT_SELECTOR, XacmlTypes.XPATH);
+	}
+
+	private String normalizeMultipleContentSelectorId(String attributeId)
+	{
+		return DRAFT_MULTIPLE_CONTENT_SELECTOR.equalsIgnoreCase(attributeId)
+				? MULTIPLE_CONTENT_SELECTOR : attributeId;
+	}
+
 	private Set<Category> getCategories(Category category)
 		throws RequestSyntaxException
 	{
 		Entity entity = category.getEntity();
-		Optional<Value> value = entity.stream()
-		                              .filter(a->a.getAttributeId().equalsIgnoreCase(MULTIPLE_CONTENT_SELECTOR))
-		                              .map(a->a.getValuesByType(XacmlTypes.XPATH, XacmlTypes.JPATH))
-		                              .flatMap(a->a.stream())
-		                              .findFirst();
+		Optional<Value<?>> value = entity.attributes().stream()
+					.filter(a->normalizeMultipleContentSelectorId(a.getAttributeId())
+							.equalsIgnoreCase(MULTIPLE_CONTENT_SELECTOR))
+					.map(a->a.getValuesByType(XacmlTypes.XPATH, XacmlTypes.JPATH))
+					.flatMap(a->a.stream())
+					.findFirst();
 		if(!value.isPresent()){
 			return ImmutableSet.of(category);
 		}
-		PathValue path = (PathValue)value.get();
+		Path path = (Path)value.get();
 		LOG.debug("Found multiple content selector path value={}", value.get());
 		Optional<Content> content = entity.getContent().filter(
 				c->c.getType().equals(path.getContentType()));
@@ -141,9 +154,10 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			if(LOG.isDebugEnabled()){
 				LOG.debug("Found node paths=\"{}\" for path=\"{}\"", paths, path);
 			}
+			// Preserve the XPath node order in the response result sequence.
 			return paths.stream()
-					.map(p->transform(p, path.getEvaluatesTo(), content.get(), category))
-					.collect(Collectors.toSet());
+					.map(p->transform(p, path.getEvaluatesTo().getValueType(), content.get(), category))
+					.collect(Collectors.toCollection(LinkedHashSet::new));
 		}
 		catch (PathEvaluationException e){
 			if(LOG.isDebugEnabled()){
@@ -160,9 +174,10 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		Entity.Builder builder = Entity
 				.builder()
 				.content(content);
-		for(Attribute a : e.find())
+		for(Attribute a : e.attributes())
 		{
-			if(a.getAttributeId().equals(MULTIPLE_CONTENT_SELECTOR)){
+			if(normalizeMultipleContentSelectorId(a.getAttributeId())
+					.equalsIgnoreCase(MULTIPLE_CONTENT_SELECTOR)){
 				Attribute selectorAttr =
 						Attribute.builder(CONTENT_SELECTOR)
 						.issuer(a.getIssuer())

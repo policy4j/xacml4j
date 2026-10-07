@@ -22,14 +22,14 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.xacml4j.v30.types.XacmlTypes.ANYURI;
 import static org.xacml4j.v30.types.XacmlTypes.BOOLEAN;
 import static org.xacml4j.v30.types.XacmlTypes.DOUBLE;
 import static org.xacml4j.v30.types.XacmlTypes.INTEGER;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.policy.function.FunctionProvider;

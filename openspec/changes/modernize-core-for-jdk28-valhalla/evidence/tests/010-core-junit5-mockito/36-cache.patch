@@ -1,0 +1,10 @@
+--- before/xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java
++++ mutant/xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java
+@@ -120,6 +120,7 @@
+ 		verify(context, times(1)).resolve(ref);
+ 		verifyNoMoreInteractions(context, algorithm);
+ 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
++		context.resolve(ref);
+ 		order.verify(context).getCurrentPolicy();
+ 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+ 		verify(context, times(2)).getCurrentPolicyIDReference();

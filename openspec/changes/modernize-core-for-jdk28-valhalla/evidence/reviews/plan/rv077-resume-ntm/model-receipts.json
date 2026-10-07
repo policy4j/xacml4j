@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-10-04T16:09:00Z",
+  "models": {
+    "claude_opus_5_5": {
+      "requested": "claude-opus-5-5",
+      "observed": "claude-opus-5-5",
+      "source": "Native Claude assistant response metadata",
+      "session": "6690fbe0-dbe0-450a-b61c-928ca638288b"
+    },
+    "claude_fable_5_1": {
+      "requested": "claude-fable-5-1",
+      "observed": "claude-fable-5-1",
+      "source": "Native Claude assistant response metadata",
+      "session": "d8d2611c-5700-41a1-b96d-6c45cd0876f3"
+    },
+    "codex_sol_6_1": {
+      "requested": "gpt-6.1-sol",
+      "observed": "gpt-6.1-sol",
+      "source": "Native Codex turn_context metadata",
+      "session": "01a1079b-8464-70d0-8be2-d89a20262f86",
+      "coverage": "session configuration, not backend serving attestation",
+      "report_identity": "Exact serving identity not exposed to lane"
+    },
+    "codex_astra": {
+      "requested": "gpt-6-astra",
+      "observed": "gpt-6-astra",
+      "source": "Native Codex turn_context metadata",
+      "session": "01a1079b-8464-7022-a86a-d7488271e913",
+      "coverage": "session configuration, not backend serving attestation",
+      "report_identity": "Lane self-report says GPT-6.1-sol, conflicting with native session model gpt-6-astra; no silent substitution claimed"
+    },
+    "agy_gemini_pro_3_1": {
+      "requested": "gemini-3.1-pro-high",
+      "observed": "Gemini 3.1 Pro (High)",
+      "source": "Native Agy TUI header and model footer",
+      "coverage": "configured model; backend serving attestation not available"
+    },
+    "agy_gemini_flash_3_8": {
+      "requested": "gemini-3.8-flash-high",
+      "observed": "Gemini 3.8 Flash (High)",
+      "source": "Native Agy TUI header and model footer; NTM built-in pinned Flash",
+      "coverage": "configured model; backend serving attestation not available"
+    },
+    "grok_4_6": {
+      "requested": "grok-4.6",
+      "observed": "Grok 4.6 (xhigh)",
+      "source": "Native Grok /model current selection and footer",
+      "note": "Initial welcome rendered 4.7; before review input native /model and footer confirmed 4.6",
+      "coverage": "configured model; backend serving attestation not available"
+    },
+    "grok_4_7": {
+      "requested": "grok-4.7",
+      "observed": "Grok 4.7 (xhigh)",
+      "source": "Native Grok TUI footer",
+      "coverage": "configured model; backend serving attestation not available"
+    }
+  }
+}

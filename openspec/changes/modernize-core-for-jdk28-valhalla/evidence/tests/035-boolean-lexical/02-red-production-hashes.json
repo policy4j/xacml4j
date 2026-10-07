@@ -1,0 +1,5 @@
+{
+  "xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java": "61d9e3373fac6eb189406cec85e73f93f5039e42f16f6f00542a1094483285ae",
+  "xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java": "f420506c32e1645b26edc825312c71c5cc1e488d57f57d07a4fd3d10c073baae",
+  "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java": "87be71dc0b139de4b5a548dd1e75bbe39e77ad0f33f94530babed6b0e702ccf7"
+}

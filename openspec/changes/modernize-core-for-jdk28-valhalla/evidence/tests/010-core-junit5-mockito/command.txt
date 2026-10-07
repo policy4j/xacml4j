@@ -1,0 +1,206 @@
+# Commands executed in this core-only lane. Each Maven invocation is a plain command.
+# Maven -l captures unfiltered output; capture-run normalizes checkout paths to <repo>.
+# Native apply_patch performed the manual source/evidence edits; no POM/main/module edits.
+# 03b/04b repeat 03/04 with approved cache access after filesystem denial.
+# Auxiliary-script entries were reconstructed from the lane execution record; Maven order is chronological.
+
+rtk git status --short
+rtk ./scripts/agent-doctor.sh ast-grep
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/01-snapshot.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-core-baseline-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core org.openrewrite.maven:rewrite-maven-plugin:6.46.1:dryRun -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.44.0 -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -Drewrite.runPerSubmodule=true '-Drewrite.exclusions=**/pom.xml,pom.xml,**/src/main/**,**/src/test/resources/**' -DskipMavenParsing=true -Drewrite.pomCacheEnabled=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/03-rewrite-dry-run.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 02-core-baseline-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core org.openrewrite.maven:rewrite-maven-plugin:6.46.1:dryRun -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.44.0 -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -Drewrite.runPerSubmodule=true '-Drewrite.exclusions=**/pom.xml,pom.xml,**/src/main/**,**/src/test/resources/**' -DskipMavenParsing=true -Drewrite.pomCacheEnabled=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/03b-rewrite-dry-run.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 03-rewrite-dry-run.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/03-review-dry-run.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core org.openrewrite.maven:rewrite-maven-plugin:6.46.1:run -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.44.0 -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -Drewrite.runPerSubmodule=true '-Drewrite.exclusions=**/pom.xml,pom.xml,**/src/main/**,**/src/test/resources/**' -DskipMavenParsing=true -Drewrite.pomCacheEnabled=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/04-rewrite-run.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core org.openrewrite.maven:rewrite-maven-plugin:6.46.1:run -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.44.0 -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -Drewrite.runPerSubmodule=true '-Drewrite.exclusions=**/pom.xml,pom.xml,**/src/main/**,**/src/test/resources/**' -DskipMavenParsing=true -Drewrite.pomCacheEnabled=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/04b-rewrite-run.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/05-after-recipes-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/06-manual-mock-adapt.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/09-manual-migration-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/07-reference-models.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/08-parameterized-helpers.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/10-audit-exceptions.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/10-repair-exceptions.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/11-first-runtime-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 11-first-runtime-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/12-first-behavior-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 12-first-behavior-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/13-refine-fixtures.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/14-refined-behavior.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 14-refined-behavior.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/10-audit-exceptions.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/15-helpers-characterization.py before
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TestFunctions,TestInstanceFunctions test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/15-vintage-empty-helpers.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/15-helpers-characterization.py restore
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 15-vintage-empty-helpers.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/15-helpers-characterization.py before with-test
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=BagFunctionsTest,TestFunctions,TestInstanceFunctions test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/16-vintage-skip-bookkeeping.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 16-vintage-skip-bookkeeping.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/15-helpers-characterization.py restore with-test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/17-clean-generated-boilerplate.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/18-core-final-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 18-core-final-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/19-replay-baseline.py before
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/19-vintage-count-characterization.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 19-vintage-count-characterization.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/19-replay-baseline.py restore
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core clean test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/22-core-clean-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 22-core-clean-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/23-expression-boundaries.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/24-interface-boundaries-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 24-interface-boundaries-gate.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/25-core-migration-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 25-core-migration-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/26-source-audit.py
+rtk git diff --check -- xacml-core/src/test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/27-fix-new-whitespace.py
+rtk git diff --check -- xacml-core/src/test
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/28-core-final-test.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 28-core-final-test.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/26-source-audit.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/10-audit-exceptions.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/29-write-evidence.py
+rtk git status --short
+
+# Final source queries (exit 1 = no match for rg):
+rtk rg -n '^import (static )?org\.(easymock|junit\.(Assert|Assume|Test|Before[A-Za-z]*|After[A-Za-z]*|Rule|ClassRule|Ignore|runner|runners|rules))([.;]|$)' xacml-core/src/test
+ast-grep scan --rule openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/20-legacy-stack-rule.yml --json=compact xacml-core/src/test/java
+ast-grep scan --rule openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/20-legacy-stack-rule.yml --json=compact openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/before/java
+rtk rg -n '\breset\s*\(|clearInvocations|createControl|createMock|org\.easymock|org\.junit\.(Assert|Test|Before|After|Ignore|runner|rules)' xacml-core/src/test
+
+# Final evidence review (no test-source change after run 28):
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/26-source-audit.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/29-write-evidence.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/31-final-artifact-audit.py
+rtk git diff --check -- xacml-core/src/test
+
+# Conductor recipe-artifact follow-up. Native apply_patch added the audit/fix scripts.
+# The initial 33 script attempt stopped on a missing Python re import before writing test sources.
+rtk ./scripts/agent-doctor.sh ast-grep
+ast-grep run --lang java --pattern '$RECEIVER.$METHOD($$$ARGS);' --json=compact xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/32-review-artifacts-audit.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/33-strengthen-captors.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=AttributeDesignatorTest,AttributeSelectorTest,ConditionTest,MatchTest,PolicyTest,PolicySetTest,TargetTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/34-captor-oracles-green.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 34-captor-oracles-green.log
+# 34 is RED despite its initially chosen filename: two new direct-context identity assumptions.
+# Native apply_patch corrected these new checks to extended-mode plus policy identity on the wrapper.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=AttributeDesignatorTest,AttributeSelectorTest,ConditionTest,MatchTest,PolicyTest,PolicySetTest,TargetTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/35-captor-oracles-green.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 35-captor-oracles-green.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py mutate order
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=TargetTest#testAllMatch' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/37-mutant-order-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 37-mutant-order-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py restore
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py mutate count
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=HigherOrderFunctionsTest#testMapWithValidArguments' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/38-mutant-count-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 38-mutant-count-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py restore
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py mutate exception_verify
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=AttributeDesignatorTest#testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/39-mutant-exception-verify-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 39-mutant-exception-verify-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py restore
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py mutate captured_rule
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=ConditionTest#testExpressionThrowsRuntimeException' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/40-mutant-captured-rule-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 40-mutant-captured-rule-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py restore
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py mutate cache
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=PolicyIDReferenceTest#testEvaluateFailedToResolveReferenceAndReturnNull' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/41-mutant-cache-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 41-mutant-cache-red.log
+# 41 survived: strict stubs automatically verified the extra resolver call.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py restore
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py mutate empty_control
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=FunctionSpecBuilderTest#testParameterVarArgMinAndMaxEquals' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/42-mutant-empty-control-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 42-mutant-empty-control-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py restore
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/44-exact-cumulative-verification.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/45-exact-count-core-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 45-exact-count-core-gate.log
+# The initial cache patch/restoration were copied to 41-cache-* before the repeat.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py mutate cache
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=PolicyIDReferenceTest#testEvaluateFailedToResolveReferenceAndReturnNull' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/46-mutant-cache-exact-count-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 46-mutant-cache-exact-count-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/36-oracle-mutation.py restore
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/47-core-oracle-final-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/02-capture-run.py 47-core-oracle-final-gate.log
+# Strict global preservation audit rejected 30 concurrent changes outside this lane; core protection still passes.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/26-source-audit.py 47-core-oracle-final-gate-receipt.json
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/26-source-audit.py 47-core-oracle-final-gate-receipt.json --allow-shared-changes
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/10-audit-exceptions.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/32-review-artifacts-audit.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/29-write-evidence.py 47-core-oracle-final-gate-receipt.json
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/48-write-review-follow-up.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/31-final-artifact-audit.py 47-core-oracle-final-gate-receipt.json
+rtk git diff --check -- xacml-core/src/test
+rtk git status --short
+
+# rv019 follow-up. Commands are from <repo> unless a scratch workdir is noted.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py prepare
+# Corrected snapshot metadata parsing before test edits; source hashes remained unchanged.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py refresh-metadata
+# Workdir <scratch>: generated core reactor; both isMatch catches removed only there.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=RuleTest#testPermitRuleEvaluateIfApplicableWithTargetEvaluationException,PolicyTest#testIsApplicableTargetException,PolicySetTest#testIsApplicableTargetException' test -l 51-rv019-before-mutant.log
+# Workdir <repo>.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py receipt 51 rv019-before-mutant scratch 0
+# Three test repairs applied; production source untouched.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py sync-tests
+# Workdir <scratch>, with the same catch mutant and the repaired tests.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=RuleTest#testPermitRuleEvaluateIfApplicableWithTargetEvaluationException,PolicyTest#testIsApplicableTargetException,PolicySetTest#testIsApplicableTargetException' test -l 52-rv019-catch-mutant-red.log
+# Workdir <repo>.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py receipt 52 rv019-catch-mutant-red scratch 1
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py restore-scratch
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core '-Dtest=RuleTest#testPermitRuleEvaluateIfApplicableWithTargetEvaluationException,PolicyTest#testIsApplicableTargetException,PolicySetTest#testIsApplicableTargetException' test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/53-rv019-focused-green.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py receipt 53 rv019-focused-green repo 0
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/54-rv019-core-gate.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py receipt 54 rv019-core-gate repo 0
+# Initial strict audit rejected the concurrent docs/ai/TESTING.md edit; retained strict receipt.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py audit
+rtk proxy cp openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/56-rv019-scope-audit.json openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/56-rv019-strict-scope-audit.json
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/50-rv019-oracle.py audit --record-shared-doc-change
+rtk rg -n 'thenThrow|doThrow|setEvaluationStatus|thenAnswer|doAnswer' xacml-core/src/test/java
+rtk rg -n 'andThrow' openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/before/java
+rtk ./scripts/agent-doctor.sh ast-grep
+ast-grep run --lang java --pattern '$A.setEvaluationStatus($$$ARGS)' xacml-core/src/test/java
+rtk rg -n -C 3 'thenAnswer|doAnswer' xacml-core/src/test/java
+ast-grep run --lang java --pattern '$A.thenAnswer($$$ARGS)' --json xacml-core/src/test/java
+ast-grep run --lang java --pattern '$A.doAnswer($$$ARGS)' --json xacml-core/src/test/java
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/55-rv019-boundary-audit.py
+rtk git diff --check -- xacml-core/src/test
+rtk git status --short -- xacml-core/src/test xacml-core/src/main/java/org/xacml4j/v30/policy/BaseDecisionRule.java
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/57-rv019-write-evidence.py
+
+# Final receipts, local evidence links, production restoration, gate totals and whitespace checks.
+rtk proxy python3 -c 'from pathlib import Path
+import hashlib,json,re,xml.etree.ElementTree as ET
+ev=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito")
+expected={"51":(3,0,0,0),"52":(3,0,3,0),"53":(3,0,0,0),"54":(760,0,0,2)}
+names={"51":"rv019-before-mutant","52":"rv019-catch-mutant-red","53":"rv019-focused-green","54":"rv019-core-gate"}
+for number,counts in expected.items():
+    receipt=json.loads((ev/(number+"-"+names[number]+"-receipt.json")).read_text())
+    assert tuple(receipt["totals"][k] for k in ("tests","failures","errors","skipped"))==counts
+    assert receipt["production_unchanged"]
+restoration=json.loads((ev/"50-rv019-production-restoration.json").read_text())
+assert restoration["scratch_restored_exact_bytes"] and len({restoration[k] for k in ("worktree_production_sha256","scratch_production_sha256","task_start_production_sha256")})==1
+scope=json.loads((ev/"56-rv019-scope-audit.json").read_text())
+assert scope["result"]=="PASS_CORE_SCOPE_WITH_RECORDED_SHARED_DOC_CHANGE"
+assert scope["outside_three_test_files"]==["docs/ai/TESTING.md"]
+assert all(scope["headers_unchanged"].values()) and all(scope["methods_unchanged"].values())
+review=(ev/"review-artifacts.md").read_text().split("## rv019 fixes",1)[1]
+for target in re.findall(r"\[[^\]\n]+\]\(([^)\n]+)\)",review):
+    assert (ev/target.split("#",1)[0]).is_file(),target
+for file in ev.iterdir():
+    if file.is_file() and re.match(r"5[0-7]-rv019",file.name):
+        assert not re.search(r"/(?:Users|home)/",file.read_text()),file.name
+source=Path("xacml-core/src/main/java/org/xacml4j/v30/policy/BaseDecisionRule.java")
+assert hashlib.sha256(source.read_bytes()).hexdigest()==restoration["task_start_production_sha256"]
+actual=dict.fromkeys(("tests","failures","errors","skipped"),0)
+for file in Path("xacml-core/target/surefire-reports").glob("TEST-*.xml"):
+    root=ET.parse(file).getroot()
+    for key in actual:
+        actual[key]+=int(root.get(key,"0"))
+assert tuple(actual.values())==(760,0,0,2)
+audit=json.loads((ev/"55-rv019-exception-boundaries.json").read_text())
+assert len(audit["baseline_exception_mappings"])==26 and len(audit["baseline_status_return_fixtures"])==22
+result={"result":"PASS","core_gate":actual,"mutation_red_errors":3,"original_exception_sites":26,"status_result_fixtures":22,"headers_unchanged":True,"method_lists_unchanged":True,"production_restored_exact_bytes":True,"recorded_shared_change":"docs/ai/TESTING.md","new_evidence_no_home_paths":True}
+(ev/"58-rv019-final-checks.json").write_text(json.dumps(result,indent=2)+"\n")
+print(json.dumps(result,indent=2))'
+rtk git diff --check -- xacml-core/src/test openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito

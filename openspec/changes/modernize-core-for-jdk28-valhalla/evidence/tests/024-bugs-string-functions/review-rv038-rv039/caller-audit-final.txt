@@ -1,0 +1,53 @@
+xacml-core/src/main/java/org/xacml4j/v30/AttributeDesignatorKey.java:25:import org.xacml4j.v30.types.AnyURI;
+xacml-core/src/main/java/org/xacml4j/v30/AttributeDesignatorKey.java:127:		public Builder attributeId(AnyURI id){
+xacml-core/src/main/java/org/xacml4j/v30/AttributeDesignatorKey.java:150:		public Builder issuer(AnyURI issuer){
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceManifest.java:112:						|| !path.normalize().equals(path) || resource.contains("\\")) {
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/GenerateVendoredFixtureManifest.java:73:		Path candidate = start.toAbsolutePath().normalize();
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/VendoredFixtureIntegrityTest.java:44:				: Paths.get(override).toAbsolutePath().normalize();
+xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java:8:import org.xacml4j.v30.types.AnyURI;
+xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java:129:		if(v instanceof AnyURI){
+xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java:130:			return getById(((AnyURI)v).get().toString());
+xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:81:			public AnyURI fromString(java.lang.String v) {
+xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:82:				return AnyURI.of(v);
+xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:87:				AnyURI anyURI = (AnyURI)v;
+xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/PolicyImportTool.java:100:		Iterator<Path> it = path.normalize().iterator();
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:51:			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:70:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:78:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:97:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:105:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:124:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:132:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:158:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:278:	public static StringVal stringFromAnyURI(
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:280:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI v)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:287:	public static AnyURI anyURIFromString(
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:51:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI attributeId,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:52:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI dataType,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:87:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI dataType,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:120:	private static ValueType getType(AnyURI typeUri){
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:127:		return getType((AnyURI)arguments.get(2));
+xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java:44:		public AnyURI ofAny(Object v, Object... params) {
+xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java:45:			return AnyURI.
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:38:public final class AnyURI extends Value.OtherValue<URI>
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:42:    private AnyURI(URI value){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:49:        return o == this || (o instanceof AnyURI && toXacmlString().equals(((AnyURI)o).toXacmlString()));
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:57:    static AnyURI ofAny(Object v,
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:59:        if (v instanceof AnyURI) {
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:60:            return (AnyURI)v;
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:84:     * @return {@link AnyURI} defaultProvider
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:86:    static AnyURI of(java.lang.String v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:92:        return new AnyURI(URI.create(v));
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:95:    static AnyURI of(StringVal v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:103:    static AnyURI of(URL v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:109:            return new AnyURI(v.toURI());
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:116:    static AnyURI of(URI v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:121:        return new AnyURI(v);
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:142:    public AnyURI normalize(){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:143:        return new AnyURI(get().normalize());
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java:379:	public static AnyURI anyURIOneAndOnly(
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java:396:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI v,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java:406:			AnyURI...values){
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/RegExpFunctions.java:60:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI input)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java:64:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java:65:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)

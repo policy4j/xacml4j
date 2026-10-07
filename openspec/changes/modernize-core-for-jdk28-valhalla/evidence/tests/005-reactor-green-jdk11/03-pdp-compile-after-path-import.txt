@@ -1,0 +1,88 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java:[68,54] cannot find symbol
+  symbol:   method findAttributeValues(java.lang.String,org.xacml4j.v30.types.XacmlTypes)
+  location: variable entity of type org.xacml4j.v30.types.Entity
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java:[90,56] no suitable method found for find(no arguments)
+    method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[49,7] org.xacml4j.v30.pdp.DefaultEvaluationContextHandler is not abstract and does not override abstract method getEntity(org.xacml4j.v30.CategoryId) in org.xacml4j.v30.policy.EvaluationContextHandler
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[131,81] incompatible types: org.xacml4j.v30.AttributeDesignatorKey cannot be converted to org.xacml4j.v30.AttributeSelectorKey
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[132,61] incompatible types: java.util.Optional<java.lang.Object> cannot be converted to java.util.Optional<org.xacml4j.v30.BagOfValues>
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[180,48] cannot find symbol
+  symbol:   class EntityValue
+  location: class org.xacml4j.v30.pdp.DefaultEvaluationContextHandler
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[181,48] cannot find symbol
+  symbol:   variable EntityValue
+  location: class org.xacml4j.v30.pdp.DefaultEvaluationContextHandler
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[196,48] name clash: getEntity(org.xacml4j.v30.CategoryId) in org.xacml4j.v30.pdp.DefaultEvaluationContextHandler and getEntity(org.xacml4j.v30.CategoryId) in org.xacml4j.v30.policy.EvaluationContextHandler have the same erasure, yet neither overrides the other
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[119,47] cannot find symbol
+  symbol:   method stream()
+  location: variable entity of type org.xacml4j.v30.types.Entity
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[145,81] incompatible types: org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[146,49] incompatible types: inference variable T has incompatible bounds
+    equality constraints: org.xacml4j.v30.Category
+    lower bounds: java.lang.Object
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[163,36] no suitable method found for find(no arguments)
+    method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+      (actual and formal argument lists differ in length)
+    method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+      (actual and formal argument lists differ in length)
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project xacml-pdp: Compilation failure: Compilation failure: 
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java:[68,54] cannot find symbol
+[ERROR]   symbol:   method findAttributeValues(java.lang.String,org.xacml4j.v30.types.XacmlTypes)
+[ERROR]   location: variable entity of type org.xacml4j.v30.types.Entity
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java:[90,56] no suitable method found for find(no arguments)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[49,7] org.xacml4j.v30.pdp.DefaultEvaluationContextHandler is not abstract and does not override abstract method getEntity(org.xacml4j.v30.CategoryId) in org.xacml4j.v30.policy.EvaluationContextHandler
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[131,81] incompatible types: org.xacml4j.v30.AttributeDesignatorKey cannot be converted to org.xacml4j.v30.AttributeSelectorKey
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[132,61] incompatible types: java.util.Optional<java.lang.Object> cannot be converted to java.util.Optional<org.xacml4j.v30.BagOfValues>
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[180,48] cannot find symbol
+[ERROR]   symbol:   class EntityValue
+[ERROR]   location: class org.xacml4j.v30.pdp.DefaultEvaluationContextHandler
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[181,48] cannot find symbol
+[ERROR]   symbol:   variable EntityValue
+[ERROR]   location: class org.xacml4j.v30.pdp.DefaultEvaluationContextHandler
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:[196,48] name clash: getEntity(org.xacml4j.v30.CategoryId) in org.xacml4j.v30.pdp.DefaultEvaluationContextHandler and getEntity(org.xacml4j.v30.CategoryId) in org.xacml4j.v30.policy.EvaluationContextHandler have the same erasure, yet neither overrides the other
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[119,47] cannot find symbol
+[ERROR]   symbol:   method stream()
+[ERROR]   location: variable entity of type org.xacml4j.v30.types.Entity
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[145,81] incompatible types: org.xacml4j.v30.ValueExpTypeInfo cannot be converted to org.xacml4j.v30.types.ValueType
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[146,49] incompatible types: inference variable T has incompatible bounds
+[ERROR]     equality constraints: org.xacml4j.v30.Category
+[ERROR]     lower bounds: java.lang.Object
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[163,36] no suitable method found for find(no arguments)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.util.function.Predicate<org.xacml4j.v30.Attribute>) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR]     method org.xacml4j.v30.types.Entity.find(java.lang.String,java.lang.String) is not applicable
+[ERROR]       (actual and formal argument lists differ in length)
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :xacml-pdp

@@ -4,6 +4,7 @@ import org.xacml4j.util.DateTimeDurationUtils;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.Period;
 import java.time.ZonedDateTime;
@@ -56,8 +57,9 @@ public abstract class ISO8601Duration <T extends ISO8601Duration<T>> extends Val
         return duration.getMinutes() == DatatypeConstants.FIELD_UNDEFINED?0:duration.getMinutes();
     }
 
-    public final int getSeconds() {
-        return duration.getSeconds() == DatatypeConstants.FIELD_UNDEFINED?0:duration.getSeconds();
+    public final BigDecimal getSeconds() {
+        BigDecimal seconds = (BigDecimal)duration.getField(DatatypeConstants.SECONDS);
+        return seconds == null ? BigDecimal.ZERO : seconds;
     }
 
     public boolean isZero(){

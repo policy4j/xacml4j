@@ -22,26 +22,29 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.lang.reflect.Method;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.util.Reflections;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
+@ExtendWith(MockitoExtension.class)
 public class AnnotationBasedFunctionFactoryTest
 {
 	private FunctionProvider f1;
@@ -50,14 +53,14 @@ public class AnnotationBasedFunctionFactoryTest
 
 	private Method method;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 		this.f1 = FunctionProviderBuilder.builder()
 		                                 .fromClass(TestFunctions.class).build();
 		this.f2 = FunctionProviderBuilder.builder()
 		                                 .fromInstance(new TestInstanceFunctions()).build();
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 		this.method = Reflections.getMethod(TestFunctions.class, "test5VarArg").orElse(null);
 		assertNotNull(method);
 	}
@@ -65,55 +68,67 @@ public class AnnotationBasedFunctionFactoryTest
 	@Test
 	public void testTest1And2FunctionsStaticProvider()
 	{
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
-		replay(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		InOrder order = inOrder(context);
 		FunctionSpec spec1 = f1.getFunction("test1").get();
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(java.lang.Boolean.FALSE),
-				spec1.invoke(context, XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)));
+				spec1.<Value>invoke(context, XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)));
 
 		FunctionSpec spec2 = f1.getFunction("test2").get();
 		assertEquals(XacmlTypes.INTEGER.ofAny(2),
-				spec2.invoke(context, XacmlTypes.INTEGER.bagBuilder().value(1, 2).build()));
-		verify(context);
+				spec2.<Value>invoke(context, XacmlTypes.INTEGER.bagBuilder().value(1, 2).build()));
+		order.verify(context, times(2)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 
 	}
 
 	@Test
 	public void testTest1And2FunctionsInstanceProvider()
 	{
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(2);
-		replay(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		InOrder order = inOrder(context);
 		FunctionSpec spec1 = f2.getFunction("test1").get();
 		assertNotNull(spec1);
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(java.lang.Boolean.FALSE),
-				spec1.invoke(context, XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)));
+				spec1.<Value>invoke(context, XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)));
 
 		FunctionSpec spec2 = f2.getFunction("test2").get();
 		assertEquals(XacmlTypes.INTEGER.ofAny(2),
-				spec2.invoke(context, XacmlTypes.INTEGER.bagBuilder().value(1, 2).build()));
-		verify(context);
+				spec2.<Value>invoke(context, XacmlTypes.INTEGER.bagBuilder().value(1, 2).build()));
+		order.verify(context, times(2)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 
 	}
 
 	@Test
 	public void testLazyParamEvaluationPassingEvaluationContext()
 	{
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
-		replay(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		InOrder order = inOrder(context);
 		FunctionSpec spec3 = f1.getFunction("test3").get();
 		FunctionSpec spec4 = f1.getFunction("test4").get();
 		spec3.invoke(context, XacmlTypes.INTEGER.ofAny(10), XacmlTypes.INTEGER.ofAny(10));
 		spec3.invoke(context, XacmlTypes.INTEGER.ofAny(10));
 		spec4.invoke(context, XacmlTypes.INTEGER.ofAny(10));
-		verify(context);
+		order.verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 
 	}
 
 	@Test
 	public void testVarArgFunctionInvocation()
 	{
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true).anyTimes();
-		replay(context);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		InOrder order = inOrder(context);
 		FunctionSpec spec5 = f1.getFunction("test5VarArg").get();
 		FunctionSpec spec6 = f1.getFunction("test6VarArg").get();
 
@@ -124,7 +139,9 @@ public class AnnotationBasedFunctionFactoryTest
 
 		spec6.invoke(context, XacmlTypes.INTEGER.ofAny(10), XacmlTypes.INTEGER.ofAny(10));
 		spec6.invoke(context, XacmlTypes.INTEGER.ofAny(0), XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false));
-		verify(context);
+		order.verify(context, atLeast(0)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 
 	}
 

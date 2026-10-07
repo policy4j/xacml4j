@@ -1,0 +1,11 @@
+{
+  "xacml-core": [
+    "<ns0:dependency xmlns:ns0=\"http://maven.apache.org/POM/4.0.0\">\n\t\t\t<ns0:groupId>org.junit.vintage</ns0:groupId>\n\t\t\t<ns0:artifactId>junit-vintage-engine</ns0:artifactId>\n\t\t</ns0:dependency>\n\t"
+  ],
+  "xacml-test": [],
+  "xacml-xml-jaxb": [],
+  "xacml-xml": [],
+  "xacml-conformance-tests": [],
+  "xacml-json": [],
+  "xacml-pdp": []
+}

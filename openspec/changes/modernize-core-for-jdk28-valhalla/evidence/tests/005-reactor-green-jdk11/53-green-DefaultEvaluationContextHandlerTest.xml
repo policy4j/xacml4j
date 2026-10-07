@@ -1,0 +1,177 @@
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.042" tests="18" errors="0" skipped="0" failures="0">
+  <testcase name="testRelativePathWithoutContextSelectorUsesDocumentNode" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.005">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,258 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,258 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,258 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,258 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="0" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,258 &amp;amp#27;[36mAttributeReference.evaluate()&amp;amp#27;[m - Evaluating ref=AttributeSelectorKey{Category=recipient-subject, Path=md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null} result=Optional.empty
+</system-out>
+  </testcase>
+  <testcase name="testSelectorFallsBackToEntityValueFromPipAndCachesResult" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.01">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,260 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=entity-selector}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,260 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating contextSelector xpath="PathValue{type=xpathExpression, path=/md:record/md:patient, categoryId=CategoryId{id=recipient-subject}, pathType=XPATH}"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,260 &amp;amp#27;[36mXPathProvider.evaluateToNode()&amp;amp#27;[m - EvaluateToNode XPath="/md:record/md:patient"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,260 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,260 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,261 &amp;amp#27;[36mXPathProvider.evaluateToNode()&amp;amp#27;[m - Xpath=com.sun.org.apache.xpath.internal.jaxp.XPathExpressionImpl@7aad3f7d result node name="{urn:example:med:schemas:record}patient" node type="1"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,261 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,261 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,261 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,261 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,261 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,268 &amp;amp#27;[36mXmlContent.convertNodeToXacml()&amp;amp#27;[m - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+</system-out>
+  </testcase>
+  <testcase name="testTwoNodeContextSelectorCurrentlyUsesFirstNode" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.003">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=urn:oasis:names:tc:xacml:3.0:content-selector}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating contextSelector xpath="PathValue{type=xpathExpression, path=/md:record/md:patient, categoryId=CategoryId{id=recipient-subject}, pathType=XPATH}"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mXPathProvider.evaluateToNode()&amp;amp#27;[m - EvaluateToNode XPath="/md:record/md:patient"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mXPathProvider.evaluateToNode()&amp;amp#27;[m - Xpath=com.sun.org.apache.xpath.internal.jaxp.XPathExpressionImpl@5f13be1 result node name="{urn:example:med:schemas:record}patient" node type="1"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,271 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,272 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,272 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,272 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,272 &amp;amp#27;[36mXmlContent.convertNodeToXacml()&amp;amp#27;[m - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+</system-out>
+  </testcase>
+  <testcase name="testDesignatorResolveAttributeIsNotInRequest" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.001">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,273 &amp;amp#27;[36mEntity.resolve()&amp;amp#27;[m - attributeId=testId type=anyURI issuer=null values=[]
+</system-out>
+  </testcase>
+  <testcase name="testDesignatorResolveAttributeIsNotInRequestPIPThrowsRuntimeException" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,274 &amp;amp#27;[36mEntity.resolve()&amp;amp#27;[m - attributeId=testId type=anyURI issuer=null values=[]
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,274 &amp;amp#27;[36mDefaultEvaluationContextHandler.doPipResolve()&amp;amp#27;[m - null
+46</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,276 &amp;amp#27;[36mXmlContent.convertNodeToXacml()&amp;amp#27;[m - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,278 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,278 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,278 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,278 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,278 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,278 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,279 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,279 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,279 &amp;amp#27;[36mXmlContent.convertNodeToXacml()&amp;amp#27;[m - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.001">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient, PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/md:record/md:patient"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="/md:record/md:patient"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,280 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Unsupported DOM node for xpath="/md:record/md:patient" domType="{urn:example:med:schemas:record}patient"
+85</system-out>
+  </testcase>
+  <testcase name="testDesignatorPreservesIssuerAndDuplicateValuesAndGetEntityReturnsEntity" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.001">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,281 &amp;amp#27;[36mEntity.resolve()&amp;amp#27;[m - attributeId=test-id type=integer issuer=requested-issuer values=[IntegerVal{type=integer, value=7}, IntegerVal{type=integer, value=7}]
+</system-out>
+  </testcase>
+  <testcase name="testZeroNodeContextSelectorCurrentlyFallsBackToDocument" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,282 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=urn:oasis:names:tc:xacml:3.0:content-selector}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,282 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating contextSelector xpath="PathValue{type=xpathExpression, path=/md:record/md:missing, categoryId=CategoryId{id=recipient-subject}, pathType=XPATH}"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,282 &amp;amp#27;[36mXPathProvider.evaluateToNode()&amp;amp#27;[m - EvaluateToNode XPath="/md:record/md:missing"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,282 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,282 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[33mWARN &amp;amp#27;[m] 2026-10-01 14:22:26,282 &amp;amp#27;[33mXPathProvider.evaluateToNode()&amp;amp#27;[m - Xpath=com.sun.org.apache.xpath.internal.jaxp.XPathExpressionImpl@3be4f71 result null
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,282 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,283 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,283 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,283 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,283 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,283 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,283 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,283 &amp;amp#27;[36mXmlContent.convertNodeToXacml()&amp;amp#27;[m - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentIsNotInRequestPIPThrowsRuntimeException" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.001">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,284 &amp;amp#27;[36mDefaultEvaluationContextHandler.doPipResolve()&amp;amp#27;[m - null
+46</system-out>
+  </testcase>
+  <testcase name="testRelativePathWithExplicitContextSelectorUsesSelectedNode" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=urn:oasis:names:tc:xacml:3.0:content-selector}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating contextSelector xpath="PathValue{type=xpathExpression, path=/md:record/md:patient, categoryId=CategoryId{id=recipient-subject}, pathType=XPATH}"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mXPathProvider.evaluateToNode()&amp;amp#27;[m - EvaluateToNode XPath="/md:record/md:patient"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mXPathProvider.evaluateToNode()&amp;amp#27;[m - Xpath=com.sun.org.apache.xpath.internal.jaxp.XPathExpressionImpl@5c645b43 result node name="{urn:example:med:schemas:record}patient" node type="1"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,285 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,286 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,286 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,286 &amp;amp#27;[36mXmlContent.convertNodeToXacml()&amp;amp#27;[m - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndNodeFailsConvertionToDate" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=date, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,287 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,288 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - /md:record/md:patient/md:patient-number/text()
+81</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentInRequestExistXPathReturnsEmptySet" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,289 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/test, PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,289 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/test"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,290 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="0" nodes
+</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndCorrectNodeTypeAndNodeFailsConvertionToDate" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.001">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,290 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=date, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,290 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,291 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,291 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,291 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,291 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,291 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,291 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,291 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - /md:record/md:patient/md:patient-number/text()
+81</system-out>
+  </testcase>
+  <testcase name="testSelectorResolveContentIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,292 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,292 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,292 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,293 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,293 &amp;amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp;amp#27;[m - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,293 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Evaluation result has="1" nodes
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,293 &amp;amp#27;[36mXPathProvider.evaluateToNodeSet()&amp;amp#27;[m - Result at index="0" domType="Text" domNodeType="3"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,293 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Found="1" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,293 &amp;amp#27;[36mXmlContent.convertNodeToXacml()&amp;amp#27;[m - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+</system-out>
+  </testcase>
+  <testcase name="testExplicitMissingContextSelectorIsRejected" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.001">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,294 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=missing-selector}
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,294 &amp;amp#27;[36mXmlContent.getAttributeValues()&amp;amp#27;[m - Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="missing-selector"
+107</system-out>
+  </testcase>
+  <testcase name="testDesignatorResolveAttributeIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute" classname="org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest" time="0.002">
+    <system-out>[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,296 &amp;amp#27;[36mEntity.resolve()&amp;amp#27;[m - attributeId=testId type=anyURI issuer=null values=[]
+[&amp;amp#27;[36mDEBUG&amp;amp#27;[m] 2026-10-01 14:22:26,296 &amp;amp#27;[36mEntity.resolve()&amp;amp#27;[m - attributeId=testId type=anyURI issuer=null values=[]
+[&amp;amp#27;[33mWARN &amp;amp#27;[m] 2026-10-01 14:22:26,296 &amp;amp#27;[33mDefaultEvaluationContextHandler.doPipResolve()&amp;amp#27;[m - Cyclic designator="AttributeDesignatorKey{Category=resource, AttributeId=testId, DataType=anyURI, Issuer=null}" resolution detected
+</system-out>
+  </testcase>
+</testsuite>

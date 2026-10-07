@@ -46,15 +46,32 @@ public class FunctionInvocationException extends EvaluationException
 		this(spec, cause, null);
 	}
 
+	/**
+	 * The first {@link EvaluationException} in the cause chain keeps
+	 * its status. Every other failure stays processing-error.
+	 */
 	public FunctionInvocationException(
 			FunctionSpec spec,
 			Throwable cause,
 			String message, Object...params) {
-		super(Status.processingError()
-				.message(Optional.ofNullable(message)
-				                 .map(v-> String.format(v, params)).orElse(null))
-				.error(cause).build(), cause);
+		super(statusFor(cause, message, params), cause);
 		this.spec = spec;
+	}
+
+	private static Status statusFor(Throwable cause, String message, Object... params) {
+		for(Throwable current = cause; current != null; current = current.getCause()){
+			if(current instanceof EvaluationException){
+				return ((EvaluationException) current).getStatus();
+			}
+			if(current.getCause() == current){
+				break;
+			}
+		}
+		return Status.processingError()
+				.message(Optional.ofNullable(message)
+				                 .map(v -> String.format(v, params)).orElse(null))
+				.error(cause)
+				.build();
 	}
 
 

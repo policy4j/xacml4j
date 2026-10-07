@@ -65,7 +65,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 			return handleNext(request, context);
 		}
 		Entity entity = resource.getEntity();
-		Collection<Value> resourceId = entity.findAttributeValues(RESOURCE_ID_ATTRIBUTE,
+		Collection<Value<?>> resourceId = entity.findValues(RESOURCE_ID_ATTRIBUTE,
 		                                                         XacmlTypes.XPATH);
 		if(resourceId.isEmpty()){
 			return handleNext(request, context);
@@ -87,7 +87,7 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 			if(attrs.getCategoryId().equals(CategoryId.RESOURCE)){
 				Collection<Attribute> resourceAttr = new LinkedList<Attribute>();
 				Entity en = attrs.getEntity();
-				for(Attribute attr : en.find()){
+				for(Attribute attr : en.attributes()){
 					if(attr.getAttributeId().equals(RESOURCE_ID_ATTRIBUTE))
 					{
 						Attribute selector =

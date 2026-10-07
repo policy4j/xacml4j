@@ -1,0 +1,57 @@
+{
+  "xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyRepository.java": {
+    "current_sha256": "ecafe9472a3ce7eefaf8a2473fe7abb83737617af1f73c59d8394e2aa7cf60f2",
+    "base_sha256": "ecafe9472a3ce7eefaf8a2473fe7abb83737617af1f73c59d8394e2aa7cf60f2",
+    "command": "rtk proxy git show a8a90d46:xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyRepository.java",
+    "matches_api_base": true
+  },
+  "xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java": {
+    "current_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "base_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "command": "rtk proxy git show a8a90d46:xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java",
+    "matches_api_base": true
+  },
+  "failed_run": {
+    "counts": [
+      5,
+      1,
+      0,
+      1
+    ],
+    "tests": [
+      {
+        "name": "",
+        "problems": [
+          {
+            "kind": "skipped",
+            "trace": ""
+          }
+        ]
+      },
+      {
+        "name": "testAddPolicyWithTheSameIdAndSameVersion",
+        "problems": []
+      },
+      {
+        "name": "testAddRemove",
+        "problems": []
+      },
+      {
+        "name": "testOnePolicyDifferentVersion",
+        "problems": []
+      },
+      {
+        "name": "testFindAllPoliciesWithTheSameId",
+        "problems": [
+          {
+            "kind": "failure",
+            "message": "\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1",
+            "type": "java.lang.AssertionError",
+            "trace": "java.lang.AssertionError: \n\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1\n\tat org.easymock.internal.MocksControl.verify(MocksControl.java:262)\n\tat org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest.testFindAllPoliciesWithTheSameId(InMemoryPolicyRepositoryTest.java:219)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:566)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)\n\tat org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)\n\tat org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)\n\tat org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)\n\tat org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)\n\tat org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)\n\tat org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)\n\tat org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)\n\tat org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)\n"
+          }
+        ]
+      }
+    ]
+  },
+  "inference": "Pre-existing asynchronous listener/test race: default single-thread executor enqueues notifications; tests verify EasyMock immediately, with no completion barrier. No map function is used by these policies."
+}

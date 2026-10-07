@@ -22,16 +22,20 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
+import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.Versionable;
 
@@ -134,20 +138,27 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 						          "id=\"{}\" condition=\"{}\", evaluating rules", id, result);
 			}
 			if(result == ConditionResult.TRUE){
-				Decision decision = combineDecisions(context);
+				// XACML 3.0, section 7.18: the obligations and advice from the evaluation of
+				// this rule go to an enclosing policy set only if they match its decision
+				StagedResponses staged = isEnclosed(context)?new StagedResponses(context):null;
+				EvaluationContext evaluationContext = (staged == null)?context:staged;
+				Decision decision = combineDecisions(evaluationContext);
 				if(log.isDebugEnabled()){
 					log.debug("Composite decision rule " +
 							"id=\"{}\" combined  decision result is=\"{}\"", id, decision);
 				}
-				if(!decision.isIndeterminate() ||
+				if(!decision.isIndeterminate() &&
 						decision != Decision.NOT_APPLICABLE){
 					if(!context.isExtendedIndeterminateEval()){
 						try
 						{
-							evaluateAdvicesAndObligations(context, decision);
+							evaluateAdvicesAndObligations(evaluationContext, decision);
 						}catch(EvaluationException e){
 							return getExtendedIndeterminate(
-									context.createExtIndeterminateEvalContext());
+									createExtIndeterminateEvalContext(context));
+						}
+						if(staged != null){
+							staged.publish(decision);
 						}
 						context.addEvaluationResult(this, decision);
 					}
@@ -163,7 +174,41 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 				return Decision.NOT_APPLICABLE;
 			}
 		}
-		return getExtendedIndeterminate(context.createExtIndeterminateEvalContext());
+		return getExtendedIndeterminate(createExtIndeterminateEvalContext(context));
+	}
+
+	/**
+	 * Creates a context to evaluate this rule for the extended indeterminate.
+	 * The result of that evaluation is never Permit or Deny, so a rule which is
+	 * evaluated inside a policy set gives no obligations and no advice to it
+	 *
+	 * @param context an evaluation context of this rule
+	 * @return {@link EvaluationContext} to evaluate extended indeterminate
+	 */
+	private static EvaluationContext createExtIndeterminateEvalContext(EvaluationContext context)
+	{
+		EvaluationContext extContext = context.createExtIndeterminateEvalContext();
+		return isEnclosed(context)?new StagedResponses(extContext):extContext;
+	}
+
+	/**
+	 * Tests if a given context belongs to a rule which is evaluated inside a policy set.
+	 * The outermost rule needs no staging: the root context is read only for the
+	 * final decision, and a response of a different decision is not read
+	 *
+	 * @param context an evaluation context of this rule
+	 * @return {@code true} if a policy set context is above the given context
+	 */
+	private static boolean isEnclosed(EvaluationContext context)
+	{
+		EvaluationContext c = context;
+		while(c instanceof DescendantEvaluationContext){
+			c = c.getParentContext();
+			if(c instanceof PolicySet.PolicySetDescendantEvaluationContext){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected Decision getExtendedIndeterminate(EvaluationContext context)
@@ -209,6 +254,68 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	public int hashCode() {
 		return super.hashCode() * 31 +
 				Objects.hashCode(version, policyIssuer, maxDelegationDepth, combinerParameters);
+	}
+
+	/**
+	 * Holds the obligations and advice from the evaluation of one composite decision
+	 * rule until the decision of that rule is known. The root context is not changed
+	 * before that, so nothing must be removed from it when the rule is not applicable,
+	 * is indeterminate, or has a different decision
+	 */
+	private static final class StagedResponses extends DescendantEvaluationContext
+	{
+		private final List<Advice> permitAdvices = new ArrayList<>();
+		private final List<Advice> denyAdvices = new ArrayList<>();
+		private final List<Obligation> permitObligations = new ArrayList<>();
+		private final List<Obligation> denyObligations = new ArrayList<>();
+
+		StagedResponses(EvaluationContext context){
+			super(context);
+		}
+
+		@Override
+		public boolean isExtendedIndeterminateEval(){
+			return getParent().isExtendedIndeterminateEval();
+		}
+
+		@Override
+		public EvaluationContext getParentContext(){
+			// This wrapper replaces its delegate in ancestry walks; do not count it twice.
+			return getParent().getParentContext();
+		}
+
+		@Override
+		public void addAdvices(Decision d, Iterable<Advice> advices){
+			Preconditions.checkNotNull(d, "decision");
+			if(d == Decision.PERMIT || d == Decision.DENY){
+				List<Advice> staged = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
+				for(Advice a : advices){
+					staged.add(a);
+				}
+			}
+		}
+
+		@Override
+		public void addObligations(Decision d, Iterable<Obligation> obligations){
+			Preconditions.checkNotNull(d, "decision");
+			if(d == Decision.PERMIT || d == Decision.DENY){
+				List<Obligation> staged = (d == Decision.PERMIT)?permitObligations:denyObligations;
+				for(Obligation o : obligations){
+					staged.add(o);
+				}
+			}
+		}
+
+		/**
+		 * Gives the obligations and advice which match a given decision to the parent context
+		 *
+		 * @param d a Permit or Deny decision of the rule
+		 */
+		void publish(Decision d){
+			EvaluationContext parent = getParent();
+			parent.addAdvices(d, (d == Decision.PERMIT)?permitAdvices:denyAdvices);
+			parent.addObligations(d, (d == Decision.PERMIT)?permitObligations:denyObligations);
+		}
 	}
 
 	public abstract static class Builder<T extends Builder<?>>

@@ -105,6 +105,7 @@ class JavaMethodToFunctionSpecConverter
 				         (legacyFuncId == null) ? null : legacyFuncId.id());
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
+		Class<?> varArgComponentType = m.isVarArgs() ? types[types.length - 1].getComponentType() : null;
 		boolean evalContextParamFound = false;
 		for (int i = 0; i < params.length; i++)
 		{
@@ -190,6 +191,12 @@ class JavaMethodToFunctionSpecConverter
 									+ "varArg parameter must be a last parameter in the method");
 				}
 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
+				// An empty type id denotes the mixed primitive/bag sequence used by higher-order functions.
+				if (param.typeId().isEmpty() && !param.isBag()
+						&& Expression.class.isAssignableFrom(types[i].getComponentType())) {
+					b.anyValuesVarArg(param.min(), param.max());
+					continue;
+				}
 				java.util.Optional<ValueType> type = XacmlTypes.getType(param.typeId());
 				if(!type.isPresent()){
 					throw SyntaxException.invalidDataTypeId(param.typeId());
@@ -231,7 +238,7 @@ class JavaMethodToFunctionSpecConverter
 					(validator != null) ? createValidator(m, validator
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory.create(instance, m),
-					                              evalContextParamFound));
+					                              evalContextParamFound, varArgComponentType));
 		}
 		if (returnTypeResolver != null) {
 			return b.build(createResolver(m, returnTypeResolver.resolverClass()),
@@ -239,7 +246,7 @@ class JavaMethodToFunctionSpecConverter
 							.validatorClass()) : null,
 					new DefaultFunctionInvocation(invocationFactory
 							.<ValueExp>create(instance, m),
-							evalContextParamFound));
+							evalContextParamFound, varArgComponentType));
 		}
 		throw SyntaxException.invalidResolverMethod(m,
 		                                            "Either static return type or " +

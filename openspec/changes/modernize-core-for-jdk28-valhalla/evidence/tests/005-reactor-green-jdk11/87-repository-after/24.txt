@@ -1,0 +1,192 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Xacml4J Project                                                    [pom]
+[INFO] Xacml4J Core Engine Implementation                                 [jar]
+[INFO] Xacml4J XML representation JAXB classes                            [jar]
+[INFO] Xacml XML representation marshallers                               [jar]
+[INFO] Xacml4J Json based request/response and policy format support      [jar]
+[INFO] Xacml4J PDP                                                        [jar]
+[INFO] 
+[INFO] -------------------------< org.xacml4j:xacml >--------------------------
+[INFO] Building Xacml4J Project 2.0.0-SNAPSHOT                            [1/6]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT         [2/6]
+[INFO]   from xacml-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-core ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-core ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 31 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-core ---
+[INFO] 
+[INFO] ---------------------< org.xacml4j:xacml-xml-jaxb >---------------------
+[INFO] Building Xacml4J XML representation JAXB classes 2.0.0-SNAPSHOT    [3/6]
+[INFO]   from xacml-xml-jaxb/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-xml-jaxb ---
+[INFO] 
+[INFO] --- jaxb2:0.15.1:generate (default) @ xacml-xml-jaxb ---
+[INFO] Latest timestamp of the source resources is [2026-10-01 10:17:01.834], earliest timestamp of the target resources is [2026-10-01 10:28:05.407].
+[INFO] Sources are up-to-date, XJC will be skipped.
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-xml-jaxb ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-xml-jaxb ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 1 resource from target/generated-sources/xjc to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-xml-jaxb ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-xml-jaxb ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-xml-jaxb/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-xml-jaxb ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-xml-jaxb ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-xml >------------------------
+[INFO] Building Xacml XML representation marshallers 2.0.0-SNAPSHOT       [4/6]
+[INFO]   from xacml-xml/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-xml ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-xml ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-xml ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-xml/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-xml ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-xml ---
+[INFO] Copying 30 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-xml ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-xml ---
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-json >-----------------------
+[INFO] Building Xacml4J Json based request/response and policy format support 2.0.0-SNAPSHOT [5/6]
+[INFO]   from xacml-json/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-json ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-json ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-json ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-json/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-json ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-json ---
+[INFO] Copying 5 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-json ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-json ---
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-pdp >------------------------
+[INFO] Building Xacml4J PDP 2.0.0-SNAPSHOT                                [6/6]
+[INFO]   from xacml-pdp/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-pdp ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-pdp ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-pdp ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-pdp/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-pdp ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-pdp ---
+[INFO] Copying 30 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-pdp ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-pdp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[DEBUG] 2026-10-01 16:30:59,862 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1.1}"
+[DEBUG] 2026-10-01 16:30:59,864 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1.1}"
+[WARN ] 2026-10-01 16:30:59,864 AbstractPolicyRepository.add() - Policy with id="id1" and version="Version{version=1.1}" already exist in this repository
+[DEBUG] 2026-10-01 16:30:59,867 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1.1}"
+[DEBUG] 2026-10-01 16:30:59,867 InMemoryPolicyRepository.removePolicy() - Removing Policy with id="id1" version="Version{version=1.1}"
+[DEBUG] 2026-10-01 16:30:59,867 InMemoryPolicyRepository.getPolicies() - Found="0" versions of policy with id="id1"
+[DEBUG] 2026-10-01 16:30:59,869 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1}"
+[DEBUG] 2026-10-01 16:30:59,869 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1.1}"
+[DEBUG] 2026-10-01 16:30:59,869 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1.2.1}"
+[DEBUG] 2026-10-01 16:30:59,869 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=2.0.1}"
+[DEBUG] 2026-10-01 16:30:59,869 InMemoryPolicyRepository.getPolicies() - Found="4" versions of policy with id="id1"
+[DEBUG] 2026-10-01 16:30:59,870 InMemoryPolicyRepository.getPolicies() - Found="4" versions of policy with id="id1"
+[DEBUG] 2026-10-01 16:30:59,870 InMemoryPolicyRepository.getPolicies() - Found="4" versions of policy with id="id1"
+[DEBUG] 2026-10-01 16:30:59,870 InMemoryPolicyRepository.getPolicies() - Found="4" versions of policy with id="id1"
+[DEBUG] 2026-10-01 16:30:59,871 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1.1}"
+[DEBUG] 2026-10-01 16:30:59,871 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1}"
+[DEBUG] 2026-10-01 16:30:59,872 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=1.2.1}"
+[DEBUG] 2026-10-01 16:30:59,872 InMemoryPolicyRepository.addPolicy() - Adding Policy with id="id1" version="Version{version=2.0.1}"
+[DEBUG] 2026-10-01 16:30:59,872 InMemoryPolicyRepository.getPolicies() - Found="4" versions of policy with id="id1"
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.263 s - in org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] 
+[INFO] Xacml4J Project .................................... SUCCESS [  0.554 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.361 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.213 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.073 s]
+[INFO] Xacml4J Json based request/response and policy format support SUCCESS [  0.045 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.749 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.081 s
+[INFO] Finished at: 2026-10-01T16:30:59-04:00
+[INFO] ------------------------------------------------------------------------

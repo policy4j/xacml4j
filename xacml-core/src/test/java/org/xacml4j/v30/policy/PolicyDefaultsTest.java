@@ -22,9 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.XPathVersion;
 
 public class PolicyDefaultsTest

@@ -1,0 +1,10 @@
+Working directory: <lane>
+
+Regression proof, with `factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)` temporarily removed from XPathProvider's thread-local factory initializer. The initializer catch was temporarily widened from XPathFactoryConfigurationException to Exception solely because removing the setter removes the checked exception in the try body. Both lines were restored before the clean gate.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=XmlContentTest#testXPathFactoryEnablesSecureProcessing test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/review-fix/secure-processing-flag-removed.log
+
+Focused test with final code restored:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=XmlContentTest#testXPathFactoryEnablesSecureProcessing test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/review-fix/secure-processing-flag-restored.log
+
+Requested clean gate with final code restored:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -am clean test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/review-fix/core-clean-test.log

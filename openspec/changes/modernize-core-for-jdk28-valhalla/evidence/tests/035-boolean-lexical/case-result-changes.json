@@ -1,0 +1,38 @@
+[
+  {
+    "suite": "oasis30",
+    "case_id": "IIA022",
+    "before": "skipped",
+    "after": "passed"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA024",
+    "before": "skipped",
+    "after": "passed"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIA340",
+    "before": "skipped",
+    "after": "passed"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIE301",
+    "before": "skipped",
+    "after": "passed"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIE303",
+    "before": "skipped",
+    "after": "passed"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIG301",
+    "before": "skipped",
+    "after": "passed"
+  }
+]

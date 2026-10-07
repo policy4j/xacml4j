@@ -1,0 +1,8 @@
+class,before,after,failures,errors,skipped
+org.xacml4j.v20.Xacml20SamplePolicyTest,1,1,0,0,0
+org.xacml4j.v20.Xacml20TestUtilityTest,0,18,0,0,0
+org.xacml4j.v20.Xacml30TestUtilityTest,24,53,0,0,0
+org.xacml4j.v30.AttributeResolverTestSupportTest,1,1,0,0,0
+org.xacml4j.v30.ExpectedAttributeResolverBuilderTest,2,2,0,0,0
+org.xacml4j.v30.Xacml30SamplePolicyTest,2,2,0,0,0
+org.xacml4j.v30.XacmlPolicyTestSupportTest,0,6,0,0,0

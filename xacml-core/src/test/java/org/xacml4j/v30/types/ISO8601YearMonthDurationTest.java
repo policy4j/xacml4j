@@ -22,22 +22,30 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.Duration;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.xacml4j.v30.SyntaxException;
 
 import java.time.Period;
 
 public class ISO8601YearMonthDurationTest
 {
+	@Test
+	public void rejectsDayComponentsInYearMonthDuration()
+	{
+		assertThrows(SyntaxException.class, () -> ISO8601YearMonthDuration.of("P30D"));
+	}
+
 	private DatatypeFactory df;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception{
 		this.df = DatatypeFactory.newInstance();
 	}
@@ -77,4 +85,3 @@ public class ISO8601YearMonthDurationTest
 		assertEquals(d, v2);
 	}
 }
-

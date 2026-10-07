@@ -1,0 +1,21 @@
+JDK 21 full reactor test gate (see 029-bug-4.22-policy-id-list/full-reactor.log):
+xacml-core: 767 tests, 0 failures, 0 errors, 2 skipped
+xacml-xml: 38 tests, 0 failures, 0 errors, 0 skipped
+xacml-json: 8 tests, 0 failures, 0 errors, 1 skipped
+
+Focused TypeToStringTest and RootEvaluationContextTest: 6 tests, 0 failures, 0 errors, 0 skipped.
+Focused XML/JSON request and formatter tests: reactor build succeeded; class-level reports are in module target/surefire-reports.
+
+rv037 focused JDK 21 tests:
+StringFunctionLexicalFormTest: 15 tests, 0 failures, 0 errors, 0 skipped.
+StringFunctionLexicalFormTest + TypeToStringTest: 17 total tests, 0 failures, 0 errors, 0 skipped.
+
+rv037 JDK 21 full module gates:
+xacml-core: 782 tests, 0 failures, 0 errors, 2 skipped
+xacml-xml: 38 tests, 0 failures, 0 errors, 0 skipped
+xacml-json: 8 tests, 0 failures, 0 errors, 1 skipped
+xacml-pdp: 75 tests, 0 failures, 0 errors, 3 skipped
+
+Red proof before the DoubleVal fix: StringFunctionLexicalFormTest ran 15
+cases with 2 failures, for expected INF/actual Infinity and expected
+-INF/actual -Infinity. See rv037-string-functions-red.log.

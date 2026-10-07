@@ -1,0 +1,157 @@
+[
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java",
+    "method": "testCreateAdviceExpression",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/BagOfValuesTest.java",
+    "method": "testEvaluateBag",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testObjectMethods",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java",
+    "method": "testObjectMethods",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java",
+    "method": "testObjectMethods",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+    "method": "testCreateObligationExpression",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+    "method": "testEvaluateObligationExpression",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java",
+    "method": "testSetAndGetDecisionCacheTTLWithDefaultTTLZero",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java",
+    "method": "testSetAndGetDecisionCacheTTLWithDefaultTTL",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleIsApplicableWithNoTarget",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleIsApplicableWithNoTarget",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testObjectMethods",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java",
+    "method": "testCombineWithNoDecisions",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testValidateSingleTypeParametersWithSameTypeArgs",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testValidateSingeTypeParametersWithDiffTypesArgs",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testParameterAfterVaragParam",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testParameterVarArgMinAndMaxEquals",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java",
+    "method": "testDesignatorFunctionWithEntity",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testAndFunction",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testOrFunction",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testNOfFunction",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testNOfFunctionInderterminate",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java",
+    "method": "testTimeInRangeNoTimeZonesAndTimeIsInRange",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java",
+    "method": "testTimeInRangeNoTimeZonesAndTimeIsNotInRange",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java",
+    "method": "testTimeInRangeNoTimeZonesAndTimeIsEqualToUpperBound",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java",
+    "method": "testXacmlRegExpWithSpaceBugTrimming",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java",
+    "method": "testRegExpMatchFromIIC168ConformanceTest",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java",
+    "method": "testStringRegExpMatch",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java",
+    "method": "testAnyURIRegExpMatch",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java",
+    "method": "testRFC822NameRegExpMatch",
+    "retained": "verifyNoMoreInteractions"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java",
+    "method": "subNanosecondArithmeticEvaluatesThroughApply",
+    "retained": "verifyNoMoreInteractions"
+  }
+]

@@ -22,23 +22,24 @@ package org.xacml4j.v30.pdp.request;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.easymock.Capture;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
@@ -78,13 +79,85 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 
 	private XPathProvider xpathProvider;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
-		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
+		this.pdp = mock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesViaXPathExpressionHandler();
 		this.xpathProvider = XPathProvider.defaultProvider();
 		this.content = XmlContent.of(XmlContent.fromString(testXml));
+	}
+
+	@Test
+	public void testExpansionPreservesSelectorMetadataAndOtherAttributes()
+	{
+		Attribute first = Attribute.builder("shared-id").issuer("first")
+				.value(XacmlTypes.STRING.ofAny("first-value")).build();
+		Attribute second = Attribute.builder("shared-id").issuer("second")
+				.value(XacmlTypes.STRING.ofAny("second-value")).build();
+		Category resource = Category.builder(CategoryId.RESOURCE).id("resource-ref")
+				.entity(Entity.builder().content(content).attribute(first, second,
+						Attribute.builder(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR)
+								.issuer("selector-issuer").includeInResult(true)
+								.value(XacmlTypes.XPATH.ofAny("//md:record/md:patient", CategoryId.RESOURCE))
+								.build()).build()).build();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
+		when(pdp.requestDecision(Mockito.any())).thenReturn(Result.ok(Decision.PERMIT).build());
+
+		assertEquals(2, profile.handle(RequestContext.builder().attributes(resource).build(), pdp).size());
+		InOrder order = Mockito.inOrder(pdp);
+		order.verify(pdp, times(2)).requestDecision(requests.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		Set<Value<?>> paths = new java.util.HashSet<>();
+		for(RequestContext expanded : requests.getAllValues()){
+			Category category = expanded.getCategory().iterator().next();
+			Entity entity = category.getEntity();
+			assertEquals(resource.getCategoryId(), category.getCategoryId());
+			assertEquals(resource.getReferenceId(), category.getReferenceId());
+			assertSame(content, entity.getContent().get());
+			assertEquals(3, entity.attributes().size());
+			assertEquals(ImmutableSet.of(first, second), ImmutableSet.copyOf(entity.find("shared-id")));
+			assertTrue(entity.find(MultipleResourcesViaXPathExpressionHandler.MULTIPLE_CONTENT_SELECTOR).isEmpty());
+			Attribute selector = Iterables.getOnlyElement(entity.find(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR));
+			assertEquals("selector-issuer", selector.getIssuer());
+			assertTrue(selector.isIncludeInResult());
+			paths.addAll(selector.values());
+		}
+		assertEquals(ImmutableSet.of(
+				XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]", CategoryId.RESOURCE),
+				XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE)), paths);
+	}
+
+	@Test
+	public void testDraftMultipleContentSelectorIsAcceptedAndExpanded()
+	{
+		String draftId = "urn:oasis:names:tc:xacml:3.0:multiple:content-selector";
+		Category resource = Category.builder(CategoryId.RESOURCE)
+				.entity(Entity.builder().content(content)
+						.attribute(Attribute.builder(draftId)
+								.value(XacmlTypes.XPATH.ofAny("//md:record/md:patient", CategoryId.RESOURCE))
+								.build())
+						.build())
+				.build();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
+		when(pdp.requestDecision(Mockito.any())).thenReturn(Result.ok(Decision.PERMIT).build());
+
+		assertEquals(2, profile.handle(RequestContext.builder().attributes(resource).build(), pdp).size());
+		Mockito.verify(pdp, times(2)).requestDecision(requests.capture());
+		assertEquals(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]", CategoryId.RESOURCE),
+				Iterables.getOnlyElement(requests.getAllValues().get(0).getCategory(CategoryId.RESOURCE)
+						.iterator().next().getEntity()
+						.find(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).iterator().next().values()));
+		assertEquals(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE),
+				Iterables.getOnlyElement(requests.getAllValues().get(1).getCategory(CategoryId.RESOURCE)
+						.iterator().next().getEntity()
+						.find(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).iterator().next().values()));
+		for(RequestContext request : requests.getAllValues()){
+			Entity expanded = request.getCategory(CategoryId.RESOURCE).iterator().next().getEntity();
+			assertTrue(expanded.find(draftId).isEmpty());
+			assertEquals(1, expanded.find(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).size());
+		}
+		Mockito.verifyNoMoreInteractions(pdp);
 	}
 
 	@Test
@@ -121,27 +194,27 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
+		ArgumentCaptor<RequestContext> c1 = ArgumentCaptor.forClass(RequestContext.class);
 
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
 
-		expect(pdp.requestDecision(capture(c1))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		replay(pdp);
 
 		Collection<Result> results = profile.handle(context, pdp);
 		Iterator<Result> it = results.iterator();
 		assertEquals(Status.processingError().build(), it.next().getStatus());
 		assertEquals(Status.processingError().build(), it.next().getStatus());
-		RequestContext r0 = c0.getValue();
-		RequestContext r1 = c1.getValue();
+		InOrder order = Mockito.inOrder(pdp);
+		order.verify(pdp, times(2)).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		RequestContext r0 = c0.getAllValues().get(0);
+		RequestContext r1 = c0.getAllValues().get(1);
 
-		Attribute selector0 = r0.getEntity(CategoryId.RESOURCE).get().
-				single(MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
+		Attribute selector0 = r0.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector1 = r1.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 
 		Set<Value> valueSet = ImmutableSet.<Value>builder()
@@ -154,7 +227,8 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE)));
 
 
-		verify(pdp);
+
+
 	}
 
 	@Test
@@ -195,32 +269,33 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.build();
 
 		assertFalse(context.containsRepeatingCategories());
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
-		Capture<RequestContext> c2 = Capture.newInstance();
-		Capture<RequestContext> c3 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
+		ArgumentCaptor<RequestContext> c1 = ArgumentCaptor.forClass(RequestContext.class);
+		ArgumentCaptor<RequestContext> c2 = ArgumentCaptor.forClass(RequestContext.class);
+		ArgumentCaptor<RequestContext> c3 = ArgumentCaptor.forClass(RequestContext.class);
 
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-		expect(pdp.requestDecision(capture(c1))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-		expect(pdp.requestDecision(capture(c2))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-		expect(pdp.requestDecision(capture(c3))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		replay(pdp);
 
 		Collection<Result> results = profile.handle(context, pdp);
 		Iterator<Result> it = results.iterator();
 		assertEquals(Status.processingError().build(), it.next().getStatus());
 		assertEquals(Status.processingError().build(), it.next().getStatus());
 
-		RequestContext r0 = c0.getValue();
-		RequestContext r1 = c1.getValue();
-		RequestContext r2 = c2.getValue();
-		RequestContext r3 = c3.getValue();
+		InOrder order = Mockito.inOrder(pdp);
+		order.verify(pdp, times(4)).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		RequestContext r0 = c0.getAllValues().get(0);
+		RequestContext r1 = c0.getAllValues().get(1);
+		RequestContext r2 = c0.getAllValues().get(2);
+		RequestContext r3 = c0.getAllValues().get(3);
 
 		Attribute selector00 = r0.getAttribute(CategoryId.RESOURCE, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
 		Attribute selector01 = r0.getAttribute(CategoryId.SUBJECT_ACCESS, MultipleResourcesViaXPathExpressionHandler.CONTENT_SELECTOR).get();
@@ -244,13 +319,15 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 		                                  .addAll(selector30.values())
 		                                  .addAll(selector31.values())
 		                                  .build();
-		assertEquals(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE), XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE));
+		assertEquals((Object) XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE), XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE));
 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]", CategoryId.RESOURCE)));
 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE)));
 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
 
-		verify(pdp);
+
+
+
 	}
 
 	@Test
@@ -284,17 +361,16 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 				.build();
 
 		assertFalse(request.containsRepeatingCategories());
-		Capture<RequestContext> c0 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		replay(pdp);
 
 		profile.handle(request, pdp);
 
-		assertEquals(request, c0.getValue());
-		verify(pdp);
+		Mockito.verify(pdp).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		assertEquals(request, c0.getAllValues().get(0));
 	}
 
 	@Test
@@ -329,12 +405,9 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 
 		assertFalse(request.containsRepeatingCategories());
 
-		replay(pdp);
-
 		Collection<Result> results = profile.handle(request, pdp);
 		assertEquals(Decision.INDETERMINATE, Iterables.getOnlyElement(results).getDecision());
-
-		verify(pdp);
+		Mockito.verifyNoInteractions(pdp);
 	}
 
 	@Test
@@ -343,17 +416,15 @@ public class MultipleResourcesViaXacmlXPathHandlerTest
 
 		RequestContext context = RequestContext.builder().build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
-		assertSame(context, c0.getValue());
-		verify(pdp);
+		Mockito.verify(pdp).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		assertSame(context, c0.getAllValues().get(0));
 	}
 }
-

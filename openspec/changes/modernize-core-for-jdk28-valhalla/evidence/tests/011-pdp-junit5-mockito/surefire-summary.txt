@@ -1,0 +1,41 @@
+JDK 21 latest run: pdp-run-final.log
+Tests/failures/errors/skips
+
+Class | before | after
+DefaultFunctionFunctionInvocationFactoryTest | 2/0/0/0 | 2/0/0/0
+DefaultEvaluationContextHandlerTest | 18/0/0/0 | 18/0/0/0
+DefaultPolicyDecisionPointTest | 2/0/0/0 | 2/0/0/0
+MultipleResourcesHandlerTest | 6/0/0/0 | 6/0/0/0
+MultipleResourcesViaRepeatingAttributesHandlerTest | 3/0/0/0 | 3/0/0/0
+MultipleResourcesViaRequestReferencesHandlerTest | 3/0/0/0 | 3/0/0/0
+MultipleResourcesViaXacmlXPathHandlerTest | 6/0/0/0 | 6/0/0/0
+RequestContextHandlerChainTest | 2/0/0/0 | 2/0/0/0
+AnnotatedResolverFactoryTest | 6/0/0/0 | 6/0/0/0
+AttributeResolverDescriptorTest | 3/0/0/0 | 3/0/0/0
+AttributeSetTest | 3/0/0/0 | 3/0/0/0
+BaseAttributeResolverTest | 1/0/0/1 | 1/0/0/1
+ContentResolverDescriptorTest | 1/0/0/0 | 1/0/0/0
+DefaultPolicyInformationPointTest | 5/0/0/2 | 5/0/0/2
+DefaultResolverRegistryTest | 5/0/0/0 | 5/0/0/0
+ResolverRegistryBuilderTest | 1/0/0/0 | 1/0/0/0
+DefaultPolicyReferenceResolverTest | 2/0/0/0 | 2/0/0/0
+InMemoryPolicyRepositoryTest | 5/0/0/1* | 4/0/0/0
+TOTAL | 74/0/0/4 | 73/0/0/3
+
+Latest PDP module status: 73 tests, 0 failures, 0 errors, 3 skips.
+Current skip reasons: BaseAttributeResolverTest.testMBeanInvocationStats;
+DefaultPolicyInformationPointTest.testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet;
+DefaultPolicyInformationPointTest.testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable.
+Baseline `TestObject` has class-level `@Ignore` and no `@Test` methods; lane `TestObject` has class-level `@Disabled` and no `@Test` methods. Vintage counts the ignored helper class as a skipped test; Jupiter discovers no test for a disabled helper with no methods. This explains aggregate 74/4 -> 73/3. There is no TestObject-specific Surefire line in either captured Maven log or current Surefire reports; aggregate lines are baseline-before.log:11920 and pdp-run-final.log:11924.
+
+The per-class InMemory 5/1 -> 4/0 result is independently inconsistent with both source copies: each has four `@Test` methods and no ignored/disabled test method. Baseline line 11388 is a retained Surefire/source discrepancy, not a missing method in migrated sources. No method or skip reason was fabricated. `*` marks this discrepancy.
+
+Latest reactor note: core had 96 EasyMock class-mock errors under
+-Dmaven.test.failure.ignore=true. Those errors are upstream and outside the PDP
+lane; xacml-pdp had 0 errors/failures.
+
+Repair rerun: `pdp-run-repair.log` is the final JDK 21 reactor run after all temporary mutations were reverted. At line 11176 xacml-core reports 762 tests, 0 failures, 96 errors, 4 skips; at lines 11921-11933 xacml-pdp reports 73 tests, 0 failures, 0 errors, 3 skips and reactor SUCCESS. Maven `-version` reported Java 21.0.6. The source annotation count is 75 `@Test`, 5 `@Disabled`; the count/skip reconciliation above is unchanged.
+
+After repair item 7, `repair-path-exceptions.log` reports 18 tests, 0 failures, 0 errors, 0 skips for `DefaultEvaluationContextHandlerTest`. The three paths now verify the pre-throw callback call after `assertThrows`; no status or PIP call is asserted on those throw paths.
+
+Oracle mutation checks: `mutation-policy-reference.log` (1 failure), `mutation-selector-cache.log` (2 failures), `mutation-reentrant-pip-count.log` (1 failure), `mutation-annotated-keys.log` (1 failure), and `mutation-annotated-no-interactions.log` (1 failure). Each temporary source/test mutation was reverted before `pdp-run-repair.log`. The historical `mutation-path-status.log` shows why the baseline status expectation was dead: an added `verify(context).setEvaluationStatus(...)` observed zero interactions; that temporary verify was removed, and the corrected tests now use the baseline exception-only oracle.

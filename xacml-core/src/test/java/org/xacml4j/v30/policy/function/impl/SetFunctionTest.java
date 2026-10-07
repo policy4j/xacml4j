@@ -22,12 +22,10 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
@@ -38,7 +36,7 @@ public class SetFunctionTest
 {
 	private static FunctionProvider p;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws Exception
 	{
 		p = FunctionProviderBuilder.builder().withDefaultFunctions().build();

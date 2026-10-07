@@ -1,0 +1,13 @@
+{
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java": "03486494c25776083f76496c13364fbc3e02229aa341992f5bc5db0e1c4692c9",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java": "dd4ffad9f30fd192bd7685856c4e2e8e2f247a2d6bd701b95ea35132deb3220b",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java": "38ee86d57c6b113b6fd6fde26036a41a298fe826b25617a1ef253724bb824158",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java": "17885af65b8029786d1db7eca7f70abf96ac4e0adf01e9d2c5db72062e79c585",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/ArtimeticFunctionsTest.java": "3c25948e34bbc2005961f389a991f52ce84cb1f38c2a1538d0cbd2f85488f932",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/FunctionSafetyNet43Test.java": "8ec1a88abf887130864af708b601c3c792b5f739a6248100d4f0cdf1284be78c",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DoubleBagSetEqualityTest.java": "760099472a1f6055fabb500b19cebad09939fa0303cb673456885a8111d521ef",
+  "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java": "0bc4846dda7f77c103dff122d84ab6b63da5dfb8ba78208cfe01867c001bc0ad",
+  "xacml-conformance-tests/src/test/java/org/xacml4j/v20/NaNFixtureAdjudicationTest.java": "c6287b2e06ef3fb1236008c729f1ff7b976eac1a8b7f2061f3ca947331cfa5da",
+  "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv": "2569ec32f318ccc414ad1fe2082a6985c532e0e40817ebd56735a9ec262a4b67",
+  "openspec/changes/modernize-core-for-jdk28-valhalla/specs/function-semantics/spec.md": "fc9c24b60ba1954fe30db340fd20f6ee677a31edb64fb738c24a0bfe2d71b766"
+}

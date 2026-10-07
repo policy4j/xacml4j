@@ -22,20 +22,21 @@ package org.xacml4j.v30.pdp.request;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 import java.util.Collection;
 
-import org.easymock.Capture;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
@@ -53,9 +54,9 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	private PolicyDecisionPointContext pdp;
 	private RequestContextHandler profile;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
+		this.pdp = mock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesViaRepeatingAttributesHandler();
 	}
 
@@ -96,19 +97,18 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 				.attributes(subject, resource0, resource1)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-		expect(pdp.requestDecision(capture(c1))).andReturn(
-				Result.indeterminate(Status.processingError().build()).build());
-		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(2, results.size());
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
-		RequestContext r0 = c0.getValue();
-		RequestContext r1 = c1.getValue();
+		InOrder order = Mockito.inOrder(pdp);
+		order.verify(pdp, times(2)).requestDecision(requests.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		RequestContext r0 = requests.getAllValues().get(0);
+		RequestContext r1 = requests.getAllValues().get(1);
 		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject));
 		assertEquals(1, r0.getCategory(CategoryId.RESOURCE).size());
 		// order is not known so check if has 1 and at least one is in the request
@@ -117,7 +117,6 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 		// order is not known so check if has 1 and at least one is in the request
 		assertEquals(1, r1.getCategory(CategoryId.RESOURCE).size());
 		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0) || r0.getCategory(CategoryId.RESOURCE).contains(resource1));
-		verify(pdp);
 	}
 
 
@@ -149,19 +148,18 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 				.attributes(subject, resource0)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
-		RequestContext r0 = c0.getValue();
+		verify(pdp).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		RequestContext r0 = c0.getAllValues().get(0);
 		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject));
 		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0));
-		verify(pdp);
 	}
 
 	@Test
@@ -169,17 +167,15 @@ public class MultipleResourcesViaRepeatingAttributesHandlerTest
 	{
 		RequestContext context = RequestContext.builder().build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
-		assertSame(context, c0.getValue());
-		verify(pdp);
+		verify(pdp).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		assertSame(context, c0.getAllValues().get(0));
 	}
 }
-

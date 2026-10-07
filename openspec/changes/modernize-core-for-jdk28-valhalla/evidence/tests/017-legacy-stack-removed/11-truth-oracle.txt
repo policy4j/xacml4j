@@ -1,0 +1,1 @@
+Truth and Truth8: positive assertions pass; both negative oracles throw AssertionError; legacy classes absent.

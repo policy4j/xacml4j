@@ -1,0 +1,458 @@
+{
+  "log": "35-captor-oracles-green.log",
+  "build_success": true,
+  "counts": [
+    61,
+    0,
+    0,
+    0
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.AttributeDesignatorTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseContextHandlerThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAttributeDoesExist",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.AttributeSelectorTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresenTrueAndReturnsNonEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAndContextThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresenFalseAndReturnsNonEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAndReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAndReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.ConditionTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testExpressionThrowsEvaluationException",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testExpressionEvaluatesToFalse",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateWithExpWhichReturnsNonBooleanValue",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testExpressionThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testExpressionEvaluatesToTrue",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.MatchTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMatchEvaluation",
+          "class": "org.xacml4j.v30.policy.MatchTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMatchEvaluationFailedToResolveAttributeException",
+          "class": "org.xacml4j.v30.policy.MatchTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.PolicySetTest": {
+      "counts": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateTargetMatchConditionFalse",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetNoMatch",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetMatch",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrue",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateContext",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetException",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.PolicyTest": {
+      "counts": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateTargetMatchConditionFalse",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetNoMatch",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetMatch",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrue",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateContext",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetException",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.TargetTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testFirstMatchSecondIsNoMatch",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAllMatch",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFirstIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEmptyTarget",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFirstMatchAndSecondIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFirstIsNoMatch",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [],
+  "compiler_diagnostics": []
+}

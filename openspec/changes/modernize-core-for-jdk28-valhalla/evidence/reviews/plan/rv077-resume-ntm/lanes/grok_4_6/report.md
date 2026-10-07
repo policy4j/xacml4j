@@ -1,0 +1,38 @@
+Requested identity: xAI `grok-4.6`; lane `grok_4_6`, adversarial semantics. Actual identity: Grok 4.6 released by xAI. Steering applied: objective spec compliance. IEEE 754-1985 PDF was not opened this session; NaN/zero claims below are bound to OASIS A.3.1/A.3.6 plus the Java primitive relations this tree already uses. No product edit. Issue `policy4j-the.4.6` stays with conductor `codex-modernization-resume`.
+
+Prefixes: `F=xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl`; `V=xacml-core/src/main/java/org/xacml4j/v30/types`; `T=xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl`; `R=xacml-conformance-tests/src/test/resources`; `H=xacml-conformance-tests/src/test/java/org/xacml4j/v20`; `E=openspec/changes/modernize-core-for-jdk28-valhalla`.
+
+OASIS 3.0 OS (22 Jan 2013) and Plus Errata 01 complete (12 Jul 2017) were read for §7.5, A.3.1, A.3.2, A.3.6. The cited sentences match.
+
+**Classification of the three cases**
+
+| Case | Kind | Spec result | Fixture |
+| --- | --- | --- | --- |
+| oasis20/30 IIC020 | specification requirement; engine defect | A.3.2: integer-divide returns integer; then integer-greater-than-or-equal may run | Permit is correct; 45/2 vs 10 does not select a rounding mode |
+| oasis30 IIC350 | fixture mismatch | A.3.1 IEEE double-equal(NaN,NaN) is false; empty-target deny-overrides → NotApplicable | Experimental case; vendored Permit |
+| oasis30 IIC358 | mixed | A.3.2 IEEE: NaN+1.0 is NaN. Observing that with double-equal(NaN,NaN) is the same mismatch as IIC350 | Experimental; vendored Permit |
+
+**Numbered findings**
+
+1. **HIGH — A.3.2 requires an integer result; it does not require toward-zero truncation.** `F/ArithmeticFunctions.java:160-167` declares xs:double and returns `DoubleVal`. `V/IntegerVal.java:109-111` already does Java `long` division, so 5/2 is double `2.0`, not `2.5`. IIC020 (`R/xacml3.0-ct-v.0.4/IIC020Policy.xml:13-23`; 2.0 copy `:21-35`; requests age 45, bart-age 10; both responses Permit at line 8) fails because `integer-greater-than-or-equal` (`F/NumericComparisonFunctions.java:59-65`) takes `IntegerVal`. Manifest rows 95 and 474 skip for that type error. A.3.2: integer functions “SHALL return an element of integer or double data-type, respectively”; integer-divide is only “the first argument divided by the second argument”; IEEE in A.3.2 is limited to functions operating on doubles; zero divisor Indeterminate names “the divide functions” and does not name integer-mod. §7.5 (OS and Errata) separately SHALL use IEEE Extended Default Context for “all integer and double functions” with rounding round-half-even. OS Appendix E records “Don’t refer to IEEE 754 for integer arithmetic,” but the §7.5 body was not rewritten. Delta spec `E/specs/function-semantics/spec.md:3-5` attributes “truncated toward zero (XACML 3.0 §A.3.2)” to a section that does not contain that rule. Swarm D1(a) is right on the return type and overstates truncation as normative.
+
+   Counterexamples: 45/2 is 22 under toward-zero, floor, and half-even of 22.5, and 22 and 23 are both ≥ 10, so IIC020 cannot choose a mode. 3/2 is 1 (project `long` truncation) and 2 (§7.5 half-even). 7/-3 is -2 (toward-zero and half-even) and -3 (floor); safety-net `T/FunctionSafetyNet43Test.java:564-568` therefore does not separate §7.5 from project truncation. `Long.MIN_VALUE/-1` wraps; that is run 061 D4 / task 5.4.
+
+   Minimal fix after maintainer lock: change the annotation and Java return of `divideInteger` to xs:integer/`IntegerVal`; keep the zero-divisor guard (`:166`, wrapped at `F/DefaultFunctionInvocation.java:137-138`). Enable IIC020 after the typed result. Do not cite A.3.2 as the truncation rule. Amend the delta spec parenthetical. Add unit rows 3/2 and -3/2 before encoding C2 as toward-zero. Leave `IntegerVal.divide` as a compatibility wrapper until callers are known. Enable `row37` only for the integer type and 5/2=2 after C2 is recorded as project truncation.
+
+2. **HIGH — D2(a) (keep NaN equal NaN) is a compatibility tradeoff, not A.3.1.** `F/EqualityPredicates.java:70-76,193-194` delegates to `Value.equals`. `V/Value.java:132-142` uses boxed `Double.equals`, so NaN equals NaN and `+0.0` does not equal `-0.0`. A.3.1: double-equal “SHALL perform its evaluation on doubles according to IEEE 754”. A.3.6: double comparisons SHALL comply with IEEE 754. Primitive relations in `F/NumericComparisonFunctions.java:83,92,101,110` already make NaN≥NaN false and `-0.0>=0.0` true (`T/FunctionSafetyNet43Test.java:467-487` locks that). Java `Double.equals` is the opposite of those primitives. The written delta spec (`spec.md:29-36`) already requires IEEE NaN inequality and signed-zero equality. IIC350 (`R/xacml3.0-ct-v.0.4/IIC350Policy.xml:11-18`, request age NaN) Permits only if NaN equals NaN. IIC358 (`IIC358Policy.xml:12-19`) adds 1.0 then uses the same predicate. Both HTML entries (`ConformanceTests.html:1359-1364,1407-1412`) are March 2014 **EXPERIMENTAL** contributions. IIC353 (`IIC353Policy.xml:12-17`, response NotApplicable) only shows NaN≠INF, which both IEEE and XSD identity accept. `H/ConformanceCaseRunner.java:155-165` compares the vendored Permit files; retagging a manifest row cannot change that oracle. Objective spec compliance is IEEE: double-equal(NaN,NaN)=false, so both experimental policies evaluate False and, with empty Target and deny-overrides, NotApplicable. Do not implement D2(a) while claiming A.3.1. Do not edit vendored XML.
+
+   Minimal fix: unbox in a double-equal predicate using primitive `==` (NaN≠NaN, +0==-0). Do not put IEEE inequality into `Value.equals` (hash-map reflexivity). Enable `row30` as false and `row31` as true. Observe IIC358 arithmetic with `Double.isNaN(double-add(NaN,1.0))`, independent of equality. Disposition IIC350/IIC358 as skipped or special-harness with expected NotApplicable and a fixture-mismatch reason; keep per-case counts so two restored IIC020 rows cannot hide two lost IEEE cases. `double-is-in` (`F/BagFunctions.java:279-285,89-93`) and `BagOfValues.contains` (`xacml-core/.../BagOfValues.java:141-142`) still use Java equality; align those with the same predicate or document the split.
+
+3. **MEDIUM — integer-mod zero divisor is not A.3.2.** A.3.2 names “the divide functions.” `modInteger` (`F/ArithmeticFunctions.java:170-177`) has no zero check; `% 0` throws. `row43` stays a separate C6/D7 choice.
+
+**Recommendations (objective spec compliance)**
+
+- D1: adopt xs:integer (A.3.2 “respectively”). Record toward-zero as **project truncation** (current `long /`), not as A.3.2. Do not apply §7.5 round-half-even to integer-divide unless the maintainer explicitly prefers that reading of “all integer and double functions” over A.3.2’s double-only IEEE sentence and Appendix E. Pair remainder with the chosen quotient so `(a/b)*b+(a%b)=a`.
+- D2: implement IEEE double-equal (primitive `==`). Treat IIC350/IIC358 Permit as experimental fixture mismatch. Signed-zero equality is required by the same A.3.1 citation and is not locked by any opened OASIS case.
+- Public `divideInteger(DoubleVal)` is a binary break; in-tree Java caller is `T/ArtimeticFunctionsTest.java:49-53`. External callers were not inventoried.
+
+**Uncertainty and unrun gates**
+
+SUPPORTED: named source, fixtures, manifest, OS/Errata HTML. PARTIAL: semantic caller completeness; IEEE 754-1985 not opened (NaN unordered inferred from A.3.1 plus primitive `==`/`>` already in this tree). No read was blocked. Unrun: Maven, focused tests, conformance, vendored-integrity, JDK 28, JMH, `openspec validate`. Run 068 (7,137 tests, 39 skipped) was not rerun. Gate 4.7 remains open.
+DONE_GROK_4_6_20261004

@@ -1,0 +1,65 @@
+{
+  "date": "2026-10-04",
+  "task": "4.6",
+  "conductor": "codex-modernization-resume",
+  "worktree": "<checkouts>/xacml4j-worktrees/policy4j",
+  "purpose": "Independent task preparation and semantic decision review while maintainer choices remain pending",
+  "lanes": [
+    {
+      "id": "claude_opus_5_5",
+      "model": "claude-opus-5-5",
+      "role": "architecture reviewer",
+      "wave": 1,
+      "question": "Audit task 4.6 versus the written specs and run 061 decisions D1/D2/D10. Identify exact compatibility impacts and a bounded specification-consistent recommendation. In particular, do not accept NaN=true solely because inherited fixtures expect it."
+    },
+    {
+      "id": "claude_fable_5_1",
+      "model": "claude-fable-5-1",
+      "role": "test reviewer",
+      "wave": 1,
+      "question": "Review existing FunctionSafetyNet43Test, ArtimeticFunctionsTest and DecisionCombiningAlgorithmRegistryTest. Produce a concrete tests-first red/green plan for task 4.6, including registry entrypoints, negative division, zero, signed zero, NaN, and profile arity/decision combinations. Identify tests that should be enabled after approval."
+    },
+    {
+      "id": "codex_sol_6_1",
+      "model": "gpt-6.1-sol",
+      "role": "implementation planner",
+      "wave": 1,
+      "question": "Prepare task 4.6 integer-division and equality implementation slices. Trace direct source callers and conformance IIC020, IIC350/IIC358; identify minimal owned files, result type compatibility, Java Value.equals versus XACML equality, and signed-zero bag/set implications. Return a reviewable plan or patch text in your report only."
+    },
+    {
+      "id": "codex_astra",
+      "model": "gpt-6-astra",
+      "role": "adversarial architecture reviewer",
+      "wave": 1,
+      "question": "Audit OnPermitApplySecondPolicyCombiningAlgorithm against the on-permit-apply-second CS01 profile. Check policy count validation, deciding-policy order, status/advice/obligation propagation and registry discovery. Return a complete decision-table test plan and minimal implementation design; cite normative evidence or mark it unverified."
+    },
+    {
+      "id": "agy_gemini_pro_3_1",
+      "model": "gemini-3.1-pro-high",
+      "role": "specification reviewer",
+      "wave": 2,
+      "question": "Independently adjudicate run 061 D1, D2, D10, D11 and D18 against official XACML/profile sources and the written specs. Focus on which choices the existing spec already settles versus real maintainer choices. Do not blindly ratify prior model memos."
+    },
+    {
+      "id": "agy_gemini_flash_3_8",
+      "model": "gemini-3.8-flash-high",
+      "role": "test and evidence reviewer",
+      "wave": 2,
+      "question": "Audit the fresh run 068 baseline and Phase 4 acceptance against disabled safety-net tests, the conformance manifest and pending decisions D1-D18. State exactly what is green and which requirements are not yet proved. Propose actionable task ownership and gate order."
+    },
+    {
+      "id": "grok_4_6",
+      "model": "grok-4.6",
+      "role": "adversarial semantics reviewer",
+      "wave": 2,
+      "question": "Challenge task 4.6 division and IEEE equality recommendations. Inspect source and conformance policies for IIC020, IIC350 and IIC358. Separate fixture mismatch, specification requirement and compatibility tradeoff. Give concrete counterexamples and tests; do not edit vendored resources."
+    },
+    {
+      "id": "grok_4_7",
+      "model": "grok-4.7",
+      "role": "adversarial combining and security reviewer",
+      "wave": 2,
+      "question": "Challenge the combining-algorithm plan and Phase 4 semantic decisions, prioritizing error propagation, PIP/XPath failures, profile-correct on-permit-apply-second, and resource limits. Bound findings to live reachable code and distinguish recommendations from approved behavior."
+    }
+  ]
+}

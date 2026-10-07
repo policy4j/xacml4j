@@ -22,8 +22,11 @@ package org.xacml4j.v30.policy.combine.impl;
  * #L%
  */
 
+import com.google.auto.service.AutoService;
 import org.xacml4j.v30.policy.combine.BaseDecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 
+@AutoService(DecisionCombiningAlgorithmProvider.class)
 public final class DefaultXacml30DecisionCombiningAlgorithms
 		extends BaseDecisionCombiningAlgorithmProvider
 {
@@ -51,6 +54,9 @@ public final class DefaultXacml30DecisionCombiningAlgorithms
 		addCompositeRuleCombineAlgorithm(new OnlyOneApplicablePolicyCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new PermitUnlessDenyPolicyCombiningAlgorithm());
 		addCompositeRuleCombineAlgorithm(new DenyUnlessPermitPolicyCombiningAlgorithm());
+
+		// XACML 3.0 Additional Combining Algorithms Profile Version 1.0
+		addCompositeRuleCombineAlgorithm(new OnPermitApplySecondPolicyCombiningAlgorithm());
 
 		// Legacy algorithms
 

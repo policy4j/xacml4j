@@ -1,0 +1,81 @@
+{
+  "command_exit_code": 0,
+  "suites": [
+    {
+      "name": "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+      "tests": "33",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.function.impl.DoubleBagSetEqualityTest",
+      "tests": "108",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test",
+      "tests": "109",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "7"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest",
+      "tests": "125",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondDecisionTableTest",
+      "tests": "289",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.PolicyTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.PolicySetTest",
+      "tests": "14",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "tests": "12",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "tests": "7",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0"
+    }
+  ],
+  "totals": {
+    "tests": 721,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 7
+  }
+}

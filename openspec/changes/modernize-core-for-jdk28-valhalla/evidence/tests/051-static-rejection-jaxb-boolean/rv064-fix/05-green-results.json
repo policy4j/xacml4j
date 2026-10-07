@@ -1,0 +1,20 @@
+[
+  {
+    "suite": "org.xacml4j.v30.xml.BaseJAXBUnmarshallerSecurityTest",
+    "counts": {
+      "tests": 97,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "suite": "org.xacml4j.v30.xml.BooleanAttributeLexicalTest",
+    "counts": {
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+]

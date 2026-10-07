@@ -1,0 +1,364 @@
+  ### A. Donor Numeric Defects
+
+  The table below lists defects identified in donor branch wip/feature_xacml_20-donor (b9f114a3) across
+  numeric types, arithmetic utilities, conversions, and function implementations.
+
+   #  │ Donor File : Line    │ Defect Description   │ Scenario / Failing … │ Required Behavior &… │ Sever…
+  ────┼──────────────────────┼──────────────────────┼──────────────────────┼──────────────────────┼────────
+   D1 │ b9f114a3:xacml-core/ │ Product Identity     │ Multi-argument       │ Product identity     │ CRITIC
+      │ src/main/java/org/xa │ Initialized to Zero: │ multiplication:      │ element is 1. In     │ AL
+      │ cml4j/v30/types/Int6 │ mul(Iterable<Int64>) │ mul([2, 3]) yields   │ XACML 3.0 §A.3.4:    │
+      │ 4.java:172           │ reduces using        │ 0L.                  │ "This function SHALL │
+      │                      │ initial accumulator  │                      │ return the result of │
+      │                      │ 0L (reduce(0L,       │                      │ multiplying the      │
+      │                     │ 0L (reduce(0L,      │                      │ arguments." x × y ≠  │
+      │                     │ Math::multiplyExact │                      │ 0.                   │
+      │                     │ )).                 │                      │                      │
+   D2 │ b9f114a3:xacml-core │ Unsigned Product    │ mul([2, 3]) yields   │ Multiplicative       │ CRITICAL
+      │ /src/main/java/org/ │ Identity            │ 0.                   │ reduction identity   │
+      │ xacml4j/v30/types/U │ Initialized to      │                      │ must be 1.           │
+      │ Int32.java:187      │ Zero:               │                      │                      │
+      │                     │ mul(Iterable<UInt32 │                      │                      │
+      │                     │ >) reduces with 0   │                      │                      │
+      │                     │ (reduce(0,          │                      │                      │
+      │                     │ Math::multiplyExact │                      │                      │
+      │                     │ )).                 │                      │                      │
+   D3 │ b9f114a3:xacml-core │ Eight Null-         │ Invocation of        │ Methods must either  │ HIGH
+      │ /src/main/java/org/ │ Returning Method    │ Int64.min(...),      │ perform the          │
+      │ xacml4j/v30/types/I │ Stubs: toUInt32(),  │ max(...), conversion │ conversion,          │
+      │ nt64.java:136,141,1 │ toUInt64(),         │ methods, or          │ calculate the        │
+      │ 46,151,156,206,211, │ toInt16(),          │ toBigDecimal().      │ extrema, or throw    │
+      │ 248                 │ toInt32(),          │                      │ UnsupportedOperation │
+      │                     │ toInt64(), min(),   │                      │ Exception if         │
+      │                   │ toInt64(), min(),  │                       │ Returning null violates   │
+      │                   │ max(), and         │                       │ non-null type contracts.  │
+      │                     │ unconditionally     │                      │ violates non-null    │
+      │                     │ return null.        │                      │ type contracts.      │
+   D4 │ b9f114a3:xacml-core │ Duplicate           │ Resolving type ID    │ Task 5.3 & Design D5 │ CRITICAL
+      │ /src/main/java/org/ │ xs:integer          │ http://www.w3.org/20 │ require fail-fast on │
+      │ xacml4j/v30/types/U │ Registration: Both  │ 01/XMLSchema#integer │ duplicate ID         │
+      │ Int32.java:42-43 vs │ Int64 and UInt32    │ . If UInt32 wins,    │ collisions.          │
+      │ Int64.java:43       │ claim @DataType(id  │ negative integers    │ xs:integer must have │
+      │                     │ =                   │ cannot be            │ a single             │
+      │                     │ "http://www.w3.org/ │ represented.         │ authoritative owner  │
+      │                     │ 2001/XMLSchema#inte │                      │ (Int64).             │
+      │                     │ ger", aliases =     │                      │                      │
+      │                   │ teger", aliases =  │                       │                        │
+      │                     │ inside               │                      │ removed or properly  │
+      │                     │ Int32.of(Double      │                      │ implemented.         │
+      │                     │ value).              │                      │                      │
+      │ org/xacml4j/v30/t │ Failure:           │                    │ arguments must be removed  │
+      │ ypes/Int32.java:1 │ Unfinished         │                    │ or properly implemented.   │
+      │ 34                │ statement          │                    │                            │
+      │                   │ Math.divideExact() │                    │                            │
+      │ ypes/Int32.java:1 │ Unfinished         │             │ implemented.                      │
+      │ 34                │ statement          │             │                                   │
+      │                   │ Math.divideExact() │             │                                   │
+      │                   │ ; inside           │             │                                   │
+      │                   │ Int32.of(Double    │             │                                   │
+      │                   │ value).            │             │                                   │
+   D6 │ b9f114a3:xacml-co │ Flawed String      │ 1. Input    │ XML Schema Part 2 §3.3.13:        │ HIGH
+      │ re/src/main/java/ │ Lexing for         │ "12+34"     │ lexical space is [-+]?[0-9]+ with │
+      │ org/xacml4j/v30/t │ xs:integer:        │ evaluates   │ whitespace collapsed. Internal    │
+      │ ypes/Int64.java:1 │ Implements naive   │ to 34.2.    │ signs or whitespace must fail     │
+      │ ypes/Int64.java:1 │ Implements naive   │ to 34.2.   │ signs or whitespace must fail     │
+      │ 15-117            │ indexOf('+') and   │ Input "+"  │ strict parsing with               │
+      │                   │ substring slicing  │ slices     │ SyntaxException.                  │
+      │                   │ (int i =           │ empty      │                                   │
+      │                   │ v.trim().indexOf(' │ string and │                                   │
+      │                   │ of(Long.parseLong( │ uncaught    │                                  │
+      │                   │ i >= 0 ?           │ NumberForma │                                  │
+      │                   │ v.substring(i + 1) │ tException. │                                  │
+      │                   │ : v));).           │ 3. Input "1 │                                  │
+      │                   │                    │ 2" throws   │                                  │
+      │                   │                    │ NumberForma │                                  │
+      │                   │                    │ tException  │                                  │
+      │                   │                    │ instead of  │                                  │
+      │                   │                    │ policy      │                                  │
+      │                   │                    │ syntax      │                                  │
+      │                   │                    │ error.      │                                  │
+   D7 │ b9f114a3:xacml-co │ Non-Compliant      │ Marshalling │ XML Schema Part 2 §3.2.5:        │ MEDIUM
+      │                   │                    │ error.     │                                   │
+   D7 │ b9f114a3:xacml-co │ Non-Compliant      │ Marshallin │ XML Schema Part 2 §3.2.5: lexical │ MEDIUM
+      │ re/src/main/java/ │ Float Infinity     │ g          │ values for infinities SHALL be    │
+   D7  │ b9f114a3:xacml-co │ Non-Compliant      │ Marshalli │ XML Schema Part 2 §3.2.5: lexical │ MEDIUM
+       │ re/src/main/java/ │ Float Infinity     │ ng        │ values for infinities SHALL be    │
+       │ org/xacml4j/v30/t │ Lexical            │ Double.PO │ "INF" and "-INF".                 │
+       │ ypes/DoubleVal.ja │ Formatting:        │ SITIVE_IN │                                   │
+       │ va:68             │ toXacmlString()    │ FINITY or │                                   │
+       │                   │ returns            │ Double.NE │                                   │
+       │                   │ value.toString().  │ GATIVE_IN │                                   │
+       │                   │ For infinite       │ FINITY.   │                                   │
+       │                   │ values, Java       │           │                                   │
+       │                   │ produces           │           │                                   │
+       │                   │ "Infinity" and "-  │           │                                   │
+       │                   │ Infinity".         │           │                                   │
+   D8  │ b9f114a3:xacml-co │ Off-By-One         │           │ r <= Byte.MIN_VALUE) throw new    │ addSigne
+       │ re/src/main/java/ │ Rejection of Valid │           │ ArithmeticException(...)`.        │ dExact((
+       │ org/xacml4j/v30/I │ Minimum Byte:      │           │                                   │ byte) -
+       │                   │ `if (r >           │            │                                   │ 0)
+       │                   │ Byte.MAX_VALUE     │            │                                   │ throws
+       │                   │                    │            │                                   │ Arithme
+       │                   │                    │            │                                   │ ticExce
+       │                   │                    │            │                                   │ ption.
+   D9  │ b9f114a3:xacml-co │ Corrupted Signed   │ addSignedE │ Signed short arithmetic must      │ HIGH
+       │ re/src/main/java/ │ Rejection of Valid │          │ ArithmeticException(...)`.        │ Exact((by
+       │ org/xacml4j/v30/I │ Minimum Byte:      │          │                                   │ te) -128,
+       │ ntegerArithmetics │ addSignedExact(byt │          │                                   │ (byte) 0)
+       │ .java:52          │ e, byte) checks    │          │                                   │ throws
+       │                   │ `if (r >           │          │                                   │ Arithmeti
+       │                   │ Byte.MAX_VALUE     │          │                                   │ cExceptio
+       │                   │                    │          │                                   │ n.
+   D9  │ b9f114a3:xacml-co │ Corrupted Signed   │ addSigne │ Signed short arithmetic must      │ HIGH
+       │ re/src/main/java/ │ Short Addition:    │ dExact(( │ perform signed integer addition   │
+       │ org/xacml4j/v30/I │ addSignedExact(sho │ short) - │ before checking bounds against    │
+       │ ntegerArithmetics │ rt, short)         │ 1,       │ Short.MIN_VALUE and               │
+       │ .java:61-63       │ converts operands  │ (short)  │ Short.MAX_VALUE.                  │
+       │                   │ via                │ 1)       │                                   │
+       │                   │ Short.toUnsignedIn │ treats   │                                   │
+       │ re/src/main/java/ │ Addition           │ signed(200 │ values up to 2³² - 1 (4, 294,     │
+       │ org/xacml4j/v30/I │ Restricted to      │ 0000000,   │ 967, 295).                        │
+       │ ntegerArithmetics │ Signed 31-bit      │ 2000000000 │                                   │
+       │ .java:92          │ Boundary:          │ ) throws   │                                   │
+       │                   │ addExactUnsigned(i │ Arithmetic │                                   │
+       │                   │ nt, int) checks if │ Exception. │                                   │
+       │                   │ (r >               │            │                                   │
+       │                   │ Integer.MAX_VALUE) │            │                                   │
+       │                   │ instead of         │            │                                   │
+       │                   │ 0xFFFFFFFFL.       │            │                                   │
+   D11 │ b9f114a3:xacml-co │ Unsigned Int       │ multiplyEx │ Must allow product up to unsigned │ MEDIUM
+       │ re/src/main/java/ │ Multiplication     │ actUnsigne │ 32-bit ceiling (0xFFFFFFFFL).     │
+       │ org/xacml4j/v30/I │ Truncated by       │ d(65536,   │                                   │
+       │ ntegerArithmetics │ toIntExact:        │ 32768)     │                                   │
+       │ .java:156         │ multiplyExactUnsig │ (2³¹)      │                                   │
+       │                   │ ned(int, int)      │ throws     │                                   │
+       │                   │ passes unsigned    │ Arithmetic │                                   │
+       │                   │ product to         │ Exception. │                                   │
+       │                   │ Math.toIntExact(.. │            │                                   │
+       │                   │ .).                │            │                                   │
+   D12 │ b9f114a3:xacml-co │ Inverted Modulus   │ Int64.of(5 │ XACML 3.0 §A.3.4                  │ CRITICA
+       │ re/src/main/java/ │ Logic              │ ).mod(Int6 │ urn:oasis:names:tc:xacml:1.0:func │ L
+       │ org/xacml4j/v30/t │ (Math.ceilMod):    │ 4.of(3))   │ tion:integer-mod: "The result     │
+       │ ypes/Int64.java:1 │ Int64.mod and      │ yields -1  │ SHALL be the remainder of         │
+       │ 95 &              │ Int32.mod compute  │ instead of │ dividing the first argument by    │
+       │ Int32.java:231    │ modulus via        │ 2.         │ the second argument" (truncating  │
+       │                   │ Math.ceilMod(...). │            │ toward zero, e.g. Java %).        │
+   D13 │ b9f114a3:xacml-co │ Inconsistent       │ Long.MAX_V │ Arithmetic operations must be     │ HIGH
+       │ re/src/main/java/ │ Wrapping vs Exact  │ ALUE + 1   │ consistent; overflow must either  │
+       │ org/xacml4j/v30/t │ Arithmetic:        │ wraps to   │ consistently throw                │
+       │ ypes/Int64.java:1 │ Int64.add(Int64)   │ negative   │ ArithmeticException or follow     │
+       │ 60                │ uses plain Java    │ Long.MIN_V │ Decision C3.                      │
+       │                   │ addition +         │ ALUE.      │                                   │
+       │                   │ (silently wraps),  │            │                                   │
+       │                   │ while subtract and │            │                                   │
+       │                   │ multiply use       │            │                                   │
+       │                   │ Math.*Exact.       │            │                                   │
+       │                   │ multiply use       │            │                                   │
+       │                   │ Math.*Exact.       │            │                                   │
+   D14 │ b9f114a3:xacml-co │ Silent Overflow    │ Summing    │ Must use Math.addExact or yield   │ HIGH
+       │ re/src/main/java/ │ Wrapping in        │ bag of     │ Indeterminate on overflow.        │
+       │ org/xacml4j/v30/p │ ArithmeticFunction │ [Long.MAX_ │                                   │
+       │ olicy/function/im │ s.sum: Bag         │ VALUE, 1]  │                                   │
+       │ pl/ArithmeticFunc │ reduction loops    │ silently   │                                   │
+       │ tions.java:67     │ over LongVal using │ wraps to   │                                   │
+       │                   │ sum += v.get().    │ Long.MIN_V │                                   │
+       │                   │                    │ ALUE.      │                                   │
+   D15 │ b9f114a3:xacml-co │ Swapped Return     │ Calling    │ XACML 3.0 §A.3.6: double-to-      │ CRITICA
+       │ re/src/main/java/ │ Type Annotations   │ double-to- │ integer returns xs:integer;       │ L
+       │ org/xacml4j/v30/p │ (Grok NEW-4):      │ integer    │ integer-to-double returns         │
+       │ olicy/function/im │ double-to-integer  │ type-      │ xs:double.                        │
+       │ pl/NumericConvers │ specifies return   │ checks as  │                                   │
+       │ ionFunctions.java │ type xs:double,    │ producing  │                                   │
+       │ :49,56            │ while integer-to-  │ a double.  │                                   │
+       │                   │ double specifies   │            │                                   │
+       │                   │ return type        │            │                                   │
+       │                   │ xs:integer.        │            │                                   │
+  ──────
+  ### B. Single Owner of xs:integer
+
+  #### 1. Resolution & Ownership
+
+  • Under XACML 3.0 §A.2 and XML Schema Part 2 §3.3.13, http://www.w3.org/2001/XMLSchema#integer represents
+  the standard integer data-type.
+  • In the donor branch, both Int64 and UInt32 declare @DataType(id = "http://www.w3.
+  org/2001/XMLSchema#integer").
+  • UInt32 cannot represent negative integers or numbers above 2³² - 1. Registering UInt32 as the owner or
+  alias for xs:integer breaks standard XACML integer semantics.
+  • Decision & Ownership:
+      • Int64 (wrapping signed 64-bit long) is the sole owner of http://www.w3.org/2001/XMLSchema#integer
+      (with alias "integer").
+      • UInt32 and Int32 must NOT claim xs:integer or "integer". Their IDs must be non-standard internal
+      identifiers (or omitted if unused).
+      • The legacy IntegerVal in xacml-core must be replaced by Int64 (aliased or exposed via Primitives.
+      Integer).
+
+
+  #### 2. Caller Impact Inventory (IntegerVal -> Int64)
+
+  Searching across all repository modules (rtk rg "IntegerVal") reveals references are entirely isolated to
+  xacml-core:
+
+  • xacml-core: 23 files, 128 total occurrences:
+      • types/IntegerVal.java (definition)
+      • types/XacmlTypes.java
+      • types/TypeRegistry.java & TypeRegistryTest.java
+      • types/Primitives.java
+      • policy/function/impl/ArithmeticFunctions.java
+      • policy/function/impl/NumericConversionFunctions.java
+      • policy/function/impl/NumericFunctions.java
+      • policy/function/impl/StringFunctions.java
+      • policy/function/impl/TimeFunctions.java
+      • policy/function/impl/DateFunctions.java
+      • policy/function/impl/DateTimeFunctions.java
+      • policy/function/impl/BagFunctions.java
+      • policy/function/impl/SetFunctions.java
+      • policy/function/impl/XPathFunctions.java
+      • Tests: ArithmeticFunctionsTest.java, NumericConversionFunctionsTest.java, NumericFunctionsTest.java,
+      StringFunctionsTest.java, DateFunctionsTest.java, TimeFunctionsTest.java, DateTimeFunctionsTest.java,
+      BagFunctionsTest.java, SetFunctionsTest.java.
+  • xacml-pdp: 0 occurrences (uses generic Value / EvaluationContext).
+  • xacml-xml: 0 occurrences (JAXB mappers map directly to string or schema types).
+  • xacml-json: 0 occurrences (Gson serializer delegates to Value.getValue()).
+
+  Migrating IntegerVal callers to Int64 is localized to xacml-core functions and tests.
+  ──────
+  ### C. Options for Overflow (Decision C3)
+
+  XACML 3.0 §A.3.4 (Arithmetic Functions) does not mandate arbitrary precision for integers, but requires
+  that operations unable to compute their mathematical result return Indeterminate with a processing-error
+  status code (XACML 3.0 §7.3.3, §10.2.7).
+
+  Two architectural options exist for addressing integer overflow:
+
+   Dimension │ Option 1: Signed 64-bit long + Exact Arithmet… │ Option 2: Arbitrary Precision (BigInteger)
+  ───────────┼────────────────────────────────────────────────┼────────────────────────────────────────────
+   Mechanism │ Int64 holds primitive long. Arithmetic uses    │ Int64 holds java.math.BigInteger. Overflow
+             │ Math.addExact, Math.multiplyExact,             │ is impossible; arithmetic produces
+             │ Math.subtractExact. Overflows throw            │ mathematically exact values up to memory
+             │ ArithmeticException, caught by PDP runtime and │ limits.
+             │ mapped to Indeterminate                        │
+             │ (urn:oasis:names:tc:xacml:1.0:status:processin │
+             │ g-error).                                      │
+   Spec      │ Fully conformant with XACML 3.0 §A.3.4 and     │ Conforms with unbounded integer conceptual
+   Conforman │ §7.3.3. When an integer exceeds implementation │ model in XML Schema §3.3.13.
+   ce        │ limits, PDP yields Indeterminate (fail-        │
+             │ closed).                                       │
+   JDK 28 /  │ Primitive Value Candidate: Unboxed 64-bit flat │ Ineligible for flat memory layout:
+   Valhalla  │ layout in memory with zero heap allocation     │ BigInteger requires heap allocations,
+   (JEP 401) │ overhead. Direct alignment with Task 9.3       │ int[] mag arrays, and indirection. Cannot
+             │ modernization goals.                           │ be flattened to primitive value.
+   Performan │ Near-zero overhead. Standard CPU register      │ High overhead: heap allocation on every
+   ce        │ arithmetic with branch on overflow flag.       │ single arithmetic operation, object
+   Overhead  │                                                │ headers, garbage collection pressure.
+   Code      │ Minimal (3 files): Int64.java,                 │ Extensive (15+ files): Affects type
+   Impact    │ IntegerArithmetics.java,                       │ conversion interfaces, marshalling, parser
+             │ ArithmeticFunctions.java.                      │ logic, comparison routines, and test
+             │                                                │ fixtures.
+
+  #### Recommendation
+
+  Adopt Option 1 (Math.*Exact throwing ArithmeticException mapped to Indeterminate):
+
+  1. It maintains fail-closed security semantics required by XACML.
+  2. It satisfies Task 5.4's non-wrapping arithmetic requirement without ballooning allocation overhead.
+  3. It directly supports the epic's core objective (Task 9.3: JDK 28 Project Valhalla primitive value
+  classes).
+  ──────
+  ### D. Safety-Net Test List for Task 5.4
+
+  The following 25 test cases cover numeric semantics, edge cases, parser constraints, identities, and
+  overflow behavior:
+
+   #  │ Test Name           │ Target Unit / Funct… │ Inputs… │ Expected Result / S… │ Notes / Source
+  ────┼─────────────────────┼──────────────────────┼─────────┼──────────────────────┼──────────────────────
+   1  │ testInt64MulIdentit │ Int64.mul / integer- │ [2, 3]  │ Int64.of(6)          │ Fixes D1 (returned 0
+      │ yTwoArgs            │ multiply             │         │                      │ in donor)
+   2  │ testInt64MulIdentit │ Int64.mul / integer- │ [7]     │ Int64.of(7)          │ Multiplicative
+      │ ySingleArg          │ multiply             │         │                      │ reduction check
+   3  │ testInt64MulIdentit │ Int64.mul / integer- │ []      │ Int64.of(1)          │ Empty product
+      │ yEmpty              │ multiply             │         │                      │ identity = 1
+   4  │ testInt64AddIdentit │ Int64.add / integer- │ []      │ Int64.of(0)          │ Empty sum identity =
+      │ yEmpty              │ add                  │         │                      │ 0
+   5  │ testInt64AddExactOv │ Int64.add / integer- │ Long.MA │ Indeterminate        │ Fixes D13 / NEW-11
+      │ erflow              │ add                  │ X_VALUE │ (processing-error)   │
+      │                     │                      │ , 1     │                      │
+   6  │ testInt64AddExactUn │ Int64.add / integer- │ Long.MI │ Indeterminate        │ Exact signed
+      │ derflow             │ add                  │ N_VALUE │ (processing-error)   │ addition check
+      │                     │                      │ , -1    │                      │
+   7  │ testInt64SubtractEx │ Int64.subtract /     │ Long.MI │ Indeterminate        │ Exact subtraction
+      │ actOverflow         │ integer-subtract     │ N_VALUE │ (processing-error)   │ check
+      │                     │                      │ , 1     │                      │
+   8  │ testInt64MultiplyEx │ Int64.multiply /     │ Long.MA │ Indeterminate        │ Exact multiplication
+      │ actOverflow         │ integer-multiply     │ X_VALUE │ (processing-error)   │ check
+      │                     │                      │ / 2 +   │                      │
+      │                     │                      │ 1, 2    │                      │
+   9  │ testInt64DivideExac │ Int64.divide /       │ Long.MI │ Indeterminate        │ MIN_VALUE / -1
+      │ tOverflow           │ integer-divide       │ N_VALUE │ (processing-error)   │ overflow
+      │                     │                      │ , -1    │                      │
+   10 │ testInt64DivideByZe │ Int64.divide /       │ 10, 0   │ Indeterminate        │ Division by zero
+      │ ro                  │ integer-divide       │         │ (processing-error)   │ check
+   11 │ testInt64ModTruncat │ Int64.mod / integer- │ 5, 3    │ Int64.of(2)          │ Fixes D12 (returned
+      │ esTowardsZero       │ mod                  │         │                      │ -1 in donor)
+   12 │ testInt64ModNegativ │ Int64.mod / integer- │ -5, 3   │ Int64.of(-2)         │ Truncating remainder
+      │ eDividend           │ mod                  │         │                      │ semantics
+   13 │ testInt64ModByZero  │ Int64.mod / integer- │ 5, 0    │ Indeterminate        │ Division by zero
+      │                     │ mod                  │         │ (processing-error)   │ check
+   14 │ testInt64StrictLexi │ Int64.of(String)     │ "+123"  │ Int64.of(123)        │ Leading plus allowed
+      │ ngValidPositive     │                      │         │                      │
+   15 │ testInt64StrictLexi │ Int64.of(String)     │ "-123"  │ Int64.of(-123)       │ Leading minus
+      │ ngValidNegative     │                      │         │                      │ allowed
+   16 │ testInt64StrictLexi │ Int64.of(String)     │ "12+34" │ Rejects with         │ Fixes D6 (parsed as
+      │ ngEmbeddedSign      │                      │         │ SyntaxException      │ 34 in donor)
+   17 │ testInt64StrictLexi │ Int64.of(String)     │ "+"     │ Rejects with         │ Fixes D6
+      │ ngSoleSign          │                      │         │ SyntaxException      │
+   18 │ testInt64StrictLexi │ Int64.of(String)     │ "1 2"   │ Rejects with         │ XML Schema §3.3.13
+      │ ngEmbeddedWhitespac │                      │         │ SyntaxException      │ check
+      │ e                   │                      │         │                      │
+   19 │ testDoubleToInteger │ NumericConversionFun │ DoubleV │ Int64.of(123)        │ Type check & round
+      │ Valid               │ ctions               │ al.of(1 │                      │ toward zero
+      │                     │                      │ 23.45)  │                      │
+   20 │ testDoubleToInteger │ NumericConversionFun │ Method  │ Declares return      │ Fixes D15 / NEW-4
+      │ ReturnType          │ ctions               │ signatu │ xs:integer           │
+      │                     │                      │ re      │                      │
+   21 │ testIntegerToDouble │ NumericConversionFun │ Method  │ Declares return      │ Fixes D15 / NEW-4
+      │ ReturnType          │ ctions               │ signatu │ xs:double            │
+      │                     │                      │ re      │                      │
+   22 │ testDoubleToStringI │ DoubleVal.toXacmlStr │ Double. │ "INF"                │ Fixes D7 (XML Schema
+      │ nfinity             │ ing                  │ POSITIV │                      │ §3.2.5)
+      │                     │                      │ E_INFIN │                      │
+      │                     │                      │ ITY     │                      │
+   23 │ testDoubleToStringN │ DoubleVal.toXacmlStr │ Double. │ "-INF"               │ Fixes D7 (XML Schema
+      │ egativeInfinity     │ ing                  │ NEGATIV │                      │ §3.2.5)
+      │                     │                      │ E_INFIN │                      │
+      │                     │                      │ ITY     │                      │
+   24 │ testDoubleCompariso │ NumericFunctions     │ Double. │ false                │ IEEE 754 / XACML
+      │ nNaN                │ (double-equal)       │ NaN,    │                      │ §A.3.5 (NEW-9)
+      │                     │                      │ Double. │                      │
+      │                     │                      │ NaN     │                      │
+   25 │ testArithmeticFunct │ ArithmeticFunctions. │ Bag of  │ Indeterminate        │ Fixes D14
+      │ ionsSumOverflow     │ sum                  │ [Long.M │ (processing-error)   │
+      │                     │                      │ AX_VALU │                      │
+      │                     │                      │ E, 1]   │                      │
+  ──────
+  FINAL REPORT (policy4j_code_review_agy, claude-3-7-sonnet)
+
+  • Defect Counts: 15 distinct donor numeric defects cataloged (5 CRITICAL, 6 HIGH, 4 MEDIUM).
+  • Top 5 Defects:
+      1. Int64.mul and UInt32.mul product reduction identity initialized to 0 instead of 1 (all multi-
+      operand multiplications return 0).
+      2. Int64 contains 8 unconditional return null; stubs (min, max, toBigDecimal, conversions).
+      3. UInt32 conflicts with Int64 by claiming @DataType(id = "http://www.w3.org/2001/XMLSchema#integer").
+      4. Int32.java:134 has an unclosed Math.divideExact(); statement that prevents compilation.
+      5. Int64.mod uses Math.ceilMod, yielding -1 instead of 2 for 5 mod 3.
+  • Files Opened / Audited:
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/IntegerArithmetics.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Int64.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Int32.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/UInt32.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NumericConversionFunctions.
+      java
+      • worktree:xacml-core/src/main/java/org/xacml4j/v30/types/IntegerVal.java (and 22 referencing files)
+
+

@@ -24,10 +24,11 @@ package org.xacml4j.v30.types;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+import com.google.common.base.Objects;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.google.common.collect.Range;
@@ -45,8 +46,16 @@ public final class ISO8601DateTime
 {
     private static final long serialVersionUID = 1085808268199675887L;
 
+    // Keep lexical timezone absence while retaining the existing UTC comparison default.
+    private final boolean timeZoneAbsent;
+
     private ISO8601DateTime(OffsetDateTime value) {
+        this(value, false);
+    }
+
+    private ISO8601DateTime(OffsetDateTime value, boolean timeZoneAbsent) {
         super(XacmlTypes.DATETIME, value);
+        this.timeZoneAbsent = timeZoneAbsent;
     }
 
     /**
@@ -104,15 +113,21 @@ public final class ISO8601DateTime
     }
 
     public static ISO8601DateTime of(String v){
-        return ISO8601DateTime.of(DateTimeDurationUtils.parseISO860DateTime(v));
+        OffsetDateTime value = DateTimeDurationUtils.parseISO860DateTime(v);
+        int timeStart = v.indexOf('T');
+        boolean timeZoneAbsent = v.indexOf('Z', timeStart) < 0
+                && v.indexOf('+', timeStart) < 0
+                && v.indexOf('-', timeStart) < 0;
+        return new ISO8601DateTime(value, timeZoneAbsent);
     }
 
     public static ISO8601DateTime of(StringVal v){
-        return new ISO8601DateTime(DateTimeDurationUtils.parseISO860DateTime(v.get()));
+        return of(v.get());
     }
 
     public static ISO8601DateTime of(XMLGregorianCalendar v){
-        return new ISO8601DateTime(DateTimeDurationUtils.toISO860DateTime(v));
+        return new ISO8601DateTime(DateTimeDurationUtils.toISO860DateTime(v),
+                v.getTimezone() == DatatypeConstants.FIELD_UNDEFINED);
     }
 
     public static ISO8601DateTime of(GregorianCalendar v){
@@ -131,12 +146,12 @@ public final class ISO8601DateTime
         return toStringExp(DateTimeFormatter.ISO_DATE_TIME);
     }
     public java.lang.String toXacmlString(){
-        return value.format(DateTimeFormatter.ISO_DATE_TIME);
+        return timeZoneAbsent ? value.toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME)
+                : value.format(DateTimeFormatter.ISO_DATE_TIME);
     }
 
     public StringVal toStringExp(DateTimeFormatter df){
-        return StringVal.of(value
-                .format(df));
+        return StringVal.of(timeZoneAbsent ? value.toLocalDateTime().format(df) : value.format(df));
     }
 
     @Override
@@ -149,57 +164,39 @@ public final class ISO8601DateTime
     }
     @Override
     public int compareTo(ISO8601DateTime o) {
-        return get().compareTo(o.get());
+        return get().toInstant().compareTo(o.get().toInstant());
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof ISO8601DateTime
+                && get().toInstant().equals(((ISO8601DateTime)other).get().toInstant());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(get().toInstant(), getEvaluatesTo());
     }
 
     public ISO8601DateTime plus(Duration v){
-        return new ISO8601DateTime(get().plus(v));
+        return new ISO8601DateTime(get().plus(v), timeZoneAbsent);
     }
     public ISO8601DateTime plus(ISO8601YearMonthDuration v){
-        return v.isNegative()?
-            ISO8601DateTime.of(value.minus(v.getYears(),
-                            ChronoUnit.YEARS)
-                    .minus(v.getMonths(),
-                            ChronoUnit.MONTHS)):
-            ISO8601DateTime.of(value.plus(v.getYears(),
-                        ChronoUnit.YEARS)
-                .plus(v.getMonths(),
-                        ChronoUnit.MONTHS));
-
+        return new ISO8601DateTime(value.plus(v.toPeriod()), timeZoneAbsent);
     }
 
     public ISO8601DateTime plus(ISO8601DayTimeDuration v){
-        return !v.isNegative()?
-                ISO8601DateTime.of(value.plus(v.getDays(), ChronoUnit.DAYS)
-                        .plus(v.getHours(), ChronoUnit.HOURS)
-                        .plus(v.getMinutes(), ChronoUnit.MINUTES)
-                        .plus(v.getSeconds(), ChronoUnit.SECONDS)) :
-                ISO8601DateTime.of(value.minus(v.getDays(), ChronoUnit.DAYS)
-                .minus(v.getHours(), ChronoUnit.HOURS)
-                .minus(v.getMinutes(), ChronoUnit.MINUTES)
-                .minus(v.getSeconds(), ChronoUnit.SECONDS));
+        return new ISO8601DateTime(value.plus(v.toDuration()), timeZoneAbsent);
     }
     public ISO8601DateTime minus(ISO8601YearMonthDuration v){
-        return v.isNegative()?
-                ISO8601DateTime.of(value.plus(v.getYears(), ChronoUnit.YEARS)
-                        .plus(v.getMonths(), ChronoUnit.MONTHS)):
-                ISO8601DateTime.of(value.minus(v.getYears(), ChronoUnit.YEARS)
-                                .minus(v.getMonths(), ChronoUnit.MONTHS));
-
+        return new ISO8601DateTime(value.minus(v.toPeriod()), timeZoneAbsent);
     }
     public ISO8601DateTime minus(ISO8601DayTimeDuration v){
-        return v.isNegative()?new ISO8601DateTime(value.minus(v.getDays(), ChronoUnit.DAYS)
-                .minus(v.getHours(), ChronoUnit.HOURS)
-                .minus(v.getMinutes(), ChronoUnit.MINUTES)
-                .minus(v.getSeconds(), ChronoUnit.SECONDS)):
-                new ISO8601DateTime(value.plus(v.getDays(), ChronoUnit.DAYS)
-                        .plus(v.getHours(), ChronoUnit.HOURS)
-                        .plus(v.getMinutes(), ChronoUnit.MINUTES)
-                        .plus(v.getSeconds(), ChronoUnit.SECONDS));
+        return new ISO8601DateTime(value.minus(v.toDuration()), timeZoneAbsent);
     }
 
     public ISO8601DateTime minus(Duration v){
-        return new ISO8601DateTime(get().minus(v));
+        return new ISO8601DateTime(get().minus(v), timeZoneAbsent);
     }
 
     public boolean isInRange(Range<ISO8601DateTime> range){

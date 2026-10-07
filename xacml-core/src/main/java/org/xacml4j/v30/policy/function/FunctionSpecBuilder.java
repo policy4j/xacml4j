@@ -193,6 +193,17 @@ public final class FunctionSpecBuilder {
 		return this;
 	}
 
+	/** A variadic sequence of primitive values or bags, for higher-order functions. */
+	public FunctionSpecBuilder anyValuesVarArg(int min, int max) {
+		Preconditions.checkArgument(min >= 0 && max > min);
+		if (hadVarArg) {
+			throw new SyntaxException("Can't add vararg parameter after vararg parameter");
+		}
+		hadVarArg = true;
+		paramSpec.add(new FunctionParamValueTypeSequenceSpec(min, max));
+		return this;
+	}
+
 	public FunctionSpecBuilder anyAttribute() {
 		paramSpec.add(new FunctionParamAnyValueSpec());
 		return this;

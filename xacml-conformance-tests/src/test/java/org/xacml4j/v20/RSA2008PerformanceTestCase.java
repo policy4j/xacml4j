@@ -22,12 +22,12 @@ package org.xacml4j.v20;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.InputStream;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.ResponseContext;
@@ -50,7 +50,7 @@ public class RSA2008PerformanceTestCase extends XacmlPolicyTestSupport
 	private static PolicyDecisionPoint pdp;
 	private static RequestContext[][] requests;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws Exception
 	{
 		PolicyRepository repository =

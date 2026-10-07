@@ -1,0 +1,144 @@
+[
+  {
+    "suite": "oasis20",
+    "case_id": "IIA005",
+    "fields": {
+      "reason": {
+        "before": "Engine defect: Request omits AttributeId; XML mapping throws IllegalArgumentException before the PDP can return the expected syntax-error Indeterminate",
+        "after": "Request syntax error: Missing AttributeId is rejected with SyntaxException; mapping request syntax errors to a response remains pending decision"
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA005",
+    "fields": {
+      "reason": {
+        "before": "Engine defect: Request omits AttributeId; XML mapping throws IllegalArgumentException before the PDP can return the expected syntax-error Indeterminate",
+        "after": "Request syntax error: Missing AttributeId is rejected with SyntaxException; mapping request syntax errors to a response remains pending decision"
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA022",
+    "fields": {
+      "disposition": {
+        "before": "skipped",
+        "after": "executed"
+      },
+      "enabled": {
+        "before": "false",
+        "after": "true"
+      },
+      "reason": {
+        "before": "Engine defect: Integer response value 56 is serialized as the IntegerVal debug string instead of the XML Schema integer lexical value 56",
+        "after": "Compare the PDP response with the vendored expected response"
+      },
+      "bug_id": {
+        "before": "policy4j-the.4.16",
+        "after": ""
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA024",
+    "fields": {
+      "disposition": {
+        "before": "skipped",
+        "after": "executed"
+      },
+      "enabled": {
+        "before": "false",
+        "after": "true"
+      },
+      "reason": {
+        "before": "Engine defect: Integer response value 56 is serialized as the IntegerVal debug string instead of the XML Schema integer lexical value 56",
+        "after": "Compare the PDP response with the vendored expected response"
+      },
+      "bug_id": {
+        "before": "policy4j-the.4.16",
+        "after": ""
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIA030",
+    "fields": {
+      "bug_id": {
+        "before": "BUG-TBD-IIIA030",
+        "after": "policy4j-the.4.24"
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIA330",
+    "fields": {
+      "bug_id": {
+        "before": "BUG-TBD-IIIA330",
+        "after": "policy4j-the.4.24"
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIA340",
+    "fields": {
+      "disposition": {
+        "before": "skipped",
+        "after": "executed"
+      },
+      "enabled": {
+        "before": "false",
+        "after": "true"
+      },
+      "reason": {
+        "before": "Engine defect: Positive infinity is serialized as Infinity instead of the XML Schema double lexical form INF in included attributes",
+        "after": "Compare the PDP response with the vendored expected response"
+      },
+      "bug_id": {
+        "before": "policy4j-the.4.16",
+        "after": ""
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIG300",
+    "fields": {
+      "reason": {
+        "before": "Engine defect: Returned PolicyIdentifierList contains 5 policy references instead of the expected 2; non-applicable/evaluated reference tracking includes extra policies",
+        "after": "Fixture/spec adjudication: Fixture expects 2 policy ids; XACML 3.0 Plus Errata 01 section 5.48 lists all fully applicable policies so the engine returns 3"
+      },
+      "bug_id": {
+        "before": "policy4j-the.4.22",
+        "after": "policy4j-the.3.9"
+      }
+    }
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIG301",
+    "fields": {
+      "disposition": {
+        "before": "skipped",
+        "after": "executed"
+      },
+      "enabled": {
+        "before": "false",
+        "after": "true"
+      },
+      "reason": {
+        "before": "Engine defect: Returned PolicyIdentifierList contains 4 policy references instead of the expected 3; non-applicable/evaluated reference tracking includes extra policies",
+        "after": "Compare the PDP response with the vendored expected response"
+      },
+      "bug_id": {
+        "before": "policy4j-the.4.22",
+        "after": ""
+      }
+    }
+  }
+]

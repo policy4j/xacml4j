@@ -1,0 +1,14 @@
+{
+  "modified_existing_sources": 105,
+  "added_sources": 1,
+  "actual_surefire_xml_counts": [
+    760,
+    0,
+    0,
+    2
+  ],
+  "receipt_matches_actual_xml": true,
+  "required_evidence_present": true,
+  "home_and_checkout_paths_absent": true,
+  "numeric_acceptance": "PENDING_COUNT_DECISION"
+}

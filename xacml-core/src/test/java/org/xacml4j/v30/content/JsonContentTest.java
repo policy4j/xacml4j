@@ -23,13 +23,14 @@ package org.xacml4j.v30.content;
  */
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.PathEvaluationException;
@@ -80,7 +81,7 @@ public class JsonContentTest
     private Content content;
 
 
-    @Before
+    @BeforeEach
     public void setUp()
     {
         this.content = Content.fromString(JSON_DATA).get();
@@ -102,17 +103,20 @@ public class JsonContentTest
                 "$['store']['book'][3]['author']");
     }
 
-    @Test(expected = PathEvaluationException.class)
+    @Test
     public void testJsonEvaluateToNodeSetAmdNodePathListWithInvalidPath()
-    {
-        List<Object> authors0 = content.evaluateToNodeSet("$.store--.book[***].author");
-    }
+	{
+		assertThrows(PathEvaluationException.class, () -> {
+			List<Object> authors0 = content.evaluateToNodeSet("$.store--.book[***].author");
+		});
+	}
 
-    @Test(expected = PathEvaluationException.class)
+    @Test
     public void testJsonEvaluateToNodeSetAmdNodePathListInvalidPath()
-    {
-        content.evaluateToNodeSet("$.store.??aa-203(-book[*].author");
-    }
+	{
+		assertThrows(PathEvaluationException.class, () ->
+			content.evaluateToNodeSet("$.store.??aa-203(-book[*].author"));
+	}
 
     @Test
     public void testJsonPathEvalToNodePathAndNode(){
@@ -131,11 +135,13 @@ public class JsonContentTest
         Truth8.assertThat(price).hasValue(8.95);
     }
 
-    @Test(expected = PathEvaluationException.class)
+    @Test
     public void testInvalidInvalidPath() {
-        Optional<Number> price = content.evaluateToNumber("$.store.---?book[*].price");
-        Truth8.assertThat(price).hasValue(8.95);
-    }
+		assertThrows(PathEvaluationException.class, () -> {
+			Optional<Number> price = content.evaluateToNumber("$.store.---?book[*].price");
+			Truth8.assertThat(price).hasValue(8.95);
+		});
+	}
 
     @Test
     public void testGetNode() {

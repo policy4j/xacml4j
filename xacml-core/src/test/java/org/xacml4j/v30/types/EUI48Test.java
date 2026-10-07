@@ -40,17 +40,13 @@ package org.xacml4j.v30.types;
  */
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.NetworkInterface;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EUI48;
 
 /**
@@ -206,15 +202,15 @@ public class EUI48Test {
 		EUI48 ethernet_address = new EUI48(
 				new byte[ETHERNET_ADDRESS_ARRAY_LENGTH]);
 		assertEquals(
-				"EthernetAddress(byte[]) did not build expected EthernetAddress",
-				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				NULL_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress(byte[]) did not build expected EthernetAddress");
 
 		// let's test creating an array from a good byte array
 		ethernet_address = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
 		assertEquals(
-				"EthernetAddress(byte[]) did not build expected EthernetAddress",
-				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				VALID_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress(byte[]) did not build expected EthernetAddress");
 	}
 
 	/**
@@ -227,14 +223,14 @@ public class EUI48Test {
 		EUI48 ethernet_address = new EUI48(
 				0x0000000000000000L);
 		assertEquals(
-				"EthernetAddress(long) did not build expected EthernetAddress",
-				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				NULL_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress(long) did not build expected EthernetAddress");
 
 		// let's test creating an array from a good long
 		ethernet_address = new EUI48(VALID_ETHERNET_ADDRESS_LONG);
 		assertEquals(
-				"EthernetAddress(long) did not build expected EthernetAddress",
-				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				VALID_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress(long) did not build expected EthernetAddress");
 	}
 
 	/**
@@ -356,17 +352,17 @@ public class EUI48Test {
 
 		// first we'll test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
-		assertEquals("Expected length of returned array wrong",
-				ETHERNET_ADDRESS_ARRAY_LENGTH,
-				ethernet_address.asByteArray().length);
+		assertEquals(ETHERNET_ADDRESS_ARRAY_LENGTH,
+				ethernet_address.asByteArray().length,
+				"Expected length of returned array wrong");
 		assertEthernetAddressArraysAreEqual(NULL_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, ethernet_address.asByteArray(), 0);
 
 		// now test a non-null EthernetAddress
 		ethernet_address = new EUI48(VALID_ETHERNET_ADDRESS_LONG);
-		assertEquals("Expected length of returned array wrong",
-				ETHERNET_ADDRESS_ARRAY_LENGTH,
-				ethernet_address.asByteArray().length);
+		assertEquals(ETHERNET_ADDRESS_ARRAY_LENGTH,
+				ethernet_address.asByteArray().length,
+				"Expected length of returned array wrong");
 		assertEthernetAddressArraysAreEqual(VALID_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, ethernet_address.asByteArray(), 0);
 
@@ -406,11 +402,11 @@ public class EUI48Test {
 		// ARE true in the case of EthernetAddress clone() because it is
 		// the desired behavior.
 		EUI48 x = new EUI48(VALID_ETHERNET_ADDRESS_STRING);
-		assertTrue("x.clone() != x did not return true", x.clone() != x);
-		assertTrue("x.clone().getClass() == x.getClass() did not return true",
-				x.clone().getClass() == x.getClass());
-		assertTrue("x.clone().equals(x) did not return true",
-				x.clone().equals(x));
+		assertTrue(x.clone() != x, "x.clone() != x did not return true");
+		assertTrue(x.clone().getClass() == x.getClass(),
+				"x.clone().getClass() == x.getClass() did not return true");
+		assertTrue(x.clone().equals(x),
+				"x.clone().equals(x) did not return true");
 	}
 
 	/**
@@ -530,43 +526,43 @@ public class EUI48Test {
 		// (as specified in the JDK docs for Object)
 		EUI48 x = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
-		assertFalse("equals(null) didn't return false", x.equals(null));
+		assertFalse(x.equals(null), "equals(null) didn't return false");
 
 		// test passing an object which is not a EthernetAddress returns false
-		assertFalse("x.equals(non_EthernetAddress_object) didn't return false",
-				x.equals(new Object()));
+		assertFalse(x.equals(new Object()),
+				"x.equals(non_EthernetAddress_object) didn't return false");
 
 		// test a case where two EthernetAddresss are definitely not equal
 		EUI48 w = new EUI48(
 				ANOTHER_VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
-		assertFalse("x == w didn't return false", x == w);
-		assertFalse("x.equals(w) didn't return false", x.equals(w));
+		assertFalse(x == w, "x == w didn't return false");
+		assertFalse(x.equals(w), "x.equals(w) didn't return false");
 
 		// test reflexivity
-		assertTrue("x.equals(x) didn't return true", x.equals(x));
+		assertTrue(x.equals(x), "x.equals(x) didn't return true");
 
 		// test symmetry
 		EUI48 y = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
-		assertFalse("x == y didn't return false", x == y);
-		assertTrue("y.equals(x) didn't return true", y.equals(x));
-		assertTrue("x.equals(y) didn't return true", x.equals(y));
+		assertFalse(x == y, "x == y didn't return false");
+		assertTrue(y.equals(x), "y.equals(x) didn't return true");
+		assertTrue(x.equals(y), "x.equals(y) didn't return true");
 
 		// now we'll test transitivity
 		EUI48 z = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
-		assertFalse("x == y didn't return false", x == y);
-		assertFalse("x == y didn't return false", y == z);
-		assertFalse("x == y didn't return false", x == z);
-		assertTrue("x.equals(y) didn't return true", x.equals(y));
-		assertTrue("y.equals(z) didn't return true", y.equals(z));
-		assertTrue("x.equals(z) didn't return true", x.equals(z));
+		assertFalse(x == y, "x == y didn't return false");
+		assertFalse(y == z, "x == y didn't return false");
+		assertFalse(x == z, "x == y didn't return false");
+		assertTrue(x.equals(y), "x.equals(y) didn't return true");
+		assertTrue(y.equals(z), "y.equals(z) didn't return true");
+		assertTrue(x.equals(z), "x.equals(z) didn't return true");
 
 		// test consistancy (this test is just calling equals multiple times)
-		assertFalse("x == y didn't return false", x == y);
-		assertTrue("x.equals(y) didn't return true", x.equals(y));
-		assertTrue("x.equals(y) didn't return true", x.equals(y));
-		assertTrue("x.equals(y) didn't return true", x.equals(y));
+		assertFalse(x == y, "x == y didn't return false");
+		assertTrue(x.equals(y), "x.equals(y) didn't return true");
+		assertTrue(x.equals(y), "x.equals(y) didn't return true");
+		assertTrue(x.equals(y), "x.equals(y) didn't return true");
 	}
 
 	/**
@@ -578,17 +574,17 @@ public class EUI48Test {
 
 		// first we'll test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
-		assertEquals("Expected length of returned array wrong",
-				ETHERNET_ADDRESS_ARRAY_LENGTH,
-				ethernet_address.toByteArray().length);
+		assertEquals(ETHERNET_ADDRESS_ARRAY_LENGTH,
+				ethernet_address.toByteArray().length,
+				"Expected length of returned array wrong");
 		assertEthernetAddressArraysAreEqual(NULL_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, ethernet_address.toByteArray(), 0);
 
 		// now test a non-null EthernetAddress
 		ethernet_address = new EUI48(VALID_ETHERNET_ADDRESS_LONG);
-		assertEquals("Expected length of returned array wrong",
-				ETHERNET_ADDRESS_ARRAY_LENGTH,
-				ethernet_address.toByteArray().length);
+		assertEquals(ETHERNET_ADDRESS_ARRAY_LENGTH,
+				ethernet_address.toByteArray().length,
+				"Expected length of returned array wrong");
 		assertEthernetAddressArraysAreEqual(VALID_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, ethernet_address.toByteArray(), 0);
 
@@ -670,8 +666,8 @@ public class EUI48Test {
 		assertEthernetAddressArraysAreEqual(NULL_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, test_array, 0);
 		for (int i = 0; i < EXTRA_DATA_LENGTH; i++) {
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH]);
+			assertEquals((byte) 'x', test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH],
+					"Expected array fill value changed");
 		}
 
 		// now test a good EthernetAddress case with extra data in the array
@@ -683,8 +679,8 @@ public class EUI48Test {
 		assertEthernetAddressArraysAreEqual(VALID_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, test_array, 0);
 		for (int i = 0; i < EXTRA_DATA_LENGTH; i++) {
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH]);
+			assertEquals((byte) 'x', test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH],
+					"Expected array fill value changed");
 		}
 	}
 
@@ -792,8 +788,8 @@ public class EUI48Test {
 		assertEthernetAddressArraysAreEqual(NULL_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, test_array, 0);
 		for (int i = 0; i < EXTRA_DATA_LENGTH; i++) {
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH]);
+			assertEquals((byte) 'x', test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH],
+					"Expected array fill value changed");
 		}
 
 		// now test a null EthernetAddress case with extra data in the array
@@ -804,11 +800,11 @@ public class EUI48Test {
 		assertEthernetAddressArraysAreEqual(NULL_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, test_array, EXTRA_DATA_LENGTH / 2);
 		for (int i = 0; i < EXTRA_DATA_LENGTH / 2; i++) {
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i]);
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH
-							+ EXTRA_DATA_LENGTH / 2]);
+			assertEquals((byte) 'x', test_array[i],
+					"Expected array fill value changed");
+			assertEquals((byte) 'x', test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH
+							+ EXTRA_DATA_LENGTH / 2],
+					"Expected array fill value changed");
 		}
 
 		// now test a good EthernetAddress case with extra data in the array
@@ -820,8 +816,8 @@ public class EUI48Test {
 		assertEthernetAddressArraysAreEqual(VALID_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, test_array, 0);
 		for (int i = 0; i < EXTRA_DATA_LENGTH; i++) {
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH]);
+			assertEquals((byte) 'x', test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH],
+					"Expected array fill value changed");
 		}
 
 		// now test a good EthernetAddress case with extra data in the array
@@ -833,11 +829,11 @@ public class EUI48Test {
 		assertEthernetAddressArraysAreEqual(VALID_ETHERNET_ADDRESS_BYTE_ARRAY,
 				0, test_array, EXTRA_DATA_LENGTH / 2);
 		for (int i = 0; i < EXTRA_DATA_LENGTH / 2; i++) {
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i]);
-			assertEquals("Expected array fill value changed", (byte) 'x',
-					test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH
-							+ EXTRA_DATA_LENGTH / 2]);
+			assertEquals((byte) 'x', test_array[i],
+					"Expected array fill value changed");
+			assertEquals((byte) 'x', test_array[i + ETHERNET_ADDRESS_ARRAY_LENGTH
+							+ EXTRA_DATA_LENGTH / 2],
+					"Expected array fill value changed");
 		}
 	}
 
@@ -851,14 +847,14 @@ public class EUI48Test {
 
 		// test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
-		assertEquals("null EthernetAddress long and toLong did not match",
-				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+		assertEquals(NULL_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "null EthernetAddress long and toLong did not match");
 
 		// test a non-null EthernetAddress
 		ethernet_address = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
-		assertEquals("EthernetAddress long and toLong results did not match",
-				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+		assertEquals(VALID_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress long and toLong results did not match");
 	}
 
 	/**
@@ -871,17 +867,17 @@ public class EUI48Test {
 
 		// test the null EthernetAddress
 		EUI48 ethernet_address = new EUI48(0L);
-		assertEquals("null EthernetAddress string and toString did not match",
-				NULL_ETHERNET_ADDRESS_STRING.toLowerCase(), ethernet_address
-						.toString().toLowerCase());
+		assertEquals(NULL_ETHERNET_ADDRESS_STRING.toLowerCase(),
+				ethernet_address
+						.toString().toLowerCase(), "null EthernetAddress string and toString did not match");
 
 		// test a non-null EthernetAddress
 		ethernet_address = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
 		assertEquals(
-				"EthernetAddress string and toString results did not match",
 				MIXED_CASE_VALID_ETHERNET_ADDRESS_STRING.toLowerCase(),
-				ethernet_address.toString().toLowerCase());
+				ethernet_address.toString().toLowerCase(),
+				"EthernetAddress string and toString results did not match");
 
 		// EthernetAddress implementation returns strings all lowercase.
 		// Although relying on this behavior in code is not recommended,
@@ -890,15 +886,15 @@ public class EUI48Test {
 		// who relies on this particular behavior.
 		ethernet_address = new EUI48(
 				VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
-		assertFalse("mixed case EthernetAddress string and toString "
-				+ "matched (expected toString to be all lower case)",
-				MIXED_CASE_VALID_ETHERNET_ADDRESS_STRING
-						.equals(ethernet_address.toString()));
-		assertEquals("mixed case string toLowerCase and "
+		assertFalse(MIXED_CASE_VALID_ETHERNET_ADDRESS_STRING
+						.equals(ethernet_address.toString()),
+				"mixed case EthernetAddress string and toString "
+				+ "matched (expected toString to be all lower case)");
+		assertEquals(MIXED_CASE_VALID_ETHERNET_ADDRESS_STRING.toLowerCase(),
+				ethernet_address.toString(),
+				"mixed case string toLowerCase and "
 				+ "toString results did not match (expected toString to "
-				+ "be all lower case)",
-				MIXED_CASE_VALID_ETHERNET_ADDRESS_STRING.toLowerCase(),
-				ethernet_address.toString());
+				+ "be all lower case)");
 	}
 
 	/**
@@ -951,15 +947,15 @@ public class EUI48Test {
 		EUI48 ethernet_address = EUI48
 				.valueOf(new byte[ETHERNET_ADDRESS_ARRAY_LENGTH]);
 		assertEquals(
-				"EthernetAddress.valueOf did not build expected EthernetAddress",
-				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				NULL_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress.valueOf did not build expected EthernetAddress");
 
 		// let's test creating an array from a good byte array
 		ethernet_address = EUI48
 				.valueOf(VALID_ETHERNET_ADDRESS_BYTE_ARRAY);
 		assertEquals(
-				"EthernetAddress.valueOf did not build expected EthernetAddress",
-				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				VALID_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress.valueOf did not build expected EthernetAddress");
 	}
 
 	/**
@@ -1009,15 +1005,15 @@ public class EUI48Test {
 		EUI48 ethernet_address = EUI48
 				.valueOf(new int[ETHERNET_ADDRESS_ARRAY_LENGTH]);
 		assertEquals(
-				"EthernetAddress.valueOf did not build expected EthernetAddress",
-				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				NULL_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress.valueOf did not build expected EthernetAddress");
 
 		// let's test creating an array from a good int array
 		ethernet_address = EUI48
 				.valueOf(VALID_ETHERNET_ADDRESS_INT_ARRAY);
 		assertEquals(
-				"EthernetAddress.valueOf did not build expected EthernetAddress",
-				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				VALID_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress.valueOf did not build expected EthernetAddress");
 	}
 
 	/**
@@ -1030,14 +1026,14 @@ public class EUI48Test {
 		EUI48 ethernet_address = EUI48
 				.valueOf(0x0000000000000000L);
 		assertEquals(
-				"EthernetAddress.valueOf did not build expected EthernetAddress",
-				NULL_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				NULL_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress.valueOf did not build expected EthernetAddress");
 
 		// let's test creating an array from a good long
 		ethernet_address = EUI48.valueOf(VALID_ETHERNET_ADDRESS_LONG);
 		assertEquals(
-				"EthernetAddress.valueOf did not build expected EthernetAddress",
-				VALID_ETHERNET_ADDRESS_LONG, ethernet_address.toLong());
+				VALID_ETHERNET_ADDRESS_LONG,
+				ethernet_address.toLong(), "EthernetAddress.valueOf did not build expected EthernetAddress");
 	}
 
 	/**
@@ -1168,9 +1164,9 @@ public class EUI48Test {
 			fail("Caught unexpected exception: " + ex);
 		}
 
-		assertEquals("EthernetAddresses were not equal",
-				expectedEthernetAddressString.toLowerCase(), ethernet_address
-						.toString().toLowerCase());
+		assertEquals(expectedEthernetAddressString.toLowerCase(),
+				ethernet_address
+						.toString().toLowerCase(), "EthernetAddresses were not equal");
 	}
 
 	private void badStringValueOfHelper(String ethernetAddressString) {
@@ -1195,60 +1191,60 @@ public class EUI48Test {
 			fail("Caught unexpected exception: " + ex);
 		}
 
-		assertEquals("EthernetAddresses were not equal",
-				expectedEthernetAddressString.toLowerCase(), ethernet_address
-						.toString().toLowerCase());
+		assertEquals(expectedEthernetAddressString.toLowerCase(),
+				ethernet_address
+						.toString().toLowerCase(), "EthernetAddresses were not equal");
 	}
 
 	private void assertEthernetAddressesMatchHelper(EUI48 expected,
 			EUI48 actual) {
-		assertEquals("EthernetAddresses in long form did not match",
-				expected.toLong(), actual.toLong());
-		assertEquals("EthernetAddress equals did not match", expected, actual);
+		assertEquals(expected.toLong(),
+				actual.toLong(), "EthernetAddresses in long form did not match");
+		assertEquals(expected, actual, "EthernetAddress equals did not match");
 	}
 
 	private void assertEthernetAddressEqualOrderHelper(
 			EUI48 ethernetAddress1, EUI48 ethernetAddress2) {
-		assertTrue(ethernetAddress1 + " did not test as equal to "
-				+ ethernetAddress2,
-				0 == ethernetAddress1.compareTo(ethernetAddress2));
-		assertTrue(ethernetAddress2 + " did not test as equal to "
-				+ ethernetAddress1,
-				0 == ethernetAddress2.compareTo(ethernetAddress1));
+		assertTrue(0 == ethernetAddress1.compareTo(ethernetAddress2),
+				ethernetAddress1 + " did not test as equal to "
+				+ ethernetAddress2);
+		assertTrue(0 == ethernetAddress2.compareTo(ethernetAddress1),
+				ethernetAddress2 + " did not test as equal to "
+				+ ethernetAddress1);
 	}
 
 	private void assertEthernetAddressGreaterOrderHelper(
 			EUI48 ethernetAddress1, EUI48 ethernetAddress2) {
-		assertTrue(ethernetAddress1 + " did not test as larger then "
-				+ ethernetAddress2,
-				0 < ethernetAddress1.compareTo(ethernetAddress2));
-		assertTrue(ethernetAddress2 + " did not test as smaller then "
-				+ ethernetAddress1,
-				0 > ethernetAddress2.compareTo(ethernetAddress1));
+		assertTrue(0 < ethernetAddress1.compareTo(ethernetAddress2),
+				ethernetAddress1 + " did not test as larger then "
+				+ ethernetAddress2);
+		assertTrue(0 > ethernetAddress2.compareTo(ethernetAddress1),
+				ethernetAddress2 + " did not test as smaller then "
+				+ ethernetAddress1);
 	}
 
 	private void assertEthernetAddressArraysAreEqual(byte[] array1,
 			int array1_start, byte[] array2, int array2_start) {
-		assertTrue("Array1 start offset is invalid", 0 <= array1_start);
-		assertTrue("Array2 start offset is invalid", 0 <= array2_start);
-		assertTrue("Array1 is not long enough for the given start offset",
-				array1.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array1_start);
-		assertTrue("Array2 is not long enough for the given start offset",
-				array2.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array2_start);
+		assertTrue(0 <= array1_start, "Array1 start offset is invalid");
+		assertTrue(0 <= array2_start, "Array2 start offset is invalid");
+		assertTrue(array1.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array1_start,
+				"Array1 is not long enough for the given start offset");
+		assertTrue(array2.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array2_start,
+				"Array2 is not long enough for the given start offset");
 		for (int i = 0; i < ETHERNET_ADDRESS_ARRAY_LENGTH; i++) {
-			assertEquals("Array1 and Array2 did not match (index #" + i + ")",
-					array1[i + array1_start], array2[i + array2_start]);
+			assertEquals(array1[i + array1_start],
+					array2[i + array2_start], "Array1 and Array2 did not match (index #" + i + ")");
 		}
 	}
 
 	private void assertEthernetAddressArraysAreNotEqual(byte[] array1,
 			int array1_start, byte[] array2, int array2_start) {
-		assertTrue("Array1 start offset is invalid", 0 <= array1_start);
-		assertTrue("Array2 start offset is invalid", 0 <= array2_start);
-		assertTrue("Array1 is not long enough for the given start offset",
-				array1.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array1_start);
-		assertTrue("Array2 is not long enough for the given start offset",
-				array2.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array2_start);
+		assertTrue(0 <= array1_start, "Array1 start offset is invalid");
+		assertTrue(0 <= array2_start, "Array2 start offset is invalid");
+		assertTrue(array1.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array1_start,
+				"Array1 is not long enough for the given start offset");
+		assertTrue(array2.length >= ETHERNET_ADDRESS_ARRAY_LENGTH + array2_start,
+				"Array2 is not long enough for the given start offset");
 		for (int i = 0; i < ETHERNET_ADDRESS_ARRAY_LENGTH; i++) {
 			// as soon as we find a non-matching byte,
 			// we know we're not equal, so return

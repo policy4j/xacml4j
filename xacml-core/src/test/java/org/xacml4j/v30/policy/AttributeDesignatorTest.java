@@ -22,23 +22,23 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.CategoryId;
@@ -52,16 +52,15 @@ import org.xacml4j.v30.types.XacmlTypes;
 import com.google.common.truth.Truth;
 
 
+@ExtendWith(MockitoExtension.class)
 public class AttributeDesignatorTest
 {
 	private EvaluationContext context;
 	private AttributeDesignatorKey.Builder builder;
 
-	private IMocksControl control;
-	@Before
+	@BeforeEach
 	public void init(){
-		this.control = EasyMock.createStrictControl();
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 		this.builder = AttributeDesignatorKey
 				.builder()
 				.category(CategoryId.SUBJECT_RECIPIENT)
@@ -70,32 +69,37 @@ public class AttributeDesignatorTest
 				.dataType(XacmlTypes.INTEGER);
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
+	@Test
 	public void testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag() throws EvaluationException
 	{
 		AttributeDesignator desig = AttributeDesignator
-				.builder()
-				.key(builder.build())
-				.mustBePresent(true)
-				.build();
-		Capture<AttributeDesignatorKey> capture = Capture.newInstance();
-		expect(context
-				.resolve(capture(capture)))
-				.andReturn(Optional.empty());
-		Capture<Supplier<Status>> status = Capture.newInstance();
-		context.setEvaluationStatusIfAbsent(capture(status));
+			.builder()
+			.key(builder.build())
+			.mustBePresent(true)
+			.build();
+		ArgumentCaptor<AttributeDesignatorKey> capture = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context
+			.resolve(capture.capture()))
+			.thenReturn(Optional.empty());
+		ArgumentCaptor<Supplier<Status>> status = ArgumentCaptor.forClass(Supplier.class);
+		doNothing().when(context).setEvaluationStatusIfAbsent(status.capture());
 
-		control.replay();
-		try{
-			desig.evaluate(context);
-		}catch(AttributeReferenceEvaluationException e){
-			control.verify();
-			Truth.assertThat(capture.getValue()).isSameInstanceAs(e.getReference());
-			Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
-			assertThat(e.getStatus().getStatusCode().getValue(), is(StatusCodeId.MISSING_ATTRIBUTE));
-			throw e;
-		}
+		InOrder order = inOrder(context);
+		AttributeReferenceEvaluationException e = assertThrows(
+			AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
+		order.verify(context
+			).resolve(capture.capture());
+		order.verify(context).setEvaluationStatusIfAbsent(status.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(capture.capture());
+		verify(context, times(1)).setEvaluationStatusIfAbsent(status.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		Truth.assertThat(capture.getValue()).isSameInstanceAs(e.getReference());
+		Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
+		assertThat(e.getStatus().getStatusCode().getValue(), is(StatusCodeId.MISSING_ATTRIBUTE));
 
+		assertEquals(StatusCodeId.MISSING_ATTRIBUTE, status.getValue().get().getStatusCode().getValue());
 	}
 
 	@Test
@@ -107,18 +111,23 @@ public class AttributeDesignatorTest
 				.mustBePresent(true)
 				.build();
 
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(Optional.empty());
-		Capture<Supplier<Status>> status = Capture.newInstance();
-		context.setEvaluationStatusIfAbsent(capture(status));
-		control.replay();
-		try{
-			desig.evaluate(context);
-		}catch(AttributeReferenceEvaluationException e){
-			control.verify();
-			Truth.assertThat(c.getValue()).isSameInstanceAs(e.getReference());
-			Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
-		}
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenReturn(Optional.empty());
+		ArgumentCaptor<Supplier<Status>> status = ArgumentCaptor.forClass(Supplier.class);
+		doNothing().when(context).setEvaluationStatusIfAbsent(status.capture());
+		InOrder order = inOrder(context);
+		AttributeReferenceEvaluationException e = assertThrows(
+				AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
+		order.verify(context).resolve(c.capture());
+		order.verify(context).setEvaluationStatusIfAbsent(status.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		verify(context, times(1)).setEvaluationStatusIfAbsent(status.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		Truth.assertThat(c.getValue()).isSameInstanceAs(e.getReference());
+		Truth.assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.MISSING_ATTRIBUTE);
+		assertEquals(StatusCodeId.MISSING_ATTRIBUTE, status.getValue().get().getStatusCode().getValue());
 	}
 
 
@@ -130,16 +139,21 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(Optional.of(
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenReturn(Optional.of(
 				XacmlTypes.INTEGER.bagBuilder().attribute(
 						XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build()));
-		control.replay();
+		InOrder order = inOrder(context);
 		Expression v = desig.evaluate(context);
-		control.verify();
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().attribute(
 				XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build(), v);
+		assertEquals(builder.build(), c.getValue());
 	}
 
 	@Test
@@ -150,14 +164,19 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(Optional.of(XacmlTypes.INTEGER.emptyBag()));
-		replay(context);
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenReturn(Optional.of(XacmlTypes.INTEGER.emptyBag()));
+		InOrder order = inOrder(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
-		verify(context);
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(builder.build(), c.getValue());
 	}
 
 	@Test
@@ -168,17 +187,22 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andReturn(null);
-		replay(context);
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenReturn(null);
+		InOrder order = inOrder(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
-		verify(context);
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(builder.build(), c.getValue());
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
+	@Test
 	public void testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException() throws EvaluationException
 	{
 		AttributeDesignator desig = AttributeDesignator
@@ -186,11 +210,16 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(desig.getReferenceKey(), "Errror"));
-		replay(context);
-		desig.evaluate(context);
-		verify(context);
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenThrow(new AttributeReferenceEvaluationException(desig.getReferenceKey(), "Errror"));
+		InOrder order = inOrder(context);
+		assertThrows(AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(builder.build(), c.getValue());
 	}
 
 	@Test
@@ -201,18 +230,23 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenThrow(
 				AttributeReferenceEvaluationException.forDesignator(builder.build()));
-		replay(context);
+		InOrder order = inOrder(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
-		verify(context);
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(builder.build(), c.getValue());
 	}
 
-	@Test(expected=AttributeReferenceEvaluationException.class)
+	@Test
 	public void testMustBePresentTrueContextHandlerThrowsRuntimeException() throws EvaluationException
 	{
 		AttributeDesignator desig = AttributeDesignator
@@ -220,11 +254,16 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(true)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
-		replay(context);
-		desig.evaluate(context);
-		verify(context);
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenThrow(new NullPointerException("Null"));
+		InOrder order = inOrder(context);
+		assertThrows(AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(builder.build(), c.getValue());
 	}
 
 	@Test
@@ -235,13 +274,18 @@ public class AttributeDesignatorTest
 				.key(builder.build())
 				.mustBePresent(false)
 				.build();
-		Capture<AttributeDesignatorKey> c = Capture.newInstance();
-		expect(context.resolve(capture(c))).andThrow(new NullPointerException("Null"));
-		replay(context);
+		ArgumentCaptor<AttributeDesignatorKey> c = ArgumentCaptor.forClass(AttributeDesignatorKey.class);
+		when(context.resolve(c.capture())).thenThrow(new NullPointerException("Null"));
+		InOrder order = inOrder(context);
 		Expression v = desig.evaluate(context);
 		assertNotNull(v);
 		assertEquals(XacmlTypes.INTEGER.bagType(), v.getEvaluatesTo());
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().build(), v);
-		verify(context);
+		order.verify(context).resolve(c.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolve(c.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
+		assertEquals(builder.build(), c.getValue());
 	}
 }

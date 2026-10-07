@@ -1,0 +1,27 @@
+Run date: 2026-10-04. Worktree: integration/modernize-core-jdk28-valhalla.
+JDK: GraalVM 21.0.6+8.1, JAVA_HOME selected explicitly for each Maven run.
+All Maven runs set -Dlicense.skipUpdateLicense=true. No Git history changes.
+
+RED numeric:
+  rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=ArtimeticFunctionsTest,DoubleBagSetEqualityTest,FunctionSafetyNet43Test -Dsurefire.failIfNoSpecifiedTests=false test
+RED harness:
+  rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=NaNFixtureAdjudicationTest -Dsurefire.failIfNoSpecifiedTests=false test
+Numeric GREEN / combining RED:
+  rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=ArtimeticFunctionsTest,DoubleBagSetEqualityTest,FunctionSafetyNet43Test,DecisionCombiningAlgorithmRegistryTest,OnPermitApplySecondDecisionTableTest,OnPermitApplySecondPolicyTest -Dsurefire.failIfNoSpecifiedTests=false test
+Focused GREEN r1:
+  rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=ArtimeticFunctionsTest,DoubleBagSetEqualityTest,FunctionSafetyNet43Test,DecisionCombiningAlgorithmRegistryTest,OnPermitApplySecondDecisionTableTest,OnPermitApplySecondPolicyTest,PolicyTest,PolicySetTest,PolicyIDReferenceTest,PolicySetIDReferenceTest -Dsurefire.failIfNoSpecifiedTests=false test
+Full reactor:
+  rtk mvn -Dlicense.skipUpdateLicense=true clean verify
+  First attempt: testCompile failure in the conductor's newly added full-response assertion. Preserved reactor-r1-testcompile-failure.log.
+  Corrected assertion to marshal through the production XACML30 XML response marshaller, then reran clean verify: exit0, reactor-green.log and reactor-green-receipt.json.
+OpenSpec:
+  rtk proxy <installed openspec CLI> validate modernize-core-for-jdk28-valhalla --strict
+NTM:
+  Implementation session policy4j--resume-g4-implement-20261004-w3b (Sol, Fable), plus existing decision-wave Gemini Flash harness writer. All writers terminated after handoff.
+  Review session policy4j--resume-g4-review-20261004-w4 (Opus, Astra, Grok4.7), packets under reviews/code/rv078-task46-spec-compliance/packets.
+
+Receipts are parsed from preserved Surefire XML; XML artifacts are retained under reactor-green-surefire/<module>/.
+Conformance runtime identities are parsed from each testcase system-out PASS marker, checked against enabled manifest identities; four expected static-rejection passes are labeled separately.
+Source preservation compares 3753 non-evidence baseline hashes from run068; no vendored bytes changed.
+Model pins reflect native metadata and terminal observations; serving variants are not independently attested.
+One native Codex startup automatically updated the host CLI 0.159.3 to 0.160.0 before task execution. This was disclosed; no further global changes were requested or performed.

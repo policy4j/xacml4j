@@ -22,16 +22,15 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.when;
 
 import java.util.Map;
 import java.util.function.Function;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -41,14 +40,12 @@ public class BaseAttributeResolverTest
 {
 	private AttributeResolverDescriptor d;
 	private ResolverContext context;
-	private IMocksControl c;
 	private Function<ResolverContext, Map<String, BagOfValues>> r;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.context = c.createMock(ResolverContext.class);
-		this.r =  c.createMock(Function.class);
+		this.context = Mockito.mock(ResolverContext.class);
+		this.r =  Mockito.mock(Function.class);
 		this.d = AttributeResolverDescriptor
 				.builder("test", "Test", CategoryId.SUBJECT_ACCESS)
 				.attribute("testId1", XacmlTypes.STRING)
@@ -57,12 +54,10 @@ public class BaseAttributeResolverTest
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testMBeanInvocationStats() throws Exception
 	{
-		expect(context.getDescriptor()).andReturn(d);
-		c.replay();
+		when(context.getDescriptor()).thenReturn(d);
 		r.apply(context);
-		c.verify();
 	}
 }

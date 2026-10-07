@@ -93,7 +93,7 @@ interface ExpressionTypeBuilder
  	 			Preconditions.checkArgument(e instanceof Value);
  	 			Value v = (Value)e;
  	 			AttributeValueType exp = factory.createAttributeValueType();
- 	 			exp.setDataType(v.getEvaluatesTo().getTypeId());
+ 	 			exp.setDataType(v.getEvaluatesTo().getValueType().getTypeId());
  				exp.getContent().add(v.get());
  				return factory.createAttributeValue(exp);
  	 		}

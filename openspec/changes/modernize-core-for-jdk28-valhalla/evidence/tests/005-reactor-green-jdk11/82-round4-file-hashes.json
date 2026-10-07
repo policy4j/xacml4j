@@ -1,0 +1,4 @@
+{
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java": "0949e2ba7da8fb083090a230f823ffcf455a881c96d43552a2cdc5e3a4e75949",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java": "6990001ba91c1e1ed2d7a976c06fe05058c4362ea20e7d5450d4231aea321858"
+}

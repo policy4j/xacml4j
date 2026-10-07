@@ -95,7 +95,7 @@ import org.xacml4j.v30.policy.VariableDefinition;
 import org.xacml4j.v30.policy.VariableReference;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.policy.function.FunctionProvider;
-import org.xacml4j.v30.types.PathValue;
+import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.Xacml20XPathTo30Transformer;
 
 import com.google.common.collect.ImmutableMap;
@@ -699,7 +699,7 @@ class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
 		return CategoryId.RESOURCE;
 	}
 
-	private PathValue transformSelectorXPath(AttributeSelectorType selector) throws SyntaxException
+	private Path transformSelectorXPath(AttributeSelectorType selector) throws SyntaxException
 	{
 		return Xacml20XPathTo30Transformer.transform20PathTo30(selector.getRequestContextPath());
 	}
@@ -714,6 +714,9 @@ class Xacml20PolicyFromJaxbToObjectModelMapper extends PolicyUnmarshallerSupport
 	private AttributeDesignator createDesignator(CategoryId categoryId,
 			AttributeDesignatorType ref) throws SyntaxException
 	{
+		if (ref.getAttributeId() == null) {
+			throw new SyntaxException("Policy AttributeDesignator is missing AttributeId");
+		}
 		return AttributeDesignator
 				.builder()
 				.key(AttributeDesignatorKey.builder().

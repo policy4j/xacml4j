@@ -22,10 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
+import org.junit.jupiter.api.Test;
 
 public class RFC822NameTest
 {
@@ -44,9 +43,10 @@ public class RFC822NameTest
 	 * Test case tests RegExp DoS attack vector
 	 * on email validation
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void parseInvalidName() {
-		RFC822Name.parse("13b3f46cbea4d9388066e08cc58134381ec8a7d7");
+		assertThrows(IllegalArgumentException.class, () ->
+			RFC822Name.parse("13b3f46cbea4d9388066e08cc58134381ec8a7d7"));
 	}
 
 	@Test

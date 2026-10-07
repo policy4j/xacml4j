@@ -22,21 +22,22 @@ package org.xacml4j.v30.pdp.request;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 import java.util.Collection;
 
-import org.easymock.Capture;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
@@ -55,10 +56,10 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 	private PolicyDecisionPointContext pdp;
 	private RequestContextHandler profile;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
-		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
+		this.pdp = mock(PolicyDecisionPointContext.class);
 		this.profile = new MultipleResourcesViaRequestReferencesHandler();
 	}
 
@@ -135,17 +136,16 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.reference(reference0, reference1)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
-		Capture<RequestContext> c1 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> requests = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-		expect(pdp.requestDecision(capture(c1))).andReturn(
-				Result.indeterminate(Status.processingError().build()).build());
-		replay(pdp);
 		profile.handle(context, pdp).iterator();
-		RequestContext context0 = c0.getValue();
-		RequestContext context1 = c1.getValue();
+		InOrder order = Mockito.inOrder(pdp);
+		order.verify(pdp, times(2)).requestDecision(requests.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		RequestContext context0 = requests.getAllValues().get(0);
+		RequestContext context1 = requests.getAllValues().get(1);
 
 		assertFalse(context0.containsRequestReferences());
 		assertEquals(3, context0.getCategories().size());
@@ -167,7 +167,7 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId3").orElse(null));
 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId4").orElse(null));
 
-		verify(pdp);
+
 	}
 
 	@Test
@@ -200,12 +200,11 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.attributes(attr0, attr1)
 				.build();
 
-		expect(pdp.requestDecision(request)).andReturn(
+		when(pdp.requestDecision(request)).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-		replay(pdp);
 		Collection<Result> results = profile.handle(request, pdp);
 		assertEquals(Result.indeterminate(Status.processingError().build()).build(), results.iterator().next());
-		verify(pdp);
+		verify(pdp).requestDecision(request);
 	}
 
 	@Test
@@ -216,16 +215,15 @@ public class MultipleResourcesViaRequestReferencesHandlerTest
 				.returnPolicyIdList(false)
 				.build();
 
-		Capture<RequestContext> c0 = Capture.newInstance();
+		ArgumentCaptor<RequestContext> c0 = ArgumentCaptor.forClass(RequestContext.class);
 
-		expect(pdp.requestDecision(capture(c0))).andReturn(
+		when(pdp.requestDecision(Mockito.any())).thenReturn(
 				Result.indeterminate(Status.processingError().build()).build());
-
-		replay(pdp);
 		Collection<Result> results = profile.handle(context, pdp);
 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
 		assertEquals(1, results.size());
-		assertSame(context, c0.getValue());
-		verify(pdp);
+		verify(pdp).requestDecision(c0.capture());
+		Mockito.verifyNoMoreInteractions(pdp);
+		assertSame(context, c0.getAllValues().get(0));
 	}
 }

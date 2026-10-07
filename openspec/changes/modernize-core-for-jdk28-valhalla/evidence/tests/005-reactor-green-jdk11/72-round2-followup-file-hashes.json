@@ -1,0 +1,5 @@
+{
+  "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java": "417dfa5341dff354e64816837804d20a3d4d1334caaa4cd7bd2f09f12bda3bc8",
+  "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java": "7089b1b3fa6156d9eddfe562ac1ac5423dabec85e98cb6acc916dedb85878395",
+  "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java": "d59eae3c0e5f3879e2a3433277cae80f3fadde0309578f4c022e7a04aa838b0e"
+}

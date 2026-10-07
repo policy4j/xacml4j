@@ -1,0 +1,2435 @@
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/util/DefaultFunctionFunctionInvocationFactoryTest.java b/xacml-pdp/src/test/java/org/xacml4j/util/DefaultFunctionFunctionInvocationFactoryTest.java
+index ebda36a..777fb76 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/util/DefaultFunctionFunctionInvocationFactoryTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/util/DefaultFunctionFunctionInvocationFactoryTest.java
+@@ -1,31 +1,10 @@ org.openrewrite.config.CompositeRecipe
+ package org.xacml4j.util;
+ 
+-/*
+- * #%L
+- * Xacml4J Core Engine Implementation
+- * %%
+- * Copyright (C) 2009 - 2014 Xacml4J.org
+- * %%
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as
+- * published by the Free Software Foundation, either version 3 of the
+- * License, or (at your option) any later version.
+- * 
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Lesser Public License for more details.
+- * 
+- * You should have received a copy of the GNU General Lesser Public
+- * License along with this program.  If not, see
+- * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+- * #L%
+- */
++import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+-import static org.junit.Assert.assertEquals;
+ 
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
+ import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+ import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
+ 
+@@ -34,7 +13,7 @@
+ 	private FunctionInvocationFactory f;
+ 	private TestObject instance;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.f = FunctionInvocationFactory.defaultFactory();
+ 		this.instance = new TestObject();
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/util/TestObject.java b/xacml-pdp/src/test/java/org/xacml4j/util/TestObject.java
+index cd12ccb..6942295 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/util/TestObject.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/util/TestObject.java
+@@ -1,30 +1,8 @@ org.openrewrite.config.CompositeRecipe
+ package org.xacml4j.util;
+ 
+-/*
+- * #%L
+- * Xacml4J Core Engine Implementation
+- * %%
+- * Copyright (C) 2009 - 2014 Xacml4J.org
+- * %%
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as
+- * published by the Free Software Foundation, either version 3 of the
+- * License, or (at your option) any later version.
+- * 
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Lesser Public License for more details.
+- * 
+- * You should have received a copy of the GNU General Lesser Public
+- * License along with this program.  If not, see
+- * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+- * #L%
+- */
++import org.junit.jupiter.api.Disabled;
+ 
+-import org.junit.Ignore;
+-
+-@Ignore
++@Disabled
+ public class TestObject
+ {
+ 	public String test(String v)
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/util/FunctionInvocationBenchmark.java b/xacml-pdp/src/test/java/org/xacml4j/util/FunctionInvocationBenchmark.java
+index 1c7c81e..25bfde2 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/util/FunctionInvocationBenchmark.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/util/FunctionInvocationBenchmark.java
+@@ -1,39 +1,17 @@ org.openrewrite.config.CompositeRecipe
+ package org.xacml4j.util;
+ 
+-/*
+- * #%L
+- * Xacml4J Core Engine Implementation
+- * %%
+- * Copyright (C) 2009 - 2014 Xacml4J.org
+- * %%
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as
+- * published by the Free Software Foundation, either version 3 of the
+- * License, or (at your option) any later version.
+- * 
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Lesser Public License for more details.
+- * 
+- * You should have received a copy of the GNU General Lesser Public
+- * License along with this program.  If not, see
+- * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+- * #L%
+- */
+-
+-import org.junit.Before;
+-import org.junit.Ignore;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Disabled;
++import org.junit.jupiter.api.Test;
+ import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+ import org.xacml4j.v30.policy.function.impl.PolicyToPlatformFunctionInvocation;
+ 
+-@Ignore
++@Disabled
+ public class FunctionInvocationBenchmark
+ {
+ 	private TestObject instance;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.instance = new TestObject();
+ 	}
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+index b2d6fc8..b217b05 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+@@ -23,14 +23,14 @@ org.openrewrite.config.CompositeRecipe
+  */
+ 
+ 
+-import static org.easymock.EasyMock.createControl;
+-import static org.easymock.EasyMock.expect;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
+-import static org.junit.Assert.assertNotSame;
+-import static org.junit.Assert.assertNull;
+-import static org.junit.Assert.assertSame;
+-import static org.junit.Assert.assertTrue;
++import static org.mockito.Mockito.createControl;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNotSame;
++import static org.junit.jupiter.api.Assertions.assertNull;
++import static org.junit.jupiter.api.Assertions.assertSame;
++import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import java.util.Collection;
+ import java.util.Iterator;
+@@ -38,8 +38,9 @@
+ import java.util.concurrent.TimeUnit;
+ 
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.CompositeDecisionRule;
+ import org.xacml4j.v30.Version;
+ import org.xacml4j.v30.VersionMatch;
+@@ -73,14 +74,14 @@
+ 	private DecisionCombiningAlgorithmProvider decisionAlgorithms;
+ 
+ 	@SuppressWarnings("unchecked")
+-	@Before
++	@BeforeEach
+ 	public void init() throws Exception
+ 	{
+ 		this.c = createControl();
+-		this.algorithm = c.createMock(DecisionCombiningAlgorithm.class);
+-		this.functions = c.createMock(FunctionProvider.class);
+-		this.unmarshaller = c.createMock(PolicyUnmarshaller.class);
+-		this.decisionAlgorithms = c.createMock(DecisionCombiningAlgorithmProvider.class);
++		this.algorithm = Mockito.createMock(DecisionCombiningAlgorithm.class);
++		this.functions = Mockito.createMock(FunctionProvider.class);
++		this.unmarshaller = Mockito.createMock(PolicyUnmarshaller.class);
++		this.decisionAlgorithms = Mockito.createMock(DecisionCombiningAlgorithmProvider.class);
+ 
+ 		this.p1v1 = Policy.builder("id1").version("1").combiningAlgorithm(algorithm).build();
+ 		this.p1v2 = Policy.builder("id1").version("1.1").combiningAlgorithm(algorithm).build();
+@@ -88,7 +89,7 @@
+ 		this.p1v3 =  Policy.builder("id1").version("1.2.1").combiningAlgorithm(algorithm).build();
+ 		this.p1v4 =  Policy.builder("id1").version("2.0.1").combiningAlgorithm(algorithm).build();
+ 		this.r = new InMemoryPolicyRepository("testId", functions, decisionAlgorithms);
+-		this.l = c.createMock(PolicyRepositoryListener.class);
++		this.l = Mockito.createMock(PolicyRepositoryListener.class);
+ 	}
+ 
+ 	private CountDownLatch listenerCallbacks(int expected)
+@@ -123,21 +124,20 @@
+ 	public void testOnePolicyDifferentVersion() throws Exception
+ 	{
+ 
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v1);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v2);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v3);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v4);
+ 
+ 		CountDownLatch callbacks = listenerCallbacks(4);
+-		c.replay();
+ 
+ 		r.add(p1v1);
+ 		r.add(p1v2);
+@@ -171,19 +171,17 @@
+ 		Policy policy = r.getPolicy("id1", null, null, null);
+ 		assertEquals(Version.parse("2.0.1"), policy.getVersion());
+ 
+-		assertTrue("Timed out waiting for four policy-added callbacks", callbacks.await(5, TimeUnit.SECONDS));
+-		c.verify();
++		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for four policy-added callbacks");
+ 	}
+ 
+ 	@Test
+ 	public void testAddRemove() throws Exception
+ 	{
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v2);
+ 		l.policyRemoved(p1v2);
+ 		CountDownLatch callbacks = listenerCallbacks(2);
+-		c.replay();
+ 
+ 		r.add(p1v2);
+ 
+@@ -196,48 +194,44 @@
+ 		Collection<Policy> found = r.getPolicies("id1", VersionMatch.parse("1.+"));
+ 		assertEquals(0, found.size());
+ 
+-		assertTrue("Timed out waiting for policy-added and policy-removed callbacks", callbacks.await(5, TimeUnit.SECONDS));
+-		c.verify();
++		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for policy-added and policy-removed callbacks");
+ 	}
+ 
+ 	@Test
+ 	public void testAddPolicyWithTheSameIdAndSameVersion() throws Exception
+ 	{
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v2);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		CountDownLatch callbacks = listenerCallbacks(1);
+-		c.replay();
+ 		assertTrue(r.add(p1v2));
+ 		assertFalse(r.add(p1v2DiffInstance));
+ 		Policy p = (Policy)r.get("id1", Version.parse("1.1"));
+ 		assertSame(p1v2, p);
+ 		assertNotSame(p1v2DiffInstance, p);
+-		assertTrue("Timed out waiting for one policy-added callback", callbacks.await(5, TimeUnit.SECONDS));
+-		c.verify();
++		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for one policy-added callback");
+ 	}
+ 
+ 
+ 	@Test
+ 	public void testFindAllPoliciesWithTheSameId() throws Exception
+ 	{
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v2);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v1);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v3);
+-		expect(algorithm.getId()).andReturn("testId");
+-		expect(decisionAlgorithms.isRuleAlgorithmProvided("testId")).andReturn(true);
++		when(algorithm.getId()).thenReturn("testId");
++		when(decisionAlgorithms.isRuleAlgorithmProvided("testId")).thenReturn(true);
+ 		l.policyAdded(p1v4);
+ 
+ 		CountDownLatch callbacks = listenerCallbacks(4);
+-		c.replay();
+ 
+ 		r.add(p1v2);
+ 		r.add(p1v1);
+@@ -253,7 +247,6 @@
+ 		assertEquals(Version.parse("1.2.1"), it.next().getVersion());
+ 		assertEquals(Version.parse("2.0.1"), it.next().getVersion());
+ 
+-		assertTrue("Timed out waiting for four policy-added callbacks", callbacks.await(5, TimeUnit.SECONDS));
+-		c.verify();
++		assertTrue(callbacks.await(5, TimeUnit.SECONDS), "Timed out waiting for four policy-added callbacks");
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/DefaultPolicyReferenceResolverTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/DefaultPolicyReferenceResolverTest.java
+index 1e0a338..216c3f4 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/DefaultPolicyReferenceResolverTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/DefaultPolicyReferenceResolverTest.java
+@@ -22,15 +22,16 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createControl;
+-import static org.easymock.EasyMock.expect;
+-import static org.junit.Assert.assertSame;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.createControl;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertSame;
+ 
+ import org.easymock.Capture;
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.VersionMatch;
+ import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
+ import org.xacml4j.v30.policy.Policy;
+@@ -48,20 +49,20 @@
+ 	private PolicySet ps1v1;
+ 
+ 	@SuppressWarnings("unchecked")
+-	@Before
++	@BeforeEach
+ 	public void init() throws Exception
+ 	{
+ 		this.c = createControl();
+-		this.repository = c.createMock(PolicyRepository.class);
++		this.repository = Mockito.createMock(PolicyRepository.class);
+ 		this.p1v1 = Policy
+ 				.builder("id")
+ 				.version("1.0.0")
+-				.combiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class))
++				.combiningAlgorithm(Mockito.createMock(DecisionCombiningAlgorithm.class))
+ 				.build();
+ 		this.ps1v1 = PolicySet
+ 				.builder("id")
+ 				.version("1.2.1")
+-				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).build();
++				.withCombiningAlgorithm(Mockito.createMock(DecisionCombiningAlgorithm.class)).build();
+ 
+ 	}
+ 
+@@ -69,9 +70,8 @@
+ 	public void testResolvePolicyIDReference() throws Exception
+ 	{
+ 		Capture<PolicyRepositoryListener> listener = Capture.newInstance();
+-		repository.addPolicyRepositoryListener(capture(listener));
+-		expect(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
+-		c.replay();
++		repository.addPolicyRepositoryListener(argThat(listener));
++		when(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).thenReturn(p1v1);
+ 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
+ 		PolicyIDReference ref = PolicyIDReference.builder("id").versionAsString("1.0.0").build();
+ 		Policy p = r.resolve(ref);
+@@ -79,16 +79,14 @@
+ 		r.policyRemoved(p1v1);
+ 		p = r.resolve(ref);
+ 		assertSame(p1v1, p);
+-		c.verify();
+ 	}
+ 
+ 	@Test
+ 	public void testResolvePolicySetIDReference() throws Exception
+ 	{
+ 		Capture<PolicyRepositoryListener> listener = Capture.newInstance();
+-		repository.addPolicyRepositoryListener(capture(listener));
+-		expect(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
+-		c.replay();
++		repository.addPolicyRepositoryListener(argThat(listener));
++		when(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).thenReturn(ps1v1);
+ 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
+ 		PolicySetIDReference ref = PolicySetIDReference.builder("id").versionAsString("1.0.0").build();
+ 		PolicySet p = r.resolve(ref);
+@@ -96,6 +94,5 @@
+ 		r.policySetRemoved(ps1v1);
+ 		p = r.resolve(ref);
+ 		assertSame(ps1v1, p);
+-		c.verify();
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeSetTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeSetTest.java
+index ce7f308..87ada68 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeSetTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeSetTest.java
+@@ -1,36 +1,14 @@ org.openrewrite.config.CompositeRecipe
+ package org.xacml4j.v30.spi.pip;
+ 
+-/*
+- * #%L
+- * Xacml4J Core Engine Implementation
+- * %%
+- * Copyright (C) 2009 - 2014 Xacml4J.org
+- * %%
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as
+- * published by the Free Software Foundation, either version 3 of the
+- * License, or (at your option) any later version.
+- * 
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Lesser Public License for more details.
+- * 
+- * You should have received a copy of the GNU General Lesser Public
+- * License along with this program.  If not, see
+- * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+- * #L%
+- */
+-
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
+-import static org.junit.Assert.assertNotNull;
+-import static org.junit.Assert.assertTrue;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNotNull;
++import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import java.util.Optional;
+ 
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
+ import org.xacml4j.v30.AttributeDesignatorKey;
+ import org.xacml4j.v30.BagOfValues;
+ import org.xacml4j.v30.CategoryId;
+@@ -43,7 +21,7 @@
+ 	private AttributeResolverDescriptor noIssuer;
+ 	private AttributeResolverDescriptor withIssuer;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.noIssuer = AttributeResolverDescriptor.builder(
+ 				"id", "name", null, CategoryId.SUBJECT_ACCESS)
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AnnotatedResolverFactoryTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AnnotatedResolverFactoryTest.java
+index d646782..6656987 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AnnotatedResolverFactoryTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AnnotatedResolverFactoryTest.java
+@@ -22,13 +22,13 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.createControl;
+-import static org.easymock.EasyMock.expect;
+-import static org.easymock.EasyMock.replay;
+-import static org.easymock.EasyMock.verify;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertNotNull;
+-import static org.junit.Assert.assertTrue;
++import static org.mockito.Mockito.createControl;
++import static org.mockito.Mockito.when;
++import static org.mockito.Mockito.verify;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertNotNull;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import java.lang.reflect.Method;
+ import java.time.Clock;
+@@ -39,8 +39,9 @@
+ import java.util.Optional;
+ 
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.slf4j.LoggerFactory;
+ import org.w3c.dom.Node;
+ import org.xacml4j.v30.AttributeDesignatorKey;
+@@ -62,11 +63,11 @@
+ 	private EvaluationContext context;
+ 	private IMocksControl control;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.p = new AnnotatedResolverFactory();
+ 		this.control = createControl();
+-		this.context = control.createMock(EvaluationContext.class);
++		this.context = Mockito.createMock(EvaluationContext.class);
+ 	}
+ 
+ 	@Test
+@@ -90,20 +91,18 @@
+ 		Method m = getMethod(this.getClass(), "resolve1");
+ 		assertNotNull(m);
+ 
+-		expect(context.resolve(AttributeDesignatorKey.builder()
++		when(context.resolve(AttributeDesignatorKey.builder()
+ 		                                             .category(CategoryId.of("test"))
+ 		                                             .dataType(XacmlTypes.BOOLEAN)
+ 				                       .attributeId("attr1").build()))
+-				.andReturn(Optional.of(XacmlTypes.BOOLEAN.ofAny(true).toBag()));
+-		expect(context.resolve(AttributeDesignatorKey.builder()
++				.thenReturn(Optional.of(XacmlTypes.BOOLEAN.ofAny(true).toBag()));
++		when(context.resolve(AttributeDesignatorKey.builder()
+ 		                                             .category(CategoryId.of("test"))
+ 		                                             .issuer("test")
+ 		                                             .dataType(XacmlTypes.INTEGER)
+ 		                                             .attributeId("attr2").build()))
+-				.andReturn(Optional.of(XacmlTypes.INTEGER.ofAny(10).toBag()));
+-		expect(context.getClock()).andReturn(Clock.systemUTC());
+-
+-		control.replay();
++				.thenReturn(Optional.of(XacmlTypes.INTEGER.ofAny(10).toBag()));
++		when(context.getClock()).thenReturn(Clock.systemUTC());
+ 
+ 		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
+ 		LoggerFactory.getLogger(getClass()).debug(d.toString());
+@@ -115,7 +114,6 @@
+ 		ResolverContext pipContext = ResolverContext.createContext(context, d);
+ 
+ 		d.getResolverFunction().apply(pipContext);
+-		control.verify();
+ 
+ 		assertEquals("Test", d.getName());
+ 		Truth8.assertThat(CategoryId.parse("subject")).hasValue(d.getCategory());
+@@ -147,10 +145,6 @@
+ 
+ 		assertEquals(expectedKey0, keys.get(0));
+ 		assertEquals(expectedKey1, keys.get(1));
+-
+-
+-
+-		control.verify();
+ 	}
+ 
+ 	@Test
+@@ -158,7 +152,6 @@
+ 	{
+ 		Method m = getMethod(this.getClass(), "resolve2");
+ 		assertNotNull(m);
+-		replay(context);
+ 		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
+ 		ResolverContext pipContext = ResolverContext.createContext(context, d);
+ 		d.getResolverFunction().apply(pipContext);
+@@ -180,20 +173,24 @@
+ 		assertTrue(d.getContextKeyRefs().isEmpty());
+ 	}
+ 
+-	@Test(expected= SyntaxException.class)
++	@Test
+ 	public void testParseAttributeResolverWithKeyParametersFirst()
+ 	{
+-		Method m = getMethod(this.getClass(), "resolve4");
+-		assertNotNull(m);
+-		p.parseAttributeResolver(this, m);
++		assertThrows(SyntaxException.class, () -> {
++			Method m = getMethod(this.getClass(), "resolve4");
++			assertNotNull(m);
++			p.parseAttributeResolver(this, m);
++		});
+ 	}
+ 
+-	@Test(expected= SyntaxException.class)
++	@Test
+ 	public void testParseAttributeResolverWrongReturnType()
+ 	{
+-		Method m = getMethod(this.getClass(), "resolve5");
+-		assertNotNull(m);
+-		p.parseAttributeResolver(this, m);
++		assertThrows(SyntaxException.class, () -> {
++			Method m = getMethod(this.getClass(), "resolve5");
++			assertNotNull(m);
++			p.parseAttributeResolver(this, m);
++		});
+ 	}
+ 
+ 	@Test
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeResolverDescriptorTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeResolverDescriptorTest.java
+index 200fa31..8e70493 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeResolverDescriptorTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeResolverDescriptorTest.java
+@@ -1,43 +1,22 @@ org.openrewrite.config.CompositeRecipe
+ package org.xacml4j.v30.spi.pip;
+ 
+-/*
+- * #%L
+- * Xacml4J Core Engine Implementation
+- * %%
+- * Copyright (C) 2009 - 2014 Xacml4J.org
+- * %%
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as
+- * published by the Free Software Foundation, either version 3 of the
+- * License, or (at your option) any later version.
+- * 
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Lesser Public License for more details.
+- * 
+- * You should have received a copy of the GNU General Lesser Public
+- * License along with this program.  If not, see
+- * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+- * #L%
+- */
+-
+-import static org.easymock.EasyMock.expect;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
+-import static org.junit.Assert.assertNotNull;
+-import static org.junit.Assert.assertNull;
+-import static org.junit.Assert.assertTrue;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNotNull;
++import static org.junit.jupiter.api.Assertions.assertNull;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++import static org.mockito.Mockito.when;
+ 
+ import java.time.Clock;
+ import java.util.Map;
+ import java.util.Optional;
+ import java.util.function.Function;
+ 
+-import org.easymock.EasyMock;
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.AttributeDesignatorKey;
+ import org.xacml4j.v30.CategoryId;
+ import org.xacml4j.v30.EvaluationContext;
+@@ -50,27 +29,28 @@
+ {
+ 	private IMocksControl c;
+ 	private EvaluationContext context;
+-	@Before
++	@BeforeEach
+ 	public void setUp(){
+-		this.c = EasyMock.createControl();
+-		this.context = c.createMock(EvaluationContext.class);
++		this.c = Mockito.createControl();
++		this.context = Mockito.createMock(EvaluationContext.class);
+ 	}
+ 
+-	@Test(expected= SyntaxException.class)
++	@Test
+ 	public void testBuildDescriptorWithContextKeyReferringToThisDescriptor()
+ 	{
+-		AttributeResolverDescriptor.builder(
+-				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
+-		.attribute("testId1", XacmlTypes.INTEGER)
+-		.attribute("testId2", XacmlTypes.STRING)
+-		.contextRef(AttributeDesignatorKey
+-				.builder()
+-				.category(CategoryId.SUBJECT_ACCESS)
+-				.issuer("issuer")
+-				.attributeId("testId1")
+-				.dataType(XacmlTypes.INTEGER)
+-				.build())
+-		.build((c)-> ImmutableMap.of());
++		assertThrows(SyntaxException.class, () ->
++			AttributeResolverDescriptor.builder(
++					"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
++					.attribute("testId1", XacmlTypes.INTEGER)
++					.attribute("testId2", XacmlTypes.STRING)
++					.contextRef(AttributeDesignatorKey
++							.builder()
++							.category(CategoryId.SUBJECT_ACCESS)
++							.issuer("issuer")
++							.attributeId("testId1")
++							.dataType(XacmlTypes.INTEGER)
++							.build())
++					.build((c) -> ImmutableMap.of()));
+ 	}
+ 
+ 	@Test
+@@ -117,13 +97,11 @@
+ 		assertNotNull(byKey.get(key0.build()));
+ 		assertNotNull(byKey.get(key1.build()));
+ 
+-		expect(context.getClock()).andReturn(Clock.systemUTC());
+-		c.replay();
++		when(context.getClock()).thenReturn(Clock.systemUTC());
+ 		Function<ResolverContext, Optional<AttributeSet>> r = d.getResolverFunction();
+ 		ResolverContext resolverContext = ResolverContext.createContext(context, d);
+ 		assertEquals(XacmlTypes.INTEGER.ofAny(10).toBag(),
+ 		             r.apply(resolverContext).get().get("testId1").get());
+-		c.verify();
+ 	}
+ 
+ 	@Test
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/BaseAttributeResolverTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/BaseAttributeResolverTest.java
+index 05525e3..6d94c77 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/BaseAttributeResolverTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/BaseAttributeResolverTest.java
+@@ -22,16 +22,17 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.createControl;
+-import static org.easymock.EasyMock.expect;
++import static org.mockito.Mockito.createControl;
++import static org.mockito.Mockito.when;
+ 
+ import java.util.Map;
+ import java.util.function.Function;
+ 
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Ignore;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Disabled;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.BagOfValues;
+ import org.xacml4j.v30.CategoryId;
+ import org.xacml4j.v30.types.XacmlTypes;
+@@ -44,11 +45,11 @@
+ 	private IMocksControl c;
+ 	private Function<ResolverContext, Map<String, BagOfValues>> r;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.c = createControl();
+-		this.context = c.createMock(ResolverContext.class);
+-		this.r =  c.createMock(Function.class);
++		this.context = Mockito.createMock(ResolverContext.class);
++		this.r =  Mockito.createMock(Function.class);
+ 		this.d = AttributeResolverDescriptor
+ 				.builder("test", "Test", CategoryId.SUBJECT_ACCESS)
+ 				.attribute("testId1", XacmlTypes.STRING)
+@@ -57,12 +58,10 @@
+ 	}
+ 
+ 	@Test
+-	@Ignore
++	@Disabled
+ 	public void testMBeanInvocationStats() throws Exception
+ 	{
+-		expect(context.getDescriptor()).andReturn(d);
+-		c.replay();
++		when(context.getDescriptor()).thenReturn(d);
+ 		r.apply(context);
+-		c.verify();
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ContentResolverDescriptorTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ContentResolverDescriptorTest.java
+index 3ae616d..ea1f92c 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ContentResolverDescriptorTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ContentResolverDescriptorTest.java
+@@ -1,30 +1,8 @@ org.openrewrite.config.CompositeRecipe
+ package org.xacml4j.v30.spi.pip;
+ 
+-/*
+- * #%L
+- * Xacml4J Core Engine Implementation
+- * %%
+- * Copyright (C) 2009 - 2014 Xacml4J.org
+- * %%
+- * This program is free software: you can redistribute it and/or modify
+- * it under the terms of the GNU Lesser General Public License as
+- * published by the Free Software Foundation, either version 3 of the
+- * License, or (at your option) any later version.
+- * 
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Lesser Public License for more details.
+- * 
+- * You should have received a copy of the GNU General Lesser Public
+- * License along with this program.  If not, see
+- * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+- * #L%
+- */
++import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+-import static org.junit.Assert.assertEquals;
+-
+-import org.junit.Test;
++import org.junit.jupiter.api.Test;
+ import org.xacml4j.v30.CategoryId;
+ 
+ 
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java
+index 9ceadc6..9ef7e19 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java
+@@ -22,19 +22,21 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.createStrictControl;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
+-import static org.junit.Assert.assertSame;
+-import static org.junit.Assert.assertTrue;
++import static org.mockito.Mockito.createStrictControl;
++import static org.hamcrest.CoreMatchers.containsString;
++import static org.hamcrest.MatcherAssert.assertThat;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertSame;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import java.util.Collection;
+ 
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Rule;
+-import org.junit.Test;
+-import org.junit.rules.ExpectedException;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.AttributeDesignatorKey;
+ import org.xacml4j.v30.CategoryId;
+ import org.xacml4j.v30.EvaluationContext;
+@@ -52,14 +54,11 @@
+ 
+ 	private AttributeResolverDescriptor d1;
+ 
+-	@Rule
+-	public ExpectedException expectedException = ExpectedException.none();
+-
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.r = new DefaultResolverRegistry();
+ 		this.control = createStrictControl();
+-		this.context = control.createMock(EvaluationContext.class);
++		this.context = Mockito.createMock(EvaluationContext.class);
+ 		this.d1 = AttributeResolverDescriptor.builder(
+ 				"testId1", "Test1", CategoryId.SUBJECT_ACCESS)
+ 		                                     .attribute("testAttr1", XacmlTypes.INTEGER)
+@@ -79,37 +78,30 @@
+ 				.attribute("testAttr1", XacmlTypes.INTEGER)
+ 				.build((c)-> ImmutableMap.of());
+ 
+-		control.replay();
+-
+ 		r.addResolver(d1);
+ 		r.addResolver(d2);
+-
+-		control.verify();
+ 	}
+ 
+ 	@Test
+ 	public void testAddResolversWithTheSameIdsAndAttributesNoIssuer()
+ 	{
+-		expectedException.expect(IllegalArgumentException.class);
+-		expectedException.expectMessage("Attribute resolver with id=\"test1\" is already registered with this registry");
++		Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+ 
+-		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
+-				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
+-				.attribute("testAttr1", XacmlTypes.INTEGER)
+-				.build(c->ImmutableMap.of());
++			AttributeResolverDescriptor d1 = AttributeResolverDescriptor
++					.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
++					.attribute("testAttr1", XacmlTypes.INTEGER)
++					.build(c -> ImmutableMap.of());
+ 
+-		AttributeResolverDescriptor d2 =
+-				AttributeResolverDescriptor
+-				.builder("test1", "Test2", CategoryId.SUBJECT_ACCESS)
+-				.attribute("testAttr1", XacmlTypes.INTEGER)
+-				.build(c->ImmutableMap.of());
++			AttributeResolverDescriptor d2 =
++					AttributeResolverDescriptor
++							.builder("test1", "Test2", CategoryId.SUBJECT_ACCESS)
++							.attribute("testAttr1", XacmlTypes.INTEGER)
++							.build(c -> ImmutableMap.of());
+ 
+-		control.replay();
+-
+-		r.addResolver(d1);
+-		r.addResolver(d2);
+-
+-		control.verify();
++			r.addResolver(d1);
++			r.addResolver(d2);
++		});
++		assertThat(exception.getMessage(), containsString("Attribute resolver with id=\"test1\" is already registered with this registry"));
+ 	}
+ 
+ 	@Test
+@@ -124,8 +116,6 @@
+ 				.attribute("testAttr1", XacmlTypes.INTEGER)
+ 				.build(c->ImmutableMap.of());
+ 
+-		control.replay();
+-
+ 		r.addResolver(d1);
+ 		r.addResolver(d2);
+ 
+@@ -149,8 +139,6 @@
+ 
+ 		assertEquals(1, Iterables.size(matchWithtMatchingIssuer2));
+ 		assertSame(d2, Iterables.get(matchWithtMatchingIssuer2, 0));
+-
+-		control.verify();
+ 	}
+ 
+ 	@Test
+@@ -165,8 +153,6 @@
+ 				.attribute("testAttr1", XacmlTypes.INTEGER)
+ 				.build(c->ImmutableMap.of());
+ 
+-		control.replay();
+-
+ 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
+ 				.category(CategoryId.SUBJECT_ACCESS)
+ 				.attributeId("testAttr1")
+@@ -188,8 +174,6 @@
+ 		Iterable<AttributeResolverDescriptor> matchWithNotMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer1").build());
+ 
+ 		assertEquals(0, Iterables.size(matchWithNotMatchingIssuer));
+-
+-		control.verify();
+ 	}
+ 
+ 	@Test
+@@ -205,9 +189,6 @@
+ 				.attributeId("testAttr1")
+ 				.dataType(XacmlTypes.INTEGER);
+ 
+-
+-		control.replay();
+-
+ 		r.addResolver(d1);
+ 		r.addResolver(d);
+ 
+@@ -216,8 +197,6 @@
+ 		assertFalse(Iterables.isEmpty(resolvers));
+ 		assertTrue(resolvers.contains(d1));
+ 		assertTrue(resolvers.contains(d));
+-
+-		control.verify();
+ 	}
+ 
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ResolverRegistryBuilderTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ResolverRegistryBuilderTest.java
+index e08f2dd..67ec5d9 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ResolverRegistryBuilderTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ResolverRegistryBuilderTest.java
+@@ -22,12 +22,13 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.createControl;
+-import static org.junit.Assert.assertNotNull;
++import static org.mockito.Mockito.createControl;
++import static org.junit.jupiter.api.Assertions.assertNotNull;
+ 
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ 
+ public class ResolverRegistryBuilderTest
+ {
+@@ -35,18 +36,16 @@
+ 	private ResolverRegistry r;
+ 	private IMocksControl c;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.c = createControl();
+-		this.r = c.createMock(ResolverRegistry.class);
++		this.r = Mockito.createMock(ResolverRegistry.class);
+ 		this.b = ResolverRegistry.builder();
+ 
+ 	}
+ 
+ 	@Test
+ 	public void testBuildEmpty(){
+-		c.replay();
+ 		assertNotNull(b.build());
+-		c.verify();
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultPolicyInformationPointTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultPolicyInformationPointTest.java
+index e86f16a..7b354d7 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultPolicyInformationPointTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultPolicyInformationPointTest.java
+@@ -22,12 +22,11 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createStrictControl;
+-import static org.easymock.EasyMock.eq;
+-import static org.easymock.EasyMock.expect;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertSame;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.createStrictControl;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertSame;
+ 
+ import java.time.Clock;
+ import java.time.ZonedDateTime;
+@@ -36,9 +35,10 @@
+ 
+ import org.easymock.Capture;
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Ignore;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Disabled;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.AttributeDesignatorKey;
+ import org.xacml4j.v30.BagOfValues;
+ import org.xacml4j.v30.CategoryId;
+@@ -69,14 +69,14 @@
+ 	private AttributeDesignatorKey.Builder attr1;
+ 	private AttributeDesignatorKey usernameContextKey;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init()
+ 	{
+ 		this.control = createStrictControl();
+-		this.cache = control.createMock(PolicyInformationPointCacheProvider.class);
++		this.cache = Mockito.createMock(PolicyInformationPointCacheProvider.class);
+ 		ResolverRegistry.Builder builder = ResolverRegistry.builder();
+ 
+-		this.context = control.createMock(EvaluationContext.class);
++		this.context = Mockito.createMock(EvaluationContext.class);
+ 
+ 		this.attr0 = AttributeDesignatorKey
+ 				.builder()
+@@ -130,10 +130,7 @@
+ 						            .attributeId("username")
+ 						            .dataType(XacmlTypes.STRING)
+ 						            .build())
+-				.build(c->
+-				       {
+-						   return Collections.emptyMap();
+-				       });
++				.build(c-> Collections.emptyMap());
+ 		builder.withAttributeResolver(testId2WithIssuerEmpty);
+ 
+ 		this.testId2WithIssuerException = AttributeResolverDescriptor
+@@ -194,27 +191,23 @@
+ 		// attribute resolver found
+ 		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+ 		Capture<ResolverContext> ctx = Capture.newInstance();
+-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
+-		expect(context.resolve(eq(usernameContextKey)))
+-				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
+-		expect(context.getClock()).andReturn(Clock.systemUTC());
++		when(cache.getAttributes(argThat(resolverContext1))).thenReturn(Optional.empty());
++		when(context.resolve(usernameContextKey))
++				.thenReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
++		when(context.getClock()).thenReturn(Clock.systemUTC());
+ 
+ 		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+ 		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+-		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
+-
+-		control.replay();
++		cache.putAttributes(argThat(resolverContext2), argThat(attributeSetCapture));
+ 
+ 		Optional<BagOfValues> v = pip.resolve(context, a0);
+ 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
+ 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
+-
+-		control.verify();
+ 	}
+ 
+ 
+ 	@Test
+-	@Ignore
++	@Disabled
+ 	public void testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet() throws Exception
+ 	{
+ 
+@@ -223,9 +216,9 @@
+ 
+ 		// attribute resolver found
+ 		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
++		when(cache.getAttributes(argThat(resolverContext1))).thenReturn(Optional.empty());
+ 		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+-		expect(cache.getAttributes(capture(resolverContext2))).andReturn(Optional.empty());
++		when(cache.getAttributes(argThat(resolverContext2))).thenReturn(Optional.empty());
+ 
+ //		expect(context.resolve(eq(usernameContextKey)))
+ //				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));expect(context.resolve(eq(usernameContextKey)))
+@@ -235,14 +228,9 @@
+ 
+ 		Capture<ResolverContext> resolverContext3 = Capture.newInstance();
+ 		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+-		//cache.putAttributes(capture(resolverContext3), capture(attributeSetCapture));
+-
+-		control.replay();
+ 
+ 		Optional<BagOfValues> v = pip.resolve(context, a0);
+ 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
+-
+-		control.verify();
+ 	}
+ 
+ 	@Test
+@@ -253,25 +241,21 @@
+ 		// attribute resolver found
+ 		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+ 		Capture<ResolverContext> ctx = Capture.newInstance();
+-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
+-		expect(context.resolve(eq(usernameContextKey)))
+-				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
+-		expect(context.getClock()).andReturn(Clock.systemUTC());
++		when(cache.getAttributes(argThat(resolverContext1))).thenReturn(Optional.empty());
++		when(context.resolve(usernameContextKey))
++				.thenReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
++		when(context.getClock()).thenReturn(Clock.systemUTC());
+ 
+ 		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+ 		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+-		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
+-
+-		control.replay();
++		cache.putAttributes(argThat(resolverContext2), argThat(attributeSetCapture));
+ 
+ 		Optional<BagOfValues> v = pip.resolve(context, a0);
+ 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
+-
+-		control.verify();
+ 	}
+ 
+ 	@Test
+-	@Ignore
++	@Disabled
+ 	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable()
+ 		throws Exception
+ 	{
+@@ -280,20 +264,16 @@
+ 		// attribute resolver found
+ 		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
+ 		Capture<ResolverContext> ctx = Capture.newInstance();
+-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
+-		expect(context.resolve(eq(usernameContextKey)))
+-				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
++		when(cache.getAttributes(argThat(resolverContext1))).thenReturn(Optional.empty());
++		when(context.resolve(usernameContextKey))
++				.thenReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
+ 
+ 		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
+ 		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
+-		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
+-
+-		control.replay();
++		cache.putAttributes(argThat(resolverContext2), argThat(attributeSetCapture));
+ 
+ 		Optional<BagOfValues> v = pip.resolve(context, a0);
+ 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
+-
+-		control.verify();
+ 	}
+ 
+ 	@Test
+@@ -304,14 +284,10 @@
+ 		AttributeDesignatorKey key  = AttributeDesignatorKey
+ 				.builder().category(CategoryId.ENVIRONMENT).dataType(XacmlTypes.DATETIME)
+ 				.attributeId(WellKnownAttributeIds.CURRENT_TIME.getId()).build();
+-		expect(context.getCurrentDateTime()).andReturn(now);
+-		expect(context.getClock()).andReturn(Clock.systemUTC());
+-
+-		control.replay();
++		when(context.getCurrentDateTime()).thenReturn(now);
++		when(context.getClock()).thenReturn(Clock.systemUTC());
+ 
+ 		Optional<BagOfValues> v = pip.resolve(context, key);
+ 		assertEquals(XacmlTypes.TIME.ofAny(now).toBag(), v.get());
+-
+-		control.verify();
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pdp/RequestContextHandlerChainTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pdp/RequestContextHandlerChainTest.java
+index b712b0b..ae65126 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pdp/RequestContextHandlerChainTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pdp/RequestContextHandlerChainTest.java
+@@ -22,19 +22,20 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.createControl;
+-import static org.easymock.EasyMock.createStrictMock;
++import static org.mockito.Mockito.createControl;
++import static org.mockito.Mockito.mock;
+ 
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ 
+ 
+ public class RequestContextHandlerChainTest
+ {
+ 	private IMocksControl c;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.c = createControl();
+ 	}
+@@ -42,36 +43,28 @@
+ 	@Test
+ 	public void testCreateCompositeHandlerWith1Handler()
+ 	{
+-		RequestContextHandler m0 = c.createMock(RequestContextHandler.class);
+-		c.replay();
++		RequestContextHandler m0 = Mockito.createMock(RequestContextHandler.class);
+ 		RequestContextHandlerChain h = new RequestContextHandlerChain(m0);
+-		c.verify();
+ 		c.reset();
+-		RequestContextHandler m1 = c.createMock(RequestContextHandler.class);
++		RequestContextHandler m1 = Mockito.createMock(RequestContextHandler.class);
+ 		m0.setNext(m1);
+-		c.replay();
+ 		h.setNext(m1);
+-		c.verify();
+ 	}
+ 
+ 	@Test
+ 	public void testCreateCompositeHandlerWith4Handlers()
+ 	{
+-		RequestContextHandler m0 = c.createMock(RequestContextHandler.class);
+-		RequestContextHandler m1 = c.createMock(RequestContextHandler.class);
+-		RequestContextHandler m2 = c.createMock(RequestContextHandler.class);
+-		RequestContextHandler m3 = c.createMock(RequestContextHandler.class);
++		RequestContextHandler m0 = Mockito.createMock(RequestContextHandler.class);
++		RequestContextHandler m1 = Mockito.createMock(RequestContextHandler.class);
++		RequestContextHandler m2 = Mockito.createMock(RequestContextHandler.class);
++		RequestContextHandler m3 = Mockito.createMock(RequestContextHandler.class);
+ 		m0.setNext(m1);
+ 		m1.setNext(m2);
+ 		m2.setNext(m3);
+-		c.replay();
+ 		RequestContextHandler h = new RequestContextHandlerChain(m0, m1, m2, m3);
+-		c.verify();
+ 		c.reset();
+-		RequestContextHandler m4 = createStrictMock(RequestContextHandler.class);
++		RequestContextHandler m4 = mock(RequestContextHandler.class);
+ 		h.setNext(m4, false);
+-		c.replay();
+ 		h.setNext(m4);
+-		c.verify();
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+index e1957e8..2a60709 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+@@ -22,19 +22,21 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createControl;
+-import static org.easymock.EasyMock.expect;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.createControl;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertThrows;
+ 
+ import java.util.Optional;
+ 
+ import org.easymock.Capture;
+ import org.easymock.IAnswer;
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.Attribute;
+ import org.xacml4j.v30.AttributeDesignatorKey;
+ import org.xacml4j.v30.AttributeSelectorKey;
+@@ -74,14 +76,14 @@
+ 	private RequestContextCallback requestContextCallback;
+ 	private EvaluationContextHandler handler;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init() throws Exception
+ 	{
+ 		this.c = createControl();
+ 
+-		this.context = c.createMock(EvaluationContext.class);
+-		this.requestContextCallback = c.createMock(RequestContextCallback.class);
+-		this.pip = c.createMock(PolicyInformationPoint.class);
++		this.context = Mockito.createMock(EvaluationContext.class);
++		this.requestContextCallback = Mockito.createMock(RequestContextCallback.class);
++		this.pip = Mockito.createMock(PolicyInformationPoint.class);
+ 		this.entity = Entity
+ 				.builder()
+ 				.content(XmlContent.of(XmlContent.fromString(testXml)))
+@@ -103,14 +105,12 @@
+ 				.attribute(Attribute.builder("urn:oasis:names:tc:xacml:3.0:content-selector")
+ 						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+ 						.build()).build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(selected));
+-		expect(pip.resolve(context, selector)).andReturn(Optional.empty());
+-		expect(context.resolve(selector)).andAnswer(()->handler.resolve(context, selector));
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
++		when(pip.resolve(context, selector)).thenReturn(Optional.empty());
++		when(context.resolve(selector)).thenAnswer(()->handler.resolve(context, selector));
+ 
+ 		assertEquals(XacmlTypes.INTEGER.emptyBag(),
+ 				AttributeSelector.builder().key(selector).mustBePresent(false).build().evaluate(context));
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -125,11 +125,9 @@
+ 				.attribute(Attribute.builder(selectorId)
+ 						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+ 						.build()).build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(selected));
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+ 
+ 		assertEquals(Optional.of(XacmlTypes.INTEGER.ofAny(555555).toBag()), handler.resolve(context, selector));
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -146,11 +144,9 @@
+ 				.attribute(Attribute.builder(selectorId)
+ 						.value(XacmlTypes.XPATH.ofAny("/md:record/md:missing", CategoryId.SUBJECT_RECIPIENT))
+ 						.build()).build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(selected));
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+ 
+ 		assertEquals(Optional.of(XacmlTypes.INTEGER.ofAny(555555).toBag()), handler.resolve(context, selector));
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -167,24 +163,23 @@
+ 				.attribute(Attribute.builder(selectorId)
+ 						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+ 						.build()).build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(selected));
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+ 
+ 		assertEquals(Optional.of(XacmlTypes.INTEGER.ofAny(555555).toBag()), handler.resolve(context, selector));
+-		c.verify();
+ 	}
+ 
+-	@Test(expected = PathEvaluationException.class)
++	@Test
+ 	public void testExplicitMissingContextSelectorIsRejected()
+ 	{
+-		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+-				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId("missing-selector")
+-				.xpath("/md:record/md:patient/md:patient-number/text()")
+-				.dataType(XacmlTypes.INTEGER).build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+-		c.replay();
++		assertThrows(PathEvaluationException.class, () -> {
++			AttributeSelectorKey selector = AttributeSelectorKey.builder()
++					.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId("missing-selector")
++					.xpath("/md:record/md:patient/md:patient-number/text()")
++					.dataType(XacmlTypes.INTEGER).build();
++			when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+ 
+-		handler.resolve(context, selector);
++			handler.resolve(context, selector);
++		});
+ 	}
+ 
+ 	@Test
+@@ -198,13 +193,11 @@
+ 						.value(XacmlTypes.INTEGER.ofAny(7), XacmlTypes.INTEGER.ofAny(7)).build(),
+ 						Attribute.builder("test-id").issuer("other-issuer")
+ 						.value(XacmlTypes.INTEGER.ofAny(9)).build()).build();
+-		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(supplied)).times(2);
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(supplied));
+ 
+ 		assertEquals(Optional.of(XacmlTypes.INTEGER.bagBuilder().value(7, 7).build()),
+ 				handler.resolve(context, designator));
+ 		assertEquals(Optional.of(supplied), handler.getEntity(CategoryId.RESOURCE));
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -221,16 +214,14 @@
+ 				.attribute(Attribute.builder(selectorId)
+ 						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+ 						.build()).build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT))
+-				.andReturn(Optional.empty()).times(2);
+-		expect(pip.resolve(context, selector)).andReturn(Optional.empty());
+-		expect(pip.resolve(context, designator)).andReturn(Optional.of(supplied.toBag()));
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT))
++				.thenReturn(Optional.empty());
++		when(pip.resolve(context, selector)).thenReturn(Optional.empty());
++		when(pip.resolve(context, designator)).thenReturn(Optional.of(supplied.toBag()));
+ 
+ 		Optional<BagOfValues> expected = Optional.of(XacmlTypes.INTEGER.ofAny(555555).toBag());
+ 		assertEquals(expected, handler.resolve(context, selector));
+ 		assertEquals(expected, handler.resolve(context, selector));
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -243,11 +234,9 @@
+ 				.xpath("/md:record/md:patient/md:patient-number/text()")
+ 				.dataType(XacmlTypes.INTEGER)
+ 				.build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+ 		Optional<BagOfValues> v = handler.resolve(context, ref);
+ 		assertEquals(v.get(), XacmlTypes.INTEGER.ofAny(555555).toBag());
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -260,15 +249,12 @@
+ 				.dataType(XacmlTypes.INTEGER)
+ 				.build();
+ 
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+-		
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+ 
+ 		Optional<BagOfValues> v = handler.resolve(context, ref);
+ 		assertEquals(v.get(), XacmlTypes.INTEGER.bagBuilder()
+ 		                                        .value(555555)
+ 		                                        .build());
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -282,77 +268,73 @@
+ 				.dataType(XacmlTypes.INTEGER)
+ 				.build();
+ 
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.empty());
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+ 
+-		expect(pip.resolve(context, ref)).andReturn(Optional.of(content).flatMap(v->v.resolve(ref)));
+-
+-		c.replay();
++		when(pip.resolve(context, ref)).thenReturn(Optional.of(content).flatMap(v->v.resolve(ref)));
+ 
+ 		Optional<BagOfValues> v = handler.resolve(context, ref);
+ 		// test cache
+ 		v = handler.resolve(context, ref);
+ 		assertEquals(XacmlTypes.INTEGER.bagBuilder().value(555555).build(), v.get());
+-		c.verify();
+ 	}
+ 
+ 
+-	@Test(expected = PathEvaluationException.class)
++	@Test
+ 	public void testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType() throws EvaluationException
+ 	{
+-		AttributeSelectorKey ref = AttributeSelectorKey
+-				.builder()
+-				.category(CategoryId.SUBJECT_RECIPIENT)
+-				.xpath("/md:record/md:patient")
+-				.dataType(XacmlTypes.INTEGER)
+-				.build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
+-		Capture<Status> statusCapture = Capture.newInstance();
+-		context.setEvaluationStatus(capture(statusCapture));
+-		c.replay();
+-		Optional<BagOfValues> v = handler.resolve(context, ref);
+-		c.verify();
+-		assertFalse(v.isPresent());
++		assertThrows(PathEvaluationException.class, () -> {
++			AttributeSelectorKey ref = AttributeSelectorKey
++					.builder()
++					.category(CategoryId.SUBJECT_RECIPIENT)
++					.xpath("/md:record/md:patient")
++					.dataType(XacmlTypes.INTEGER)
++					.build();
++			when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
++			when(pip.resolve(context, ref)).thenReturn(Optional.empty());
++			Capture<Status> statusCapture = Capture.newInstance();
++			context.setEvaluationStatus(argThat(statusCapture));
++			Optional<BagOfValues> v = handler.resolve(context, ref);
++			assertFalse(v.isPresent());
++		});
+ 	}
+-	@Test(expected = PathEvaluationException.class)
++	@Test
+ 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndNodeFailsConvertionToDate() throws EvaluationException
+ 	{
+-		AttributeSelectorKey ref = AttributeSelectorKey
+-				.builder()
+-				.category(CategoryId.SUBJECT_RECIPIENT)
+-				.xpath("/md:record/md:patient/md:patient-number/text()")
+-				.dataType(XacmlTypes.DATE)
+-				.build();
++		assertThrows(PathEvaluationException.class, () -> {
++			AttributeSelectorKey ref = AttributeSelectorKey
++					.builder()
++					.category(CategoryId.SUBJECT_RECIPIENT)
++					.xpath("/md:record/md:patient/md:patient-number/text()")
++					.dataType(XacmlTypes.DATE)
++					.build();
+ 
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
+-		Capture<Status> statusCapture = Capture.newInstance();
+-		context.setEvaluationStatus(capture(statusCapture));
+-		
+-		c.replay();
+-		Optional<BagOfValues> v = handler.resolve(context, ref);
+-		c.verify();
+-		assertFalse(v.isPresent());
++			when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
++			when(pip.resolve(context, ref)).thenReturn(Optional.empty());
++			Capture<Status> statusCapture = Capture.newInstance();
++			context.setEvaluationStatus(argThat(statusCapture));
++			Optional<BagOfValues> v = handler.resolve(context, ref);
++			assertFalse(v.isPresent());
++		});
+ 	}
+ 
+-	@Test(expected = PathEvaluationException.class)
++	@Test
+ 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndCorrectNodeTypeAndNodeFailsConvertionToDate() throws EvaluationException
+ 	{
++		assertThrows(PathEvaluationException.class, () -> {
+ 
+-		AttributeSelectorKey ref = AttributeSelectorKey
+-				.builder()
+-				.category(CategoryId.SUBJECT_RECIPIENT)
+-				.xpath("/md:record/md:patient/md:patient-number/text()")
+-				.dataType(XacmlTypes.DATE)
+-				.build();
++			AttributeSelectorKey ref = AttributeSelectorKey
++					.builder()
++					.category(CategoryId.SUBJECT_RECIPIENT)
++					.xpath("/md:record/md:patient/md:patient-number/text()")
++					.dataType(XacmlTypes.DATE)
++					.build();
+ 
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
+-		Capture<Status> statusCapture = Capture.newInstance();
+-		context.setEvaluationStatus(capture(statusCapture));
+-		c.replay();
+-		Optional<BagOfValues> v = handler.resolve(context, ref);
+-		c.verify();
++			when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
++			when(pip.resolve(context, ref)).thenReturn(Optional.empty());
++			Capture<Status> statusCapture = Capture.newInstance();
++			context.setEvaluationStatus(argThat(statusCapture));
++			Optional<BagOfValues> v = handler.resolve(context, ref);
++		});
+ 	}
+ 
+ 	@Test
+@@ -364,12 +346,9 @@
+ 				.xpath("/test")
+ 				.dataType(XacmlTypes.INTEGER)
+ 				.build();
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
+-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
+-		
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
++		when(pip.resolve(context, ref)).thenReturn(Optional.empty());
+ 		Optional<BagOfValues> v = handler.resolve(context, ref);
+-		c.verify();
+ 		assertFalse(v.isPresent());
+ 	}
+ 
+@@ -385,13 +364,10 @@
+ 				.dataType(XacmlTypes.INTEGER)
+ 				.build();
+ 
+-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.empty());
++		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+ 
+-		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
+-
+-		c.replay();
++		when(pip.resolve(context, ref)).thenThrow(new RuntimeException());
+ 		Optional<BagOfValues> v = handler.resolve(context, ref);
+-		c.verify();
+ 		assertFalse(v.isPresent());
+ 	}
+ 	
+@@ -406,12 +382,10 @@
+ 				.dataType(XacmlTypes.ANYURI)
+ 				.build();
+ 
+-		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity));
+-		expect(pip.resolve(context, ref)).andReturn(Optional.of(XacmlTypes.ANYURI.ofAny("testValue").toBag()));
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
++		when(pip.resolve(context, ref)).thenReturn(Optional.of(XacmlTypes.ANYURI.ofAny("testValue").toBag()));
+ 		Optional<BagOfValues> v = handler.resolve(context, ref);
+ 		assertEquals(XacmlTypes.ANYURI.ofAny("testValue").toBag(), v.get());
+-		c.verify();
+ 	}
+ 
+ 
+@@ -426,12 +400,9 @@
+ 				.dataType(XacmlTypes.ANYURI)
+ 				.build();
+ 
+-		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity));
+-		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
+-
+-		c.replay();
++		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
++		when(pip.resolve(context, ref)).thenThrow(new RuntimeException());
+ 		Optional<BagOfValues> v = handler.resolve(context, ref);
+-		c.verify();
+ 		assertFalse(v.isPresent());
+ 	}
+ 
+@@ -445,16 +416,12 @@
+ 				.attributeId("testId")
+ 				.dataType(XacmlTypes.ANYURI)
+ 				.build();
+-		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity)).anyTimes();
+-		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<Optional<BagOfValues>>() {
++		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
++		when(pip.resolve(context, ref)).thenAnswer(new IAnswer<Optional<BagOfValues>>() {
+ 		public Optional<BagOfValues> answer() throws Throwable{
+ 				return handler.resolve(context, ref);
+ 			}
+ 		});
+-
+-
+-		c.replay();
+ 		handler.resolve(context, ref);
+-		c.verify();
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPointTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPointTest.java
+index 69d4edb..6439baa 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPointTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPointTest.java
+@@ -22,19 +22,20 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createControl;
+-import static org.easymock.EasyMock.eq;
+-import static org.easymock.EasyMock.expect;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertSame;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.createControl;
++import static org.mockito.Mockito.eq;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertSame;
+ 
+ import java.time.Duration;
+ 
+ import org.easymock.Capture;
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.CompositeDecisionRule;
+ import org.xacml4j.v30.Decision;
+ import org.xacml4j.v30.EvaluationContext;
+@@ -65,16 +66,16 @@
+ 
+ 	private PolicyDecisionPointBuilder pdpBuilder;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init()
+ 	{
+ 		this.control = createControl();
+-		this.pip = control.createMock(PolicyInformationPoint.class);
+-		this.repository = control.createMock(PolicyRepository.class);
+-		this.policyDomain = control.createMock(CompositeDecisionRule.class);
+-		this.decisionAuditor = control.createMock(PolicyDecisionAuditor.class);
+-		this.decisionCache = control.createMock(PolicyDecisionCache.class);
+-		this.xpathProvider = control.createMock(XPathProvider.class);
++		this.pip = Mockito.createMock(PolicyInformationPoint.class);
++		this.repository = Mockito.createMock(PolicyRepository.class);
++		this.policyDomain = Mockito.createMock(CompositeDecisionRule.class);
++		this.decisionAuditor = Mockito.createMock(PolicyDecisionAuditor.class);
++		this.decisionCache = Mockito.createMock(PolicyDecisionCache.class);
++		this.xpathProvider = Mockito.createMock(XPathProvider.class);
+ 		this.pdpBuilder = PolicyDecisionPointBuilder
+ 		.builder("testPdp")
+ 			.decisionAuditor(decisionAuditor)
+@@ -94,20 +95,18 @@
+ 				.build();
+ 
+ 		Capture<PolicyRepositoryListener> c = Capture.newInstance();
+-		repository.addPolicyRepositoryListener(capture(c));
++		repository.addPolicyRepositoryListener(argThat(c));
+ 
+-		expect(decisionCache.getDecision(req)).andReturn(null);
++		when(decisionCache.getDecision(req)).thenReturn(null);
+ 		Capture<EvaluationContext> rootContext = Capture.newInstance();
+-		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
++		when(policyDomain.createContext(argThat(rootContext))).thenReturn(Mockito.createMock(EvaluationContext.class));
+ 		Capture<EvaluationContext> policyContext = Capture.newInstance();
+-		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.PERMIT);
++		when(policyDomain.evaluate(argThat(policyContext))).thenReturn(Decision.PERMIT);
+ 		Capture<Result> result0 = Capture.newInstance();
+ 		Capture<PolicyDecisionPoint> pdp1 = Capture.newInstance();
+-		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
++		decisionAuditor.audit(argThat(pdp1), argThat(result0), eq(req));
+ 		Capture<Result> result1 = Capture.newInstance();
+-		decisionCache.putDecision(eq(req), capture(result1), eq(Duration.ofSeconds(30)));
+-
+-		control.replay();
++		decisionCache.putDecision(eq(req), argThat(result1), eq(Duration.ofSeconds(30)));
+ 
+ 		this.pdp = pdpBuilder.build();
+ 
+@@ -115,7 +114,6 @@
+ 		assertEquals(1, res.getResults().size());
+ 		assertEquals(result0.getValue(), result1.getValue());
+ 		assertSame(pdp, pdp1.getValue());
+-		control.verify();
+ 	}
+ 
+ 	@Test
+@@ -127,30 +125,26 @@
+ 				.build();
+ 
+ 		Capture<PolicyRepositoryListener> c = Capture.newInstance();
+-		repository.addPolicyRepositoryListener(capture(c));
++		repository.addPolicyRepositoryListener(argThat(c));
+ 
+-		expect(decisionCache.getDecision(req)).andReturn(null);
++		when(decisionCache.getDecision(req)).thenReturn(null);
+ 		Capture<EvaluationContext> rootContext = Capture.newInstance();
+-		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
++		when(policyDomain.createContext(argThat(rootContext))).thenReturn(Mockito.createMock(EvaluationContext.class));
+ 		Capture<EvaluationContext> policyContext = Capture.newInstance();
+-		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.DENY);
++		when(policyDomain.evaluate(argThat(policyContext))).thenReturn(Decision.DENY);
+ 
+ 		Capture<Result> result0 = Capture.newInstance();
+ 		Capture<PolicyDecisionPoint> pdp1 = Capture.newInstance();
+ 
+-		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
++		decisionAuditor.audit(argThat(pdp1), argThat(result0), eq(req));
+ 		Capture<Result> result1 = Capture.newInstance();
+ 		Capture<RequestContext> req1 = Capture.newInstance();
+-		decisionCache.putDecision(capture(req1), capture(result1), eq(Duration.ofSeconds(30)));
+-
+-		control.replay();
++		decisionCache.putDecision(argThat(req1), argThat(result1), eq(Duration.ofSeconds(30)));
+ 		this.pdp = pdpBuilder.build();
+ 
+ 		ResponseContext res = pdp.decide(req);
+ 		assertEquals(1, res.getResults().size());
+ 		assertEquals(result0.getValue(), result1.getValue());
+ 		assertSame(pdp, pdp1.getValue());
+-
+-		control.verify();
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+index 2fcdd91..8bc45ec 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+@@ -22,23 +22,23 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createStrictMock;
+-import static org.easymock.EasyMock.expect;
+-import static org.easymock.EasyMock.replay;
+-import static org.easymock.EasyMock.verify;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
+-import static org.junit.Assert.assertSame;
+-import static org.junit.Assert.assertTrue;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.mock;
++import static org.mockito.Mockito.when;
++import static org.mockito.Mockito.verify;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertSame;
++import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import java.util.Collection;
+ import java.util.Iterator;
+ import java.util.Set;
+ 
+ import org.easymock.Capture;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.Attribute;
+ import org.xacml4j.v30.Category;
+ import org.xacml4j.v30.CategoryId;
+@@ -78,10 +78,10 @@
+ 
+ 	private XPathProvider xpathProvider;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init() throws Exception
+ 	{
+-		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
++		this.pdp = mock(PolicyDecisionPointContext.class);
+ 		this.profile = new MultipleResourcesViaXPathExpressionHandler();
+ 		this.xpathProvider = XPathProvider.defaultProvider();
+ 		this.content = XmlContent.of(XmlContent.fromString(testXml));
+@@ -102,9 +102,8 @@
+ 								.build()).build()).build();
+ 		Capture<RequestContext> firstRequest = Capture.newInstance();
+ 		Capture<RequestContext> secondRequest = Capture.newInstance();
+-		expect(pdp.requestDecision(capture(firstRequest))).andReturn(Result.ok(Decision.PERMIT).build());
+-		expect(pdp.requestDecision(capture(secondRequest))).andReturn(Result.ok(Decision.PERMIT).build());
+-		replay(pdp);
++		when(pdp.requestDecision(argThat(firstRequest))).thenReturn(Result.ok(Decision.PERMIT).build());
++		when(pdp.requestDecision(argThat(secondRequest))).thenReturn(Result.ok(Decision.PERMIT).build());
+ 
+ 		assertEquals(2, profile.handle(RequestContext.builder().attributes(resource).build(), pdp).size());
+ 		Set<Value<?>> paths = new java.util.HashSet<>();
+@@ -125,7 +124,8 @@
+ 		assertEquals(ImmutableSet.of(
+ 				XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]", CategoryId.RESOURCE),
+ 				XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE)), paths);
+-		verify(pdp);
++		Mockito.verify(pdp).requestDecision(argThat(firstRequest));
++		Mockito.verify(pdp).requestDecision(argThat(secondRequest));
+ 	}
+ 
+ 	@Test
+@@ -166,14 +166,12 @@
+ 		Capture<RequestContext> c1 = Capture.newInstance();
+ 
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+ 
+-		expect(pdp.requestDecision(capture(c1))).andReturn(
++		when(pdp.requestDecision(argThat(c1))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+ 
+-		replay(pdp);
+-
+ 		Collection<Result> results = profile.handle(context, pdp);
+ 		Iterator<Result> it = results.iterator();
+ 		assertEquals(Status.processingError().build(), it.next().getStatus());
+@@ -194,7 +192,10 @@
+ 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]", CategoryId.RESOURCE)));
+ 
+ 
+-		verify(pdp);
++		Mockito.verify(pdp).requestDecision(argThat(c0));
++
++
++		Mockito.verify(pdp).requestDecision(argThat(c1));
+ 	}
+ 
+ 	@Test
+@@ -241,17 +242,15 @@
+ 		Capture<RequestContext> c3 = Capture.newInstance();
+ 
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		expect(pdp.requestDecision(capture(c1))).andReturn(
++		when(pdp.requestDecision(argThat(c1))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		expect(pdp.requestDecision(capture(c2))).andReturn(
++		when(pdp.requestDecision(argThat(c2))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		expect(pdp.requestDecision(capture(c3))).andReturn(
++		when(pdp.requestDecision(argThat(c3))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+ 
+-		replay(pdp);
+-
+ 		Collection<Result> results = profile.handle(context, pdp);
+ 		Iterator<Result> it = results.iterator();
+ 		assertEquals(Status.processingError().build(), it.next().getStatus());
+@@ -290,7 +289,13 @@
+ 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
+ 		assertTrue(valueSet.contains(XacmlTypes.XPATH.ofAny("//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1", CategoryId.SUBJECT_ACCESS)));
+ 
+-		verify(pdp);
++		Mockito.verify(pdp).requestDecision(argThat(c0));
++
++		Mockito.verify(pdp).requestDecision(argThat(c1));
++
++		Mockito.verify(pdp).requestDecision(argThat(c2));
++
++		Mockito.verify(pdp).requestDecision(argThat(c3));
+ 	}
+ 
+ 	@Test
+@@ -326,15 +331,13 @@
+ 		assertFalse(request.containsRepeatingCategories());
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+ 
+-		replay(pdp);
+-
+ 		profile.handle(request, pdp);
+ 
+ 		assertEquals(request, c0.getValue());
+-		verify(pdp);
++		Mockito.verify(pdp).requestDecision(argThat(c0));
+ 	}
+ 
+ 	@Test
+@@ -369,8 +372,6 @@
+ 
+ 		assertFalse(request.containsRepeatingCategories());
+ 
+-		replay(pdp);
+-
+ 		Collection<Result> results = profile.handle(request, pdp);
+ 		assertEquals(Decision.INDETERMINATE, Iterables.getOnlyElement(results).getDecision());
+ 
+@@ -385,15 +386,13 @@
+ 
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-
+-		replay(pdp);
+ 		Collection<Result> results = profile.handle(context, pdp);
+ 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
+ 		assertEquals(1, results.size());
+ 		assertSame(context, c0.getValue());
+-		verify(pdp);
++		Mockito.verify(pdp).requestDecision(argThat(c0));
+ 	}
+ }
+ 
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRequestReferencesHandlerTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRequestReferencesHandlerTest.java
+index c6e1dbd..05775ce 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRequestReferencesHandlerTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRequestReferencesHandlerTest.java
+@@ -22,21 +22,20 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createStrictMock;
+-import static org.easymock.EasyMock.expect;
+-import static org.easymock.EasyMock.replay;
+-import static org.easymock.EasyMock.verify;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
+-import static org.junit.Assert.assertNotNull;
+-import static org.junit.Assert.assertSame;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.mock;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertNotNull;
++import static org.junit.jupiter.api.Assertions.assertSame;
++import static org.mockito.Mockito.verify;
+ 
+ import java.util.Collection;
+ 
+ import org.easymock.Capture;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
+ import org.xacml4j.v30.Attribute;
+ import org.xacml4j.v30.Category;
+ import org.xacml4j.v30.CategoryId;
+@@ -55,10 +54,10 @@
+ 	private PolicyDecisionPointContext pdp;
+ 	private RequestContextHandler profile;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init()
+ 	{
+-		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
++		this.pdp = mock(PolicyDecisionPointContext.class);
+ 		this.profile = new MultipleResourcesViaRequestReferencesHandler();
+ 	}
+ 
+@@ -138,11 +137,10 @@
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 		Capture<RequestContext> c1 = Capture.newInstance();
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		expect(pdp.requestDecision(capture(c1))).andReturn(
++		when(pdp.requestDecision(argThat(c1))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		replay(pdp);
+ 		profile.handle(context, pdp).iterator();
+ 		RequestContext context0 = c0.getValue();
+ 		RequestContext context1 = c1.getValue();
+@@ -167,7 +165,9 @@
+ 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId3").orElse(null));
+ 		assertNotNull(context1.getAttribute(CategoryId.RESOURCE, "testId4").orElse(null));
+ 
+-		verify(pdp);
++		verify(pdp).requestDecision(argThat(c0));
++
++		verify(pdp).requestDecision(argThat(c1));
+ 	}
+ 
+ 	@Test
+@@ -200,12 +200,11 @@
+ 				.attributes(attr0, attr1)
+ 				.build();
+ 
+-		expect(pdp.requestDecision(request)).andReturn(
++		when(pdp.requestDecision(request)).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		replay(pdp);
+ 		Collection<Result> results = profile.handle(request, pdp);
+ 		assertEquals(Result.indeterminate(Status.processingError().build()).build(), results.iterator().next());
+-		verify(pdp);
++		verify(pdp).requestDecision(request);
+ 	}
+ 
+ 	@Test
+@@ -218,14 +217,12 @@
+ 
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-
+-		replay(pdp);
+ 		Collection<Result> results = profile.handle(context, pdp);
+ 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
+ 		assertEquals(1, results.size());
+ 		assertSame(context, c0.getValue());
+-		verify(pdp);
++		verify(pdp).requestDecision(argThat(c0));
+ 	}
+ }
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRepeatingAttributesHandlerTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRepeatingAttributesHandlerTest.java
+index f180d54..9920f4d 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRepeatingAttributesHandlerTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRepeatingAttributesHandlerTest.java
+@@ -22,20 +22,19 @@ org.openrewrite.config.CompositeRecipe
+  * #L%
+  */
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createStrictMock;
+-import static org.easymock.EasyMock.expect;
+-import static org.easymock.EasyMock.replay;
+-import static org.easymock.EasyMock.verify;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertSame;
+-import static org.junit.Assert.assertTrue;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.mock;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertSame;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++import static org.mockito.Mockito.verify;
+ 
+ import java.util.Collection;
+ 
+ import org.easymock.Capture;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
+ import org.xacml4j.v30.Attribute;
+ import org.xacml4j.v30.Category;
+ import org.xacml4j.v30.CategoryId;
+@@ -53,9 +52,9 @@
+ 	private PolicyDecisionPointContext pdp;
+ 	private RequestContextHandler profile;
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+-		this.pdp = createStrictMock(PolicyDecisionPointContext.class);
++		this.pdp = mock(PolicyDecisionPointContext.class);
+ 		this.profile = new MultipleResourcesViaRepeatingAttributesHandler();
+ 	}
+ 
+@@ -99,11 +98,10 @@
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 		Capture<RequestContext> c1 = Capture.newInstance();
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		expect(pdp.requestDecision(capture(c1))).andReturn(
++		when(pdp.requestDecision(argThat(c1))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-		replay(pdp);
+ 		Collection<Result> results = profile.handle(context, pdp);
+ 		assertEquals(2, results.size());
+ 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
+@@ -117,7 +115,8 @@
+ 		// order is not known so check if has 1 and at least one is in the request
+ 		assertEquals(1, r1.getCategory(CategoryId.RESOURCE).size());
+ 		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0) || r0.getCategory(CategoryId.RESOURCE).contains(resource1));
+-		verify(pdp);
++		verify(pdp).requestDecision(argThat(c0));
++		verify(pdp).requestDecision(argThat(c1));
+ 	}
+ 
+ 
+@@ -151,17 +150,15 @@
+ 
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-
+-		replay(pdp);
+ 		Collection<Result> results = profile.handle(context, pdp);
+ 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
+ 		assertEquals(1, results.size());
+ 		RequestContext r0 = c0.getValue();
+ 		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject));
+ 		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0));
+-		verify(pdp);
++		verify(pdp).requestDecision(argThat(c0));
+ 	}
+ 
+ 	@Test
+@@ -171,15 +168,13 @@
+ 
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 
+-		expect(pdp.requestDecision(capture(c0))).andReturn(
++		when(pdp.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-
+-		replay(pdp);
+ 		Collection<Result> results = profile.handle(context, pdp);
+ 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
+ 		assertEquals(1, results.size());
+ 		assertSame(context, c0.getValue());
+-		verify(pdp);
++		verify(pdp).requestDecision(argThat(c0));
+ 	}
+ }
+ 
+
+diff --git a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandlerTest.java b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandlerTest.java
+index 1b0ba97..898b002 100644
+--- a/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandlerTest.java
++++ b/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandlerTest.java
+@@ -23,19 +23,20 @@ org.openrewrite.config.CompositeRecipe
+  */
+ 
+ 
+-import static org.easymock.EasyMock.capture;
+-import static org.easymock.EasyMock.createStrictControl;
+-import static org.easymock.EasyMock.expect;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertSame;
+-import static org.junit.Assert.assertTrue;
++import static org.mockito.Mockito.argThat;
++import static org.mockito.Mockito.createStrictControl;
++import static org.mockito.Mockito.when;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertSame;
++import static org.junit.jupiter.api.Assertions.assertTrue;
+ 
+ import java.util.Collection;
+ 
+ import org.easymock.Capture;
+ import org.easymock.IMocksControl;
+-import org.junit.Before;
+-import org.junit.Test;
++import org.junit.jupiter.api.BeforeEach;
++import org.junit.jupiter.api.Test;
++import org.mockito.Mockito;
+ import org.xacml4j.v30.Attribute;
+ import org.xacml4j.v30.Category;
+ import org.xacml4j.v30.CategoryId;
+@@ -61,10 +62,10 @@
+ 	private IMocksControl c;
+ 
+ 
+-	@Before
++	@BeforeEach
+ 	public void init(){
+ 		this.c = createStrictControl();
+-		this.context = c.mock(PolicyDecisionPointContext.class);
++		this.context = Mockito.mock(PolicyDecisionPointContext.class);
+ 		this.profile = new MultipleResourcesHandler();
+ 
+ 		this.resource0 = Category.builder(CategoryId.RESOURCE)
+@@ -116,18 +117,15 @@
+ 		Capture<RequestContext> c2 = Capture.newInstance();
+ 		Capture<RequestContext> c3 = Capture.newInstance();
+ 
+-		expect(context.requestDecision(capture(c0))).andReturn(
++		when(context.requestDecision(argThat(c0))).thenReturn(
+ 						Result.ok(Decision.DENY).build());
+ 
+-		expect(context.requestDecision(capture(c1))).andReturn(Result.ok(Decision.DENY).build());
++		when(context.requestDecision(argThat(c1))).thenReturn(Result.ok(Decision.DENY).build());
+ 
+-		expect(context.requestDecision(capture(c2))).andReturn(Result.ok(Decision.DENY).build());
++		when(context.requestDecision(argThat(c2))).thenReturn(Result.ok(Decision.DENY).build());
+ 
+-		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.DENY).build());
+-
+-		c.replay();
++		when(context.requestDecision(argThat(c3))).thenReturn(Result.ok(Decision.DENY).build());
+ 		Collection<Result> results = profile.handle(request, context);
+-		c.verify();
+ 		assertEquals(1, results.size());
+ 		Result r = results.iterator().next();
+ 
+@@ -155,17 +153,14 @@
+ 		Capture<RequestContext> c2 = Capture.newInstance();
+ 		Capture<RequestContext> c3 = Capture.newInstance();
+ 
+-		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.PERMIT).build());
++		when(context.requestDecision(argThat(c0))).thenReturn(Result.ok(Decision.PERMIT).build());
+ 
+-		expect(context.requestDecision(capture(c1))).andReturn(Result.ok(Decision.PERMIT).build());
++		when(context.requestDecision(argThat(c1))).thenReturn(Result.ok(Decision.PERMIT).build());
+ 
+-		expect(context.requestDecision(capture(c2))).andReturn(Result.ok(Decision.PERMIT).build());
++		when(context.requestDecision(argThat(c2))).thenReturn(Result.ok(Decision.PERMIT).build());
+ 
+-		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.PERMIT).build());
+-
+-		c.replay();
++		when(context.requestDecision(argThat(c3))).thenReturn(Result.ok(Decision.PERMIT).build());
+ 		Collection<Result> results = profile.handle(request, context);
+-		c.verify();
+ 		assertEquals(1, results.size());
+ 		Result r = results.iterator().next();
+ 
+@@ -194,19 +189,17 @@
+ 		Capture<RequestContext> c2 = Capture.newInstance();
+ 		Capture<RequestContext> c3 = Capture.newInstance();
+ 
+-		expect(context.requestDecision(capture(c0))).andReturn(
++		when(context.requestDecision(argThat(c0))).thenReturn(
+ 				Result.ok(Decision.NOT_APPLICABLE).build());
+ 
+-		expect(context.requestDecision(capture(c1))).andReturn(
++		when(context.requestDecision(argThat(c1))).thenReturn(
+ 				Result.ok(Decision.NOT_APPLICABLE).build());
+ 
+-		expect(context.requestDecision(capture(c2))).andReturn(
++		when(context.requestDecision(argThat(c2))).thenReturn(
+ 				Result.ok(Decision.NOT_APPLICABLE).build());
+ 
+-		expect(context.requestDecision(capture(c3))).andReturn(
++		when(context.requestDecision(argThat(c3))).thenReturn(
+ 				Result.ok(Decision.NOT_APPLICABLE).build());
+-
+-		c.replay();
+ 		Collection<Result> results = profile.handle(request, context);
+ 		assertEquals(1, results.size());
+ 		Result r = results.iterator().next();
+@@ -217,7 +210,6 @@
+ 		assertEquals(0, r.getIncludeInResultAttributes().size());
+ 		assertEquals(0, r.getObligations().size());
+ 		assertEquals(0, r.getAssociatedAdvice().size());
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -237,15 +229,13 @@
+ 		Capture<RequestContext> c2 = Capture.newInstance();
+ 		Capture<RequestContext> c3 = Capture.newInstance();
+ 
+-		expect(context.requestDecision(capture(c0))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
++		when(context.requestDecision(argThat(c0))).thenReturn(Result.ok(Decision.NOT_APPLICABLE).build());
+ 
+-		expect(context.requestDecision(capture(c1))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
++		when(context.requestDecision(argThat(c1))).thenReturn(Result.ok(Decision.NOT_APPLICABLE).build());
+ 
+-		expect(context.requestDecision(capture(c2))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
++		when(context.requestDecision(argThat(c2))).thenReturn(Result.ok(Decision.NOT_APPLICABLE).build());
+ 
+-		expect(context.requestDecision(capture(c3))).andReturn(Result.ok(Decision.NOT_APPLICABLE).build());
+-
+-		c.replay();
++		when(context.requestDecision(argThat(c3))).thenReturn(Result.ok(Decision.NOT_APPLICABLE).build());
+ 		Collection<Result> results = profile.handle(request, context);
+ 		assertEquals(1, results.size());
+ 		Result r = results.iterator().next();
+@@ -256,7 +246,6 @@
+ 		assertEquals(0, r.getIncludeInResultAttributes().size());
+ 		assertEquals(0, r.getObligations().size());
+ 		assertEquals(0, r.getAssociatedAdvice().size());
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -271,17 +260,14 @@
+ 
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 
+-		expect(context.requestDecision(capture(c0))).andReturn(
++		when(context.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-
+-		c.replay();
+ 		Collection<Result> results = profile.handle(request, context);
+ 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
+ 		assertEquals(1, results.size());
+ 		RequestContext r0 = c0.getValue();
+ 		assertTrue(r0.getCategory(CategoryId.SUBJECT_ACCESS).contains(subject0));
+ 		assertTrue(r0.getCategory(CategoryId.RESOURCE).contains(resource0));
+-		c.verify();
+ 	}
+ 
+ 	@Test
+@@ -295,15 +281,12 @@
+ 
+ 		Capture<RequestContext> c0 = Capture.newInstance();
+ 
+-		expect(context.requestDecision(capture(c0))).andReturn(
++		when(context.requestDecision(argThat(c0))).thenReturn(
+ 				Result.indeterminate(Status.processingError().build()).build());
+-
+-		c.replay();
+ 		Collection<Result> results = profile.handle(request, context);
+ 		assertEquals(Status.processingError().build(), results.iterator().next().getStatus());
+ 		assertEquals(1, results.size());
+ 		assertSame(request, c0.getValue());
+-		c.verify();
+ 	}
+ }
+ 
+

@@ -1,0 +1,10 @@
+{
+  "evidence_files_checked": 43,
+  "required_nonempty_summary_command_surefire_files": 6,
+  "checkout_or_home_path_hits": 0,
+  "local_summary_links_checked": 11,
+  "source_hashes_still_match_final_gate": 3543,
+  "new_class_invocations_green": 3553,
+  "manifest_has_no_BUG_TBD_case_id": true,
+  "scoped_git_diff_check_exit_code": 0
+}

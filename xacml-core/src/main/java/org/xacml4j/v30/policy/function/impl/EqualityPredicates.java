@@ -23,6 +23,8 @@ package org.xacml4j.v30.policy.function.impl;
  */
 
 
+import java.util.Locale;
+
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.*;
 
@@ -71,7 +73,7 @@ public final class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal b)
 	{
-		return _eq(a, b);
+		return BooleanVal.of(doubleEquals(a, b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-equal")
@@ -107,7 +109,8 @@ public final class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
 	{
-		return _eq(a, b);
+		return _eq(StringVal.of(a.get().toLowerCase(Locale.ROOT)),
+				StringVal.of(b.get().toLowerCase(Locale.ROOT)));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-equal")
@@ -185,6 +188,11 @@ public final class EqualityPredicates
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#base64Binary") Base64Binary b)
 	{
 		return _eq(a, b);
+	}
+
+	// XACML A.3.1 policy equality is distinct from reflexive Java Value.equals.
+	static boolean doubleEquals(DoubleVal a, DoubleVal b){
+		return a.get().doubleValue() == b.get().doubleValue();
 	}
 
 	private static BooleanVal _eq(Value<?> a, Value<?> b){

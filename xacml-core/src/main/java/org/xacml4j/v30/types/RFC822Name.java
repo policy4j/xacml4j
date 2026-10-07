@@ -23,6 +23,7 @@ package org.xacml4j.v30.types;
  */
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -181,21 +182,26 @@ public final class RFC822Name extends Value.SelfValue<RFC822Name> implements Ser
 		super(XacmlTypes.RFC822NAME);
 		Preconditions.checkNotNull(localPart);
 		Preconditions.checkNotNull(domainPart);
-		this.domainPart = domainPart.toLowerCase();
+		this.domainPart = domainPart.toLowerCase(Locale.ROOT);
 		this.localPart = localPart;
 		this.fqName = this.localPart + '@' + this.domainPart;
 	}
 
 	public boolean matches(String pattern){
+		if(pattern.isEmpty()){
+			return false;
+		}
 		int pos = pattern.indexOf('@');
 		if(pos != -1){
 			RFC822Name n = RFC822Name.parse(pattern);
 			return n.equals(this);
 		}
-		if (pattern.charAt(0) == '.') {
-             return domainPart.endsWith(pattern.toLowerCase());
+		String normalized = pattern.toLowerCase(Locale.ROOT);
+		if(normalized.charAt(0) == '.'){
+			String suffix = normalized.substring(1);
+			return domainPart.equals(suffix) || domainPart.endsWith(normalized);
 		}
-		return domainPart.equalsIgnoreCase(pattern);
+		return domainPart.equals(normalized);
 	}
 
 	public static RFC822Name ofAny(Object v, Object ...params){

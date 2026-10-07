@@ -22,17 +22,18 @@ package org.xacml4j.v30.policy.combine.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
@@ -40,17 +41,18 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 
 
+@ExtendWith(MockitoExtension.class)
 public class PermitOverridesTest
 {
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new PermitOverrides<DecisionRule>("aaaa");
-		this.context = createStrictMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
@@ -62,137 +64,215 @@ public class PermitOverridesTest
 	@Test
 	public void testCombineWithAllNotApplicable() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
-		DecisionRule r2 = createStrictMock(DecisionRule.class);
-		DecisionRule r3 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
+		DecisionRule r2 = mock(DecisionRule.class);
+		DecisionRule r3 = mock(DecisionRule.class);
 		decisions = new LinkedList<DecisionRule>();
 		decisions.add(r1);
 		decisions.add(r2);
 		decisions.add(r3);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
-		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
-		expect(r3.createContext(context)).andReturn(context);
-		expect(r3.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
-		replay(r1, r2, r3, context);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.NOT_APPLICABLE);
+		when(r2.createContext(context)).thenReturn(context);
+		when(r2.evaluate(context)).thenReturn(Decision.NOT_APPLICABLE);
+		when(r3.createContext(context)).thenReturn(context);
+		when(r3.evaluate(context)).thenReturn(Decision.NOT_APPLICABLE);
+		InOrder order = inOrder(context, r1, r2, r3);
 		assertEquals(Decision.NOT_APPLICABLE, algorithm.combine(context, decisions));
-		verify(r1, r2, r3, context);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		order.verify(r2).createContext(context);
+		order.verify(r2).evaluate(context);
+		order.verify(r3).createContext(context);
+		order.verify(r3).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		verify(r2, times(1)).createContext(context);
+		verify(r2, times(1)).evaluate(context);
+		verify(r3, times(1)).createContext(context);
+		verify(r3, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1, r2, r3);
 	}
 
 	@Test
 	public void testCombineWithPermit() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
-		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
+		DecisionRule r2 = mock(DecisionRule.class);
 		decisions.add(r1);
 		decisions.add(r2);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
-		replay(r1, r2, context);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.PERMIT);
+		InOrder order = inOrder(context, r1, r2);
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
-		verify(r1, r2, context);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1, r2);
 	}
 
 
 	@Test
 	public void testCombineWithDenyThenNotApplicable() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
-		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
+		DecisionRule r2 = mock(DecisionRule.class);
 		decisions.add(r1);
 		decisions.add(r2);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.DENY);
-		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
-		replay(r1, r2, context);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.DENY);
+		when(r2.createContext(context)).thenReturn(context);
+		when(r2.evaluate(context)).thenReturn(Decision.NOT_APPLICABLE);
+		InOrder order = inOrder(context, r1, r2);
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
-		verify(r1, r2, context);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		order.verify(r2).createContext(context);
+		order.verify(r2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		verify(r2, times(1)).createContext(context);
+		verify(r2, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1, r2);
 	}
 
 	@Test
 	public void testCombineWithDenyThenPermit() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
-		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
+		DecisionRule r2 = mock(DecisionRule.class);
 		decisions.add(r1);
 		decisions.add(r2);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.DENY);
-		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluate(context)).andReturn(Decision.PERMIT);
-		replay(r1, r2, context);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.DENY);
+		when(r2.createContext(context)).thenReturn(context);
+		when(r2.evaluate(context)).thenReturn(Decision.PERMIT);
+		InOrder order = inOrder(context, r1, r2);
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
-		verify(r1, r2, context);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		order.verify(r2).createContext(context);
+		order.verify(r2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		verify(r2, times(1)).createContext(context);
+		verify(r2, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1, r2);
 	}
 
 	@Test
 	public void testCombineWithDenyThenIndeterminate() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
-		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
+		DecisionRule r2 = mock(DecisionRule.class);
 		decisions.add(r1);
 		decisions.add(r2);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.DENY);
-		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluate(context)).andReturn(Decision.INDETERMINATE);
-		replay(r1, r2, context);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.DENY);
+		when(r2.createContext(context)).thenReturn(context);
+		when(r2.evaluate(context)).thenReturn(Decision.INDETERMINATE);
+		InOrder order = inOrder(context, r1, r2);
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
-		verify(r1, r2, context);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		order.verify(r2).createContext(context);
+		order.verify(r2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		verify(r2, times(1)).createContext(context);
+		verify(r2, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1, r2);
 	}
 
 	@Test
 	public void testCombineWithInderterminateP() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
 		decisions.add(r1);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE_P);
-		replay(r1);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.INDETERMINATE_P);
+		InOrder order = inOrder(context, r1);
 		assertEquals(Decision.INDETERMINATE_P, algorithm.combine(context, decisions));
-		verify(r1);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1);
 	}
 
 	@Test
 	public void testCombineWithInderterminateD() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
 		decisions.add(r1);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE_D);
-		replay(r1);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.INDETERMINATE_D);
+		InOrder order = inOrder(context, r1);
 		assertEquals(Decision.INDETERMINATE_D, algorithm.combine(context, decisions));
-		verify(r1);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1);
 	}
 
 	@Test
 	public void testCombineWithInderterminate() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
 		decisions.add(r1);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE);
-		replay(r1);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.INDETERMINATE);
+		InOrder order = inOrder(context, r1);
 		assertEquals(Decision.INDETERMINATE_DP, algorithm.combine(context, decisions));
-		verify(r1);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1);
 	}
 
 	@Test
 	public void testCombineWithInderterminateDP() throws EvaluationException
 	{
-		DecisionRule r1 = createStrictMock(DecisionRule.class);
-		DecisionRule r2 = createStrictMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
+		DecisionRule r2 = mock(DecisionRule.class);
 		decisions.add(r1);
 		decisions.add(r2);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE_DP);
-		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluate(context)).andReturn(Decision.PERMIT);
-		replay(r1, r2);
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.INDETERMINATE_DP);
+		when(r2.createContext(context)).thenReturn(context);
+		when(r2.evaluate(context)).thenReturn(Decision.PERMIT);
+		InOrder order = inOrder(context, r1, r2);
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
-		verify(r1, r2);
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		order.verify(r2).createContext(context);
+		order.verify(r2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		verify(r2, times(1)).createContext(context);
+		verify(r2, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1, r2);
 	}
 
 }

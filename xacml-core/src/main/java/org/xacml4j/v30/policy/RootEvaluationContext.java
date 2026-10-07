@@ -199,7 +199,9 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public final void addEvaluationResult(CompositeDecisionRule policy, Decision result) {
-		this.evaluatedPolicies.put(policy.getId(), policy);
+		if (!result.isIndeterminate() && result != Decision.NOT_APPLICABLE) {
+			this.evaluatedPolicies.put(policy.getId(), policy);
+		}
 	}
 
 	@Override
@@ -454,5 +456,3 @@ public final class RootEvaluationContext implements EvaluationContext
 		this.evaluatedPolicies.clear();
 	}
 }
-
-

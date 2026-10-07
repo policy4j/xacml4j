@@ -39,8 +39,10 @@ import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
+import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Preconditions;
@@ -118,9 +120,17 @@ final class DefaultEvaluationContextHandler
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
 		AttributeSelectorKey selectorKey = (AttributeSelectorKey)ref;
 		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
-		                                         .flatMap(e-> e.resolve(selectorKey))
+		                                         .flatMap(e-> resolveSelector(e, selectorKey))
 		                                         .or(()->doPipResolve(context, selectorKey));
 		return v;
+	}
+
+	private Optional<BagOfValues> resolveSelector(Entity entity, AttributeSelectorKey selectorKey)
+	{
+		if(selectorKey.getContextSelectorId() == null){
+			return entity.<Content>getContent().flatMap(content->content.resolve(selectorKey));
+		}
+		return entity.resolve(selectorKey);
 	}
 
 	private Optional<BagOfValues> doDesignatorResolve(EvaluationContext context, AttributeReferenceKey ref)
@@ -128,7 +138,8 @@ final class DefaultEvaluationContextHandler
 		Preconditions.checkArgument(ref instanceof AttributeDesignatorKey);
 		AttributeDesignatorKey designatorKey = (AttributeDesignatorKey)ref;
 		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
-		                                         .flatMap(e-> e.resolve(designatorKey))
+		                                         .flatMap(e-> e.resolve(designatorKey.getAttributeId(),
+		                                                              designatorKey.getDataType(), designatorKey.getIssuer()))
 		                                         .or(()->doPipResolve(context, (AttributeDesignatorKey)ref));
 		return v;
 	}
@@ -177,12 +188,18 @@ final class DefaultEvaluationContextHandler
 								.build();
 				v = resolve(context, entitySelector)
 				          .flatMap(b->b.single())
-				          .map(EntityValue.class::cast)
-				          .map(EntityValue::get)
+				          .map(Entity.class::cast)
 						.flatMap(e->e.resolve(ref));
 			}
 			v.ifPresent(bag -> selectorCache.putIfAbsent(ref, bag));
 			return v;
+		}
+		catch(PathEvaluationException e){
+			if(e.getStatus().getStatusCode().isSyntaxError()){
+				throw e;
+			}
+			LOG.debug(e.getMessage(), e);
+			return Optional.empty();
 		}
 		catch(Exception e){
 			LOG.debug(e.getMessage(), e);
@@ -193,11 +210,9 @@ final class DefaultEvaluationContextHandler
 		}
 	}
 
-	public <C extends Content> Optional<C> getEntity(CategoryId id){
-		return requestCallback
-				.getEntity(id)
-				.flatMap((
-						entity -> entity.getContent()));
+	@Override
+	public Optional<Entity> getEntity(CategoryId id){
+		return requestCallback.getEntity(id);
 	}
 
 }

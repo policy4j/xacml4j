@@ -1,0 +1,39 @@
+Working directory: <lane>
+
+JDK selection/version:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Test first, expected red:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-core -Dlicense.skipUpdateLicense=true -Dtest=ISO8601DurationReviewTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/red.log
+
+Focused green:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-core -Dlicense.skipUpdateLicense=true -Dtest=ISO8601DurationReviewTest,ISO8601DayTimeDurationTest,XmlContentTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/focused-green.log
+
+Full core gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-core -Dlicense.skipUpdateLicense=true test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/core-gate.log
+
+Source call-site inventory:
+rtk rg -n '\.isZero\(\)|DateTimeDurationUtils\.isZero|getSeconds\(\)' --glob '*.java' xacml-core xacml-pdp xacml-test xacml-xml xacml-json
+
+Header-byte check against the sibling baseline used Python to extract each edited file's `#%L` through `#L%` block and compare bytes. No Git command was run in the lane.
+
+## rv030 repair
+
+JDK/Maven used for these runs:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Expected-red and focused-green duration/Match tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DurationReviewTest,MatchTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-red-core.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DurationReviewTest,MatchTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-focused-core.log
+
+Focused XML and JSON round-trip tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=TypeToXacml30Test -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-focused-xml.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=JsonEntityMarshallingTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-focused-json.log
+
+Full JDK 21 gates:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-core-gate.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-xml-gate.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-json-gate.log
+
+Header check: the same eight edited Java files were compared byte-for-byte to their `<lane>.base` files; all header blocks matched. No Git command was run in the lane.
+The full conformance command is recorded in `../021-bug-4.9-context-selector/command.txt`; it uses the same source state as the above module gates.

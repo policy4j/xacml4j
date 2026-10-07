@@ -22,14 +22,14 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
 import java.util.Map;
 
-import org.junit.Test;
-
 import com.google.common.collect.ImmutableMap;
+
+import org.junit.jupiter.api.Test;
 
 public class AttributeResolverTestSupportTest extends AttributeResolverTestSupport {
 

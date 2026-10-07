@@ -1,0 +1,8 @@
+{
+  "temporary_probe": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+  "probe_source_sha256": "9369bc2f0a463ae4aafc62e7fb1017f9aebe2a9366b4feb2d2f3a94246c0b89c",
+  "probe_removed": true,
+  "protected_files_unchanged": 4199,
+  "root_pom_sha256": "3eea70fb4f0ac7a3797ca557a1399a5bb4ae5bc8c7099d37ac0dfc5c2a3c0410",
+  "full_gate_start_ns": 1790890009158883000
+}

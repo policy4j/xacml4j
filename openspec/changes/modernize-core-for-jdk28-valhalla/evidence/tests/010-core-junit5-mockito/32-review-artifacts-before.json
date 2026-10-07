@@ -1,0 +1,956 @@
+{
+  "coverage": "SUPPORTED Java statement syntax; receiver identities/count correspondence require source review",
+  "ast_commands": [
+    [
+      "ast-grep",
+      "run",
+      "--lang",
+      "java",
+      "--pattern",
+      "$RECEIVER.$METHOD($$$ARGS);",
+      "--json=compact",
+      "xacml-core/src/test/java"
+    ],
+    [
+      "ast-grep",
+      "run",
+      "--lang",
+      "java",
+      "--pattern",
+      "$RECEIVER.$METHOD($$$ARGS);",
+      "--json=compact",
+      "<repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/010-core-junit5-mockito/before/java"
+    ]
+  ],
+  "current_statement_matches": 1448,
+  "before_statement_matches": 1281,
+  "plain_mock_call_candidates": [],
+  "verify_inside_assertThrows": [],
+  "duplicate_consecutive_verifies": [],
+  "captor_declarations": [
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 80,
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+      "variable": "capture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 84,
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+      "variable": "status",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 110,
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional",
+      "variable": "c",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 112,
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional",
+      "variable": "status",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 134,
+      "method": "testMustBePresentTrueAttributeDoesExist",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 156,
+      "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 176,
+      "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 196,
+      "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 213,
+      "method": "testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 234,
+      "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": 251,
+      "method": "testMustBePresentFalseContextHandlerThrowsRuntimeException",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 77,
+      "method": "testMustBePresenTrueAndReturnsNonEmptyBag",
+      "variable": "c",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 105,
+      "method": "testMustBePresenFalseAndReturnsNonEmptyBag",
+      "variable": "c",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 132,
+      "method": "testMustBePresentTrueAndReturnsEmptyBag",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 158,
+      "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 160,
+      "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+      "variable": "status",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 185,
+      "method": "testMustBePresentFalseAndReturnsEmptyBag",
+      "variable": "c",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 214,
+      "method": "testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException",
+      "variable": "c",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 242,
+      "method": "testMustBePresentFalseAndContextThrowsRuntimeException",
+      "variable": "c",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 268,
+      "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "line": 293,
+      "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+      "variable": "c",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": 80,
+      "method": "testExpressionThrowsEvaluationException",
+      "variable": "statusCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": 99,
+      "method": "testExpressionThrowsRuntimeException",
+      "variable": "statusCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": 100,
+      "method": "testExpressionThrowsRuntimeException",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+      "line": 115,
+      "method": "testMatchEvaluationFailedToResolveAttributeException",
+      "variable": "statusCapture",
+      "getter_sites": 2,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+      "line": 116,
+      "method": "testMatchEvaluationFailedToResolveAttributeException",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+      "line": 214,
+      "method": "testEvaluateIfApplicablePolicyCanBeResolved",
+      "variable": "refContext",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+      "line": 172,
+      "method": "testEvaluateIfApplicable",
+      "variable": "refContext",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 210,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 211,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "variable": "contextCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 226,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 227,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 243,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 244,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 260,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 261,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 278,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 279,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 310,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 311,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 340,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": 341,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 209,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 210,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "variable": "contextCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 225,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 226,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 242,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 243,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 259,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 260,
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 277,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 278,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 309,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 310,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 339,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+      "variable": "contextCapture",
+      "getter_sites": 1,
+      "needs_review": false
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": 340,
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+      "variable": "ruleCapture",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 65,
+      "method": "testAllMatch",
+      "variable": "c1",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 66,
+      "method": "testAllMatch",
+      "variable": "c2",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 100,
+      "method": "testFirstMatchSecondIsNoMatch",
+      "variable": "c1",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 101,
+      "method": "testFirstMatchSecondIsNoMatch",
+      "variable": "c2",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 125,
+      "method": "testFirstMatchAndSecondIsIndeterminate",
+      "variable": "c1",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 126,
+      "method": "testFirstMatchAndSecondIsIndeterminate",
+      "variable": "c2",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 150,
+      "method": "testFirstIsNoMatch",
+      "variable": "c1",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": 169,
+      "method": "testFirstIsIndeterminate",
+      "variable": "c1",
+      "getter_sites": 0,
+      "needs_review": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java",
+      "line": 73,
+      "method": "<field>",
+      "variable": "status",
+      "getter_sites": 2,
+      "needs_review": false
+    }
+  ],
+  "explicit_original_count_sites": [
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "method": "testObjectMethods",
+      "old_line": 131,
+      "expectation": "exp1.getEvaluatesTo()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": []
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "method": "testObjectMethods",
+      "old_line": 132,
+      "expectation": "exp2.getEvaluatesTo()",
+      "old_count": ".times(1)",
+      "current_candidate_checks": []
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "method": "testTest1And2FunctionsStaticProvider",
+      "old_line": 68,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(context, times(2)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "method": "testTest1And2FunctionsInstanceProvider",
+      "old_line": 84,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(context, times(2)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "method": "testLazyParamEvaluationPassingEvaluationContext",
+      "old_line": 101,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(3)",
+      "current_candidate_checks": [
+        "order.verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeNoEvaluationContextFunctionIsNotVariadic",
+      "old_line": 74,
+      "expectation": "spec.isVariadic()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(spec, times(2)).isVariadic();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeInvocationThrowsRuntimeException",
+      "old_line": 90,
+      "expectation": "spec.isVariadic()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(spec, times(2)).isVariadic();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeWithEvaluationContextFunctionIsNotVariadic",
+      "old_line": 106,
+      "expectation": "spec.isVariadic()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(spec, times(2)).isVariadic();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeWithEvaluationContextFunctionIsVariadic",
+      "old_line": 133,
+      "expectation": "spec.isVariadic()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(spec, times(2)).isVariadic();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeWithNoEvaluationContextFunctionIsVariadicAndMoreThanZeroVariadicParams",
+      "old_line": 159,
+      "expectation": "spec.isVariadic()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(spec, times(2)).isVariadic();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeWithNoEvaluationContextFunctionIsVariadicAndZeroVariadicParams",
+      "old_line": 179,
+      "expectation": "spec.isVariadic()",
+      "old_count": ".times(2)",
+      "current_candidate_checks": [
+        "order.verify(spec, times(2)).isVariadic();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+      "method": "testMapWithValidArguments",
+      "old_line": 98,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(4)",
+      "current_candidate_checks": [
+        "order.verify(context, times(4)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+      "method": "testAnyOf",
+      "old_line": 117,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(3)",
+      "current_candidate_checks": [
+        "order.verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+      "method": "testAllOfAny",
+      "old_line": 139,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(3)",
+      "current_candidate_checks": [
+        "order.verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+      "method": "testAnyOfAll",
+      "old_line": 161,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(8)",
+      "current_candidate_checks": [
+        "order.verify(context, times(8)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+      "method": "testAnyOfAllIIC168",
+      "old_line": 184,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(3)",
+      "current_candidate_checks": [
+        "order.verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+      "method": "testAllOfAll",
+      "old_line": 205,
+      "expectation": "context.isValidateFuncParamsAtRuntime()",
+      "old_count": ".times(9)",
+      "current_candidate_checks": [
+        "order.verify(context, times(9)).isValidateFuncParamsAtRuntime();"
+      ]
+    }
+  ],
+  "original_void_recording_sites": [
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "method": "testExpressionThrowsEvaluationException",
+      "old_line": 78,
+      "call": "context.setEvaluationStatus(capture(statusCapture));",
+      "current_checks": [
+        "order.verify(context).setEvaluationStatus(statusCapture.capture());"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "method": "testExpressionThrowsRuntimeException",
+      "old_line": 95,
+      "call": "context.setEvaluationStatus(capture(ruleCapture), capture(statusCapture));",
+      "current_checks": [
+        "order.verify(context).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+      "old_line": 156,
+      "call": "context.setEvaluationStatusIfAbsent(capture(status));",
+      "current_checks": [
+        "order.verify(context).setEvaluationStatusIfAbsent(status.capture());"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+      "old_line": 86,
+      "call": "context.setEvaluationStatusIfAbsent(capture(status));",
+      "current_checks": [
+        "order.verify(context).setEvaluationStatusIfAbsent(status.capture());"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional",
+      "old_line": 113,
+      "call": "context.setEvaluationStatusIfAbsent(capture(status));",
+      "current_checks": [
+        "order.verify(context).setEvaluationStatusIfAbsent(status.capture());"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableReferenceTest.java",
+      "method": "testVariableEvaluationValueNotAvailableInContext",
+      "old_line": 61,
+      "call": "context.setVariableEvaluationResult(\"testId\", XacmlTypes.BOOLEAN.ofAny(true));",
+      "current_checks": [
+        "order.verify(context).setVariableEvaluationResult(\"testId\", XacmlTypes.BOOLEAN.ofAny(true));"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+      "method": "testMatchEvaluationFailedToResolveAttributeException",
+      "old_line": 110,
+      "call": "context.setEvaluationStatus(capture(ruleCapture), capture(statusCapture));",
+      "current_checks": [
+        "order.verify(context).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java",
+      "method": "testCombineWithNoDecisions",
+      "old_line": 61,
+      "call": "context.setEvaluationStatus(Status.processingError().build());",
+      "current_checks": [
+        "order.verify(context).setEvaluationStatus(Status.processingError().build());"
+      ]
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java",
+      "method": "context",
+      "old_line": 100,
+      "call": "context.setEvaluationStatus(capture(status));",
+      "current_checks": []
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableDefinitionTest.java",
+      "method": "testVariableEvaluationValueNotAvailableInContext",
+      "old_line": 58,
+      "call": "context.setVariableEvaluationResult(\"testId\", XacmlTypes.BOOLEAN.ofAny(true));",
+      "current_checks": [
+        "order.verify(context).setVariableEvaluationResult(\"testId\", XacmlTypes.BOOLEAN.ofAny(true));"
+      ]
+    }
+  ],
+  "original_mock_only_methods": [
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java",
+      "method": "testApplyEvaluationFunctionThrowsRuntimeException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java",
+      "method": "testApplyEvaluationFunctionThrowsFunctionInvocationException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "method": "testCreateWithExpWhichReturnsNonBooleanValue",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+      "method": "testAttributeAssignmentThrowsEvaluationException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+      "method": "testCreatePolicyIDReferenceEvaluatonConntext",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+      "method": "testParameterAfterVaragParam",
+      "current_verify": false,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+      "method": "testParameterVarArgMinAndMaxEquals",
+      "current_verify": false,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "method": "testLazyParamEvaluationPassingEvaluationContext",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "method": "testVarArgFunctionInvocation",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeInvocationThrowsRuntimeException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testInvokeSpecFailsWithInvocationException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testInvokeSpecFailsWithRuntimeException",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testOptionalParameterWithDefaultValue",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testOptionalParameterWithNoDefaultValue",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testOptionalParameterWithNoDefaultValueAndVarArg",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testOptionalParameterWithDefaultValueAndVarArg",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "test2OptionalParameters",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "test2OptionalParameters1",
+      "current_verify": true,
+      "current_no_more": true
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "test2OptionalParametersTheSameType",
+      "current_verify": true,
+      "current_no_more": true
+    }
+  ]
+}

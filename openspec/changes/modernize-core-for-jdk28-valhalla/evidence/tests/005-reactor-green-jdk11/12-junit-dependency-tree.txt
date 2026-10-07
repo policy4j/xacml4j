@@ -1,0 +1,112 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Xacml4J Project                                                    [pom]
+[INFO] Xacml4J Core Engine Implementation                                 [jar]
+[INFO] Xacml4J XML representation JAXB classes                            [jar]
+[INFO] Xacml XML representation marshallers                               [jar]
+[INFO] Xacml4J Json based request/response and policy format support      [jar]
+[INFO] Xacml4J PDP                                                        [jar]
+[INFO] Xacml4J Policy Unit Test Support                                   [jar]
+[INFO] 
+[INFO] -------------------------< org.xacml4j:xacml >--------------------------
+[INFO] Building Xacml4J Project 2.0.0-SNAPSHOT                            [1/7]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml ---
+[INFO] org.xacml4j:xacml:pom:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT         [2/7]
+[INFO]   from xacml-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-core ---
+[INFO] org.xacml4j:xacml-core:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] ---------------------< org.xacml4j:xacml-xml-jaxb >---------------------
+[INFO] Building Xacml4J XML representation JAXB classes 2.0.0-SNAPSHOT    [3/7]
+[INFO]   from xacml-xml-jaxb/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-xml-jaxb ---
+[INFO] org.xacml4j:xacml-xml-jaxb:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-xml >------------------------
+[INFO] Building Xacml XML representation marshallers 2.0.0-SNAPSHOT       [4/7]
+[INFO]   from xacml-xml/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Downloading from sonatype-nexus-snapshots: https://oss.sonatype.org/content/repositories/snapshots/org/xacml4j/xacml-xml-jaxb/2.0.0-SNAPSHOT/maven-metadata.xml
+[INFO] Downloading from mirror-snapshots: https://artifactory.example.com/artifactory/libs-snapshots/org/xacml4j/xacml-xml-jaxb/2.0.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata org.xacml4j:xacml-xml-jaxb:2.0.0-SNAPSHOT/maven-metadata.xml from/to mirror-snapshots (https://artifactory.example.com/artifactory/libs-snapshots/): Connect to artifactory.example.com:443 [artifactory.example.com/192.0.2.1] failed: connect timed out
+[INFO] Downloading from mirror-snapshots: https://artifactory.example.com/artifactory/libs-snapshots/org/xacml4j/xacml-core/2.0.0-SNAPSHOT/maven-metadata.xml
+[INFO] Downloading from sonatype-nexus-snapshots: https://oss.sonatype.org/content/repositories/snapshots/org/xacml4j/xacml-core/2.0.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata org.xacml4j:xacml-core:2.0.0-SNAPSHOT/maven-metadata.xml from/to mirror-snapshots (https://artifactory.example.com/artifactory/libs-snapshots/): Connect to artifactory.example.com:443 [artifactory.example.com/192.0.2.1] failed: connect timed out
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-xml ---
+[INFO] org.xacml4j:xacml-xml:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-json >-----------------------
+[INFO] Building Xacml4J Json based request/response and policy format support 2.0.0-SNAPSHOT [5/7]
+[INFO]   from xacml-json/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-json ---
+[INFO] org.xacml4j:xacml-json:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-pdp >------------------------
+[INFO] Building Xacml4J PDP 2.0.0-SNAPSHOT                                [6/7]
+[INFO]   from xacml-pdp/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Downloading from sonatype-nexus-snapshots: https://oss.sonatype.org/content/repositories/snapshots/org/xacml4j/xacml-xml/2.0.0-SNAPSHOT/maven-metadata.xml
+[INFO] Downloading from mirror-snapshots: https://artifactory.example.com/artifactory/libs-snapshots/org/xacml4j/xacml-xml/2.0.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata org.xacml4j:xacml-xml:2.0.0-SNAPSHOT/maven-metadata.xml from/to mirror-snapshots (https://artifactory.example.com/artifactory/libs-snapshots/): Connect to artifactory.example.com:443 [artifactory.example.com/192.0.2.1] failed: connect timed out
+[INFO] Downloading from mirror-snapshots: https://artifactory.example.com/artifactory/libs-snapshots/org/xacml4j/xacml-json/2.0.0-SNAPSHOT/maven-metadata.xml
+[INFO] Downloading from sonatype-nexus-snapshots: https://oss.sonatype.org/content/repositories/snapshots/org/xacml4j/xacml-json/2.0.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata org.xacml4j:xacml-json:2.0.0-SNAPSHOT/maven-metadata.xml from/to mirror-snapshots (https://artifactory.example.com/artifactory/libs-snapshots/): Connect to artifactory.example.com:443 [artifactory.example.com/192.0.2.1] failed: connect timed out
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-pdp ---
+[INFO] org.xacml4j:xacml-pdp:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-test >-----------------------
+[INFO] Building Xacml4J Policy Unit Test Support 2.0.0-SNAPSHOT           [7/7]
+[INFO]   from xacml-test/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Downloading from sonatype-nexus-snapshots: https://oss.sonatype.org/content/repositories/snapshots/org/xacml4j/xacml-pdp/2.0.0-SNAPSHOT/maven-metadata.xml
+[INFO] Downloading from mirror-snapshots: https://artifactory.example.com/artifactory/libs-snapshots/org/xacml4j/xacml-pdp/2.0.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Could not transfer metadata org.xacml4j:xacml-pdp:2.0.0-SNAPSHOT/maven-metadata.xml from/to mirror-snapshots (https://artifactory.example.com/artifactory/libs-snapshots/): Connect to artifactory.example.com:443 [artifactory.example.com/192.0.2.1] failed: connect timed out
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-test ---
+[INFO] org.xacml4j:xacml-test:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] 
+[INFO] Xacml4J Project .................................... SUCCESS [  0.544 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.020 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.023 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [ 20.503 s]
+[INFO] Xacml4J Json based request/response and policy format support SUCCESS [  0.009 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [ 20.022 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [ 10.013 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  51.259 s
+[INFO] Finished at: 2026-10-01T11:18:28-04:00
+[INFO] ------------------------------------------------------------------------

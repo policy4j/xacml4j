@@ -1,0 +1,338 @@
+   Spec Audit & Test Design: Tasks 4.1 & 4.2
+
+  This report audits attribute resolution (Task 4.1) and rule conditions (Task 4.2) against the XACML 3.0
+  Core Specification https://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html (§5.25, §5.29,
+  §5.30, §5.58, §5.59, §7.3.5, §7.11, §7.19.3) and the current xacml-core and xacml-pdp implementations.
+  ──────
+  ## Table A: Defects
+
+   # │ Element / Function    │ Input                 │ Spec-Required Result   │ Current Result         │ …
+  ───┼───────────────────────┼───────────────────────┼───────────────────────┼────────────────────────┼────
+   1 │ AttributeDesignator / │ PIP resolver throws   │ Indeterminate with    │ Evaluates to an empty  │ HI
+     │ AttributeSelector     │ exception during      │ status                │ bag (success).         │ GH
+     │                       │ retrieval when        │ urn:oasis:names:tc:xa │ DefaultEvaluationConte │
+     │                       │ MustBePresent="false" │ cml:1.0:status:proces │ xtHandler.java:160-163 │
+     │                       │                       │ sing-error (§7.3.5).  │ catches Exception and  │
+     │                       │                       │ MustBePresent only    │ returns                │
+     │                       │                       │ governs missing       │ Optional.empty();      │
+     │                       │                       │ attributes, not       │ AttributeReference.jav │
+     │                       │                       │ retrieval errors.      │ a:132-143 suppresses   │
+     │                       │                       │                       │ it when                │
+     │                       │                       │                       │ !isMustBePresent().    │
+   2 │ AttributeDesignator / │ PIP resolver throws   │ Indeterminate with    │ Evaluates to           │ HI
+     │ AttributeSelector     │ exception during      │ status                │ Indeterminate with     │ GH
+     │                       │ retrieval when        │ urn:oasis:names:tc:xa │ status                 │
+     │                       │ MustBePresent="true"  │ cml:1.0:status:proces │ urn:oasis:names:tc:xac │
+     │                       │                       │ sing-error (§7.3.5).  │ ml:1.0:status:missing- │
+     │                       │                       │                       │ attribute.             │
+     │                       │                       │                       │ DefaultEvaluationConte │
+     │                       │                       │                       │ xtHandler.java:160-163 │
+     │                       │                       │                       │ swallows the error     │
+     │                       │                       │                       │ into Optional.empty(), │
+     │                       │                       │                       │ and                    │
+     │                       │                       │                       │ AttributeDesignator.ja │
+     │                       │                       │                       │ va:96-98 misidentifies │
+     │                       │                       │                       │ it as a missing        │
+     │                       │                       │                       │ attribute.             │
+   3 │ AttributeSelector     │ MustBePresent="false" │ Evaluates to an empty │ Throws                 │
+     │                       │ , and                 │ bag (§5.30).          │ AttributeReferenceEva │
+     │                       │ context.resolve(selec │                       │ luationException with │
+     │                       │ torKey) returns null  │                       │ status:missing-       │
+     │                       │                       │                       │ attribute. Operator   │
+     │                       │                       │                       │ precedence defect in  │
+     │                       │                       │                       │ AttributeSelector.jav │
+     │                       │                       │                       │ a:77-78: `(v == null  │
+   4 │ Status.missingAttribu │ Attribute missing     │ <StatusDetail> MUST   │ Status.java:107-111   │ MED
+     │ te                    │ when                  │ contain at least one  │ sets status code      │ IUM
+     │                       │ MustBePresent="true"  │ <MissingAttributeDeta │ missing-attribute and │
+     │                       │                       │ il> element           │ message =             │
+     │                       │                       │ identifying Category, │ attributeId, but      │
+     │                       │                       │ AttributeId, and      │ StatusDetail remains  │
+     │                       │                       │ DataType (§5.59,      │ null. No              │
+     │                       │                       │ §7.19.3).             │ <MissingAttributeDeta │
+     │                       │                       │                       │ il> is ever           │
+     │                       │                       │                       │ constructed.          │
+   5 │ AttributeDesignatorFu │ categoryOrEntity is a │ Evaluates to an empty │ Throws                │ MED
+     │ nctions.designator    │ Category URI not      │ bag (parity with      │ EvaluationException   │ IUM
+     │                       │ present in request    │ <AttributeDesignator> │ with                  │
+     │                       │ context, and          │ ).                    │ status:processing-    │
+     │                       │ mustBePresent = false │                       │ error ("Entity is     │
+     │                       │                       │                       │ null") at             │
+     │                       │                       │                       │ AttributeDesignatorFu │
+     │                       │                       │                       │ nctions.java:64-66    │
+     │                       │                       │                       │ unconditionally.      │
+   6 │ Condition constructor │ Predicate expression  │ Condition allows      │ Condition.java:59-63  │ MED
+     │                       │ evaluates to          │ expressions returning │ throws                │ IUM
+     │                       │ BagOfValuesType (e.g. │ a boolean bag         │ IllegalArgumentExcept │
+     │                       │ <AttributeDesignator  │ (§5.25). 1-element    │ ion: requires         │
+     │                       │ DataType="...#boolean │ bag evaluates to that │ XacmlTypes.BOOLEAN.eq │
+     │                       │ ">)                   │ boolean; 0 or >1      │ uals(resultType),     │
+     │                       │                       │ values evaluate to    │ forbidding direct bag │
+     │                       │                       │ Indeterminate with    │ expressions at        │
+     │                       │                       │ status:processing-    │ construction time.    │
+     │                       │                       │ error.                │                       │
+  ──────
+  ## Table B: Test Cases (Safety Net for Groups 5–7)
+
+  All test cases are designed to be executed via public API: PolicyDecisionPoint.decide(RequestContext),
+  Rule.evaluate(EvaluationContext), Condition.evaluate(EvaluationContext),
+  AttributeDesignator.evaluate(EvaluationContext), or AttributeDesignatorFunctions.designator(...).
+
+   # │ Ar… │ Setup / Test Description │ Expected Decision / Status / B… │ Passes Today? (Evidence) │ Publ…
+  ───┼─────┼──────────────────────────┼─────────────────────────────────┼──────────────────────────┼───────
+   1 │ 4.1 │ Designator for string    │ Bag of 1 string value (["val"]) │ Y                        │ Attri
+     │     │ matching 1 value in      │                                 │ (AttributeDesignator.jav │ buteD
+     │     │ request                  │                                 │ a:117)                   │ esign
+     │     │                          │                                 │                          │ ator.
+     │     │                          │                                 │                          │ evalu
+     │     │                          │                                 │                          │ ate
+   2 │ 4.1 │ Designator for integer   │ Bag of 2 integer values ([1,    │ Y                        │ Attri
+     │     │ matching 2 values in     │ 2])                             │ (AttributeIndex.java:171 │ buteD
+     │     │ request                  │                                 │ )                        │ esign
+     │     │                          │                                 │                          │ ator.
+     │     │                          │                                 │                          │ evalu
+     │     │                          │                                 │                          │ ate
+   3 │ 4.1 │ MustBePresent=false,     │ Bag containing attribute values │ Y                        │ Attri
+     │     │ attribute exists in      │                                 │ (AttributeDesignator.jav │ buteD
+     │     │ request                  │                                 │ a:117)                   │ esign
+     │     │                          │                                 │                          │ ator.
+     │     │                          │                                 │                          │ evalu
+     │     │                          │                                 │                          │ ate
+   4 │ 4.1 │ MustBePresent=false,     │ Empty bag of declared data type │ Y                        │ Attri
+     │     │ attribute missing in     │                                 │ (AttributeDesignator.jav │ buteD
+     │     │ request & PIP            │                                 │ a:100)                   │ esign
+   4  │ 4.1  │ MustBePresent=false,     │ Empty bag of declared data type │ Y                       │ Attr
+      │      │ attribute missing in     │                                 │ (AttributeDesignator.ja │ ibut
+      │      │ request & PIP            │                                 │ va:100)                 │ eDes
+      │      │                          │                                 │                         │ igna
+      │      │                          │                                 │                         │ tor.
+      │      │                          │                                 │                         │ eval
+      │      │                          │                                 │                         │ uate
+   5  │ 4.1  │ MustBePresent=true,      │ Bag containing attribute values │ Y                       │ Attr
+      │      │ attribute exists in      │                                 │ (AttributeDesignator.ja │ ibut
+      │      │ request                  │                                 │ va:117)                 │ eDes
+      │      │                          │                                 │                         │ igna
+      │     │                          │                                 │                          │ tor.
+      │     │                          │                                 │                          │ eval
+      │     │                          │                                 │                          │ uate
+   6  │ 4.1 │ MustBePresent=true,      │ Throws evaluation exception     │ Y                        │ Attr
+      │     │ attribute missing in     │ with status:missing-attribute   │ (AttributeDesignator.jav │ ibut
+      │     │ request & PIP            │                                 │ a:96-98)                 │ eDes
+      │     │                          │                                 │                          │ igna
+      │     │                          │                                 │                          │ tor.
+      │     │                          │                                 │                          │ eval
+      │     │                          │                                 │                          │ uate
+   7  │ 4.1 │ MustBePresent=false, PIP │ Indeterminate with              │ N                        │ Poli
+      │     │ throws runtime exception │ status:processing-error         │ (DefaultEvaluationContex │ cyDe
+      │     │                          │                                 │ tHandler.java:160-163    │ cisi
+      │     │                          │                                 │ returns empty bag)       │ onPo
+      │     │                          │                                 │                          │ int.
+      │     │                          │                                 │                          │ deci
+      │     │                          │                                 │                          │ de
+   8  │ 4.1 │ MustBePresent=true, PIP  │ Indeterminate with              │ N                        │ Poli
+      │     │ throws runtime exception │ status:processing-error         │ (AttributeDesignator.jav │ cyDe
+      │     │                          │                                 │ a:98 sets missing-       │ cisi
+      │     │                          │                                 │ attribute)               │ onPo
+      │     │                          │                                 │                          │ int.
+      │     │                          │                                 │                          │ deci
+      │     │                          │                                 │                          │ de
+   9  │ 4.1 │ Status detail on missing │ StatusDetail contains           │ N (Status.java:107-111   │ Poli
+      │     │ attribute                │ <MissingAttributeDetail> with   │ detail is null)          │ cyDe
+      │     │ (MustBePresent=true)     │ category, id, type              │                          │ cisi
+      │     │                          │                                 │                          │ onPo
+      │     │                          │                                 │                          │ int.
+      │     │                          │                                 │                          │ deci
+      │     │                          │                                 │                          │ de
+   10 │ 4.1 │ Designator issuer=null,  │ Bag containing the attribute    │ Y                        │ Attr
+      │     │ request has matching     │ value                           │ (AttributeIndex.java:109 │ ibut
+      │      │ attribute with           │                                │ )                        │ eDes
+      │      │ issuer=null              │                                │                          │ igna
+      │      │                          │                                │                          │ tor.
+      │      │                          │                                │                          │ eval
+      │      │                          │                                │                          │ uate
+   11 │ 4.1  │ Designator issuer=null,  │ Bag containing the attribute   │ Y                        │ Attr
+      │      │ request has matching     │ value                          │ (AttributeIndex.java:109 │ ibut
+      │      │ attribute with           │                                │ )                        │ eDes
+      │      │ issuer="corp"            │                                │                          │ igna
+   20 │ 4.1 │ attribute-designator     │ Empty bag of        │ Y                    │ Apply.evaluate /
+      │     │ function with Entity     │ requested data type │ (AttributeDesignator │ function
+      │     │ instance, attribute      │                     │ Functions.java:77)   │
+      │     │ missing,                 │                     │                      │
+      │     │ mustBePresent=false      │                     │                      │
+   21 │ 4.1 │ attribute-designator     │ Throws              │ Y                    │ Apply.evaluate /
+      │     │ function with Entity     │ EvaluationException │ (AttributeDesignator │ function
+      │     │ instance, attribute      │ with                │ Functions.java:73)   │
+      │     │ missing,                 │ status:missing-attr │                      │
+      │     │ mustBePresent=true       │ ibute               │                      │
+   22 │ 4.1 │ attribute-designator     │ Bag containing      │ Y                    │ Apply.evaluate /
+      │     │ function with Entity,    │ resolved values     │ (AttributeDesignator │ function
+      │     │ matching issuer          │                     │ Functions.java:70)   │
+   23 │ 4.1 │ attribute-designator     │ Empty bag           │ Y                    │ Apply.evaluate /
+      │     │ function with Entity,    │                     │ (AttributeDesignator │ function
+      │     │ mismatching issuer       │                     │ Functions.java:77)   │
+   24 │ 4.2 │ Rule with absent         │ Decision.PERMIT     │ Y                    │ Rule.evaluate
+      │     │ Condition, Effect=PERMIT │                     │ (Rule.java:126,131)  │
+   25 │ 4.2 │ Rule with absent         │ Decision.DENY       │ Y                    │ Rule.evaluate
+      │     │ Condition, Effect=DENY   │                     │ (Rule.java:126,131)  │
+   26 │ 4.2 │ Rule Condition evaluates │ Decision.PERMIT     │ Y (Rule.java:131)    │ Rule.evaluate
+      │     │ to BooleanVal.of(true),  │                     │                      │
+      │     │ Effect=PERMIT            │                     │                      │
+   27 │ 4.2 │ Rule Condition evaluates │ Decision.DENY       │ Y (Rule.java:131)    │ Rule.evaluate
+      │     │ to BooleanVal.of(true),  │                     │                      │
+      │     │ Effect=DENY              │                     │                      │
+   28 │ 4.2 │ Rule Condition evaluates │ Decision.NOT_APPLIC │ Y (Rule.java:150)    │ Rule.evaluate
+      │     │ to BooleanVal.of(false), │ ABLE                │                      │
+      │     │ Effect=PERMIT            │                     │                      │
+   29 │ 4.2 │ Rule Condition evaluates │ Decision.NOT_APPLIC │ Y (Rule.java:150)    │ Rule.evaluate
+      │     │ to BooleanVal.of(false), │ ABLE                │                      │
+      │     │ Effect=DENY              │                     │                      │
+   30 │ 4.2 │ Rule Condition throws    │ Decision.INDETERMIN │ Y                    │ Rule.evaluate
+      │     │ EvaluationException(stat │ ATE_PERMIT          │ (Rule.java:145-149)  │
+      │     │ us:processing-error),    │ (extended) /        │                      │
+      │     │ Effect=PERMIT            │ INDETERMINATE,      │                      │
+      │     │                          │ status processing-  │                      │
+      │     │                          │ error               │                      │
+   31 │ 4.2 │ Rule Condition throws    │ Decision.INDETERMIN │ Y                    │ Rule.evaluate
+      │     │ EvaluationException(stat │ ATE_DENY (extended) │ (Rule.java:145-149)  │
+      │     │ us:processing-error),    │ / INDETERMINATE,    │                      │
+      │     │ Effect=DENY              │ status processing-  │                      │
+      │     │                          │ error               │                      │
+   32 │ 4.2 │ Rule Condition throws    │ Decision.INDETERMIN │ Y                    │ Rule.evaluate
+      │     │ EvaluationException(stat │ ATE_PERMIT          │ (Rule.java:145-149)  │
+      │     │ us:missing-attribute),   │ (extended), status  │                      │
+      │     │ Effect=PERMIT            │ missing-attribute   │                      │
+   33 │ 4.2 │ Rule Condition throws    │ Decision.INDETERMIN │ Y                    │ Rule.evaluate
+      │     │ EvaluationException(stat │ ATE_DENY            │ (Rule.java:145-149)  │
+      │     │ us:missing-attribute),   │ (extended), status  │                      │
+      │     │ Effect=DENY              │ missing-attribute   │                      │
+   34 │ 4.2 │ Condition predicate      │ ConditionResult.IND │ PARTIAL              │ Condition.evaluate
+      │     │ evaluates to empty bag   │ ETERMINATE with     │ (Condition.java:96-1 │
+      │     │ (0 values)               │ status:processing-  │ 00 via               │
+      │     │                          │ error (§5.25)       │ ClassCastException)  │
+   35 │ 4.2 │ Condition predicate      │ ConditionResult.IND │ PARTIAL              │ Condition.evaluate
+      │     │ evaluates to multi-      │ ETERMINATE with     │ (Condition.java:96-1 │
+      │     │ valued bag (2 booleans)  │ status:processing-  │ 00 via               │
+      │     │                          │ error (§5.25)       │ ClassCastException)  │
+   36 │ 4.2 │ Condition predicate      │ ConditionResult.TRU │ N (Condition.java:59 │ Condition.evaluate
+      │     │ evaluates to 1-element   │ E (§5.25)           │ constructor rejects  │
+      │     │ bag [true]               │                     │ bag types)           │
+   37 │ 4.2 │ Condition predicate      │ ConditionResult.FAL │ N (Condition.java:59 │ Condition.evaluate
+      │     │ evaluates to 1-element   │ SE (§5.25)          │ constructor rejects  │
+      │     │ bag [false]              │                     │ bag types)           │
+   38 │ 4.2 │ new                      │ Throws              │ Y                    │ Condition
+      │     │ Condition(expression)    │ IllegalArgumentExce │ (Condition.java:59-6 │ constructor
+      │     │ where expression         │ ption               │ 3)                   │
+      │     │ declared type is INTEGER │                     │                      │
+   39 │ 4.2 │ new                      │ Throws              │ Y                    │ Condition
+      │     │ Condition(expression)    │ IllegalArgumentExce │ (Condition.java:59-6 │ constructor
+      │     │ where expression         │ ption               │ 3)                   │
+      │     │ declared type is STRING  │                     │                      │
+   40 │ 4.2 │ End-to-end PDP decision: │ ResponseContext     │ Y                    │ PolicyDecisionPoint.
+      │     │ Policy with Rule         │ decision PERMIT,    │                      │ decide
+      │     │ condition true           │ status ok           │                      │
+   41 │ 4.2 │ End-to-end PDP decision: │ ResponseContext     │ Y                    │ PolicyDecisionPoint.
+      │     │ Policy with Rule         │ decision            │                      │ decide
+      │     │ condition false          │ NOT_APPLICABLE,     │                      │
+      │     │                          │ status ok           │                      │
+   42 │ 4.2 │ End-to-end PDP decision: │ ResponseContext     │ Y                    │ PolicyDecisionPoint.
+      │     │ Policy with Rule         │ decision            │                      │ decide
+      │     │ condition designator     │ INDETERMINATE,      │                      │
+      │     │ MustBePresent=true,      │ status code         │                      │
+      │     │ missing attribute        │ missing-attribute   │                      │
+   43 │ 4.2 │ End-to-end PDP decision: │ ResponseContext     │ Y                    │ PolicyDecisionPoint.
+      │     │ Policy with Rule         │ decision            │                      │ decide
+      │     │ condition designator     │ NOT_APPLICABLE      │                      │
+      │     │ MustBePresent=false,     │ (empty bag in       │                      │
+      │     │ missing attribute        │ condition           │                      │
+      │     │                          │ comparison)         │                      │
+  ──────
+  ## Table C: Spec Ambiguities Needing Maintainer Decisions
+
+   # │ Topic                │ Normative References & Dilemma │ Options              │ Recommended Option
+  ───┼──────────────────────┼────────────────────────────────┼──────────────────────┼──────────────────────
+   1 │ Direct Bag in        │ XACML 3.0 §5.25 states that if │ Option 1: Allow      │ Option 1 (scheduled
+     │ <Condition> vs       │ <Condition> expression         │ Condition to accept  │ for task 6.1 under
+     │ Explicit Unwrapping  │ evaluates to an empty bag or   │ bag[boolean]         │ design D7). For task
+     │                      │ >1 values, it evaluates to     │ expressions and      │ 4.2 tests, pin the
+     │                      │ Indeterminate; if it evaluates │ unwrap 1-element     │ existing scalar
+     │                      │ to a single boolean, it        │ bags at evaluation   │ constructor check
+     │                      │ evaluates to that boolean.     │ time (per §5.25 and  │ and test bag
+     │                      │ However, XACML 3.0 schema      │ design D7 / task     │ handling via mock
+     │                      │ allows any <Expression>.       │ 6.1).Option 2:       │ expressions or
+     │                      │ Currently, Condition.java:59   │ Maintain strict      │ unmarshaller.
+     │                      │ strictly rejects bag[boolean]  │ scalar BOOLEAN       │
+     │                      │ at construction, requiring an  │ requirement on       │
+     │                      │ explicit type-one-and-only     │ Condition, requiring │
+     │                      │ wrapper function.              │ the XML unmarshaller │
+     │                      │                                │ to synthesize a one- │
+     │                      │                                │ and-only AST node    │
+     │                      │                                │ for direct           │
+     │                      │                                │ designators.         │
+   2 │ MissingAttributeDeta │ XACML 3.0 §7.19.3 requires     │ Option 1: Implement  │ Option 1: Implement
+     │ il Completeness &    │ <StatusDetail> to contain      │ <MissingAttributeDet │ model
+     │ Accumulation         │ <MissingAttributeDetail> for   │ ail> in the object   │ MissingAttributeDeta
+     │                      │ missing attributes when        │ model and populate   │ il in core so both
+     │                      │ MustBePresent="true".          │ it with Category,    │ PDP evaluation and
+     │                      │ Currently, Status.java:107     │ AttributeId,         │ XML/JSON marshallers
+     │                      │ leaves StatusDetail null.      │ DataType, and Issuer │ produce compliant
+     │                      │                                │ on missing           │ status details.
+     │                      │                                │ designator           │
+     │                      │                                │ evaluation.Option 2: │
+     │                      │                                │ Defer StatusDetail   │
+     │                      │                                │ population to a      │
+     │                      │                                │ separate XML         │
+     │                      │                                │ marshaller mapper    │
+     │                      │                                │ task, keeping core   │
+     │                      │                                │ Status message-      │
+     │                      │                                │ based.               │
+   3 │ attribute-designator │ The OASIS Entity Profile       │ Option 1: Align with │ Option 1: Provides
+     │ Function on Absent   │ function                       │ <AttributeDesignator │ behavioral symmetry
+     │ Category             │ urn:oasis:names:tc:xacml:3.0:f │ >: if category is    │ between the XML
+     │                      │ unction:attribute-designator   │ absent and           │ <AttributeDesignator
+     │                      │ allows evaluating attributes   │ mustBePresent=false, │ > element and the
+     │                      │ from a category URI or Entity. │ return an empty bag; │ attribute-designator
+     │                      │ When a Category URI is not     │ if                   │ function.
+     │                      │ present in the request         │ mustBePresent=true,  │
+     │                      │ context:                       │ throw missing-       │
+     │                      │ AttributeDesignatorFunctions.j │ attribute.Option 2:  │
+     │                      │ ava:65 throws processing-error │ Retain current       │
+     │                      │ ("Entity is null").            │ behavior where       │
+     │                      │                                │ missing categories   │
+     │                      │                                │ are treated as fatal │
+     │                      │                                │ processing-error     │
+     │                      │                                │ while missing        │
+     │                      │                                │ attributes within an │
+     │                      │                                │ existing category    │
+     │                      │                                │ follow               │
+     │                      │                                │ mustBePresent.       │
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, antigravity)
+    Counts:
+      - Table A (Defects): 6
+      - Table B (Test cases): 43
+      - Table C (Ambiguities): 3
+    Top 3 Defects:
+      1. DefaultEvaluationContextHandler.java:160-163 & AttributeReference.java:132-143 swallow PIP
+  resolver exceptions when MustBePresent=false, returning an empty bag instead of Indeterminate with
+  status:processing-error (§7.3.5).
+      2. DefaultEvaluationContextHandler.java:160-163 & AttributeDesignator.java:96-98 misclassify PIP
+  resolver failures when MustBePresent=true as status:missing-attribute instead of status:processing-error
+  (§7.3.5).
+      3. AttributeSelector.java:77-78 operator precedence bug: (v == null || !v.isPresent() &&
+  isMustBePresent()) throws missing-attribute whenever v is null even when MustBePresent=false.
+    Files opened:
+      - xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeDesignator.java
+      - xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeSelector.java
+      - xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeReference.java
+      - xacml-core/src/main/java/org/xacml4j/v30/policy/Condition.java
+      - xacml-core/src/main/java/org/xacml4j/v30/policy/Rule.java
+      - xacml-core/src/main/java/org/xacml4j/v30/Status.java
+      - xacml-core/src/main/java/org/xacml4j/v30/AttributeIndex.java
+      - xacml-core/src/main/java/org/xacml4j/v30/AttributeDesignatorKey.java
+      - xacml-core/src/main/java/org/xacml4j/v30/types/Entity.java
+      - xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java
+      - xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+      - xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java
+      - xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java
+      - xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java
+

@@ -22,13 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Method;
 import java.time.Clock;
@@ -38,9 +37,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeDesignatorKey;
@@ -60,13 +59,11 @@ public class AnnotatedResolverFactoryTest
 {
 	private AnnotatedResolverFactory p;
 	private EvaluationContext context;
-	private IMocksControl control;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.p = new AnnotatedResolverFactory();
-		this.control = createControl();
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = Mockito.mock(EvaluationContext.class);
 	}
 
 	@Test
@@ -90,20 +87,18 @@ public class AnnotatedResolverFactoryTest
 		Method m = getMethod(this.getClass(), "resolve1");
 		assertNotNull(m);
 
-		expect(context.resolve(AttributeDesignatorKey.builder()
+		when(context.resolve(AttributeDesignatorKey.builder()
 		                                             .category(CategoryId.of("test"))
 		                                             .dataType(XacmlTypes.BOOLEAN)
 				                       .attributeId("attr1").build()))
-				.andReturn(Optional.of(XacmlTypes.BOOLEAN.ofAny(true).toBag()));
-		expect(context.resolve(AttributeDesignatorKey.builder()
+				.thenReturn(Optional.of(XacmlTypes.BOOLEAN.ofAny(true).toBag()));
+		when(context.resolve(AttributeDesignatorKey.builder()
 		                                             .category(CategoryId.of("test"))
 		                                             .issuer("test")
 		                                             .dataType(XacmlTypes.INTEGER)
 		                                             .attributeId("attr2").build()))
-				.andReturn(Optional.of(XacmlTypes.INTEGER.ofAny(10).toBag()));
-		expect(context.getClock()).andReturn(Clock.systemUTC());
-
-		control.replay();
+				.thenReturn(Optional.of(XacmlTypes.INTEGER.ofAny(10).toBag()));
+		when(context.getClock()).thenReturn(Clock.systemUTC());
 
 		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
 		LoggerFactory.getLogger(getClass()).debug(d.toString());
@@ -115,7 +110,10 @@ public class AnnotatedResolverFactoryTest
 		ResolverContext pipContext = ResolverContext.createContext(context, d);
 
 		d.getResolverFunction().apply(pipContext);
-		control.verify();
+		verify(context).resolve(expectedKey0);
+		verify(context).resolve(expectedKey1);
+		verify(context).getClock();
+		Mockito.verifyNoMoreInteractions(context);
 
 		assertEquals("Test", d.getName());
 		Truth8.assertThat(CategoryId.parse("subject")).hasValue(d.getCategory());
@@ -147,10 +145,6 @@ public class AnnotatedResolverFactoryTest
 
 		assertEquals(expectedKey0, keys.get(0));
 		assertEquals(expectedKey1, keys.get(1));
-
-
-
-		control.verify();
 	}
 
 	@Test
@@ -158,16 +152,15 @@ public class AnnotatedResolverFactoryTest
 	{
 		Method m = getMethod(this.getClass(), "resolve2");
 		assertNotNull(m);
-		replay(context);
 		AttributeResolverDescriptor d = p.parseAttributeResolver(this, m);
 		ResolverContext pipContext = ResolverContext.createContext(context, d);
 		d.getResolverFunction().apply(pipContext);
+		Mockito.verifyNoInteractions(context);
 
 		assertEquals("Test", d.getName());
 		assertEquals(CategoryId.parse("subject").get(), d.getCategory());
 		assertEquals("issuer", d.getIssuer());
 		assertEquals(Duration.ofSeconds(30), d.getPreferredCacheTTL());
-		verify(context);
 
 	}
 
@@ -180,20 +173,24 @@ public class AnnotatedResolverFactoryTest
 		assertTrue(d.getContextKeyRefs().isEmpty());
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testParseAttributeResolverWithKeyParametersFirst()
 	{
-		Method m = getMethod(this.getClass(), "resolve4");
-		assertNotNull(m);
-		p.parseAttributeResolver(this, m);
+		assertThrows(SyntaxException.class, () -> {
+			Method m = getMethod(this.getClass(), "resolve4");
+			assertNotNull(m);
+			p.parseAttributeResolver(this, m);
+		});
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testParseAttributeResolverWrongReturnType()
 	{
-		Method m = getMethod(this.getClass(), "resolve5");
-		assertNotNull(m);
-		p.parseAttributeResolver(this, m);
+		assertThrows(SyntaxException.class, () -> {
+			Method m = getMethod(this.getClass(), "resolve5");
+			assertNotNull(m);
+			p.parseAttributeResolver(this, m);
+		});
 	}
 
 	@Test

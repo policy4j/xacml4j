@@ -1,0 +1,64 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[25,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[25,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[26,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[26,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[27,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[27,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[27,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[27,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[28,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[28,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[29,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[29,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[25,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[25,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[26,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[26,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[34,17] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[25,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[25,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[26,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[26,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[27,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[27,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[63,10] cannot find symbol
+  symbol:   class Before
+  location: class org.xacml4j.v30.XacmlPolicyTestSupport
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project xacml-test: Compilation failure: Compilation failure: 
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[25,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[25,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[26,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[26,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[27,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:[27,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[27,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[27,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[28,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[28,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[29,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java:[29,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[25,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[25,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[26,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[26,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[34,17] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[25,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[25,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[26,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[26,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[27,24] package org.junit does not exist
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java:[27,1] static import only from classes and interfaces
+[ERROR] <repo>/xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java:[63,10] cannot find symbol
+[ERROR]   symbol:   class Before
+[ERROR]   location: class org.xacml4j.v30.XacmlPolicyTestSupport
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :xacml-test

@@ -24,7 +24,7 @@ package org.xacml4j.v30;
 
 import static com.google.common.truth.Truth8.assertThat;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ContentTest
 {

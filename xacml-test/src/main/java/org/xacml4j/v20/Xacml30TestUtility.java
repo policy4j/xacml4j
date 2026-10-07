@@ -22,14 +22,14 @@ package org.xacml4j.v20;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
+import java.util.function.BiPredicate;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
@@ -37,6 +37,7 @@ import javax.xml.bind.JAXBElement;
 import org.oasis.xacml.v30.jaxb.AttributeType;
 import org.oasis.xacml.v30.jaxb.AttributeValueType;
 import org.oasis.xacml.v30.jaxb.AttributesType;
+import org.oasis.xacml.v30.jaxb.ContentType;
 import org.oasis.xacml.v30.jaxb.IdReferenceType;
 import org.oasis.xacml.v30.jaxb.PolicyIdentifierListType;
 import org.oasis.xacml.v30.jaxb.ResponseType;
@@ -45,10 +46,17 @@ import org.oasis.xacml.v30.jaxb.StatusType;
 import org.oasis.xacml.v30.jaxb.AttributeAssignmentType;
 import org.oasis.xacml.v30.jaxb.ObligationType;
 import org.oasis.xacml.v30.jaxb.ObligationsType;
+import org.oasis.xacml.v30.jaxb.AdviceType;
+import org.oasis.xacml.v30.jaxb.AssociatedAdviceType;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.xml.JAXBUtils;
 import org.xacml4j.v30.xml.Xacml30RequestContextUnmarshaller;
+import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.DoubleVal;
+import org.xacml4j.v30.types.XacmlTypes;
+import org.w3c.dom.Node;
 
 import com.google.common.base.Supplier;
 import com.google.common.io.Closeables;
@@ -78,46 +86,106 @@ public class Xacml30TestUtility
 		assertAttributesType(a.getAttributes(), b.getAttributes());
 		assertStatus(a.getStatus(), b.getStatus());
 		assertObligations(a.getObligations(), b.getObligations());
+		assertAssociatedAdvice(a.getAssociatedAdvice(), b.getAssociatedAdvice());
 	}
 
 	public static void assertAttributesType(List<AttributesType> a, List<AttributesType> b){
-		assertEquals(a.size(), b.size());
-		for(int i = 0; i < a.size(); i++){
-			AttributesType a1 = a.get(i);
-			AttributesType b1 = b.get(i);
-			assertEquals(a1.getCategory(), b1.getCategory());
-			assertEquals(a1.getId(), b1.getId());
-			assertAttributeType(a1.getAttribute(), b1.getAttribute());
-			assertEquals(a1.getContent().getContent(), b1.getContent().getContent());
-		}
+		assertTrue(sameMultiset(a, b, Xacml30TestUtility::sameAttributes), "Included categories differ");
 	}
 
 	public static void assertAttributeType(List<AttributeType> a, List<AttributeType> b){
-		assertEquals(a.size(), b.size());
-		for(int i = 0; i < a.size(); i++){
-			AttributeType a1 = a.get(i);
-			AttributeType b1 = b.get(i);
-			assertEquals(a1.getAttributeId(), b1.getAttributeId());
-			assertEquals(a1.getIssuer(), b1.getIssuer());
-			assertEquals(a1.isIncludeInResult(), b1.isIncludeInResult());
-			assertAttributeValues(a1.getAttributeValue(), b1.getAttributeValue());
-		}
+		assertTrue(sameMultiset(a, b, Xacml30TestUtility::sameAttribute), "Included attributes differ");
 	}
 
 	public static void assertAttributeValues(List<AttributeValueType> a, List<AttributeValueType> b){
-		assertEquals(a.size(), b.size());
-		for(int i = 0; i < a.size(); i++){
-			AttributeValueType a1 = a.get(i);
-			AttributeValueType b1 = b.get(i);
-			assertEquals(a1.getDataType(), b1.getDataType());
-			assertEquals(a1.getContent(), b1.getContent());
-			assertEquals(a1.getOtherAttributes(), b1.getOtherAttributes());
+		assertTrue(sameMultiset(a, b, Xacml30TestUtility::sameAttributeValue), "Attribute values differ");
+	}
+
+	private static boolean sameAttributes(AttributesType a, AttributesType b)
+	{
+		return Objects.equals(a.getCategory(), b.getCategory())
+				&& Objects.equals(a.getId(), b.getId())
+				&& sameMultiset(a.getAttribute(), b.getAttribute(), Xacml30TestUtility::sameAttribute)
+				&& sameContent(a.getContent(), b.getContent());
+	}
+
+	private static boolean sameContent(ContentType a, ContentType b)
+	{
+		if (a == null || b == null) {
+			return a == b;
 		}
+		return Objects.equals(a.getType(), b.getType()) && sameContent(a.getContent(), b.getContent());
+	}
+
+	private static boolean sameAttribute(AttributeType a, AttributeType b)
+	{
+		return Objects.equals(a.getAttributeId(), b.getAttributeId())
+				&& Objects.equals(a.getIssuer(), b.getIssuer())
+				&& a.isIncludeInResult() == b.isIncludeInResult()
+				&& sameMultiset(a.getAttributeValue(), b.getAttributeValue(), Xacml30TestUtility::sameAttributeValue);
+	}
+
+	private static boolean sameAttributeValue(AttributeValueType a, AttributeValueType b)
+	{
+		return Objects.equals(a.getDataType(), b.getDataType())
+				&& Objects.equals(a.getOtherAttributes(), b.getOtherAttributes())
+				&& sameValueContent(a.getDataType(), a.getContent(), b.getContent());
+	}
+
+	static boolean sameValueContent(String dataType, List<?> a, List<?> b)
+	{
+		if (a.stream().allMatch(String.class::isInstance) && b.stream().allMatch(String.class::isInstance)) {
+			String expected = a.stream().map(String.class::cast).collect(java.util.stream.Collectors.joining());
+			String actual = b.stream().map(String.class::cast).collect(java.util.stream.Collectors.joining());
+			ValueType type = XacmlTypes.getType(dataType).orElse(null);
+			if (type == null) {
+				// Unknown extension types retain strict lexical comparison.
+				return expected.equals(actual);
+			}
+			try {
+				Value<?> expectedValue = type.ofAny(expected);
+				Value<?> actualValue = type.ofAny(actual);
+				if (type.equals(XacmlTypes.DOUBLE)) {
+					double first = ((DoubleVal) expectedValue).get();
+					double second = ((DoubleVal) actualValue).get();
+					return first == second || (Double.isNaN(first) && Double.isNaN(second));
+				}
+				return Objects.equals(expectedValue, actualValue);
+			} catch (RuntimeException invalid) {
+				throw new AssertionError("Invalid lexical attribute value for " + dataType, invalid);
+			}
+		}
+		return sameContent(a, b);
+	}
+
+	static boolean sameContent(List<?> a, List<?> b)
+	{
+		if (a.size() != b.size()) {
+			return false;
+		}
+		for (int i = 0; i < a.size(); i++) {
+			Object expected = a.get(i);
+			Object actual = b.get(i);
+			if (expected instanceof Node && actual instanceof Node) {
+				if (!((Node) expected).isEqualNode((Node) actual)) {
+					return false;
+				}
+			} else if (!Objects.equals(expected, actual)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public static void assertPolicyIdentifierList(PolicyIdentifierListType a, PolicyIdentifierListType b){
 		if(a == null && b == null){
 			return;
+		}
+		if(a == null){
+			a = new PolicyIdentifierListType();
+		}
+		if(b == null){
+			b = new PolicyIdentifierListType();
 		}
 		assertEquals(a.getPolicyIdReferenceOrPolicySetIdReference().size(),
 		             b.getPolicyIdReferenceOrPolicySetIdReference().size());
@@ -141,63 +209,103 @@ public class Xacml30TestUtility
 		if(a == null && b == null){
 			return;
 		}
-		List<ObligationType> oa = a.getObligation();
-		List<ObligationType> ob = a.getObligation();
-		assertEquals(oa.size(), ob.size());
-		Map<String , ObligationType> aMap = toObligationMap(oa);
-		Map<String , ObligationType> bMap = toObligationMap(ob);
-
-		assertTrue(aMap.keySet().containsAll(bMap.keySet()));
-		assertTrue(bMap.keySet().containsAll(aMap.keySet()));
-
-		for(String obligationId : aMap.keySet()){
-			ObligationType obligationA = aMap.get(obligationId);
-			ObligationType obligationB = bMap.get(obligationId);
-			assertObligation(obligationA, obligationB);
+		if(a == null){
+			a = new ObligationsType();
 		}
+		if(b == null){
+			b = new ObligationsType();
+		}
+		List<ObligationType> oa = a.getObligation();
+		List<ObligationType> ob = b.getObligation();
+		assertTrue(sameMultiset(oa, ob, Xacml30TestUtility::sameObligation),
+				"Obligations differ");
+	}
+
+	public static void assertAssociatedAdvice(AssociatedAdviceType a, AssociatedAdviceType b)
+	{
+		if(a == null && b == null){
+			return;
+		}
+		if(a == null){
+			a = new AssociatedAdviceType();
+		}
+		if(b == null){
+			b = new AssociatedAdviceType();
+		}
+		List<AdviceType> aa = a.getAdvice();
+		List<AdviceType> ab = b.getAdvice();
+		assertTrue(sameMultiset(aa, ab, Xacml30TestUtility::sameAdvice),
+				"Associated advice differs");
+	}
+
+	public static void assertAdvice(AdviceType a, AdviceType b)
+	{
+		assertEquals(a.getAdviceId(), b.getAdviceId());
+		assertTrue(sameMultiset(a.getAttributeAssignment(), b.getAttributeAssignment(),
+				Xacml30TestUtility::sameAttributeAssignment), "Advice assignments differ");
 	}
 
 	public static void assertObligation(ObligationType a, ObligationType b)
 	{
-		List<AttributeAssignmentType> aAttr = a.getAttributeAssignment();
-		List<AttributeAssignmentType> bAttr = b.getAttributeAssignment();
-		assertEquals(aAttr.size(), bAttr.size());
-		Map<String, AttributeAssignmentType> aMap = toAttributeAssignmentMap(aAttr);
-		Map<String, AttributeAssignmentType> bMap = toAttributeAssignmentMap(bAttr);
-		assertTrue(aMap.keySet().containsAll(bMap.keySet()));
-		assertTrue(bMap.keySet().containsAll(aMap.keySet()));
-		for(String attributeId : aMap.keySet()){
-			AttributeAssignmentType attrA = aMap.get(attributeId);
-			AttributeAssignmentType attrB = bMap.get(attributeId);
-			assertAttributeAssignment(attrA, attrB);
-		}
+		assertEquals(a.getObligationId(), b.getObligationId());
+		assertTrue(sameMultiset(a.getAttributeAssignment(), b.getAttributeAssignment(),
+				Xacml30TestUtility::sameAttributeAssignment), "Obligation assignments differ");
 	}
 
 	public static void assertAttributeAssignment(AttributeAssignmentType a, AttributeAssignmentType b)
 	{
 		assertEquals(a.getAttributeId(), b.getAttributeId());
+		assertEquals(a.getCategory(), b.getCategory());
+		assertEquals(a.getIssuer(), b.getIssuer());
 		assertEquals(a.getDataType(), b.getDataType());
-		assertEquals(a.getContent(), b.getContent());
+		assertEquals(a.getOtherAttributes(), b.getOtherAttributes());
+		assertTrue(sameValueContent(a.getDataType(), a.getContent(), b.getContent()), "Assignment values differ");
 	}
 
-	private static Map<String, ObligationType> toObligationMap(
-			List<ObligationType> obligations)
+	private static boolean sameAdvice(AdviceType a, AdviceType b)
 	{
-		Map<String, ObligationType> map = new LinkedHashMap<String, ObligationType>();
-		for(ObligationType o : obligations){
-			map.put(o.getObligationId(), o);
-		}
-		return map;
+		return Objects.equals(a.getAdviceId(), b.getAdviceId())
+				&& sameMultiset(a.getAttributeAssignment(), b.getAttributeAssignment(),
+						Xacml30TestUtility::sameAttributeAssignment);
 	}
 
-	private static Map<String, AttributeAssignmentType> toAttributeAssignmentMap(
-			List<AttributeAssignmentType> attributes)
+	private static boolean sameObligation(ObligationType a, ObligationType b)
 	{
-		Map<String, AttributeAssignmentType> map = new LinkedHashMap<String, AttributeAssignmentType>();
-		for(AttributeAssignmentType a : attributes){
-			map.put(a.getAttributeId(), a);
+		return Objects.equals(a.getObligationId(), b.getObligationId())
+				&& sameMultiset(a.getAttributeAssignment(), b.getAttributeAssignment(),
+						Xacml30TestUtility::sameAttributeAssignment);
+	}
+
+	private static boolean sameAttributeAssignment(AttributeAssignmentType a, AttributeAssignmentType b)
+	{
+		return Objects.equals(a.getAttributeId(), b.getAttributeId())
+				&& Objects.equals(a.getCategory(), b.getCategory())
+				&& Objects.equals(a.getIssuer(), b.getIssuer())
+				&& Objects.equals(a.getDataType(), b.getDataType())
+				&& Objects.equals(a.getOtherAttributes(), b.getOtherAttributes())
+				&& sameValueContent(a.getDataType(), a.getContent(), b.getContent());
+	}
+
+	static <T> boolean sameMultiset(List<T> a, List<T> b, BiPredicate<T, T> equivalent)
+	{
+		if (a.size() != b.size()) {
+			return false;
 		}
-		return map;
+		boolean[] matched = new boolean[b.size()];
+		for (T expected : a) {
+			boolean found = false;
+			for (int i = 0; i < b.size(); i++) {
+				if (!matched[i] && equivalent.test(expected, b.get(i))) {
+					matched[i] = true;
+					found = true;
+					break;
+				}
+			}
+			if (!found) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@SuppressWarnings("unchecked")

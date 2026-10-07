@@ -1,0 +1,17 @@
+NTM session: policy4j--resume-g4-review-20261004-w4.
+Lanes: policy4j_code_review_claude_opus, policy4j_code_review_codex_astra, Grok4.7 adversarial.
+Numeric/harness packet: numeric-harness-hashes.json (11 files), packets/{opus,astra,grok}.md.
+Final combining/follow-up packet: final-scope-hashes.json v2 (18 files), packets/final-{opus,astra,grok}.md.
+One announced revision changed only NaNFixtureAdjudicationTest: marshal actual ResponseContext to JAXB before full comparator. The superseded manifest is retained as final-scope-r1-superseded.json.
+Documentation-only traceability addendum: closure-scope-hashes.json and traceability-spec-hashes.json. Only the combining delta spec changes after v2; all production/test bytes remain unchanged from the successful reactor.
+
+Dispatch (from integration worktree, NTM_PROJECTS_BASE=<checkouts>/xacml4j-worktrees):
+  rtk ntm send policy4j--resume-g4-review-20261004-w4 --pane=<0:Grok,1:Opus,2:Astra> --file=<packet-path>
+Review commands: native reads, rtk rg, rtk proxy shasum -a 256, structured receipt parsing; Astra ran scoped ast-grep scan (exit0, no diagnostics).
+No reviewer ran Maven, tests, network research or source edits. Persona refusal to write reports was honored; conductor copied final text from native provider session records.
+Native final metadata and terminal markers are in each lane's final-native-receipt.json and retained terminal captures. Config/model metadata is not independent backend attestation.
+Opus final review was bounded after an interrupted long inspection, then completed a final hash check and printed its final verdict. Earlier inspection and interruption do not count as completion; the required final marker does.
+
+Conductor gates are in tests/069-task46-spec-compliance, not claimed as reviewer execution.
+Strict OpenSpec validation rerun after the traceability addendum.
+Session shutdown and final hash/report checks occur after all required terminal reports are retained.

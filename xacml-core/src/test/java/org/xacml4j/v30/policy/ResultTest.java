@@ -22,10 +22,11 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.Obligation;
@@ -41,7 +42,7 @@ public class ResultTest
 	private Obligation denyObligationWithId2;
 	private Obligation denyObligationWithSameId1;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.denyObligationWithId1 = Obligation
 				.builder("id1", Effect.DENY)

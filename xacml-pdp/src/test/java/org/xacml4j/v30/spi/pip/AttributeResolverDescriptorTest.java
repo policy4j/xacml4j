@@ -21,23 +21,22 @@ package org.xacml4j.v30.spi.pip;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.time.Clock;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import org.easymock.EasyMock;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
@@ -48,29 +47,28 @@ import com.google.common.collect.ImmutableMap;
 
 public class AttributeResolverDescriptorTest
 {
-	private IMocksControl c;
 	private EvaluationContext context;
-	@Before
+	@BeforeEach
 	public void setUp(){
-		this.c = EasyMock.createControl();
-		this.context = c.createMock(EvaluationContext.class);
+				this.context = Mockito.mock(EvaluationContext.class);
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testBuildDescriptorWithContextKeyReferringToThisDescriptor()
 	{
-		AttributeResolverDescriptor.builder(
-				"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
-		.attribute("testId1", XacmlTypes.INTEGER)
-		.attribute("testId2", XacmlTypes.STRING)
-		.contextRef(AttributeDesignatorKey
-				.builder()
-				.category(CategoryId.SUBJECT_ACCESS)
-				.issuer("issuer")
-				.attributeId("testId1")
-				.dataType(XacmlTypes.INTEGER)
-				.build())
-		.build((c)-> ImmutableMap.of());
+		assertThrows(SyntaxException.class, () ->
+			AttributeResolverDescriptor.builder(
+					"id", "name", "issuer", CategoryId.SUBJECT_ACCESS)
+					.attribute("testId1", XacmlTypes.INTEGER)
+					.attribute("testId2", XacmlTypes.STRING)
+					.contextRef(AttributeDesignatorKey
+							.builder()
+							.category(CategoryId.SUBJECT_ACCESS)
+							.issuer("issuer")
+							.attributeId("testId1")
+							.dataType(XacmlTypes.INTEGER)
+							.build())
+					.build((c) -> ImmutableMap.of()));
 	}
 
 	@Test
@@ -117,13 +115,11 @@ public class AttributeResolverDescriptorTest
 		assertNotNull(byKey.get(key0.build()));
 		assertNotNull(byKey.get(key1.build()));
 
-		expect(context.getClock()).andReturn(Clock.systemUTC());
-		c.replay();
+		when(context.getClock()).thenReturn(Clock.systemUTC());
 		Function<ResolverContext, Optional<AttributeSet>> r = d.getResolverFunction();
 		ResolverContext resolverContext = ResolverContext.createContext(context, d);
 		assertEquals(XacmlTypes.INTEGER.ofAny(10).toBag(),
 		             r.apply(resolverContext).get().get("testId1").get());
-		c.verify();
 	}
 
 	@Test

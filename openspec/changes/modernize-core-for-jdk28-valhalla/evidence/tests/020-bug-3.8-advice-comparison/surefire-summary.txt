@@ -1,0 +1,16 @@
+JDK: Oracle Java 21.0.6 (Maven 3.9.16; `JAVA_HOME="$(jenv prefix 21)"`).
+
+Red comparator run: Xacml30TestUtilityTest: 20 tests, 4 failures, 0 errors, 0 skipped. The failing methods were missing advice, extra advice, differing advice id, and differing assignment fields.
+
+Focused green comparator run: Xacml30TestUtilityTest: 20 tests, 0 failures, 0 errors, 0 skipped; BUILD SUCCESS.
+
+Full `-pl xacml-test -am test`: core: 760 tests, 0 failures, 0 errors, 2 skipped; xacml-test: 26 tests, 0 failures, 0 errors, 0 skipped; BUILD SUCCESS.
+
+Full `-pl xacml-conformance-tests -am test`: conformance module total: 42 Surefire test methods, 0 failures, 0 errors, 0 skipped; BUILD SUCCESS. The data-driven suites report 347 OASIS 2.0 cases, 347 OASIS 3.0 cases, 17 RSA 2008 cases, and 2 examples. No conformance case failed.
+
+rv028 red run: Xacml30TestUtilityTest had 24 tests, 4 failures, 0 errors, and 0 skipped. Failures were the new tests for permuted repeated-AttributeId assignments in advice and obligations, and changed earlier entries among duplicate AdviceIds and ObligationIds.
+
+rv028 focused green: Xacml30TestUtilityTest had 24 tests, 0 failures, 0 errors, and 0 skipped; BUILD SUCCESS.
+
+rv028 conformance run (`-pl xacml-conformance-tests -am test`):
+OASIS 2.0: 347 cases; OASIS 3.0: 347 cases; RSA 2008: 17 tests; examples: 2 tests. No failures, errors, or skips. Conformance module: 42 test methods, 0 failures, 0 errors, 0 skips; BUILD SUCCESS. xacml-test: 30 tests, 0 failures, 0 errors, 0 skips.

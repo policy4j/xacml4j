@@ -1,0 +1,1702 @@
+commit ea3fc607d7493530ad90a77aee221d77464cb0b3
+Author: Giedrius Trumpickas <trumpyla@gmail.com>
+Date:   Mon Apr 17 22:32:30 2023 -0400
+
+    Move core domain value objects to root
+
+diff --git a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+index 73b9fc06..9210d583 100644
+--- a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
++++ b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+@@ -1,9 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Request
+-      xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+-      xmlns:md="http://www.medico.com/schemas/record"
+-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os
++		xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++		xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os
+         access_control-xacml-2.0-context-schema-os.xsd">
+     <Subject>
+         <Attribute
+
+commit 451e0b44659dad4bceb1604d7ae35dd0d268156b
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Mon Jun 30 16:17:48 2014 -0400
+
+    Exposing project to the public
+
+diff --git a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+new file mode 100644
+index 00000000..73b9fc06
+--- /dev/null
++++ b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+@@ -0,0 +1,33 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Request
++      xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os
++        access_control-xacml-2.0-context-schema-os.xsd">
++    <Subject>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>Julius Hibbert</AttributeValue>
++        </Attribute>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>riddle me this</AttributeValue>
++        </Attribute>
++    </Subject>
++    <Resource>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
++              DataType="http://www.w3.org/2001/XMLSchema#anyURI">
++            <AttributeValue>http://medico.com/record/patient/BartSimpson</AttributeValue>
++        </Attribute>
++    </Resource>
++    <Action>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>read</AttributeValue>
++        </Attribute>
++    </Action><Environment/></Request>
+
+commit a9189026dc851633a28d78e087d521d0d9a414a2
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Fri May 30 23:18:11 2014 -0400
+
+    - Updated project description
+    - Moved conformance tests to a separate module
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+similarity index 100%
+rename from xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+rename to xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+
+commit 0e1210917d34223f6969e63d86e337f13205058d
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Wed May 14 21:30:51 2014 -0400
+
+    Removed 'executable' bits from text files
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+old mode 100755
+new mode 100644
+
+commit fae4b3f2ce6cf420212cbc3d80916af2882a2a23
+Author: Valdas Sevelis <valdas@artagon.com>
+Date:   Mon Jan 28 17:41:35 2013 -0500
+
+    Removed xacml-schemas, converted files to Unix format
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+index 1dd8d7eb..73b9fc06 100755
+--- a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+@@ -1,33 +1,33 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Request
+-      xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+-      xmlns:md="http://www.medico.com/schemas/record"
+-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os
+-        access_control-xacml-2.0-context-schema-os.xsd">
+-    <Subject>
+-        <Attribute
+-              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+-              DataType="http://www.w3.org/2001/XMLSchema#string">
+-            <AttributeValue>Julius Hibbert</AttributeValue>
+-        </Attribute>
+-        <Attribute
+-              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
+-              DataType="http://www.w3.org/2001/XMLSchema#string">
+-            <AttributeValue>riddle me this</AttributeValue>
+-        </Attribute>
+-    </Subject>
+-    <Resource>
+-        <Attribute
+-              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+-              DataType="http://www.w3.org/2001/XMLSchema#anyURI">
+-            <AttributeValue>http://medico.com/record/patient/BartSimpson</AttributeValue>
+-        </Attribute>
+-    </Resource>
+-    <Action>
+-        <Attribute
+-              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+-              DataType="http://www.w3.org/2001/XMLSchema#string">
+-            <AttributeValue>read</AttributeValue>
+-        </Attribute>
+-    </Action><Environment/></Request>
++<?xml version="1.0" encoding="UTF-8"?>
++<Request
++      xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os
++        access_control-xacml-2.0-context-schema-os.xsd">
++    <Subject>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>Julius Hibbert</AttributeValue>
++        </Attribute>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>riddle me this</AttributeValue>
++        </Attribute>
++    </Subject>
++    <Resource>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
++              DataType="http://www.w3.org/2001/XMLSchema#anyURI">
++            <AttributeValue>http://medico.com/record/patient/BartSimpson</AttributeValue>
++        </Attribute>
++    </Resource>
++    <Action>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>read</AttributeValue>
++        </Attribute>
++    </Action><Environment/></Request>
+
+commit 3672d1fe10c3dde26db3b8556704c58298616201
+Author: Giedrius Trumpickas <trumpyla@artagon.com>
+Date:   Wed May 19 14:28:39 2010 +0000
+
+    Added XACML compatibility test suite project
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+new file mode 100755
+index 00000000..1dd8d7eb
+--- /dev/null
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+@@ -0,0 +1,33 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Request
++      xmlns="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:context:schema:os
++        access_control-xacml-2.0-context-schema-os.xsd">
++    <Subject>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>Julius Hibbert</AttributeValue>
++        </Attribute>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>riddle me this</AttributeValue>
++        </Attribute>
++    </Subject>
++    <Resource>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
++              DataType="http://www.w3.org/2001/XMLSchema#anyURI">
++            <AttributeValue>http://medico.com/record/patient/BartSimpson</AttributeValue>
++        </Attribute>
++    </Resource>
++    <Action>
++        <Attribute
++              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++              DataType="http://www.w3.org/2001/XMLSchema#string">
++            <AttributeValue>read</AttributeValue>
++        </Attribute>
++    </Action><Environment/></Request>
+commit ea3fc607d7493530ad90a77aee221d77464cb0b3
+Author: Giedrius Trumpickas <trumpyla@gmail.com>
+Date:   Mon Apr 17 22:32:30 2023 -0400
+
+    Move core domain value objects to root
+
+diff --git a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+index 5344cd21..b516a56d 100644
+--- a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
++++ b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+@@ -1,13 +1,12 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Policy
+-      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+-      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+-      xmlns:md="http://www.medico.com/schemas/record"
+-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++		xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++		xmlns:md="http://www.medico.com/schemas/record"
++		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++		xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+         access_control-xacml-2.0-policy-schema-os.xsd"
+-      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
+-      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++		PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
++		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+     <Description>
+         Policy for Conformance Test IIIF007.
+     </Description>
+
+commit 451e0b44659dad4bceb1604d7ae35dd0d268156b
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Mon Jun 30 16:17:48 2014 -0400
+
+    Exposing project to the public
+
+diff --git a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+new file mode 100644
+index 00000000..5344cd21
+--- /dev/null
++++ b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+@@ -0,0 +1,136 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy
++      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++        access_control-xacml-2.0-policy-schema-os.xsd"
++      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
++      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++    <Description>
++        Policy for Conformance Test IIIF007.
++    </Description>
++    <PolicyDefaults>
++        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++    </PolicyDefaults>
++    <Target/>
++    <Rule
++          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:rule"
++          Effect="Permit">
++        <Description>
++            Julius Hibbert can read or write Bart Simpson's medical record.
++        </Description>
++        <Target>
++            <Subjects>
++                <Subject>
++                    <SubjectMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Julius Hibbert</AttributeValue>
++                        <SubjectAttributeDesignator
++                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </SubjectMatch>
++                    <SubjectMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">riddle me this</AttributeValue>
++                        <SubjectAttributeDesignator
++                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
++                              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </SubjectMatch>
++                </Subject>
++            </Subjects>
++            <Resources>
++                <Resource>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://medico.com/record/patient/BartSimpson</AttributeValue>
++                        <ResourceAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#anyURI"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                </Resource>
++            </Resources>
++            <Actions>
++                <Action>
++                    <ActionMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
++                        <ActionAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ActionMatch>
++                </Action>
++                <Action>
++                    <ActionMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">write</AttributeValue>
++                        <ActionAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ActionMatch>
++                </Action>
++            </Actions>
++        </Target>
++        <Condition>
++<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++
++</Apply></Condition>
++    </Rule>
++</Policy>
+
+commit a9189026dc851633a28d78e087d521d0d9a414a2
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Fri May 30 23:18:11 2014 -0400
+
+    - Updated project description
+    - Moved conformance tests to a separate module
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+similarity index 100%
+rename from xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+rename to xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+
+commit 0e1210917d34223f6969e63d86e337f13205058d
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Wed May 14 21:30:51 2014 -0400
+
+    Removed 'executable' bits from text files
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+old mode 100755
+new mode 100644
+
+commit 7a15016fa5a9d84f3cadb07f4133af22546f6c10
+Author: Valdas Sevelis <valdas@artagon.com>
+Date:   Mon Oct 28 21:11:13 2013 -0400
+
+    - Removed extra whitespace
+    - Fixed JavaDocs
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+index 03a52479..5344cd21 100755
+--- a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+@@ -130,7 +130,7 @@
+                       RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
+                       MustBePresent="true"
+                       DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
+-        
++
+ </Apply></Condition>
+     </Rule>
+ </Policy>
+
+commit fae4b3f2ce6cf420212cbc3d80916af2882a2a23
+Author: Valdas Sevelis <valdas@artagon.com>
+Date:   Mon Jan 28 17:41:35 2013 -0500
+
+    Removed xacml-schemas, converted files to Unix format
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+index 3e6e74c7..03a52479 100755
+--- a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+@@ -1,136 +1,136 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Policy
+-      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+-      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+-      xmlns:md="http://www.medico.com/schemas/record"
+-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+-        access_control-xacml-2.0-policy-schema-os.xsd"
+-      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
+-      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+-    <Description>
+-        Policy for Conformance Test IIIF007.
+-    </Description>
+-    <PolicyDefaults>
+-        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
+-    </PolicyDefaults>
+-    <Target/>
+-    <Rule
+-          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:rule"
+-          Effect="Permit">
+-        <Description>
+-            Julius Hibbert can read or write Bart Simpson's medical record.
+-        </Description>
+-        <Target>
+-            <Subjects>
+-                <Subject>
+-                    <SubjectMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#string">Julius Hibbert</AttributeValue>
+-                        <SubjectAttributeDesignator
+-                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+-                              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+-                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+-                    </SubjectMatch>
+-                    <SubjectMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#string">riddle me this</AttributeValue>
+-                        <SubjectAttributeDesignator
+-                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
+-                              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
+-                              MustBePresent="true"
+-                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+-                    </SubjectMatch>
+-                </Subject>
+-            </Subjects>
+-            <Resources>
+-                <Resource>
+-                    <ResourceMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://medico.com/record/patient/BartSimpson</AttributeValue>
+-                        <ResourceAttributeDesignator
+-                              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+-                              DataType="http://www.w3.org/2001/XMLSchema#anyURI"/>
+-                    </ResourceMatch>
+-                    <ResourceMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
+-                        <AttributeSelector
+-                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
+-                              MustBePresent="true"
+-                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+-                    </ResourceMatch>
+-                    <ResourceMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
+-                        <AttributeSelector
+-                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
+-                              MustBePresent="true"
+-                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+-                    </ResourceMatch>
+-                    <ResourceMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
+-                        <AttributeSelector
+-                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
+-                              MustBePresent="true"
+-                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+-                    </ResourceMatch>
+-                </Resource>
+-            </Resources>
+-            <Actions>
+-                <Action>
+-                    <ActionMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
+-                        <ActionAttributeDesignator
+-                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+-                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+-                    </ActionMatch>
+-                </Action>
+-                <Action>
+-                    <ActionMatch
+-                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-                        <AttributeValue
+-                              DataType="http://www.w3.org/2001/XMLSchema#string">write</AttributeValue>
+-                        <ActionAttributeDesignator
+-                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+-                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
+-                    </ActionMatch>
+-                </Action>
+-            </Actions>
+-        </Target>
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy
++      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++        access_control-xacml-2.0-policy-schema-os.xsd"
++      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
++      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++    <Description>
++        Policy for Conformance Test IIIF007.
++    </Description>
++    <PolicyDefaults>
++        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++    </PolicyDefaults>
++    <Target/>
++    <Rule
++          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:rule"
++          Effect="Permit">
++        <Description>
++            Julius Hibbert can read or write Bart Simpson's medical record.
++        </Description>
++        <Target>
++            <Subjects>
++                <Subject>
++                    <SubjectMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Julius Hibbert</AttributeValue>
++                        <SubjectAttributeDesignator
++                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </SubjectMatch>
++                    <SubjectMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">riddle me this</AttributeValue>
++                        <SubjectAttributeDesignator
++                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
++                              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </SubjectMatch>
++                </Subject>
++            </Subjects>
++            <Resources>
++                <Resource>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://medico.com/record/patient/BartSimpson</AttributeValue>
++                        <ResourceAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#anyURI"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                </Resource>
++            </Resources>
++            <Actions>
++                <Action>
++                    <ActionMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
++                        <ActionAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ActionMatch>
++                </Action>
++                <Action>
++                    <ActionMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">write</AttributeValue>
++                        <ActionAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ActionMatch>
++                </Action>
++            </Actions>
++        </Target>
+         <Condition>
+-<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+-            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
+-                <AttributeValue
+-                    DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
+-                <AttributeSelector
+-                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
+-                      MustBePresent="true"
+-                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
+-            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
+-                <AttributeValue
+-                    DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
+-                <AttributeSelector
+-                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
+-                      MustBePresent="true"
+-                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
+-            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
+-                <AttributeValue
+-                    DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
+-                <AttributeSelector
+-                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
+-                      MustBePresent="true"
+-                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
+         
+-</Apply></Condition>
+-    </Rule>
+-</Policy>
++</Apply></Condition>
++    </Rule>
++</Policy>
+
+commit 3672d1fe10c3dde26db3b8556704c58298616201
+Author: Giedrius Trumpickas <trumpyla@artagon.com>
+Date:   Wed May 19 14:28:39 2010 +0000
+
+    Added XACML compatibility test suite project
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+new file mode 100755
+index 00000000..3e6e74c7
+--- /dev/null
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+@@ -0,0 +1,136 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy
++      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++        access_control-xacml-2.0-policy-schema-os.xsd"
++      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:policy"
++      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++    <Description>
++        Policy for Conformance Test IIIF007.
++    </Description>
++    <PolicyDefaults>
++        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++    </PolicyDefaults>
++    <Target/>
++    <Rule
++          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIF007:rule"
++          Effect="Permit">
++        <Description>
++            Julius Hibbert can read or write Bart Simpson's medical record.
++        </Description>
++        <Target>
++            <Subjects>
++                <Subject>
++                    <SubjectMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Julius Hibbert</AttributeValue>
++                        <SubjectAttributeDesignator
++                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </SubjectMatch>
++                    <SubjectMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">riddle me this</AttributeValue>
++                        <SubjectAttributeDesignator
++                              SubjectCategory="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject"
++                              AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:some-attribute"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </SubjectMatch>
++                </Subject>
++            </Subjects>
++            <Resources>
++                <Resource>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#anyURI">http://medico.com/record/patient/BartSimpson</AttributeValue>
++                        <ResourceAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#anyURI"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                    <ResourceMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
++                        <AttributeSelector
++                              RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
++                              MustBePresent="true"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ResourceMatch>
++                </Resource>
++            </Resources>
++            <Actions>
++                <Action>
++                    <ActionMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
++                        <ActionAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ActionMatch>
++                </Action>
++                <Action>
++                    <ActionMatch
++                          MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++                        <AttributeValue
++                              DataType="http://www.w3.org/2001/XMLSchema#string">write</AttributeValue>
++                        <ActionAttributeDesignator
++                              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
++                              DataType="http://www.w3.org/2001/XMLSchema#string"/>
++                    </ActionMatch>
++                </Action>
++            </Actions>
++        </Target>
++        <Condition>
++<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">Bart Simpson</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient_info/md:name/text()"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">yes</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:pathological_diagnosis/md:malignancy/@type"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-is-in">
++                <AttributeValue
++                    DataType="http://www.w3.org/2001/XMLSchema#string">Gastric Cancer</AttributeValue>
++                <AttributeSelector
++                      RequestContextPath="./xacml-context:Resource/xacml-context:ResourceContent/md:record/md:diagnosis_info/md:diagnosis/md:item/text()"
++                      MustBePresent="true"
++                      DataType="http://www.w3.org/2001/XMLSchema#string"/>                  </Apply>
++        
++</Apply></Condition>
++    </Rule>
++</Policy>
+commit ea3fc607d7493530ad90a77aee221d77464cb0b3
+Author: Giedrius Trumpickas <trumpyla@gmail.com>
+Date:   Mon Apr 17 22:32:30 2023 -0400
+
+    Move core domain value objects to root
+
+diff --git a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+index 728d8900..765d760a 100644
+--- a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
++++ b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+@@ -1,13 +1,12 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <Policy
+-      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+-      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+-      xmlns:md="http://www.medico.com/schemas/record"
+-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++		xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++		xmlns:md="http://www.medico.com/schemas/record"
++		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++		xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+         access_control-xacml-2.0-policy-schema-os.xsd"
+-      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:policy"
+-      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++		PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:policy"
++		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+     <Description>
+         Policy for Conformance Test IIIG006.
+     </Description>
+
+commit 451e0b44659dad4bceb1604d7ae35dd0d268156b
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Mon Jun 30 16:17:48 2014 -0400
+
+    Exposing project to the public
+
+diff --git a/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+new file mode 100644
+index 00000000..728d8900
+--- /dev/null
++++ b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy
++      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++        access_control-xacml-2.0-policy-schema-os.xsd"
++      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:policy"
++      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++    <Description>
++        Policy for Conformance Test IIIG006.
++    </Description>
++    <PolicyDefaults>
++        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++    </PolicyDefaults>
++    <Target/>
++    <Rule
++          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:rule"
++          Effect="Permit">
++        <Condition>
++<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-equal">
++                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count">
++                <AttributeValue
++                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name</AttributeValue>
++                </Apply>
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#integer">2</AttributeValue>
++            </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal">
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">//md:record</AttributeValue>
++            </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">.</AttributeValue>
++                <AttributeValue
++                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
++            </Apply>
++
++</Apply></Condition>
++    </Rule>
++</Policy>
+
+commit a9189026dc851633a28d78e087d521d0d9a414a2
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Fri May 30 23:18:11 2014 -0400
+
+    - Updated project description
+    - Moved conformance tests to a separate module
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml b/xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+similarity index 100%
+rename from xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+rename to xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+
+commit 0e1210917d34223f6969e63d86e337f13205058d
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Wed May 14 21:30:51 2014 -0400
+
+    Removed 'executable' bits from text files
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+old mode 100755
+new mode 100644
+
+commit 7a15016fa5a9d84f3cadb07f4133af22546f6c10
+Author: Valdas Sevelis <valdas@artagon.com>
+Date:   Mon Oct 28 21:11:13 2013 -0400
+
+    - Removed extra whitespace
+    - Fixed JavaDocs
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+index 41aba630..728d8900 100755
+--- a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+@@ -40,7 +40,7 @@
+                 <AttributeValue
+                   DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
+             </Apply>
+-        
++
+ </Apply></Condition>
+     </Rule>
+ </Policy>
+
+commit fae4b3f2ce6cf420212cbc3d80916af2882a2a23
+Author: Valdas Sevelis <valdas@artagon.com>
+Date:   Mon Jan 28 17:41:35 2013 -0500
+
+    Removed xacml-schemas, converted files to Unix format
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+index e1b829ab..41aba630 100755
+--- a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+@@ -1,46 +1,46 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<Policy
+-      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+-      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+-      xmlns:md="http://www.medico.com/schemas/record"
+-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+-        access_control-xacml-2.0-policy-schema-os.xsd"
+-      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:policy"
+-      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+-    <Description>
+-        Policy for Conformance Test IIIG006.
+-    </Description>
+-    <PolicyDefaults>
+-        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
+-    </PolicyDefaults>
+-    <Target/>
+-    <Rule
+-          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:rule"
+-          Effect="Permit">
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy
++      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++        access_control-xacml-2.0-policy-schema-os.xsd"
++      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:policy"
++      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++    <Description>
++        Policy for Conformance Test IIIG006.
++    </Description>
++    <PolicyDefaults>
++        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++    </PolicyDefaults>
++    <Target/>
++    <Rule
++          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:rule"
++          Effect="Permit">
+         <Condition>
+-<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
+-            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-equal">
+-                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count">
+-                <AttributeValue
+-                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name</AttributeValue>
+-                </Apply>
+-                <AttributeValue
+-                      DataType="http://www.w3.org/2001/XMLSchema#integer">2</AttributeValue>
+-            </Apply>
+-            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal">
+-                <AttributeValue
+-                      DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
+-                <AttributeValue
+-                      DataType="http://www.w3.org/2001/XMLSchema#string">//md:record</AttributeValue>
+-            </Apply>
+-            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
+-                <AttributeValue
+-                      DataType="http://www.w3.org/2001/XMLSchema#string">.</AttributeValue>
+-                <AttributeValue
+-                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
+-            </Apply>
++<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-equal">
++                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count">
++                <AttributeValue
++                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name</AttributeValue>
++                </Apply>
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#integer">2</AttributeValue>
++            </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal">
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">//md:record</AttributeValue>
++            </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">.</AttributeValue>
++                <AttributeValue
++                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
++            </Apply>
+         
+-</Apply></Condition>
+-    </Rule>
+-</Policy>
++</Apply></Condition>
++    </Rule>
++</Policy>
+
+commit 3672d1fe10c3dde26db3b8556704c58298616201
+Author: Giedrius Trumpickas <trumpyla@artagon.com>
+Date:   Wed May 19 14:28:39 2010 +0000
+
+    Added XACML compatibility test suite project
+
+diff --git a/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+new file mode 100755
+index 00000000..e1b829ab
+--- /dev/null
++++ b/xacml-test/src/main/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy
++      xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++      xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++      xmlns:md="http://www.medico.com/schemas/record"
++      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++      xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
++        access_control-xacml-2.0-policy-schema-os.xsd"
++      PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:policy"
++      RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++    <Description>
++        Policy for Conformance Test IIIG006.
++    </Description>
++    <PolicyDefaults>
++        <XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++    </PolicyDefaults>
++    <Target/>
++    <Rule
++          RuleId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIIG006:rule"
++          Effect="Permit">
++        <Condition>
++<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:integer-equal">
++                <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count">
++                <AttributeValue
++                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record//md:name</AttributeValue>
++                </Apply>
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#integer">2</AttributeValue>
++            </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-equal">
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">//md:record</AttributeValue>
++            </Apply>
++            <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
++                <AttributeValue
++                      DataType="http://www.w3.org/2001/XMLSchema#string">.</AttributeValue>
++                <AttributeValue
++                  DataType="http://www.w3.org/2001/XMLSchema#string">./xacml-context:Resource/xacml-context:ResourceContent/md:record</AttributeValue>
++            </Apply>
++        
++</Apply></Condition>
++    </Rule>
++</Policy>
+commit ea3fc607d7493530ad90a77aee221d77464cb0b3
+Author: Giedrius Trumpickas <trumpyla@gmail.com>
+Date:   Mon Apr 17 22:32:30 2023 -0400
+
+    Move core domain value objects to root
+
+diff --git a/xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml b/xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+index 92fc4b8b..323ca579 100644
+--- a/xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
++++ b/xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+@@ -1,5 +1,9 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" xmlns:md="http://www.med.example.com/schemas/record.xsd" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:1" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++		xsi:schemaLocation=" urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
++		xmlns:md="http://www.med.example.com/schemas/record.xsd"
++		PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:1"
++		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+ 	<PolicyDefaults>
+ 		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
+ 	</PolicyDefaults>
+
+commit b09e94e510fbfad7fff59bb23af1a6829817efcb
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Mon Nov 3 20:14:39 2014 -0500
+
+    Added test case from XACML 2.0 Specification
+
+diff --git a/xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml b/xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+new file mode 100644
+index 00000000..92fc4b8b
+--- /dev/null
++++ b/xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+@@ -0,0 +1,49 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" xmlns:md="http://www.med.example.com/schemas/record.xsd" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:1" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++	<PolicyDefaults>
++		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++	</PolicyDefaults>
++	<Target/>
++	<VariableDefinition VariableId="17590034">
++		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
++				<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:patient-number" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++			</Apply>
++			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
++				<AttributeSelector RequestContextPath="//xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patient-number/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++			</Apply>
++		</Apply>
++	</VariableDefinition>
++	<Rule RuleId="urn:oasis:names:tc:xacml:2.0:example:ruleid:1" Effect="Permit">
++		<Description>
++    A person may read any medical record in the
++    http://www.med.example.com/schemas/record.xsd namespace
++    for which he or she is the designated patient
++  		</Description>
++		<Target>
++			<Resources>
++				<Resource>
++					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">http://www.med.example.com/schemas/record.xsd</AttributeValue>
++						<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:resource:target-namespace" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ResourceMatch>
++					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">/md:record</AttributeValue>
++						<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:xpath" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ResourceMatch>
++				</Resource>
++			</Resources>
++			<Actions>
++				<Action>
++					<ActionMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
++						<ActionAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ActionMatch>
++				</Action>
++			</Actions>
++		</Target>
++		<Condition>
++			<VariableReference VariableId="17590034"/>
++		</Condition>
++	</Rule>
++</Policy>
+commit ea3fc607d7493530ad90a77aee221d77464cb0b3
+Author: Giedrius Trumpickas <trumpyla@gmail.com>
+Date:   Mon Apr 17 22:32:30 2023 -0400
+
+    Move core domain value objects to root
+
+diff --git a/xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml b/xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+index af9d2f81..f818d085 100644
+--- a/xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
++++ b/xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+@@ -1,5 +1,10 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" xmlns:xf="http://www.w3.org/TR/2002/WD-xquery-operators-20020816/#" xmlns:md="http:www.med.example.com/schemas/record.xsd" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:2" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++		xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
++		xmlns:xf="http://www.w3.org/TR/2002/WD-xquery-operators-20020816/#"
++		xmlns:md="http:www.med.example.com/schemas/record.xsd"
++		PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:2"
++		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+ 	<PolicyDefaults>
+ 		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
+ 	</PolicyDefaults>
+
+commit b09e94e510fbfad7fff59bb23af1a6829817efcb
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Mon Nov 3 20:14:39 2014 -0500
+
+    Added test case from XACML 2.0 Specification
+
+diff --git a/xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml b/xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+new file mode 100644
+index 00000000..af9d2f81
+--- /dev/null
++++ b/xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+@@ -0,0 +1,63 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" xmlns:xf="http://www.w3.org/TR/2002/WD-xquery-operators-20020816/#" xmlns:md="http:www.med.example.com/schemas/record.xsd" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:2" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++	<PolicyDefaults>
++		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++	</PolicyDefaults>
++	<Target/>
++	<VariableDefinition VariableId="17590035">
++		<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:date-less-than-or-equal">
++			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:date-one-and-only">
++				<EnvironmentAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-date" DataType="http://www.w3.org/2001/XMLSchema#date"/>
++			</Apply>
++			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:date-add-yearMonthDuration">
++				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:date-one-and-only">
++					<AttributeSelector RequestContextPath="//xacml-context:Resource/xacml-context:ResourceContent/md:record/md:patient/md:patientDoB/text()" DataType="http://www.w3.org/2001/XMLSchema#date"/>
++				</Apply>
++				<AttributeValue DataType="http://www.w3.org/TR/2002/WD-xquery-operators-20020816#yearMonthDuration"><xf:dt-yearMonthDuration>P16Y</xf:dt-yearMonthDuration></AttributeValue>
++			</Apply>
++		</Apply>
++	</VariableDefinition>
++	<Rule RuleId="urn:oasis:names:tc:xacml:2.0:example:ruleid:2" Effect="Permit">
++		<Description>
++   A person may read any medical record in the
++   http://www.med.example.com/records.xsd namespace
++   for which he or she is the designated parent or guardian,
++   and for which the patient is under 16 years of age
++  </Description>
++		<Target>
++			<Resources>
++				<Resource>
++					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">urn:med:example:schemas:record</AttributeValue>
++						<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:resource:target-namespace" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ResourceMatch>
++					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">/md:record</AttributeValue>
++						<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:xpath" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ResourceMatch>
++				</Resource>
++			</Resources>
++			<Actions>
++				<Action>
++					<ActionMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">read</AttributeValue>
++						<ActionAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ActionMatch>
++				</Action>
++			</Actions>
++		</Target>
++		<Condition>
++			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:and">
++				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
++						<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:parent-guardian-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</Apply>
++					<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
++						<AttributeSelector RequestContextPath="//md:record/md:parentGuardian/md:parentGuardianId/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</Apply>
++				</Apply>
++				<VariableReference VariableId="17590035"/>
++			</Apply>
++		</Condition>
++	</Rule>
++</Policy>
+commit ea3fc607d7493530ad90a77aee221d77464cb0b3
+Author: Giedrius Trumpickas <trumpyla@gmail.com>
+Date:   Mon Apr 17 22:32:30 2023 -0400
+
+    Move core domain value objects to root
+
+diff --git a/xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml b/xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+index 131ac04b..8fb986f1 100644
+--- a/xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
++++ b/xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+@@ -1,5 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" xmlns:md="urn:med:example:schemas:record" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:3" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++		xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
++		xmlns:md="urn:med:example:schemas:record" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:3"
++		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+ 	<Description>
+   Policy for any medical record in the
+   http://www.med.example.com/schemas/record.xsd namespace
+
+commit b09e94e510fbfad7fff59bb23af1a6829817efcb
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Mon Nov 3 20:14:39 2014 -0500
+
+    Added test case from XACML 2.0 Specification
+
+diff --git a/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml b/xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+similarity index 61%
+copy from xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml
+copy to xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+index 5bc39238..131ac04b 100644
+--- a/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml
++++ b/xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+@@ -1,36 +1,9 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+-<!--
+-  #%L
+-  Xacml4J Core Engine Implementation
+-  %%
+-  Copyright (C) 2009 - 2014 Xacml4J.org
+-  %%
+-  This program is free software: you can redistribute it and/or modify
+-  it under the terms of the GNU Lesser General Public License as
+-  published by the Free Software Foundation, either version 3 of the
+-  License, or (at your option) any later version.
+-
+-  This program is distributed in the hope that it will be useful,
+-  but WITHOUT ANY WARRANTY; without even the implied warranty of
+-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-  GNU General Lesser Public License for more details.
+-
+-  You should have received a copy of the GNU General Lesser Public
+-  License along with this program.  If not, see
+-  <http://www.gnu.org/licenses/lgpl-3.0.html>.
+-  #L%
+-  -->
+-<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+-		xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
+-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-		xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
+-		xmlns:md="http:www.med.example.com/schemas/record.xsd"
+-		PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:3"
+-		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd" xmlns:md="urn:med:example:schemas:record" PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:3" RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+ 	<Description>
+-		Policy for any medical record in the
+-		http://www.med.example.com/schemas/record.xsd namespace
+-	</Description>
++  Policy for any medical record in the
++  http://www.med.example.com/schemas/record.xsd namespace
++ 	</Description>
+ 	<PolicyDefaults>
+ 		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
+ 	</PolicyDefaults>
+@@ -38,9 +11,7 @@
+ 		<Resources>
+ 			<Resource>
+ 				<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
+-						urn:med:example:schemas:record
+-					</AttributeValue>
++					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">urn:med:example:schemas:record</AttributeValue>
+ 					<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:target-namespace" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 				</ResourceMatch>
+ 			</Resource>
+@@ -48,17 +19,15 @@
+ 	</Target>
+ 	<Rule RuleId="urn:oasis:names:tc:xacml:2.0:example:ruleid:3" Effect="Permit">
+ 		<Description>
+-			A physician may write any medical element in a record
+-			for which he or she is the designated primary care
+-			physician, provided an email is sent to the patient
+-		</Description>
++   A physician may write any medical element in a record
++   for which he or she is the designated primary care
++   physician, provided an email is sent to the patient
++  </Description>
+ 		<Target>
+ 			<Subjects>
+ 				<Subject>
+ 					<SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
+-							physician
+-						</AttributeValue>
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">physician</AttributeValue>
+ 						<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:role" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 					</SubjectMatch>
+ 				</Subject>
+@@ -66,9 +35,7 @@
+ 			<Resources>
+ 				<Resource>
+ 					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
+-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
+-							/md:record/md:medical
+-						</AttributeValue>
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">/md:record/md:medical</AttributeValue>
+ 						<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:xpath" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 					</ResourceMatch>
+ 				</Resource>
+@@ -76,9 +43,7 @@
+ 			<Actions>
+ 				<Action>
+ 					<ActionMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+-						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
+-							write
+-						</AttributeValue>
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">write</AttributeValue>
+ 						<ActionAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 					</ActionMatch>
+ 				</Action>
+@@ -87,7 +52,7 @@
+ 		<Condition>
+ 			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+ 				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+-					<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:example: attribute:physician-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:physician-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 				</Apply>
+ 				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+ 					<AttributeSelector RequestContextPath="//xacml-context:Resource/xacml-context:ResourceContent/md:record/md:primaryCarePhysician/md:registrationID/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+@@ -100,9 +65,7 @@
+ 			<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:mailto" DataType="http://www.w3.org/2001/XMLSchema#string">
+ 				<AttributeSelector RequestContextPath="//md:/record/md:patient/md:patientContact/md:email" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 			</AttributeAssignment>
+-			<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">
+-				Your medical record has been accessed by:
+-			</AttributeAssignment>
++			<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">Your medical record has been accessed by:</AttributeAssignment>
+ 			<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">
+ 				<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 			</AttributeAssignment>
+
+commit c5217e2f51aff16e65fc342e6b272497d3609c62
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Fri Oct 31 01:08:07 2014 -0400
+
+    xacml4j-23 Implement Obligation AttributeAssignment evaluation
+
+diff --git a/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml b/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml
+index bd0feaf4..5bc39238 100644
+--- a/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml
++++ b/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml
+@@ -20,43 +20,90 @@
+   <http://www.gnu.org/licenses/lgpl-3.0.html>.
+   #L%
+   -->
+-
+-<Policy
+-		xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+-		PolicyId="urn:org:xacml4j:tests:policy-with-obligations"
++<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++		xmlns:xacml-context="urn:oasis:names:tc:xacml:2.0:context:schema:os"
++		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++		xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os http://docs.oasis-open.org/xacml/access_control-xacml-2.0-policy-schema-os.xsd"
++		xmlns:md="http:www.med.example.com/schemas/record.xsd"
++		PolicyId="urn:oasis:names:tc:xacml:2.0:example:policyid:3"
+ 		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
+-	<Description>Test policy with different obligations</Description>
+-	<Target/>
+-	<Rule
+-			RuleId="urn:org:xacml4j:tests:policy-with-obligations:rule1"
+-			Effect="Permit">
++	<Description>
++		Policy for any medical record in the
++		http://www.med.example.com/schemas/record.xsd namespace
++	</Description>
++	<PolicyDefaults>
++		<XPathVersion>http://www.w3.org/TR/1999/Rec-xpath-19991116</XPathVersion>
++	</PolicyDefaults>
++	<Target>
++		<Resources>
++			<Resource>
++				<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++					<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
++						urn:med:example:schemas:record
++					</AttributeValue>
++					<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:target-namespace" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++				</ResourceMatch>
++			</Resource>
++		</Resources>
++	</Target>
++	<Rule RuleId="urn:oasis:names:tc:xacml:2.0:example:ruleid:3" Effect="Permit">
++		<Description>
++			A physician may write any medical element in a record
++			for which he or she is the designated primary care
++			physician, provided an email is sent to the patient
++		</Description>
++		<Target>
++			<Subjects>
++				<Subject>
++					<SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
++							physician
++						</AttributeValue>
++						<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:role" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</SubjectMatch>
++				</Subject>
++			</Subjects>
++			<Resources>
++				<Resource>
++					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
++							/md:record/md:medical
++						</AttributeValue>
++						<ResourceAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:xpath" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ResourceMatch>
++				</Resource>
++			</Resources>
++			<Actions>
++				<Action>
++					<ActionMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">
++							write
++						</AttributeValue>
++						<ActionAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++					</ActionMatch>
++				</Action>
++			</Actions>
++		</Target>
+ 		<Condition>
+-			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-equal">
+-				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only">
+-					<SubjectAttributeDesignator
+-							AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:auth-duration"
+-							DataType="http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"/>
++			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
++				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
++					<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:2.0:example: attribute:physician-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++				</Apply>
++				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
++					<AttributeSelector RequestContextPath="//xacml-context:Resource/xacml-context:ResourceContent/md:record/md:primaryCarePhysician/md:registrationID/text()" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 				</Apply>
+-				<AttributeValue
+-						DataType="http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration">P5DT2H0M0S</AttributeValue>
+ 			</Apply>
+ 		</Condition>
+ 	</Rule>
+-
+ 	<Obligations>
+-		<Obligation
+-				ObligationId="urn:org:xacml4j:tests:policy-with-obligations:obligation1"
+-				FulfillOn="Permit">
+-				<AttributeAssignment
+-						AttributeId="urn:org:xacml4j:tests:policy-with-obligations:obligation1:assignment1"
+-						DataType="http://www.w3.org/2001/XMLSchema#string">assignment1</AttributeAssignment>
+-		</Obligation>
+-		<Obligation
+-				ObligationId="urn:org:xacml4j:tests:policy-with-obligations:obligation2"
+-				FulfillOn="Permit">
+-			<AttributeAssignment
+-					AttributeId="urn:org:xacml4j:tests:policy-with-obligations:obligation2:assignment1"
+-					DataType="http://www.w3.org/2001/XMLSchema#string">
++		<Obligation ObligationId="urn:oasis:names:tc:xacml:example:obligation:email" FulfillOn="Permit">
++			<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:mailto" DataType="http://www.w3.org/2001/XMLSchema#string">
++				<AttributeSelector RequestContextPath="//md:/record/md:patient/md:patientContact/md:email" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++			</AttributeAssignment>
++			<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">
++				Your medical record has been accessed by:
++			</AttributeAssignment>
++			<AttributeAssignment AttributeId="urn:oasis:names:tc:xacml:2.0:example:attribute:text" DataType="http://www.w3.org/2001/XMLSchema#string">
+ 				<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
+ 			</AttributeAssignment>
+ 		</Obligation>
+
+commit 5b0ab7f909fb46bd34270647a6797256b2846743
+Author: Valdas Sevelis <valdas.s@gmail.com>
+Date:   Thu Oct 30 19:47:13 2014 -0400
+
+    Added test case to test obligation marshalling
+
+diff --git a/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml b/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml
+new file mode 100644
+index 00000000..bd0feaf4
+--- /dev/null
++++ b/xacml-core/src/test/resources/xacml2.0-policy-with-obligations.xml
+@@ -0,0 +1,64 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!--
++  #%L
++  Xacml4J Core Engine Implementation
++  %%
++  Copyright (C) 2009 - 2014 Xacml4J.org
++  %%
++  This program is free software: you can redistribute it and/or modify
++  it under the terms of the GNU Lesser General Public License as
++  published by the Free Software Foundation, either version 3 of the
++  License, or (at your option) any later version.
++
++  This program is distributed in the hope that it will be useful,
++  but WITHOUT ANY WARRANTY; without even the implied warranty of
++  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++  GNU General Lesser Public License for more details.
++
++  You should have received a copy of the GNU General Lesser Public
++  License along with this program.  If not, see
++  <http://www.gnu.org/licenses/lgpl-3.0.html>.
++  #L%
++  -->
++
++<Policy
++		xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
++		PolicyId="urn:org:xacml4j:tests:policy-with-obligations"
++		RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides">
++	<Description>Test policy with different obligations</Description>
++	<Target/>
++	<Rule
++			RuleId="urn:org:xacml4j:tests:policy-with-obligations:rule1"
++			Effect="Permit">
++		<Condition>
++			<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-equal">
++				<Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only">
++					<SubjectAttributeDesignator
++							AttributeId="urn:oasis:names:tc:xacml:2.0:conformance-test:auth-duration"
++							DataType="http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration"/>
++				</Apply>
++				<AttributeValue
++						DataType="http://www.w3.org/TR/2002/WD-xquery-operators-20020816#dayTimeDuration">P5DT2H0M0S</AttributeValue>
++			</Apply>
++		</Condition>
++	</Rule>
++
++	<Obligations>
++		<Obligation
++				ObligationId="urn:org:xacml4j:tests:policy-with-obligations:obligation1"
++				FulfillOn="Permit">
++				<AttributeAssignment
++						AttributeId="urn:org:xacml4j:tests:policy-with-obligations:obligation1:assignment1"
++						DataType="http://www.w3.org/2001/XMLSchema#string">assignment1</AttributeAssignment>
++		</Obligation>
++		<Obligation
++				ObligationId="urn:org:xacml4j:tests:policy-with-obligations:obligation2"
++				FulfillOn="Permit">
++			<AttributeAssignment
++					AttributeId="urn:org:xacml4j:tests:policy-with-obligations:obligation2:assignment1"
++					DataType="http://www.w3.org/2001/XMLSchema#string">
++				<SubjectAttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id" DataType="http://www.w3.org/2001/XMLSchema#string"/>
++			</AttributeAssignment>
++		</Obligation>
++	</Obligations>
++</Policy>

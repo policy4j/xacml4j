@@ -25,6 +25,7 @@ package org.xacml4j.v30.types;
 import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import com.google.common.base.Objects;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -42,9 +43,15 @@ public final class ISO8601Time
         implements Comparable<ISO8601Time>
 {
     private static final long serialVersionUID = -8244143626423796791L;
+    private final boolean timeZoneDefined;
+
+    private ISO8601Time(OffsetTime time, boolean timeZoneDefined) {
+        super(XacmlTypes.TIME, time);
+        this.timeZoneDefined = timeZoneDefined;
+    }
 
     private ISO8601Time(OffsetTime time) {
-        super(XacmlTypes.TIME, time);
+        this(time, true);
     }
 
     public static ISO8601Time ofAny(Object v, Object ...p)
@@ -80,7 +87,9 @@ public final class ISO8601Time
 
 
     public static ISO8601Time of(String v){
-        return new ISO8601Time(DateTimeDurationUtils.parseISO860Time(v));
+        OffsetTime parsedTime = DateTimeDurationUtils.parseISO860Time(v);
+        boolean timeZoneDefined = v.endsWith("Z") || v.matches(".*[+-]\\d{2}:\\d{2}$");
+        return new ISO8601Time(parsedTime, timeZoneDefined);
     }
 
     public static ISO8601Time of(OffsetTime v){
@@ -88,7 +97,8 @@ public final class ISO8601Time
     }
 
     public static ISO8601Time of(XMLGregorianCalendar v){
-        return new ISO8601Time(DateTimeDurationUtils.toISO860Time(v));
+        return new ISO8601Time(DateTimeDurationUtils.toISO860Time(v),
+                v.getTimezone() != javax.xml.datatype.DatatypeConstants.FIELD_UNDEFINED);
     }
 
     public static ISO8601Time of(GregorianCalendar v){
@@ -97,7 +107,7 @@ public final class ISO8601Time
     }
 
     public static ISO8601Time of(LocalTime v){
-        return new ISO8601Time(v.atOffset(ZoneOffset.UTC));
+        return new ISO8601Time(v.atOffset(ZoneOffset.UTC), false);
     }
     public static ISO8601Time of(Instant v){
         return new ISO8601Time(
@@ -110,7 +120,9 @@ public final class ISO8601Time
     }
 
     public String toXacmlString(){
-        return value.format(DateTimeFormatter.ISO_TIME);
+        return value.format(timeZoneDefined
+                ? DateTimeFormatter.ISO_TIME
+                : DateTimeFormatter.ISO_LOCAL_TIME);
     }
 
     public StringVal toStringExp(DateTimeFormatter df){
@@ -134,8 +146,36 @@ public final class ISO8601Time
         return get().getOffset();
     }
 
+    public boolean isTimeZoneDefined(){
+        return timeZoneDefined;
+    }
+
     @Override
     public int compareTo(ISO8601Time v) {
-        return get().compareTo(v.get());
+        return Long.compare(toUtcReferenceNanos(ZoneOffset.UTC),
+                v.toUtcReferenceNanos(ZoneOffset.UTC));
+    }
+
+    /**
+     * Returns this time's nanosecond position relative to midnight on the
+     * XPath time-comparison reference date, after applying its UTC offset.
+     * An absent offset uses the supplied implicit timezone.
+     */
+    public long toUtcReferenceNanos(ZoneOffset implicitOffset) {
+        ZoneOffset offset = timeZoneDefined ? get().getOffset() : implicitOffset;
+        return get().toLocalTime().toNanoOfDay()
+                - (long) offset.getTotalSeconds() * 1_000_000_000L;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof ISO8601Time
+                && toUtcReferenceNanos(ZoneOffset.UTC)
+                == ((ISO8601Time) other).toUtcReferenceNanos(ZoneOffset.UTC);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(toUtcReferenceNanos(ZoneOffset.UTC), getEvaluatesTo());
     }
 }

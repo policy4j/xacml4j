@@ -1,0 +1,15 @@
+{
+  "task46_status": "closed",
+  "checked_tasks": 26,
+  "total_tasks": 57,
+  "closure_scope_matches": true,
+  "reviewed_v2_code_and_test_hashes_unchanged": true,
+  "post_reactor_changes": [
+    "openspec/changes/modernize-core-for-jdk28-valhalla/specs/combining-algorithm-registry/spec.md"
+  ],
+  "gate47_open": true,
+  "task46_evidence_indexed": true,
+  "owned_ntm_sessions_shutdown": true,
+  "unrelated_policy4j_g1_preserved": true,
+  "beads_sync": "flush-only completed; nothing dirty to export"
+}

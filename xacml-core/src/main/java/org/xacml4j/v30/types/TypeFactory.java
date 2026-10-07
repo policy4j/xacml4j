@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 /**
  * A provider for new types
@@ -49,21 +48,36 @@ public interface TypeFactory
 		private Map<String, ValueType> byAliasTypeId;
 
 		public BaseTypeFactory(Collection<ValueType> types){
-			this.byTypeId = Collections.unmodifiableMap(types.stream()
-			                     .collect(Collectors
-					                              .toMap(v->v.getTypeId(), v->v, (a, b)->a,
-					                                     ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER))));
-			this.byAbbreviatedTypeId = Collections.unmodifiableMap(types.stream()
-			                                            .collect(Collectors
-					                                   .toMap(v->v.getShortTypeId(), v->v, (a, b)->a,
-					                                          ()->new TreeMap<>(String.CASE_INSENSITIVE_ORDER))));
-			this.byAliasTypeId  = Collections.unmodifiableMap(types.stream()
-			                           .flatMap(t->t.getTypeIdAliases()
-			                                        .stream()
-			                                        .collect(Collectors.toMap(a->a, a->t, (v1, v2)->v1))
-			                                        .entrySet()
-			                                        .stream())
-			                           .collect(Collectors.toMap(a->a.getKey(), a->a.getValue(), (a, b)->a)));
+			Map<String, ValueType> identifiers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			Map<String, ValueType> canonicalIds = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			Map<String, ValueType> abbreviatedIds = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			Map<String, ValueType> aliases = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+			for (ValueType type : types) {
+				register(identifiers, type.getTypeId(), type);
+				register(canonicalIds, type.getTypeId(), type);
+				register(identifiers, type.getShortTypeId(), type);
+				register(abbreviatedIds, type.getShortTypeId(), type);
+				for (String alias : type.getTypeIdAliases()) {
+					register(identifiers, alias, type);
+					register(aliases, alias, type);
+				}
+			}
+			this.byTypeId = Collections.unmodifiableMap(canonicalIds);
+			this.byAbbreviatedTypeId = Collections.unmodifiableMap(abbreviatedIds);
+			this.byAliasTypeId = Collections.unmodifiableMap(aliases);
+		}
+
+		private static void register(Map<String, ValueType> identifiers, String id, ValueType type) {
+			ValueType previous = identifiers.putIfAbsent(id, type);
+			if (previous != null && previous != type) {
+				throw new IllegalArgumentException("Duplicate data type identifier '" + id
+						+ "' claimed by " + describe(previous) + " and " + describe(type));
+			}
+		}
+
+		private static String describe(ValueType type) {
+			return "'" + type.getTypeId() + "' (" + type + ", "
+					+ type.getClass().getName() + ")";
 		}
 
 		@Override

@@ -1,0 +1,7 @@
+Working directory for all commands: <lane>
+
+rtk mkdir -p openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/062-regexp-dollar
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=RegularExpressionFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/062-regexp-dollar/red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=FunctionSafetyNet43Test,RegularExpressionFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/062-regexp-dollar/focused-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core clean test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/062-regexp-dollar/core-clean-test.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/062-regexp-dollar/full-reactor-verify.log

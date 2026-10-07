@@ -22,6 +22,8 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import java.util.Locale;
+
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
@@ -40,7 +42,20 @@ public final class StringConversionFunctions
 	public static StringVal normalizeSpace(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal v)
 	{
-		return v.trim();
+		String value = v.get();
+		int start = 0;
+		int end = value.length();
+		while(start < end && isXmlSpace(value.charAt(start))){
+			start++;
+		}
+		while(end > start && isXmlSpace(value.charAt(end - 1))){
+			end--;
+		}
+		return StringVal.of(value.substring(start, end));
+	}
+
+	private static boolean isXmlSpace(char character){
+		return character == ' ' || character == '\t' || character == '\n' || character == '\r';
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-normalize-to-lower-case")
@@ -48,7 +63,7 @@ public final class StringConversionFunctions
 	public static StringVal normalizeToLowerCase(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal v)
 	{
-		return v.toLowerCase();
+		return StringVal.of(v.get().toLowerCase(Locale.ROOT));
 	}
 
 	@XacmlFuncSpec(id="urn:xacml4j:names:tc:xacml:1.0:function:string-normalize-to-upper-case")

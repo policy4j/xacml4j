@@ -42,7 +42,12 @@ import org.xacml4j.v30.policy.combine.BaseDecisionCombiningAlgorithm;
  * equals the owner attribute of the resource in the request. This matching cannot be done with
  * a &lt;Target&gt; since it is not a match expression against a constant value.
  * Such a policy would require a Condition at the Policy level
+ * <p>
+ * The algorithm follows the normative pseudo-code of the XACML 3.0 Additional Combining
+ * Algorithms Profile Version 1.0, Committee Specification 01, section 2.1.
  *
+ * @see <a href="https://docs.oasis-open.org/xacml/xacml-3.0-combalgs/v1.0/cs01/xacml-3.0-combalgs-v1.0-cs01.html">
+ * XACML 3.0 Additional Combining Algorithms Profile Version 1.0</a>
  * @author Giedrius Trumpickas
  */
 public class OnPermitApplySecondPolicyCombiningAlgorithm extends
@@ -59,39 +64,25 @@ public class OnPermitApplySecondPolicyCombiningAlgorithm extends
 	@Override
 	public Decision combine(EvaluationContext context,
 			List<CompositeDecisionRule> policies) {
-		if(policies.size() != 2){
+		if(policies.size() < 2 || policies.size() > 3){
 			context.setEvaluationStatus(PROCESSING_ERROR);
 			return Decision.INDETERMINATE_DP;
 		}
 		Decision d0 =  evaluateIfMatch(context, policies.get(0));
-		if(d0 == Decision.NOT_APPLICABLE){
-			return Decision.NOT_APPLICABLE;
+		if(d0 == Decision.NOT_APPLICABLE ||
+				d0 == Decision.DENY ||
+				d0 == Decision.INDETERMINATE_D){
+			if(policies.size() == 2){
+				return Decision.NOT_APPLICABLE;
+			}
+			return evaluateIfMatch(context, policies.get(2));
 		}
-		Decision d1 = evaluateIfMatch(context, policies.get(1));
 		if(d0 == Decision.PERMIT){
-			return d1;
+			return evaluateIfMatch(context, policies.get(1));
 		}
-		if(d1 == Decision.PERMIT){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_P;
-		}
-		if(d1 == Decision.DENY){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_D;
-		}
-		if(d1 == Decision.INDETERMINATE_P){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_P;
-		}
-		if(d1 == Decision.INDETERMINATE_D){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_D;
-		}
-		if(d1 == Decision.INDETERMINATE_DP){
-			context.setEvaluationStatus(PROCESSING_ERROR);
-			return Decision.INDETERMINATE_DP;
-		}
-		return Decision.NOT_APPLICABLE;
+		// The first child is Indeterminate{P} or Indeterminate{DP}. No other child is
+		// evaluated, so the status that the first child reported stays the status of the result.
+		return Decision.INDETERMINATE_DP;
 	}
 
 }

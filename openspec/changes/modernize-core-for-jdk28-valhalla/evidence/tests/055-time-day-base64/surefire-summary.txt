@@ -1,0 +1,30 @@
+JDK: 21 (compiler log: javac release 21)
+
+Focused final runs:
+- ISO8601TimeTest + TypeRegistryTest + Base64BinaryTest + NonNumericComparisionFunctionTest + DecisionCombiningAlgorithmRegistryTest: 122 tests, 0 failures, 0 errors, 4 skips.
+- DecisionCombiningAlgorithmRegistryTest follow-up: 26 tests, 0 failures, 0 errors, 1 skip.
+
+Final full clean verify:
+- Reactor: BUILD SUCCESS.
+- Conformance module: 917 tests, 0 failures, 0 errors, 17 skips.
+
+Conformance suite reports:
+- OASIS 2.0 (Xacml20ConformanceTest): 375 tests, 0 failures, 0 errors, 10 skips.
+- OASIS 3.0 (Xacml30ConformanceTest): 488 tests, 0 failures, 0 errors, 7 skips.
+- RSA 2008 (RSA2008InteropTest): 17 tests, 0 failures, 0 errors, 0 skips.
+- Examples (XacmlExampleTest): 2 tests, 0 failures, 0 errors, 0 skips.
+- ConformanceManifestTest: 13 tests, 0 failures, 0 errors, 0 skips.
+- ConformanceStaticRejectionTest: 16 tests, 0 failures, 0 errors, 0 skips.
+
+Explicit `-pl xacml-conformance-tests -am test`: BUILD SUCCESS; module total 917, 0 failures, 0 errors, 17 skips.
+
+rv062 follow-up:
+- Focused TypeRegistryTest, DecisionCombiningAlgorithmRegistryTest, and AttributeDesignatorFunctionTest: 200 tests, 0 failures, 0 errors, 3 skips.
+- Final `clean verify`: BUILD SUCCESS; conformance module total 917, 0 failures, 0 errors, 17 skips.
+- Final explicit conformance: OASIS 2.0 375 tests / 10 skips; OASIS 3.0 488 / 7 skips; RSA 17 / 0 skips; examples 2 / 0 skips; all failures and errors 0. Manifest tests 13 / 0 skips; static-rejection tests 16 / 0 skips.
+
+rv065 positive-offset fix:
+- Focused `NonNumericComparisionFunctionTest`: 14 tests, 0 failures, 0 errors, 0 skips.
+- `-pl xacml-core clean test`: BUILD SUCCESS; `NonNumericComparisionFunctionTest` 14/0/0/0.
+- Full reactor `verify`: BUILD SUCCESS; conformance module 917 tests, 0 failures, 0 errors, 17 skips.
+- Conformance suite lines in the full run: OASIS 2.0 375 tests / 10 skips; OASIS 3.0 488 / 7; RSA 2008 17 / 0; examples 2 / 0. All reported 0 failures and errors.

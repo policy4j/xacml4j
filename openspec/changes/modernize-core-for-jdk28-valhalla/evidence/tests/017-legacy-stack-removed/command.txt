@@ -1,0 +1,48 @@
+# Task 2.7. All commands from <repo>; JDK 21. No install, br or Git writes.
+# Read AGENTS.md, docs/ai/TESTING.md and OPENSPEC Apply loop; proposal, design D4, tasks 2.7 and test-framework spec.
+# Read Luna's 016 plan/patch/commands. Its patch applied cleanly in this snapshot.
+rtk git branch --show-current
+rtk git status --short
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/016-legacy-stack-removal-plan/proposed-2.7-pom.patch
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/audit.py prepare
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -version
+# First attempt: sandbox denied a resolver-status.properties cache write. Same command then rerun with escalation.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dincludes=junit:junit -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/01-before-junit-tree.log
+rtk proxy mv openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/01-before-junit-tree.log openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/00-before-junit-tree-sandbox.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dincludes=junit:junit -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/01-before-junit-tree.log
+# Applied Luna's removal with native apply_patch, changing only root/core POMs.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dincludes=junit:junit -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/02-luna-patch-junit-tree.log
+# Dependency gate RED: Truth 0.45 still brings junit:junit 4.12 into all eight projects.
+# Added junit:junit exclusion to managed Truth, with native apply_patch.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dincludes=junit:junit -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/03-after-junit-tree.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/04-after-full-test-tree.log
+# Dependency gate RED: retained Mockito brings Objenesis 3.3 into all eight projects.
+# Added Objenesis exclusions to both inherited Mockito dependencies, with native apply_patch.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=RuleTest#testPermitRuleEvaluateIfApplicableWithTargetEvaluationException test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/05-objenesis-exclusion-probe.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/06-final-test-tree.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/07-jdk21-clean-verify.log
+# Test gate RED: core 760 / 0 failures / 21 errors / 2 skips. Truth 0.45 eagerly links JUnit ComparisonFailure.
+rtk ./scripts/agent-doctor.sh ast-grep
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/scan.py
+# Pinned Truth and truth-java8-extension to 1.1.5 in the owned root POM; retained the JUnit exclusion.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/09-jdk21-clean-verify.log
+# Exit 0, but log normalized while Maven was writing; it contains NUL padding and is superseded by run 10.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/10-final-jdk21-clean-verify.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/audit.py finish
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/runtime-probes.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/12-final-test-tree.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -Dincludes=junit:junit -Dverbose -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/13-final-junit-tree.log
+# Logs normalized only after Maven exited, except the superseded run 09 noted above.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/audit.py normalize
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/scan.py
+# scan.py records each exact rg/Java AST argv, output and status in 08-static-checks.json.
+# runtime-probes.py uses JDK 21 Java source-file execution, with each exact classpath read from its fresh Surefire XML.
+# Command form: rtk proxy <jdk21>/bin/java --class-path <Surefire classpath> <run>/TestEngineInventory.java <module>
+# Assertion probe form: rtk proxy <jdk21>/bin/java --class-path <core Surefire classpath> <run>/TruthWithoutJunit.java
+rtk git diff --check -- pom.xml xacml-core/pom.xml
+rtk git status --short -- pom.xml xacml-core/pom.xml xacml-core/src/test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/write-evidence.py
+# First final-check helper compared XML whitespace tails; replaced it with an exact byte comparison of the core Vintage deletion.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/final-checks.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/audit.py normalize
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/017-legacy-stack-removed/final-checks.py

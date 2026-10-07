@@ -1,0 +1,36 @@
+{
+  "baseline": "run 024 final case receipts (historical)",
+  "changed_cases": [
+    {
+      "suite": "oasis30",
+      "case_id": "IIIA030",
+      "before": "passed",
+      "strict_probe": "failed",
+      "after": "skipped",
+      "disposition": "skipped",
+      "enabled": "false",
+      "bug_id": "BUG-TBD-IIIA030"
+    },
+    {
+      "suite": "oasis30",
+      "case_id": "IIIA330",
+      "before": "passed",
+      "strict_probe": "failed",
+      "after": "skipped",
+      "disposition": "skipped",
+      "enabled": "false",
+      "bug_id": "BUG-TBD-IIIA330"
+    },
+    {
+      "suite": "oasis30",
+      "case_id": "IIIE302",
+      "before": "skipped",
+      "strict_probe": "passed",
+      "after": "passed",
+      "disposition": "executed",
+      "enabled": "true",
+      "bug_id": ""
+    }
+  ],
+  "unchanged_cases": 877
+}

@@ -22,144 +22,195 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 
 
+@ExtendWith(MockitoExtension.class)
 public class TargetTest
 {
 	private Collection<MatchAnyOf> matches;
 	private EvaluationContext context;
-	private IMocksControl c;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.matches = new LinkedList<MatchAnyOf>();
-		this.c = createStrictControl();
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = ModelFixtures.context();
 	}
 
 	@Test
 	public void testAllMatch(){
-		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
+		Expression m1Expression = ModelFixtures.reference();
+		MatchAnyOf m1 = ModelFixtures.anyOf(m1Expression);
+		Expression m2Expression = ModelFixtures.reference();
+		MatchAnyOf m2 = ModelFixtures.anyOf(m2Expression);
 		matches.add(m1);
 		matches.add(m2);
-		Capture<EvaluationContext> c1 = Capture.newInstance();
-		Capture<EvaluationContext> c2 = Capture.newInstance();
-		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
-		expect(m2.match(capture(c2))).andReturn(MatchResult.MATCH);
-		c.replay();
+		ArgumentCaptor<EvaluationContext> c1 = ArgumentCaptor.forClass(EvaluationContext.class);
+		ArgumentCaptor<EvaluationContext> c2 = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(m1Expression.evaluate(c1.capture())).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(m2Expression.evaluate(c2.capture())).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		InOrder order = inOrder(m1Expression, m2Expression);
 		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.MATCH, t.match(context));
-		c.verify();
+		order.verify(m1Expression).evaluate(c1.capture());
+		order.verify(m2Expression).evaluate(c2.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(m1Expression, times(1)).evaluate(c1.capture());
+		verify(m2Expression, times(1)).evaluate(c2.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(m1Expression, m2Expression);
+		assertSame(context, c1.getValue());
+		assertSame(context, c2.getValue());
 	}
 
 	@Test
 	public void testEmptyTarget()
 	{
-		c.replay();
+
 		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.MATCH, t.match(context));
-		c.verify();
+
 	}
 
 
 	@Test
 	public void testFirstMatchSecondIsNoMatch()
 	{
-		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m3 = c.createMock(MatchAnyOf.class);
+		Expression m1Expression = ModelFixtures.reference();
+		MatchAnyOf m1 = ModelFixtures.anyOf(m1Expression);
+		Expression m2Expression = ModelFixtures.reference();
+		MatchAnyOf m2 = ModelFixtures.anyOf(m2Expression);
+		Expression m3Expression = ModelFixtures.reference();
+		MatchAnyOf m3 = ModelFixtures.anyOf(m3Expression);
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		Capture<EvaluationContext> c1 = Capture.newInstance();
-		Capture<EvaluationContext> c2 = Capture.newInstance();
-		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
-		expect(m2.match(capture(c2))).andReturn(MatchResult.NOMATCH);
-		c.replay();
+		ArgumentCaptor<EvaluationContext> c1 = ArgumentCaptor.forClass(EvaluationContext.class);
+		ArgumentCaptor<EvaluationContext> c2 = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(m1Expression.evaluate(c1.capture())).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(m2Expression.evaluate(c2.capture())).thenReturn(ModelFixtures.matchValues(MatchResult.NOMATCH));
+		InOrder order = inOrder(m1Expression, m2Expression, m3Expression);
 		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.NOMATCH, t.match(context));
-		c.verify();
+		order.verify(m1Expression).evaluate(c1.capture());
+		order.verify(m2Expression).evaluate(c2.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(m1Expression, times(1)).evaluate(c1.capture());
+		verify(m2Expression, times(1)).evaluate(c2.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(m1Expression, m2Expression, m3Expression);
+		assertSame(context, c1.getValue());
+		assertSame(context, c2.getValue());
 	}
 
 	@Test
 	public void testFirstMatchAndSecondIsIndeterminate()
 	{
-		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m3 = c.createMock(MatchAnyOf.class);
+		Expression m1Expression = ModelFixtures.reference();
+		MatchAnyOf m1 = ModelFixtures.anyOf(m1Expression);
+		Expression m2Expression = ModelFixtures.reference();
+		MatchAnyOf m2 = ModelFixtures.anyOf(m2Expression);
+		Expression m3Expression = ModelFixtures.reference();
+		MatchAnyOf m3 = ModelFixtures.anyOf(m3Expression);
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		Capture<EvaluationContext> c1 = Capture.newInstance();
-		Capture<EvaluationContext> c2 = Capture.newInstance();
-		expect(m1.match(capture(c1))).andReturn(MatchResult.MATCH);
-		expect(m2.match(capture(c2))).andReturn(MatchResult.INDETERMINATE);
-		c.replay();
+		ArgumentCaptor<EvaluationContext> c1 = ArgumentCaptor.forClass(EvaluationContext.class);
+		ArgumentCaptor<EvaluationContext> c2 = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(m1Expression.evaluate(c1.capture())).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(m2Expression.evaluate(c2.capture())).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(m1Expression, m2Expression, m3Expression);
 		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
-		c.verify();
+		order.verify(m1Expression).evaluate(c1.capture());
+		order.verify(m2Expression).evaluate(c2.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(m1Expression, times(1)).evaluate(c1.capture());
+		verify(m2Expression, times(1)).evaluate(c2.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(m1Expression, m2Expression, m3Expression);
+		assertSame(context, c1.getValue());
+		assertSame(context, c2.getValue());
 	}
 
 	@Test
 	public void testFirstIsNoMatch()
 	{
-		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m3 = c.createMock(MatchAnyOf.class);
+		Expression m1Expression = ModelFixtures.reference();
+		MatchAnyOf m1 = ModelFixtures.anyOf(m1Expression);
+		Expression m2Expression = ModelFixtures.reference();
+		MatchAnyOf m2 = ModelFixtures.anyOf(m2Expression);
+		Expression m3Expression = ModelFixtures.reference();
+		MatchAnyOf m3 = ModelFixtures.anyOf(m3Expression);
 		matches.add(m1);
 		matches.add(m2);
 		matches.add(m3);
-		Capture<EvaluationContext> c1 = Capture.newInstance();
-		expect(m1.match(capture(c1))).andReturn(MatchResult.NOMATCH);
-		c.replay();
+		ArgumentCaptor<EvaluationContext> c1 = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(m1Expression.evaluate(c1.capture())).thenReturn(ModelFixtures.matchValues(MatchResult.NOMATCH));
+		InOrder order = inOrder(m1Expression, m2Expression, m3Expression);
 		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.NOMATCH, t.match(context));
-		c.verify();
+		order.verify(m1Expression).evaluate(c1.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(m1Expression, times(1)).evaluate(c1.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(m1Expression, m2Expression, m3Expression);
+		assertSame(context, c1.getValue());
 	}
 
 	@Test
 	public void testFirstIsIndeterminate()
 	{
-		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
+		Expression m1Expression = ModelFixtures.reference();
+		MatchAnyOf m1 = ModelFixtures.anyOf(m1Expression);
+		Expression m2Expression = ModelFixtures.reference();
+		MatchAnyOf m2 = ModelFixtures.anyOf(m2Expression);
 		matches.add(m1);
 		matches.add(m2);
-		Capture<EvaluationContext> c1 = Capture.newInstance();
-		expect(m1.match(capture(c1))).andReturn(MatchResult.INDETERMINATE);
-		c.replay();
+		ArgumentCaptor<EvaluationContext> c1 = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(m1Expression.evaluate(c1.capture())).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(m1Expression, m2Expression);
 		Target t = Target.builder().anyOf(matches).build();
 		assertEquals(MatchResult.INDETERMINATE, t.match(context));
-		c.verify();
+		order.verify(m1Expression).evaluate(c1.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(m1Expression, times(1)).evaluate(c1.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(m1Expression, m2Expression);
+		assertSame(context, c1.getValue());
 	}
 
 	@Test
 	public void testObjectMethods() {
-		MatchAnyOf m1 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m2 = c.createMock(MatchAnyOf.class);
-		MatchAnyOf m3 = c.createMock(MatchAnyOf.class);
+		Expression m1Expression = ModelFixtures.reference();
+		MatchAnyOf m1 = ModelFixtures.anyOf(m1Expression);
+		Expression m2Expression = ModelFixtures.reference();
+		MatchAnyOf m2 = ModelFixtures.anyOf(m2Expression);
+		Expression m3Expression = ModelFixtures.reference();
+		MatchAnyOf m3 = ModelFixtures.anyOf(m3Expression);
 
 		Target t1 = Target.builder().anyOf(m1, m2).build();
 		Target t2 = Target.builder().anyOf(m1, m2).build();
 		Target t3 = Target.builder().anyOf(m3, m2).build();
 
-		c.replay();
 		assertTrue(t1.equals(t2));
 		assertFalse(t1.equals(t3));
 		assertFalse(t1.equals(m3));
@@ -167,6 +218,6 @@ public class TargetTest
 
 		assertEquals(t1.hashCode(), t2.hashCode());
 		assertEquals(t1.toString(), t2.toString());
-		c.verify();
+		verifyNoMoreInteractions(m1Expression, m2Expression, m3Expression);
 	}
 }

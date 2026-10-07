@@ -22,19 +22,18 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Optional;
 
-import org.easymock.Capture;
-import org.easymock.IAnswer;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
@@ -43,10 +42,11 @@ import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
-import org.xacml4j.v30.Status;
+import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
+import org.xacml4j.v30.policy.AttributeSelector;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -62,7 +62,6 @@ public class DefaultEvaluationContextHandlerTest
 	"</md:record>";
 
 	private EvaluationContext context;
-	private IMocksControl c;
 
 	private Entity entity;
 	private XmlContent content;
@@ -72,14 +71,13 @@ public class DefaultEvaluationContextHandlerTest
 	private RequestContextCallback requestContextCallback;
 	private EvaluationContextHandler handler;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
-		this.c = createControl();
 
-		this.context = c.createMock(EvaluationContext.class);
-		this.requestContextCallback = c.createMock(RequestContextCallback.class);
-		this.pip = c.createMock(PolicyInformationPoint.class);
+		this.context = Mockito.mock(EvaluationContext.class);
+		this.requestContextCallback = Mockito.mock(RequestContextCallback.class);
+		this.pip = Mockito.mock(PolicyInformationPoint.class);
 		this.entity = Entity
 				.builder()
 				.content(XmlContent.of(XmlContent.fromString(testXml)))
@@ -91,6 +89,209 @@ public class DefaultEvaluationContextHandlerTest
 
 
 	@Test
+	public void testRelativePathWithoutContextSelectorUsesDocumentNode()
+	{
+		// XACML 3.0 7.3.7: no ContextSelectorId means the Content document node.
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).xpath("md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER).build();
+		Entity selected = Entity.builder().content(content)
+				.attribute(Attribute.builder("urn:oasis:names:tc:xacml:3.0:content-selector")
+						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+		when(pip.resolve(context, selector)).thenReturn(Optional.empty());
+		when(context.resolve(selector)).thenAnswer(invocation -> handler.resolve(context, selector));
+
+		assertEquals(XacmlTypes.INTEGER.emptyBag(),
+				AttributeSelector.builder().key(selector).mustBePresent(false).build().evaluate(context));
+	}
+
+	@Test
+	public void testRelativePathWithExplicitContextSelectorUsesSelectedNode()
+	{
+		// XACML 3.0 7.3.7: an explicit selector sets the context to its single node.
+		String selectorId = "urn:oasis:names:tc:xacml:3.0:content-selector";
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId(selectorId)
+				.xpath("md:patient-number/text()").dataType(XacmlTypes.INTEGER).build();
+		Entity selected = Entity.builder().content(content)
+				.attribute(Attribute.builder(selectorId)
+						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+
+		assertEquals(Optional.of(XacmlTypes.INTEGER.ofAny(555555).toBag()), handler.resolve(context, selector));
+	}
+
+	@Test
+	public void testZeroNodeContextSelectorIsIndeterminateWithSyntaxError()
+	{
+		// XACML 3.0 7.3.7 requires Indeterminate with syntax-error for a non-singleton selector result.
+		String selectorId = "urn:oasis:names:tc:xacml:3.0:content-selector";
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId(selectorId)
+				.xpath("/md:record/md:patient/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER).build();
+		Entity selected = Entity.builder().content(content)
+				.attribute(Attribute.builder(selectorId)
+						.value(XacmlTypes.XPATH.ofAny("/md:record/md:missing", CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+
+		EvaluationException exception = assertThrows(EvaluationException.class,
+				() -> handler.resolve(context, selector));
+		assertEquals(StatusCodeId.SYNTAX_ERROR,
+				exception.getStatus().getStatusCode().getValue());
+	}
+
+	@Test
+	public void testTwoNodeContextSelectorIsIndeterminateWithSyntaxError()
+	{
+		// XACML 3.0 7.3.7 requires Indeterminate with syntax-error for a non-singleton selector result.
+		String selectorId = "urn:oasis:names:tc:xacml:3.0:content-selector";
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId(selectorId)
+				.xpath("md:patient-number/text()").dataType(XacmlTypes.INTEGER).build();
+		String twoPatients = testXml.replace("</md:record>",
+				"<md:patient><md:patient-number>666666</md:patient-number></md:patient></md:record>");
+		Entity selected = Entity.builder().content(XmlContent.of(twoPatients))
+				.attribute(Attribute.builder(selectorId)
+						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+
+		EvaluationException exception = assertThrows(EvaluationException.class,
+				() -> handler.resolve(context, selector));
+		assertEquals(StatusCodeId.SYNTAX_ERROR,
+				exception.getStatus().getStatusCode().getValue());
+	}
+
+	@Test
+	public void testAttributeSelectorPreservesContextSelectorCardinalitySyntaxError()
+	{
+		for (boolean twoNodes : new boolean[]{false, true}) {
+			for (boolean mustBePresent : new boolean[]{false, true}) {
+				assertAttributeSelectorCardinalitySyntaxError(twoNodes, mustBePresent);
+			}
+		}
+	}
+
+	private void assertAttributeSelectorCardinalitySyntaxError(boolean twoNodes, boolean mustBePresent)
+	{
+		String selectorId = "urn:oasis:names:tc:xacml:3.0:content-selector";
+		AttributeSelectorKey key = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId(selectorId)
+				.xpath(twoNodes ? "md:patient-number/text()" : "/md:record/md:missing/text()")
+				.dataType(XacmlTypes.INTEGER).build();
+		String selectedXml = twoNodes
+				? testXml.replace("</md:record>",
+						"<md:patient><md:patient-number>666666</md:patient-number></md:patient></md:record>")
+				: testXml;
+		String contextXPath = twoNodes ? "/md:record/md:patient" : "/md:record/md:missing";
+		Entity selected = Entity.builder().content(XmlContent.of(selectedXml))
+				.attribute(Attribute.builder(selectorId)
+						.value(XacmlTypes.XPATH.ofAny(contextXPath, CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(selected));
+		Mockito.doAnswer(invocation -> handler.resolve(context, key)).when(context).resolve(key);
+
+		EvaluationException exception = assertThrows(EvaluationException.class,
+				() -> AttributeSelector.builder().key(key).mustBePresent(mustBePresent).build().evaluate(context));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, exception.getStatus().getStatusCode().getValue(),
+				"twoNodes=" + twoNodes + ", mustBePresent=" + mustBePresent);
+		Mockito.verifyNoInteractions(pip);
+	}
+
+	@Test
+	public void testPipSuppliedContextSelectorPreservesCardinalitySyntaxError()
+	{
+		String selectorId = "context-selector";
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId(selectorId)
+				.xpath("/md:record/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER).build();
+		AttributeDesignatorKey entitySelector = AttributeDesignatorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).attributeId(selectorId)
+				.dataType(XacmlTypes.ENTITY).build();
+		Entity supplied = Entity.builder().content(content)
+				.attribute(Attribute.builder(selectorId)
+						.value(XacmlTypes.XPATH.ofAny("/md:record/md:missing", CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+		when(pip.resolve(context, selector)).thenReturn(Optional.empty());
+		when(pip.resolve(context, entitySelector)).thenReturn(Optional.of(supplied.toBag()));
+		Mockito.doAnswer(invocation -> handler.resolve(context, selector)).when(context).resolve(selector);
+
+		EvaluationException exception = assertThrows(EvaluationException.class,
+				() -> AttributeSelector.builder().key(selector).mustBePresent(false).build().evaluate(context));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, exception.getStatus().getStatusCode().getValue());
+		Mockito.verify(pip).resolve(context, selector);
+		Mockito.verify(pip).resolve(context, entitySelector);
+		Mockito.verifyNoMoreInteractions(pip);
+	}
+
+	@Test
+	public void testExplicitMissingContextSelectorIsRejected()
+	{
+		assertThrows(PathEvaluationException.class, () -> {
+			AttributeSelectorKey selector = AttributeSelectorKey.builder()
+					.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId("missing-selector")
+					.xpath("/md:record/md:patient/md:patient-number/text()")
+					.dataType(XacmlTypes.INTEGER).build();
+			when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+
+			handler.resolve(context, selector);
+		});
+	}
+
+	@Test
+	public void testDesignatorPreservesIssuerAndDuplicateValuesAndGetEntityReturnsEntity()
+	{
+		AttributeDesignatorKey designator = AttributeDesignatorKey.builder()
+				.category(CategoryId.RESOURCE).attributeId("test-id").issuer("requested-issuer")
+				.dataType(XacmlTypes.INTEGER).build();
+		Entity supplied = Entity.builder().content(content)
+				.attribute(Attribute.builder("test-id").issuer("requested-issuer")
+						.value(XacmlTypes.INTEGER.ofAny(7), XacmlTypes.INTEGER.ofAny(7)).build(),
+						Attribute.builder("test-id").issuer("other-issuer")
+						.value(XacmlTypes.INTEGER.ofAny(9)).build()).build();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(supplied));
+
+		assertEquals(Optional.of(XacmlTypes.INTEGER.bagBuilder().value(7, 7).build()),
+				handler.resolve(context, designator));
+		assertEquals(Optional.of(supplied), handler.getEntity(CategoryId.RESOURCE));
+	}
+
+	@Test
+	public void testSelectorFallsBackToEntityValueFromPipAndCachesResult()
+	{
+		String selectorId = "entity-selector";
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId(selectorId)
+				.xpath("md:patient-number/text()").dataType(XacmlTypes.INTEGER).build();
+		AttributeDesignatorKey designator = AttributeDesignatorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).attributeId(selectorId)
+				.dataType(XacmlTypes.ENTITY).build();
+		Entity supplied = Entity.builder().content(content)
+				.attribute(Attribute.builder(selectorId)
+						.value(XacmlTypes.XPATH.ofAny("/md:record/md:patient", CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT))
+				.thenReturn(Optional.empty());
+		when(pip.resolve(context, selector)).thenReturn(Optional.empty());
+		when(pip.resolve(context, designator)).thenReturn(Optional.of(supplied.toBag()));
+
+		Optional<BagOfValues> expected = Optional.of(XacmlTypes.INTEGER.ofAny(555555).toBag());
+		assertEquals(expected, handler.resolve(context, selector));
+		assertEquals(expected, handler.resolve(context, selector));
+		Mockito.verify(requestContextCallback, Mockito.times(2)).getEntity(CategoryId.SUBJECT_RECIPIENT);
+		Mockito.verify(pip).resolve(context, selector);
+		Mockito.verify(pip).resolve(context, designator);
+		Mockito.verifyNoMoreInteractions(requestContextCallback, pip);
+	}
+
+	@Test
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest()
 		throws EvaluationException
 	{
@@ -100,11 +301,9 @@ public class DefaultEvaluationContextHandlerTest
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		c.replay();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		assertEquals(v.get(), XacmlTypes.INTEGER.ofAny(555555).toBag());
-		c.verify();
 	}
 
 	@Test
@@ -117,15 +316,12 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		
-		c.replay();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
 
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		assertEquals(v.get(), XacmlTypes.INTEGER.bagBuilder()
 		                                        .value(555555)
 		                                        .build());
-		c.verify();
 	}
 
 	@Test
@@ -139,21 +335,21 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.empty());
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
 
-		expect(pip.resolve(context, ref)).andReturn(Optional.of(content).flatMap(v->v.resolve(ref)));
-
-		c.replay();
+		when(pip.resolve(context, ref)).thenReturn(Optional.of(content).flatMap(v->v.resolve(ref)));
 
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		// test cache
 		v = handler.resolve(context, ref);
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().value(555555).build(), v.get());
-		c.verify();
+		Mockito.verify(requestContextCallback, Mockito.times(1)).getEntity(CategoryId.SUBJECT_RECIPIENT);
+		Mockito.verify(pip).resolve(context, ref);
+		Mockito.verifyNoMoreInteractions(requestContextCallback, pip);
 	}
 
 
-	@Test(expected = PathEvaluationException.class)
+	@Test
 	public void testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType() throws EvaluationException
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
@@ -162,16 +358,12 @@ public class DefaultEvaluationContextHandlerTest
 				.xpath("/md:record/md:patient")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
-		Capture<Status> statusCapture = Capture.newInstance();
-		context.setEvaluationStatus(capture(statusCapture));
-		c.replay();
-		Optional<BagOfValues> v = handler.resolve(context, ref);
-		c.verify();
-		assertFalse(v.isPresent());
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+		assertThrows(PathEvaluationException.class, () -> handler.resolve(context, ref));
+		// The baseline status expectation was unreachable after the throw.
+		Mockito.verify(requestContextCallback).getEntity(CategoryId.SUBJECT_RECIPIENT);
 	}
-	@Test(expected = PathEvaluationException.class)
+	@Test
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndNodeFailsConvertionToDate() throws EvaluationException
 	{
 		AttributeSelectorKey ref = AttributeSelectorKey
@@ -180,36 +372,25 @@ public class DefaultEvaluationContextHandlerTest
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.DATE)
 				.build();
-
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
-		Capture<Status> statusCapture = Capture.newInstance();
-		context.setEvaluationStatus(capture(statusCapture));
-		
-		c.replay();
-		Optional<BagOfValues> v = handler.resolve(context, ref);
-		c.verify();
-		assertFalse(v.isPresent());
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+		assertThrows(PathEvaluationException.class, () -> handler.resolve(context, ref));
+		// The baseline status expectation was unreachable after the throw.
+		Mockito.verify(requestContextCallback).getEntity(CategoryId.SUBJECT_RECIPIENT);
 	}
 
-	@Test(expected = PathEvaluationException.class)
+	@Test
 	public void testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndCorrectNodeTypeAndNodeFailsConvertionToDate() throws EvaluationException
 	{
-
 		AttributeSelectorKey ref = AttributeSelectorKey
 				.builder()
 				.category(CategoryId.SUBJECT_RECIPIENT)
 				.xpath("/md:record/md:patient/md:patient-number/text()")
 				.dataType(XacmlTypes.DATE)
 				.build();
-
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
-		Capture<Status> statusCapture = Capture.newInstance();
-		context.setEvaluationStatus(capture(statusCapture));
-		c.replay();
-		Optional<BagOfValues> v = handler.resolve(context, ref);
-		c.verify();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+		assertThrows(PathEvaluationException.class, () -> handler.resolve(context, ref));
+		// The baseline status expectation was unreachable after the throw.
+		Mockito.verify(requestContextCallback).getEntity(CategoryId.SUBJECT_RECIPIENT);
 	}
 
 	@Test
@@ -221,12 +402,9 @@ public class DefaultEvaluationContextHandlerTest
 				.xpath("/test")
 				.dataType(XacmlTypes.INTEGER)
 				.build();
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andReturn(Optional.empty());
-		
-		c.replay();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.of(entity));
+		when(pip.resolve(context, ref)).thenReturn(Optional.empty());
 		Optional<BagOfValues> v = handler.resolve(context, ref);
-		c.verify();
 		assertFalse(v.isPresent());
 	}
 
@@ -242,13 +420,10 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.INTEGER)
 				.build();
 
-		expect(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).andReturn(Optional.empty());
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
 
-		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
-
-		c.replay();
+		when(pip.resolve(context, ref)).thenThrow(new RuntimeException());
 		Optional<BagOfValues> v = handler.resolve(context, ref);
-		c.verify();
 		assertFalse(v.isPresent());
 	}
 	
@@ -263,12 +438,10 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andReturn(Optional.of(XacmlTypes.ANYURI.ofAny("testValue").toBag()));
-		c.replay();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		when(pip.resolve(context, ref)).thenReturn(Optional.of(XacmlTypes.ANYURI.ofAny("testValue").toBag()));
 		Optional<BagOfValues> v = handler.resolve(context, ref);
 		assertEquals(XacmlTypes.ANYURI.ofAny("testValue").toBag(), v.get());
-		c.verify();
 	}
 
 
@@ -283,12 +456,9 @@ public class DefaultEvaluationContextHandlerTest
 				.dataType(XacmlTypes.ANYURI)
 				.build();
 
-		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity));
-		expect(pip.resolve(context, ref)).andThrow(new RuntimeException());
-
-		c.replay();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		when(pip.resolve(context, ref)).thenThrow(new RuntimeException());
 		Optional<BagOfValues> v = handler.resolve(context, ref);
-		c.verify();
 		assertFalse(v.isPresent());
 	}
 
@@ -302,16 +472,9 @@ public class DefaultEvaluationContextHandlerTest
 				.attributeId("testId")
 				.dataType(XacmlTypes.ANYURI)
 				.build();
-		expect(requestContextCallback.getEntity(CategoryId.RESOURCE)).andReturn(Optional.of(entity)).anyTimes();
-		expect(pip.resolve(context, ref)).andAnswer(new IAnswer<Optional<BagOfValues>>() {
-		public Optional<BagOfValues> answer() throws Throwable{
-				return handler.resolve(context, ref);
-			}
-		});
-
-
-		c.replay();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(entity));
+		when(pip.resolve(context, ref)).thenAnswer(invocation -> handler.resolve(context, ref));
 		handler.resolve(context, ref);
-		c.verify();
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
 	}
 }

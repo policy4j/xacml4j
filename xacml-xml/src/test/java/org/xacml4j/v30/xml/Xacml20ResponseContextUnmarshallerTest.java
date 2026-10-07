@@ -22,12 +22,12 @@ package org.xacml4j.v30.xml;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
@@ -42,7 +42,7 @@ public class Xacml20ResponseContextUnmarshallerTest
 {
 	private ResponseUnmarshaller unmarshaller;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 		this.unmarshaller = new Xacml20ResponseContextUnmarshaller();

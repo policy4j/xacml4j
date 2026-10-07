@@ -22,12 +22,12 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.xacml4j.v30.types.Xacml20XPathTo30Transformer.fromXacml20String;
 import static org.xacml4j.v30.types.Xacml20XPathTo30Transformer.transform20PathTo30;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.CategoryId;
 
 
@@ -43,7 +43,7 @@ public class Xacml20XPathTo30TransformerTest
 
 	// FIXME: Implement transformation
 	@Test
-	@Ignore
+	@Disabled
 	public void testXPathTransformationWithFunctions()
 	{
 		assertEquals("//md:record/md:patient/md:patient-number/text()",

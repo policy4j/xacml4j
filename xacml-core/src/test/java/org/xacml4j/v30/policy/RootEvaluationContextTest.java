@@ -22,42 +22,46 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.util.Optional;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.CompositeDecisionRuleIDReference;
+import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
+@ExtendWith(MockitoExtension.class)
 public class RootEvaluationContextTest
 {
 	private EvaluationContextHandler handler;
 	private PolicyReferenceResolver resolver;
-	private IMocksControl c;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.handler = c.createMock(EvaluationContextHandler.class);
-		this.resolver = c.createMock(PolicyReferenceResolver.class);
+		this.handler = mock(EvaluationContextHandler.class);
+		this.resolver = mock(PolicyReferenceResolver.class);
 	}
 
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTLZero()
 	{
 		RootEvaluationContext context = new RootEvaluationContext(false, Duration.ZERO, resolver, handler);
-		c.replay();
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(0)));
 		context.setDecisionCacheTTL(20);
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(0)));
@@ -67,14 +71,13 @@ public class RootEvaluationContextTest
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(0)));
 		context.setDecisionCacheTTL(10);
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(0)));
-		c.verify();
+		verifyNoMoreInteractions(handler, resolver);
 	}
 
 	@Test
 	public void testSetAndGetDecisionCacheTTLWithDefaultTTL()
 	{
 		RootEvaluationContext context = new RootEvaluationContext(false, Duration.ofSeconds(10), resolver, handler);
-		c.replay();
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(10)));
 		context.setDecisionCacheTTL(Duration.ofSeconds(20));
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ofSeconds(10)));
@@ -84,7 +87,7 @@ public class RootEvaluationContextTest
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ZERO));
 		context.setDecisionCacheTTL(10);
 		assertThat(context.getDecisionCacheTTL(), is(Duration.ZERO));
-		c.verify();
+		verifyNoMoreInteractions(handler, resolver);
 	}
 
 	@Test
@@ -102,10 +105,32 @@ public class RootEvaluationContextTest
 		                                             .value("aaa", "ccc")
 		                                             .build();
 
-		expect(handler.resolve(context, k)).andReturn(Optional.of(expectedValue));
+		when(handler.resolve(context, k)).thenReturn(Optional.of(expectedValue));
 
-		c.replay();
+		InOrder order = inOrder(handler, resolver);
 		assertThat(context.resolve(k).get(), is(expectedValue));
-		c.verify();
+		order.verify(handler).resolve(context, k);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(handler, times(1)).resolve(context, k);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(handler, resolver);
+	}
+
+	@Test
+	public void testEvaluatedPolicyListContainsOnlyApplicableDecisions()
+	{
+		RootEvaluationContext context = new RootEvaluationContext(false, Duration.ZERO, resolver, handler);
+		CompositeDecisionRule permit = mock(CompositeDecisionRule.class);
+		CompositeDecisionRule notApplicable = mock(CompositeDecisionRule.class);
+		CompositeDecisionRule indeterminate = mock(CompositeDecisionRule.class);
+		CompositeDecisionRuleIDReference permitRef = mock(CompositeDecisionRuleIDReference.class);
+		when(permit.getId()).thenReturn("permit");
+		when(permit.getReference()).thenReturn(permitRef);
+
+		context.addEvaluationResult(permit, Decision.PERMIT);
+		context.addEvaluationResult(notApplicable, Decision.NOT_APPLICABLE);
+		context.addEvaluationResult(indeterminate, Decision.INDETERMINATE);
+
+		assertEquals(java.util.List.of(permitRef), context.getEvaluatedPolicies());
 	}
 }

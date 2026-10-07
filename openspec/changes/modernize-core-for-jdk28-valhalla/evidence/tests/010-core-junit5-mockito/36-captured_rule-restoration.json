@@ -1,0 +1,11 @@
+{
+  "case": "captured_rule",
+  "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+  "method": "testExpressionThrowsRuntimeException",
+  "intent": "Return a different current Rule; result/status/count checks remain satisfied but the captured Rule identity assertion must fail.",
+  "mutation_boundary": "Owned test stimulus/collaborator only; no production source was mutated",
+  "backup": "36-mutation-backups/ConditionTest.java",
+  "original_sha256": "c6dca92146e3310c42ae0c08b40de369b1ac75503dd7c7b453b9427e0486c96e",
+  "mutant_sha256": "371457041263da7ce6366d1d7f6517d4c684651e334bdab3de9ecbbd05fe8e42",
+  "restored_exact_bytes": true
+}

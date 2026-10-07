@@ -22,12 +22,14 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 import java.lang.reflect.Method;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
@@ -38,45 +40,51 @@ public class JavaMethodToFunctionSpecTest
 {
 	private JavaMethodToFunctionSpecConverter builder;
 	
-	@Before
+	@BeforeEach
 	public void init(){
 		this.builder = new JavaMethodToFunctionSpecConverter(FunctionInvocationFactory.defaultFactory());
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void missingXacmlFuncAnnotation() throws Exception
 	{
-		builder.createFunctionSpec(getTestMethod("missingXacmlFuncAnnotation"));
+		assertThrows(SyntaxException.class, () ->
+			builder.createFunctionSpec(getTestMethod("missingXacmlFuncAnnotation")));
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void missingReturnTypeDeclaration1() throws Exception
 	{
-		builder.createFunctionSpec(getTestMethod("missingReturnTypeDeclaration1"));
+		assertThrows(SyntaxException.class, () ->
+			builder.createFunctionSpec(getTestMethod("missingReturnTypeDeclaration1")));
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void returnsVoid() throws Exception
 	{
-		builder.createFunctionSpec(getTestMethod("returnsVoid"));
+		assertThrows(SyntaxException.class, () ->
+			builder.createFunctionSpec(getTestMethod("returnsVoid")));
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void returnsNonXacmlExpression() throws Exception
 	{
-		builder.createFunctionSpec(getTestMethod("returnsNonXacmlExpression"));
+		assertThrows(SyntaxException.class, () ->
+			builder.createFunctionSpec(getTestMethod("returnsNonXacmlExpression")));
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void returnTypeDeclarationExistButWrongMethodReturnType1() throws Exception
 	{
-		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType1"));
+		assertThrows(SyntaxException.class, () ->
+			builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType1")));
 	}
 	
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void returnTypeDeclarationExistButWrongMethodReturnType2() throws Exception
 	{
-		builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType2"));
+		assertThrows(SyntaxException.class, () ->
+			builder.createFunctionSpec(getTestMethod("returnTypeDeclarationExistButWrongMethodReturnType2")));
 	}
 	
 	@Test

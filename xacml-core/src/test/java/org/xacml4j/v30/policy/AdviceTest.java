@@ -22,11 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.CategoryId;
@@ -180,18 +178,20 @@ public class AdviceTest
 		assertTrue(a.getAttribute("testId1").contains(attrBuilder.build()));
 	}
 
-	@Test(expected=UnsupportedOperationException.class)
+	@Test
 	public void testImmutability2()
 	{
-		AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
-				.attributeId("testId1")
-				.category(CategoryId.SUBJECT_ACCESS)
-				.issuer("testIssuer")
-				.value(XacmlTypes.INTEGER.ofAny(0));
+		assertThrows(UnsupportedOperationException.class, () -> {
+			AttributeAssignment.Builder attrBuilder = AttributeAssignment.builder()
+					.attributeId("testId1")
+					.category(CategoryId.SUBJECT_ACCESS)
+					.issuer("testIssuer")
+					.value(XacmlTypes.INTEGER.ofAny(0));
 
-		Advice a = Advice.builder("testId", Effect.DENY)
-				.attribute(attrBuilder.build())
-				.build();
-		a.getAttribute("testId1").clear();
+			Advice a = Advice.builder("testId", Effect.DENY)
+					.attribute(attrBuilder.build())
+					.build();
+			a.getAttribute("testId1").clear();
+		});
 	}
 }

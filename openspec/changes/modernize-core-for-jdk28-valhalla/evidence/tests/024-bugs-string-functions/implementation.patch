@@ -1,0 +1,146 @@
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java
+@@ -22,6 +22,9 @@
+  * #L%
+  */
+ 
++import java.net.URI;
++
++import com.google.common.base.Preconditions;
+ import org.xacml4j.v30.policy.function.*;
+ import org.xacml4j.v30.types.*;
+ 
+@@ -57,7 +60,16 @@
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
+ 	{
+-		return a.startsWith(b);
++		return b.startsWith(a);
++	}
++
++	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-starts-with")
++	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++	public static BooleanVal anyURIStartsWith(
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
++	{
++		return startsWith(a, b.toStringExp());
+ 	}
+ 
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-starts-with")
+@@ -66,7 +78,7 @@
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
+ 	{
+-		return a.toStringExp().startsWith(b);
++		return anyURIStartsWith(b, a);
+ 	}
+ 
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-ends-with")
+@@ -75,7 +87,16 @@
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
+ 	{
+-		return a.endsWith(b);
++		return b.endsWith(a);
++	}
++
++	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-ends-with")
++	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++	public static BooleanVal anyURIEndsWith(
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
++	{
++		return endsWith(a, b.toStringExp());
+ 	}
+ 
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-ends-with")
+@@ -84,7 +105,7 @@
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
+ 	{
+-		return a.endsWith(b);
++		return anyURIEndsWith(b, a);
+ 	}
+ 
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-contains")
+@@ -93,7 +114,16 @@
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
+ 	{
+-		return a.contains(b);
++		return b.contains(a);
++	}
++
++	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-contains")
++	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++	public static BooleanVal anyURIContains(
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
++	{
++		return contains(a, b.toStringExp());
+ 	}
+ 
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:uri-contains")
+@@ -102,7 +132,37 @@
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+ 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal b)
+ 	{
+-		return a.contains(b);
++		return anyURIContains(b, a);
++	}
++
++	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-substring")
++	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
++	public static StringVal substring(
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal a,
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal start,
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal end)
++	{
++		String value = a.get();
++		int length = value.codePointCount(0, value.length());
++		long first = start.get();
++		long last = end.get() == -1 ? length : end.get();
++		Preconditions.checkArgument(first >= 0 && first <= last && last <= length,
++				"Substring indexes are out of bounds");
++		return StringVal.of(value.substring(value.offsetByCodePoints(0, (int)first),
++				value.offsetByCodePoints(0, (int)last)));
++	}
++
++	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:anyURI-substring")
++	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#string")
++	public static StringVal anyURISubstring(
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal start,
++			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal end)
++	{
++		StringVal result = substring(a.toStringExp(), start, end);
++		// A.3.9 returns a string, but requires the resulting substring to be a valid URI.
++		URI.create(result.get());
++		return result;
+ 	}
+ 
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:string-from-boolean")
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java
+@@ -85,15 +85,15 @@
+ 		if(atLeastOneIndeterminateDP){
+ 			return Decision.INDETERMINATE_DP;
+ 		}
+-		if(atLeastOneIndeterminateD &&
+-				(atLeastOneIndeterminateP || atLeastOneDeny)){
++		if(atLeastOneIndeterminateP &&
++				(atLeastOneIndeterminateD || atLeastOneDeny)){
+ 			return Decision.INDETERMINATE_DP;
++		}
++		if(atLeastOneIndeterminateP){
++			return Decision.INDETERMINATE_P;
+ 		}
+ 		if(atLeastOneDeny){
+ 			return Decision.DENY;
+-		}
+-		if(atLeastOneIndeterminateP){
+-			return Decision.INDETERMINATE_P;
+ 		}
+ 		if(atLeastOneIndeterminateD){
+ 			return Decision.INDETERMINATE_D;

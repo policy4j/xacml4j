@@ -1,5 +1,7 @@
 package org.xacml4j.v30.policy.function.impl;
 
+import java.time.ZoneOffset;
+
 /*
  * #%L
  * Xacml4J Core Engine Implementation
@@ -108,7 +110,8 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(r  < 0 || r == 0);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-in-range")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:time-in-range")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-in-range")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal timeInRange(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
@@ -116,7 +119,19 @@ public final class NonNumericComparisonFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") ISO8601Time b,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#time") ISO8601Time c)
 	{
-		return BooleanVal.of(a.compareTo(b) >= 0 && a.compareTo(c) <= 0);
+		ZoneOffset firstOffset = a.isTimeZoneDefined()
+				? a.getTimeZone()
+				: context.getTimeZone().toZoneId().getRules().getOffset(context.getClock().instant());
+		long time = a.toUtcReferenceNanos(firstOffset);
+		long start = b.toUtcReferenceNanos(firstOffset);
+		long end = c.toUtcReferenceNanos(firstOffset);
+		long day = 24L * 60 * 60 * 1_000_000_000;
+		if (end < start) {
+			end += day;
+		}
+		// Bounds recur daily; fold the first argument into the bounds' UTC day cycle.
+		long timeInCycle = start + Math.floorMod(time - start, day);
+		return BooleanVal.of(timeInCycle <= end);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-greater-than")

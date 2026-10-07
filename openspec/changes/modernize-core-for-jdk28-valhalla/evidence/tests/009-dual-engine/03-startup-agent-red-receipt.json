@@ -1,0 +1,20 @@
+{
+  "log": "03-startup-agent-red.log",
+  "build_success": false,
+  "tests_executed": false,
+  "module_counts": {},
+  "totals": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "compiler_diagnostics": [],
+  "reports": {},
+  "jdk_properties": {},
+  "problems": [],
+  "conformance": {},
+  "root_pom_sha256": "ee6123ad79074d703801f98460df723ac075b91d4235959e6751914802d6bf9d",
+  "root_pom_matches_before": false,
+  "probe_present": true
+}

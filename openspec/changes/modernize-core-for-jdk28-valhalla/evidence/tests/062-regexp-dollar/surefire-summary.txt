@@ -1,0 +1,16 @@
+JDK: 21 (compiler release 21)
+
+Focused gate (\`FunctionSafetyNet43Test\`, \`RegularExpressionFunctionsTest\`):
+- FunctionSafetyNet43Test: 109 tests, 0 failures, 0 errors, 12 skips.
+- RegularExpressionFunctionsTest: 11 tests, 0 failures, 0 errors, 0 skips.
+- Aggregate: 120 tests, 0 failures, 0 errors, 12 skips; BUILD SUCCESS.
+
+Core clean test:
+- xacml-core: 4,889 tests, 0 failures, 0 errors, 18 skips; BUILD SUCCESS.
+
+Full reactor verify:
+- Conformance module: 917 tests, 0 failures, 0 errors, 17 skips; BUILD SUCCESS.
+- OASIS 2.0: 375 tests, 0 failures, 0 errors, 10 skips.
+- OASIS 3.0: 488 tests, 0 failures, 0 errors, 7 skips.
+- RSA 2008: 17 tests, 0 failures, 0 errors, 0 skips.
+- Examples: 2 tests, 0 failures, 0 errors, 0 skips.

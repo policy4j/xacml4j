@@ -1,0 +1,9 @@
+{
+  "path": "openspec/changes/modernize-core-for-jdk28-valhalla/specs/combining-algorithm-registry/spec.md",
+  "before_v2": "12beb7a7299ce931e565284520cc797ea3723462928ac3537ffd0602b499cd6c",
+  "after_addendum": "36a0f3599c7b06ba8c629d0262894f511d3894c8ac962e94b4013723418403fa",
+  "only_changed_scope_file": true,
+  "production_and_test_hashes_unchanged": true,
+  "after_approved_opus_wording": "8fc5dd2a7e3951c6d5bf2d43ee846a30ad473e22ef28cd8fcb7392d18ce4a5ef",
+  "wording_edits": "status if any; publication boundary enclosing policy set/final response; matching gate scenario"
+}

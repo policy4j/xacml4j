@@ -1,0 +1,41 @@
+{
+  "suites": {
+    "oasis20": {
+      "cases": 374,
+      "executed": 360,
+      "special_harness": 2,
+      "special_passed": 2,
+      "skipped": 12,
+      "passed": 362
+    },
+    "oasis30": {
+      "cases": 487,
+      "executed": 454,
+      "special_harness": 2,
+      "special_passed": 1,
+      "skipped": 31,
+      "passed": 455
+    },
+    "rsa2008": {
+      "cases": 17,
+      "executed": 17,
+      "special_harness": 0,
+      "special_passed": 0,
+      "skipped": 0,
+      "passed": 17
+    },
+    "example": {
+      "cases": 2,
+      "executed": 2,
+      "special_harness": 0,
+      "special_passed": 0,
+      "skipped": 0,
+      "passed": 2
+    }
+  },
+  "total_cases": 880,
+  "passed_cases": 836,
+  "previous_unique_cases": 711,
+  "new_passing_cases": 125,
+  "removed_previous_cases": []
+}

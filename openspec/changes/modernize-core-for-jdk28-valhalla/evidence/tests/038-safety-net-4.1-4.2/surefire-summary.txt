@@ -1,0 +1,29 @@
+Surefire aggregate from TEST-*.xml after rv049/rv050 final run
+JDK: Maven 3.9.16 / GraalVM Java 21.0.6
+
+Module totals (tests, failures, errors, skipped)
+xacml-core: 4467, 0, 0, 8
+xacml-pdp: 98, 0, 0, 8
+
+Added safety-net test classes
+xacml-core org.xacml4j.v30.policy.ConditionSafetyNetTest: 4, 0, 0, 1
+xacml-core org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest: 6, 0, 0, 2
+xacml-pdp org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest: 21, 0, 0, 5
+
+Skipped test methods
+xacml-core org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest.testXPathTransformationWithFunctions — pre-existing @Disabled
+xacml-core org.xacml4j.v30.policy.ConditionSafetyNetTest.selectorAbsentResultMustNotSetMissingAttributeStatus — policy4j-the.4.32 selector null result status expectation
+xacml-core org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest.resolvesOnPermitApplySecondProfileIdentifier — Task 4.6 profile semantics not implemented
+xacml-core org.xacml4j.v30.content.ContentTest.testXmlBase64 — pre-existing @Disabled
+xacml-core org.xacml4j.v30.types.TypeRegistryTest.duplicateTypeIdentifierFailsRegistration — policy4j-the.4.26
+xacml-core org.xacml4j.v30.types.TypeRegistryTest.duplicateFunctionIdentifierFailsRegistration — policy4j-the.4.26
+xacml-core org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest.testDesignatorFunctionWithAbsentCategoryReturnsEmptyBag — policy4j-the.4.33 category URI absent with MustBePresent=false; direct test asserts empty bag
+xacml-core org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest.testDesignatorFunctionWithAbsentCategoryFailsWhenRequired — policy4j-the.4.33 category URI absent with MustBePresent=true; direct test expects missing-attribute
+xacml-pdp org.xacml4j.v30.spi.pip.BaseAttributeResolverTest.testMBeanInvocationStats — pre-existing @Disabled
+xacml-pdp org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest.attributeDesignatorFunctionWithAbsentCategoryYieldsEmptyBag — policy4j-the.4.33 category URI absent with MustBePresent=false
+xacml-pdp org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest.attributeDesignatorFunctionWithAbsentCategoryAndMustBePresentYieldsMissingAttribute — policy4j-the.4.33 category URI absent with MustBePresent=true
+xacml-pdp org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest.attributeDesignatorFunctionRequiredMissingAttributeIsIndeterminateForCategoryAndEntity — policy4j-the.4.33 PDP currently reports processing-error instead of preserving missing-attribute
+xacml-pdp org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest.resolverFailureMustBeIndeterminateWithProcessingErrorWhenNotMustBePresent — policy4j-the.4.34 resolver failure, MustBePresent=false
+xacml-pdp org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest.resolverFailureMustBeIndeterminateWithProcessingErrorWhenMustBePresent — policy4j-the.4.34 resolver failure, MustBePresent=true
+xacml-pdp org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet — pre-existing @Disabled
+xacml-pdp org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable — pre-existing @Disabled

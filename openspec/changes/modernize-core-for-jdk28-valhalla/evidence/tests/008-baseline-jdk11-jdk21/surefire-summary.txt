@@ -1,0 +1,130 @@
+JDK 11 before release change — extracted from jdk11-before.log
+module | tests | failures | errors | skipped
+---|---:|---:|---:|---:
+xacml-core | 762 | 0 | 0 | 4
+xacml-xml-jaxb | 0 | 0 | 0 | 0
+xacml-xml | 34 | 0 | 0 | 0
+xacml-json | 5 | 0 | 0 | 1
+xacml-pdp | 74 | 0 | 0 | 4
+xacml-test | 20 | 0 | 0 | 0
+xacml-conformance-tests | 41 | 0 | 0 | 0
+
+JDK 21 after release change — aggregated from current module Surefire XML reports
+module | tests | failures | errors | skipped
+---|---:|---:|---:|---:
+xacml-core | 762 | 0 | 96 | 4
+xacml-xml-jaxb | 0 | 0 | 0 | 0
+xacml-xml | 34 | 0 | 0 | 0
+xacml-json | 5 | 0 | 0 | 1
+xacml-pdp | 74 | 0 | 0 | 4
+xacml-test | 20 | 0 | 0 | 0
+xacml-conformance-tests | 41 | 0 | 0 | 0
+
+JDK 21 failure/error method inventory (all reported methods)
+- org.xacml4j.v30.policy.ConditionTest (6):
+  - error testExpressionThrowsEvaluationException — java.lang.IllegalArgumentException: Could not create type
+  - error testObjectMethods — java.lang.IllegalArgumentException: Could not create type
+  - error testExpressionEvaluatesToFalse — java.lang.IllegalArgumentException: Could not create type
+  - error testCreateWithExpWhichReturnsNonBooleanValue — java.lang.IllegalArgumentException: Could not create type
+  - error testExpressionThrowsRuntimeException — java.lang.IllegalArgumentException: Could not create type
+  - error testExpressionEvaluatesToTrue — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.MatchAllOfTest (6):
+  - error testNoMatchStopsEvaluation — java.lang.IllegalArgumentException: Could not create type
+  - error testAllMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testAtLeastOneNoMatch1 — java.lang.IllegalArgumentException: Could not create type
+  - error testObjectMethods — java.lang.IllegalArgumentException: Could not create type
+  - error testAtLeastOneNoMatchAndIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testAllMatchAndAtLeastOneIndeterminate — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.MatchAnyOfTest (5):
+  - error testAllNoMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testNoMatchAndAtLeastOneIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testObjectMethods — java.lang.IllegalArgumentException: Could not create type
+  - error testAtLeastOneMatch1 — java.lang.IllegalArgumentException: Could not create type
+  - error testAtLeastOneMatch2 — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.MatchTest (2):
+  - error testMatchEvaluation — java.lang.IllegalArgumentException: Could not create type
+  - error testMatchEvaluationFailedToResolveAttributeException — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.ObligationExpressionTest (1):
+  - error testCreateObligationExpression — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.PolicyIDReferenceTest (12):
+  - error testEvaluateIfApplicableFailedToResolveReferenceReturnsNull — java.lang.IllegalArgumentException: Could not create type
+  - error testReferenceBuilder — java.lang.IllegalArgumentException: Could not create type
+  - error testObjectMethods — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableFailedToResolveReference — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateIfApplicableFailedToResolveReferenceViaException — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateIfApplicablePolicyCanBeResolved — java.lang.IllegalArgumentException: Could not create type
+  - error testReferersTo — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicablePolicyCanBeResolved — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateFailedToResolveReference — java.lang.IllegalArgumentException: Could not create type
+  - error testCreatePolicyIDReferenceEvaluatonConntext — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateFailedToResolveReferenceAndReturnNull — java.lang.IllegalArgumentException: Could not create type
+  - error testPolicyIDResolutionViaWrongEvaluationContext — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.PolicySetIDReferenceTest (7):
+  - error testIsApplicableFailToResolveReference — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateIfApplicable — java.lang.IllegalArgumentException: Could not create type
+  - error testObjectMethods — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateFailToResolveReferenceViaException — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateFailToResolveReferenceReturnsNull — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicablePolicyIDReference — java.lang.IllegalArgumentException: Could not create type
+  - error testPolicyIDResolutionViaWrongEvaluationContext — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.PolicySetTest (14):
+  - error testEvaluateTargetMatchConditionFalse — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetNoMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrue — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testCreateContext — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetException — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.PolicyTest (14):
+  - error testEvaluateTargetMatchConditionFalse — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetNoMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrue — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testCreateContext — java.lang.IllegalArgumentException: Could not create type
+  - error testIsApplicableTargetException — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit — java.lang.IllegalArgumentException: Could not create type
+  - error testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.RuleTest (23):
+  - error testPermitRuleIsApplicableWithTargetMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleIsApplicableWithTargetNoMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleEvaluateIfApplicableWithTargetMatchConditionTrue — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleConditionTrue — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleEvaluateIfApplicableWithTargetNoMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleEvaluateIfApplicableWithTargetIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleObligationOrAdviceEvaluationFails — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleApplicabilityWithTargetMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleEvaluateIfApplicableWithTargetNoMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleIsApplicableWithTargetIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleIsApplicableWithNoTarget — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleIsApplicableWithNoTarget — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleConditionFalse — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleConditionTrue — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleEvaluateIfApplicableWithTargetEvaluationException — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleEvaluateIfApplicableWithTargetMatchConditionTrue — java.lang.IllegalArgumentException: Could not create type
+  - error testHashCode — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleConditionIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleEvaluateIfApplicableWithTargetIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testEquals — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleConditionIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testDenyRuleConditionFalse — java.lang.IllegalArgumentException: Could not create type
+  - error testPermitRuleIsApplicableWithTargetIndeterminate — java.lang.IllegalArgumentException: Could not create type
+- org.xacml4j.v30.policy.TargetTest (6):
+  - error testFirstMatchSecondIsNoMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testAllMatch — java.lang.IllegalArgumentException: Could not create type
+  - error testFirstIsIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testObjectMethods — java.lang.IllegalArgumentException: Could not create type
+  - error testFirstMatchAndSecondIsIndeterminate — java.lang.IllegalArgumentException: Could not create type
+  - error testFirstIsNoMatch — java.lang.IllegalArgumentException: Could not create type

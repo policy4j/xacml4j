@@ -47,12 +47,15 @@ it to the build unless asked.
 
 ## Build and Test
 
-- Use JDK 21. The poms compile at level 21, and `xacml-core` adds
-  `--enable-preview`. The local `.java-version` file (gitignored) says `11.0`,
-  so select JDK 21 for each Maven run, for example
-  `JAVA_HOME="$(jenv prefix 21)" rtk mvn ...`.
+- Use JDK 21. Every module compiles with `<release>21</release>` and no
+  preview features (task 1.6). JDK 11 can no longer build the reactor. The
+  local `.java-version` file (gitignored) says `11.0`, so select JDK 21 for
+  each Maven run, for example `JAVA_HOME="$(jenv prefix 21)" rtk mvn ...`.
+- After changing compiler settings, build with `clean`: the compiler plugin
+  does not treat a `source`/`target`/`release` change as stale and reuses old
+  class files.
 - CI (`.github/workflows/main.yml`) still builds with JDK 8. It fails at
-  level 21 until someone updates it.
+  release 21 until someone updates it.
 - Maven rewrites license headers during `process-sources`
   (license-maven-plugin `update-file-header`). Pass
   `-Dlicense.skipUpdateLicense=true` unless you intend to update headers.
@@ -66,11 +69,12 @@ it to the build unless asked.
 | Run one test class | `rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultPolicyDecisionPointTest -Dsurefire.failIfNoSpecifiedTests=false test` |
 | Package | `rtk mvn -Dlicense.skipUpdateLicense=true package` |
 
-Tests use the JUnit 4 API (`org.junit.Test`) on the JUnit Platform through
-`junit-vintage-engine`, plus EasyMock, Google Truth, and Hamcrest, until the
-JUnit 5 + Mockito migration lands. `docs/ai/TESTING.md` has the test rules,
-the conformance commands, what to test per change type, and how to record
-results. `docs/ai/BENCHMARKS.md` covers JMH.
+Tests use JUnit 5 (Jupiter, `junit-bom` 5.14.4) and Mockito 5.24.0,
+with Google Truth and Hamcrest. Mockito starts as a JVM agent: the
+`maven-dependency-plugin` `properties` goal supplies its JAR path to the
+Surefire `argLine`. `docs/ai/TESTING.md` has the test rules, the conformance
+commands, what to test per change type, and how to record results.
+`docs/ai/BENCHMARKS.md` covers JMH.
 
 ## Code Conventions
 
@@ -149,6 +153,29 @@ Rules that hold everywhere:
   `openspec init --tools claude,codex,antigravity,kimi .` and check that
   `openspec/config.yaml` and `openspec/schemas/` survived.
 
+## Research Tools
+
+Use native MCP tools directly for external research. Research servers can
+come from the active client's user configuration, so discover each lane's
+callable tools before relying on this catalog. Availability differs by client.
+
+| Need | MCP server | Tools |
+| --- | --- | --- |
+| Library, framework, SDK, or CLI documentation | `context7` | `resolve_library_id`, then `query_docs` |
+| Public facts and standards discovery | `tavily` | `tavily_search`, `tavily_extract`, `tavily_map`, `tavily_crawl`; bounded `tavily_research` for synthesis |
+| Search or fetch fallback | `duckduckgo` | `search`, `fetch_content` (paginated) |
+| Independent, multi-source research | `deep-research-mcp` | `deep_research`, `research_status` where supported |
+| Research papers and original source | `arxiv` | `search_papers`, `get_abstract`, `download_paper`, bounded LaTeX section tools |
+| OpenAI or Claude product documentation | Provider-native docs MCP | Discover the matching `search_*_docs` and fetch/query tools |
+
+For XACML semantics, fetch the exact official OASIS standard/profile and
+section; distinguish normative requirements from experimental fixtures and
+engine conventions. On quota or service failure, record it and try the next
+available MCP lane once. Never retry-loop or substitute a model's memory
+for a fetched source. Do not launch Context7 through a shell wrapper.
+See [Research procedure](docs/ai/RESEARCH.md) for tool health, citations,
+fallbacks, and swarm handoffs.
+
 ## Code Intelligence Tools
 
 Check tool health before you rely on a tool:
@@ -168,8 +195,8 @@ scripts/agent-doctor.sh serena     # one tool: ast-grep | ripwire | tgrep | sere
 | Literal or regex text search | `rtk rg` | Default for one-off searches |
 | Repeated whole-repo regex searches | tgrep | `tgrep <pattern> .` (ripgrep flags) |
 
-Project MCP servers are declared in `.mcp.json`: `serena` (HTTP), `ast-grep`
-(stdio), and `ripwire` (stdio).
+Project MCP servers are declared in `.mcp.json`: `serena`, `ast-grep`, and
+`ripwire` (all stdio).
 
 ### ripwire
 
@@ -186,13 +213,16 @@ Project MCP servers are declared in `.mcp.json`: `serena` (HTTP), `ast-grep`
   reactor through m2e.
 - Config: `.serena/project.yml`. Other files in `.serena/` are local
   (gitignored).
-- Runs as a project-scoped daemon at `http://127.0.0.1:9951/mcp`, managed by
-  the `mcp.sh` controller with launchd label
-  `com.artagon.serena-xacml4j-0adfb4b7`.
-- Restart after changes to a `pom.xml`, the JDK, or `.serena/project.yml`:
-  `mcp.sh -m serena restart`.
-- File edits and shell commands go through the agent's native tools. Serena's
-  editing, shell, and memory tools are disabled for this project.
+- Starts on first use. The `.mcp.json` stanza runs `mcp.sh -m serena attach`
+  for the current checkout, so each worktree has its own Serena and port.
+  The controller stops an idle Serena. `mcp.sh -m serena status` shows the
+  URL.
+- After changes to a `pom.xml`, the JDK, or `.serena/project.yml`, stop it
+  with `mcp.sh -m serena stop`. The next call starts it again.
+- Serena's symbol tools (`rename_symbol`, `replace_symbol_body`,
+  `insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) are
+  enabled for refactoring. Its file-creation, text-replace, shell, and memory
+  tools are disabled; use the agent's native tools for those.
 - JDTLS results can be incomplete when the working tree has compile errors.
   Then label Serena results `PARTIAL` and confirm them in source. An empty
   result is not proof of absence.

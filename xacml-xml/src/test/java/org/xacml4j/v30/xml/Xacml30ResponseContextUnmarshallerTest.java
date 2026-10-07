@@ -22,33 +22,60 @@ package org.xacml4j.v30.xml;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Iterator;
 
 import javax.xml.bind.JAXBElement;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.oasis.xacml.v30.jaxb.ResponseType;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
 
 
 public class Xacml30ResponseContextUnmarshallerTest {
+
+	@Test
+	public void xpathCategorySurvivesObligationAndAdviceResponseMarshalling() throws Exception {
+		AttributeAssignment xpath = AttributeAssignment.builder("urn:test:xpath")
+				.value(Path.xpath("//sample:item", CategoryId.ACTION))
+				.build();
+		Obligation obligation = Obligation.builder("urn:test:obligation", Effect.PERMIT)
+				.attribute(xpath).build();
+		Advice advice = Advice.builder("urn:test:advice", Effect.PERMIT)
+				.attribute(xpath).build();
+		ResponseContext response = ResponseContext.builder()
+				.result(Result.ok(Decision.PERMIT).obligation(obligation).advice(advice).build())
+				.build();
+		ByteArrayOutputStream xml = new ByteArrayOutputStream();
+
+		new Xacml30ResponseContextMarshaller().marshal(response, xml);
+
+		String serialized = xml.toString(StandardCharsets.UTF_8.name());
+		assertTrue(serialized.contains("XPathCategory"));
+		assertTrue(serialized.contains("urn:oasis:names:tc:xacml:3.0:attribute-category:action"));
+	}
 
 	@Test
 	public void testResponseUnmarshal() throws Exception {
@@ -99,8 +126,8 @@ public class Xacml30ResponseContextUnmarshallerTest {
 		// test attributes
 		assertEquals(1, r1.getIncludeInResultAttributes().size());
 		Entity attrs = r1.getEntity(CategoryId.SUBJECT_ACCESS).get();
-		assertEquals(1, attrs.find().size());
-		Collection<Attribute> attr1 = attrs.get("urn:test:attribute1");
+		assertEquals(1, attrs.attributes().size());
+		Collection<Attribute> attr1 = attrs.find("urn:test:attribute1");
 		assertEquals(1, attr1.size());
 		assertEquals(1, attr1.iterator().next().values().size());
 		assertEquals(XacmlTypes.STRING.ofAny("value"), attr1.iterator().next().values().iterator().next());

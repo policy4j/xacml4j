@@ -1,0 +1,26 @@
+JDK: Maven 3.9.16 running Java 21.0.6 (Oracle GraalVM), from `JAVA_HOME="$(jenv prefix 21)" rtk mvn -version`.
+
+Core + PDP clean test gate:
+Module                  Classes  Tests  Failures  Errors  Skipped
+xacml-core                 115    4755       0       0       9
+xacml-pdp                   18      77       0       0       3
+
+Full reactor clean verify gate:
+Module                  Classes  Tests  Failures  Errors  Skipped
+xacml-core                 115    4755       0       0       9
+xacml-pdp                   18      77       0       0       3
+xacml-xml                  11      57       0       0       0
+xacml-json                  6      24       0       0       1
+xacml-test                  7      99       0       0       0
+xacml-conformance-tests     8     901       0       0      21
+TOTAL                     165    5913       0       0      34
+
+Relevant focused classes in the final reactor run:
+TypeRegistryTest: 74 tests, 0 failures, 0 errors, 4 skips (AnyURI 4.15 rows, negative-zero BUG-TBD-4.44, duplicate-ID 4.26 tests).
+DecisionCombiningAlgorithmRegistryTest: 25 tests, 0 failures, 0 errors, 1 skip (on-permit-apply-second, task 4.6).
+FunctionProviderServiceLoaderTest: 239 tests, 0 failures, 0 errors, 2 skips (known 4.36 regex / 4.37 string-from ID groups).
+
+Conformance rows enabled in the unchanged lane manifest and their passing `CONFORMANCE PASS` markers:
+OASIS 2.0: 362 enabled/pass markers; manifest universe 374 (360 executed disposition, 2 special-harness, 12 skipped).
+OASIS 3.0: 478 enabled/pass markers; manifest universe 487 (477 executed disposition, enabled special-harness row(s), 8 skipped; one non-enabled special-harness row accounts for the manifest/Surefire difference).
+RSA 2008: 17 passed; examples: 2 passed.

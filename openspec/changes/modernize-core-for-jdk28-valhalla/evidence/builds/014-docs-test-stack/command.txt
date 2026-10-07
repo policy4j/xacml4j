@@ -1,0 +1,75 @@
+# Task 2.8 documentation checks; run from <repo>.
+# No Maven command was run. Search exit 1 denotes no matches.
+
+rtk git diff --stat -- AGENTS.md docs/ai/TESTING.md
+
+rtk git diff --check -- AGENTS.md docs/ai/TESTING.md
+
+rtk git diff -- AGENTS.md docs/ai/TESTING.md
+
+rtk rg -n 'org\.junit\.(Test|Assert|Before|After|Rule|Ignore|runner)|TemporaryFolder|@Ignore|@RunWith|junit-vintage-engine|Until task 2\.1|no Jupiter dependency' AGENTS.md docs/ai/TESTING.md
+
+rtk rg -n 'JUnit 4|Vintage|EasyMock|Objenesis|@TempDir|MockitoExtension|lenient\(|ArgumentCaptor|InOrder|verifyNoInteractions|verifyNoMoreInteractions|assertThrows' AGENTS.md docs/ai/TESTING.md
+
+rtk proxy python3 -c 'from pathlib import Path
+import hashlib,json
+guide=Path("AGENTS.md").read_text()
+start=guide.index("Tests use JUnit 5")
+end=guide.index("\n\n## Code Conventions",start)
+docs=Path("docs/ai/TESTING.md").read_text()
+sections=["## Commands","## Test layers","## What to test by change type","## Recording results"]
+section_hashes={}
+for section in sections:
+    start_section=docs.index(section)
+    next_section=docs.find("\n## ",start_section+1)
+    body=docs[start_section:next_section if next_section!=-1 else len(docs)]
+    section_hashes[section]=hashlib.sha256(body.encode()).hexdigest()
+data={"agents_prefix_sha256":hashlib.sha256(guide[:start].encode()).hexdigest(),"agents_suffix_sha256":hashlib.sha256(guide[end:].encode()).hexdigest(),"testing_preserved_sections":section_hashes,"core_test_sha256":{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in Path("xacml-core/src/test").rglob("*") if p.is_file()},"root_pom_sha256":hashlib.sha256(Path("pom.xml").read_bytes()).hexdigest(),"claude_is_symlink":Path("CLAUDE.md").is_symlink(),"claude_resolves_to_agents":Path("CLAUDE.md").resolve()==Path("AGENTS.md").resolve()}
+print(json.dumps(data))'
+
+rtk proxy python3 -c 'from pathlib import Path
+import json,re
+from urllib.parse import unquote,urlsplit
+root=Path.cwd()
+files=[Path("AGENTS.md"),Path("docs/ai/TESTING.md")]
+checks=[]
+for file in files:
+    text=file.read_text()
+    for match in re.finditer(r"\[[^\]\n]+\]\(([^)\n]+)\)",text):
+        link=match.group(1)
+        parts=urlsplit(link)
+        assert not parts.scheme and not parts.netloc, "External link requires separate verification"
+        target=(file.parent/unquote(parts.path)).resolve() if parts.path else file.resolve()
+        passed=target.is_file()
+        if passed and parts.fragment:
+            headings=re.findall(r"^#{1,6} +(.+)$",target.read_text(),re.MULTILINE)
+            slugs={re.sub(r"\s","-",re.sub(r"[^\w\- ]","",h.lower().replace("_",""))) for h in headings}
+            passed=unquote(parts.fragment) in slugs
+        checks.append({"source":str(file),"line":text.count("\n",0,match.start())+1,"target":link,"passed":passed})
+    for match in re.finditer(r"docs/ai/[A-Z]+\.md",text):
+        checks.append({"source":str(file),"line":text.count("\n",0,match.start())+1,"target":match.group(0),"passed":Path(match.group(0)).is_file()})
+result={"result":"PASS" if all(c["passed"] for c in checks) else "FAIL","checked_references":len(checks),"checks":checks}
+print(json.dumps(result,indent=2))
+assert all(c["passed"] for c in checks), "Broken local link or document reference"'
+
+# Final evidence and scoped status checks.
+
+rtk git diff --check -- AGENTS.md docs/ai/TESTING.md openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/014-docs-test-stack
+
+rtk git status --short -- AGENTS.md CLAUDE.md docs/ai/TESTING.md openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/014-docs-test-stack
+
+rtk proxy python3 -c 'from pathlib import Path
+import json,re
+ev=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/014-docs-test-stack")
+for match in re.finditer(r"\[[^\]\n]+\]\(([^)\n]+)\)",(ev/"summary.md").read_text()):
+    assert (ev/match.group(1)).resolve().is_file(), match.group(1)
+for file in ev.iterdir():
+    if file.is_file():
+        text=file.read_text()
+        assert not re.search(r"/(?:Users|home)/",text), "Checkout or home path in "+str(file)
+checks=json.loads((ev/"checks.json").read_text())
+assert checks["result"]=="PASS"
+assert checks["scope"]["core_tests"]["changed_paths"]==[]
+assert checks["scope"]["agents_prefix"]["unchanged"]
+assert checks["scope"]["agents_suffix"]["unchanged"]
+print("PASS: evidence links resolve, receipts pass, and no home paths are present.")'

@@ -22,7 +22,8 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 import java.io.StringReader;
 
@@ -32,8 +33,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xacml4j.util.NodeNamespaceContext;
@@ -53,7 +54,7 @@ public class XPathTest
 	private Document doc;
 	private XPathFactory xpf;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 		this.xpf = XPathFactory.newInstance();

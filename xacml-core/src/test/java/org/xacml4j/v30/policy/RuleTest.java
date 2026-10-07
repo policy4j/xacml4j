@@ -22,18 +22,20 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.Collection;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
@@ -50,6 +52,7 @@ import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
+@ExtendWith(MockitoExtension.class)
 public class RuleTest
 {
 	private Rule rulePermit;
@@ -57,13 +60,14 @@ public class RuleTest
 
 	private Policy enclosingPolicy;
 	private Condition condition;
+	private Expression conditionExpression;
 	private Target target;
+	private Expression targetExpression;
 
 	private EvaluationContext context;
 	private EvaluationContextHandler handler;
 	private PolicyReferenceResolver resolver;
 
-	private IMocksControl c;
 
 	private Expression denyObligationAttributeExp;
 	private Expression permitObligationAttributeExp;
@@ -74,25 +78,25 @@ public class RuleTest
 	private Rule.Builder builder;
 	private DecisionCombiningAlgorithm<Rule> combiner;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
-		this.c = createStrictControl();
-		this.combiner = c.createMock(DecisionCombiningAlgorithm.class);
-		this.handler = c.createMock(EvaluationContextHandler.class);
-		this.resolver = c.createMock(PolicyReferenceResolver.class);
+		this.combiner = mock(DecisionCombiningAlgorithm.class);
+		this.handler = mock(EvaluationContextHandler.class);
+		this.resolver = mock(PolicyReferenceResolver.class);
 
 
-		this.condition = c.createMock(Condition.class);
-		this.target = c.createMock(Target.class);
-		this.enclosingPolicy = c.createMock(Policy.class);
+		this.conditionExpression = mock(Expression.class);
+		this.condition = ModelFixtures.condition(conditionExpression);
+		this.targetExpression = ModelFixtures.reference();
+		this.target = ModelFixtures.target(targetExpression);
 
 
-		this.permitAdviceAttributeExp = c.createMock(Expression.class);
-		this.denyAdviceAttributeExp = c.createMock(Expression.class);
+		this.permitAdviceAttributeExp = mock(Expression.class);
+		this.denyAdviceAttributeExp = mock(Expression.class);
 
-		this.denyObligationAttributeExp = c.createMock(Expression.class);
-		this.permitObligationAttributeExp = c.createMock(Expression.class);
+		this.denyObligationAttributeExp = mock(Expression.class);
+		this.permitObligationAttributeExp = mock(Expression.class);
 
 		Policy.Builder b  = Policy.builder("testPolicyId").version("1.0");
 
@@ -130,9 +134,8 @@ public class RuleTest
 	{
 		DecisionRule ruleDenyNoTarget = builder.withoutTarget().withEffect(Effect.DENY).build();
 		EvaluationContext ruleContext = ruleDenyNoTarget.createContext(context);
-		c.replay();
 		assertEquals(MatchResult.MATCH, ruleDenyNoTarget.isMatch(ruleContext));
-		c.verify();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
@@ -140,75 +143,104 @@ public class RuleTest
 	{
 		DecisionRule rulePermitNoTarget = builder.withoutTarget().withEffect(Effect.PERMIT).build();
 		EvaluationContext ruleContext = rulePermitNoTarget.createContext(context);
-		c.replay();
 		assertEquals(MatchResult.MATCH, rulePermitNoTarget.isMatch(ruleContext));
-		c.verify();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testDenyRuleApplicabilityWithTargetMatch() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(MatchResult.MATCH, ruleDeny.isMatch(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testPermitRuleIsApplicableWithTargetIndeterminate() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(MatchResult.INDETERMINATE, rulePermit.isMatch(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testDenyRuleIsApplicableWithTargetIndeterminate() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(MatchResult.INDETERMINATE, ruleDeny.isMatch(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testPermitRuleIsApplicableWithTargetMatch() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(MatchResult.MATCH, rulePermit.isMatch(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testDenyRuleIsApplicableWithTargetNoMatch() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.NOMATCH));
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(MatchResult.NOMATCH, ruleDeny.isMatch(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testDenyRuleConditionTrue() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
+		when(denyAdviceAttributeExp.evaluate(ruleContext)).thenReturn(
 				XacmlTypes.STRING.ofAny("testVal1"));
-		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(
+		when(denyObligationAttributeExp.evaluate(ruleContext)).thenReturn(
 				XacmlTypes.STRING.ofAny("testVal1"));
-		c.replay();
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		order.verify(denyAdviceAttributeExp).evaluate(ruleContext);
+		order.verify(denyObligationAttributeExp).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		verify(denyAdviceAttributeExp, times(1)).evaluate(ruleContext);
+		verify(denyObligationAttributeExp, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		Collection<Advice> advices = context.getMatchingAdvices(Decision.DENY);
 		System.out.println(advices);
 		assertTrue(
@@ -228,43 +260,65 @@ public class RuleTest
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(
+		when(denyAdviceAttributeExp.evaluate(ruleContext)).thenReturn(
 				XacmlTypes.STRING.ofAny("testVal1"));
 
-		expect(denyObligationAttributeExp.evaluate(ruleContext)).andThrow(
+		when(denyObligationAttributeExp.evaluate(ruleContext)).thenThrow(
 				new EvaluationException(Status.processingError().build(), new NullPointerException()));
 
-		c.replay();
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		order.verify(denyAdviceAttributeExp).evaluate(ruleContext);
+		order.verify(denyObligationAttributeExp).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		verify(denyAdviceAttributeExp, times(1)).evaluate(ruleContext);
+		verify(denyObligationAttributeExp, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testDenyRuleConditionFalse() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
 
-		c.replay();
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 
 		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testDenyRuleConditionIndeterminate() throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
 		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, ruleContext.getEvaluationStatus().map(s->s.getStatusCode().getValue()).orElse(null));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 
@@ -272,16 +326,26 @@ public class RuleTest
 	public void testPermitRuleConditionTrue() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		when(permitAdviceAttributeExp.evaluate(ruleContext)).thenReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		when(permitObligationAttributeExp.evaluate(ruleContext)).thenReturn(XacmlTypes.STRING.ofAny("testVal1"));
 
 
-		c.replay();
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		order.verify(permitAdviceAttributeExp).evaluate(ruleContext);
+		order.verify(permitObligationAttributeExp).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		verify(permitAdviceAttributeExp, times(1)).evaluate(ruleContext);
+		verify(permitObligationAttributeExp, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 
 		assertTrue(
 				context.getMatchingAdvices(Decision.PERMIT).contains(Advice
@@ -304,22 +368,34 @@ public class RuleTest
 	public void testPermitRuleConditionFalse() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.FALSE);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testPermitRuleConditionIndeterminate() throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.INDETERMINATE);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
@@ -327,10 +403,14 @@ public class RuleTest
 		throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.INDETERMINATE_D, ruleDeny.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
@@ -338,10 +418,14 @@ public class RuleTest
 		throws EvaluationException
 	{
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.NOMATCH));
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.NOT_APPLICABLE, ruleDeny.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
@@ -350,16 +434,26 @@ public class RuleTest
 
 		EvaluationContext ruleContext = ruleDeny.createContext(context);
 
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(ruleContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(denyAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
-		expect(denyObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		when(denyAdviceAttributeExp.evaluate(ruleContext)).thenReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		when(denyObligationAttributeExp.evaluate(ruleContext)).thenReturn(XacmlTypes.STRING.ofAny("testVal1"));
 
-		c.replay();
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 
 		assertEquals(Decision.DENY, ruleDeny.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		order.verify(denyAdviceAttributeExp).evaluate(ruleContext);
+		order.verify(denyObligationAttributeExp).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		verify(denyAdviceAttributeExp, times(1)).evaluate(ruleContext);
+		verify(denyObligationAttributeExp, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 
 		assertTrue(
 				context.getMatchingAdvices(Decision.DENY).contains(Advice
@@ -384,25 +478,37 @@ public class RuleTest
 		throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.INDETERMINATE);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
 	public void testPermitRuleEvaluateIfApplicableWithTargetEvaluationException()
 			throws EvaluationException
 	{
+		// rv019: inject at Target.match so BaseDecisionRule.isMatch must catch the exception.
+		Target throwingTarget = spy(target);
+		Rule ruleWithThrowingTarget = builder.id(rulePermit.getId()).withEffect(Effect.PERMIT).target(throwingTarget).build();
 		Status.Builder b =  Status.missingAttribute(AttributeDesignatorKey.builder("id")
 		                                              .category(CategoryId.ACTION)
 		                                              .dataType(XacmlTypes.INTEGER)
 		                                              .build());
-		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andThrow(new EvaluationException(b.build(), "Bad"));
-		c.replay();
-		assertEquals(Decision.INDETERMINATE_P, rulePermit.evaluate(ruleContext));
-		c.verify();
+		EvaluationContext ruleContext = ruleWithThrowingTarget.createContext(context);
+		EvaluationException failure = new EvaluationException(b.build(), "Bad");
+		doThrow(failure).when(throwingTarget).match(ruleContext);
+		InOrder order = inOrder(throwingTarget, combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
+		assertEquals(Decision.INDETERMINATE_P, ruleWithThrowingTarget.evaluate(ruleContext));
+		order.verify(throwingTarget).match(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(throwingTarget, times(1)).match(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(throwingTarget, combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(ruleContext.getEvaluationStatus().get(), b.message("Bad").build());
 		assertEquals(context.getEvaluationStatus().get(), b.message("Bad").build());
 	}
@@ -412,10 +518,14 @@ public class RuleTest
 		throws EvaluationException
 	{
 		EvaluationContext ruleContext = rulePermit.createContext(context);
-		expect(target.match(ruleContext)).andReturn(MatchResult.NOMATCH);
-		c.replay();
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.NOMATCH));
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 		assertEquals(Decision.NOT_APPLICABLE, rulePermit.evaluate(ruleContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test
@@ -424,14 +534,14 @@ public class RuleTest
 
 		EvaluationContext ruleContext = rulePermit.createContext(context);
 
-		expect(target.match(ruleContext)).andReturn(MatchResult.MATCH);
+		when(targetExpression.evaluate(ruleContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
 
-		expect(condition.evaluate(ruleContext)).andReturn(ConditionResult.TRUE);
+		when(conditionExpression.evaluate(ruleContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(permitAdviceAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
-		expect(permitObligationAttributeExp.evaluate(ruleContext)).andReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		when(permitAdviceAttributeExp.evaluate(ruleContext)).thenReturn(XacmlTypes.STRING.ofAny("testVal1"));
+		when(permitObligationAttributeExp.evaluate(ruleContext)).thenReturn(XacmlTypes.STRING.ofAny("testVal1"));
 
-		c.replay();
+		InOrder order = inOrder(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 
 		assertEquals(Decision.PERMIT, rulePermit.evaluate(ruleContext));
 
@@ -450,7 +560,17 @@ public class RuleTest
 								"testId",
 								XacmlTypes.STRING.ofAny("testVal1"))
 								.build()));
-		c.verify();
+		order.verify(targetExpression).evaluate(ruleContext);
+		order.verify(conditionExpression).evaluate(ruleContext);
+		order.verify(permitAdviceAttributeExp).evaluate(ruleContext);
+		order.verify(permitObligationAttributeExp).evaluate(ruleContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(ruleContext);
+		verify(conditionExpression, times(1)).evaluate(ruleContext);
+		verify(permitAdviceAttributeExp, times(1)).evaluate(ruleContext);
+		verify(permitObligationAttributeExp, times(1)).evaluate(ruleContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(combiner, handler, resolver, conditionExpression, targetExpression, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp);
 	}
 
 	@Test

@@ -22,18 +22,20 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -46,7 +48,7 @@ import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
-
+@ExtendWith(MockitoExtension.class)
 public class HigherOrderFunctionsTest
 {
 	private EvaluationContext context;
@@ -62,16 +64,14 @@ public class HigherOrderFunctionsTest
 	private FunctionSpec anyOfAll;
 	private FunctionSpec allOfAll;
 
-	private IMocksControl c;
 
 	private FunctionProvider functions;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
-		this.c  = createControl();
 
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 		this.functions = FunctionProviderBuilder.builder().withDefaultFunctions().build();
 		this.intToString = functions.getFunction("urn:oasis:names:tc:xacml:3.0:function:string-from-integer").get();
 		this.intEq = functions.getFunction("urn:oasis:names:tc:xacml:1.0:function:integer-equal").get();
@@ -95,12 +95,16 @@ public class HigherOrderFunctionsTest
 		v.add(XacmlTypes.INTEGER.ofAny(20));
 		v.add(XacmlTypes.INTEGER.ofAny(30));
 
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(4);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
 
-		c.replay();
+		InOrder order = inOrder(context);
 		BagOfValues bag =  map.invoke(context, new FunctionReference(intToString),
 		                              XacmlTypes.INTEGER.bagBuilder().attributes(v).build());
-		c.verify();
+		order.verify(context, times(4)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(4)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 		assertTrue(bag.contains(XacmlTypes.STRING.ofAny("10")));
 		assertTrue(bag.contains(XacmlTypes.STRING.ofAny("20")));
 		assertTrue(bag.contains(XacmlTypes.STRING.ofAny("30")));
@@ -114,13 +118,17 @@ public class HigherOrderFunctionsTest
 		v.add(XacmlTypes.INTEGER.ofAny(20));
 		v.add(XacmlTypes.INTEGER.ofAny(30));
 
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
 
-		c.replay();
+		InOrder order = inOrder(context);
 		BooleanVal r = anyOf.invoke(context, new FunctionReference(intEq), XacmlTypes.INTEGER.ofAny(20),
 		                              XacmlTypes.INTEGER.bagBuilder().attributes(v).build());
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
-		c.verify();
+		order.verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -136,13 +144,17 @@ public class HigherOrderFunctionsTest
 		b.add(XacmlTypes.INTEGER.ofAny(5));
 		b.add(XacmlTypes.INTEGER.ofAny(19));
 
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
 
-		c.replay();
+		InOrder order = inOrder(context);
 		BooleanVal r = allOfAny.invoke(context, new FunctionReference(intGreaterThan),
 		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
-		c.verify();
+		order.verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -158,14 +170,18 @@ public class HigherOrderFunctionsTest
 		b.add(XacmlTypes.INTEGER.ofAny(3));
 		b.add(XacmlTypes.INTEGER.ofAny(4));
 
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(8);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
 
 
-		c.replay();
+		InOrder order = inOrder(context);
 		BooleanVal r = anyOfAll.invoke(context, new FunctionReference(intGreaterThan),
 		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
-		c.verify();
+		order.verify(context, times(7)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(7)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -181,12 +197,16 @@ public class HigherOrderFunctionsTest
 		b.add(XacmlTypes.STRING.ofAny("   This  is not IT!  "));
 
 
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(3);
-		c.replay();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		InOrder order = inOrder(context);
 		BooleanVal r = anyOfAll.invoke(context, new FunctionReference(stringRegExpMatch),
 		                                 XacmlTypes.STRING.bagBuilder().attributes(a).build(), XacmlTypes.STRING.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
-		c.verify();
+		order.verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(3)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -202,12 +222,16 @@ public class HigherOrderFunctionsTest
 		b.add(XacmlTypes.INTEGER.ofAny(3));
 		b.add(XacmlTypes.INTEGER.ofAny(4));
 
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false).times(9);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
 
-		c.replay();
+		InOrder order = inOrder(context);
 		BooleanVal r = allOfAll.invoke(context, new FunctionReference(intGreaterThan),
 		                                 XacmlTypes.INTEGER.bagBuilder().attributes(a).build(), XacmlTypes.INTEGER.bagBuilder().attributes(b).build());
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), r);
-		c.verify();
+		order.verify(context, times(9)).isValidateFuncParamsAtRuntime();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(9)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 }

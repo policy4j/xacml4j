@@ -36,6 +36,7 @@ import org.xacml4j.v30.RequestReference;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 
 public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	private final Gson json;
@@ -52,11 +53,18 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 
 	@Override
 	public RequestContext unmarshal(Object source) throws SyntaxException, IOException {
-		if (source instanceof Reader) {
-			return json.fromJson((Reader) source, RequestContext.class);
-		}
-		if (source instanceof JsonElement) {
-			return json.fromJson((JsonElement) source, RequestContext.class);
+		try {
+			if (source instanceof Reader) {
+				return json.fromJson((Reader) source, RequestContext.class);
+			}
+			if (source instanceof JsonElement) {
+				return json.fromJson((JsonElement) source, RequestContext.class);
+			}
+		} catch (JsonParseException e) {
+			if (e.getCause() instanceof SyntaxException) {
+				throw (SyntaxException)e.getCause();
+			}
+			throw e;
 		}
 		return null;
 	}

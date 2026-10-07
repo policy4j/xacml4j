@@ -7,7 +7,8 @@
 # Each tool prints PASS or FAIL. The exit status is non-zero when a selected
 # check fails. The Serena check runs the mcp.sh transport doctor, then a live
 # JDTLS canary (get_symbols_overview on one tracked Java file), so a PASS
-# covers symbol lookup and not only the HTTP route.
+# covers symbol lookup and not only the HTTP route. With an attach stanza in
+# .mcp.json, the check first starts Serena on demand.
 
 set -Eeuo pipefail
 shopt -s inherit_errexit 2>/dev/null || true
@@ -170,14 +171,26 @@ serena_canary() {
 check_serena() {
   local url
   need curl jq git || return 1
-  url="$(jq -r '.mcpServers.serena.url // empty' "${ROOT}/.mcp.json" 2>/dev/null || true)"
-  if [[ -z "${url}" ]]; then
-    fail "serena: no mcpServers.serena.url in .mcp.json"
-    return 1
-  fi
   if ! command -v mcp.sh >/dev/null 2>&1; then
     fail "serena: mcp.sh controller is not on PATH"
     return 1
+  fi
+  url="$(jq -r '.mcpServers.serena.url // empty' "${ROOT}/.mcp.json" 2>/dev/null || true)"
+  if [[ -z "${url}" ]]; then
+    if ! jq -e '(.mcpServers.serena.args // []) | join(" ") | test("serena attach")' \
+        "${ROOT}/.mcp.json" >/dev/null 2>&1; then
+      fail "serena: no URL or attach stanza for mcpServers.serena in .mcp.json"
+      return 1
+    fi
+    # Attach stanza: the controller owns the port and Serena starts on first
+    # use. Start it through attach, so the idle reaper still stops it.
+    mcp.sh -q -m serena attach --project "${ROOT}" </dev/null >/dev/null 2>&1 || true
+    url="$(MCP_PROJECT_ROOT="${ROOT}" mcp.sh -q -m serena emit 2>/dev/null \
+      | jq -r '.serena.url // empty' 2>/dev/null || true)"
+    if [[ -z "${url}" ]]; then
+      fail "serena: the mcp.sh controller returned no Serena URL"
+      return 1
+    fi
   fi
   if ! MCP_PROJECT_ROOT="${ROOT}" mcp.sh -q -m serena doctor; then
     fail "serena: transport doctor failed (start with: mcp.sh -m serena start)"

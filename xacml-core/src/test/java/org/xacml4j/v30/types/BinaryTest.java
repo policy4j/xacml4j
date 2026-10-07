@@ -22,10 +22,12 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-
 import com.google.common.truth.Truth8;
-import org.junit.Test;
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class BinaryTest
 {

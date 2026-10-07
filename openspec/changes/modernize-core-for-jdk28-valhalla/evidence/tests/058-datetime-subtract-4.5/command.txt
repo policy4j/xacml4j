@@ -1,0 +1,41 @@
+# Task 4.5; run from <repo>. Maven commands are plain, use JDK 21, and skip license rewrites.
+# Historical source snapshots; exact unfiltered source bytes:
+rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
+rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticFunctions.java
+rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Duration.java
+rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DayTimeDuration.java
+rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601YearMonthDuration.java
+
+# Original characterization, before the security priority interrupt: exit 1.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DateTimeArithmeticRegistryTest -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/058-datetime-subtract-4.5/01-registry-characterization-red.log test
+
+# Resumed red with factory controls and corrected legacy exact expectation: exit 1.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DateTimeArithmeticRegistryTest,ISO8601DateTimeZonePreservationTest,ISO8601DateTimeTest -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/058-datetime-subtract-4.5/02-resumed-registry-and-zone-tests-red.log test
+
+# Focused green after the timezone fix: exit 0.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DateTimeArithmeticRegistryTest,ISO8601DateTimeZonePreservationTest,ISO8601DateTimeTest -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/058-datetime-subtract-4.5/03-registry-and-zone-tests-green.log test
+
+# Historical probe, archived bytes checked against Git; javac/java both JDK 21: exit 0.
+JAVA_HOME="$(jenv prefix 21)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/058-datetime-subtract-4.5/historical-probe.py
+# historical-probe.py invokes rtk proxy $JAVA_HOME/bin/javac --release 21 with the Surefire classpath,
+# then rtk proxy $JAVA_HOME/bin/java with the historical classes first. No install.
+
+# Full reactor, including all conformance suites: exit 0.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/058-datetime-subtract-4.5/05-full-reactor-clean-verify.log clean verify
+
+# Runtime identity:
+JAVA_HOME="$(jenv prefix 21)" JENV_VERSION=21 rtk proxy java -version
+
+# Gate receipts and source-input stability:
+rtk proxy python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/058-datetime-subtract-4.5/collect-results.py
+
+# Scope and whitespace:
+rtk git diff --check -- xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java
+rtk git status --short -- xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeZonePreservationTest.java xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticRegistryTest.java openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/058-datetime-subtract-4.5/
+# rtk git status --short was also inspected for the shared tree. Unrelated dirty work was preserved.
+
+# Evidence metadata was assembled with project-scoped rtk proxy python3 parsers.
+# Existing/new headers and comparison methods were checked byte-for-byte;
+# all persisted evidence replaces the checkout path with <repo> and home prefixes with <home>.

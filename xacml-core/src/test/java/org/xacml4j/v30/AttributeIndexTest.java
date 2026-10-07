@@ -2,7 +2,8 @@ package org.xacml4j.v30;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Truth8;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 

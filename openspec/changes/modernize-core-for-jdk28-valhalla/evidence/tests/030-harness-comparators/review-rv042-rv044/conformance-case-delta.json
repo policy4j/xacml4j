@@ -1,0 +1,16 @@
+[
+  {
+    "suite": "oasis30",
+    "case_id": "IIIA030",
+    "before": "skipped",
+    "after": "passed",
+    "cause": "Conductor-reviewed 4.24 XML assignment XPathCategory fix"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIA330",
+    "before": "skipped",
+    "after": "passed",
+    "cause": "Conductor-reviewed 4.24 XML assignment XPathCategory fix"
+  }
+]

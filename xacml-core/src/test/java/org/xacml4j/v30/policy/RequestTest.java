@@ -22,15 +22,12 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
@@ -47,7 +44,7 @@ public class RequestTest
 	private Category subject0;
 	private Category subject1;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
 			this.resource0 = Category.builder(CategoryId.RESOURCE)
@@ -164,15 +161,17 @@ public class RequestTest
 		assertNotNull(attr);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testGetOnlyAttributesMultipleInstancesOfTheSameCategory()
 	{
-		RequestContext request = RequestContext
-				.builder()
-				.returnPolicyIdList(false)
-				.attributes(subject0, resource0, resource1)
-				.build();
-		request.getOnlyAttributes(CategoryId.RESOURCE);
+		assertThrows(IllegalArgumentException.class, () -> {
+			RequestContext request = RequestContext
+					.builder()
+					.returnPolicyIdList(false)
+					.attributes(subject0, resource0, resource1)
+					.build();
+			request.getOnlyAttributes(CategoryId.RESOURCE);
+		});
 	}
 
 	@Test

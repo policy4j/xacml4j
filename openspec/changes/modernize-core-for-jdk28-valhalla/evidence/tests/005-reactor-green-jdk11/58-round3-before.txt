@@ -1,0 +1,123 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-core ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-core ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 31 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 106 source files with javac [debug target 10] to target/test-classes
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Some input files use or override a deprecated API.
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] bootstrap class path not set in conjunction with -source 10
+[INFO] 1 warning
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java:[58,84] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.String
+  reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java:[347,41] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.Object[]
+  reason: varargs mismatch; java.lang.Object[] cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java:[352,42] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.Object[]
+  reason: varargs mismatch; java.lang.Object[] cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[115,76] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.String,java.lang.String
+  reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[116,53] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.String,java.lang.String
+  reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[118,109] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.String,java.lang.String,java.lang.String,java.lang.String
+  reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[121,106] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.String,java.lang.String
+  reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[124,76] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.String
+  reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[124,106] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+  required: org.xacml4j.v30.types.Value<?>[]
+  found: java.lang.String
+  reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[INFO] 9 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.308 s
+[INFO] Finished at: 2026-10-01T14:59:41-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:testCompile (default-testCompile) on project xacml-core: Compilation failure: Compilation failure: 
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java:[58,84] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.String
+[ERROR]   reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java:[347,41] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.Object[]
+[ERROR]   reason: varargs mismatch; java.lang.Object[] cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java:[352,42] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.Object[]
+[ERROR]   reason: varargs mismatch; java.lang.Object[] cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[115,76] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.String,java.lang.String
+[ERROR]   reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[116,53] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.String,java.lang.String
+[ERROR]   reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[118,109] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.String,java.lang.String,java.lang.String,java.lang.String
+[ERROR]   reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[121,106] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.String,java.lang.String
+[ERROR]   reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[124,76] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.String
+[ERROR]   reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java:[124,106] method bagOf in interface org.xacml4j.v30.types.ValueType cannot be applied to given types;
+[ERROR]   required: org.xacml4j.v30.types.Value<?>[]
+[ERROR]   found: java.lang.String
+[ERROR]   reason: varargs mismatch; java.lang.String cannot be converted to org.xacml4j.v30.types.Value<?>
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

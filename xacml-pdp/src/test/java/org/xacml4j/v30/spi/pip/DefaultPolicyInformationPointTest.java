@@ -22,23 +22,21 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.Optional;
 
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
@@ -63,20 +61,18 @@ public class DefaultPolicyInformationPointTest
 	private AttributeResolverDescriptor testId2WithIssuerException;
 	private AttributeResolverDescriptor testId3WithIssuerNoCacheWithValues;
 
-	private IMocksControl control;
 
 	private AttributeDesignatorKey.Builder attr0;
 	private AttributeDesignatorKey.Builder attr1;
 	private AttributeDesignatorKey usernameContextKey;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
-		this.control = createStrictControl();
-		this.cache = control.createMock(PolicyInformationPointCacheProvider.class);
+		this.cache = Mockito.mock(PolicyInformationPointCacheProvider.class);
 		ResolverRegistry.Builder builder = ResolverRegistry.builder();
 
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = Mockito.mock(EvaluationContext.class);
 
 		this.attr0 = AttributeDesignatorKey
 				.builder()
@@ -130,10 +126,7 @@ public class DefaultPolicyInformationPointTest
 						            .attributeId("username")
 						            .dataType(XacmlTypes.STRING)
 						            .build())
-				.build(c->
-				       {
-						   return Collections.emptyMap();
-				       });
+				.build(c-> Collections.emptyMap());
 		builder.withAttributeResolver(testId2WithIssuerEmpty);
 
 		this.testId2WithIssuerException = AttributeResolverDescriptor
@@ -192,29 +185,29 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignatorKey a0 = attr0.build();
 
 		// attribute resolver found
-		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
-		Capture<ResolverContext> ctx = Capture.newInstance();
-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
-		expect(context.resolve(eq(usernameContextKey)))
-				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
-		expect(context.getClock()).andReturn(Clock.systemUTC());
+		ArgumentCaptor<ResolverContext> resolverContext1 = ArgumentCaptor.forClass(ResolverContext.class);
+		when(cache.getAttributes(Mockito.any())).thenReturn(Optional.empty());
+		when(context.resolve(usernameContextKey))
+				.thenReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
+		when(context.getClock()).thenReturn(Clock.systemUTC());
 
-		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
-		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
-		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
-
-		control.replay();
+		ArgumentCaptor<ResolverContext> resolverContext2 = ArgumentCaptor.forClass(ResolverContext.class);
+		ArgumentCaptor<AttributeSet> attributeSetCapture = ArgumentCaptor.forClass(AttributeSet.class);
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
+		InOrder order = Mockito.inOrder(cache, context);
+		order.verify(cache).getAttributes(resolverContext1.capture());
+		order.verify(context).resolve(usernameContextKey);
+		order.verify(context).getClock();
+		order.verify(cache).putAttributes(resolverContext2.capture(), attributeSetCapture.capture());
+		Mockito.verifyNoMoreInteractions(cache, context);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
-
-		control.verify();
 	}
 
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet() throws Exception
 	{
 
@@ -222,27 +215,12 @@ public class DefaultPolicyInformationPointTest
 
 
 		// attribute resolver found
-		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
-		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
-		expect(cache.getAttributes(capture(resolverContext2))).andReturn(Optional.empty());
-
-//		expect(context.resolve(eq(usernameContextKey)))
-//				.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));expect(context.resolve(eq(usernameContextKey)))
-//			.andReturn(Optional.of(XacmlTypes.STRING.of("testUser").toBag()));
-
-//		expect(context.getClock()).andReturn(Clock.systemUTC());
-
-		Capture<ResolverContext> resolverContext3 = Capture.newInstance();
-		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
-		//cache.putAttributes(capture(resolverContext3), capture(attributeSetCapture));
-
-		control.replay();
+		when(cache.getAttributes(Mockito.any())).thenReturn(Optional.empty(), Optional.empty());
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
+		Mockito.verify(cache, Mockito.times(2)).getAttributes(Mockito.any());
+		Mockito.verifyNoMoreInteractions(cache, context);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
-
-		control.verify();
 	}
 
 	@Test
@@ -251,49 +229,48 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignatorKey a0 = attr0.build();
 
 		// attribute resolver found
-		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
-		Capture<ResolverContext> ctx = Capture.newInstance();
-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
-		expect(context.resolve(eq(usernameContextKey)))
-				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
-		expect(context.getClock()).andReturn(Clock.systemUTC());
+		ArgumentCaptor<ResolverContext> resolverContext1 = ArgumentCaptor.forClass(ResolverContext.class);
+		when(cache.getAttributes(Mockito.any())).thenReturn(Optional.empty());
+		when(context.resolve(usernameContextKey))
+				.thenReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
+		when(context.getClock()).thenReturn(Clock.systemUTC());
 
-		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
-		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
-		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
-
-		control.replay();
+		ArgumentCaptor<ResolverContext> resolverContext2 = ArgumentCaptor.forClass(ResolverContext.class);
+		ArgumentCaptor<AttributeSet> attributeSetCapture = ArgumentCaptor.forClass(AttributeSet.class);
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
+		InOrder order = Mockito.inOrder(cache, context);
+		order.verify(cache).getAttributes(resolverContext1.capture());
+		order.verify(context).resolve(usernameContextKey);
+		order.verify(context).getClock();
+		order.verify(cache).putAttributes(resolverContext2.capture(), attributeSetCapture.capture());
+		Mockito.verifyNoMoreInteractions(cache, context);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
-
-		control.verify();
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable()
 		throws Exception
 	{
 		AttributeDesignatorKey a0 = attr1.build();
 
 		// attribute resolver found
-		Capture<ResolverContext> resolverContext1 = Capture.newInstance();
-		Capture<ResolverContext> ctx = Capture.newInstance();
-		expect(cache.getAttributes(capture(resolverContext1))).andReturn(Optional.empty());
-		expect(context.resolve(eq(usernameContextKey)))
-				.andReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
+		ArgumentCaptor<ResolverContext> resolverContext1 = ArgumentCaptor.forClass(ResolverContext.class);
+		when(cache.getAttributes(Mockito.any())).thenReturn(Optional.empty());
+		when(context.resolve(usernameContextKey))
+				.thenReturn(Optional.of(XacmlTypes.STRING.ofAny("testUser").toBag()));
 
-		Capture<ResolverContext> resolverContext2 = Capture.newInstance();
-		Capture<AttributeSet> attributeSetCapture = Capture.newInstance();
-		cache.putAttributes(capture(resolverContext2), capture(attributeSetCapture));
-
-		control.replay();
+		ArgumentCaptor<ResolverContext> resolverContext2 = ArgumentCaptor.forClass(ResolverContext.class);
+		ArgumentCaptor<AttributeSet> attributeSetCapture = ArgumentCaptor.forClass(AttributeSet.class);
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
+		InOrder order = Mockito.inOrder(cache, context);
+		order.verify(cache).getAttributes(resolverContext1.capture());
+		order.verify(context).resolve(usernameContextKey);
+		order.verify(cache).putAttributes(resolverContext2.capture(), attributeSetCapture.capture());
+		Mockito.verifyNoMoreInteractions(cache, context);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
-
-		control.verify();
 	}
 
 	@Test
@@ -304,14 +281,14 @@ public class DefaultPolicyInformationPointTest
 		AttributeDesignatorKey key  = AttributeDesignatorKey
 				.builder().category(CategoryId.ENVIRONMENT).dataType(XacmlTypes.DATETIME)
 				.attributeId(WellKnownAttributeIds.CURRENT_TIME.getId()).build();
-		expect(context.getCurrentDateTime()).andReturn(now);
-		expect(context.getClock()).andReturn(Clock.systemUTC());
-
-		control.replay();
+		when(context.getCurrentDateTime()).thenReturn(now);
+		when(context.getClock()).thenReturn(Clock.systemUTC());
 
 		Optional<BagOfValues> v = pip.resolve(context, key);
 		assertEquals(XacmlTypes.TIME.ofAny(now).toBag(), v.get());
-
-		control.verify();
+		InOrder order = Mockito.inOrder(context);
+		order.verify(context).getCurrentDateTime();
+		order.verify(context).getClock();
+		Mockito.verifyNoMoreInteractions(context);
 	}
 }

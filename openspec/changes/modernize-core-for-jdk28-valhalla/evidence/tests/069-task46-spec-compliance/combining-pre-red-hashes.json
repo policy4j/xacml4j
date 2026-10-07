@@ -1,0 +1,12 @@
+[
+  {
+    "path": "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyCombiningAlgorithm.java",
+    "sha256": "1e946dd79dd3f4b43738e411f191100af806d27e62c3d91b0f637b0f5f42106c",
+    "matches_baseline": true
+  },
+  {
+    "path": "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/DefaultXacml30DecisionCombiningAlgorithms.java",
+    "sha256": "d6f1b3716063ccd2a297711976149969d0f045725bafdbc0a59b86380f22a273",
+    "matches_baseline": true
+  }
+]

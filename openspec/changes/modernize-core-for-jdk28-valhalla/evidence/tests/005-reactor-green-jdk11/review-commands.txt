@@ -1,0 +1,17 @@
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-review-tests.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601FractionalDateTimeArithmeticTest,ISO8601DurationReviewTest,ISO8601DateTimeArithmeticTest,DateTimeArithmeticBoundaryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/48-review-arithmetic-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 48-review-arithmetic-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest,MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/49-review-context-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 49-review-context-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-review-red.py
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-review-diagnostics.py DiagnoseXPathMultipleDecisions.java 50-IIIE3xx-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601FractionalDateTimeArithmeticTest,ISO8601DurationReviewTest,ISO8601DateTimeArithmeticTest,DateTimeArithmeticBoundaryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/51-review-arithmetic-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 51-review-arithmetic-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest,MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/52-review-context-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 52-review-context-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/53-reactor-verify-review-fixes.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 53-reactor-verify-review-fixes.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 53
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-review-diagnostics.py DiagnoseXPathMultipleDecisions.java 54-IIIE3xx-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-review-diagnostics.py DiagnoseFractionalDurationGaps.java 55-fractional-duration-gaps.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-review-baselines.py

@@ -24,21 +24,25 @@ package org.xacml4j.v30.marshal.json;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.ResourceAttributes;
 import org.xacml4j.v30.SubjectAttributes;
@@ -59,7 +63,7 @@ public class JsonRequestUnmarshallerTest {
 	private Unmarshaller<RequestContext> unmarshaller;
 	private Marshaller<RequestContext> marshaller;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		unmarshaller = new JsonRequestContextUnmarshaller();
 		marshaller = new JsonRequestContextMarshaller();
@@ -72,6 +76,16 @@ public class JsonRequestUnmarshallerTest {
 		log.debug("JSON request: {}", o);
 		RequestContext reqOut = unmarshaller.unmarshal(o);
 		assertThat(reqOut, is(equalTo(reqIn)));
+	}
+
+	@Test
+	public void missingAttributeIdIsReportedAsSyntaxError() throws Exception {
+		String request = "{\"Category\":[{\"CategoryId\":\"action\","
+				+ "\"Attribute\":[{\"Value\":\"read\","
+				+ "\"DataType\":\"http://www.w3.org/2001/XMLSchema#string\"}]}]}";
+		SyntaxException error = assertThrows(SyntaxException.class,
+				() -> unmarshaller.unmarshal(new StringReader(request)));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
 	}
 
 	private RequestContext createTestRequest() throws Exception {

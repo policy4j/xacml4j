@@ -22,11 +22,11 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.RFC822Name;
@@ -39,7 +39,7 @@ public class SpecialMatchFunctionsTest
 {
 	private FunctionProvider p;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 		this.p = FunctionProviderBuilder.builder().withDefaultFunctions().build();

@@ -22,15 +22,13 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
@@ -63,7 +61,7 @@ public class AttributesTest
 	private XmlContent content2;
 	private XmlContent content3;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 		this.attributes = new LinkedList<Attribute>();
@@ -73,7 +71,6 @@ public class AttributesTest
 		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true)
 				.value(XacmlTypes.STRING.ofAny("value1"), XacmlTypes.STRING.ofAny("value2")).build());
 		attributes.add(Attribute.builder("testId11").issuer("testIssuer").includeInResult(true).value(XacmlTypes.INTEGER.ofAny(10)).build());
-
 
 
 		this.content1 = XmlContent.of(XmlContent.fromString(testXml1));

@@ -1,0 +1,61 @@
+{
+  "scope": [
+    "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/inherited-skip-dispositions.csv",
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OverrideDecisionTableTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/StringFunctionSemanticsTest.java"
+  ],
+  "files_hashed_before_and_after_full_gate": 3543,
+  "full_gate_source_changes": [],
+  "packet_modified_in_scope": [
+    "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/inherited-skip-dispositions.csv",
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java"
+  ],
+  "packet_added_in_scope": [
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OverrideDecisionTableTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/StringFunctionSemanticsTest.java"
+  ],
+  "conductor_merge_modified_files": [
+    "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeReference.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Duration.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/content/XmlContentTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DayTimeDurationTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java",
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java",
+    "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java",
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java"
+  ],
+  "concurrent_unowned_additions_preserved": [
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java.orig"
+  ],
+  "poms_unchanged": 8,
+  "conformance_resource_files_unchanged": 2906,
+  "vendored_schema_files_unchanged": 5,
+  "headers": {
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java": {
+      "license_header_unchanged": true,
+      "header_sha256": "a7b4dcc7099a9ae135762f2e0d90dac5c0086f7279c2d0c642896d89dc3815a5"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java": {
+      "license_header_unchanged": true,
+      "header_sha256": "a7b4dcc7099a9ae135762f2e0d90dac5c0086f7279c2d0c642896d89dc3815a5"
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OverrideDecisionTableTest.java": {
+      "matches_core_LGPL_header": true,
+      "header_sha256": "a7b4dcc7099a9ae135762f2e0d90dac5c0086f7279c2d0c642896d89dc3815a5"
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/StringFunctionSemanticsTest.java": {
+      "matches_core_LGPL_header": true,
+      "header_sha256": "a7b4dcc7099a9ae135762f2e0d90dac5c0086f7279c2d0c642896d89dc3815a5"
+    }
+  },
+  "attribution": "Out-of-scope changes are consistent with the conductor-reported merges. Hashes identify changes, not their author. This lane did not edit them."
+}

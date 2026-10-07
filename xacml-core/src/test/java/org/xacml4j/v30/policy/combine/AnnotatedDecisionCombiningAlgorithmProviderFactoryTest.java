@@ -22,15 +22,14 @@ package org.xacml4j.v30.policy.combine;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
@@ -43,7 +42,7 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 {
 	private AnnotatedDecisionCombiningAlgorithmProviderFactory p;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.p = new AnnotatedDecisionCombiningAlgorithmProviderFactory();
 	}
@@ -78,11 +77,12 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 		return Decision.DENY;
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void doTest1()
 	{
-		p.createPolicyDecisionCombineAlgorithm(
-				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "testNonStaticMethod"));
+		assertThrows(IllegalArgumentException.class, () ->
+			p.createPolicyDecisionCombineAlgorithm(
+					getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "testNonStaticMethod")));
 	}
 
 	@Test
@@ -94,19 +94,21 @@ public class AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
 		assertEquals("test2Algo", a.getId());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void doTest2Params1()
 	{
-		p.createRuleDecisionCombineAlgorithm(
-				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test2params2"));
+		assertThrows(IllegalArgumentException.class, () ->
+			p.createRuleDecisionCombineAlgorithm(
+					getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test2params2")));
 
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void doTest2Params2()
 	{
-		p.createRuleDecisionCombineAlgorithm(
-				getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test2params2"));
+		assertThrows(IllegalArgumentException.class, () ->
+			p.createRuleDecisionCombineAlgorithm(
+					getMethod(AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.class, "test2params2")));
 
 	}
 

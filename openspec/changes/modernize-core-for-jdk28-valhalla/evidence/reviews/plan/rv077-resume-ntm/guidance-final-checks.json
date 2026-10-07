@@ -1,0 +1,28 @@
+{
+  "research_section_identical": true,
+  "research_procedure_identical": true,
+  "complete_AGENTS_identical": false,
+  "complete_AGENTS_difference_expected": "preexisting donor/integration build and test guidance preserved",
+  "catalog_checks": {
+    "resolve_library_id": true,
+    "query_docs": true,
+    "tavily": true,
+    "duckduckgo": true,
+    "arxiv": true,
+    "deep_research": true,
+    "research_status": true,
+    "openai": true,
+    "claude": true
+  },
+  "claude_symlinks": {
+    "donor": {
+      "is_symlink": true,
+      "target": "AGENTS.md"
+    },
+    "integration": {
+      "is_symlink": true,
+      "target": "AGENTS.md"
+    }
+  },
+  "targets_exist": true
+}

@@ -35,6 +35,7 @@ import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -73,12 +74,13 @@ public class DateTimeDurationUtils {
 
     public static boolean isZero(Duration d){
         assert DF_FACTORY != null;
+        BigDecimal seconds = (BigDecimal)d.getField(DatatypeConstants.SECONDS);
         return isUndefinedOrZero(d.getYears()) &&
                 isUndefinedOrZero(d.getMonths()) &&
                 isUndefinedOrZero(d.getDays()) &&
                 isUndefinedOrZero(d.getHours()) &&
                 isUndefinedOrZero(d.getMinutes()) &&
-                isUndefinedOrZero(d.getSeconds());
+                (seconds == null || seconds.signum() == 0);
 
     }
 
@@ -208,8 +210,7 @@ public class DateTimeDurationUtils {
     }
 
     public static java.time.Duration toISO8601DayTimeDuration(Duration v) {
-        Duration d = DF_FACTORY.newDurationDayTime(v.getSign() >= 0,
-                v.getDays(), v.getHours(), v.getMinutes(), v.getSeconds());
+        Duration d = v;
         java.time.Duration duration = null;
         if (d.getDays() != DatatypeConstants.FIELD_UNDEFINED) {
             duration = java.time.Duration.ofDays(d.getDays());
@@ -222,9 +223,13 @@ public class DateTimeDurationUtils {
             duration = duration != null ? duration.plusMinutes(d.getMinutes()) :
                     java.time.Duration.ofMinutes(d.getMinutes());
         }
-        if (d.getSeconds() != DatatypeConstants.FIELD_UNDEFINED) {
-            duration = duration != null ? duration.plusSeconds(d.getSeconds()) :
-                    java.time.Duration.ofSeconds(d.getSeconds());
+        BigDecimal seconds = (BigDecimal)d.getField(DatatypeConstants.SECONDS);
+        if (seconds != null) {
+            long wholeSeconds = seconds.toBigInteger().longValueExact();
+            int nanos = seconds.remainder(BigDecimal.ONE).movePointRight(9)
+                    .setScale(0, RoundingMode.DOWN).intValueExact();
+            duration = duration != null ? duration.plusSeconds(wholeSeconds).plusNanos(nanos) :
+                    java.time.Duration.ofSeconds(wholeSeconds, nanos);
         }
         if (duration == null) {
             throw SyntaxException
@@ -241,7 +246,7 @@ public class DateTimeDurationUtils {
             period = Period.ofYears(d.getYears());
         }
         if (d.getMonths() != DatatypeConstants.FIELD_UNDEFINED) {
-            period = period != null ? period.plusMonths(v.getMonths()) : period;
+            period = period != null ? period.plusMonths(d.getMonths()) : period;
         }
         return d.getSign() > 0 ? period : period.negated();
     }
@@ -255,8 +260,14 @@ public class DateTimeDurationUtils {
             LOG.debug(e.getMessage(), e);
             duration = parseAsJDKDuration(v);
         }
-        return DF_FACTORY.newDurationDayTime(duration.getSign() >= 0,
-                duration.getDays(), duration.getHours(), duration.getMinutes(), duration.getSeconds());
+        BigDecimal seconds = (BigDecimal)duration.getField(DatatypeConstants.SECONDS);
+        if (seconds != null && seconds.remainder(BigDecimal.ONE).signum() == 0) {
+            seconds = new BigDecimal(seconds.toBigInteger());
+        }
+        Duration dayTime = DF_FACTORY.newDuration(duration.getSign() >= 0, null, null,
+                BigInteger.valueOf(duration.getDays()), BigInteger.valueOf(duration.getHours()),
+                BigInteger.valueOf(duration.getMinutes()), seconds != null ? seconds : BigDecimal.ZERO);
+        return DF_FACTORY.newDurationDayTime(dayTime.toString());
     }
 
     private static Duration parseAsJDKDuration(String v){
@@ -278,6 +289,10 @@ public class DateTimeDurationUtils {
 
     public static Duration parseISO8601YearMonthDuration(String v) {
         assert DF_FACTORY != null;
+        if (!v.matches("[+-]?P(?:\\d+Y)?(?:\\d+M)?")
+                || !v.matches(".*\\d[YM]$")) {
+            throw new SyntaxException(v, XacmlTypes.YEARMONTHDURATION);
+        }
         Duration duration;
         try{
             duration = DF_FACTORY.newDuration(v);
@@ -289,7 +304,25 @@ public class DateTimeDurationUtils {
     }
 
     public static Duration toXmlDayTimeDuration(java.time.Duration d) {
-        return DF_FACTORY.newDurationDayTime(!d.isNegative(), Long.valueOf(d.toDaysPart()).intValue(), d.toHoursPart(), d.toMinutesPart(), d.toSecondsPart());
+        java.time.Duration magnitude = d.abs();
+        BigDecimal seconds = BigDecimal.valueOf(magnitude.toSecondsPart())
+                .add(BigDecimal.valueOf(magnitude.getNano(), 9));
+        if (magnitude.getNano() == 0) {
+            seconds = new BigDecimal(seconds.toBigInteger());
+        } else {
+            int fractionalNanos = magnitude.getNano();
+            int scale = 9;
+            while (fractionalNanos % 10 == 0) {
+                fractionalNanos /= 10;
+                scale--;
+            }
+            seconds = BigDecimal.valueOf(magnitude.toSecondsPart())
+                    .add(new BigDecimal(BigInteger.valueOf(fractionalNanos), scale));
+        }
+        return DF_FACTORY.newDuration(!d.isNegative(), null, null,
+                BigInteger.valueOf(magnitude.toDaysPart()),
+                BigInteger.valueOf(magnitude.toHoursPart()),
+                BigInteger.valueOf(magnitude.toMinutesPart()), seconds);
     }
 
     public static Duration toXmlYearsMonthsDuration(Period p) {

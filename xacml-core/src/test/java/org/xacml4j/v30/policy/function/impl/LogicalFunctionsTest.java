@@ -23,16 +23,16 @@ package org.xacml4j.v30.policy.function.impl;
  */
 
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.reset;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -43,6 +43,7 @@ import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
+@ExtendWith(MockitoExtension.class)
 public class LogicalFunctionsTest
 {
 	private FunctionProvider f;
@@ -51,141 +52,168 @@ public class LogicalFunctionsTest
 	FunctionSpec orFunc;
 	FunctionSpec notFunc;
 
-	private IMocksControl control;
 
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
-		this.control = createControl();
 
 		this.f = FunctionProviderBuilder.builder().withDefaultFunctions().build();
 		this.andFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:and").get();
 		this.orFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:or").get();
 		this.notFunc = f.getFunction("urn:oasis:names:tc:xacml:1.0:function:not").get();
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 
 	@Test
 	public void testAndFunction() throws EvaluationException
 	{
-		control.replay();
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 		             LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(false)));
-		control.verify();
+		verifyNoMoreInteractions(context);
 
-		control.reset();
-		control.replay();
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)));
-		control.verify();
+		verifyNoMoreInteractions(context);
 
-		control.reset();
-		control.replay();
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)));
-		control.verify();
+		verifyNoMoreInteractions(context);
 
-		control.reset();
-		control.replay();
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.and(context, XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)));
-		control.verify();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
 	public void testLazyAndFunctionParamEvaluation() throws EvaluationException
 	{
-		Expression p1 = control.createMock(Expression.class);
-		Expression p2 = control.createMock(Expression.class);
-		Expression p3 = control.createMock(Expression.class);
+		Expression p1 = mock(Expression.class);
+		Expression p2 = mock(Expression.class);
+		Expression p3 = mock(Expression.class);
 
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		control.replay();
-
-		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
-				LogicalFunctions.and(context, p1, p2, p3));
-		control.verify();
-
-		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		control.replay();
+		when(p1.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(context, p1, p2, p3);
 
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.and(context, p1, p2, p3));
-		control.verify();
+		order.verify(p1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(p1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, p1, p2, p3);
 
-		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
-		expect(p3.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		control.replay();
+
+		when(p1.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		when(p2.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+
 
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.and(context, p1, p2, p3));
-		control.verify();
+		order.verify(p1).evaluate(context);
+		order.verify(p2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(p1, times(2)).evaluate(context);
+		verify(p2, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, p1, p2, p3);
+
+
+		when(p1.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		when(p2.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		when(p3.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+
+
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+				LogicalFunctions.and(context, p1, p2, p3));
+		order.verify(p1).evaluate(context);
+		order.verify(p2).evaluate(context);
+		order.verify(p3).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(p1, times(3)).evaluate(context);
+		verify(p2, times(2)).evaluate(context);
+		verify(p3, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, p1, p2, p3);
 
 	}
 
 	@Test
 	public void testOrFunction() throws EvaluationException
 	{
-		control.replay();
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.ofAny(false),
 						XacmlTypes.BOOLEAN.ofAny(false)));
-		control.verify();
-		control.reset();
-		control.replay();
+		verifyNoMoreInteractions(context);
+
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)));
-		control.verify();
-		control.reset();
-		control.replay();
+		verifyNoMoreInteractions(context);
+
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.or(context, XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)));
-		control.verify();
-		control.reset();
-		control.replay();
+		verifyNoMoreInteractions(context);
+
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.or(context,XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)));
-		verify(context);
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
 	public void testLazyOrFunctionParamEvaluation() throws EvaluationException
 	{
-		Expression p1 = control.createMock(Expression.class);
-		Expression p2 = control.createMock(Expression.class);
-		Expression p3 = control.createMock(Expression.class);
+		Expression p1 = mock(Expression.class);
+		Expression p2 = mock(Expression.class);
+		Expression p3 = mock(Expression.class);
 
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
-		control.replay();
-
-		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
-				LogicalFunctions.or(context, p1, p2, p3));
-		control.verify();
-
-		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
-		control.replay();
+		when(p1.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		InOrder order = inOrder(context, p1, p2, p3);
 
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.or(context, p1, p2, p3));
-		control.verify();
+		order.verify(p1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(p1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, p1, p2, p3);
 
-		control.reset();
-		expect(p1.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		expect(p2.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		control.replay();
+
+		when(p1.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		when(p2.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+
+
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
+				LogicalFunctions.or(context, p1, p2, p3));
+		order.verify(p1).evaluate(context);
+		order.verify(p2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(p1, times(2)).evaluate(context);
+		verify(p2, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, p1, p2, p3);
+
+
+		when(p1.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		when(p2.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+
 
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.or(context, p1, p2));
-		control.verify();
+		order.verify(p1).evaluate(context);
+		order.verify(p2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(p1, times(3)).evaluate(context);
+		verify(p2, times(2)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, p1, p2, p3);
 
 	}
 
@@ -193,52 +221,47 @@ public class LogicalFunctionsTest
 	public void testNOfFunction() throws EvaluationException
 	{
 		IntegerVal n = XacmlTypes.INTEGER.ofAny(0);
-		replay(context);
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.nof(context, n));
-		verify(context);
-		reset(context);
-		replay(context);
+		verifyNoMoreInteractions(context);
+
 		n = XacmlTypes.INTEGER.ofAny(1);
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.ofAny(true)));
-		verify(context);
-		reset(context);
-		replay(context);
+		verifyNoMoreInteractions(context);
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.ofAny(false)));
-		verify(context);
-		reset(context);
-		replay(context);
+		verifyNoMoreInteractions(context);
+
 		n = XacmlTypes.INTEGER.ofAny(2);
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.nof(context, n,
 						XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(true)));
-		verify(context);
-		reset(context);
-		replay(context);
+		verifyNoMoreInteractions(context);
+
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.nof(context, n,
 						XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false)));
-		verify(context);
-		reset(context);
-		replay(context);
+		verifyNoMoreInteractions(context);
+
 		n = XacmlTypes.INTEGER.ofAny(2);
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true),
 				LogicalFunctions.nof(context, n,
 						XacmlTypes.BOOLEAN.ofAny(true),
 						XacmlTypes.BOOLEAN.ofAny(false),
 						XacmlTypes.BOOLEAN.ofAny(true)));
-		verify(context);
+		verifyNoMoreInteractions(context);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNOfFunctionInderterminate() throws EvaluationException
 	{
 		IntegerVal n = XacmlTypes.INTEGER.ofAny(4);
-		replay(context);
-		assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
+		assertThrows(IllegalArgumentException.class, () -> {
+			assertEquals(XacmlTypes.BOOLEAN.ofAny(false),
 				LogicalFunctions.nof(context, n, XacmlTypes.BOOLEAN.ofAny(false)));
-		verify(context);
+		});
+		verifyNoMoreInteractions(context);
 	}
 }

@@ -22,15 +22,16 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.xacml4j.v30.VersionMatch;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.Policy;
@@ -42,60 +43,56 @@ import org.xacml4j.v30.policy.PolicySetIDReference;
 public class DefaultPolicyReferenceResolverTest
 {
 	private PolicyRepository repository;
-	private IMocksControl c;
 
 	private Policy p1v1;
 	private PolicySet ps1v1;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
-		this.c = createControl();
-		this.repository = c.createMock(PolicyRepository.class);
+		this.repository = Mockito.mock(PolicyRepository.class);
 		this.p1v1 = Policy
 				.builder("id")
 				.version("1.0.0")
-				.combiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class))
+				.combiningAlgorithm(Mockito.mock(DecisionCombiningAlgorithm.class))
 				.build();
 		this.ps1v1 = PolicySet
 				.builder("id")
 				.version("1.2.1")
-				.withCombiningAlgorithm(c.createMock(DecisionCombiningAlgorithm.class)).build();
+				.withCombiningAlgorithm(Mockito.mock(DecisionCombiningAlgorithm.class)).build();
 
 	}
 
 	@Test
 	public void testResolvePolicyIDReference() throws Exception
 	{
-		Capture<PolicyRepositoryListener> listener = Capture.newInstance();
-		repository.addPolicyRepositoryListener(capture(listener));
-		expect(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).andReturn(p1v1).times(2);
-		c.replay();
+		when(repository.getPolicy("id", new VersionMatch("1.0.0"), null, null)).thenReturn(p1v1);
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
+		verify(repository).addPolicyRepositoryListener(any());
 		PolicyIDReference ref = PolicyIDReference.builder("id").versionAsString("1.0.0").build();
 		Policy p = r.resolve(ref);
 		assertSame(p1v1, p);
 		r.policyRemoved(p1v1);
 		p = r.resolve(ref);
 		assertSame(p1v1, p);
-		c.verify();
+		verify(repository, times(2)).getPolicy("id", new VersionMatch("1.0.0"), null, null);
+		verifyNoMoreInteractions(repository);
 	}
 
 	@Test
 	public void testResolvePolicySetIDReference() throws Exception
 	{
-		Capture<PolicyRepositoryListener> listener = Capture.newInstance();
-		repository.addPolicyRepositoryListener(capture(listener));
-		expect(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).andReturn(ps1v1).times(1);
-		c.replay();
+		when(repository.getPolicySet("id", new VersionMatch("1.0.0"), null, null)).thenReturn(ps1v1);
 		DefaultPolicyReferenceResolver r = new DefaultPolicyReferenceResolver(repository);
+		verify(repository).addPolicyRepositoryListener(any());
 		PolicySetIDReference ref = PolicySetIDReference.builder("id").versionAsString("1.0.0").build();
 		PolicySet p = r.resolve(ref);
 		assertSame(ps1v1, p);
 		r.policySetRemoved(ps1v1);
 		p = r.resolve(ref);
 		assertSame(ps1v1, p);
-		c.verify();
+		verify(repository, times(1)).getPolicySet("id", new VersionMatch("1.0.0"), null, null);
+		verifyNoMoreInteractions(repository);
 	}
 }

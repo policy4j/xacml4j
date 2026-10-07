@@ -1,0 +1,452 @@
+[
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2002-03-22",
+    "duration": "P1Y2M",
+    "expected": "2003-05-22",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2002-03-22, P1Y2M -> 2003-05-22]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2002-03-22",
+    "duration": "-P1Y2M",
+    "expected": "2001-01-22",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2002-03-22, -P1Y2M -> 2001-01-22]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2002-03-22",
+    "duration": "P0M",
+    "expected": "2002-03-22",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2002-03-22, P0M -> 2002-03-22]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2020-01-31",
+    "duration": "P1M",
+    "expected": "2020-02-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-01-31, P1M -> 2020-02-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2021-01-31",
+    "duration": "P1M",
+    "expected": "2021-02-28",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2021-01-31, P1M -> 2021-02-28]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2020-03-31",
+    "duration": "-P1M",
+    "expected": "2020-02-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-03-31, -P1M -> 2020-02-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2021-03-31",
+    "duration": "-P1M",
+    "expected": "2021-02-28",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2021-03-31, -P1M -> 2021-02-28]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2020-02-29",
+    "duration": "P1Y1M",
+    "expected": "2021-03-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-02-29, P1Y1M -> 2021-03-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-add-yearMonthDuration",
+    "start": "2020-02-29",
+    "duration": "-P1Y1M",
+    "expected": "2019-01-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-02-29, -P1Y1M -> 2019-01-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2002-03-22",
+    "duration": "P1Y2M",
+    "expected": "2001-01-22",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2002-03-22, P1Y2M -> 2001-01-22]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2002-03-22",
+    "duration": "-P1Y2M",
+    "expected": "2003-05-22",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2002-03-22, -P1Y2M -> 2003-05-22]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2002-03-22",
+    "duration": "P0M",
+    "expected": "2002-03-22",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2002-03-22, P0M -> 2002-03-22]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2020-01-31",
+    "duration": "-P1M",
+    "expected": "2020-02-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-01-31, -P1M -> 2020-02-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2021-01-31",
+    "duration": "-P1M",
+    "expected": "2021-02-28",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2021-01-31, -P1M -> 2021-02-28]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2020-03-31",
+    "duration": "P1M",
+    "expected": "2020-02-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-03-31, P1M -> 2020-02-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2021-03-31",
+    "duration": "P1M",
+    "expected": "2021-02-28",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2021-03-31, P1M -> 2021-02-28]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2020-02-29",
+    "duration": "-P1Y1M",
+    "expected": "2021-03-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-02-29, -P1Y1M -> 2021-03-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "date-subtract-yearMonthDuration",
+    "start": "2020-02-29",
+    "duration": "P1Y1M",
+    "expected": "2019-01-29",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-02-29, P1Y1M -> 2019-01-29]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "P1Y2M",
+    "expected": "2003-05-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P1Y2M -> 2003-05-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "-P1Y2M",
+    "expected": "2001-01-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2002-03-22T08:23:47-05:00, -P1Y2M -> 2001-01-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "P0M",
+    "expected": "2002-03-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P0M -> 2002-03-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2020-01-31T08:23:47-05:00",
+    "duration": "P1M",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-01-31T08:23:47-05:00, P1M -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2021-01-31T08:23:47-05:00",
+    "duration": "P1M",
+    "expected": "2021-02-28T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2021-01-31T08:23:47-05:00, P1M -> 2021-02-28T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2020-03-31T08:23:47-05:00",
+    "duration": "-P1M",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-03-31T08:23:47-05:00, -P1M -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2021-03-31T08:23:47-05:00",
+    "duration": "-P1M",
+    "expected": "2021-02-28T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2021-03-31T08:23:47-05:00, -P1M -> 2021-02-28T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2020-02-29T08:23:47-05:00",
+    "duration": "P1Y1M",
+    "expected": "2021-03-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-02-29T08:23:47-05:00, P1Y1M -> 2021-03-29T08:23:47-05:00]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-yearMonthDuration",
+    "start": "2020-02-29T08:23:47-05:00",
+    "duration": "-P1Y1M",
+    "expected": "2019-01-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-02-29T08:23:47-05:00, -P1Y1M -> 2019-01-29T08:23:47-05:00]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "P1Y2M",
+    "expected": "2001-01-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P1Y2M -> 2001-01-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "-P1Y2M",
+    "expected": "2003-05-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2002-03-22T08:23:47-05:00, -P1Y2M -> 2003-05-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "P0M",
+    "expected": "2002-03-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P0M -> 2002-03-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2020-01-31T08:23:47-05:00",
+    "duration": "-P1M",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-01-31T08:23:47-05:00, -P1M -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2021-01-31T08:23:47-05:00",
+    "duration": "-P1M",
+    "expected": "2021-02-28T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2021-01-31T08:23:47-05:00, -P1M -> 2021-02-28T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2020-03-31T08:23:47-05:00",
+    "duration": "P1M",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-03-31T08:23:47-05:00, P1M -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2021-03-31T08:23:47-05:00",
+    "duration": "P1M",
+    "expected": "2021-02-28T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2021-03-31T08:23:47-05:00, P1M -> 2021-02-28T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2020-02-29T08:23:47-05:00",
+    "duration": "-P1Y1M",
+    "expected": "2021-03-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-02-29T08:23:47-05:00, -P1Y1M -> 2021-03-29T08:23:47-05:00]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-yearMonthDuration",
+    "start": "2020-02-29T08:23:47-05:00",
+    "duration": "P1Y1M",
+    "expected": "2019-01-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-02-29T08:23:47-05:00, P1Y1M -> 2019-01-29T08:23:47-05:00]",
+    "red_run": "FAIL",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-dayTimeDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "P5DT2H",
+    "expected": "2002-03-27T10:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2002-03-22T08:23:47-05:00, P5DT2H -> 2002-03-27T10:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-dayTimeDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "-P5DT2H",
+    "expected": "2002-03-17T06:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2002-03-22T08:23:47-05:00, -P5DT2H -> 2002-03-17T06:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-dayTimeDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "PT0S",
+    "expected": "2002-03-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2002-03-22T08:23:47-05:00, PT0S -> 2002-03-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-dayTimeDuration",
+    "start": "2020-01-31T23:30:00-05:00",
+    "duration": "PT2H",
+    "expected": "2020-02-01T01:30:00-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-01-31T23:30:00-05:00, PT2H -> 2020-02-01T01:30:00-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-dayTimeDuration",
+    "start": "2020-03-01T00:30:00-05:00",
+    "duration": "-PT2H",
+    "expected": "2020-02-29T22:30:00-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-03-01T00:30:00-05:00, -PT2H -> 2020-02-29T22:30:00-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-dayTimeDuration",
+    "start": "2020-02-28T08:23:47-05:00",
+    "duration": "P1D",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-02-28T08:23:47-05:00, P1D -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-add-dayTimeDuration",
+    "start": "2020-03-01T08:23:47-05:00",
+    "duration": "-P1D",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-03-01T08:23:47-05:00, -P1D -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-dayTimeDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "P5DT2H",
+    "expected": "2002-03-17T06:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2002-03-22T08:23:47-05:00, P5DT2H -> 2002-03-17T06:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-dayTimeDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "-P5DT2H",
+    "expected": "2002-03-27T10:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2002-03-22T08:23:47-05:00, -P5DT2H -> 2002-03-27T10:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-dayTimeDuration",
+    "start": "2002-03-22T08:23:47-05:00",
+    "duration": "PT0S",
+    "expected": "2002-03-22T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2002-03-22T08:23:47-05:00, PT0S -> 2002-03-22T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-dayTimeDuration",
+    "start": "2020-01-31T23:30:00-05:00",
+    "duration": "-PT2H",
+    "expected": "2020-02-01T01:30:00-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-01-31T23:30:00-05:00, -PT2H -> 2020-02-01T01:30:00-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-dayTimeDuration",
+    "start": "2020-03-01T00:30:00-05:00",
+    "duration": "PT2H",
+    "expected": "2020-02-29T22:30:00-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-03-01T00:30:00-05:00, PT2H -> 2020-02-29T22:30:00-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-dayTimeDuration",
+    "start": "2020-02-28T08:23:47-05:00",
+    "duration": "-P1D",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-02-28T08:23:47-05:00, -P1D -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  },
+  {
+    "function": "dateTime-subtract-dayTimeDuration",
+    "start": "2020-03-01T08:23:47-05:00",
+    "duration": "P1D",
+    "expected": "2020-02-29T08:23:47-05:00",
+    "test": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-03-01T08:23:47-05:00, P1D -> 2020-02-29T08:23:47-05:00]",
+    "red_run": "PASS",
+    "green_run": "PASS"
+  }
+]

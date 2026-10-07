@@ -1,0 +1,22 @@
+id: legacy-test-stack
+language: Java
+severity: error
+message: Legacy JUnit or EasyMock API remains.
+rule:
+  any:
+    - all:
+        - kind: import_declaration
+        - regex: '\borg\.junit\.(Test|Assert|Before|BeforeClass|After|AfterClass|Ignore|Rule|ClassRule|Assume|runner|runners|rules|experimental|internal)(\.|;|\s)|\borg\.junit\.\*|\borg\.easymock\.|\bjunit\.framework\.|\borg\.hamcrest\.junit\.'
+    - all:
+        - kind: scoped_identifier
+        - regex: '\borg\.junit\.(Test|Assert|Before|BeforeClass|After|AfterClass|Ignore|Rule|ClassRule|Assume|runner|runners|rules|experimental|internal)(\.|$)|\borg\.easymock\.|\bjunit\.framework\.'
+    - pattern: '@Before'
+    - pattern: '@BeforeClass'
+    - pattern: '@After'
+    - pattern: '@AfterClass'
+    - pattern: '@Ignore'
+    - pattern: '@Rule'
+    - pattern: '@ClassRule'
+    - pattern: '@RunWith($RUNNER)'
+    - pattern: '@Test(expected = $EXCEPTION)'
+    - pattern: 'EasyMock.$METHOD($$$ARGS)'

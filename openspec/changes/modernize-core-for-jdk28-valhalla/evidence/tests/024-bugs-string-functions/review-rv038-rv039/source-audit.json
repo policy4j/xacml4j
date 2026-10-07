@@ -1,0 +1,96 @@
+{
+  "lane_changed_files": [
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/AnyURILexicalTest.java",
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/AnyURIRequestLexicalTest.java",
+    "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+    "xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java",
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java",
+    "xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/AnyURIRequestLexicalTest.java"
+  ],
+  "conductor_merge_files": [
+    "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeSelector.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/Value.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/StringEqualIgnoreCaseTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601YearMonthDurationTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TemporalEqualityTest.java",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30ResponseContextUnmarshallerTest.java"
+  ],
+  "existing_headers_unchanged": {
+    "xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java": true,
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/types/AnyURILexicalTest.java": true,
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/AnyURIRequestLexicalTest.java": true,
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/AnyURIRequestLexicalTest.java": true,
+    "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java": true,
+    "xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java": true,
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java": true,
+    "xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java": true
+  },
+  "original_test_assertions": {
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java": {
+      "original_methods": [
+        "absentContentIsSafeAndPresenceIsComparedSymmetrically",
+        "assignmentExtensionAttributesMustMatch",
+        "categoryMatchingKeepsAllAttributeFields",
+        "contentComparesTypeAndDomStructure",
+        "differentValuesOfTheSameTypeRemainRejected",
+        "includedCategoriesAttributesAndValuesAreMultisets",
+        "invalidBooleanLexicalFormsAreRejected",
+        "lexicalFormsCompareByDataType",
+        "obligationAndAdviceAssignmentsAlsoUseTypedValues",
+        "stringsKeepWhitespaceAndTextChunkBoundariesDoNotMatter",
+        "testAbsentPolicyIdentifierLists",
+        "testAdviceAssignmentsWithSameAttributeIdAreUnordered",
+        "testAdviceOrderDoesNotMatter",
+        "testDifferentAdviceAssignmentFieldsRejected",
+        "testDifferentAdviceIdRejected",
+        "testDifferentObligationAssignmentRejected",
+        "testDifferingEarliestVersionRejected",
+        "testDifferingLatestVersionRejected",
+        "testDifferingPolicyIdRejected",
+        "testDifferingVersionRejected",
+        "testDuplicateAdviceIdsAreComparedAsMultiset",
+        "testDuplicateObligationIdsAreComparedAsMultiset",
+        "testEmptyAdviceMatchesAbsent",
+        "testEmptyObligationsMatchAbsent",
+        "testEmptyPolicyIdentifierListMatchesAbsent",
+        "testExtraAdviceRejected",
+        "testMarshalledEmptyPermitMatchesAbsentOptionalCollections",
+        "testMissingAdviceRejected",
+        "testMissingObligationRejected",
+        "testMissingPolicyIdentifierRejected",
+        "testObligationAssignmentsWithSameAttributeIdAreUnordered",
+        "testSamePolicyIdentifiersWithVersions",
+        "testUnexpectedObligationRejected",
+        "testUnexpectedPolicyIdentifierRejected",
+        "valueBagsAreUnorderedButKeepDuplicatesAndMetadata"
+      ],
+      "all_original_methods_retained": true,
+      "deleted_assertions": []
+    },
+    "xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java": {
+      "original_methods": [
+        "assignmentPermutationPreservesBothValues",
+        "responseRejectsAssignmentDifferencesUnderTheSameObligationId"
+      ],
+      "all_original_methods_retained": true,
+      "deleted_assertions": []
+    }
+  },
+  "protected_files_unchanged": 2919,
+  "final_gate_source_stable": true,
+  "live_source_matches_gate": true,
+  "production_unchanged_before_run_03": true
+}

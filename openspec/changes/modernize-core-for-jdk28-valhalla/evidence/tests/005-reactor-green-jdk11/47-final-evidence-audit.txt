@@ -1,0 +1,3 @@
+rtk git branch --show-current: integration/modernize-core-jdk28-valhalla
+rtk git rev-parse HEAD: befdd116bd11385ac8d007732fa8e4d347af3143
+Final evidence audit PASS: exact commands, six Maven Results, all counts/cases, path normalization, preserved source/input hashes

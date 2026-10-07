@@ -1,0 +1,489 @@
+  A. Defects in the donor files: file:line (donor) | defect | scenario |
+     required behavior (cite RFC/spec/design) | severity.
+  B. Behavior changes vs the worktree that callers would see (for example a
+     category id that equals today but not after, or the reverse), with the
+     callers (rtk rg) at risk.
+  C. Test list for 5.1: test | inputs | expected (at most 40 rows), including
+     the symmetry/transitivity/hash-map/case cases the task names.
+  FINAL REPORT (policy4j_code_review_agy, <model>): counts, top 5 defects,
+  files opened (donor files marked with the commit).
+
+▸ Thought for 8s, 704 tokens
+  FINAL REPORT
+
+● Bash(rtk rg -n "5\.1|identifier" openspec/changes/modernize-core-for-jdk28-valhalla/) (ctrl+o to expand)
+
+▸ Thought for 4s, 750 tokens
+  Analyzing the request to understand the scope; a read-only pre-audit of a specific donor slice is requir...
+
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...anges/modernize-core-for-jdk28-valhalla/design.md)
+● Bash(rtk ls openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds)
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...dence/builds/040-slice-map-refresh-agy/summary.md)
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...la/evidence/builds/026-donor-slice-map/summary.md)
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...la/evidence/builds/026-donor-slice-map/summary.md)
+● Bash(rtk rg -n "Task 5.1" openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/026-donor-
+sli...)
+● Bash(rtk rg -n "Slice: Task 5.1|Task 5.1:" openspec/changes/modernize-core-for-jdk28-
+valhalla/evidence/bui...)
+● Read(~/Projects/Personal/xacml4j-worktrees/p...e/builds/026-donor-slice-map/summary.md) (ctrl+o to expand)
+
+▸ Thought for 3s, 758 tokens
+  Examining the provided file list, it's necessary to process the file paths and associated annotations (A...
+
+● Bash(rtk git ls-tree -r b9f114a3 -- xacml-core/src/main/java/org/xacml4j/v30/identifier)
+● Bash(rtk git ls-tree -r b9f114a3 -- xacml-core/src/test/java/org/xacml4j/v30/identifier)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/util/URN8141.java) (ctrl+o to expand)
+
+▸ Thought for 5s, 1.1k tokens
+  The `NID` definition in RFC 8141, specifically the regex `\\p{Alnum}[a-zA-Z0-9\\-]{0,30}\\p{Alnum}`, enf...
+● Bash(rtk git grep -n "URN8141" b9f114a3)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Identifi...) (ctrl+o to
+expand)
+
+▸ Thought for 4s, 950 tokens
+  The code's equality check considers aliases, but the automatically generated `hashCode()` relies solely...
+
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/URI.java) (ctrl+o to expand)
+
+▸ Thought for 5s, 831 tokens
+  Examining `URI.java` reveals that the constructor normalizes the URI using `java.net.URI.normalize()`. T...
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Category...) (ctrl+o to
+expand)
+
+▸ Thought for 2s, 464 tokens
+  `CategoryId` is implemented by `Category` which defines a `toDelegate()` method. This method seems to cr...
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/EntityTypeId.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/AttributeId.java)
+● Bash(rtk rg -n "class AttributeId" xacml-core)
+● Bash(rtk rg -n "getAttributeId\(\)" xacml-core)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/ValueTypeId.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/StatusCodeId.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Issuer.j...) (ctrl+o to
+expand)
+
+▸ Thought for 3s, 409 tokens
+  `Issuer.issuer` utilizes `Identifier.StringIdCaseInsensitive` for issuer creation. This suggests case-in...
+
+● Bash(rtk rg -n "getIssuer\(\)" xacml-core)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Either.java)
+● Bash(rtk git grep -n "Either" b9f114a3)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/ParamId.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/UrnIdentifier.java) (ctrl+o to expand)
+▸ Thought for 7s, 1.6k tokens
+  The code retrieves `CategoryId` by URN, but the direct lookup in a critical data structure fails. This l...
+
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/xa...ore/src/main/java/org/xacml4j/v30/CategoryId.java)
+● Read(~/Projects/Personal/xacml4j-worktrees/p...org/xacml4j/v30/SemanticIdentifier.java) (ctrl+o to expand)
+
+▸ Thought for 5s, 541 tokens
+  The `equals` method within `SemanticIdentifier` is now under scrutiny. The null check and class instance...
+
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/xa...e/src/main/java/org/xacml4j/v30/StatusCodeId.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/StatusCodeId.java) (ctrl+o to expand)
+
+▸ Thought for 4s, 749 tokens
+  Examining `StatusCodeId.java`, observed that it utilizes `UrnIdentifier` to create two maps: one indexed...
+
+● Bash(rtk git show b9f114a3:xacml-core/src/test/java/org/xacml4j/v30/CategoryIdTest.java) (ctrl+o to expand)
+
+▸ Thought for 3s, 379 tokens
+  The test case uses JUnit 4 and checks the `parse` method of the `CategoryId` class. Specifically, the te...
+
+● Bash(rtk git show b9f114a3:xacml-core/src/test/java/org/xacml4j/v30/identifier/URITest....) (ctrl+o to
+expand)
+
+▸ Thought for 12s, 3.8k tokens
+  If the root `CategoryId` is an adapter for `identifier.CategoryId`, the adapter must either wrap or exte...
+
+● Bash(rtk rg -n "CategoryId" xacml-core/src/main xacml-pdp/src/main) (ctrl+o to expand)
+
+▸ Thought for 3s, 389 tokens
+  `CategoryId` appears consistently as a `Map` key across several classes. It's used to organize and retri...
+
+● Bash(rtk rg -n "CategoryId" xacml-core/src/main/java/org/xacml4j/v30/RequestContext.java)
+● Bash(rtk rg -n "StatusCodeId" xacml-core/src/main xacml-pdp/src/main)
+● Bash(rtk git diff a8a90d46 b9f114a3 -- xacml-core/src/main/java/org/xacml4j/v30/Semanti...) (ctrl+o to
+expand)
+
+▸ Thought for 3s, 396 tokens
+  The code change highlights a potential issue. The method `getById`'s generic type was altered from `Sema...
+
+● Bash(rtk git diff a8a90d46 b9f114a3 -- xacml-core/src/main/java/org/xacml4j/v30/Categor...) (ctrl+o to
+expand)
+
+▸ Thought for 4s, 503 tokens
+  Examining `CategoryId.java`, specifically the `BY_ID` and `BY_ABBREVIATED_ID` maps, reveals their popula...
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...hanges/modernize-core-for-jdk28-valhalla/tasks.md)
+● Read(~/Projects/Personal/xacml4j-worktrees/p...ernize-core-for-jdk28-valhalla/tasks.md) (ctrl+o to expand)
+
+▸ Thought for 38s
+  Verified line numbers for identified defects. Defects include RFC 8141 and XACML 3.0 violations in ident...
+   Task 5.1 Pre-Audit: Identifier Package & Adapters
+
+  Read-only pre-audit of the donor refactor slice for Task 5.1 (identifier package and compatibility
+  adapters) on commit b9f114a3 (branch wip/feature_xacml_20-donor) compared against worktree baseline
+  a8a90d46 and change specification design.md.
+  ──────
+  ## A. Defect Table (Donor Commit b9f114a3)
+
+   file:line (donor) │ defect           │ scenario         │ required behavior (cite RFC/spec/de… │ sever…
+  ───────────────────┼──────────────────┼──────────────────┼──────────────────────────────────────┼────────
+   b9f114a3:xacml-   │ Alias-         │ id1 =          │ Design D6 & XACML 3.0 §10.2 / §7.20:     │ CRITIC
+   core/.../identifi │ dependent      │ uri("urn:a",   │ Identifiers compare by canonical string  │ AL
+   dentifier.java:103-   │ canonical-only design │ uri("urn:b",          │ Identifiers compare by │
+   108, :120-125, :137-  │                       │ "alias1") evaluate    │ canonical string only  │
+   142, :154-159         │                       │ id1.equals(id2) ==    │ (Unicode code-point    │
+   :154-159          │ design         │ "alias1")       │                                         │
+                     │                │ evaluate        │                                         │
+                     │                │ id1.equals(id2) │                                         │
+                     │                │ == true         │                                         │
+   b9f114a3:xacml-   │ Missing        │ id1.equals(id2) │ Java Object.hashCode() contract:        │ CRITIC
+   core/.../identifi │ hashCode() in  │ == true (via    │ x.equals(y) ==> x.hashCode() ==         │ AL
+   er/Identifier.jav │ all 4 record   │ alias          │ y.hashCode(). Hashing must hash          │
+   a:95-161          │ implementation │ overlap), but  │ canonical string only.                   │
+                     │ s (UriId,      │ id1.hashCode() │                                          │
+                     │ UrnId,         │ !=             │                                          │
+                     │ StringId,      │ id2.hashCode() │                                          │
+                     │ StringIdCaseIn │ ;              │                                          │
+                     │ sensitive)     │ HashSet.contai │                                          │
+                     │                │ ns(id2)        │                                          │
+                     │                │ returns false  │                                          │
+   b9f114a3:xacml-   │ Broken         │ A has aliases  │ Java Object.equals() equivalence         │ CRITIC
+   core/.../identifi │ transitivity   │ {"X"}, B has   │ relation contract: transitivity          │ AL
+   er/Identifier.jav │ in             │ {"X","Y"}, C   │ required. Resolved by canonical-only     │
+   a:103-108, :120-  │ equals(Object) │ has {"Y"}.     │ equality (D6).                           │
+   125               │                │ A.equals(B) && │                                          │
+                     │                │ B.equals(C) is │                                          │
+                     │                │ true, but      │                                          │
+                     │                │ A.equals(C) is │                                          │
+                     │                │ false          │                                          │
+   b9f114a3:xacml-   │ Inverted       │ Issuer.any().m │ XACML 3.0 §7.3.5: An unconstrained       │ CRITIC
+   core/.../identifi │ matching logic │ atch(specific) │ designator (Issuer.any()) MUST match     │ AL
+   er/Issuer.java:51 │ in             │ returns false; │ attributes with any or no issuer. A      │
+   -54               │ Issuer.match(I │ Issuer.specifi │ designator with an explicit issuer MUST  │
+                     │ ssuer)         │ c.match(Issuer │ NOT match attributes lacking an issuer.  │
+                     │                │ .any())        │                                          │
+                     │                │ returns true   │                                          │
+   b9f114a3:xacml-   │ getById        │ CategoryId.par │ Worktree baseline                        │ CRITIC
+   core/.../UrnIdent │ indexes by     │ se("urn:...:ac │ (SemanticIdentifier:107): getById must   │ AL
+   ifier.java:110    │ shortId        │ tion") fails   │ index by full canonical URN id().        │
+                     │ instead of id  │ lookup in      │                                          │
+                     │                │ BY_ID, creates │                                          │
+                     │                │ new instance   │                                          │
+                     │                │ with           │                                          │
+                     │                │ shortId=fullUR │                                          │
+                     │                │ N, failing     │                                          │
+                     │                │ .equals(ACTION │                                          │
+                     │                │ )              │                                          │
+   b9f114a3:xacml-   │ Inverted       │ CategoryId.ACT │ Worktree baseline (CategoryId:90-93):    │ CRITIC
+   core/.../Category │ isDelegated()  │ ION.isDelegate │ normal categories must return false;     │ AL
+   Id.java:87-91     │ predicate in   │ d() returns    │ delegated categories must return true.   │
+                     │ root adapter   │ true;          │                                          │
+                     │                │ ACTION.toDeleg │                                          │
+                     │                │ atedCategory() │                                          │
+                     │                │ .get().isDeleg │                                          │
+                     │                │ ated() returns │                                          │
+                     │                │ false          │                                          │
+   b9f114a3:xacml-   │ Case-          │ Issuer.issuer( │ XACML 3.0 §7.3.5 / §7.20: Issuer         │ HIGH
+   core/.../identifi │ insensitive    │ "Authority").e │ comparison in <AttributeDesignator> MUST │
+   er/Issuer.java:47 │ Issuer         │ quals(Issuer.i │ use string-equal (case-sensitive Unicode │
+                     │ StringId         │ ive("ABC"))      │                                          │
+                     │                  │ evaluates to     │                                          │
+                     │                  │ false            │                                          │
+   b9f114a3:xacml-   │ Type bifurcation │ Identifier.urn(" │ XACML 3.0 §10.2: Identifiers are URIs    │ HI
+   core/.../identifi │ between UriId    │ urn:oasis:..."). │ compared by string equality. Unifying to │ GH
+   er/Identifier.jav │ and UrnId        │ equals(Identifie │ canonical URI prevents artificial record │
+   a:112-126         │ records          │ r.uri("urn:oasis │ inequality.                              │
+   core/.../identifi │ bifurcation     │ "urn:oasis:..." │ compared by string equality. Unifying to │
+   er/Identifier.jav │ between UriId   │ ).equals(Identi │ canonical URI prevents artificial record │
+   a:112-126         │ and UrnId       │ fier.uri("urn:o │ inequality.                              │
+                     │ records         │ asis:..."))     │                                          │
+   er/CategoryId.jav │ to un-prefixed   │ creates          │ with                                     │
+   a:73-82           │ URN              │ Delegated record │ urn:oasis:names:tc:xacml:3.0:attribute-  │
+                     │                  │ whose id lacks   │ category:delegated:.                     │
+                     │                  │ the XACML        │                                          │
+                     │                  │ delegation       │                                          │
+                     │                  │ prefix           │                                          │
+   b9f114a3:xacml-   │ Couples          │ Cannot           │ XACML 3.0 §10.2 & Worktree baseline:     │ HI
+   core/.../identifi │ attribute        │ instantiate or   │ AttributeId is a URI identifying an      │ GH
+   er/AttributeId.ja │ identifier with  │ compare          │ attribute, distinct from category        │
+   va:36-44          │ CategoryId       │ AttributeId      │ context.                                 │
+                     │                  │ without          │                                          │
+                     │                  │ supplying a      │                                          │
+                     │                  │ CategoryId       │                                          │
+   b9f114a3:xacml-   │ Premature        │ Slice 5.1 cannot │ Task 5.1 Slice isolation: Must not       │ HI
+   core/.../identifi │ dependency on    │ compile in       │ depend on Slice 5.2 types. Drop          │ GH
+   er/ValueTypeId.ja │ unmerged Slice   │ isolation        │ of(UriVal) or defer to Task 5.2.         │
+   va:27             │ 5.2 (UriVal)     │ without          │                                          │
+                     │                  │ org.xacml4j.v30. │                                          │
+                     │                  │ types.UriVal     │                                          │
+   va:27             │ 5.2 (UriVal)    │ without         │                                          │
+                     │                 │ org.xacml4j.v30 │                                          │
+                     │                 │ .types.UriVal   │                                          │
+   b9f114a3:xacml-   │ Premature       │ Root adapter    │ Keep worktree AnyURI reference in root   │ HIGH
+   core/.../Category │ dependency on   │ fails           │ adapter during Group 5 transition.       │
+   Id.java:129       │ unmerged Slice  │ compilation     │                                          │
+                     │ 5.2 (UriVal)    │ without Slice   │                                          │
+                     │                 │ 5.2 UriVal      │                                          │
+   b9f114a3:xacml-   │ Root CategoryId │ root.CategoryId │ Task 5.1 & Design D1: Root compatibility │ HIGH
+   core/.../Category │ extends         │ .equals(identif │ types must be true adapters delegating   │
+   Id.java:40-54     │ UrnIdentifier   │ ier.CategoryId) │ to identifier.* records.                 │
+                     │ instead of      │ is incompatible │                                          │
+                     │ adapting        │ and returns     │                                          │
+                     │ canonical       │ false           │                                          │
+                     │ record          │                 │                                          │
+   b9f114a3:xacml-   │ Root            │ StatusCodeId.of │ Worktree baseline (StatusCodeId:42):     │ HIGH
+   core/.../StatusCo │ StatusCodeId    │ ("urn:...:ok"). │ Must index by full canonical URN.        │
+   deId.java:42-43   │ By_ID indexed   │ get().equals(St │                                          │
+                     │ by shortId      │ atusCodeId.OK)  │                                          │
+                     │                 │ returns false   │                                          │
+   b9f114a3:xacml-   │ Case-           │ Compares        │ XACML 3.0 §10.2: Compare full canonical  │ HIGH
+   core/.../UrnIdent │ insensitive     │ shortId         │ URI strings with case-sensitive code-    │
+   ifier.java:92-101 │ equals and dual │ equality; fails │ point equality.                          │
+                     │ shortId         │ when one        │                                          │
+                     │ comparison      │ instance has    │                                          │
+                     │                 │ shortId="action │                                          │
+                     │                 │ " and another   │                                          │
+                     │                 │ has             │                                          │
+                     │                 │ shortId="urn:.. │                                          │
+                     │                 │ .:action"       │                                          │
+   b9f114a3:xacml-   │ Broken          │ Hashes shortId  │ Java Object.hashCode() contract: must    │ HIGH
+   core/.../UrnIdent │ hashCode() in   │ twice, ignores  │ hash canonical id.                       │
+   ifier.java:105-   │ UrnIdentifier   │ id, and is      │                                          │
+   107               │                 │ case-sensitive  │                                          │
+                     │                 │ while equals is │                                          │
+                     │                 │ case-           │                                          │
+                     │                 │ insensitive     │                                          │
+   b9f114a3:xacml-   │ Rejects         │ URN8141.isValid │ RFC 8141 §2 / RFC 3986 §2.1: HEXDIG is   │ HIGH
+   core/.../util/URN │ lowercase       │ URN("urn:exampl │ case-insensitive; %2f is valid. Regex    │
+   8141.java:49      │ percent-        │ e:a%2fb")       │ must accept [0-9a-fA-F]{2}.              │
+                     │ encoding hex    │ returns false   │                                          │
+                     │ digits          │                 │                                          │
+   b9f114a3:xacml-   │ Missing RFC     │ Cannot compare  │ RFC 8141 §3: Equivalence requires case-  │ HIGH
+   core/.../util/URN │ 8141            │ urn:oasis:foo   │ insensitive "urn" & NID, code-point NSS  │
+   8141.java:110-134 │ equivalence     │ with            │ with uppercase hex normalization,        │
+                     │ implementation  │ URN:OASIS:foo   │ ignoring r/q/f.                          │
+                     │                 │ for equivalence │                                          │
+   b9f114a3:xacml-   │ Unsolicited     │ Dot segments in │ XACML 3.0 §10.2: Identifiers are         │ MEDI
+   core/.../identifi │ path            │ URI strings are │ compared as URI strings verbatim without │ UM
+   er/URI.java:36    │ normalization   │ rewritten (e.g. │ path normalization.                      │
+                     │ via             │ /a/../b -> /b)  │                                          │
+                     │ uri.normalize() │                 │                                          │
+   b9f114a3:xacml-   │ java.net.URI.eq │ http://example. │ XACML 3.0 §10.2 / §7.20: Code-point      │ MEDI
+   core/.../identifi │ uals ignores    │ com equals      │ equality (string-equal) requires exact   │ UM
+   er/URI.java:32-38 │ scheme case     │ HTTP://example. │ match.                                   │
+                     │                 │ com in URI      │                                          │
+                     │                 │ record          │                                          │
+   b9f114a3:xacml-   │ Category and    │ Cannot compare  │ Java records check exact class equality; │ MEDI
+   core/.../identifi │ Delegated       │ delegated       │ common interface comparison required if  │ UM
+   er/CategoryId.jav │ records never   │ category with   │ semantic equivalence intended.           │
+   a:85-99           │ equal           │ equivalent      │                                          │
+                     │                 │ category        │                                          │
+                     │                 │ instance        │                                          │
+   b9f114a3:xacml-   │ Test classes    │ Reintroduces    │ Tasks 2.1–2.7: All tests must use JUnit  │ MEDI
+   core/.../Category │ use legacy      │ JUnit 4         │ 5 Jupiter (org.junit.jupiter.api.*).     │ UM
+   IdTest.java:31-35 │ JUnit 4 imports │ (org.junit.Test │                                          │
+                     │                 │ , Assert.*)     │                                          │
+   b9f114a3:xacml-   │ Unreferenced    │ Class is never  │ Dead code cleanup; integrate with URN    │ MEDI
+   core/.../util/URN │ dead code       │ imported or     │ parsing or drop.                         │ UM
+   8141.java:29      │                 │ called anywhere │                                          │
+                     │                 │ in the          │                                          │
+                     │                 │ repository      │                                          │
+   b9f114a3:xacml-   │ Throws          │ URI.of((java.ne │ Standard Java null check:                │ LOW
+   core/.../identifi │ VerifyException │ t.URI) null)    │ Objects.requireNonNull(uri, "URI is      │
+   er/URI.java:35    │ instead of      │ throws Guava    │ null").                                  │
+                     │ NullPointerExce │ VerifyException │                                          │
+                     │ ption           │                 │                                          │
+   b9f114a3:xacml-   │ Inverted        │ Right           │ Javadoc correction. (Class is also       │ LOW
+   core/.../identifi │ Javadoc         │ documented as   │ unused dead code in identifier package). │
+   er/Either.java:10 │ descriptions    │ left side; Left │                                          │
+   7, :126           │ for Left and    │ documented as   │                                          │
+                     │ Right           │ right side      │                                          │
+   b9f114a3:xacml-   │ Empty test      │ Empty test      │ Provide comprehensive assertions for all │ LOW
+   core/.../Category │ method stub     │ passes without  │ standard XACML 1.0/2.0/3.0 categories.   │
+   IdTest.java:72-76 │ (testSystemCate │ asserting       │                                          │
+                     │ gories)         │ anything        │                                          │
+  ──────
+  ## B. Behavior Changes vs Worktree & Callers at Risk
+
+    Baseline (a8a90d46): Strict Case-Sensitive Code-Point Equality on (id, abbreviatedId)
+      ▲
+      ├─ Donor UrnIdentifier Bug: BY_ID indexed by shortId -> CategoryId.parse(fullURN) creates new
+  CategoryId
+      │  └─ Equality fails: new CategoryId(shortId=fullURN) != CategoryId.ACTION (shortId="action")
+      │
+      ├─ Donor Identifier.* Bug: Compares !Sets.intersection(aliases, other.aliases).isEmpty()
+      │  └─ Corrupts Map/Set lookups (no hashCode()) and breaks transitivity
+      │
+      └─ Required Task 5.1 (D6): Canonical-only URI string equality; aliases live only in registry indexes
+
+  ### Callers at Risk of Equality Drift (Identified via rtk rg)
+
+  1. RequestContext.java (Entities & Attribute Multimaps)
+      • entities.get(CategoryId.RESOURCE) (RequestContext:215)
+      • getOnlyAttributes(CategoryId.RESOURCE) (RequestContext:242)
+      • getEntities(CategoryId c) (RequestContext:220)
+      • getAttribute(CategoryId id, ...) (RequestContext:254, :260)
+      • getCategoryOccurrences(CategoryId category) (RequestContext:144)
+      • Risk: In requests unmarshalled from XML/JSON, categories carry full URNs
+      (urn:oasis:names:tc:xacml:3.0:attribute-category:resource). Under the donor's UrnIdentifier bug,
+      CategoryId.parse(fullURN) does not resolve to CategoryId.RESOURCE and fails .equals(). Lookups return
+      empty, completely dropping request attributes during policy evaluation.
+  2. DefaultPolicyDecisionPoint.java
+      • Line 217: Multimap<CategoryId, Attribute> attributes = HashMultimap.create();
+      • Line 228: for(CategoryId c : attributes.keySet())
+      • Risk: Hash-based multimaps fail to match or retrieve keys if equals uses alias intersection without
+      consistent hashCode().
+  3. DefaultResolverRegistry.java (PIP Attribute Resolvers)
+      • Line 58: Map<CategoryId, Multimap<String, AttributeResolverDescriptor>> attributeResolvers;
+      • Line 112: attributeResolvers.get(categoryId)
+      • Risk: Attribute resolvers registered under CategoryId.RESOURCE or CategoryId.ENVIRONMENT will never
+      trigger if the query context category ID has drifted equality.
+  4. MultipleResourcesViaXPathExpressionLegacyHandler.java
+      • Line 63: Category resource = request.getOnlyAttributes(CategoryId.RESOURCE);
+      • Line 87: if(attrs.getCategoryId().equals(CategoryId.RESOURCE))
+      • Risk: Multiple-resource expansion fails to detect the resource category, throwing Indeterminate or
+      skipping evaluation.
+  5. StatusCode.java
+      • Lines 80, 88, 92, 96: value.equals(StatusCodeId.OK), value.equals(StatusCodeId.
+      STATUS_PROCESSING_ERROR), etc.
+      • Risk: Because StatusCodeId.of(fullURN) suffers from the same UrnIdentifier.getById bug, response
+      status codes parsed from XML evaluate to false when checked against StatusCodeId.OK.
+  6. AttributeIndex.java & AttributeContainer.java
+      • AttributeIndex:109: Objects.equals(issuer, a.getIssuer())
+      • Risk: Donor's case-insensitive Issuer would match "authority" with "AUTHORITY", violating XACML 3.0
+      §7.3.5 / §7.20. Donor's inverted Issuer.match() would cause unconstrained designators to reject
+      attributes.
+
+  ──────
+  ## C. Test List for Task 5.1 (38 Test Cases)
+
+   test                             │ inputs                           │ expected
+  ──────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────
+   testCanonicalEquality_SameUri_Di │ Id.uri("urn:a", "alias1"),       │ equals == true, hashCode1 ==
+   fferentAliases                   │ Id.uri("urn:a", "alias2")        │ hashCode2
+   testCanonicalEquality_DifferentU │ Id.uri("urn:a", "alias1"),       │ equals == false (aliases do not
+   ri_SameAlias                     │ Id.uri("urn:b", "alias1")        │ determine equality)
+   testCanonicalEquality_DifferentU │ Id.uri("urn:a"), Id.uri("urn:b") │ equals == false
+   ri_DisjointAliases               │                                  │
+   testSymmetry_Canonical_Self      │ id = Id.uri("urn:a")             │ id.equals(id) == true
+   testSymmetry_Canonical_Pairs     │ a = Id.uri("urn:a"), b =         │ a.equals(b) == true and
+                                    │ Id.uri("urn:a")                  │ b.equals(a) == true
+   testSymmetry_Canonical_Unequal   │ a = Id.uri("urn:a"), b =         │ a.equals(b) == false and
+                                    │ Id.uri("urn:b")                  │ b.equals(a) == false
+   testSymmetry_Adapter_To_Canonica │ adapter =                        │ adapter.equals(canonical) ==
+   l                                │ root.CategoryId.of("urn:...:acti │ canonical.equals(adapter)
+                                    │ on"), canonical =                │
+                                    │ id.CategoryId.of("urn:...:action │
+                                    │ ")                               │
+   testSymmetry_Adapter_To_Adapter  │ a1 =                             │ a1.equals(a2) == true and
+                                    │ root.CategoryId.of("action"), a2 │ a2.equals(a1) == true
+                                    │ =                                │
+                                    │ root.CategoryId.of("urn:...:acti │
+                                    │ on")                             │
+   testTransitivity_Canonical       │ a = Id.uri("urn:a"), b =         │ a.equals(b) && b.equals(c) ==>
+                                    │ Id.uri("urn:a"), c =             │ a.equals(c)
+                                    │ Id.uri("urn:a")                  │
+   testTransitivity_NoAliasBleed    │ a = Id.uri("urn:a", "X"), b =    │ a.equals(b) == false, b.equals(c)
+                                    │ Id.uri("urn:b", "X", "Y"), c =   │ == false, a.equals(c) == false
+                                    │ Id.uri("urn:c", "Y")             │
+   testHashMap_CanonicalKeyRetrieva │ map.put(Id.uri("urn:a",          │ Returns "val"
+   l                                │ "alias1"), "val");               │
+                                    │ map.get(Id.uri("urn:a",          │
+                                    │ "alias2"))                       │
+   testHashMap_DisjointKeyNoCollisi │ map.put(Id.uri("urn:a", "X"),    │ map.size() == 2, map.get("urn:a")
+   on                               │ "v1"); map.put(Id.uri("urn:b",   │ == "v1"
+                                    │ "X"), "v2")                      │
+   testHashSet_ContainsEquivalent   │ set.add(Id.uri("urn:a",          │ assertTrue(contains)
+                                    │ "alias1"));                      │
+                                    │ set.contains(Id.uri("urn:a"))    │
+   testCaseSensitivity_CategoryId   │ Id.uri("urn:...:Action"),        │ equals == false (XACML 3.0 §10.2
+                                    │ Id.uri("urn:...:action")         │ string-equal)
+   testCaseSensitivity_AttributeId  │ Id.uri("urn:...:Subject-Id"),    │ equals == false
+                                    │ Id.uri("urn:...:subject-id")     │
+   testCaseSensitivity_StatusCodeId │ Id.uri("urn:...:OK"),            │ equals == false
+                                    │ Id.uri("urn:...:ok")             │
+   testCaseSensitivity_Issuer       │ Issuer.issuer("Authority"),      │ equals == false (XACML 3.0 §7.3.5
+                                    │ Issuer.issuer("authority")       │ string-equal)
+   testIssuer_Any_Matches_Any       │ Issuer.any().match(Issuer.any()) │ true
+   testIssuer_Any_Matches_Specific  │ Issuer.any().match(Issuer.issuer │ true (unconstrained designator
+                                    │ ("CN=Admin"))                    │ matches all)
+   testIssuer_Specific_DoesNotMatch │ Issuer.issuer("CN=Admin").match( │ false (explicit designator
+   _Any                             │ Issuer.any())                    │ requires match)
+   testIssuer_Specific_Matches_Same │ Issuer.issuer("CN=Admin").match( │ true
+   Specific                         │ Issuer.issuer("CN=Admin"))       │
+   testIssuer_Specific_DoesNotMatch │ Issuer.issuer("CN=Admin").match( │ false
+   _DifferentSpecific               │ Issuer.issuer("CN=Other"))       │
+   testCategoryId_Parse_FullUrn     │ root.CategoryId.parse("urn:oasis │ Returns
+                                    │ :names:tc:xacml:3.0:attribute-   │ Optional.of(CategoryId.ACTION)
+                                    │ category:action")                │
+   testCategoryId_Parse_ShortId     │ root.CategoryId.parse("action")  │ Returns
+                                    │                                  │ Optional.of(CategoryId.ACTION)
+   testCategoryId_FullUrn_Equals_Co │ root.CategoryId.of("urn:oasis:na │ equals(CategoryId.ACTION) == true
+   nstant                           │ mes:tc:xacml:3.0:attribute-      │
+                                    │ category:action")                │
+   testCategoryId_Delegated_IsDeleg │ CategoryId.ACTION.toDelegatedCat │ true
+   ated                             │ egory().get().isDelegated()      │
+   testCategoryId_NonDelegated_IsNo │ CategoryId.ACTION.isDelegated()  │ false
+   tDelegated                       │                                  │
+   testCategoryId_Delegated_Prefix  │ CategoryId.ACTION.toDelegatedCat │ Ends with :delegated:action
+                                    │ egory().get().id()               │
+   testStatusCodeId_Parse_FullUrn   │ StatusCodeId.of("urn:oasis:names │ Returns
+                                    │ :tc:xacml:1.0:status:ok")        │ Optional.of(StatusCodeId.OK)
+   testStatusCodeId_FullUrn_Equals_ │ StatusCodeId.of("urn:oasis:names │ equals(StatusCodeId.OK) == true
+   Constant                         │ :tc:xacml:1.0:status:ok").get()  │
+   testRFC8141_SchemeCaseInsensitiv │ URN8141.isValidURN("URN:example: │ Both true
+   e                                │ foo"),                           │
+                                    │ URN8141.isValidURN("urn:example: │
+                                    │ foo")                            │
+   testRFC8141_NIDCaseInsensitive   │ URN8141.isValidNID("OASIS"),     │ Both true
+                                    │ URN8141.isValidNID("oasis")      │
+   testRFC8141_PercentEncoding_Lowe │ URN8141.isValidURN("urn:example: │ true (lowercase hex valid per RFC
+   rcaseHex                         │ a%2fb")                          │ 8141 §2)
+   testRFC8141_PercentEncoding_Uppe │ URN8141.isValidURN("urn:example: │ true
+   rcaseHex                         │ a%2Fb")                          │
+   testRFC8141_InvalidNID_SingleCha │ URN8141.isValidNID("a")          │ false (NID requires 2..32 chars)
+   r                                │                                  │
+   testNullHandling_Constructor     │ Id.uri((String) null)            │ Throws NullPointerException
+   testNullHandling_Equals          │ Id.uri("urn:a").equals(null)     │ false
+   testImmutability_AliasesSet      │ id = Id.uri("urn:a", "x");       │ Throws
+                                    │ id.aliases().add("y")            │ UnsupportedOperationException
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, gemini-2.5-pro)
+
+    Task: 5.1 Pre-audit of donor slice (identifier package & adapters)
+    Verdict: DEFECTS IDENTIFIED — DO NOT APPLY DONOR HUNKS AS-IS
+    Total Donor Files Inspected: 16 (12 main, 2 test, 2 adapters)
+    Total Defects Found: 27 (6 CRITICAL, 13 HIGH, 5 MEDIUM, 3 LOW)
+
+    Top 5 Defects:
+    1. Identifier.java:103-159: Alias-dependent equality violates Decision D6 and XACML 3.0 §10.2; missing
+  hashCode() breaks HashSet/HashMap lookups.
+    2. Issuer.java:51-54: Inverted match() logic causes unconstrained designators to reject attributes,
+  while explicit designators match missing issuers.
+    3. UrnIdentifier.java:110: getById indexes by shortId, breaking CategoryId and StatusCodeId full-URN
+  lookups and causing .equals() to fail against constants.
+    4. CategoryId.java:87-91: isDelegated() predicate inverted (normal category returns true, delegated
+  returns false).
+    5. ValueTypeId.java:27 & CategoryId.java:129: Premature import/reference to unmerged Slice 5.2 UriVal
+  breaks Slice 5.1 build isolation.
+
+    Donor Files Opened:
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/util/URN8141.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Identifier.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/URI.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/CategoryId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/AttributeId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/ValueTypeId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/StatusCodeId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/EntityTypeId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/ParamId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Issuer.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Either.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/StatusCodeId.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/UrnIdentifier.java
+    - b9f114a3:xacml-core/src/test/java/org/xacml4j/v30/CategoryIdTest.java
+    - b9f114a3:xacml-core/src/test/java/org/xacml4j/v30/identifier/URITest.java
+

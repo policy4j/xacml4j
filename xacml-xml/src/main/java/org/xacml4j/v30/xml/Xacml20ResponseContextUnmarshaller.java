@@ -126,7 +126,7 @@ implements ResponseUnmarshaller
 								.attribute(
 								Attribute
 								.builder(RESOURCE_ID)
-								.value(XacmlTypes.STRING.of(result.getResourceId()))
+								.value(XacmlTypes.STRING.ofAny(result.getResourceId()))
 								.build()).build())
 						.build());
 			}

@@ -1,0 +1,63 @@
+{
+  "xacml-test": {
+    "counts": {
+      "tests": 73,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v20.Xacml30TestUtilityTest": {
+        "tests": 64,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.XacmlPolicyTestSupportTest": {
+        "tests": 9,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [
+      {
+        "class": "org.xacml4j.v20.Xacml30TestUtilityTest",
+        "test": "doubleOracleAcceptsSignedZeroAndNan(String, String)[1]",
+        "kind": "failure",
+        "message": "Attribute values differ ==> expected: <true> but was: <false>"
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30TestUtilityTest",
+        "test": "doubleOracleAcceptsSignedZeroAndNan(String, String)[2]",
+        "kind": "failure",
+        "message": "Attribute values differ ==> expected: <true> but was: <false>"
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30TestUtilityTest",
+        "test": "differentUriSpellingsRemainRejected(String, String)[1]",
+        "kind": "failure",
+        "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30TestUtilityTest",
+        "test": "differentUriSpellingsRemainRejected(String, String)[2]",
+        "kind": "failure",
+        "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.XacmlPolicyTestSupportTest",
+        "test": "duplicateObligationsCannotReuseOneActualMatch",
+        "kind": "failure",
+        "message": "Expected java.lang.reflect.InvocationTargetException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.XacmlPolicyTestSupportTest",
+        "test": "differentFulfillOnIsRejected",
+        "kind": "failure",
+        "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+      }
+    ],
+    "disabled": []
+  }
+}

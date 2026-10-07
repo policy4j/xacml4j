@@ -1,0 +1,59 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-core ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-core ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-core ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 249 source files with javac [debug target 10] to target/classes
+[WARNING] bootstrap class path not set in conjunction with -source 10
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java: <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java uses or overrides a deprecated API.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java: Recompile with -Xlint:deprecation for details.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java: Some input files use unchecked or unsafe operations.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 31 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 104 source files with javac [debug target 10] to target/test-classes
+[WARNING] bootstrap class path not set in conjunction with -source 10
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Some input files use or override a deprecated API.
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.286 s - in org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[INFO] Running org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[INFO] Tests run: 30, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s - in org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[INFO] Running org.xacml4j.v30.types.ISO8601DurationReviewTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.types.ISO8601DurationReviewTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 97, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.589 s
+[INFO] Finished at: 2026-10-01T14:21:15-04:00
+[INFO] ------------------------------------------------------------------------

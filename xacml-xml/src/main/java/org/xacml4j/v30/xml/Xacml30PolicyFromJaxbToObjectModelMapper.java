@@ -574,6 +574,9 @@ class Xacml30PolicyFromJaxbToObjectModelMapper
 		}
 		if (ref instanceof AttributeDesignatorType) {
 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
+			if (desig.getAttributeId() == null) {
+				throw new SyntaxException("Policy AttributeDesignator is missing AttributeId");
+			}
 			java.util.Optional<ValueType> type = XacmlTypes.getType(desig.getDataType());
 			Preconditions.checkState(type.isPresent());
 			return AttributeDesignator.builder().

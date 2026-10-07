@@ -22,15 +22,18 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExp;
@@ -41,26 +44,25 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
 
+@ExtendWith(MockitoExtension.class)
 public class DefaultFunctionFunctionInvocationTest
 {
 	private PolicyToPlatformFunctionInvocation<ValueExp> inv0;
 	private PolicyToPlatformFunctionInvocation<ValueExp> inv1;
 	private FunctionSpec spec;
-	private IMocksControl c;
 	private FunctionInvocation f0;
 	private FunctionInvocation f1;
 	private EvaluationContext context;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.inv0 = c.createMock(PolicyToPlatformFunctionInvocation.class);
-		this.inv1 = c.createMock(PolicyToPlatformFunctionInvocation.class);
-		this.spec = c.createMock(FunctionSpec.class);
+		this.inv0 = mock(PolicyToPlatformFunctionInvocation.class);
+		this.inv1 = mock(PolicyToPlatformFunctionInvocation.class);
+		this.spec = mock(FunctionSpec.class);
 		this.f0 = new DefaultFunctionInvocation(inv0, false);
 		this.f1 = new DefaultFunctionInvocation(inv1, true);
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
@@ -70,28 +72,44 @@ public class DefaultFunctionFunctionInvocationTest
 		.add(XacmlTypes.INTEGER.ofAny(1))
 		.add(XacmlTypes.INTEGER.ofAny(2))
 		.build();
-		expect(spec.getNumberOfParams()).andReturn(2);
-		expect(spec.isVariadic()).andReturn(false).times(2);
-		expect(inv0.invoke(p.toArray())).andReturn(XacmlTypes.INTEGER.ofAny(1));
-		c.replay();
+		when(spec.getNumberOfParams()).thenReturn(2);
+		when(spec.isVariadic()).thenReturn(false);
+		when(inv0.invoke(p.toArray())).thenReturn(XacmlTypes.INTEGER.ofAny(1));
+		InOrder order = inOrder(inv0, inv1, spec, context);
 		ValueExp v = f0.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
-		c.verify();
+		order.verify(spec).getNumberOfParams();
+		order.verify(spec, times(2)).isVariadic();
+		order.verify(inv0).invoke(p.toArray());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(spec, times(1)).getNumberOfParams();
+		verify(spec, times(2)).isVariadic();
+		verify(inv0, times(1)).invoke(p.toArray());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(inv0, inv1, spec, context);
 	}
 
-	@Test(expected=FunctionInvocationException.class)
+	@Test
 	public void testInvokeInvocationThrowsRuntimeException() throws Exception
 	{
 		List<Expression>  p = ImmutableList.<Expression>builder()
 		.add(XacmlTypes.INTEGER.ofAny(1))
 		.add(XacmlTypes.INTEGER.ofAny(2))
 		.build();
-		expect(spec.getNumberOfParams()).andReturn(2);
-		expect(spec.isVariadic()).andReturn(false).times(2);
-		expect(inv0.invoke(p.toArray())).andThrow(new RuntimeException());
-		c.replay();
-		f0.invoke(spec, context, p);
-		c.verify();
+		when(spec.getNumberOfParams()).thenReturn(2);
+		when(spec.isVariadic()).thenReturn(false);
+		when(inv0.invoke(p.toArray())).thenThrow(new RuntimeException());
+		InOrder order = inOrder(inv0, inv1, spec, context);
+		assertThrows(FunctionInvocationException.class, () -> f0.invoke(spec, context, p));
+		order.verify(spec).getNumberOfParams();
+		order.verify(spec, times(2)).isVariadic();
+		order.verify(inv0).invoke(p.toArray());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(spec, times(1)).getNumberOfParams();
+		verify(spec, times(2)).isVariadic();
+		verify(inv0, times(1)).invoke(p.toArray());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(inv0, inv1, spec, context);
 	}
 
 	@Test
@@ -102,14 +120,22 @@ public class DefaultFunctionFunctionInvocationTest
 		.add(XacmlTypes.INTEGER.ofAny(2))
 		.build();
 		List<Object> params = ImmutableList.builder().add(context).addAll(p).build();
-		expect(spec.getNumberOfParams()).andReturn(2);
-		expect(spec.isVariadic()).andReturn(false).times(2);
-		expect(inv1.invoke(params.toArray()))
-				.andReturn(XacmlTypes.INTEGER.ofAny(1));
-		c.replay();
+		when(spec.getNumberOfParams()).thenReturn(2);
+		when(spec.isVariadic()).thenReturn(false);
+		when(inv1.invoke(params.toArray()))
+				.thenReturn(XacmlTypes.INTEGER.ofAny(1));
+		InOrder order = inOrder(inv0, inv1, spec, context);
 		ValueExp v = f1.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
-		c.verify();
+		order.verify(spec).getNumberOfParams();
+		order.verify(spec, times(2)).isVariadic();
+		order.verify(inv1).invoke(params.toArray());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(spec, times(1)).getNumberOfParams();
+		verify(spec, times(2)).isVariadic();
+		verify(inv1, times(1)).invoke(params.toArray());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(inv0, inv1, spec, context);
 	}
 
 	@Test
@@ -129,14 +155,22 @@ public class DefaultFunctionFunctionInvocationTest
 					XacmlTypes.STRING.ofAny("aaa"),
 					XacmlTypes.STRING.ofAny("bbb")}
 				};
-		expect(spec.getNumberOfParams()).andReturn(3);
-		expect(spec.isVariadic()).andReturn(true).times(2);
-		expect(inv1.invoke(pArray))
-		.andReturn(XacmlTypes.INTEGER.ofAny(1));
-		c.replay();
+		when(spec.getNumberOfParams()).thenReturn(3);
+		when(spec.isVariadic()).thenReturn(true);
+		when(inv1.invoke(pArray))
+		.thenReturn(XacmlTypes.INTEGER.ofAny(1));
+		InOrder order = inOrder(inv0, inv1, spec, context);
 		ValueExp v = f1.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
-		c.verify();
+		order.verify(spec).getNumberOfParams();
+		order.verify(spec, times(2)).isVariadic();
+		order.verify(inv1).invoke(pArray);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(spec, times(1)).getNumberOfParams();
+		verify(spec, times(2)).isVariadic();
+		verify(inv1, times(1)).invoke(pArray);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(inv0, inv1, spec, context);
 	}
 
 	@Test
@@ -155,13 +189,21 @@ public class DefaultFunctionFunctionInvocationTest
 					XacmlTypes.STRING.ofAny("aaa"),
 					XacmlTypes.STRING.ofAny("bbb")}
 				};
-		expect(spec.getNumberOfParams()).andReturn(3);
-		expect(spec.isVariadic()).andReturn(true).times(2);
-		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.ofAny(1));
-		c.replay();
+		when(spec.getNumberOfParams()).thenReturn(3);
+		when(spec.isVariadic()).thenReturn(true);
+		when(inv0.invoke(pArray)).thenReturn(XacmlTypes.INTEGER.ofAny(1));
+		InOrder order = inOrder(inv0, inv1, spec, context);
 		ValueExp v = f0.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
-		c.verify();
+		order.verify(spec).getNumberOfParams();
+		order.verify(spec, times(2)).isVariadic();
+		order.verify(inv0).invoke(pArray);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(spec, times(1)).getNumberOfParams();
+		verify(spec, times(2)).isVariadic();
+		verify(inv0, times(1)).invoke(pArray);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(inv0, inv1, spec, context);
 	}
 
 	@Test
@@ -175,12 +217,20 @@ public class DefaultFunctionFunctionInvocationTest
 				XacmlTypes.INTEGER.ofAny(1),
 				XacmlTypes.INTEGER.ofAny(2),
 				null};
-		expect(spec.getNumberOfParams()).andReturn(3);
-		expect(spec.isVariadic()).andReturn(true).times(2);
-		expect(inv0.invoke(pArray)).andReturn(XacmlTypes.INTEGER.ofAny(1));
-		c.replay();
+		when(spec.getNumberOfParams()).thenReturn(3);
+		when(spec.isVariadic()).thenReturn(true);
+		when(inv0.invoke(pArray)).thenReturn(XacmlTypes.INTEGER.ofAny(1));
+		InOrder order = inOrder(inv0, inv1, spec, context);
 		ValueExp v = f0.invoke(spec, context, p);
 		assertEquals(XacmlTypes.INTEGER.ofAny(1), v);
-		c.verify();
+		order.verify(spec).getNumberOfParams();
+		order.verify(spec, times(2)).isVariadic();
+		order.verify(inv0).invoke(pArray);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(spec, times(1)).getNumberOfParams();
+		verify(spec, times(2)).isVariadic();
+		verify(inv0, times(1)).invoke(pArray);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(inv0, inv1, spec, context);
 	}
 }

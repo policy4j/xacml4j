@@ -1,0 +1,41 @@
+{
+  "log": "46-mutant-cache-exact-count-red.log",
+  "build_success": false,
+  "counts": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.PolicyIDReferenceTest": {
+      "counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+      "kind": "failure",
+      "type": "org.mockito.exceptions.verification.TooManyActualInvocations",
+      "message": "\nevaluationContext.resolve(\n    PolicyIDReference{id=testId, version=1.+, earliest=null, latest=null}\n);\nWanted 1 time:\n-> at org.xacml4j.v30.policy.PolicyIDReferenceTest.testEvaluateFailedToResolveReferenceAndReturnNull(PolicyIDReferenceTest.java:128)\nBut was 2 times:\n-> at org.xacml4j.v30.policy.PolicyIDReference.createContext(PolicyIDReference.java:82)\n-> at org.xacml4j.v30.policy.PolicyIDReferenceTest.testEvaluateFailedToResolveReferenceAndReturnNull(PolicyIDReferenceTest.java:123)\n\n",
+      "trace": "org.mockito.exceptions.verification.TooManyActualInvocations: \n\nevaluationContext.resolve(\n    PolicyIDReference{id=testId, version=1.+, earliest=null, latest=null}\n);\nWanted 1 time:\n-> at org.xacml4j.v30.policy.PolicyIDReferenceTest.testEvaluateFailedToResolveReferenceAndReturnNull(PolicyIDReferenceTest.java:128)\nBut was 2 times:\n-> at org.xacml4j.v30.policy.PolicyIDReference.createContext(PolicyIDReference.java:82)\n-> at org.xacml4j.v30.policy.PolicyIDReferenceTest.testEvaluateFailedToResolveReferenceAndReturnNull(PolicyIDReferenceTest.java:123)\n\n\n\tat org.xacml4j.v30.policy.PolicyIDReferenceTest.testEvaluateFailedToResolveReferenceAndReturnNull(PolicyIDReferenceTest.java:128)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+    }
+  ],
+  "compiler_diagnostics": []
+}

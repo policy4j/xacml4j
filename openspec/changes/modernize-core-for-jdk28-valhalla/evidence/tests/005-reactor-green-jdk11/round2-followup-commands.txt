@@ -1,0 +1,21 @@
+rtk git status --short
+rtk git branch --show-current
+rtk git rev-parse HEAD
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/66-round2-verification-snapshot.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DurationReviewTest,ISO8601FractionalDateTimeArithmeticTest,ISO8601DateTimeArithmeticTest,DateTimeArithmeticBoundaryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/67-round2-verification-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 67-round2-verification-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/68-round2-verification-receipts.py 67-round2-verification-red
+rtk git status --short
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/68-round2-verification-receipts.py 67-round2-verification-red
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DurationReviewTest,ISO8601FractionalDateTimeArithmeticTest,ISO8601DateTimeArithmeticTest,DateTimeArithmeticBoundaryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/69-round2-verification-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 69-round2-verification-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/68-round2-verification-receipts.py 69-round2-verification-red
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DurationReviewTest,ISO8601FractionalDateTimeArithmeticTest,ISO8601DateTimeArithmeticTest,DateTimeArithmeticBoundaryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/70-round2-verification-green.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 70-round2-verification-green.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/68-round2-verification-receipts.py 70-round2-verification-green
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/71-reactor-verify-round2-followup.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 71-reactor-verify-round2-followup.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/68-round2-verification-receipts.py 71-reactor-verify-round2-followup
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 71
+JAVA_HOME="$(jenv prefix 11)" rtk proxy sh -c '"$JAVA_HOME/bin/java" -version'
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/72-finalize-round2-followup.py

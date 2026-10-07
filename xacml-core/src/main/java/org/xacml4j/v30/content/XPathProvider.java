@@ -24,11 +24,13 @@ package org.xacml4j.v30.content;
 
 import java.util.Objects;
 
+import javax.xml.XMLConstants;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import javax.xml.xpath.XPathFactoryConfigurationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -202,7 +204,15 @@ public interface XPathProvider
 				ThreadLocal.withInitial(()->{
 					log.debug("Creating new XPath instance for thread id=\"{}\" name=\"{}\"", Thread.currentThread().getId(),
 					          Thread.currentThread().getName());
-					return XPathFactory.newInstance();});
+					try {
+						XPathFactory factory = XPathFactory.newInstance();
+						factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+						// No XPathFunctionResolver or XPathVariableResolver is installed.
+						return factory;
+					} catch (XPathFactoryConfigurationException e) {
+						throw new IllegalStateException("XPath provider does not support secure processing", e);
+					}
+				});
 
 		private Supplier<XPathFactory> xpathFactory;
 
@@ -217,8 +227,17 @@ public interface XPathProvider
 					"xpathFactorySupplier");
 		}
 
+		static boolean isSecureProcessingEnabled(){
+			try{
+				return ((DefaultXPathProvider)INSTANCE).xpathFactory.get()
+						.getFeature(XMLConstants.FEATURE_SECURE_PROCESSING);
+			}catch(XPathFactoryConfigurationException e){
+				throw new IllegalStateException("Unable to read XPath secure processing feature", e);
+			}
+		}
+
 		public XPathExpression newXPath(String xpath, Node node){
-			XPath xp = DefaultXPathProvider.XPATH_FACTORY.get().newXPath();
+			XPath xp = xpathFactory.get().newXPath();
 			xp.setNamespaceContext(new NodeNamespaceContext(node));
 			try{
 				return xp.compile(xpath);

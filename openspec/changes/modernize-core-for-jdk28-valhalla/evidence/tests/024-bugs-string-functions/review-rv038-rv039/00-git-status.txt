@@ -1,0 +1,247 @@
+ M AGENTS.md
+ M docs/ai/TESTING.md
+ M openspec/changes/modernize-core-for-jdk28-valhalla/evidence/README.md
+ M openspec/changes/modernize-core-for-jdk28-valhalla/tasks.md
+ M pom.xml
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/RSA2008InteropTest.java
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/RSA2008PerformanceTestCase.java
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/XacmlExampleTest.java
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+ M xacml-core/pom.xml
+ M xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
+ M xacml-core/src/main/java/org/xacml4j/v30/RequestContext.java
+ M xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeReference.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/BaseCompositeDecisionRule.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisonFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Duration.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java
+ M xacml-core/src/test/java/org/xacml4j/util/DOMUtilTest.java
+ M xacml-core/src/test/java/org/xacml4j/util/ISO8601DurationTest.java
+ M xacml-core/src/test/java/org/xacml4j/util/JSONUtilTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/AttributeIndexTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/AttributeTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/CategoryIdTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/ContentTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/EntityTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/ObligationTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/WellKnownAttributeIdsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/content/ContentTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/content/JsonContentTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/content/XmlContentTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeAssignmentTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/AttributesTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/BagOfValuesTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/CombinerParameterTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/DecisionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyDefaultsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/RequestTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/ResultTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/StatusCodeIdTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/VariableDefinitionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/VariableReferenceTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/VersionMatchTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/VersionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/XPathTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/ParamSingleTypeSpecTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/ParamTypeSequenceTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/ArtimeticFunctionsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/BagFunctionsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeValueArithmeticFunctionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NumericComparisonFunctionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/SetFunctionTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/SpecialMatchFunctionsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/TestFunctions.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/TestInstanceFunctions.java
+ M xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/AnyURITest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/Base64BinaryTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/BinaryTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/DNSNameTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/DoubleValTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/EUI48Test.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/HexTypeTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/IPAddressTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DayTimeDurationTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601TimeTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601YearMonthDurationTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/IntegerTypeTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/PathTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/PortRangeTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/RFC822NameTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/StringValTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/TypeCapabilityTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/TypeToStringCapabilityTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/TypeToStringTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/Xacml20XPathTo30TransformerTest.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/XacmlTypesTest.java
+ M xacml-json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer.java
+ M xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java
+ M xacml-json/src/main/java/org/xacml4j/v30/marshal/json/JsonRequestContextUnmarshaller.java
+ M xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java
+ M xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonRequestUnmarshallerTest.java
+ M xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonResponseContextMarshallerTest.java
+ M xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonResponseContextUnmarshallerTest.java
+ D xacml-json/src/test/resources/policy.json
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java
+ M xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyRepository.java
+ M xacml-pdp/src/test/java/org/xacml4j/util/DefaultFunctionFunctionInvocationFactoryTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/util/FunctionInvocationBenchmark.java
+ M xacml-pdp/src/test/java/org/xacml4j/util/TestObject.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPointTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRepeatingAttributesHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRequestReferencesHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pdp/RequestContextHandlerChainTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AnnotatedResolverFactoryTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeResolverDescriptorTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeSetTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/BaseAttributeResolverTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ContentResolverDescriptorTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultPolicyInformationPointTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ResolverRegistryBuilderTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/DefaultPolicyReferenceResolverTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+ M xacml-test/pom.xml
+ M xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java
+ M xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+ M xacml-test/src/main/java/org/xacml4j/v30/AttributeResolverTestSupport.java
+ M xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java
+ M xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java
+ M xacml-test/src/test/java/org/xacml4j/v20/Xacml20SamplePolicyTest.java
+ M xacml-test/src/test/java/org/xacml4j/v30/AttributeResolverTestSupportTest.java
+ M xacml-test/src/test/java/org/xacml4j/v30/Xacml30SamplePolicyTest.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/ExpressionTypeBuilder.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/ExpressionBuilderTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30ResponseContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/XacmlPolicyUnmarshallerTest.java
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/004-vendored-fixtures/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/007-conformance-manifest-draft/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/014-docs-test-stack/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/016-legacy-stack-removal-plan/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/026-donor-slice-map/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/032-semantic-decisions-grok/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/033-profile-decisions-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/036-safety-net-design-4.1-4.2-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/037-function-audit-4.3-grok/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/040-slice-map-refresh-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/041-identifier-preaudit-5.1-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/043-value-preaudit-5.2-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/044-registry-preaudit-5.3-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/045-numeric-preaudit-5.4-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/046-resultshape-preaudit-6.1-agy/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/
+?? xacml-conformance-tests/src/test/integrity/
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceManifest.java
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceManifestTest.java
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformancePolicyImportTest.java
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/GenerateVendoredFixtureManifest.java
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/VendoredFixtureIntegrityTest.java
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolverTest.java
+?? xacml-conformance-tests/src/test/manifest/
+?? xacml-core/src/test/java/org/xacml4j/v30/RequestContextEqualityTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/RequestContextIncludeInResultTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/ModelFixtures.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OverrideDecisionTableTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionProviderServiceLoaderTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticBoundaryTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/StringFunctionLexicalFormTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/StringFunctionSemanticsTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/BooleanLexicalTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeArithmeticTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/TypeRegistryTest.java
+?? xacml-json/src/test/java/org/xacml4j/v30/marshal/json/BooleanRequestLexicalTest.java
+?? xacml-test/src/test/java/org/xacml4j/v20/Xacml20TestUtilityTest.java
+?? xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java
+?? xacml-test/src/test/java/org/xacml4j/v30/ExpectedAttributeResolverBuilderTest.java
+?? xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanRequestLexicalTest.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestContentTest.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestReferenceMappingTest.java

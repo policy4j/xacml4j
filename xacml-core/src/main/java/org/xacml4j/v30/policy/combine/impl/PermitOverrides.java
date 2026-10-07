@@ -46,7 +46,6 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 	@Override
 	public Decision combine(EvaluationContext context, List<D> decisions)
 	{
-		boolean atLeastOneIndeterminate = false;
 		boolean atLeastOneIndeterminateD = false;
 		boolean atLeastOneIndeterminateP = false;
 		boolean atLeastOneIndeterminateDP = false;
@@ -79,21 +78,18 @@ public class PermitOverrides <D extends DecisionRule> extends BaseDecisionCombin
 			}
 
 		}
-		if(atLeastOneIndeterminate){
-			return Decision.INDETERMINATE;
-		}
 		if(atLeastOneIndeterminateDP){
 			return Decision.INDETERMINATE_DP;
 		}
-		if(atLeastOneIndeterminateD &&
-				(atLeastOneIndeterminateP || atLeastOneDeny)){
+		if(atLeastOneIndeterminateP &&
+				(atLeastOneIndeterminateD || atLeastOneDeny)){
 			return Decision.INDETERMINATE_DP;
-		}
-		if(atLeastOneDeny){
-			return Decision.DENY;
 		}
 		if(atLeastOneIndeterminateP){
 			return Decision.INDETERMINATE_P;
+		}
+		if(atLeastOneDeny){
+			return Decision.DENY;
 		}
 		if(atLeastOneIndeterminateD){
 			return Decision.INDETERMINATE_D;

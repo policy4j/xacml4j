@@ -1,0 +1,9 @@
+JDK 11 selected for the before-change baseline:
+openjdk version "11.0.32.1" 2026-08-18 LTS
+OpenJDK Runtime Environment Zulu11.90+205-CA (build 11.0.32.1+1-LTS)
+OpenJDK 64-Bit Server VM Zulu11.90+205-CA (build 11.0.32.1+1-LTS, mixed mode)
+
+JDK 21 selected for the after-change reactor run:
+java version "21.0.6" 2025-01-21 LTS
+Java(TM) SE Runtime Environment Oracle GraalVM 21.0.6+8.1 (build 21.0.6+8-LTS-jvmci-23.1-b55)
+Java HotSpot(TM) 64-Bit Server VM Oracle GraalVM 21.0.6+8.1 (build 21.0.6+8-LTS-jvmci-23.1-b55, mixed mode, sharing)

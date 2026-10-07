@@ -22,21 +22,22 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
-
+@ExtendWith(MockitoExtension.class)
 public class VariableReferenceTest
 {
 	private VariableDefinition varDef;
@@ -44,11 +45,11 @@ public class VariableReferenceTest
 	private Expression expression;
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
-		this.expression = createStrictMock(Expression.class);
-		this.context = createStrictMock(EvaluationContext.class);
+		this.expression = mock(Expression.class);
+		this.context = mock(EvaluationContext.class);
 		this.varDef = new VariableDefinition("testId", expression);
 		this.varRef = new VariableReference(varDef);
 	}
@@ -56,20 +57,32 @@ public class VariableReferenceTest
 	@Test
 	public void testVariableEvaluationValueNotAvailableInContext() throws EvaluationException
 	{
-		expect(context.getVariableEvaluationResult("testId")).andReturn(null);
-		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
-		context.setVariableEvaluationResult("testId", XacmlTypes.BOOLEAN.ofAny(true));
-		replay(context, expression);
+		when(context.getVariableEvaluationResult("testId")).thenReturn(null);
+		when(expression.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		doNothing().when(context).setVariableEvaluationResult("testId", XacmlTypes.BOOLEAN.ofAny(true));
+		InOrder order = inOrder(expression, context);
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), varRef.evaluate(context));
-		verify(context, expression);
+		order.verify(context).getVariableEvaluationResult("testId");
+		order.verify(expression).evaluate(context);
+		order.verify(context).setVariableEvaluationResult("testId", XacmlTypes.BOOLEAN.ofAny(true));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).getVariableEvaluationResult("testId");
+		verify(expression, times(1)).evaluate(context);
+		verify(context, times(1)).setVariableEvaluationResult("testId", XacmlTypes.BOOLEAN.ofAny(true));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(expression, context);
 	}
 
 	@Test
 	public void testVariableEvaluationValueAvailableInContext() throws EvaluationException
 	{
-		expect(context.getVariableEvaluationResult("testId")).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		replay(context, expression);
+		when(context.getVariableEvaluationResult("testId")).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(expression, context);
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), varRef.evaluate(context));
-		verify(context, expression);
+		order.verify(context).getVariableEvaluationResult("testId");
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).getVariableEvaluationResult("testId");
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(expression, context);
 	}
 }

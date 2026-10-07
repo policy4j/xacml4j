@@ -1,0 +1,5708 @@
+{
+  "log": "25-core-migration-gate.log",
+  "build_success": true,
+  "counts": [
+    760,
+    0,
+    0,
+    2
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.util.DOMUtilTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testNodeXPathElementNodes1",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNodeXPathElementNodes2",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNodeToString",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNodeXPathElementTextNodes",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNodeEquals",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCopyNode",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testWriteNodeToStream",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNodeXPathAttributeNodes",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNodeListToList",
+          "class": "org.xacml4j.util.DOMUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.util.ISO8601DurationTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testParseISO8601DayTime",
+          "class": "org.xacml4j.util.ISO8601DurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testParseISO8601YearsMonths",
+          "class": "org.xacml4j.util.ISO8601DurationTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.util.JSONUtilTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testUnescape",
+          "class": "org.xacml4j.util.JSONUtilTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.AttributeIndexTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testAttributeIndexFind",
+          "class": "org.xacml4j.v30.AttributeIndexTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.AttributeTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateMethod",
+          "class": "org.xacml4j.v30.AttributeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateWithTheSameValues",
+          "class": "org.xacml4j.v30.AttributeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBuilder",
+          "class": "org.xacml4j.v30.AttributeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateWithIdAndValuesVarArg",
+          "class": "org.xacml4j.v30.AttributeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateWithAllArguments",
+          "class": "org.xacml4j.v30.AttributeTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.CategoryIdTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCategoryParse",
+          "class": "org.xacml4j.v30.CategoryIdTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDelegatedCategory",
+          "class": "org.xacml4j.v30.CategoryIdTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testParseCategory",
+          "class": "org.xacml4j.v30.CategoryIdTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testSystemCategories",
+          "class": "org.xacml4j.v30.CategoryIdTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.ContentTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testGetContentTypeFromContentXml",
+          "class": "org.xacml4j.v30.ContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetContentTypeFromContentJson",
+          "class": "org.xacml4j.v30.ContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetContentTypeFromContentText",
+          "class": "org.xacml4j.v30.ContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFindType",
+          "class": "org.xacml4j.v30.ContentTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.EntityTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEntityEquals2",
+          "class": "org.xacml4j.v30.EntityTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEntityDesignatorResolve",
+          "class": "org.xacml4j.v30.EntityTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBuildEntity",
+          "class": "org.xacml4j.v30.EntityTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEntityEquals",
+          "class": "org.xacml4j.v30.EntityTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEntityType",
+          "class": "org.xacml4j.v30.EntityTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.ObligationTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMerge",
+          "class": "org.xacml4j.v30.ObligationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToString",
+          "class": "org.xacml4j.v30.ObligationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testHashCode",
+          "class": "org.xacml4j.v30.ObligationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.ObligationTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.WellKnownAttributeIdsTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateWellKnownAttributeId",
+          "class": "org.xacml4j.v30.WellKnownAttributeIdsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.content.ContentTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        1
+      ],
+      "methods": [
+        {
+          "method": "testXmlBase64",
+          "class": "org.xacml4j.v30.content.ContentTest",
+          "skip_reason": "",
+          "skipped": true
+        },
+        {
+          "method": "testXml",
+          "class": "org.xacml4j.v30.content.ContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testJson",
+          "class": "org.xacml4j.v30.content.ContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testJsonBase64",
+          "class": "org.xacml4j.v30.content.ContentTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.content.JsonContentTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testJsonEvaluateToNodeSetAmdNodePathList",
+          "class": "org.xacml4j.v30.content.JsonContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testJsonEvaluateToNodeSetAmdNodePathListInvalidPath",
+          "class": "org.xacml4j.v30.content.JsonContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testJsonPathEvalToNodePathAndNode",
+          "class": "org.xacml4j.v30.content.JsonContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaludateToNumber",
+          "class": "org.xacml4j.v30.content.JsonContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetNode",
+          "class": "org.xacml4j.v30.content.JsonContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvalidInvalidPath",
+          "class": "org.xacml4j.v30.content.JsonContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testJsonEvaluateToNodeSetAmdNodePathListWithInvalidPath",
+          "class": "org.xacml4j.v30.content.JsonContentTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.content.XmlContentTest": {
+      "counts": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEntityXPathSyntaxError",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testWithContentEscaping",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateToNodeListFromSelfContainedDocument",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTestXml1",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXpathEvaluation",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEntityXPathCorrectTypeString",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEntityXPathCorrectType",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateToNodePathList",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXPathReturnUnsupportedNodeType",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateToNodeListFromContainedContent",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateToNodePath",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEntityXPathCorrectTypeString4",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testWithContentNoProlog",
+          "class": "org.xacml4j.v30.content.XmlContentTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.AdviceExpressionTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateAdviceExpression",
+          "class": "org.xacml4j.v30.policy.AdviceExpressionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateAdviceExpression",
+          "class": "org.xacml4j.v30.policy.AdviceExpressionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.AdviceTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testAdviceMergeDifferentAttributeIds",
+          "class": "org.xacml4j.v30.policy.AdviceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateAttributeAssignmentsWithSameIds",
+          "class": "org.xacml4j.v30.policy.AdviceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateAttributeAssignmentsWithDifferentIds",
+          "class": "org.xacml4j.v30.policy.AdviceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAdviceMergeHasSameAttributeIds",
+          "class": "org.xacml4j.v30.policy.AdviceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testImmutability1",
+          "class": "org.xacml4j.v30.policy.AdviceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testImmutability2",
+          "class": "org.xacml4j.v30.policy.AdviceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.policy.AdviceTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.ApplyTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testApplyEvaluationFunctionThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.ApplyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testApplyEvaluationFunctionThrowsFunctionInvocationException",
+          "class": "org.xacml4j.v30.policy.ApplyTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.AttributeAssignmentTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateAndEquals",
+          "class": "org.xacml4j.v30.policy.AttributeAssignmentTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.AttributeDesignatorTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseContextHandlerThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAttributeDoesExist",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.AttributeSelectorTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresenTrueAndReturnsNonEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAndContextThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresenFalseAndReturnsNonEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentFalseAndReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMustBePresentTrueAndReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.AttributesTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testGetAttributeValuesByIdAndIssuerAndType",
+          "class": "org.xacml4j.v30.policy.AttributesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateWithTheSameAttributes",
+          "class": "org.xacml4j.v30.policy.AttributesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetAttributesByIdAndIssuerAndType",
+          "class": "org.xacml4j.v30.policy.AttributesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetAttributesById",
+          "class": "org.xacml4j.v30.policy.AttributesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreate2",
+          "class": "org.xacml4j.v30.policy.AttributesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetIncludeInResultAttributes",
+          "class": "org.xacml4j.v30.policy.AttributesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBuilderFrom",
+          "class": "org.xacml4j.v30.policy.AttributesTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.BagOfValuesTest": {
+      "counts": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateWithDifferentAttributeTypes",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEqualsEmptyBags",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testUnion",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValue",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testContainsAll",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBuilder",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testContains",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateBag",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateBagFromValues",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIntersection",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEqualsWithElementsInTheSameOrder",
+          "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.CombinerParameterTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.CombinerParameterTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.ConditionTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testExpressionThrowsEvaluationException",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testExpressionEvaluatesToFalse",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateWithExpWhichReturnsNonBooleanValue",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testExpressionThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testExpressionEvaluatesToTrue",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.DecisionTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testIndeterminate",
+          "class": "org.xacml4j.v30.policy.DecisionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.MatchAllOfTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testNoMatchStopsEvaluation",
+          "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAllMatch",
+          "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAtLeastOneNoMatch1",
+          "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAtLeastOneNoMatchAndIndeterminate",
+          "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAllMatchAndAtLeastOneIndeterminate",
+          "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.MatchAnyOfTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testAllNoMatch",
+          "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNoMatchAndAtLeastOneIndeterminate",
+          "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAtLeastOneMatch1",
+          "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAtLeastOneMatch2",
+          "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.MatchTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMatchEvaluation",
+          "class": "org.xacml4j.v30.policy.MatchTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMatchEvaluationFailedToResolveAttributeException",
+          "class": "org.xacml4j.v30.policy.MatchTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.ObligationExpressionTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateObligationExpression",
+          "class": "org.xacml4j.v30.policy.ObligationExpressionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAttributeAssignmentThrowsEvaluationException",
+          "class": "org.xacml4j.v30.policy.ObligationExpressionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateObligationExpression",
+          "class": "org.xacml4j.v30.policy.ObligationExpressionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.PolicyDefaultsTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreatePolicyDefaults",
+          "class": "org.xacml4j.v30.policy.PolicyDefaultsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreatePolicyDefaultsWithXPath",
+          "class": "org.xacml4j.v30.policy.PolicyDefaultsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.PolicyIDReferenceTest": {
+      "counts": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateIfApplicableFailedToResolveReferenceReturnsNull",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testReferenceBuilder",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableFailedToResolveReference",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateIfApplicableFailedToResolveReferenceViaException",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateIfApplicablePolicyCanBeResolved",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testReferersTo",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicablePolicyCanBeResolved",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateFailedToResolveReference",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreatePolicyIDReferenceEvaluatonConntext",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPolicyIDResolutionViaWrongEvaluationContext",
+          "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.PolicySetIDReferenceTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testIsApplicableFailToResolveReference",
+          "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateIfApplicable",
+          "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateFailToResolveReferenceViaException",
+          "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateFailToResolveReferenceReturnsNull",
+          "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicablePolicyIDReference",
+          "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPolicyIDResolutionViaWrongEvaluationContext",
+          "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.PolicySetTest": {
+      "counts": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateTargetMatchConditionFalse",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetNoMatch",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetMatch",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrue",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateContext",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetException",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+          "class": "org.xacml4j.v30.policy.PolicySetTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.PolicyTest": {
+      "counts": [
+        14,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEvaluateTargetMatchConditionFalse",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetNoMatch",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetMatch",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrue",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateContext",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIsApplicableTargetException",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+          "class": "org.xacml4j.v30.policy.PolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.RequestTest": {
+      "counts": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testGetOnlyAttributeSingleInstanceOfTheSameCategory",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetOnlyAttributesMultipleInstancesOfTheSameCategory",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetIncludeInResult",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetAttributesByCategory",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetAttributeByCategory",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateRequest",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGetRequestDefaults",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testHasRepeatingCategories",
+          "class": "org.xacml4j.v30.policy.RequestTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.ResultTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMergeObligationValues",
+          "class": "org.xacml4j.v30.policy.ResultTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.RootEvaluationContextTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testResolveDesignatorValueValueIsNotInContext",
+          "class": "org.xacml4j.v30.policy.RootEvaluationContextTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testSetAndGetDecisionCacheTTLWithDefaultTTLZero",
+          "class": "org.xacml4j.v30.policy.RootEvaluationContextTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testSetAndGetDecisionCacheTTLWithDefaultTTL",
+          "class": "org.xacml4j.v30.policy.RootEvaluationContextTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.RuleTest": {
+      "counts": [
+        23,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testPermitRuleIsApplicableWithTargetMatch",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleIsApplicableWithTargetNoMatch",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleEvaluateIfApplicableWithTargetMatchConditionTrue",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleConditionTrue",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleEvaluateIfApplicableWithTargetNoMatch",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleEvaluateIfApplicableWithTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleObligationOrAdviceEvaluationFails",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleApplicabilityWithTargetMatch",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleEvaluateIfApplicableWithTargetNoMatch",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleIsApplicableWithTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleIsApplicableWithNoTarget",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleIsApplicableWithNoTarget",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleConditionFalse",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleConditionTrue",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleEvaluateIfApplicableWithTargetEvaluationException",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleEvaluateIfApplicableWithTargetMatchConditionTrue",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testHashCode",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleConditionIndeterminate",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleEvaluateIfApplicableWithTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleConditionIndeterminate",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDenyRuleConditionFalse",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermitRuleIsApplicableWithTargetIndeterminate",
+          "class": "org.xacml4j.v30.policy.RuleTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.StatusCodeIdTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testParseStatusCodeId",
+          "class": "org.xacml4j.v30.policy.StatusCodeIdTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.TargetTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testFirstMatchSecondIsNoMatch",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAllMatch",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFirstIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testObjectMethods",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEmptyTarget",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFirstMatchAndSecondIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFirstIsNoMatch",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.VariableDefinitionTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testVariableEvaluationValueNotAvailableInContext",
+          "class": "org.xacml4j.v30.policy.VariableDefinitionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testVariableEvaluationValueAvailableInContext",
+          "class": "org.xacml4j.v30.policy.VariableDefinitionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.VariableReferenceTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testVariableEvaluationValueNotAvailableInContext",
+          "class": "org.xacml4j.v30.policy.VariableReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testVariableEvaluationValueAvailableInContext",
+          "class": "org.xacml4j.v30.policy.VariableReferenceTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.VersionMatchTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateWithAnySingleDigitAndSubseq",
+          "class": "org.xacml4j.v30.policy.VersionMatchTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMatchAnySingleNumber",
+          "class": "org.xacml4j.v30.policy.VersionMatchTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMatchAnySubsequentialVersions",
+          "class": "org.xacml4j.v30.policy.VersionMatchTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMatchAnySingleNumberTwoTimesInTheRow",
+          "class": "org.xacml4j.v30.policy.VersionMatchTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateWithSubsquentialTwoTimes",
+          "class": "org.xacml4j.v30.policy.VersionMatchTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.VersionTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testUnparseableVersion",
+          "class": "org.xacml4j.v30.policy.VersionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testLessThanVersion",
+          "class": "org.xacml4j.v30.policy.VersionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateVersion",
+          "class": "org.xacml4j.v30.policy.VersionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNegativeComponent",
+          "class": "org.xacml4j.v30.policy.VersionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDefaultVersion",
+          "class": "org.xacml4j.v30.policy.VersionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "sortVersion",
+          "class": "org.xacml4j.v30.policy.VersionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.XPathTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testXPath",
+          "class": "org.xacml4j.v30.policy.XPathTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testParse",
+          "class": "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "doTest2Params1",
+          "class": "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "doTest2Params2",
+          "class": "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "doTest1",
+          "class": "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "doTestValidMethod",
+          "class": "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest": {
+      "counts": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCombineWithInderterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithInderterminateD",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithInderterminateP",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombinePermitWithInderterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAnyDecisionDenyResultIsDeny",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineInderterminateDPWithPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithNoDecisions",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithAllNotApplicable",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombinePermitWithInderterminateDP",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithDeny",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest": {
+      "counts": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCombineWithNotApplicable",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithIndeterminateD",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithIndeterminateP",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithNoDecisions",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithDenyAndPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithIndeterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithIndeterminateDP",
+          "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest": {
+      "counts": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testIndeterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIndeterminateDP",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDeny",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNoApplicableDecisions",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIndeterminateD",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIndeterminateP",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNoDecisions",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCombineFirstPermitSecondNotApplicable",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineFirstPermitSecondDeny",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithNoDecisions",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineFirstPermitSecondPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testOnlyOneIsApplicableAndDecisionIsPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDecisionIsNoMatchContinueEvaluation",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDecisionIndeterminateStopsEvaluation",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testOnlyOneIsApplicableAndDecisionIsIndeterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMoreThanOneIsApplicable",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testOnlyOneIsApplicableAndDecisionIsDeny",
+          "class": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest": {
+      "counts": [
+        10,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCombineWithInderterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithDenyThenNotApplicable",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithInderterminateD",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithInderterminateP",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithDenyThenPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithDenyThenIndeterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithNoDecisions",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithInderterminateDP",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithAllNotApplicable",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCombineWithNotApplicable",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithNoDecisions",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithDenyAndPermit",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithIndeterminate",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCombineWithDeny",
+          "class": "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest": {
+      "counts": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testAddVarArgAfterDefaultValue",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testParameterAfterVaragParam",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValidateSingeTypeParametersWithDiffTypesArgs",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAddParamWithDefaultValueAndOptionalFalse",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFunctionShortId",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAddOptionalAfterVarArg1",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAddOptionalAfterVarArg2",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testParameterVarArgMinAndMaxEquals",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAddMultipleVarArg",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAddOptionalParameters",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValidateSingleTypeParametersWithSameTypeArgs",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testValidateWithBagType",
+          "class": "org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValidateWithAttributeType",
+          "class": "org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.ParamTypeSequenceTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testVarArgWithZeroOrMore",
+          "class": "org.xacml4j.v30.policy.function.ParamTypeSequenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testVarArgWithOneOrMore",
+          "class": "org.xacml4j.v30.policy.function.ParamTypeSequenceTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testWithOneToFour",
+          "class": "org.xacml4j.v30.policy.function.ParamTypeSequenceTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testReflectionVarArgs",
+          "class": "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTest1And2FunctionsInstanceProvider",
+          "class": "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTest1And2FunctionsStaticProvider",
+          "class": "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testVarArgFunctionInvocation",
+          "class": "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testLazyParamEvaluationPassingEvaluationContext",
+          "class": "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testAddDoubleFunction",
+          "class": "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAddIntegerFunction",
+          "class": "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDivideIntegerFunction",
+          "class": "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testDesignatorFunctionWithEntity",
+          "class": "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDesignatorFunctionWithCategoryId",
+          "class": "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.BagFunctionsTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testIntegerBagFunctions",
+          "class": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAnyURIBagFunctions",
+          "class": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testStringBagFunctions",
+          "class": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFunctionIfImplemented",
+          "class": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBooleanBagFunctions",
+          "class": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDoubleBagFunctions",
+          "class": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest": {
+      "counts": [
+        50,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[3]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[4]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[5]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[6]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[7]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[8]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[9]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[10]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[11]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[12]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[13]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[14]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[15]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[16]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[17]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[18]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[19]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[20]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[21]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[22]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[23]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[24]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[25]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[26]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[27]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[28]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[29]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[30]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[31]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[32]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[33]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[34]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[35]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[36]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[37]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[38]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[39]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[40]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[41]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[42]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[43]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[44]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[45]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[46]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[47]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[48]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[49]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "arithmeticPreservesSignedCalendarBoundaries(Operation, String, String, String)[50]",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testProvidedFunctions",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDateTimeAddYearMonthDuration",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDateTimeAddDayTimeDuration",
+          "class": "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testInvokeWithEvaluationContextFunctionIsVariadic",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeWithNoEvaluationContextFunctionIsVariadicAndZeroVariadicParams",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeInvocationThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeNoEvaluationContextFunctionIsNotVariadic",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeWithNoEvaluationContextFunctionIsVariadicAndMoreThanZeroVariadicParams",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeWithEvaluationContextFunctionIsNotVariadic",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest": {
+      "counts": [
+        10,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testOptionalParameterWithDefaultValue",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeSpecFailsWithInvocationException",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "test2OptionalParameters1",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testOptionalParameterWithDefaultValueAndVarArg",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testOptionalParameterWithNoDefaultValueAndVarArg",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testOptionalParameterWithNoDefaultValue",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "test2OptionalParametersTheSameType",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "test2OptionalParameters",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeSpecWithListParamArguments",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testInvokeSpecFailsWithRuntimeException",
+          "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest": {
+      "counts": [
+        72,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[3]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[4]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[5]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[6]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[7]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[8]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[9]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[10]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[11]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[12]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[13]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[14]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[15]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[16]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[17]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[18]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[19]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[20]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[21]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[22]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[23]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[24]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[25]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[26]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[27]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[28]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[29]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[30]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[31]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[32]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[33]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[34]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[35]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesStandardAndLegacyNamesToSameFunction(String, String, String)[36]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[3]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[4]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[5]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[6]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[7]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[8]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[9]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[10]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[11]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[12]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[13]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[14]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[15]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[16]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[17]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[18]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[19]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[20]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[21]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[22]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[23]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[24]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[25]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[26]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[27]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[28]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[29]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[30]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[31]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[32]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[33]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[34]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[35]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[36]",
+          "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest": {
+      "counts": [
+        22,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[3]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[4]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[5]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[6]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[7]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[8]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[9]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[10]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "evaluatesStandardAndLegacyNamesIdentically(String, String, String)[11]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[3]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[4]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[5]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[6]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[7]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[8]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[9]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[10]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "resolvesEveryStandardHigherOrderName(String, String, String)[11]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testAllOfAll",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAllOfAny",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAnyOf",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMapWithValidArguments",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAnyOfAllIIC168",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAnyOfAll",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest": {
+      "counts": [
+        54,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "mapTwoBagsIsSyntaxErrorAndIndeterminate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapTwoBagsIsSyntaxErrorAndIndeterminate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfPreservesEveryBagPosition(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfPreservesEveryBagPosition(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "unaryPredicateNeedsOnlyOneBag(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "unaryPredicateNeedsOnlyOneBag(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "emptyBagsHaveIdentityResults(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "emptyBagsHaveIdentityResults(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapSpecExample(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapSpecExample(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnyAllowsAllPrimitiveOperands(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnyAllowsAllPrimitiveOperands(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfNoBagIsSyntaxErrorAndIndeterminate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfNoBagIsSyntaxErrorAndIndeterminate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "variadicPredicateAcceptsMatchingOperandTypes(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "variadicPredicateAcceptsMatchingOperandTypes(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfBagFirst(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfBagFirst(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnyMixedCrossProduct(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnyMixedCrossProduct(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "missingOperandsAreSyntaxErrorAndIndeterminate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "missingOperandsAreSyntaxErrorAndIndeterminate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapRejectsBagReturningFunctionDuringApplyTypeResolution(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapRejectsBagReturningFunctionDuringApplyTypeResolution(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfThreeArgumentPredicate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfThreeArgumentPredicate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapBagFirstPreservesOrderAndMultiplicity(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapBagFirstPreservesOrderAndMultiplicity(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfNoBagIsSyntaxErrorAndIndeterminate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfNoBagIsSyntaxErrorAndIndeterminate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfPreservesEveryBagPosition(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfPreservesEveryBagPosition(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapConcatenateWithPrimitive(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapConcatenateWithPrimitive(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnyThreeBags(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnyThreeBags(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapNoBagIsSyntaxErrorAndIndeterminate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapNoBagIsSyntaxErrorAndIndeterminate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfTwoBagsIsSyntaxErrorAndIndeterminate(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfTwoBagsIsSyntaxErrorAndIndeterminate(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfSpecExample(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "allOfSpecExample(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnySpecExample(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfAnySpecExample(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "referencedPredicateTypesAndReturnTypeAreChecked(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "referencedPredicateTypesAndReturnTypeAreChecked(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "packetBinaryPredicateWithThreeOperandsIsArityError(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "packetBinaryPredicateWithThreeOperandsIsArityError(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfSpecExample(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "anyOfSpecExample(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapRejectsBagReturningFunctionAtValidation(boolean)[1]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mapRejectsBagReturningFunctionAtValidation(boolean)[2]",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "mixedValuesReachDeclaredExpressionArray",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "mixedSequenceStillChecksMinimumAndExcludesFunctionReferences",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "typedVariadicValidationIsUnchanged",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "returnsNonXacmlExpression",
+          "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "returnsVoid",
+          "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "returnTypeDeclarationExistButWrongMethodReturnType1",
+          "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "returnTypeDeclarationExistButWrongMethodReturnType2",
+          "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "missingReturnTypeDeclaration1",
+          "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "missingXacmlFuncAnnotation",
+          "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "optionalParametersTest",
+          "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testNOfFunction",
+          "class": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testLazyAndFunctionParamEvaluation",
+          "class": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNOfFunctionInderterminate",
+          "class": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testOrFunction",
+          "class": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAndFunction",
+          "class": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testLazyOrFunctionParamEvaluation",
+          "class": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testTimeInRangeNoTimeZonesAndTimeIsEqualToUpperBound",
+          "class": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testStringGreaterThan",
+          "class": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTimeLessThan",
+          "class": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTimeInRangeNoTimeZonesAndTimeIsInRange",
+          "class": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTimeInRangeWithTimeZonesAndTimeIsInRange",
+          "class": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTimeInRangeNoTimeZonesAndTimeIsNotInRange",
+          "class": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testGreaterThanDouble",
+          "class": "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGreaterThanOrEqualDouble",
+          "class": "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGreaterThanOrEqualsInteger",
+          "class": "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testGreaterThanInteger",
+          "class": "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testXacmlRegExpToJERegExpWithCharacterSubtraction",
+          "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXacmlRegExpWithSpaceBugTrimming",
+          "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testRegExpMatchFromIIC168ConformanceTest",
+          "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFunctionIfImplemented",
+          "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAnyURIRegExpMatch",
+          "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testStringRegExpMatch",
+          "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testRFC822NameRegExpMatch",
+          "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.SetFunctionTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testBooleanSetEquals",
+          "class": "org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBooleanUnion",
+          "class": "org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIfImplemented",
+          "class": "org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBooleanIntercetion",
+          "class": "org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBooleanIntersection",
+          "class": "org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testX500NameMatch",
+          "class": "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIfFunctionImplemented",
+          "class": "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testRFC822NameMatch",
+          "class": "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testXPathCountExpressionReturnsEmptyNodeSet",
+          "class": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXPathCount",
+          "class": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXPathCountXacml20",
+          "class": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValidateFunctions",
+          "class": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXPathNodeMatch",
+          "class": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXPathNodeMatchXacml1",
+          "class": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.AnyURITest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testBagOf",
+          "class": "org.xacml4j.v30.types.AnyURITest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testTypeAlias",
+          "class": "org.xacml4j.v30.types.AnyURITest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.AnyURITest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.Base64BinaryTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateValueFromString",
+          "class": "org.xacml4j.v30.types.Base64BinaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateValueFromBinaryArray",
+          "class": "org.xacml4j.v30.types.Base64BinaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIncorrectlyBase64EncodedString",
+          "class": "org.xacml4j.v30.types.Base64BinaryTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.BinaryTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateFromBinaryAndEncodeToHex",
+          "class": "org.xacml4j.v30.types.BinaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateFromNull",
+          "class": "org.xacml4j.v30.types.BinaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateFromZeroLenghtArray",
+          "class": "org.xacml4j.v30.types.BinaryTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateFromBinaryAndEncodeToBase64",
+          "class": "org.xacml4j.v30.types.BinaryTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.BooleanValTest": {
+      "counts": [
+        5,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "fromToXacmlString",
+          "class": "org.xacml4j.v30.types.BooleanValTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "toXacmlString",
+          "class": "org.xacml4j.v30.types.BooleanValTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBagOf",
+          "class": "org.xacml4j.v30.types.BooleanValTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValueOf",
+          "class": "org.xacml4j.v30.types.BooleanValTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.BooleanValTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.DNSNameTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateFromString",
+          "class": "org.xacml4j.v30.types.DNSNameTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToXacmlString",
+          "class": "org.xacml4j.v30.types.DNSNameTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlString",
+          "class": "org.xacml4j.v30.types.DNSNameTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.DNSNameTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.DoubleValTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testToXacmlString",
+          "class": "org.xacml4j.v30.types.DoubleValTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.DoubleValTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.EUI48Test": {
+      "counts": [
+        11,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testByteArrayEthernetAddressConstructor",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToByteArrayDest",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToString",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCompareTo",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAsByteArray",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromInterface",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToByteArrayDestOffset",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testStringEthernetAddressConstructor",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValueOfByteArray",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToLong",
+          "class": "org.xacml4j.v30.types.EUI48Test",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.HexTypeTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateValueFromString",
+          "class": "org.xacml4j.v30.types.HexTypeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateValueFromBinaryArray",
+          "class": "org.xacml4j.v30.types.HexTypeTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.IPAddressTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testToXacmlStringIPV4",
+          "class": "org.xacml4j.v30.types.IPAddressTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToXacmlStringIPV6",
+          "class": "org.xacml4j.v30.types.IPAddressTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testParseIPV4",
+          "class": "org.xacml4j.v30.types.IPAddressTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testV6MultipleRepresentationsParse",
+          "class": "org.xacml4j.v30.types.IPAddressTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIpv6Address",
+          "class": "org.xacml4j.v30.types.IPAddressTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testIpv4Address",
+          "class": "org.xacml4j.v30.types.IPAddressTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601DateTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateFromZonedDateTime",
+          "class": "org.xacml4j.v30.types.ISO8601DateTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlString",
+          "class": "org.xacml4j.v30.types.ISO8601DateTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlStringJustDate",
+          "class": "org.xacml4j.v30.types.ISO8601DateTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateFromCalendar",
+          "class": "org.xacml4j.v30.types.ISO8601DateTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest": {
+      "counts": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "subtractNegativeDayTimeDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractNegativeYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractZeroDayTimeDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPositiveYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPositiveDayTimeDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addZeroDayTimeDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addZeroYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPositiveYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addNegativeDayTimeDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addNegativeYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPositiveDayTimeDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractZeroYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601DateTimeTest": {
+      "counts": [
+        8,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "fromZonedDateTime",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "compareTest",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "substractYearMonthDuration",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlStringNoTimeZone",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlString",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlStringJustDate",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addDayTimeDurationTest",
+          "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601DayTimeDurationTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateValidDurationViaExplicitCtor",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateValidDurationFromLexicalRepresentation",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCompareTo",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAddDurations",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testToXacmlString",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlString",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testSubstractDurations",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testNegate",
+          "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601DurationReviewTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "nonzeroFractionalLexicalFormStaysDecimal",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "integralSecondsDiscardZeroFractionalScale",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "fractionalEqualityAndComparisonKeepSubsecondDifferences",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "fractionalLexicalRoundTripKeepsDecimalSeconds",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "javaDurationConversionKeepsFractionAndSign",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "fractionalXmlDurationReachesDateTimeArithmetic",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "programmaticFourteenMonthsAreCountedOnce",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subNanosecondArithmeticEvaluatesThroughApply",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subNanosecondConversionTruncatesTowardZero",
+          "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest": {
+      "counts": [
+        46,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[1]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[2]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[3]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[4]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[5]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[6]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[7]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[8]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[9]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[10]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[11]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[12]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[13]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[14]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[15]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[16]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[17]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[18]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[19]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[20]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[21]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[22]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "addPreservesFractionalSeconds(String, String, String, String)[23]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[1]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[2]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[3]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[4]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[5]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[6]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[7]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[8]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[9]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[10]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[11]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[12]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[13]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[14]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[15]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[16]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[17]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[18]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[19]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[20]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[21]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[22]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "subtractPreservesFractionalSeconds(String, String, String, String)[23]",
+          "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601TimeTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testParse",
+          "class": "org.xacml4j.v30.types.ISO8601TimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testParseFromZonedTime",
+          "class": "org.xacml4j.v30.types.ISO8601TimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCompare",
+          "class": "org.xacml4j.v30.types.ISO8601TimeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateFromCalendar",
+          "class": "org.xacml4j.v30.types.ISO8601TimeTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.ISO8601YearMonthDurationTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "createFromJavaDuration",
+          "class": "org.xacml4j.v30.types.ISO8601YearMonthDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFromXacmlString",
+          "class": "org.xacml4j.v30.types.ISO8601YearMonthDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "createFromXacmlDuration",
+          "class": "org.xacml4j.v30.types.ISO8601YearMonthDurationTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.IntegerTypeTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testBag",
+          "class": "org.xacml4j.v30.types.IntegerTypeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreate",
+          "class": "org.xacml4j.v30.types.IntegerTypeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.IntegerTypeTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.PathTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testCreateXPathAttribute",
+          "class": "org.xacml4j.v30.types.PathTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateJsonAttribute",
+          "class": "org.xacml4j.v30.types.PathTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.PortRangeTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testToString",
+          "class": "org.xacml4j.v30.types.PortRangeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testCreateIPPortRange",
+          "class": "org.xacml4j.v30.types.PortRangeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValueOf",
+          "class": "org.xacml4j.v30.types.PortRangeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testContainsRange",
+          "class": "org.xacml4j.v30.types.PortRangeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testContains",
+          "class": "org.xacml4j.v30.types.PortRangeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testValueOfWithIndex",
+          "class": "org.xacml4j.v30.types.PortRangeTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.PortRangeTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.RFC822NameTest": {
+      "counts": [
+        4,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "parseInvalidName",
+          "class": "org.xacml4j.v30.types.RFC822NameTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testMatch",
+          "class": "org.xacml4j.v30.types.RFC822NameTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testParseValidName",
+          "class": "org.xacml4j.v30.types.RFC822NameTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.RFC822NameTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.StringValTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testEquals",
+          "class": "org.xacml4j.v30.types.StringValTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.TypeCapabilityTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testToStringCapability",
+          "class": "org.xacml4j.v30.types.TypeCapabilityTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.TypeToStringCapabilityTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testGetCapability",
+          "class": "org.xacml4j.v30.types.TypeToStringCapabilityTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.TypeToStringTest": {
+      "counts": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testBasicTypes",
+          "class": "org.xacml4j.v30.types.TypeToStringTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        1
+      ],
+      "methods": [
+        {
+          "method": "testXpathTransformation",
+          "class": "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testXPathTransformationWithFunctions",
+          "class": "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest",
+          "skip_reason": "",
+          "skipped": true
+        },
+        {
+          "method": "testXacml20StringXPathToXPathExpression",
+          "class": "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    },
+    "org.xacml4j.v30.types.XacmlTypesTest": {
+      "counts": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "assertSystemTypes",
+          "class": "org.xacml4j.v30.types.XacmlTypesTest",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "assertXpathTypes",
+          "class": "org.xacml4j.v30.types.XacmlTypesTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [],
+  "compiler_diagnostics": []
+}

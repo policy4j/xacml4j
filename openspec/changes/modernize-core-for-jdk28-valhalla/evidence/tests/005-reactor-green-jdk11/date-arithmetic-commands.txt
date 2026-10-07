@@ -1,0 +1,17 @@
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-date-arithmetic.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DateTimeArithmeticBoundaryTest,ISO8601DateTimeArithmeticTest,DateTimeValueArithmeticFunctionTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/34-date-arithmetic-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 34-date-arithmetic-before.txt
+rtk git apply openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DateTimeArithmeticBoundaryTest,ISO8601DateTimeArithmeticTest,DateTimeValueArithmeticFunctionTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/35-date-arithmetic-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 35-date-arithmetic-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/36-reactor-verify-date-arithmetic.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 36-reactor-verify-date-arithmetic.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 36
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-conformance-diagnostics.py DiagnoseDurationBagFunctions.java 37-duration-bag-function-diagnostics.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-duration-bag-proposal.py
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+rtk git diff --quiet a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XacmlDefaultFunctions.java
+rtk git diff --quiet a8a90d46 -- xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC150Policy.xml
+rtk proxy "$(jenv prefix 11)/bin/java" -version > openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/38-jdk-version.txt 2>&1
+rtk git rev-parse HEAD
+rtk git branch --show-current

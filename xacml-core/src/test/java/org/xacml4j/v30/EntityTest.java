@@ -22,14 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.common.truth.Truth8;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -47,7 +44,7 @@ public class   EntityTest
 	
 	private Entity entity;
 	
-	@Before
+	@BeforeEach
 	public void init() throws Exception{
 		this.entity = Entity
 				.builder()
@@ -119,7 +116,6 @@ public class   EntityTest
 				.hasValue(XacmlTypes.DOUBLE.bagBuilder().value(0.1).build());
 
 	}
-
 
 
 	@Test

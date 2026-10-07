@@ -1,0 +1,692 @@
+{
+  "identities_match_run_008": true,
+  "count": 96,
+  "other_error_categories": 0,
+  "errors_by_class": {
+    "org.xacml4j.v30.policy.ConditionTest": 6,
+    "org.xacml4j.v30.policy.MatchAllOfTest": 6,
+    "org.xacml4j.v30.policy.MatchAnyOfTest": 5,
+    "org.xacml4j.v30.policy.MatchTest": 2,
+    "org.xacml4j.v30.policy.ObligationExpressionTest": 1,
+    "org.xacml4j.v30.policy.PolicyIDReferenceTest": 12,
+    "org.xacml4j.v30.policy.PolicySetIDReferenceTest": 7,
+    "org.xacml4j.v30.policy.PolicySetTest": 14,
+    "org.xacml4j.v30.policy.PolicyTest": 14,
+    "org.xacml4j.v30.policy.RuleTest": 23,
+    "org.xacml4j.v30.policy.TargetTest": 6
+  },
+  "errors": [
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "method": "testCreateWithExpWhichReturnsNonBooleanValue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "method": "testExpressionEvaluatesToFalse",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "method": "testExpressionEvaluatesToTrue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "method": "testExpressionThrowsEvaluationException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "method": "testExpressionThrowsRuntimeException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "method": "testObjectMethods",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "method": "testAllMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "method": "testAllMatchAndAtLeastOneIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "method": "testAtLeastOneNoMatch1",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "method": "testAtLeastOneNoMatchAndIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "method": "testNoMatchStopsEvaluation",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "method": "testObjectMethods",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+      "method": "testAllNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+      "method": "testAtLeastOneMatch1",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+      "method": "testAtLeastOneMatch2",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+      "method": "testNoMatchAndAtLeastOneIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+      "method": "testObjectMethods",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchTest",
+      "method": "testMatchEvaluation",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchTest",
+      "method": "testMatchEvaluationFailedToResolveAttributeException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ObligationExpressionTest",
+      "method": "testCreateObligationExpression",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testCreatePolicyIDReferenceEvaluatonConntext",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testEvaluateFailedToResolveReference",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testEvaluateIfApplicableFailedToResolveReferenceReturnsNull",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testEvaluateIfApplicableFailedToResolveReferenceViaException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testEvaluateIfApplicablePolicyCanBeResolved",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testIsApplicableFailedToResolveReference",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testIsApplicablePolicyCanBeResolved",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testObjectMethods",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testPolicyIDResolutionViaWrongEvaluationContext",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testReferenceBuilder",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "method": "testReferersTo",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "method": "testEvaluateFailToResolveReferenceReturnsNull",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "method": "testEvaluateFailToResolveReferenceViaException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "method": "testEvaluateIfApplicable",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "method": "testIsApplicableFailToResolveReference",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "method": "testIsApplicablePolicyIDReference",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "method": "testObjectMethods",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "method": "testPolicyIDResolutionViaWrongEvaluationContext",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testCreateContext",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetMatchConditionFalse",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetMatchConditionTrue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testIsApplicableTargetException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testIsApplicableTargetIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testIsApplicableTargetMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "method": "testIsApplicableTargetNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testCreateContext",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetMatchConditionFalse",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetMatchConditionTrue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testIsApplicableTargetException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testIsApplicableTargetIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testIsApplicableTargetMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "method": "testIsApplicableTargetNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleApplicabilityWithTargetMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleConditionFalse",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleConditionIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleConditionTrue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleEvaluateIfApplicableWithTargetIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleEvaluateIfApplicableWithTargetMatchConditionTrue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleEvaluateIfApplicableWithTargetNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleIsApplicableWithNoTarget",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleIsApplicableWithTargetIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleIsApplicableWithTargetNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testDenyRuleObligationOrAdviceEvaluationFails",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testEquals",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testHashCode",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleConditionFalse",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleConditionIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleConditionTrue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleEvaluateIfApplicableWithTargetEvaluationException",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleEvaluateIfApplicableWithTargetIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleEvaluateIfApplicableWithTargetMatchConditionTrue",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleEvaluateIfApplicableWithTargetNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleIsApplicableWithNoTarget",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleIsApplicableWithTargetIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "method": "testPermitRuleIsApplicableWithTargetMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "method": "testAllMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "method": "testFirstIsIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "method": "testFirstIsNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "method": "testFirstMatchAndSecondIsIndeterminate",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "method": "testFirstMatchSecondIsNoMatch",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    },
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "method": "testObjectMethods",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "Could not create type",
+      "easymock_class_proxy": true
+    }
+  ]
+}

@@ -1,0 +1,633 @@
+Task 2.1 Surefire evidence; count order: Tests / Failures / Errors / Skipped.
+All paths normalized. Full gate used maven.test.failure.ignore=true.
+Per-engine filters are command-line proof controls; no permanent filters were added.
+
+=== 02-missing-dependencies-red.log ===
+[INFO] BUILD FAILURE
+Parsed per-module counts: {}
+
+=== 03-startup-agent-red.log ===
+[INFO] BUILD FAILURE
+Parsed per-module counts: {}
+
+=== 04-startup-agent-red.log ===
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.43 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.01 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.522 s <<< FAILURE! - in org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DualEngineTransitionProbeTest.jupiterMocksFinalClassWithStartupAgent:49 Mockito must be loaded as a startup agent on JDK 21 ==> expected: <true> but was: <false>
+[INFO] 
+[ERROR] Tests run: 6, Failures: 1, Errors: 0, Skipped: 1
+[INFO] 
+[INFO] BUILD FAILURE
+Parsed per-module counts: {"xacml-json": [6, 1, 0, 1]}
+
+=== 05-dual-engine-green.log ===
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.521 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.012 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.291 s - in org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 6, Failures: 0, Errors: 0, Skipped: 1
+[INFO] 
+[INFO] BUILD SUCCESS
+Parsed per-module counts: {"xacml-json": [6, 0, 0, 1]}
+
+=== 06-jupiter-only-green.log ===
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.252 s - in org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] BUILD SUCCESS
+Parsed per-module counts: {"xacml-json": [1, 0, 0, 0]}
+
+=== 07-vintage-only-green.log ===
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.384 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.006 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+[INFO] 
+[INFO] BUILD SUCCESS
+Parsed per-module counts: {"xacml-json": [5, 0, 0, 1]}
+
+=== 09-full-reactor-clean-verify-jdk21.log ===
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.util.JSONUtilTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.util.JSONUtilTest
+[INFO] Running org.xacml4j.util.DOMUtilTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s - in org.xacml4j.util.DOMUtilTest
+[INFO] Running org.xacml4j.util.ISO8601DurationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.util.ISO8601DurationTest
+[INFO] Running org.xacml4j.v30.CategoryIdTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.CategoryIdTest
+[INFO] Running org.xacml4j.v30.AttributeTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.AttributeTest
+[INFO] Running org.xacml4j.v30.types.ISO8601DateTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.types.ISO8601DateTest
+[INFO] Running org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.017 s - in org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest
+[INFO] Running org.xacml4j.v30.types.TypeToStringCapabilityTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeToStringCapabilityTest
+[INFO] Running org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[INFO] Running org.xacml4j.v30.types.RFC822NameTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.RFC822NameTest
+[INFO] Running org.xacml4j.v30.types.DoubleValTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.DoubleValTest
+[INFO] Running org.xacml4j.v30.types.XacmlTypesTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.XacmlTypesTest
+[INFO] Running org.xacml4j.v30.types.ISO8601TimeTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601TimeTest
+[INFO] Running org.xacml4j.v30.types.DNSNameTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.types.DNSNameTest
+[INFO] Running org.xacml4j.v30.types.ISO8601YearMonthDurationTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.ISO8601YearMonthDurationTest
+[INFO] Running org.xacml4j.v30.types.BooleanValTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.BooleanValTest
+[INFO] Running org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[INFO] Running org.xacml4j.v30.types.IPAddressTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.IPAddressTest
+[INFO] Running org.xacml4j.v30.types.BinaryTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.BinaryTest
+[INFO] Running org.xacml4j.v30.types.IntegerTypeTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.IntegerTypeTest
+[INFO] Running org.xacml4j.v30.types.ISO8601DurationReviewTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s - in org.xacml4j.v30.types.ISO8601DurationReviewTest
+[INFO] Running org.xacml4j.v30.types.Base64BinaryTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.Base64BinaryTest
+[INFO] Running org.xacml4j.v30.types.ISO8601DateTimeTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601DateTimeTest
+[INFO] Running org.xacml4j.v30.types.AnyURITest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.AnyURITest
+[INFO] Running org.xacml4j.v30.types.StringValTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.StringValTest
+[INFO] Running org.xacml4j.v30.types.EUI48Test
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.types.EUI48Test
+[INFO] Running org.xacml4j.v30.types.PortRangeTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.PortRangeTest
+[INFO] Running org.xacml4j.v30.types.PathTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.PathTest
+[INFO] Running org.xacml4j.v30.types.HexTypeTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.HexTypeTest
+[INFO] Running org.xacml4j.v30.types.TypeCapabilityTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeCapabilityTest
+[INFO] Running org.xacml4j.v30.types.TypeToStringTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeToStringTest
+[INFO] Running org.xacml4j.v30.types.ISO8601DayTimeDurationTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601DayTimeDurationTest
+[INFO] Running org.xacml4j.v30.AttributeIndexTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.AttributeIndexTest
+[INFO] Running org.xacml4j.v30.WellKnownAttributeIdsTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.WellKnownAttributeIdsTest
+[INFO] Running org.xacml4j.v30.content.JsonContentTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.content.JsonContentTest
+[INFO] Running org.xacml4j.v30.content.XmlContentTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s - in org.xacml4j.v30.content.XmlContentTest
+[INFO] Running org.xacml4j.v30.content.ContentTest
+[WARNING] Tests run: 4, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.001 s - in org.xacml4j.v30.content.ContentTest
+[INFO] Running org.xacml4j.v30.ObligationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.ObligationTest
+[INFO] Running org.xacml4j.v30.EntityTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.EntityTest
+[INFO] Running org.xacml4j.v30.ContentTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.ContentTest
+[INFO] Running org.xacml4j.v30.policy.ConditionTest
+[ERROR] Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.208 s <<< FAILURE! - in org.xacml4j.v30.policy.ConditionTest
+[INFO] Running org.xacml4j.v30.policy.MatchAllOfTest
+[ERROR] Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.028 s <<< FAILURE! - in org.xacml4j.v30.policy.MatchAllOfTest
+[INFO] Running org.xacml4j.v30.policy.BagOfValuesTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.BagOfValuesTest
+[INFO] Running org.xacml4j.v30.policy.VariableReferenceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VariableReferenceTest
+[INFO] Running org.xacml4j.v30.policy.XPathTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.XPathTest
+[INFO] Running org.xacml4j.v30.policy.RootEvaluationContextTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.RootEvaluationContextTest
+[INFO] Running org.xacml4j.v30.policy.StatusCodeIdTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.StatusCodeIdTest
+[INFO] Running org.xacml4j.v30.policy.DecisionTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.DecisionTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[INFO] Running org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
+[INFO] Running org.xacml4j.v30.policy.AdviceTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AdviceTest
+[INFO] Running org.xacml4j.v30.policy.RuleTest
+[ERROR] Tests run: 23, Failures: 0, Errors: 23, Skipped: 0, Time elapsed: 0.081 s <<< FAILURE! - in org.xacml4j.v30.policy.RuleTest
+[INFO] Running org.xacml4j.v30.policy.ApplyTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.ApplyTest
+[INFO] Running org.xacml4j.v30.policy.CombinerParameterTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.CombinerParameterTest
+[INFO] Running org.xacml4j.v30.policy.TargetTest
+[ERROR] Tests run: 7, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 0.017 s <<< FAILURE! - in org.xacml4j.v30.policy.TargetTest
+[INFO] Running org.xacml4j.v30.policy.AttributeAssignmentTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AttributeAssignmentTest
+[INFO] Running org.xacml4j.v30.policy.MatchTest
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.011 s <<< FAILURE! - in org.xacml4j.v30.policy.MatchTest
+[INFO] Running org.xacml4j.v30.policy.ResultTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.ResultTest
+[INFO] Running org.xacml4j.v30.policy.AttributesTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.AttributesTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[WARNING] Tests run: 7, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.018 s - in org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.SetFunctionTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.policy.function.impl.SetFunctionTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest
+[INFO] Tests run: 72, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.081 s - in org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest
+46[WARNING] Tests run: 11, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.09 s - in org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.095 s - in org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s - in org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s - in org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.087 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.074 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s - in org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[INFO] Running org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[INFO] Running org.xacml4j.v30.policy.function.ParamTypeSequenceTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamTypeSequenceTest
+[INFO] Running org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest
+[INFO] Running org.xacml4j.v30.policy.PolicyTest
+[ERROR] Tests run: 14, Failures: 0, Errors: 14, Skipped: 0, Time elapsed: 0.035 s <<< FAILURE! - in org.xacml4j.v30.policy.PolicyTest
+[INFO] Running org.xacml4j.v30.policy.PolicySetIDReferenceTest
+[ERROR] Tests run: 7, Failures: 0, Errors: 7, Skipped: 0, Time elapsed: 0.062 s <<< FAILURE! - in org.xacml4j.v30.policy.PolicySetIDReferenceTest
+[INFO] Running org.xacml4j.v30.policy.MatchAnyOfTest
+[ERROR] Tests run: 5, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0.009 s <<< FAILURE! - in org.xacml4j.v30.policy.MatchAnyOfTest
+[INFO] Running org.xacml4j.v30.policy.RequestTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.RequestTest
+[INFO] Running org.xacml4j.v30.policy.PolicyDefaultsTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.PolicyDefaultsTest
+[INFO] Running org.xacml4j.v30.policy.PolicySetTest
+[ERROR] Tests run: 14, Failures: 0, Errors: 14, Skipped: 0, Time elapsed: 0.028 s <<< FAILURE! - in org.xacml4j.v30.policy.PolicySetTest
+[INFO] Running org.xacml4j.v30.policy.AdviceExpressionTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.AdviceExpressionTest
+[INFO] Running org.xacml4j.v30.policy.PolicyIDReferenceTest
+[ERROR] Tests run: 12, Failures: 0, Errors: 12, Skipped: 0, Time elapsed: 0.085 s <<< FAILURE! - in org.xacml4j.v30.policy.PolicyIDReferenceTest
+[INFO] Running org.xacml4j.v30.policy.VersionMatchTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionMatchTest
+[INFO] Running org.xacml4j.v30.policy.VariableDefinitionTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.VariableDefinitionTest
+[INFO] Running org.xacml4j.v30.policy.AttributeSelectorTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AttributeSelectorTest
+[INFO] Running org.xacml4j.v30.policy.AttributeDesignatorTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.AttributeDesignatorTest
+[INFO] Running org.xacml4j.v30.policy.VersionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionTest
+[INFO] Running org.xacml4j.v30.policy.ObligationExpressionTest
+[ERROR] Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.004 s <<< FAILURE! - in org.xacml4j.v30.policy.ObligationExpressionTest
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   ConditionTest.init:59 » IllegalArgument Could not create type
+[ERROR]   ConditionTest.init:59 » IllegalArgument Could not create type
+[ERROR]   ConditionTest.init:59 » IllegalArgument Could not create type
+[ERROR]   ConditionTest.init:59 » IllegalArgument Could not create type
+[ERROR]   ConditionTest.init:59 » IllegalArgument Could not create type
+[ERROR]   ConditionTest.init:59 » IllegalArgument Could not create type
+[ERROR]   MatchAllOfTest.testAllMatch:74 » IllegalArgument Could not create type
+[ERROR]   MatchAllOfTest.testAllMatchAndAtLeastOneIndeterminate:130 » IllegalArgument Could not create type
+[ERROR]   MatchAllOfTest.testAtLeastOneNoMatch1:93 » IllegalArgument Could not create type
+[ERROR]   MatchAllOfTest.testAtLeastOneNoMatchAndIndeterminate:111 » IllegalArgument Could not create type
+[ERROR]   MatchAllOfTest.testNoMatchStopsEvaluation:59 » IllegalArgument Could not create type
+[ERROR]   MatchAllOfTest.testObjectMethods:148 » IllegalArgument Could not create type
+[ERROR]   MatchAnyOfTest.testAllNoMatch:112 » IllegalArgument Could not create type
+[ERROR]   MatchAnyOfTest.testAtLeastOneMatch1:57 » IllegalArgument Could not create type
+[ERROR]   MatchAnyOfTest.testAtLeastOneMatch2:74 » IllegalArgument Could not create type
+[ERROR]   MatchAnyOfTest.testNoMatchAndAtLeastOneIndeterminate:93 » IllegalArgument Could not create type
+[ERROR]   MatchAnyOfTest.testObjectMethods:130 » IllegalArgument Could not create type
+[ERROR]   MatchTest.init:62 » IllegalArgument Could not create type
+[ERROR]   MatchTest.init:62 » IllegalArgument Could not create type
+[ERROR]   ObligationExpressionTest.testCreateObligationExpression:63 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicyIDReferenceTest.init:60 » IllegalArgument Could not create type
+[ERROR]   PolicySetIDReferenceTest.init:58 » IllegalArgument Could not create type
+[ERROR]   PolicySetIDReferenceTest.init:58 » IllegalArgument Could not create type
+[ERROR]   PolicySetIDReferenceTest.init:58 » IllegalArgument Could not create type
+[ERROR]   PolicySetIDReferenceTest.init:58 » IllegalArgument Could not create type
+[ERROR]   PolicySetIDReferenceTest.init:58 » IllegalArgument Could not create type
+[ERROR]   PolicySetIDReferenceTest.init:58 » IllegalArgument Could not create type
+[ERROR]   PolicySetIDReferenceTest.init:58 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicySetTest.init:81 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   PolicyTest.init:79 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   RuleTest.init:86 » IllegalArgument Could not create type
+[ERROR]   TargetTest.testAllMatch:58 » IllegalArgument Could not create type
+[ERROR]   TargetTest.testFirstIsIndeterminate:140 » IllegalArgument Could not create type
+[ERROR]   TargetTest.testFirstIsNoMatch:123 » IllegalArgument Could not create type
+[ERROR]   TargetTest.testFirstMatchAndSecondIsIndeterminate:104 » IllegalArgument Could not create type
+[ERROR]   TargetTest.testFirstMatchSecondIsNoMatch:85 » IllegalArgument Could not create type
+[ERROR]   TargetTest.testObjectMethods:154 » IllegalArgument Could not create type
+[INFO] 
+[ERROR] Tests run: 762, Failures: 0, Errors: 96, Skipped: 4
+[INFO] 
+[ERROR] 
+
+Please refer to <repo>/xacml-core/target/surefire-reports for the individual test results.
+Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[INFO] 
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v30.xml.ExpressionBuilderTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 s - in org.xacml4j.v30.xml.ExpressionBuilderTest
+[INFO] Running org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.322 s - in org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest
+[INFO] Running org.xacml4j.v30.xml.Xacml30RequestContentTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s - in org.xacml4j.v30.xml.Xacml30RequestContentTest
+[INFO] Running org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest
+[INFO] Running org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest
+[INFO] Running org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest
+[INFO] Running org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.116 s - in org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest
+[INFO] Running org.xacml4j.v30.xml.TypeToXacml30Test
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.xml.TypeToXacml30Test
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.295 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[WARNING] Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.006 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[INFO] Running org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+[INFO] 
+[INFO] 
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.221 s - in org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest
+[INFO] Running org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.026 s - in org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[INFO] Running org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest
+[INFO] Running org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest
+[INFO] Running org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s - in org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest
+[INFO] Running org.xacml4j.v30.spi.pip.BaseAttributeResolverTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.BaseAttributeResolverTest
+[INFO] Running org.xacml4j.v30.spi.pip.AttributeSetTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.spi.pip.AttributeSetTest
+[INFO] Running org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest
+[INFO] Running org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest
+[INFO] Running org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.02 s - in org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest
+[INFO] Running org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest
+[INFO] Running org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest
+[INFO] Running org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest
+[INFO] Running org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest
+[INFO] Running org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest
+[INFO] Running org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.06 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[INFO] Running org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest
+[INFO] Running org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 74, Failures: 0, Errors: 0, Skipped: 4
+[INFO] 
+[INFO] 
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v30.ExpectedAttributeResolverBuilderTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.169 s - in org.xacml4j.v30.ExpectedAttributeResolverBuilderTest
+[INFO] Running org.xacml4j.v30.Xacml30SamplePolicyTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.256 s - in org.xacml4j.v30.Xacml30SamplePolicyTest
+[INFO] Running org.xacml4j.v30.AttributeResolverTestSupportTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.AttributeResolverTestSupportTest
+[INFO] Running org.xacml4j.v20.Xacml30TestUtilityTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v20.Xacml30TestUtilityTest
+[INFO] Running org.xacml4j.v20.Xacml20SamplePolicyTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v20.Xacml20SamplePolicyTest
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] Running org.xacml4j.v20.RSA2008InteropTest
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.616 s - in org.xacml4j.v20.RSA2008InteropTest
+[INFO] Running org.xacml4j.v20.Xacml20ConformanceTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.053 s - in org.xacml4j.v20.Xacml20ConformanceTest
+[INFO] Running org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest
+[INFO] Running org.xacml4j.v20.Xacml30ConformanceTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.753 s - in org.xacml4j.v20.Xacml30ConformanceTest
+[INFO] Running org.xacml4j.v20.XacmlExampleTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.04 s - in org.xacml4j.v20.XacmlExampleTest
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 41, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] BUILD SUCCESS
+Parsed per-module counts: {"xacml-conformance-tests": [41, 0, 0, 0], "xacml-core": [762, 0, 96, 4], "xacml-json": [5, 0, 0, 1], "xacml-pdp": [74, 0, 0, 4], "xacml-test": [20, 0, 0, 0], "xacml-xml": [34, 0, 0, 0]}
+
+=== 10-test-dependency-tree.log ===
+[INFO] BUILD FAILURE
+Parsed per-module counts: {}
+
+=== 10b-test-dependency-tree.log ===
+[INFO] BUILD SUCCESS
+Parsed per-module counts: {}
+
+=== Full-gate 96-error classification ===
+Every error matches run 008 class/method/type/message and has EasyMock ClassProxyFactory.createProxy plus MocksControl.createMock.
+All are java.lang.IllegalArgumentException: Could not create type. No failures or other error categories.
+org.xacml4j.v30.policy.ConditionTest#testCreateWithExpWhichReturnsNonBooleanValue
+org.xacml4j.v30.policy.ConditionTest#testExpressionEvaluatesToFalse
+org.xacml4j.v30.policy.ConditionTest#testExpressionEvaluatesToTrue
+org.xacml4j.v30.policy.ConditionTest#testExpressionThrowsEvaluationException
+org.xacml4j.v30.policy.ConditionTest#testExpressionThrowsRuntimeException
+org.xacml4j.v30.policy.ConditionTest#testObjectMethods
+org.xacml4j.v30.policy.MatchAllOfTest#testAllMatch
+org.xacml4j.v30.policy.MatchAllOfTest#testAllMatchAndAtLeastOneIndeterminate
+org.xacml4j.v30.policy.MatchAllOfTest#testAtLeastOneNoMatch1
+org.xacml4j.v30.policy.MatchAllOfTest#testAtLeastOneNoMatchAndIndeterminate
+org.xacml4j.v30.policy.MatchAllOfTest#testNoMatchStopsEvaluation
+org.xacml4j.v30.policy.MatchAllOfTest#testObjectMethods
+org.xacml4j.v30.policy.MatchAnyOfTest#testAllNoMatch
+org.xacml4j.v30.policy.MatchAnyOfTest#testAtLeastOneMatch1
+org.xacml4j.v30.policy.MatchAnyOfTest#testAtLeastOneMatch2
+org.xacml4j.v30.policy.MatchAnyOfTest#testNoMatchAndAtLeastOneIndeterminate
+org.xacml4j.v30.policy.MatchAnyOfTest#testObjectMethods
+org.xacml4j.v30.policy.MatchTest#testMatchEvaluation
+org.xacml4j.v30.policy.MatchTest#testMatchEvaluationFailedToResolveAttributeException
+org.xacml4j.v30.policy.ObligationExpressionTest#testCreateObligationExpression
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testCreatePolicyIDReferenceEvaluatonConntext
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testEvaluateFailedToResolveReference
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testEvaluateFailedToResolveReferenceAndReturnNull
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testEvaluateIfApplicableFailedToResolveReferenceReturnsNull
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testEvaluateIfApplicableFailedToResolveReferenceViaException
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testEvaluateIfApplicablePolicyCanBeResolved
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testIsApplicableFailedToResolveReference
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testIsApplicablePolicyCanBeResolved
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testObjectMethods
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testPolicyIDResolutionViaWrongEvaluationContext
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testReferenceBuilder
+org.xacml4j.v30.policy.PolicyIDReferenceTest#testReferersTo
+org.xacml4j.v30.policy.PolicySetIDReferenceTest#testEvaluateFailToResolveReferenceReturnsNull
+org.xacml4j.v30.policy.PolicySetIDReferenceTest#testEvaluateFailToResolveReferenceViaException
+org.xacml4j.v30.policy.PolicySetIDReferenceTest#testEvaluateIfApplicable
+org.xacml4j.v30.policy.PolicySetIDReferenceTest#testIsApplicableFailToResolveReference
+org.xacml4j.v30.policy.PolicySetIDReferenceTest#testIsApplicablePolicyIDReference
+org.xacml4j.v30.policy.PolicySetIDReferenceTest#testObjectMethods
+org.xacml4j.v30.policy.PolicySetIDReferenceTest#testPolicyIDResolutionViaWrongEvaluationContext
+org.xacml4j.v30.policy.PolicySetTest#testCreateContext
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetMatchConditionFalse
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetMatchConditionTrue
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit
+org.xacml4j.v30.policy.PolicySetTest#testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny
+org.xacml4j.v30.policy.PolicySetTest#testIsApplicableTargetException
+org.xacml4j.v30.policy.PolicySetTest#testIsApplicableTargetIndeterminate
+org.xacml4j.v30.policy.PolicySetTest#testIsApplicableTargetMatch
+org.xacml4j.v30.policy.PolicySetTest#testIsApplicableTargetNoMatch
+org.xacml4j.v30.policy.PolicyTest#testCreateContext
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetMatchConditionFalse
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetMatchConditionTrue
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit
+org.xacml4j.v30.policy.PolicyTest#testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny
+org.xacml4j.v30.policy.PolicyTest#testIsApplicableTargetException
+org.xacml4j.v30.policy.PolicyTest#testIsApplicableTargetIndeterminate
+org.xacml4j.v30.policy.PolicyTest#testIsApplicableTargetMatch
+org.xacml4j.v30.policy.PolicyTest#testIsApplicableTargetNoMatch
+org.xacml4j.v30.policy.RuleTest#testDenyRuleApplicabilityWithTargetMatch
+org.xacml4j.v30.policy.RuleTest#testDenyRuleConditionFalse
+org.xacml4j.v30.policy.RuleTest#testDenyRuleConditionIndeterminate
+org.xacml4j.v30.policy.RuleTest#testDenyRuleConditionTrue
+org.xacml4j.v30.policy.RuleTest#testDenyRuleEvaluateIfApplicableWithTargetIndeterminate
+org.xacml4j.v30.policy.RuleTest#testDenyRuleEvaluateIfApplicableWithTargetMatchConditionTrue
+org.xacml4j.v30.policy.RuleTest#testDenyRuleEvaluateIfApplicableWithTargetNoMatch
+org.xacml4j.v30.policy.RuleTest#testDenyRuleIsApplicableWithNoTarget
+org.xacml4j.v30.policy.RuleTest#testDenyRuleIsApplicableWithTargetIndeterminate
+org.xacml4j.v30.policy.RuleTest#testDenyRuleIsApplicableWithTargetNoMatch
+org.xacml4j.v30.policy.RuleTest#testDenyRuleObligationOrAdviceEvaluationFails
+org.xacml4j.v30.policy.RuleTest#testEquals
+org.xacml4j.v30.policy.RuleTest#testHashCode
+org.xacml4j.v30.policy.RuleTest#testPermitRuleConditionFalse
+org.xacml4j.v30.policy.RuleTest#testPermitRuleConditionIndeterminate
+org.xacml4j.v30.policy.RuleTest#testPermitRuleConditionTrue
+org.xacml4j.v30.policy.RuleTest#testPermitRuleEvaluateIfApplicableWithTargetEvaluationException
+org.xacml4j.v30.policy.RuleTest#testPermitRuleEvaluateIfApplicableWithTargetIndeterminate
+org.xacml4j.v30.policy.RuleTest#testPermitRuleEvaluateIfApplicableWithTargetMatchConditionTrue
+org.xacml4j.v30.policy.RuleTest#testPermitRuleEvaluateIfApplicableWithTargetNoMatch
+org.xacml4j.v30.policy.RuleTest#testPermitRuleIsApplicableWithNoTarget
+org.xacml4j.v30.policy.RuleTest#testPermitRuleIsApplicableWithTargetIndeterminate
+org.xacml4j.v30.policy.RuleTest#testPermitRuleIsApplicableWithTargetMatch
+org.xacml4j.v30.policy.TargetTest#testAllMatch
+org.xacml4j.v30.policy.TargetTest#testFirstIsIndeterminate
+org.xacml4j.v30.policy.TargetTest#testFirstIsNoMatch
+org.xacml4j.v30.policy.TargetTest#testFirstMatchAndSecondIsIndeterminate
+org.xacml4j.v30.policy.TargetTest#testFirstMatchSecondIsNoMatch
+org.xacml4j.v30.policy.TargetTest#testObjectMethods
+
+=== Conformance cases (distinct from Surefire methods) ===
+OASIS 2.0: 347 executions, 346 unique case ids, zero failures.
+OASIS 3.0: 347 executions, 346 unique case ids, zero failures.
+IIIG006 runs twice in each suite, unchanged from run 008.
+RSA 2008: 17 cases; examples: 2; resolver characterization methods: 2; all pass.
+Failed case ids: none. Case-id sequence matches run 008; source, fixtures, exclusions and expected results unchanged.

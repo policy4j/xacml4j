@@ -1,0 +1,25 @@
+rtk git status --short
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/57-round3-snapshot.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=HigherOrderVariadicFunctionsTest,HigherOrderVariadicInvocationTest,DurationFunctionIdentifierTest,HigherOrderFunctionIdentifierTest,HigherOrderFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/58-round3-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 58-round3-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=HigherOrderVariadicFunctionsTest,HigherOrderVariadicInvocationTest,DurationFunctionIdentifierTest,HigherOrderFunctionIdentifierTest,HigherOrderFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/59-round3-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 59-round3-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/60-round3-receipts.py 59-round3-red
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=HigherOrderVariadicInvocationTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/61-round3-packing-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 61-round3-packing-red.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/60-round3-receipts.py 61-round3-packing-red
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/60-round3-receipts.py 61-round3-packing-red HigherOrderVariadicInvocationTest
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=HigherOrderVariadicFunctionsTest,HigherOrderVariadicInvocationTest,DurationFunctionIdentifierTest,HigherOrderFunctionIdentifierTest,HigherOrderFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/62-round3-focused.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 62-round3-focused.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/60-round3-receipts.py 62-round3-focused
+rtk git diff --check
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/63-reactor-verify-round3.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 63-reactor-verify-round3.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/60-round3-receipts.py 63-round3-green
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 63
+rtk proxy "$(jenv prefix 11)/bin/java" -version
+rtk git diff --check -- xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java
+rtk git branch --show-current
+rtk git rev-parse HEAD
+rtk proxy "$(jenv prefix 11)/bin/java" -version > openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/64-jdk-version.txt 2>&1
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/64-finalize-round3.py

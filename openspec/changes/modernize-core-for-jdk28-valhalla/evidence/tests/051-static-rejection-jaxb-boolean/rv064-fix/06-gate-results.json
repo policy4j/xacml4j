@@ -1,0 +1,84 @@
+{
+  "jdk": {
+    "java.runtime.version": "21.0.6+8-LTS-jvmci-23.1-b55",
+    "java.version": "21.0.6",
+    "java.vendor": "Oracle Corporation"
+  },
+  "modules": {
+    "xacml-core": {
+      "tests": 4885,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 18
+    },
+    "xacml-xml-jaxb": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-xml": {
+      "tests": 239,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-json": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "xacml-pdp": {
+      "tests": 98,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 5
+    },
+    "xacml-test": {
+      "tests": 99,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-conformance-tests": {
+      "tests": 917,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 17
+    }
+  },
+  "total": {
+    "tests": 6262,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 41
+  },
+  "conformance": {
+    "oasis20": {
+      "manifest": 374,
+      "passed": 364,
+      "skipped": 10,
+      "failed": 0
+    },
+    "oasis30": {
+      "manifest": 487,
+      "passed": 480,
+      "skipped": 7,
+      "failed": 0
+    },
+    "rsa2008": {
+      "manifest": 17,
+      "passed": 17,
+      "skipped": 0,
+      "failed": 0
+    },
+    "example": {
+      "manifest": 2,
+      "passed": 2,
+      "skipped": 0,
+      "failed": 0
+    }
+  },
+  "changed_cases": []
+}

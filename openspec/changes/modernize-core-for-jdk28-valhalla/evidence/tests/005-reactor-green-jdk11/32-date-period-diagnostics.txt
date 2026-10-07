@@ -1,0 +1,11 @@
+Operand P1Y2M: toDuration=PT0S, toPeriod=P1Y2M
+date-add-yearMonthDuration: expected=2003-05-22, actual=2002-03-22, proposal calculation=2003-05-22
+date-subtract-yearMonthDuration: expected=2001-01-22, actual=2002-03-22, proposal calculation=2001-01-22
+Operand -P1Y2M: toDuration=PT0S, toPeriod=P-1Y-2M
+date-add-yearMonthDuration: expected=2001-01-22, actual=2002-03-22, proposal calculation=2001-01-22
+date-subtract-yearMonthDuration: expected=2003-05-22, actual=2002-03-22, proposal calculation=2003-05-22
+Operand P0M: toDuration=PT0S, toPeriod=P0D
+date-add-yearMonthDuration: expected=2002-03-22, actual=2002-03-22, proposal calculation=2002-03-22
+date-subtract-yearMonthDuration: expected=2002-03-22, actual=2002-03-22, proposal calculation=2002-03-22
+Production checks: 6; failed: 4; candidate calculations matched: 6
+IIC106 classification: pre-existing core defect; both ISO8601Date operations use day-time Duration instead of calendar Period.

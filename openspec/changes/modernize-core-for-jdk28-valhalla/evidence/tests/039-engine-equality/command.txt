@@ -1,0 +1,47 @@
+Working directory: <lane>
+JDK: JAVA_HOME="$(jenv prefix 21)"
+Every Maven command included -Dlicense.skipUpdateLicense=true.
+
+4.24 test-first red:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml30ResponseContextUnmarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.24-red.log
+4.24 green:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml30ResponseContextUnmarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.24-green.log
+
+4.28 test-first red:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TemporalEqualityTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.28-red.log
+4.28 green (final expanded assertions):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TemporalEqualityTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.28-green-final.log
+
+4.30 test-first red:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=StringEqualIgnoreCaseTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.30-red.log
+4.30 green:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=StringEqualIgnoreCaseTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.30-green.log
+
+4.31 test-first red:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601YearMonthDurationTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.31-red.log
+4.31 green:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601YearMonthDurationTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.31-green.log
+
+4.32 test-first red:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=AttributeSelectorTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.32-red.log
+4.32 green:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=AttributeSelectorTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/bug-4.32-green.log
+
+Core regression suites for 4.10 and 4.11:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DateTimeArithmeticTest,ISO8601DateTimeTest,ISO8601TimeTest,NonNumericComparisionFunctionTest,ISO8601DurationReviewTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/temporal-regressions-4.10-4.11.log
+
+Full core module tests after updating the preserved-zone date expectation:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/core-tests-after-date-expectation.log
+
+Full reactor gate (final run):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/reactor-clean-verify-final.log
+
+Conformance gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/conformance-tests.log
+
+The first focused IIIA030/IIIA330 invocation omitted the Surefire no-matching-tests override and failed in xacml-core:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml30ConformanceTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/conformance-filter-attempt-failed.log
+
+For the corrected focused run, I copied conformance-manifest.csv to evidence, temporarily changed only IIIA030 and IIIA330 from skipped/false to executed/true, then ran:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml30ConformanceTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/039-engine-equality/conformance-4.24-targets.log
+I restored the manifest with rtk cp and verified it byte-for-byte against the evidence backup using rtk proxy cmp -s (exit 0), then removed the temporary backup.

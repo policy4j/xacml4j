@@ -43,7 +43,7 @@ public final class SpecialMatchFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal pattern,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name") RFC822Name rfc822Name)
 	{
-		 return BooleanVal.of(RegExpFunctions.matches(pattern.get(), rfc822Name.getFqName()));
+		 return BooleanVal.of(rfc822Name.matches(pattern.get()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-match")

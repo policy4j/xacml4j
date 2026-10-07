@@ -1,0 +1,46 @@
+{
+  "run": "51",
+  "label": "rv019-before-mutant",
+  "workspace": "<scratch>",
+  "exit_code": 0,
+  "totals": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "classes": [
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "failed_tests": [],
+  "production_unchanged": true,
+  "catch_mutant_active_in_scratch": true,
+  "maven_result_lines": [
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.629 s - in org.xacml4j.v30.policy.RuleTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.PolicyTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.PolicySetTest",
+    "[INFO] Results:",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0",
+    "[INFO] BUILD SUCCESS"
+  ]
+}

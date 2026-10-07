@@ -22,14 +22,16 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
+import static org.mockito.Mockito.*;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.policy.function.FunctionProvider;
@@ -40,16 +42,14 @@ import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
-
+@ExtendWith(MockitoExtension.class)
 public class RegularExpressionFunctionsTest
 {
-	private IMocksControl c;
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		c = createControl();
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
@@ -67,7 +67,59 @@ public class RegularExpressionFunctionsTest
 
 	@Test
 	public void testXacmlRegExpToJERegExpWithCharacterSubtraction() {
-		assertThat(RegExpFunctions.covertXacmlToJavaSyntax("[0-9]{3}-[0-9]{3}-[0-9]{4}"), equalTo(".*[0-9]{3}-[0-9]{3}-[0-9]{4}.*"));
+		// XF 7.6.2 is a substring match: no ".*" padding and no empty-pattern rewrite.
+		assertThat(RegExpFunctions.covertXacmlToJavaSyntax("[0-9]{3}-[0-9]{3}-[0-9]{4}"),
+				equalTo("[0-9]{3}-[0-9]{3}-[0-9]{4}"));
+		assertThat(RegExpFunctions.covertXacmlToJavaSyntax("[a-z-[aeiou]]"),
+				equalTo("[a-z&&[^aeiou]]"));
+		assertThat(RegExpFunctions.covertXacmlToJavaSyntax(""), equalTo(""));
+	}
+
+	@Test
+	public void testXPathDollarAnchorMatchesOnlyTheEndOfInput() {
+		StringVal regexp = XacmlTypes.STRING.ofAny("^foo$");
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, XacmlTypes.STRING.ofAny("foo\n")),
+				equalTo(XacmlTypes.BOOLEAN.ofAny(false)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, XacmlTypes.STRING.ofAny("foo")),
+				equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void testXPathRegexEscapedDollarAndCharacterClassRemainLiteral() {
+		assertThat(RegExpFunctions.covertXacmlToJavaSyntax("a\\$"), equalTo("a\\$"));
+		assertThat(RegExpFunctions.covertXacmlToJavaSyntax("[$]"), equalTo("[$]"));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, XacmlTypes.STRING.ofAny("a\\$"),
+				XacmlTypes.STRING.ofAny("a$")), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, XacmlTypes.STRING.ofAny("[$]"),
+				XacmlTypes.STRING.ofAny("$")), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void testXPathCaretAnchorMatchesOnlyTheStartOfInput() {
+		StringVal regexp = XacmlTypes.STRING.ofAny("^foo");
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, XacmlTypes.STRING.ofAny("foo\n")),
+				equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, XacmlTypes.STRING.ofAny("\nfoo")),
+				equalTo(XacmlTypes.BOOLEAN.ofAny(false)));
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void testTypedRegexpMatchVariantsUseTheSharedAnchoredMatcher() {
+		StringVal regexp = XacmlTypes.STRING.ofAny(".*$");
+		assertThat(RegExpFunctions.anyURIRegexpMatch(context, regexp,
+				XacmlTypes.ANYURI.ofAny("https://example.com/a")), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		assertThat(RegExpFunctions.ipAddressRegexpMatch(context, regexp,
+				XacmlTypes.IPADDRESS.ofAny("192.0.2.1")), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		assertThat(RegExpFunctions.dnsNameRegexpMatch(context, regexp,
+				XacmlTypes.DNSNAME.ofAny("example.com")), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		assertThat(RegExpFunctions.rfc822NameRegexpMatch(context, regexp,
+				XacmlTypes.RFC822NAME.ofAny("alice@example.com")), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		assertThat(RegExpFunctions.x500NameRegexpMatch(context, regexp,
+				XacmlTypes.X500NAME.ofAny("CN=Alice")), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -75,13 +127,12 @@ public class RegularExpressionFunctionsTest
 		StringVal regexp1 = XacmlTypes.STRING.ofAny("   This  is n*o*t* *IT!  ");
 		StringVal regexp2 = XacmlTypes.STRING.ofAny("  *This .*is not IT! *");
 		StringVal input1 = XacmlTypes.STRING.ofAny("   This  is not IT!  ");
-		c.replay();
 		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
-		c.verify();
-		c.reset();
-		c.replay();
+		verifyNoMoreInteractions(context);
+
+
 		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp2, input1), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
-		c.verify();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -89,31 +140,28 @@ public class RegularExpressionFunctionsTest
 		StringVal regexp1 = XacmlTypes.STRING.ofAny("   This  is n*o*t* *IT!  ");
 		StringVal input1 = XacmlTypes.STRING.ofAny("   This  is IT!  ");
 		StringVal input2 = XacmlTypes.STRING.ofAny("   This  is not IT!  ");
-		c.replay();
 		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input1), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
-		c.verify();
-		c.reset();
-		c.replay();
+		verifyNoMoreInteractions(context);
+
+
 		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp1, input2), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
-		c.verify();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
 	public void testStringRegExpMatch() throws EvaluationException {
 		StringVal regexp = XacmlTypes.STRING.ofAny("S*,Value");
 		StringVal input = XacmlTypes.STRING.ofAny("Some,Value");
-		c.replay();
 		assertThat(RegExpFunctions.stringRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
-		c.verify();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
 	public void testAnyURIRegExpMatch() throws EvaluationException {
 		StringVal regexp = XacmlTypes.STRING.ofAny("http://www.test.org/public/*");
 		AnyURI input = XacmlTypes.ANYURI.ofAny("http://www.test.org/public/test/a");
-		c.replay();
 		assertThat(RegExpFunctions.anyURIRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
-		c.verify();
+		verifyNoMoreInteractions(context);
 
 	}
 
@@ -121,8 +169,7 @@ public class RegularExpressionFunctionsTest
 	public void testRFC822NameRegExpMatch() throws EvaluationException{
 		StringVal regexp = XacmlTypes.STRING.ofAny(".*@example.com");
 		RFC822Name input = XacmlTypes.RFC822NAME.ofAny("test@example.com");
-		c.replay();
 		assertThat(RegExpFunctions.rfc822NameRegexpMatch(context, regexp, input), equalTo(XacmlTypes.BOOLEAN.ofAny(true)));
-		c.verify();
+		verifyNoMoreInteractions(context);
 	}
 }

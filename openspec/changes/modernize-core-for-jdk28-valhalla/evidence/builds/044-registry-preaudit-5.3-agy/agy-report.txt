@@ -1,0 +1,412 @@
+  ### A. Defects in the Donor 5.3 Files
+
+   File : Line │ Defect  │ Scenario │ Required Behavior (Design D5, XACML 3.0 §10.2.7, Java Contracts) │ …
+  ─────────────┼─────────┼──────────┼──────────────────────────────────────────────────────────────────┼───
+   b9f114a3:xa │ Primiti │ Downstre │ Design D5: "Primitives becomes a final class with typed static   │ H
+   cml-        │ ves     │ am       │ fields (including the public XACML name Integer) backed by an    │ I
+   core/.../ty │ impleme │ callers  │ immutable map... replacing the enum whose constants have the     │ G
+   pes/Primiti │ nted as │ require  │ erased type Primitives."                                         │ H
+   ves.java:38 │ an enum │ typed    │                                                                  │
+   -124        │ with    │ constant │                                                                  │
+               │ return    │ PrimitiveT │                                                             │
+               │ type      │ ype<Long,  │                                                             │
+               │ Primitive │ Int64>).   │                                                             │
+               │ Type<?,   │            │                                                             │
+               │ ?>        │            │                                                             │
+   b9f114a3:xa │ Incomplet │ Callers in │ Design D5 & XACML 3.0 §10.2.7: Must provide public typed    │ HI
+   cml-        │ e enum    │ xacml-pdp, │ constants for all 19 standard and profile types, including  │ GH
+   core/.../ty │ constants │ xacml-xml, │ Integer.                                                    │
+   pes/Primiti │ ; omits   │ and xacml- │                                                             │
+   ves.java:38 │ Integer,  │ core       │                                                             │
+   -124        │ UriVal /  │ reference  │                                                             │
+               │ AnyURI,   │ Primitives │                                                             │
+               │ IpAddress │ .Integer,  │                                                             │
+               │ ,         │ Primitives │                                                             │
+               │ Intege │ xacml-   │                                                                  │
+               │ r,     │ core     │                                                                  │
+               │ UriVal │ referenc │                                                                  │
+               │ /      │ e        │                                                                  │
+               │ AnyURI │ Primitiv │                                                                  │
+               │ ,      │ es.Integ │                                                                  │
+               │ IpAddr │ er,      │                                                                  │
+               │ ess,   │ Primitiv │                                                                  │
+               │ RFC822 │ es.Entit │                                                                  │
+               │ Name,  │ y,       │                                                                  │
+               │ Entity │ Primitiv │                                                                  │
+               │        │ es.IpAdd │                                                                  │
+               │        │ ress,    │                                                                  │
+               │        │ Primitiv │                                                                  │
+               │           │ failures. │                                                              │
+   b9f114a3:xa │ Missing   │ Callers   │ Design D5: Must be backed by an immutable map from canonical │ HI
+   cml-        │ registry  │ (TypeToXa │ ValueTypeId and aliases to types, with case-sensitive        │ GH
+   core/.../ty │ map,      │ cml30.jav │ lookup.                                                      │
+   pes/Primiti │ lookup    │ a:84,     │                                                              │
+   ves.java:38 │ methods   │ Xacml30Po │                                                              │
+   -125        │ (getType, │ licyFromJ │                                                              │
+               │ typeOf),  │ axbToObje │                                                              │
+               │ and alias │ ctModelMa │                                                              │
+               │ resolutio │ pper.java │                                                              │
+               │ n         │ :561,     │                                                              │
+               │           │ 577,      │                                                              │
+               │           │ Attribute │                                                              │
+               │           │ Designato │                                                              │
+               │           │ rFunction │                                                              │
+               │           │ s.java:12 │                                                              │
+               │           │ 7) call   │                                                              │
+               │           │ Primitive │                                                              │
+               │           │ s.typeOf( │                                                              │
+               │ ), and │ Attribut │                                                                  │
+               │ alias  │ eDesigna │                                                                  │
+               │ resolu │ torFunct │                                                                  │
+               │ tion   │ ions.jav │                                                                  │
+               │        │ a:127)   │                                                                  │
+               │        │ call     │                                                                  │
+               │        │ Primitiv │                                                                  │
+               │        │ es.typeO │                                                                  │
+               │        │ f(...)   │                                                                  │
+               │        │ or       │                                                                  │
+               │        │ getType( │                                                                  │
+               │        │ ...),    │                                                                  │
+               │        │ which do │                                                                  │
+               │        │ not      │                                                                  │
+               │        │ exist.   │                                                                  │
+   b9f114a3:xa │ Broken │ Line 33  │ AGENTS.md & Task 1.6: Do not introduce unapproved external       │ HI
+   cml-        │ , non- │ imports  │ dependencies. Keep the clean, working IPAddress.java from the    │ GH
+   core/.../ty │ compil │ external │ worktree.                                                        │
+   pes/IPAddre │ ing    │ inet.ipa │                                                                  │
+   ssV2.java:3 │ class  │ ddr.*    │                                                                  │
+   3-216       │ with   │ (com.git │                                                                  │
+               │ syntax │ hub.sean │                                                                  │
+               │ errors │ cfoley:i │                                                                  │
+               │ ,      │ paddress │                                                                  │
+               │ unreso │ ); lines │                                                                  │
+               │ lved   │ 69 & 175 │                                                                  │
+               │ method │ call     │                                                                  │
+               │ s, and │ undefine │                                                                  │
+               │ undecl │ d method │                                                                  │
+               │ ared   │ type();  │                                                                  │
+               │ third- │ lines    │                                                                  │
+               │ party  │ 188-191  │                                                                  │
+               │ depend │ assign   │                                                                  │
+               │ ency   │ to non-  │                                                                  │
+               │        │ existent │                                                                  │
+               │        │ field    │                                                                  │
+               │        │ this.add │                                                                  │
+               │        │ r; line  │                                                                  │
+               │        │ 214      │                                                                  │
+               │        │ calls    │                                                                  │
+               │        │ deleted  │                                                                  │
+               │        │ new      │                                                                  │
+               │        │ IPAddres │                                                                  │
+               │        │ s(this). │                                                                  │
+   b9f114a3:xa │ Lenien │ String   │ XACML 3.0 §A.3.9 & XML Schema Part 2 §3.2.2: Only "true",        │ HI
+   pes/Boolean │ t        │ , or "2" │                                                                │
+   Val.java:68 │ boolean  │ is       │                                                                │
+   -70         │ parsing  │ passed   │                                                                │
+               │ via      │ to       │                                                                │
+               │ Boolean. │ BooleanV │                                                                │
+               │ parseBoo │ al.of(St │                                                                │
+               │ lean     │ ring).   │                                                                │
+               │          │ Boolean. │                                                                │
+               │          │ parseBoo │                                                                │
+               │          │ lean     │                                                                │
+               │          │ converts │                                                                │
+               │          │ "TRUE"   │                                                                │
+               │          │ to true  │                                                                │
+               │          │ and any  │                                                                │
+               │          │ invalid  │                                                                │
+               │          │ string   │                                                                │
+               │        │ invalid  │                                                                  │
+               │        │ string   │                                                                  │
+               │        │ to       │                                                                  │
+               │        │ false.   │                                                                  │
+   b9f114a3:xa │ Wrong  │ Lookup   │ XACML 3.0 §10.2.7 & Table B.9: The canonical identifier is       │ HI
+   cml-        │ major  │ by       │ urn:oasis:names:tc:xacml:2.0:data-type:dnsName. Using 1.0 breaks │ GH
+   core/.../ty │ versio │ canonica │ canonical resolution.                                            │
+   pes/DNSName │ n URN  │ l XACML  │                                                                  │
+   .java:35    │ in     │ 2.0/3.0  │                                                                  │
+               │ @DataT │ identifi │                                                                  │
+               │ ype    │ er       │                                                                  │
+               │ (1.0   │ urn:oasi │                                                                  │
+               │ instea │ s:names: │                                                                  │
+               │ d of   │ tc:xacml │                                                                  │
+               │ 2.0)   │ :2.0:dat │                                                                  │
+               │        │ a-       │                                                                  │
+               │        │ type:dns │                                                                  │
+               │        │ Name.    │                                                                  │
+   b9f114a3:xa │ Non-   │ Resolvin │ JSON Profile of XACML 3.0 §2.1 & a8a90d46: URN is                │ HI
+   cml-        │ canoni │ g        │ urn:oasis:names:tc:xacml:3.0:data-type:jsonPathExpression and    │ GH
+   core/.../ty │ cal    │ official │ alias is jsonPathExpression.                                     │
+   pes/JsonPat │ URN    │ JSON     │                                                                  │
+   h.java:35   │ and    │ Profile  │                                                                  │
+               │ alias  │ URN      │                                                                  │
+               │ trunca │ urn:oasi │                                                                  │
+               │ ted to │ s:names: │                                                                  │
+               │ jsonPa │ tc:xacml │                                                                  │
+               │ th     │ :3.0:dat │                                                                  │
+               │        │ a-       │                                                                  │
+               │        │ type:jso │                                                                  │
+               │        │ nPathExp │                                                                  │
+               │        │ ression  │                                                                  │
+               │        │ or alias │                                                                  │
+               │        │ jsonPath │                                                                  │
+               │        │ Expressi │                                                                  │
+               │        │ on.      │                                                                  │
+   b9f114a3:xa │ Omissi │ Resolvin │ Task 5.3 & Design D5: Registry must cover every a8a90d46         │ ME
+   cml-        │ on of  │ g alias  │ identifier and alias, including short name xpathExpression.      │ DI
+   core/.../ty │ standa │ xpathExp │                                                                  │ UM
+   pes/XPath.j │ rd     │ ression  │                                                                  │
+   ava:40      │ short- │ (registe │                                                                  │
+               │ name   │ red in   │                                                                  │
+               │ alias  │ a8a90d46 │                                                                  │
+               │ xpathE │ and      │                                                                  │
+               │ xpress │ tested   │                                                                  │
+               │ ion    │ in       │                                                                  │
+               │        │ TypeRegi │                                                                  │
+               │        │ stryTest │                                                                  │
+               │        │ .java:75 │                                                                  │
+               │        │ ). Only  │                                                                  │
+               │        │ "xpath"  │                                                                  │
+                │              │ s.checkArgum │                                                       │
+                │              │ ent throws   │                                                       │
+                │              │ IllegalArgum │                                                       │
+                │              │ entException │                                                       │
+                │              │ ;            │                                                       │
+                │              │ SyntaxExcept │                                                       │
+                │              │ ion          │                                                       │
+                │              │ constructor  │                                                       │
+                │              │ is passed an │                                                       │
+                │              │ unformatted  │                                                       │
+                │              │ format       │                                                       │
+                │              │ string %s.   │                                                       │
+   b9f114a3:xac │ Stub method  │ Invoking     │ Design D8 & Task 7.1: Method should resolve against   │ ME
+   ml-          │ resolve      │ EntityType.e │ active schema or fail with a descriptive error.       │ DI
+   core/.../typ │ always       │ ntity(Entity │                                                       │ UM
+   es/EntityTyp │ returns      │ TypeQualifie │                                                       │
+   e.java:52-57 │ Optional.emp │ r)           │                                                       │
+                │ ty(),        │ unconditiona │                                                       │
+               │ throwing     │ lly throws   │                                                       │
+               │ NoSuchElemen │ NoSuchElemen │                                                       │
+               │ tException   │ tException.  │                                                       │
+   b9f114a3:xa │ Dead/unused  │ @TypeFactory │ Clean Architecture: Eliminate unused annotations that │ LOW
+   cml-        │ annotation   │ Method is    │ add noise.                                            │
+   core/.../an │              │ applied to   │                                                       │
+   notations/T │              │ value        │                                                       │
+   ypeFactoryM │              │ methods but  │                                                       │
+   ethod.java  │              │ never        │                                                       │
+               │              │ processed or │                                                       │
+               │              │ queried      │                                                       │
+               │              │ anywhere in  │                                                       │
+               │              │ the reactor. │                                                       │
+   b9f114a3:xa │ Class        │ Primitives   │ Java Language Specification §12.4: Value types must   │ HIG
+   cml-        │ initializati │ static       │ independently initialize their own TYPE constant      │ H
+   core/.../ty │ on cycle and │ constants    │ without referencing Primitives. Primitives static     │
+   pes/Primiti │ static       │ initialize   │ initializer populates the registry map once types are │
+   ves.java &  │ ordering     │ value types  │ initialized.                                          │
+   Value       │ hazard       │ (e.g.        │                                                       │
+   classes     │              │ Boolean =    │                                                       │
+               │              │ BooleanVal.t │                                                       │
+               │              │ ype()),      │                                                       │
+               │              │ while value  │                                                       │
+               │              │ types or     │                                                       │
+               │              │ callers      │                                                       │
+               │              │ access       │                                                       │
+               │              │ Primitives   │                                                       │
+               │              │ during       │                                                       │
+               │              │ <clinit>,    │                                                       │
+               │              │ causing      │                                                       │
+               │              │ uninitialize │                                                       │
+               │              │ d null       │                                                       │
+               │              │ fields or    │                                                       │
+               │              │ deadlocks.   │                                                       │
+  ──────
+  ### B. Group 1–4 Fixes and Filed Bugs Carried into 5.3
+
+  1. Bug 4.25 (BooleanVal.java):
+      • Worktree: BooleanVal.java:61-76
+      • Requirement: Strict XML Schema boolean lexing (fromLexical) with XML whitespace collapsing,
+      strictly parsing "true", "1", "false", "0" and throwing SyntaxException on invalid forms (e.g. "TRUE",
+      "yes", "foo"). Donor's Boolean.parseBoolean must be rejected.
+  2. Bug 4.26 (Duplicate Type Identifiers and Aliases):
+      • Worktree: TypeRegistryTest.java:147-152 (disabled test duplicateTypeIdentifierFailsRegistration)
+      • Requirement: Registration must fail fast with IllegalArgumentException if any type id or alias is
+      registered more than once.
+  3. Bug 4.16 / rv037 (DoubleVal.java Infinity Formatting):
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java:83-85, 93-97
+      • Requirement: DoubleVal.toXacmlString() / toStringExp() must output "INF" and "-INF", not "Infinity".
+  4. Bug 4.10 & 4.11 (ISO8601Time.java Unzoned Time Formatting):
+      • Worktree: ISO8601Time.java:188-204
+      • Requirement: Preserve unzoned formatting (ISO_LOCAL_TIME) without appending "Z". Donor's forced UTC
+      "Z" suffix must remain dropped.
+  5. Bug 4.28 (ISO8601Date.java Zone Preservation):
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java:75-76, 115-116
+      • Requirement: Lexical round-trip must preserve timezone offset where present.
+
+  ──────
+  ### C. Migration of Task 4.4 Registry Tests (TypeRegistryTest.java)
+
+  When XacmlTypes and TypeFactory are replaced by Primitives and ValueTypeId:
+
+  1. Identifier & Alias Resolution:
+      • XacmlTypes.getType(canonicalId) and XacmlTypes.getType(lookupId) (lines 91–92) move to:
+        ValueType<?, ?> canonicalType = Primitives.getType(canonicalId).orElseThrow();
+        ValueType<?, ?> resolvedType = Primitives.getType(lookupId).orElseThrow();
+
+      • Strengthen per Grok rv048 Finding 2: Assert instance identity (assertThat(resolvedType).
+      isSameInstanceAs(canonicalType)), ensuring aliases map to the exact canonical object.
+  2. Type Constant References in Lexical Round-Trip Table:
+      • References in lexicalValues() (lines 101–116) move from XacmlTypes.<TYPE> to Primitives.<Type>:
+          • XacmlTypes.ANYURI -> Primitives.Uri (or Primitives.AnyURI)
+          • XacmlTypes.INTEGER -> Primitives.Integer
+          • XacmlTypes.BOOLEAN -> Primitives.Boolean
+          • XacmlTypes.DOUBLE -> Primitives.Double
+          • XacmlTypes.STRING -> Primitives.String
+          • XacmlTypes.HEXBINARY -> Primitives.HexBinary
+          • XacmlTypes.BASE64BINARY -> Primitives.Base64Binary
+          • XacmlTypes.DATE -> Primitives.Date
+          • XacmlTypes.TIME -> Primitives.Time
+          • XacmlTypes.DATETIME -> Primitives.DateTime
+          • XacmlTypes.DAYTIMEDURATION -> Primitives.DayTimeDuration
+          • XacmlTypes.YEARMONTHDURATION -> Primitives.YearMonthDuration
+          • XacmlTypes.IPADDRESS -> Primitives.IpAddress
+          • XacmlTypes.DNSNAME -> Primitives.DnsName
+          • XacmlTypes.RFC822NAME -> Primitives.RFC822Name
+          • XacmlTypes.X500NAME -> Primitives.X500Name
+      • pathLexicalValues() (lines 132–133):
+          • XacmlTypes.XPATH -> Primitives.XmlPath
+          • XacmlTypes.JPATH -> Primitives.JsonPath
+      • XacmlTypes.ENTITY -> Primitives.Entity
+  3. Lexical Construction:
+      • type.ofAny(lexical) (line 123) moves to type.construct(lexical).
+  4. Duplicate Registration Gate (Bug 4.26):
+      • duplicateTypeIdentifierFailsRegistration() (lines 147–152):
+      Remove @Disabled("policy4j-the.4.26") and assert that duplicate type ID or alias in the registry
+      builder throws IllegalArgumentException.
+
+  ──────
+  ### D. Safety-Net Test List for Task 5.3 (30 Rows)
+
+   #  │ Target Identifier / Scenario    │ Lookup Key                      │ Expected Resolution / Outcome
+  ────┼─────────────────────────────────┼─────────────────────────────────┼────────────────────────────────
+   1  │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to Primitives.String
+      │ a#string                        │ a#string                        │
+   2  │ http://www.w3.org/2001/XMLSchem │ "string"                        │ Resolves to Primitives.String
+      │ a#string (alias)                │                                 │
+   3  │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to Primitives.Boolean
+      │ a#boolean                       │ a#boolean                       │
+   4  │ http://www.w3.org/2001/XMLSchem │ "boolean"                       │ Resolves to Primitives.Boolean
+      │ a#boolean (alias)               │                                 │
+   5  │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to Primitives.Integer
+      │ a#integer                       │ a#integer                       │
+   6  │ http://www.w3.org/2001/XMLSchem │ "integer"                       │ Resolves to Primitives.Integer
+      │ a#integer (alias)               │                                 │
+   7  │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to Primitives.Double
+      │ a#double                        │ a#double                        │
+   8  │ http://www.w3.org/2001/XMLSchem │ "double"                        │ Resolves to Primitives.Double
+      │ a#double (alias)                │                                 │
+   9  │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to Primitives.Time
+      │ a#time                          │ a#time                          │
+   10 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to Primitives.Date
+      │ a#date                          │ a#date                          │
+   11 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to
+      │ a#dateTime                      │ a#dateTime                      │ Primitives.DateTime
+   12 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to
+      │ a#dayTimeDuration               │ a#dayTimeDuration               │ Primitives.DayTimeDuration
+   13 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/TR/2002/WD-   │ Resolves to
+      │ a#dayTimeDuration (W3C alias)   │ xquery-operators-               │ Primitives.DayTimeDuration
+      │                                 │ 20020816#dayTimeDuration        │
+   14 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to
+      │ a#yearMonthDuration             │ a#yearMonthDuration             │ Primitives.YearMonthDuration
+   15 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/TR/2002/WD-   │ Resolves to
+      │ a#yearMonthDuration (W3C alias) │ xquery-operators-               │ Primitives.YearMonthDuration
+      │                                 │ 20020816#yearMonthDuration      │
+   16 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to Primitives.Uri
+      │ a#anyURI                        │ a#anyURI                        │
+   17 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to
+      │ a#hexBinary                     │ a#hexBinary                     │ Primitives.HexBinary
+   18 │ http://www.w3.org/2001/XMLSchem │ http://www.w3.org/2001/XMLSchem │ Resolves to
+      │ a#base64Binary                  │ a#base64Binary                  │ Primitives.Base64Binary
+   19 │ urn:oasis:names:tc:xacml:1.0:da │ urn:oasis:names:tc:xacml:1.0:da │ Resolves to
+      │ ta-type:rfc822Name              │ ta-type:rfc822Name              │ Primitives.RFC822Name
+   20 │ urn:oasis:names:tc:xacml:1.0:da │ urn:oasis:names:tc:xacml:1.0:da │ Resolves to
+      │ ta-type:x500Name                │ ta-type:x500Name                │ Primitives.X500Name
+   21 │ urn:oasis:names:tc:xacml:2.0:da │ urn:oasis:names:tc:xacml:2.0:da │ Resolves to
+      │ ta-type:ipAddress               │ ta-type:ipAddress               │ Primitives.IpAddress
+   22 │ urn:oasis:names:tc:xacml:2.0:da │ urn:oasis:names:tc:xacml:2.0:da │ Resolves to Primitives.DnsName
+      │ ta-type:dnsName                 │ ta-type:dnsName                 │
+   23 │ urn:oasis:names:tc:xacml:3.0:da │ urn:oasis:names:tc:xacml:3.0:da │ Resolves to Primitives.XmlPath
+      │ ta-type:xpathExpression         │ ta-type:xpathExpression         │
+   24 │ urn:oasis:names:tc:xacml:3.0:da │ urn:oasis:names:tc:xacml:2.0:da │ Resolves to Primitives.XmlPath
+      │ ta-type:xpathExpression (2.0    │ ta-type:xpathExpression &       │
+      │ aliases)                        │ xpath-expression                │
+   25 │ urn:oasis:names:tc:xacml:3.0:da │ urn:oasis:names:tc:xacml:3.0:da │ Resolves to
+      │ ta-type:jsonPathExpression      │ ta-type:jsonPathExpression      │ Primitives.JsonPath
+   26 │ urn:oasis:names:tc:xacml:3.0:da │ urn:oasis:names:tc:xacml:3.0:da │ Resolves to Primitives.Entity
+      │ ta-type:entity                  │ ta-type:entity                  │
+   27 │ Duplicate canonical ID          │ Registering two types with      │ Throws
+      │ registration                    │ identical canonical URN         │ IllegalArgumentException (Bug
+      │                                 │                                 │ 4.26)
+   28 │ Duplicate alias registration    │ Registering two distinct types  │ Throws
+      │                                 │ with the same alias             │ IllegalArgumentException (Bug
+      │                                 │                                 │ 4.26)
+   29 │ Case-sensitivity check          │ http://www.w3.org/2001/XMLSchem │ Returns Optional.empty()
+      │                                 │ a#STRING                        │ (case-sensitive)
+   30 │ Strict boolean lexing           │ Primitives.Boolean.construct("T │ Throws SyntaxException (Bug
+      │                                 │ RUE")                           │ 4.25)
+  ──────
+  FINAL REPORT (policy4j_code_review_agy, claude-3-7-sonnet)
+
+  Counts: 15 defects identified in donor 5.3 slice (7 High, 5 Medium, 3 Low). 30 safety-net test rows
+  defined.
+
+  Top 5 Defects:
+
+  1. b9f114a3:xacml-core/.../types/Primitives.java:38: Primitives is an enum with erased return type
+  PrimitiveType<?, ?> and missing lookup methods (typeOf/getType), violating Design D5.
+  2. b9f114a3:xacml-core/.../types/Primitives.java: Incomplete constants omitting Integer, UriVal/AnyURI,
+  IpAddress, RFC822Name, and Entity, breaking callers in xacml-pdp and xacml-xml.
+  3. b9f114a3:xacml-core/.../types/IPAddressV2.java: Heavily broken class with syntax errors, unresolved
+  methods (type()), undefined fields (this.addr), and illegal third-party dependency inet.ipaddr.
+  4. b9f114a3:xacml-core/.../types/DNSName.java:35 & JsonPath.java:35: Incorrect canonical URNs (DNSName
+  uses 1.0 instead of 2.0; JsonPath truncates to jsonPath), breaking canonical XACML resolution.
+  5. b9f114a3:xacml-core/.../types/BooleanVal.java:69: Regresses Bug 4.25 by delegating to Boolean.
+  parseBoolean, accepting invalid XML Schema boolean literals like "TRUE" and "random".
+
+  Files Opened:
+
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Primitives.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/ValueTypeId.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/PrimitiveType.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ConstructableType.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/annotations/DataType.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/annotations/TypeFactoryMethod.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/annotations/Version.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/StringVal.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/DNSName.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/IPAddressV2.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/RFC822Name.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Rfc822NameValidator.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/X500Name.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/HexBinary.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Binary.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/UriVal.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/XPath.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/JsonPath.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/EntityType.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java
+  • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.
+  java
+  • b9f114a3:xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java
+  • openspec/changes/modernize-core-for-jdk28-valhalla/design.md
+  • openspec/changes/modernize-core-for-jdk28-valhalla/tasks.md
+  • openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/026-donor-slice-map/summary.md
+  • openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/code/rv048-g4-registry-tests-
+  grok/summary.md
+  • xacml-core/src/test/java/org/xacml4j/v30/types/TypeRegistryTest.java
+  • xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java
+  • xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java
+  • xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java
+

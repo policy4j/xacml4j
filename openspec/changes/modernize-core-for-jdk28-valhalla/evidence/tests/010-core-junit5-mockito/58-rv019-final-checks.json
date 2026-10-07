@@ -1,0 +1,17 @@
+{
+  "result": "PASS",
+  "core_gate": {
+    "tests": 760,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "mutation_red_errors": 3,
+  "original_exception_sites": 26,
+  "status_result_fixtures": 22,
+  "headers_unchanged": true,
+  "method_lists_unchanged": true,
+  "production_restored_exact_bytes": true,
+  "recorded_shared_change": "docs/ai/TESTING.md",
+  "new_evidence_no_home_paths": true
+}

@@ -1,0 +1,48 @@
+{
+  "changed_source_or_manifest_files": [
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisonFunctions.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601TimeTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java",
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceManifest.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/XacmlExampleTest.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceManifestTest.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/RSA2008InteropTest.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformancePolicyImportTest.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java",
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java",
+    "xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyRepository.java",
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java"
+  ],
+  "unexpected_changes": [
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisonFunctions.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601TimeTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java",
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java",
+    "xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyRepository.java",
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java"
+  ],
+  "locked_files_checked": 3413,
+  "locked_changes": [
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisonFunctions.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601TimeTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java",
+    "xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyRepository.java"
+  ],
+  "existing_headers_identical": {
+    "XacmlExampleTest.java": true,
+    "RSA2008InteropTest.java": true,
+    "Xacml30ConformanceTest.java": true,
+    "Xacml20ConformanceTest.java": true
+  },
+  "deleted_files": [],
+  "fixture_or_pom_changes": [],
+  "coverage": "PARTIAL: eight outside-lane source changes observed; not authored by this lane"
+}

@@ -22,12 +22,18 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.base.Preconditions;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
 import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
+import org.xacml4j.v30.policy.function.XacmlLegacyFunc;
 import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.DoubleVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**
@@ -183,7 +189,15 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues b)
 	{
-		return a.intersection(b);
+		requireDoubleBags(a, b);
+		List<DoubleVal> values = new ArrayList<>();
+		for(DoubleVal value : a.<DoubleVal>values()){
+			if(BagFunctions.doubleContains(value, b.<DoubleVal>values())
+					&& !BagFunctions.doubleContains(value, values)){
+				values.add(value);
+			}
+		}
+		return XacmlTypes.DOUBLE.bagBuilder().attributes(values).build();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-union")
@@ -192,7 +206,17 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues b)
 	{
-		return a.union(b);
+		requireDoubleBags(a, b);
+		List<DoubleVal> values = new ArrayList<>();
+		// Iterate every occurrence: even identical NaN objects do not match by double-equal.
+		for(BagOfValues bag : new BagOfValues[]{a, b}){
+			for(DoubleVal value : bag.<DoubleVal>values()){
+				if(!BagFunctions.doubleContains(value, values)){
+					values.add(value);
+				}
+			}
+		}
+		return XacmlTypes.DOUBLE.bagBuilder().attributes(values).build();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subset")
@@ -201,7 +225,8 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double", isBag = true) BagOfValues a,
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#double", isBag = true) BagOfValues b)
 	{
-		return XacmlTypes.BOOLEAN.ofAny(b.containsAll(a));
+		requireDoubleBags(a, b);
+		return BooleanVal.of(doubleSubsetImpl(a, b));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-at-least-one-member-of")
@@ -210,7 +235,13 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues b)
 	{
-		return XacmlTypes.BOOLEAN.ofAny(b.containsAtLeastOneOf(a));
+		requireDoubleBags(a, b);
+		for(DoubleVal value : a.<DoubleVal>values()){
+			if(BagFunctions.doubleContains(value, b.<DoubleVal>values())){
+				return BooleanVal.of(true);
+			}
+		}
+		return BooleanVal.of(false);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-set-equals")
@@ -219,7 +250,22 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues b)
 	{
-		return XacmlTypes.BOOLEAN.ofAny(a.containsAll(b) && b.containsAll(a));
+		requireDoubleBags(a, b);
+		return BooleanVal.of(doubleSubsetImpl(a, b) && doubleSubsetImpl(b, a));
+	}
+
+	private static boolean doubleSubsetImpl(BagOfValues a, BagOfValues b){
+		for(DoubleVal value : a.<DoubleVal>values()){
+			if(!BagFunctions.doubleContains(value, b.<DoubleVal>values())){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static void requireDoubleBags(BagOfValues a, BagOfValues b){
+		Preconditions.checkArgument(XacmlTypes.DOUBLE.equals(a.getBagValueType())
+				&& XacmlTypes.DOUBLE.equals(b.getBagValueType()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-intersection")
@@ -582,7 +628,8 @@ public final class SetFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.containsAll(b) && b.containsAll(a));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-intersection")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)
 	public static BagOfValues dayTimeDurationIntersection(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true) BagOfValues a,
@@ -591,7 +638,8 @@ public final class SetFunctions
 		return a.intersection(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-union")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-union")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-union")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)
 	public static BagOfValues dayTimeDurationUnion(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true) BagOfValues a,
@@ -600,7 +648,8 @@ public final class SetFunctions
 		return a.union(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-subset")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-subset")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-subset")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal dayTimeDurationSubset(
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag = true) BagOfValues a,
@@ -609,7 +658,8 @@ public final class SetFunctions
 		return XacmlTypes.BOOLEAN.ofAny(b.containsAll(a));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-at-least-one-member-of")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal dayTimeDurationAtLeastOneMemberOf(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true) BagOfValues a,
@@ -618,7 +668,8 @@ public final class SetFunctions
 		return XacmlTypes.BOOLEAN.ofAny(b.containsAtLeastOneOf(a));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-set-equals")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal dayTimeDurationSetEquals(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true) BagOfValues a,
@@ -627,7 +678,8 @@ public final class SetFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.containsAll(b) && b.containsAll(a));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-intersection")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
 	public static BagOfValues yearMonthDurationIntersection(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true) BagOfValues a,
@@ -636,7 +688,8 @@ public final class SetFunctions
 		return a.intersection(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-union")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
 	public static BagOfValues yearMonthDurationUnion(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true) BagOfValues a,
@@ -645,7 +698,8 @@ public final class SetFunctions
 		return a.union(b);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-subset")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-subset")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-subset")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal yearMonthDurationSubset(
 			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag = true) BagOfValues a,
@@ -654,7 +708,8 @@ public final class SetFunctions
 		return XacmlTypes.BOOLEAN.ofAny(b.containsAll(a));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-at-least-one-member-of")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal yearMonthDurationAtLeastOneMemberOf(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true) BagOfValues a,
@@ -663,7 +718,8 @@ public final class SetFunctions
 		return XacmlTypes.BOOLEAN.ofAny(b.containsAtLeastOneOf(a));
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-set-equals")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal yearMonthDurationSetEquals(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true) BagOfValues a,

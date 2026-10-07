@@ -32,6 +32,7 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.types.ValueType;
@@ -129,6 +130,10 @@ public abstract class AttributeReference implements Expression
 			}
 			return Optional.empty();
 		}catch(Exception e){
+			if(e instanceof PathEvaluationException &&
+					((PathEvaluationException)e).getStatus().getStatusCode().isSyntaxError()){
+				throw (PathEvaluationException)e;
+			}
 			LOG.debug(e.getMessage(), e);
 			if(isMustBePresent()){
 				throw AttributeReferenceEvaluationException

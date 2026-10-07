@@ -1,0 +1,62 @@
+JAVA_HOME="$(jenv prefix 11)" rtk python3 <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/86-repeat-repository-test.py before
+# Each child below inherits that JAVA_HOME; no Maven install or stale installed dependency is used.
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/01.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/02.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/03.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/04.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/05.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/06.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/07.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/08.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/09.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/10.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/11.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/12.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/13.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/14.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/15.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/16.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/17.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/18.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/19.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/20.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/21.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/22.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/23.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/24.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/25.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/26.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/27.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/28.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/29.txt
+rtk git status --short
+rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/30.txt
+rtk git status --short

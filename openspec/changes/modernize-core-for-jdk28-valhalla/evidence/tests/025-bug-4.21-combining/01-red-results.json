@@ -1,0 +1,875 @@
+{
+  "test_class": "OverrideDecisionTableTest",
+  "counts": {
+    "tests": 3048,
+    "failures": 144,
+    "errors": 0,
+    "skipped": 0
+  },
+  "failures": [
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[435]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[436]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[442]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[443]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[445]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[447]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[448]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[449]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[452]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[454]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[455]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[457]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[477]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[478]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[489]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[496]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[515]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[517]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[518]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[519]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[524]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[531]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[557]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[559]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[560]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[562]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[566]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[580]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[654]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[655]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[662]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[663]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[670]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[671]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[678]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[679]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1197]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1198]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1204]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1205]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1207]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1209]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1210]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1211]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1214]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1216]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1217]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1219]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1239]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1240]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1251]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1258]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1277]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1279]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1280]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1281]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1286]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1293]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1319]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1321]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1322]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1324]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1328]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1342]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1416]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1417]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1424]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1425]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1432]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1433]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1440]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1441]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1959]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1960]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1966]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1967]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1969]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1971]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1972]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1973]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1976]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1978]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1979]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[1981]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2001]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2002]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2013]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2020]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2039]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2041]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2042]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2043]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2048]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2055]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2081]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2083]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2084]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2086]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2090]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2104]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2178]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2179]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2186]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2187]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2194]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2195]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2202]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2203]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2721]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2722]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2728]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2729]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2731]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2733]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2734]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2735]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2738]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2740]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2741]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2743]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2763]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2764]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2775]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2782]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2801]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2803]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2804]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2805]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2810]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2817]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2843]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2845]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2846]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2848]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2852]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2866]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2940]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2941]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2948]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2949]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <DENY> but was: <INDETERMINATE_DP>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2956]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2957]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2964]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    },
+    {
+      "name": "everyRegisteredOverrideVariantMatchesTheNormativeTable(TableCase)[2965]",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <INDETERMINATE_DP> but was: <DENY>"
+    }
+  ]
+}

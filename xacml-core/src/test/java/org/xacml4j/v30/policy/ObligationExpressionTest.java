@@ -22,17 +22,20 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CoreException;
@@ -46,31 +49,29 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
+@ExtendWith(MockitoExtension.class)
 public class ObligationExpressionTest
 {
-	private IMocksControl c;
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
 	public void testCreateObligationExpression() throws CoreException
 	{
-		AttributeAssignmentExpression attrExp = c.createMock(AttributeAssignmentExpression.class);
+		AttributeAssignmentExpression attrExp = AttributeAssignmentExpression.builder("id").expression(XacmlTypes.STRING.ofAny("value")).build();
 
-		expect(attrExp.getAttributeId()).andReturn("id");
-		c.replay();
+		assertEquals("id", attrExp.getAttributeId());
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp).build();
 
 		assertTrue(exp.isApplicable(Decision.DENY));
 		assertFalse(exp.isApplicable(Decision.PERMIT));
 		assertFalse(exp.isApplicable(Decision.INDETERMINATE));
 		assertEquals("test", exp.getId());
-		c.verify();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -89,7 +90,6 @@ public class ObligationExpressionTest
 				.issuer("issuer1")
 				.build();
 
-		c.replay();
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
 
 		Obligation obligation = exp.evaluate(context);
@@ -105,13 +105,13 @@ public class ObligationExpressionTest
 		assertEquals("attributeId1", a1.getAttributeId());
 		assertEquals(CategoryId.RESOURCE, a1.getCategory().get());
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), a1.getAttribute());
-		c.verify();
+		verifyNoMoreInteractions(context);
 	}
 
-	@Test(expected=EvaluationException.class)
+	@Test
 	public void testAttributeAssignmentThrowsEvaluationException() throws CoreException
 	{
-		Expression expression = c.createMock(Expression.class);
+		Expression expression = mock(Expression.class);
 		AttributeAssignmentExpression attrExp0 = AttributeAssignmentExpression
 				.builder("attributeId0")
 				.category(CategoryId.SUBJECT_ACCESS)
@@ -125,12 +125,16 @@ public class ObligationExpressionTest
 				.issuer("issuer1")
 				.build();
 
-		expect(expression.evaluate(context)).andThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));
-		c.replay();
+		when(expression.evaluate(context)).thenThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));
+		InOrder order = inOrder(context, expression);
 
 		ObligationExpression exp = ObligationExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
 
-		exp.evaluate(context);
-		c.verify();
+		assertThrows(EvaluationException.class, () -> exp.evaluate(context));
+		order.verify(expression).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(expression, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, expression);
 	}
 }

@@ -52,7 +52,8 @@ public final class RegExpFunctions
 		 return matches(context, regexp, input);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:anyURI-regexp-match")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal anyURIRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
@@ -62,7 +63,8 @@ public final class RegExpFunctions
 		 return matches(context, regexp, input);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:ipAddress-regexp-match")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:ipAddress-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal ipAddressRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
@@ -72,7 +74,8 @@ public final class RegExpFunctions
 		 return matches(context, regexp, input);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-regexp-match")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:dnsName-regexp-match")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dnsName-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal dnsNameRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
@@ -82,7 +85,8 @@ public final class RegExpFunctions
 		 return matches(context, regexp, input);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:rfc822Name-regexp-match")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal rfc822NameRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
@@ -92,7 +96,8 @@ public final class RegExpFunctions
 		 return matches(context, regexp, input);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:2.0:function:x500Name-regexp-match")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-regexp-match")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal x500NameRegexpMatch(
 			@XacmlEvaluationContextParam EvaluationContext context,
@@ -126,7 +131,8 @@ public final class RegExpFunctions
 	{
 		java.lang.String jdk = covertXacmlToJavaSyntax(regExp);
 		if(!CACHE_REGXP){
-			return Pattern.matches(jdk, value);
+			// XF 7.6.2 fn:matches succeeds when any substring matches.
+			return Pattern.compile(jdk).matcher(value).find();
 		}
 		Map<java.lang.String, Pattern> cache = REGEXP_CACHE.get();
 		Pattern p = cache.get(jdk);
@@ -135,7 +141,7 @@ public final class RegExpFunctions
 			cache.putIfAbsent(jdk, p);
 		}
 		return p.matcher(value)
-				.matches();
+				.find();
 	}
 
 	/*
@@ -173,23 +179,13 @@ public final class RegExpFunctions
 	 */
 	public static java.lang.String covertXacmlToJavaSyntax(java.lang.String xpr)
 	{
-	       // the regular expression syntax required by XACML differs
-	       // from the syntax supported by java.util.regex.Pattern
-	       // in several ways; the next several code blocks transform
-	       // the XACML syntax into a semantically equivalent Pattern syntax
+	       // XML Schema / XPath regular expressions differ from
+	       // java.util.regex.Pattern. Substring matching is Matcher.find
+	       // (XF 7.6.2). Do not wrap the pattern in ".*": that breaks
+	       // branch-local ^ and $ and makes an empty pattern miss "\n".
+	       // An empty pattern stays empty and matches every input.
 
 	       StringBuffer buf = new StringBuffer(xpr);
-
-	       // in order to handle the requirement that the string is
-	       // considered to match the pattern if any substring matches
-	       // the pattern, we prepend ".*" and append ".*" to the reg exp,
-	       // but only if there isn't an anchor (^ or $) in place
-
-	       if (xpr.charAt(0) != '^')
-	           buf = buf.insert(0, ".*");
-
-	       if (xpr.charAt(xpr.length() - 1) != '$')
-	           buf = buf.insert(buf.length(), ".*");
 
 	       // in order to handle Unicode blocks, we replace all
 	       // instances of "\p{Is" with "\p{In" in the reg exp
@@ -223,13 +219,44 @@ public final class RegExpFunctions
 	    	   idx = buf.indexOf("-[", idx+1);
 	       }
 
-	       java.lang.String regexp = buf.toString();
+	       java.lang.String regexp = translateEndAnchors(buf.toString());
 	       if(log.isDebugEnabled()){
 	    	   log.debug("XACML regexp=\"{}\", " +
 	    	   		"Java regexp=\"{}\"", xpr, regexp);
 	       }
 	       return regexp;
 	  }
+
+	private static java.lang.String translateEndAnchors(java.lang.String regexp)
+	{
+		StringBuilder translated = new StringBuilder(regexp.length());
+		int characterClassDepth = 0;
+		boolean escaped = false;
+		for (int index = 0; index < regexp.length(); index++) {
+			char current = regexp.charAt(index);
+			if (escaped) {
+				translated.append(current);
+				escaped = false;
+			} else if (current == '\\') {
+				translated.append(current);
+				escaped = true;
+			} else if (current == '[') {
+				characterClassDepth++;
+				translated.append(current);
+			} else if (current == ']') {
+				if (characterClassDepth > 0) {
+					characterClassDepth--;
+				}
+				translated.append(current);
+			} else if (current == '$' && characterClassDepth == 0) {
+				// XPath '$' is strict end-of-input; Java '$' also accepts before a final terminator.
+				translated.append("\\z");
+			} else {
+				translated.append(current);
+			}
+		}
+		return translated.toString();
+	}
 
 	private static int calculateNestLevel(
 			StringBuffer buf, int idx) {

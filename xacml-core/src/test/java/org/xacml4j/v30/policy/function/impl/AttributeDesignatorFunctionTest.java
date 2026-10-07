@@ -22,23 +22,25 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Optional;
 
 import com.google.common.truth.Truth8;
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.content.XmlContent;
@@ -48,6 +50,7 @@ import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
+@ExtendWith(MockitoExtension.class)
 public class AttributeDesignatorFunctionTest
 {
 
@@ -61,13 +64,11 @@ public class AttributeDesignatorFunctionTest
 			"</md:record>";
 
 	private EvaluationContext context;
-	private IMocksControl c;
 	private Entity entity;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception{
-		this.c = createControl();
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 
 		this.entity = Entity.builder()
 				      .content(XmlContent.of(XmlContent.fromString(TEST_XML)))
@@ -80,8 +81,8 @@ public class AttributeDesignatorFunctionTest
 	@Test
 	public void testDesignatorFunctionWithCategoryId()
 	{
-		expect(context.resolveEntity(CategoryId.SUBJECT_ACCESS)).andReturn(Optional.of(entity));
-		c.replay();
+		when(context.resolveEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.of(entity));
+		InOrder order = inOrder(context);
 		BagOfValues v = AttributeDesignatorFunctions.designator(context,
 		                            XacmlTypes.ANYURI.ofAny(CategoryId.SUBJECT_ACCESS.getId()),
 		                            XacmlTypes.ANYURI.ofAny("testId"),
@@ -89,12 +90,15 @@ public class AttributeDesignatorFunctionTest
 		                            XacmlTypes.BOOLEAN.ofAny(false),
 		                            null);
 		assertEquals(XacmlTypes.STRING.ofAny("aaaa").toBag(), v);
-		c.verify();
+		order.verify(context).resolveEntity(CategoryId.SUBJECT_ACCESS);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).resolveEntity(CategoryId.SUBJECT_ACCESS);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
 	public void testDesignatorFunctionWithEntity(){
-		c.replay();
 		Truth8.assertThat(entity.resolve("testId", XacmlTypes.STRING, null)).hasValue(StringVal.of("aaaa").toBag());
 		BagOfValues v = AttributeDesignatorFunctions.designator(context,
 		                            entity,
@@ -103,6 +107,82 @@ public class AttributeDesignatorFunctionTest
 		                            XacmlTypes.BOOLEAN.ofAny(false),
 		                            null);
 		assertEquals(XacmlTypes.STRING.ofAny("aaaa").toBag(), v);
-		c.verify();
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void testDesignatorFunctionWithMissingAttributeReturnsEmptyBagWhenOptional(){
+		Entity emptyEntity = Entity.builder().build();
+		when(context.resolveEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.of(emptyEntity));
+		BagOfValues categoryValues = AttributeDesignatorFunctions.designator(context,
+				XacmlTypes.ANYURI.ofAny(CategoryId.SUBJECT_ACCESS.getId()),
+				XacmlTypes.ANYURI.ofAny("testId"),
+				XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+				XacmlTypes.BOOLEAN.ofAny(false), null);
+		BagOfValues entityValues = AttributeDesignatorFunctions.designator(context,
+				emptyEntity,
+				XacmlTypes.ANYURI.ofAny("testId"),
+				XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+				XacmlTypes.BOOLEAN.ofAny(false), null);
+
+		assertEquals(0, categoryValues.size());
+		assertEquals(0, entityValues.size());
+		verify(context, times(1)).resolveEntity(CategoryId.SUBJECT_ACCESS);
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void testDesignatorFunctionWithMissingAttributeFailsWhenRequired(){
+		Entity emptyEntity = Entity.builder().build();
+		when(context.resolveEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.of(emptyEntity));
+		EvaluationException categoryFailure = assertThrows(EvaluationException.class,
+				() -> AttributeDesignatorFunctions.designator(context,
+						XacmlTypes.ANYURI.ofAny(CategoryId.SUBJECT_ACCESS.getId()),
+						XacmlTypes.ANYURI.ofAny("testId"),
+						XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+						XacmlTypes.BOOLEAN.ofAny(true), null));
+		EvaluationException entityFailure = assertThrows(EvaluationException.class,
+				() -> AttributeDesignatorFunctions.designator(context,
+						emptyEntity,
+						XacmlTypes.ANYURI.ofAny("testId"),
+						XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+						XacmlTypes.BOOLEAN.ofAny(true), null));
+
+		assertEquals(org.xacml4j.v30.StatusCodeId.MISSING_ATTRIBUTE,
+				categoryFailure.getStatus().getStatusCode().getValue());
+		assertEquals(org.xacml4j.v30.StatusCodeId.MISSING_ATTRIBUTE,
+				entityFailure.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of("testId"), categoryFailure.getStatus().getMessage());
+		assertEquals(Optional.of("testId"), entityFailure.getStatus().getMessage());
+		verify(context, times(1)).resolveEntity(CategoryId.SUBJECT_ACCESS);
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void absentCategoryWithOptionalDesignatorReturnsEmptyBag(){
+		when(context.resolveEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		BagOfValues values = AttributeDesignatorFunctions.designator(context,
+				XacmlTypes.ANYURI.ofAny(CategoryId.SUBJECT_ACCESS.getId()),
+				XacmlTypes.ANYURI.ofAny("testId"),
+				XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+				XacmlTypes.BOOLEAN.ofAny(false), null);
+		assertEquals(0, values.size());
+		verify(context, times(1)).resolveEntity(CategoryId.SUBJECT_ACCESS);
+		verifyNoMoreInteractions(context);
+	}
+
+	@Test
+	public void absentCategoryWithRequiredDesignatorReportsMissingAttribute(){
+		when(context.resolveEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		EvaluationException failure = assertThrows(EvaluationException.class,
+				() -> AttributeDesignatorFunctions.designator(context,
+						XacmlTypes.ANYURI.ofAny(CategoryId.SUBJECT_ACCESS.getId()),
+						XacmlTypes.ANYURI.ofAny("testId"),
+						XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId()),
+						XacmlTypes.BOOLEAN.ofAny(true), null));
+		assertEquals(org.xacml4j.v30.StatusCodeId.MISSING_ATTRIBUTE,
+				failure.getStatus().getStatusCode().getValue());
+		verify(context, times(1)).resolveEntity(CategoryId.SUBJECT_ACCESS);
+		verifyNoMoreInteractions(context);
 	}
 }

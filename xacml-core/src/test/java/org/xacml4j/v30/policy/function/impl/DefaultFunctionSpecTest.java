@@ -22,16 +22,19 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -41,24 +44,24 @@ import org.xacml4j.v30.policy.function.FunctionInvocation;
 import org.xacml4j.v30.policy.function.FunctionReturnTypeResolver;
 import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.collect.ImmutableList;
 
+@ExtendWith(MockitoExtension.class)
 public class DefaultFunctionSpecTest
 {
 	private FunctionInvocation invocation;
 	private FunctionReturnTypeResolver resolver;
 	private FunctionSpecBuilder b;
 	private EvaluationContext context;
-	private IMocksControl c;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.invocation = c.createMock(FunctionInvocation.class);
-		this.resolver = c.createMock(FunctionReturnTypeResolver.class);
+		this.invocation = mock(FunctionInvocation.class);
+		this.resolver = mock(FunctionReturnTypeResolver.class);
 		this.b = FunctionSpecBuilder.builder("testId");
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
@@ -68,39 +71,57 @@ public class DefaultFunctionSpecTest
 		.add(XacmlTypes.BOOLEAN.ofAny(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, params)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
-		c.replay();
-		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), spec.invokeWithList(context, params));
-		c.verify();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		when(invocation.invoke(spec, context, params)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		InOrder order = inOrder(invocation, resolver, context);
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), spec.<Value>invokeWithList(context, params));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context, params);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context, params);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 
-	@Test(expected=FunctionInvocationException.class)
+	@Test
 	public void testInvokeSpecFailsWithInvocationException() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
 		.add(XacmlTypes.BOOLEAN.ofAny(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(spec, "Fail"));
-		c.replay();
-		spec.invokeWithList(context, params);
-		c.verify();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		when(invocation.invoke(spec, context, params)).thenThrow(new FunctionInvocationException(spec, "Fail"));
+		InOrder order = inOrder(invocation, resolver, context);
+		assertThrows(FunctionInvocationException.class, () -> spec.invokeWithList(context, params));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context, params);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context, params);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 
-	@Test(expected=FunctionInvocationException.class)
+	@Test
 	public void testInvokeSpecFailsWithRuntimeException() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
 		.add(XacmlTypes.BOOLEAN.ofAny(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).build(resolver, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(false);
-		expect(invocation.invoke(spec, context, params)).andThrow(new NullPointerException("Fail"));
-		c.replay();
-		spec.invokeWithList(context, params);
-		c.verify();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		when(invocation.invoke(spec, context, params)).thenThrow(new NullPointerException("Fail"));
+		InOrder order = inOrder(invocation, resolver, context);
+		assertThrows(FunctionInvocationException.class, () -> spec.invokeWithList(context, params));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context, params);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context, params);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 	
 	@Test
@@ -110,11 +131,17 @@ public class DefaultFunctionSpecTest
 		.add(XacmlTypes.BOOLEAN.ofAny(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.ofAny(true)).build(XacmlTypes.BOOLEAN, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, ImmutableList.<Expression>of(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)))).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(invocation.invoke(spec, context, ImmutableList.<Expression>of(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)))).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(invocation, resolver, context);
 		spec.invokeWithList(context, params);
-		c.verify();
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context, ImmutableList.<Expression>of(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context, ImmutableList.<Expression>of(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 	
 	@Test
@@ -124,11 +151,17 @@ public class DefaultFunctionSpecTest
 		.add(XacmlTypes.BOOLEAN.ofAny(false))
 		.build();
 		FunctionSpec spec = b.param(XacmlTypes.BOOLEAN).optional(XacmlTypes.BOOLEAN).build(XacmlTypes.BOOLEAN, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null))).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(invocation.invoke(spec, context, Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null))).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(invocation, resolver, context);
 		spec.invokeWithList(context, params);
-		c.verify();
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context, Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context, Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 	
 	@Test
@@ -142,15 +175,23 @@ public class DefaultFunctionSpecTest
 				.optional(XacmlTypes.BOOLEAN)
 				.varArg(XacmlTypes.BOOLEAN, 0, 2)
 				.build(XacmlTypes.BOOLEAN, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null, null))).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(invocation.invoke(spec, context,
+				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null, null))).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(invocation, resolver, context);
 		spec.invokeWithList(context, params);
-		c.verify();
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context,
+				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null, null));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context,
+				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null, null));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 	
-	@Test(expected=FunctionInvocationException.class)
+	@Test
 	public void testOptionalParameterWithDefaultValueAndVarArg() throws EvaluationException
 	{
 		List<Expression> params = ImmutableList.<Expression>builder()
@@ -161,12 +202,16 @@ public class DefaultFunctionSpecTest
 				.optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.ofAny(true))
 				.varArg(XacmlTypes.BOOLEAN, 1, 2)
 				.build(XacmlTypes.BOOLEAN, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, 
-				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true), null))).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
-		spec.invokeWithList(context, params);
-		c.verify();
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		InOrder order = inOrder(invocation, resolver, context);
+		assertThrows(FunctionInvocationException.class, () -> spec.invokeWithList(context, params));
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		verify(invocation, never()).invoke(spec, context,
+				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true), null));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 	
 	@Test
@@ -179,13 +224,21 @@ public class DefaultFunctionSpecTest
 				.optional(XacmlTypes.INTEGER)
 				.optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.ofAny(true))
 				.build(XacmlTypes.BOOLEAN, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, 
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(invocation.invoke(spec, context,
 				Arrays.<Expression>asList(null, XacmlTypes.BOOLEAN.ofAny(true))))
-				.andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
+				.thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(invocation, resolver, context);
 		spec.invokeWithList(context, params);
-		c.verify();
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context,
+				Arrays.<Expression>asList(null, XacmlTypes.BOOLEAN.ofAny(true)));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context,
+				Arrays.<Expression>asList(null, XacmlTypes.BOOLEAN.ofAny(true)));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 	
 	@Test
@@ -200,13 +253,21 @@ public class DefaultFunctionSpecTest
 				.optional(XacmlTypes.INTEGER)
 				.optional(XacmlTypes.BOOLEAN, XacmlTypes.BOOLEAN.ofAny(true))
 				.build(XacmlTypes.BOOLEAN, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, 
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(invocation.invoke(spec, context,
 				Arrays.<Expression>asList(XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false))))
-				.andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
+				.thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(invocation, resolver, context);
 		spec.invokeWithList(context, params);
-		c.verify();
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context,
+				Arrays.<Expression>asList(XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false)));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context,
+				Arrays.<Expression>asList(XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false)));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 	
 	@Test
@@ -219,12 +280,20 @@ public class DefaultFunctionSpecTest
 				.optional(XacmlTypes.INTEGER)
 				.optional(XacmlTypes.INTEGER, XacmlTypes.INTEGER.ofAny(10))
 				.build(XacmlTypes.BOOLEAN, invocation);
-		expect(context.isValidateFuncParamsAtRuntime()).andReturn(true);
-		expect(invocation.invoke(spec, context, 
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+		when(invocation.invoke(spec, context,
 				Arrays.<Expression>asList(null, XacmlTypes.INTEGER.ofAny(10))))
-				.andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
+				.thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(invocation, resolver, context);
 		spec.invokeWithList(context, params);
-		c.verify();
+		order.verify(context).isValidateFuncParamsAtRuntime();
+		order.verify(invocation).invoke(spec, context,
+				Arrays.<Expression>asList(null, XacmlTypes.INTEGER.ofAny(10)));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(1)).isValidateFuncParamsAtRuntime();
+		verify(invocation, times(1)).invoke(spec, context,
+				Arrays.<Expression>asList(null, XacmlTypes.INTEGER.ofAny(10)));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(invocation, resolver, context);
 	}
 }

@@ -22,31 +22,27 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class ResolverRegistryBuilderTest
 {
 	private ResolverRegistry.Builder b;
 	private ResolverRegistry r;
-	private IMocksControl c;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.r = c.createMock(ResolverRegistry.class);
+		this.r = Mockito.mock(ResolverRegistry.class);
 		this.b = ResolverRegistry.builder();
 
 	}
 
 	@Test
 	public void testBuildEmpty(){
-		c.replay();
 		assertNotNull(b.build());
-		c.verify();
+		Mockito.verifyNoInteractions(r);
 	}
 }

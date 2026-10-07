@@ -1,0 +1,48 @@
+{
+  "current_bytes_match_final_gate": true,
+  "existing_3_0_comparator_test_assertions_removed": 0,
+  "broken_local_links": [],
+  "unredacted_checkout_or_home_paths": [],
+  "local_links_checked": 19,
+  "git_receipts": [
+    {
+      "command": [
+        "rtk",
+        "git",
+        "status",
+        "--short",
+        "--",
+        "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+        "xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java",
+        "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+        "xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java",
+        "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java",
+        "xacml-test/src/test/java/org/xacml4j/v20/Xacml20TestUtilityTest.java",
+        "xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java",
+        "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators"
+      ],
+      "exit_code": 0,
+      "stdout": " M xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java\n M xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java\n M xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java\n?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/\n?? xacml-conformance-tests/src/test/manifest/conformance-manifest.csv\n?? xacml-test/src/test/java/org/xacml4j/v20/Xacml20TestUtilityTest.java\n?? xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java\n?? xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "rtk",
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+        "xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java",
+        "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+        "xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java",
+        "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java",
+        "xacml-test/src/test/java/org/xacml4j/v20/Xacml20TestUtilityTest.java",
+        "xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -23,16 +23,19 @@ package org.xacml4j.v30.policy.function;
  */
 
 
-import static org.easymock.EasyMock.createControl;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.policy.FunctionSpec;
@@ -40,17 +43,16 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableList;
 
+@ExtendWith(MockitoExtension.class)
 public class FunctionSpecBuilderTest
 {
 	private FunctionSpec specSameTypeArgs;
 	private FunctionSpec specDiffTypeArgs;
 	private FunctionInvocation impl;
-	private IMocksControl c;
 	
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.impl =  c.createMock(FunctionInvocation.class);
+		this.impl =  mock(FunctionInvocation.class);
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		this.specSameTypeArgs = b.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).build(XacmlTypes.INTEGER, impl);
 		b = FunctionSpecBuilder.builder("testFunc2");
@@ -76,12 +78,12 @@ public class FunctionSpecBuilderTest
 		b.varArg(XacmlTypes.STRING, 0, 100);
 	}
 	
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testAddMultipleVarArg(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.varArg(XacmlTypes.STRING, 0, 100);
-		b.varArg(XacmlTypes.STRING, 0, 5);
+		assertThrows(SyntaxException.class, () -> b.varArg(XacmlTypes.STRING, 0, 5));
 	}
 	
 	public void testAddVarArgAfterOptional(){
@@ -93,55 +95,55 @@ public class FunctionSpecBuilderTest
 		assertTrue(f.isVariadic());
 	}
 	
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testAddVarArgAfterDefaultValue(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
-		b.optional(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"));
-		b.varArg(XacmlTypes.STRING, 0, 5);
+		assertThrows(SyntaxException.class, () -> {
+			b.optional(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"));
+			b.varArg(XacmlTypes.STRING, 0, 5);
+		});
 	}
 	
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testAddOptionalAfterVarArg1(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.varArg(XacmlTypes.STRING, 0, 5);
-		b.optional(XacmlTypes.STRING);
+		assertThrows(SyntaxException.class, () -> b.optional(XacmlTypes.STRING));
 		
 	}
 	
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testAddOptionalAfterVarArg2(){
 		
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
 		b.varArg(XacmlTypes.STRING, 0, 5);
-		b.optional(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"));
+		assertThrows(SyntaxException.class, () -> b.optional(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa")));
 		
 	}
 	
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testAddParamWithDefaultValueAndOptionalFalse(){
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc1");
-		b.param(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"), false);
+		assertThrows(SyntaxException.class, () -> b.param(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"), false));
 		
 	}
 	@Test
 	public void testValidateSingleTypeParametersWithSameTypeArgs()
 	{
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
-		c.replay();
 		assertFalse(specSameTypeArgs.validateParameters(b.build()));
 		assertFalse(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(10L)).build()));
 		assertTrue(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(12L)).build()));
 		assertFalse(specSameTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(13L)).build()));
-		c.verify();
+		verifyNoMoreInteractions(impl);
 	}
 
 	@Test
 	public void testValidateSingeTypeParametersWithDiffTypesArgs()
 	{
 		ImmutableList.Builder<Expression> b = ImmutableList.builder();
-		c.replay();
 		assertFalse(specDiffTypeArgs.validateParameters(b.build()));
 		assertTrue(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(10L)).build()));
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.INTEGER.ofAny(12L)).build()));
@@ -155,24 +157,22 @@ public class FunctionSpecBuilderTest
 		assertFalse(specDiffTypeArgs.validateParameters(exp2));
 		b = ImmutableList.builder();
 		assertFalse(specDiffTypeArgs.validateParameters(b.add(XacmlTypes.STRING.ofAny("a")).add(XacmlTypes.INTEGER.ofAny(10L)).build()));
-		c.verify();
+		verifyNoMoreInteractions(impl);
 	}
 
-	@Test(expected= SyntaxException.class)
+	@Test
 	public void testParameterAfterVaragParam()
 	{
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
-		c.replay();
-		b.varArg(XacmlTypes.INTEGER, 1, 10).param(XacmlTypes.INTEGER);
-		c.verify();
+		assertThrows(SyntaxException.class, () -> b.varArg(XacmlTypes.INTEGER, 1, 10).param(XacmlTypes.INTEGER));
+		verifyNoMoreInteractions(impl);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testParameterVarArgMinAndMaxEquals()
 	{
 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
-		c.replay();
-		b.varArg(XacmlTypes.INTEGER, 3, 3).param(XacmlTypes.INTEGER);
-		c.verify();
+		assertThrows(IllegalArgumentException.class, () -> b.varArg(XacmlTypes.INTEGER, 3, 3).param(XacmlTypes.INTEGER));
+		verifyNoMoreInteractions(impl);
 	}
 }

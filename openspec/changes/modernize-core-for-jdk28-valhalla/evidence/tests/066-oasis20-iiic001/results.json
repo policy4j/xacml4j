@@ -1,0 +1,38 @@
+{
+  "case": "oasis20/IIIC001",
+  "outcome": "passed",
+  "test_method": "testConformance(Case)[359]",
+  "suites": {
+    "Xacml20ConformanceTest": {
+      "tests": 375,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 9
+    },
+    "ConformanceManifestTest": {
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "manifest_rows_changed": [
+    {
+      "suite": "oasis20",
+      "case_id": "IIIC001",
+      "request_file": "oasis-xacml20-compat-test/IIIC001Request.xml",
+      "policy_files": "oasis-xacml20-compat-test/IIIC001Policy.xml",
+      "expected_response_file": "oasis-xacml20-compat-test/IIIC001Response.xml",
+      "disposition": "executed",
+      "enabled": "true",
+      "reason": "Compare the PDP response with the vendored expected response",
+      "bug_id": ""
+    }
+  ],
+  "manifest_sha256": "19f9bfe8b0dda4bfbffd02fe22af6c4765a75f778580536f0a3b5e61794b67e1",
+  "oasis20_cases": {
+    "total": 374,
+    "enabled": 365,
+    "skipped": 9
+  }
+}

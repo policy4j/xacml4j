@@ -1,0 +1,533 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Xacml4J Project                                                    [pom]
+[INFO] Xacml4J Core Engine Implementation                                 [jar]
+[INFO] Xacml4J XML representation JAXB classes                            [jar]
+[INFO] Xacml XML representation marshallers                               [jar]
+[INFO] Xacml4J Json based request/response and policy format support      [jar]
+[INFO] Xacml4J PDP                                                        [jar]
+[INFO] 
+[INFO] -------------------------< org.xacml4j:xacml >--------------------------
+[INFO] Building Xacml4J Project 2.0.0-SNAPSHOT                            [1/6]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT         [2/6]
+[INFO]   from xacml-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-core ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-core ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 31 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-core ---
+[INFO] 
+[INFO] ---------------------< org.xacml4j:xacml-xml-jaxb >---------------------
+[INFO] Building Xacml4J XML representation JAXB classes 2.0.0-SNAPSHOT    [3/6]
+[INFO]   from xacml-xml-jaxb/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-xml-jaxb ---
+[INFO] 
+[INFO] --- jaxb2:0.15.1:generate (default) @ xacml-xml-jaxb ---
+[INFO] Latest timestamp of the source resources is [2026-10-01 10:17:01.834], earliest timestamp of the target resources is [2026-10-01 10:28:05.407].
+[INFO] Sources are up-to-date, XJC will be skipped.
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-xml-jaxb ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-xml-jaxb ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] Copying 1 resource from target/generated-sources/xjc to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-xml-jaxb ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-xml-jaxb ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-xml-jaxb/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-xml-jaxb ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-xml-jaxb ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-xml >------------------------
+[INFO] Building Xacml XML representation marshallers 2.0.0-SNAPSHOT       [4/6]
+[INFO]   from xacml-xml/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-xml ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-xml ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-xml ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-xml/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-xml ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-xml ---
+[INFO] Copying 30 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-xml ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-xml ---
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-json >-----------------------
+[INFO] Building Xacml4J Json based request/response and policy format support 2.0.0-SNAPSHOT [5/6]
+[INFO]   from xacml-json/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-json ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-json ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-json ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-json/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-json ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-json ---
+[INFO] Copying 5 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-json ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-json ---
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-pdp >------------------------
+[INFO] Building Xacml4J PDP 2.0.0-SNAPSHOT                                [6/6]
+[INFO]   from xacml-pdp/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-pdp ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-pdp ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-pdp ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-pdp/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-pdp ---
+[INFO] Nothing to compile - all classes are up to date
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-pdp ---
+[INFO] Copying 30 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-pdp ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 20 source files with javac [debug target 11] to target/test-classes
+[INFO] <repo>/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java: <repo>/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java uses or overrides a deprecated API.
+[INFO] <repo>/xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-pdp ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[DEBUG] 2026-10-01 11:10:53,717 MultipleResourcesViaXPathExpressionHandler.handle() - Request does not have id="urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector" of type="xpathExpression", passing request to next handler
+[DEBUG] 2026-10-01 11:10:53,735 MultipleResourcesViaXPathExpressionHandler.handle() - Categories="[Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=null, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value2}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value3}]}]}}, reference=null}]"
+[DEBUG] 2026-10-01 11:10:53,736 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found multiple content selector path value=PathValue{type=xpathExpression, path=//md:record/md:patient, categoryId=CategoryId{id=resource}, pathType=XPATH}
+[DEBUG] 2026-10-01 11:10:53,736 XmlContent.evaluateToNodePathList() - Evaluating path=//md:record/md:patient
+[DEBUG] 2026-10-01 11:10:53,736 XPathProvider.evaluateToNodeSet() - EvaluateToNodeSet XPath="//md:record/md:patient"
+[DEBUG] 2026-10-01 11:10:53,736 XPathProvider.lambda$static$0() - Creating new XPath instance for thread id="1" name="main"
+[DEBUG] 2026-10-01 11:10:53,742 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,742 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,747 XPathProvider.evaluateToNodeSet() - Evaluation result has="2" nodes
+[DEBUG] 2026-10-01 11:10:53,747 XPathProvider.evaluateToNodeSet() - Result at index="0" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[DEBUG] 2026-10-01 11:10:53,747 XPathProvider.evaluateToNodeSet() - Result at index="1" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[DEBUG] 2026-10-01 11:10:53,747 XmlContent.evaluateToNodePathList() - Evaluation of path="//md:record/md:patient" result="[//md:record/md:patient[1], //md:record/md:patient[2]]"
+[DEBUG] 2026-10-01 11:10:53,748 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found node paths="[//md:record/md:patient[1], //md:record/md:patient[2]]" for path="PathValue{type=xpathExpression, path=//md:record/md:patient, categoryId=CategoryId{id=resource}, pathType=XPATH}"
+[DEBUG] 2026-10-01 11:10:53,748 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[1]"
+[DEBUG] 2026-10-01 11:10:53,748 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}"
+[DEBUG] 2026-10-01 11:10:53,748 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}"
+[DEBUG] 2026-10-01 11:10:53,749 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,781 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,782 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}"
+[DEBUG] 2026-10-01 11:10:53,782 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[2]"
+[DEBUG] 2026-10-01 11:10:53,782 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}"
+[DEBUG] 2026-10-01 11:10:53,782 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}"
+[DEBUG] 2026-10-01 11:10:53,782 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,783 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,783 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}"
+[DEBUG] 2026-10-01 11:10:53,784 MultipleResourcesViaXPathExpressionHandler.handle() - Categories="[Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}]"
+[DEBUG] 2026-10-01 11:10:53,786 MultipleResourcesViaXPathExpressionHandler.handle() - Cartesian product="2"
+[DEBUG] 2026-10-01 11:10:53,786 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=null, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value2}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value3}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[DEBUG] 2026-10-01 11:10:53,787 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=null, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value2}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value3}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[DEBUG] 2026-10-01 11:10:53,791 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found multiple content selector path value=PathValue{type=xpathExpression, path=//md:record/md:patient, categoryId=CategoryId{id=resource}, pathType=XPATH}
+[DEBUG] 2026-10-01 11:10:53,791 XmlContent.evaluateToNodePathList() - Evaluating path=//md:record/md:patient
+[DEBUG] 2026-10-01 11:10:53,791 XPathProvider.evaluateToNodeSet() - EvaluateToNodeSet XPath="//md:record/md:patient"
+[DEBUG] 2026-10-01 11:10:53,791 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,791 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,791 XPathProvider.evaluateToNodeSet() - Evaluation result has="2" nodes
+[DEBUG] 2026-10-01 11:10:53,792 XPathProvider.evaluateToNodeSet() - Result at index="0" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[DEBUG] 2026-10-01 11:10:53,792 XPathProvider.evaluateToNodeSet() - Result at index="1" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[DEBUG] 2026-10-01 11:10:53,792 XmlContent.evaluateToNodePathList() - Evaluation of path="//md:record/md:patient" result="[//md:record/md:patient[1], //md:record/md:patient[2]]"
+[DEBUG] 2026-10-01 11:10:53,792 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found node paths="[//md:record/md:patient[1], //md:record/md:patient[2]]" for path="PathValue{type=xpathExpression, path=//md:record/md:patient, categoryId=CategoryId{id=resource}, pathType=XPATH}"
+[DEBUG] 2026-10-01 11:10:53,792 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[1]"
+[DEBUG] 2026-10-01 11:10:53,792 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}"
+[DEBUG] 2026-10-01 11:10:53,793 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}"
+[DEBUG] 2026-10-01 11:10:53,793 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,793 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,793 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=resource, id=resource-ref, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=CategoryReference{referenceId=resource-ref}}"
+[DEBUG] 2026-10-01 11:10:53,794 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[2]"
+[DEBUG] 2026-10-01 11:10:53,794 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}"
+[DEBUG] 2026-10-01 11:10:53,794 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}"
+[DEBUG] 2026-10-01 11:10:53,794 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,794 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,795 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=resource, id=resource-ref, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=CategoryReference{referenceId=resource-ref}}"
+[DEBUG] 2026-10-01 11:10:53,795 MultipleResourcesViaXPathExpressionHandler.handle() - Categories="[Category{category=resource, id=resource-ref, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=CategoryReference{referenceId=resource-ref}}, Category{category=resource, id=resource-ref, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=CategoryReference{referenceId=resource-ref}}]"
+[DEBUG] 2026-10-01 11:10:53,796 MultipleResourcesViaXPathExpressionHandler.handle() - Cartesian product="2"
+[DEBUG] 2026-10-01 11:10:53,797 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=resource, id=resource-ref, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=CategoryReference{referenceId=resource-ref}}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[DEBUG] 2026-10-01 11:10:53,797 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=resource, id=resource-ref, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=shared-id, Issuer=first, IncludeInResult=false, Values=[StringVal{type=string, value=first-value}]}, Attribute{AttributeId=shared-id, Issuer=second, IncludeInResult=false, Values=[StringVal{type=string, value=second-value}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=selector-issuer, IncludeInResult=true, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=CategoryReference{referenceId=resource-ref}}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[DEBUG] 2026-10-01 11:10:53,799 MultipleResourcesViaXPathExpressionHandler.handle() - Request does not have id="urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector" of type="xpathExpression", passing request to next handler
+[DEBUG] 2026-10-01 11:10:53,800 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found multiple content selector path value=PathValue{type=xpathExpression, path=//md:record/md:patient, categoryId=CategoryId{id=resource}, pathType=XPATH}
+[DEBUG] 2026-10-01 11:10:53,803 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found multiple content selector path value=PathValue{type=xpathExpression, path=//md:record/md:patient/md:patientDoB/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}
+[DEBUG] 2026-10-01 11:10:53,804 XmlContent.evaluateToNodePathList() - Evaluating path=//md:record/md:patient/md:patientDoB/@md:attrn1
+[DEBUG] 2026-10-01 11:10:53,804 XPathProvider.evaluateToNodeSet() - EvaluateToNodeSet XPath="//md:record/md:patient/md:patientDoB/@md:attrn1"
+[DEBUG] 2026-10-01 11:10:53,804 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,804 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,804 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,805 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,805 XPathProvider.evaluateToNodeSet() - Evaluation result has="2" nodes
+[DEBUG] 2026-10-01 11:10:53,805 XPathProvider.evaluateToNodeSet() - Result at index="0" domType="Attribute" domNodeType="2"
+[DEBUG] 2026-10-01 11:10:53,805 XPathProvider.evaluateToNodeSet() - Result at index="1" domType="Attribute" domNodeType="2"
+[DEBUG] 2026-10-01 11:10:53,805 XmlContent.evaluateToNodePathList() - Evaluation of path="//md:record/md:patient/md:patientDoB/@md:attrn1" result="[//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, //md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1]"
+[DEBUG] 2026-10-01 11:10:53,805 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found node paths="[//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, //md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1]" for path="PathValue{type=xpathExpression, path=//md:record/md:patient/md:patientDoB/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}"
+[DEBUG] 2026-10-01 11:10:53,806 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1"
+[DEBUG] 2026-10-01 11:10:53,806 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}"
+[DEBUG] 2026-10-01 11:10:53,806 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}"
+[DEBUG] 2026-10-01 11:10:53,806 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,806 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,806 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}"
+[DEBUG] 2026-10-01 11:10:53,806 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1"
+[DEBUG] 2026-10-01 11:10:53,807 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}"
+[DEBUG] 2026-10-01 11:10:53,807 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}"
+[DEBUG] 2026-10-01 11:10:53,807 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,807 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,807 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}"
+[DEBUG] 2026-10-01 11:10:53,808 MultipleResourcesViaXPathExpressionHandler.handle() - Categories="[Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}, Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}]"
+[DEBUG] 2026-10-01 11:10:53,808 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found multiple content selector path value=PathValue{type=xpathExpression, path=//md:record/md:patient, categoryId=CategoryId{id=resource}, pathType=XPATH}
+[DEBUG] 2026-10-01 11:10:53,808 XmlContent.evaluateToNodePathList() - Evaluating path=//md:record/md:patient
+[DEBUG] 2026-10-01 11:10:53,808 XPathProvider.evaluateToNodeSet() - EvaluateToNodeSet XPath="//md:record/md:patient"
+[DEBUG] 2026-10-01 11:10:53,808 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,808 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,809 XPathProvider.evaluateToNodeSet() - Evaluation result has="2" nodes
+[DEBUG] 2026-10-01 11:10:53,809 XPathProvider.evaluateToNodeSet() - Result at index="0" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[DEBUG] 2026-10-01 11:10:53,809 XPathProvider.evaluateToNodeSet() - Result at index="1" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[DEBUG] 2026-10-01 11:10:53,809 XmlContent.evaluateToNodePathList() - Evaluation of path="//md:record/md:patient" result="[//md:record/md:patient[1], //md:record/md:patient[2]]"
+[DEBUG] 2026-10-01 11:10:53,809 MultipleResourcesViaXPathExpressionHandler.getCategories() - Found node paths="[//md:record/md:patient[1], //md:record/md:patient[2]]" for path="PathValue{type=xpathExpression, path=//md:record/md:patient, categoryId=CategoryId{id=resource}, pathType=XPATH}"
+[DEBUG] 2026-10-01 11:10:53,809 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[1]"
+[DEBUG] 2026-10-01 11:10:53,809 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}"
+[DEBUG] 2026-10-01 11:10:53,809 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}"
+[DEBUG] 2026-10-01 11:10:53,809 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,810 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,810 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}"
+[DEBUG] 2026-10-01 11:10:53,811 MultipleResourcesViaXPathExpressionHandler.transform() - Processing path="//md:record/md:patient[2]"
+[DEBUG] 2026-10-01 11:10:53,811 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}"
+[DEBUG] 2026-10-01 11:10:53,811 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}"
+[DEBUG] 2026-10-01 11:10:53,811 MultipleResourcesViaXPathExpressionHandler.transform() - Adding attribute="Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}"
+[DEBUG] 2026-10-01 11:10:53,811 MultipleResourcesViaXPathExpressionHandler.transform() - New Entity="Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}"
+[DEBUG] 2026-10-01 11:10:53,811 MultipleResourcesViaXPathExpressionHandler.transform() - New Category="Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}"
+[DEBUG] 2026-10-01 11:10:53,812 MultipleResourcesViaXPathExpressionHandler.handle() - Categories="[Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}]"
+[DEBUG] 2026-10-01 11:10:53,812 MultipleResourcesViaXPathExpressionHandler.handle() - Cartesian product="4"
+[DEBUG] 2026-10-01 11:10:53,812 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[DEBUG] 2026-10-01 11:10:53,813 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[DEBUG] 2026-10-01 11:10:53,813 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[2], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[DEBUG] 2026-10-01 11:10:53,814 MultipleResourcesViaXPathExpressionHandler.handle() - Created request="RequestContext{ReturnPolicyIDList=false, CombineDecision=false, [Category{category=access-subject, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId7, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId8, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1]/md:patientDoB[1]/@md:attrn1, categoryId=CategoryId{id=access-subject}, pathType=XPATH}]}]}}, reference=null}, Category{category=resource, id=null, entity=Entity{type=entity, value=Entity{content=XmlContent{content=<md:record xmlns:md="urn:example:med:schemas:record" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><md:patient><md:patientDoB attrn2="v" md:attrn1="test">1992-03-21</md:patientDoB><md:patient-number>555555</md:patient-number></md:patient><md:patient><md:patientDoB attrn2="v1" md:attrn1="test1">1991-01-11</md:patientDoB><md:patient-number>11111</md:patient-number></md:patient></md:record>, type=XML_UTF8}, attributes=[Attribute{AttributeId=testId3, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value0}]}, Attribute{AttributeId=testId4, Issuer=null, IncludeInResult=false, Values=[StringVal{type=string, value=value1}]}, Attribute{AttributeId=urn:oasis:names:tc:xacml:3.0:content-selector, Issuer=null, IncludeInResult=false, Values=[PathValue{type=xpathExpression, path=//md:record/md:patient[1], categoryId=CategoryId{id=resource}, pathType=XPATH}]}]}}, reference=null}], RequestReferences=[], RequestDefaults=RequestDefaults{xpathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116}}"
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.449 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[INFO] Running org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[DEBUG] 2026-10-01 11:10:53,826 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=entity-selector}
+[DEBUG] 2026-10-01 11:10:53,827 XmlContent.getAttributeValues() - Evaluating contextSelector xpath="PathValue{type=xpathExpression, path=/md:record/md:patient, categoryId=CategoryId{id=recipient-subject}, pathType=XPATH}"
+[DEBUG] 2026-10-01 11:10:53,827 XPathProvider.evaluateToNode() - EvaluateToNode XPath="/md:record/md:patient"
+[DEBUG] 2026-10-01 11:10:53,827 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,827 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,827 XPathProvider.evaluateToNode() - Xpath=com.sun.org.apache.xpath.internal.jaxp.XPathExpressionImpl@64b31700 result node name="{urn:example:med:schemas:record}patient" node type="1"
+[DEBUG] 2026-10-01 11:10:53,827 XPathProvider.evaluateToNodeSet() - EvaluateToNodeSet XPath="md:patient-number/text()"
+[DEBUG] 2026-10-01 11:10:53,827 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,828 XPathProvider.evaluateToNodeSet() - Evaluation result has="1" nodes
+[DEBUG] 2026-10-01 11:10:53,828 XPathProvider.evaluateToNodeSet() - Result at index="0" domType="Text" domNodeType="3"
+[DEBUG] 2026-10-01 11:10:53,828 XmlContent.getAttributeValues() - Found="1" nodes via xpath="md:patient-number/text()"
+[DEBUG] 2026-10-01 11:10:53,843 XmlContent.convertNodeToXacml() - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+[DEBUG] 2026-10-01 11:10:53,845 Entity.resolve() - attributeId=testId type=anyURI issuer=null values=[]
+[DEBUG] 2026-10-01 11:10:53,847 Entity.resolve() - attributeId=testId type=anyURI issuer=null values=[]
+[DEBUG] 2026-10-01 11:10:53,847 DefaultEvaluationContextHandler.doPipResolve() - null
+46[DEBUG] 2026-10-01 11:10:53,849 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,850 XmlContent.getAttributeValues() - Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+107[DEBUG] 2026-10-01 11:10:53,853 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,853 XmlContent.getAttributeValues() - Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+107[DEBUG] 2026-10-01 11:10:53,855 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient, PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,855 XmlContent.getAttributeValues() - Invalid path="/md:record/md:patient" type="XPATH" contextSelectorId="null"
+107[DEBUG] 2026-10-01 11:10:53,856 Entity.resolve() - attributeId=test-id type=integer issuer=requested-issuer values=[IntegerVal{type=integer, value=7}, IntegerVal{type=integer, value=7}]
+[DEBUG] 2026-10-01 11:10:53,857 DefaultEvaluationContextHandler.doPipResolve() - null
+46[DEBUG] 2026-10-01 11:10:53,858 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=date, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,859 XmlContent.getAttributeValues() - Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+107[DEBUG] 2026-10-01 11:10:53,860 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/test, PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,860 XmlContent.getAttributeValues() - Invalid path="/test" type="XPATH" contextSelectorId="null"
+107[DEBUG] 2026-10-01 11:10:53,861 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=date, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,861 XmlContent.getAttributeValues() - Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+107[DEBUG] 2026-10-01 11:10:53,862 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,862 XPathProvider.evaluateToNodeSet() - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[DEBUG] 2026-10-01 11:10:53,863 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,863 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,863 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,863 XPathProvider.evaluateToNodeSet() - Evaluation result has="1" nodes
+[DEBUG] 2026-10-01 11:10:53,863 XPathProvider.evaluateToNodeSet() - Result at index="0" domType="Text" domNodeType="3"
+[DEBUG] 2026-10-01 11:10:53,863 XmlContent.getAttributeValues() - Found="1" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[DEBUG] 2026-10-01 11:10:53,863 XmlContent.convertNodeToXacml() - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+[DEBUG] 2026-10-01 11:10:53,864 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=/md:record/md:patient/md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=missing-selector}
+[DEBUG] 2026-10-01 11:10:53,864 XmlContent.getAttributeValues() - Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="missing-selector"
+107[DEBUG] 2026-10-01 11:10:53,866 Entity.resolve() - attributeId=testId type=anyURI issuer=null values=[]
+[DEBUG] 2026-10-01 11:10:53,866 Entity.resolve() - attributeId=testId type=anyURI issuer=null values=[]
+[WARN ] 2026-10-01 11:10:53,866 DefaultEvaluationContextHandler.doPipResolve() - Cyclic designator="AttributeDesignatorKey{Category=resource, AttributeId=testId, DataType=anyURI, Issuer=null}" resolution detected
+[DEBUG] 2026-10-01 11:10:53,867 XmlContent.getAttributeValues() - Evaluating selector=AttributeSelectorKey{Category=recipient-subject, Path=md:patient-number/text(), PathType=XPATH, DataType=integer, ContextSelectorId=null}
+[DEBUG] 2026-10-01 11:10:53,867 XmlContent.getAttributeValues() - Evaluating contextSelector xpath="PathValue{type=xpathExpression, path=/md:record/md:patient, categoryId=CategoryId{id=recipient-subject}, pathType=XPATH}"
+[DEBUG] 2026-10-01 11:10:53,867 XPathProvider.evaluateToNode() - EvaluateToNode XPath="/md:record/md:patient"
+[DEBUG] 2026-10-01 11:10:53,867 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,867 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,867 XPathProvider.evaluateToNode() - Xpath=com.sun.org.apache.xpath.internal.jaxp.XPathExpressionImpl@777c9dc9 result node name="{urn:example:med:schemas:record}patient" node type="1"
+[DEBUG] 2026-10-01 11:10:53,868 XPathProvider.evaluateToNodeSet() - EvaluateToNodeSet XPath="md:patient-number/text()"
+[DEBUG] 2026-10-01 11:10:53,868 NodeNamespaceContext.getNamespaceURI() - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[DEBUG] 2026-10-01 11:10:53,868 XPathProvider.evaluateToNodeSet() - Evaluation result has="1" nodes
+[DEBUG] 2026-10-01 11:10:53,868 XPathProvider.evaluateToNodeSet() - Result at index="0" domType="Text" domNodeType="3"
+[DEBUG] 2026-10-01 11:10:53,868 XmlContent.getAttributeValues() - Found="1" nodes via xpath="md:patient-number/text()"
+[DEBUG] 2026-10-01 11:10:53,868 XmlContent.convertNodeToXacml() - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+[ERROR] Tests run: 15, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.052 s <<< FAILURE! - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[ERROR] org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet  Time elapsed: 0.003 s  <<< ERROR!
+org.xacml4j.v30.PathEvaluationException: Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+	at org.xacml4j.v30.PathEvaluationException.invalidXpathContextSelectorId(PathEvaluationException.java:107)
+	at org.xacml4j.v30.content.XmlContent.getAttributeValues(XmlContent.java:202)
+	at org.xacml4j.v30.content.XmlContent.resolve(XmlContent.java:181)
+	at org.xacml4j.v30.types.Entity.resolve(Entity.java:218)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.lambda$doSelectorResolve$4(DefaultEvaluationContextHandler.java:121)
+	at java.base/java.util.Optional.flatMap(Optional.java:294)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.doSelectorResolve(DefaultEvaluationContextHandler.java:121)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.lambda$resolve$3(DefaultEvaluationContextHandler.java:111)
+	at java.base/java.util.Optional.or(Optional.java:318)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.resolve(DefaultEvaluationContextHandler.java:111)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet(DefaultEvaluationContextHandlerTest.java:201)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest  Time elapsed: 0.001 s  <<< ERROR!
+org.xacml4j.v30.PathEvaluationException: Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+	at org.xacml4j.v30.PathEvaluationException.invalidXpathContextSelectorId(PathEvaluationException.java:107)
+	at org.xacml4j.v30.content.XmlContent.getAttributeValues(XmlContent.java:202)
+	at org.xacml4j.v30.content.XmlContent.resolve(XmlContent.java:181)
+	at org.xacml4j.v30.types.Entity.resolve(Entity.java:218)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.lambda$doSelectorResolve$4(DefaultEvaluationContextHandler.java:121)
+	at java.base/java.util.Optional.flatMap(Optional.java:294)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.doSelectorResolve(DefaultEvaluationContextHandler.java:121)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.lambda$resolve$3(DefaultEvaluationContextHandler.java:111)
+	at java.base/java.util.Optional.or(Optional.java:318)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.resolve(DefaultEvaluationContextHandler.java:111)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest(DefaultEvaluationContextHandlerTest.java:182)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testSelectorResolveContentInRequestExistXPathReturnsEmptySet  Time elapsed: 0.001 s  <<< ERROR!
+org.xacml4j.v30.PathEvaluationException: Invalid path="/test" type="XPATH" contextSelectorId="null"
+	at org.xacml4j.v30.PathEvaluationException.invalidXpathContextSelectorId(PathEvaluationException.java:107)
+	at org.xacml4j.v30.content.XmlContent.getAttributeValues(XmlContent.java:202)
+	at org.xacml4j.v30.content.XmlContent.resolve(XmlContent.java:181)
+	at org.xacml4j.v30.types.Entity.resolve(Entity.java:218)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.lambda$doSelectorResolve$4(DefaultEvaluationContextHandler.java:121)
+	at java.base/java.util.Optional.flatMap(Optional.java:294)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.doSelectorResolve(DefaultEvaluationContextHandler.java:121)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.lambda$resolve$3(DefaultEvaluationContextHandler.java:111)
+	at java.base/java.util.Optional.or(Optional.java:318)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandler.resolve(DefaultEvaluationContextHandler.java:111)
+	at org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testSelectorResolveContentInRequestExistXPathReturnsEmptySet(DefaultEvaluationContextHandlerTest.java:305)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentInRequestExistXPathReturnsEmptySet:305 » PathEvaluation Invalid path="/test" type="XPATH" contextSelectorId="null"
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest:182 » PathEvaluation Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet:201 » PathEvaluation Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+[INFO] 
+[ERROR] Tests run: 21, Failures: 0, Errors: 3, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] 
+[INFO] Xacml4J Project .................................... SUCCESS [  0.635 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.396 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.218 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.091 s]
+[INFO] Xacml4J Json based request/response and policy format support SUCCESS [  0.046 s]
+[INFO] Xacml4J PDP ........................................ FAILURE [  1.840 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.321 s
+[INFO] Finished at: 2026-10-01T11:10:53-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.0.0:test (default-test) on project xacml-pdp: 
+[ERROR] 
+[ERROR] Please refer to <repo>/xacml-pdp/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :xacml-pdp

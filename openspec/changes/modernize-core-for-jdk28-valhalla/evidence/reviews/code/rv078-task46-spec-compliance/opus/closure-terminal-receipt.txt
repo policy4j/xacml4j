@@ -1,0 +1,41 @@
+Welcome to fish, the friendly interactiv
+e shell
+Type help for instructions on how to use
+ fish
+
+…n/modernize-c… *1 !217 ?86   11.0.32.1
+❮ cd '$HOME
+/Projects/Personal/xacml4j-worktrees/po
+licy4j' && NTM_SPAWN_ORDER=2 NTM_SPAWN_T
+OTAL=3 NTM_SPAWN_BATCH_ID='spawn-2026100
+
+  Against the oracle
+  - spec.md:36-47 and scenarios :49-72 match the algorithm I inspected and the retained CS01 transcription:
+    arity, first-child branches, evaluation order, status retention, and no child context on invalid arity.
+  - The plain-Indeterminate rule is marked as additional and legacy (:43-44, :65). That is acceptable.
+  - spec.md:74-82 matches the §7.18 oracle and the staging code. Scenarios :84-97 map to the three executed
+    nested tests.
+
+  Proof status (unchanged)
+  - The failed-own-obligation scenario (:99-102) and the extended-Indeterminate clause (:81-82) are correct by
+    source reading only. No dedicated test ran; policy4j-the.4.54 holds that proof.
+
+  Optional wording, best done before the 4.54 tests are written
+  1. :81-82: scope the clause as :78-79 does: "MUST NOT publish responses to an enclosing policy set or the
+     final response." By source reading, the outermost composite is unstaged, so its children write to the
+     root context during that pass. The PDP never returns them, because the final decision is not Permit or
+     Deny. A test that inspects the root context after an outermost Indeterminate would otherwise fail against
+     the literal text.
+  2. :45: say "retain the status that the deciding child reported". A child can return Indeterminate without a
+     status (an unresolved reference); the algorithm then adds none.
+  3. Add a scenario: the gate child's responses are returned when its decision equals the final decision. Two
+     executed tests pin this, and the "discarded branch" titles suggest the opposite.
+
+  DONE_TRACEABILITY_OPUS_20261004
+
+✻ Brewed for 2m 19s · done 1:51 PM
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯ 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts · ← 3 agents

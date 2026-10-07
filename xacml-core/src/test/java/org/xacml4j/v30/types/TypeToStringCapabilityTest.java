@@ -22,7 +22,8 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 
 import com.google.common.truth.Truth8;
 

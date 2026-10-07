@@ -24,9 +24,10 @@ package org.xacml4j.v30.policy;
 
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
@@ -56,10 +57,12 @@ public class VersionMatchTest
 		assertThat(m.match(Version.parse("2.1.1")), is(false));
 	}
 
-	@Test(expected= SyntaxException.class)
-	public void testCreateWithSubsquentialTwoTimes() throws SyntaxException
+	@Test
+	public void testCreateWithSubsquentialTwoTimes()
 	{
-		new VersionMatch("1.+.+");
+		assertThrows(SyntaxException.class, () -> {
+			new VersionMatch("1.+.+");
+		});
 	}
 
 	@Test

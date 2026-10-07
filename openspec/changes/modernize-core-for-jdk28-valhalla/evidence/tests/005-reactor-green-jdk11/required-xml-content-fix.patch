@@ -1,0 +1,14 @@
+diff --git a/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java b/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+--- a/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
++++ b/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+@@ -479,7 +479,9 @@ public final class Xacml30RequestContextFromJaxbToObjectModelMapper
+ 		if(o.isEmpty()){
+ 			return java.util.Optional.empty();
+ 		}
+-		Object v = content.getContent().get(0);
++		Object v = o.stream()
++				.filter(value -> !(value instanceof String) || !((String)value).trim().isEmpty())
++				.findFirst().orElse("");
+ 		if(v instanceof Node){
+ 			return Content.fromNode(v, Content.Type.XML_UTF8);
+ 		}

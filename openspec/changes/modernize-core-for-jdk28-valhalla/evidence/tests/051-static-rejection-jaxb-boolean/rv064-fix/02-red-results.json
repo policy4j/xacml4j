@@ -1,0 +1,889 @@
+[
+  {
+    "suite": "org.xacml4j.v30.xml.BaseJAXBUnmarshallerSecurityTest",
+    "counts": {
+      "tests": 88,
+      "failures": 60,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests": [
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[1]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[2]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[3]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[4]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[5]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[6]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[7]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[8]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[9]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[10]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[11]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[12]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[13]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[14]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[15]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[16]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[17]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[18]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[19]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[20]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[21]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[22]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[23]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[24]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[25]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[26]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[27]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[28]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[29]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[30]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[31]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[32]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[33]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[34]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[35]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[36]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[37]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[38]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[39]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "rejectsExternalEntitiesBeforeAttemptingIo(Kind, String, String)[40]",
+        "result": "failure",
+        "message": "External entities must be blocked before filesystem or network IO ==> expected: <false> but was: <true>"
+      },
+      {
+        "name": "entityExpansionLimitRemainsASyntaxError(Kind)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "entityExpansionLimitRemainsASyntaxError(Kind)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "entityExpansionLimitRemainsASyntaxError(Kind)[3]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "entityExpansionLimitRemainsASyntaxError(Kind)[4]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[3]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[4]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[5]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[6]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[7]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[8]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[9]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[10]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[11]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[12]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[13]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[14]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[15]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[16]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[17]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[18]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[19]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalSubsetEntityRemainsSupported(Kind, String)[20]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[1]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[2]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[3]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[4]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[5]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[6]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[7]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[8]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[9]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[10]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[11]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[12]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[13]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[14]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[15]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[16]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[17]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[18]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[19]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "neverReturnsAnExternalEntityValue(Kind, String)[20]",
+        "result": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "name": "internalEntityAlsoWorksThroughTheHistoricalJaxbEntryPoint(Kind)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalEntityAlsoWorksThroughTheHistoricalJaxbEntryPoint(Kind)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalEntityAlsoWorksThroughTheHistoricalJaxbEntryPoint(Kind)[3]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "internalEntityAlsoWorksThroughTheHistoricalJaxbEntryPoint(Kind)[4]",
+        "result": "pass",
+        "message": ""
+      }
+    ]
+  },
+  {
+    "suite": "org.xacml4j.v30.xml.BooleanAttributeLexicalTest",
+    "counts": {
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "tests": [
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[3]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[4]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[5]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[6]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[7]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[8]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[9]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[10]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[11]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[12]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[13]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[14]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[15]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[16]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[17]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[18]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[19]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[20]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[21]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[22]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[23]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[24]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[25]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[26]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[27]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[28]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[29]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[30]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[31]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[32]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[33]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[34]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "acceptsValidLexicalForms(String, String, boolean)[35]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[3]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[4]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[5]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[6]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[7]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[8]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "preservesValidAttributesForEveryXmlInputForm(String)[9]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "missingDesignatorAttributeIdIsAnIdentifiedSyntaxError(int)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "missingDesignatorAttributeIdIsAnIdentifiedSyntaxError(int)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[3]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[4]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[5]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[6]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[7]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[8]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[9]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[10]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[11]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[12]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[13]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[14]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[15]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[16]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[17]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[18]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[19]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[20]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[21]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[22]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[23]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[24]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[25]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[26]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[27]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidLexicalFormsWithSyntaxError(String, String)[28]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "optionalXacml20MustBePresentKeepsItsFalseDefault(String)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "optionalXacml20MustBePresentKeepsItsFalseDefault(String)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[1]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[2]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[3]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[4]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[5]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[6]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[7]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[8]",
+        "result": "pass",
+        "message": ""
+      },
+      {
+        "name": "rejectsInvalidAttributesForEveryXmlInputForm(String)[9]",
+        "result": "pass",
+        "message": ""
+      }
+    ]
+  }
+]

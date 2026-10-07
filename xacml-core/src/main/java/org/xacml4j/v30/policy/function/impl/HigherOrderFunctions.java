@@ -28,17 +28,21 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.ExpressionVisitor;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.Value;
-import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * XACML higher order functions
@@ -51,17 +55,23 @@ public final class HigherOrderFunctions
 	/** Private constructor for utility class */
 	private HigherOrderFunctions() {}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:any-of")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	@XacmlFuncParamValidator(validatorClass=SingleBagFunctionParametersValidator.class)
 	public static BooleanVal anyOf(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
-			@XacmlFuncParamAnyValue Value value,
-			@XacmlFuncParamAnyBag BagOfValues bag)
+			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
 		throws EvaluationException
 	{
+		requireValidArguments(ref, arguments, true, true);
+		int bagIndex = singleBagIndex(arguments);
+		BagOfValues bag = (BagOfValues)arguments[bagIndex];
+		Expression[] parameters = arguments.clone();
 		for(Value valueFromBag : bag.values()){
-			BooleanVal r = ref.invoke(context, value, valueFromBag);
+			parameters[bagIndex] = valueFromBag;
+			BooleanVal r = ref.invoke(context, parameters);
 			if(r.get()){
 				return BooleanVal.of(true);
 			}
@@ -69,17 +79,23 @@ public final class HigherOrderFunctions
 		return BooleanVal.of(false);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:all-of")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	@XacmlFuncParamValidator(validatorClass=SingleBagFunctionParametersValidator.class)
 	public static BooleanVal allOf(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
-			@XacmlFuncParamAnyValue Value value,
-			@XacmlFuncParamAnyBag BagOfValues bag)
+			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
 		throws EvaluationException
 	{
+		requireValidArguments(ref, arguments, true, true);
+		int bagIndex = singleBagIndex(arguments);
+		BagOfValues bag = (BagOfValues)arguments[bagIndex];
+		Expression[] parameters = arguments.clone();
 		for(Value valueFromBag : bag.values()){
-			BooleanVal r = ref.invoke(context, value, valueFromBag);
+			parameters[bagIndex] = valueFromBag;
+			BooleanVal r = ref.invoke(context, parameters);
 			if(!r.get()){
 				return BooleanVal.of(false);
 			}
@@ -87,24 +103,18 @@ public final class HigherOrderFunctions
 		return BooleanVal.of(true);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:any-of-any")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	@XacmlFuncParamValidator(validatorClass=AnyOfAnyFunctionParametersValidator.class)
 	public static BooleanVal anyOfAny(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
-			@XacmlFuncParamAnyBag BagOfValues a,
-			@XacmlFuncParamAnyBag BagOfValues b)
+			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
 		throws EvaluationException
 	{
-		for(Value aValue : a.values()){
-			for(Value bValue : b.values()){
-				BooleanVal r = ref.invoke(context, aValue, bValue);
-				if(r.get()){
-					return BooleanVal.of(true);
-				}
-			}
-		}
-		return BooleanVal.of(false);
+		requireValidArguments(ref, arguments, false, true);
+		return BooleanVal.of(anyOfAny(context, ref, arguments, new Expression[arguments.length], 0));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
@@ -135,14 +145,13 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues b)
 		throws EvaluationException
 	{
-		for(Value va : a.values())
+		for(Value vb : b.values())
 		{
-			boolean result = allOf(context, ref, va, b).get();
-			if(result){
-				return BooleanVal.of(true);
+			if(!anyOf(context, ref, a, vb).get()){
+				return BooleanVal.of(false);
 			}
 		}
-		return BooleanVal.of(false);
+		return BooleanVal.of(true);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
@@ -166,24 +175,156 @@ public final class HigherOrderFunctions
 		return BooleanVal.of(true);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:map")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:map")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:map")
 	@XacmlFuncReturnTypeResolver(resolverClass=MapFunctionResolverValidator.class)
 	@XacmlFuncParamValidator(validatorClass=MapFunctionResolverValidator.class)
 	public static BagOfValues map(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
-			@XacmlFuncParamAnyBag BagOfValues bag)
+			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
 		throws EvaluationException
 	{
+		requireValidArguments(ref, arguments, true, false);
+		int bagIndex = singleBagIndex(arguments);
+		BagOfValues bag = (BagOfValues)arguments[bagIndex];
+		Expression[] parameters = arguments.clone();
 		Collection<Value<?>> values = new ArrayList<>(bag.size());
 		for(Value<?> v : bag.values()){
-			values.add(ref.invoke(context, v));
+			parameters[bagIndex] = v;
+			values.add(ref.invoke(context, parameters));
 		}
 		return ref.getEvaluatesTo()
 				.getValueType()
 				.bagBuilder()
 				.attributes(values)
 				.build();
+	}
+
+	private static int singleBagIndex(Expression[] arguments)
+	{
+		for(int i = 0; i < arguments.length; i++){
+			if(arguments[i] instanceof BagOfValues){
+				return i;
+			}
+		}
+		throw new IllegalArgumentException("A single bag argument is required");
+	}
+
+	private static boolean anyOfAny(org.xacml4j.v30.EvaluationContext context,
+			FunctionReference ref, Expression[] arguments, Expression[] parameters, int index)
+		throws EvaluationException
+	{
+		if(index == arguments.length){
+			BooleanVal result = ref.invoke(context, parameters);
+			return result.get();
+		}
+		if(arguments[index] instanceof BagOfValues){
+			for(Value value : ((BagOfValues)arguments[index]).values()){
+				parameters[index] = value;
+				if(anyOfAny(context, ref, arguments, parameters, index + 1)){
+					return true;
+				}
+			}
+			return false;
+		}
+		parameters[index] = arguments[index];
+		return anyOfAny(context, ref, arguments, parameters, index + 1);
+	}
+
+	private static void requireValidArguments(FunctionReference ref, Expression[] arguments,
+			boolean singleBag, boolean booleanResult) throws EvaluationException
+	{
+		List<Expression> parameters = new ArrayList<>();
+		parameters.add(ref);
+		if(arguments != null){
+			parameters.addAll(Arrays.asList(arguments));
+		}
+		if(!validateArguments(parameters, singleBag, booleanResult)){
+			throw new EvaluationException(Status.syntaxError().build(), "Invalid higher-order function arguments");
+		}
+	}
+
+	/** Validate the primitive signature after replacing each bag by its element type. */
+	private static boolean validateArguments(List<Expression> arguments,
+			boolean singleBag, boolean booleanResult)
+	{
+		if(arguments == null || arguments.size() < 2 || !(arguments.get(0) instanceof FunctionReference)){
+			return false;
+		}
+		FunctionReference ref = (FunctionReference)arguments.get(0);
+		if(ref.getEvaluatesTo().isBag() || (booleanResult && !XacmlTypes.BOOLEAN.equals(ref.getEvaluatesTo()))){
+			return false;
+		}
+		int bags = 0;
+		List<Expression> primitives = new ArrayList<>();
+		for(int i = 1; i < arguments.size(); i++){
+			Expression argument = arguments.get(i);
+			if(argument == null || argument instanceof FunctionReference || argument.getEvaluatesTo() == null){
+				return false;
+			}
+			ValueExpTypeInfo type = argument.getEvaluatesTo();
+			if(type.getValueType() == null){
+				return false;
+			}
+			if(type.isBag()){
+				bags++;
+			}
+			primitives.add(new PrimitiveTypeExpression(type.getValueType()));
+		}
+		if(singleBag && bags != 1){
+			return false;
+		}
+		ListIterator<Expression> it = primitives.listIterator();
+		try{
+			for(int i = 0; i < ref.getNumberOfParams(); i++){
+				if(!ref.getParamSpecAt(i).validate(it, true)){
+					return false;
+				}
+			}
+			return !it.hasNext();
+		}catch(RuntimeException e){
+			return false;
+		}
+	}
+
+	private static class PrimitiveTypeExpression implements Expression
+	{
+		private final ValueExpTypeInfo type;
+
+		PrimitiveTypeExpression(ValueExpTypeInfo type){
+			this.type = type;
+		}
+
+		@Override
+		public ValueExpTypeInfo getEvaluatesTo(){
+			return type;
+		}
+
+		@Override
+		public <T extends Expression> T evaluate(org.xacml4j.v30.EvaluationContext context){
+			throw new IllegalStateException("A validation-only expression cannot be evaluated");
+		}
+
+		@Override
+		public void accept(ExpressionVisitor visitor){
+		}
+	}
+
+	public static class SingleBagFunctionParametersValidator implements FunctionParametersValidator
+	{
+		@Override
+		public boolean validate(FunctionSpec spec, List<Expression> arguments){
+			return validateArguments(arguments, true, true);
+		}
+	}
+
+	public static class AnyOfAnyFunctionParametersValidator implements FunctionParametersValidator
+	{
+		@Override
+		public boolean validate(FunctionSpec spec, List<Expression> arguments){
+			return validateArguments(arguments, false, true);
+		}
 	}
 
 	/**
@@ -208,14 +349,16 @@ public final class HigherOrderFunctions
 			Preconditions.checkArgument(arguments != null,
 					"Can't resolve function=\"%s\" return type " +
 					"dynamically, arguments must be specified", spec.getId());
-			Preconditions.checkArgument(arguments.size() == spec.getNumberOfParams(),
+			Preconditions.checkArgument(!arguments.isEmpty(),
 					"Can't resolve function=\"%s\" return type " +
-					"dynamically, function requires 2 parameters to be specified", spec.getId());
+					"dynamically, a function reference must be specified", spec.getId());
 			Expression ref = arguments.get(0);
 			Preconditions.checkArgument(ref instanceof FunctionReference,
 					"First function argument must be function reference");
-			ValueType type = (ValueType)ref.getEvaluatesTo();
-			return type.bagType();
+			if(ref.getEvaluatesTo().isBag()){
+				spec.validateParametersAndThrow(arguments);
+			}
+			return ref.getEvaluatesTo().getValueType().bagType();
 		}
 
 		@Override
@@ -224,16 +367,7 @@ public final class HigherOrderFunctions
 			if(log.isDebugEnabled()){
 				log.debug("Validating function=\"{}\" parameters", spec.getId());
 			}
-			if(arguments == null ||
-					arguments.size() != 2){
-				return false;
-			}
-			Expression exp = arguments.get(0);
-			if(!(exp instanceof FunctionReference)){
-				return false;
-			}
-			FunctionReference ref = (FunctionReference)exp;
-			return ref.getNumberOfParams() == 1;
+			return validateArguments(arguments, true, false);
 		}
 	}
 }

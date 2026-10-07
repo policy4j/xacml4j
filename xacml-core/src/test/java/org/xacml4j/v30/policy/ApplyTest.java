@@ -22,48 +22,58 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.CoreException;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.types.XacmlTypes;
 
+@ExtendWith(MockitoExtension.class)
 public class ApplyTest
 {
 	private FunctionSpec function;
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.function = createStrictMock(FunctionSpec.class);
-		this.context = createStrictMock(EvaluationContext.class);
+		this.function = mock(FunctionSpec.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
-	@Test(expected=EvaluationException.class)
+	@Test
 	public void testApplyEvaluationFunctionThrowsRuntimeException() throws CoreException
 	{
-		expect(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L)))
-		.andThrow(new IllegalArgumentException());
-		replay(function);
+		when(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L)))
+		.thenThrow(new IllegalArgumentException());
+		InOrder order = inOrder(function, context);
 		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.ofAny(10L)).build();
-		apply.evaluate(context);
-		verify(function);
+		assertThrows(EvaluationException.class, () -> apply.evaluate(context));
+		order.verify(function).invoke(context, XacmlTypes.INTEGER.ofAny(10L));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(function, times(1)).invoke(context, XacmlTypes.INTEGER.ofAny(10L));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(function, context);
 	}
 
-	@Test(expected=FunctionInvocationException.class)
+	@Test
 	public void testApplyEvaluationFunctionThrowsFunctionInvocationException() throws CoreException
 	{
-		expect(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L))).
-		andThrow(new FunctionInvocationException(function, new IllegalArgumentException()));
-		replay(function);
+		when(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L))).
+		thenThrow(new FunctionInvocationException(function, new IllegalArgumentException()));
+		InOrder order = inOrder(function, context);
 		Apply apply = Apply.builder(function).param(XacmlTypes.INTEGER.ofAny(10L)).build();
-		apply.evaluate(context);
-		verify(function);
+		assertThrows(FunctionInvocationException.class, () -> apply.evaluate(context));
+		order.verify(function).invoke(context, XacmlTypes.INTEGER.ofAny(10L));
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(function, times(1)).invoke(context, XacmlTypes.INTEGER.ofAny(10L));
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(function, context);
 	}
 }

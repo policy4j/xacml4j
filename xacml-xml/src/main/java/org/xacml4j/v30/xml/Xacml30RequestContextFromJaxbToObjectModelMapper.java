@@ -250,7 +250,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		AttributesType attributes = new AttributesType();
 		attributes.setId(a.getReferenceId().orElse(null));
 		attributes.setCategory(a.getCategoryId().getId());
-		for(Attribute attr : a.getEntity().find()){
+		for(Attribute attr : a.getEntity().attributes()){
 			attributes.getAttribute().add(create(attr));
 		}
 		return attributes;
@@ -263,7 +263,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		attr.setIncludeInResult(a.isIncludeInResult());
 		for(Value v : a.values()){
 			TypeToXacml30 m = TypeToXacml30
-					.forType(v.getEvaluatesTo())
+					.forType(v.getEvaluatesTo().getValueType())
 					.orElseThrow(
 							()-> SyntaxException.invalidDataTypeId(v.getEvaluatesTo()));
 			attr.getAttributeValue().add(m.toXacml30(v));
@@ -430,6 +430,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		AttributeValueType av = toJaxb(a.getAttribute());
 		attr.setDataType(av.getDataType());
 		attr.getContent().addAll(av.getContent());
+		attr.getOtherAttributes().putAll(av.getOtherAttributes());
 		return attr;
 	}
 
@@ -462,6 +463,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		return CategoryId.parse(attributes.getCategory())
 		.map(c->Category
 				.builder(c)
+				.id(attributes.getId())
 				.entity(Entity
 						.builder()
 						.content(getContent(attributes.getContent()))
@@ -479,7 +481,9 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 		if(o.isEmpty()){
 			return java.util.Optional.empty();
 		}
-		Object v = content.getContent().get(0);
+		Object v = o.stream()
+				.filter(value -> !(value instanceof String) || !((String)value).trim().isEmpty())
+				.findFirst().orElse("");
 		if(v instanceof Node){
 			return Content.fromNode(v, Content.Type.XML_UTF8);
 		}
@@ -487,17 +491,33 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	}
 
 	private RequestReference create(RequestReferenceType m)
+		throws SyntaxException
 	{
 		RequestReference.Builder b = RequestReference.builder();
 		for(AttributesReferenceType r : m.getAttributesReference()){
-			b.reference((String)r.getReferenceId());
+			Object referenceId = r.getReferenceId();
+			if(referenceId instanceof AttributesType){
+				String id = ((AttributesType)referenceId).getId();
+				if(id == null){
+					throw new SyntaxException("Referenced Attributes element has no xml:id");
+				}
+				b.reference(id);
+			}else if(referenceId instanceof String){
+				b.reference((String)referenceId);
+			}else{
+				throw new SyntaxException("Unsupported AttributesReference ReferenceId value: %s",
+						referenceId == null ? "null" : referenceId.getClass().getName());
+			}
 		}
 		return b.build();
 	}
 
-	private Attribute buildAttribute(AttributeType a)
+	private Attribute buildAttribute(AttributeType a) throws SyntaxException
 	{
 		Preconditions.checkNotNull(a);
+		if (a.getAttributeId() == null || a.getAttributeId().isEmpty()) {
+			throw new SyntaxException("Request Attribute is missing AttributeId");
+		}
 		Attribute.Builder b =  Attribute
 				.builder(a.getAttributeId())
 				.issuer(a.getIssuer())
@@ -511,7 +531,7 @@ public class Xacml30RequestContextFromJaxbToObjectModelMapper
 	private AttributeValueType toJaxb(Value a)
 	{
 		Preconditions.checkNotNull(a);
-		return TypeToXacml30.forType(a.getEvaluatesTo()).map(v->v.toXacml30(a))
+		return TypeToXacml30.forType(a.getEvaluatesTo().getValueType()).map(v->v.toXacml30(a))
 		                    .orElseThrow(()->SyntaxException.invalidAttributeValue(a.getEvaluatesTo()));
 	}
 	

@@ -1,0 +1,16 @@
+diff --git a/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java b/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+--- a/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+@@ -143,10 +143,10 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
+     }
+ 
+     public ISO8601Date plus(ISO8601YearMonthDuration duration){
+-        return ISO8601Date.of(value.plus(duration.toDuration()));
++        return ISO8601Date.of(value.plus(duration.toPeriod()));
+     }
+ 
+     public ISO8601Date minus(ISO8601YearMonthDuration duration){
+-        return ISO8601Date.of(value.minus(duration.toDuration()));
++        return ISO8601Date.of(value.minus(duration.toPeriod()));
+     }
+ }

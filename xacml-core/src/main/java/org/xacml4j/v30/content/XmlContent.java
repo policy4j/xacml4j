@@ -49,6 +49,7 @@ import org.xacml4j.v30.Content;
 import org.xacml4j.v30.types.*;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
+import org.xacml4j.v30.Status;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -194,10 +195,9 @@ public final class XmlContent implements Content
                 LOG.debug("Evaluating selector={}", selectorKey);
             }
             Node context = null;
-            if(callback != null) {
+            if(callback != null && selectorKey.getContextSelectorId() != null) {
                 Optional<Path> v = callback.get()
-                        .findValue((selectorKey.getContextSelectorId() == null ? CONTENT_SELECTOR : selectorKey.getContextSelectorId()),
-                        XacmlTypes.XPATH);
+                        .findValue(selectorKey.getContextSelectorId(), XacmlTypes.XPATH);
                 if (!v.isPresent()) {
                     throw PathEvaluationException.invalidXpathContextSelectorId(selectorKey.getPath(),
                                                                                 selectorKey.getContextSelectorId());
@@ -212,7 +212,12 @@ public final class XmlContent implements Content
                                                                             ()->String.format("and ContextSelectorId.Category=\"%s\"",
                                     xpath.getCategory().orElse(null)));
                 }
-                context = xPathProvider.evaluateToNode(xpath.getPath(), contextNode);
+                NodeList contextNodes = xPathProvider.evaluateToNodeSet(xpath.getPath(), contextNode);
+                if(contextNodes == null || contextNodes.getLength() != 1){
+                    throw PathEvaluationException.invalidXpath(
+                            selectorKey.getPath(), Status.syntaxError().build(), null);
+                }
+                context = contextNodes.item(0);
             }
             NodeList nodeSet = xPathProvider.evaluateToNodeSet(selectorKey.getPath(), context == null?contextNode:context);
             if(nodeSet == null ||

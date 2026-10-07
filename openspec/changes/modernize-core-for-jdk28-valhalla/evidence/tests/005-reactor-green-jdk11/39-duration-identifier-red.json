@@ -1,0 +1,146 @@
+[
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag-size]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag-size"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-is-in]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-is-in"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-intersection]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-intersection"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-union]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-union"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-union]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-subset]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-subset"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-subset]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-at-least-one-member-of]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-at-least-one-member-of"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-set-equals]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-set-equals"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-one-and-only]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-one-and-only"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag-size]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag-size"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-is-in]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-is-in"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-intersection]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-intersection"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-union]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-union"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-subset]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-subset"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-subset]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-at-least-one-member-of]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-at-least-one-member-of"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-set-equals]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-set-equals"
+  },
+  {
+    "test": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>"
+  }
+]

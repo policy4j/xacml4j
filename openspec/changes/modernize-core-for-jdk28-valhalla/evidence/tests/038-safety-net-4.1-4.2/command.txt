@@ -1,0 +1,5 @@
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/038-safety-net-4.1-4.2/run-jdk21.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=AttributeDesignatorFunctionTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/038-safety-net-4.1-4.2/run-rv050-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/038-safety-net-4.1-4.2/run-rv050-final.log
+rtk python3 -c 'import pathlib, xml.etree.ElementTree as ET; root=pathlib.Path("."); modules=("xacml-core","xacml-pdp"); exec("for module in modules:\n totals=[0,0,0,0]\n for path in (root/module/\"target/surefire-reports\").glob(\"TEST-*.xml\"):\n  suite=ET.parse(path).getroot()\n  for index,key in enumerate((\"tests\",\"failures\",\"errors\",\"skipped\")):\n   totals[index]+=int(suite.get(key,0))\n print(module, *totals)")'

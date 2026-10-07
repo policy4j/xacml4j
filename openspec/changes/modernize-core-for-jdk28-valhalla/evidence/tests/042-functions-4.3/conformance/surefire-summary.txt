@@ -1,0 +1,25 @@
+Checkout path below is written as <repo>.
+Source log: conformance/surefire.log
+JDK 21.0.6. Command in command.txt. Finished 2026-10-02T02:38:30-04:00. Total time 8.672 s.
+
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0 - in org.xacml4j.v20.RSA2008InteropTest
+[WARNING] Tests run: 375, Failures: 0, Errors: 0, Skipped: 12 - in org.xacml4j.v20.Xacml20ConformanceTest
+[WARNING] Tests run: 488, Failures: 0, Errors: 0, Skipped: 11 - in org.xacml4j.v20.Xacml30ConformanceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0 - in org.xacml4j.v20.XacmlExampleTest
+
+Results:
+[WARNING] Tests run: 882, Failures: 0, Errors: 0, Skipped: 23
+
+Executed 859. Failed 0. Skipped 23.
+
+Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+Xacml4J Project .................................... SUCCESS
+Xacml4J Core Engine Implementation ................. SUCCESS
+Xacml4J XML representation JAXB classes ............ SUCCESS
+Xacml XML representation marshallers ............... SUCCESS
+Xacml4J Json based request/response and policy format support SUCCESS
+Xacml4J PDP ........................................ SUCCESS
+Xacml4J Policy Unit Test Support ................... SUCCESS
+Xacml4J Conformance Tests .......................... SUCCESS
+BUILD SUCCESS
+Reports: <repo>/xacml-conformance-tests/target/surefire-reports

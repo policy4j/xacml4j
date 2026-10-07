@@ -1,0 +1,589 @@
+diff --git a/xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java b/xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java
+--- a/xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java
++++ b/xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java
+@@ -38,6 +38,7 @@
+ import org.xacml4j.v30.PolicyDecisionPoint;
+ import org.xacml4j.v30.RequestContext;
+ import org.xacml4j.v30.ResponseContext;
++import org.xacml4j.v30.SyntaxException;
+ import org.xacml4j.v30.marshal.MarshallingProvider;
+ import org.xacml4j.v30.marshal.MediaType;
+ import org.xacml4j.v30.marshal.ResponseMarshaller;
+@@ -113,7 +114,8 @@
+ 					Xacml20TestUtility.getClasspathResource(resource)));
+ 		}
+ 		CompositeDecisionRule root = policies.get(0);
+-		if ("special-harness".equals(testCase.disposition())) {
++		if ("special-harness".equals(testCase.disposition())
++				&& ("IID029".equals(testCase.caseId()) || "IID030".equals(testCase.caseId()))) {
+ 			// IID029/030 Special.txt requires both initial policies to be considered by Target matching.
+ 			root = PolicySet.builder("conformance-multiple-roots-" + testCase.caseId())
+ 					.withCombiningAlgorithm(new OnlyOneApplicablePolicyCombiningAlgorithm())
+@@ -136,7 +138,17 @@
+ 	@SuppressWarnings("unchecked")
+ 	static void verifyOasis(ConformanceManifest.Case testCase) throws Exception
+ 	{
+-		PolicyDecisionPoint pdp = buildPdp(testCase);
++		PolicyDecisionPoint pdp;
++		try {
++			pdp = buildPdp(testCase);
++		} catch (AssertionError rejected) {
++			if ("special-harness".equals(testCase.disposition()) && expectedStaticRejection(testCase, rejected.getCause())) {
++				System.out.println("CONFORMANCE REJECTION " + testCase + ": " + rejected.getCause());
++				System.out.println("CONFORMANCE PASS " + testCase);
++				return;
++			}
++			throw rejected;
++		}
+ 		boolean xacml30 = "oasis30".equals(testCase.suite());
+ 		RequestContext request = xacml30 ? Xacml30TestUtility.getRequest(testCase.requestFile())
+ 				: Xacml20TestUtility.getRequest(testCase.requestFile());
+@@ -154,4 +166,23 @@
+ 		}
+ 		System.out.println("CONFORMANCE PASS " + testCase);
+ 	}
++
++	private static boolean expectedStaticRejection(ConformanceManifest.Case testCase, Throwable failure)
++	{
++		// These Special.txt files allow static rejection only for the defect demonstrated by the case.
++		if ("IIA004".equals(testCase.caseId())) {
++			return failure instanceof SyntaxException syntax && syntax.getStatus().getStatusCode().isSyntaxError()
++					&& "Policy AttributeDesignator is missing AttributeId".equals(failure.getMessage());
++		}
++		if ("IIC012".equals(testCase.caseId())) {
++			// The 2.0 mapper wraps Condition's validation error in SyntaxException; the 3.0 mapper preserves it.
++			if (failure instanceof SyntaxException syntax && syntax.getStatus().getStatusCode().isSyntaxError()) {
++				failure = failure.getCause();
++			}
++			return failure instanceof IllegalArgumentException
++					&& ("Condition expects an expression with=\"boolean\" return value, "
++							+ "but got expression with return value type=\"integer\"").equals(failure.getMessage());
++		}
++		return false;
++	}
+ }
+diff --git a/xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceStaticRejectionTest.java b/xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceStaticRejectionTest.java
+--- /dev/null
++++ b/xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceStaticRejectionTest.java
+@@ -0,0 +1,88 @@
++package org.xacml4j.v20;
++
++/*
++ * #%L
++ * Xacml4J Conformance Tests
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertInstanceOf;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++import java.util.List;
++
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
++import org.opentest4j.AssertionFailedError;
++
++public class ConformanceStaticRejectionTest
++{
++	// IIA004Special.txt and IIC012Special.txt allow the named static defect to be rejected at load time.
++	@ParameterizedTest
++	@CsvSource({"oasis20,IIA004", "oasis20,IIC012", "oasis30,IIA004", "oasis30,IIC012"})
++	public void acceptsRejectionForTheNamedStaticDefect(String suite, String caseId) throws Exception
++	{
++		assertDoesNotThrow(() -> ConformanceCaseRunner.verifyOasis(testCase(suite, caseId, caseId, caseId)));
++	}
++
++	@ParameterizedTest
++	@CsvSource({"oasis20,IIA004", "oasis20,IIC012", "oasis30,IIA004", "oasis30,IIC012"})
++	public void loadedPolicyMustStillProduceTheExpectedResponse(String suite, String caseId) throws Exception
++	{
++		// IIA001 loads successfully and returns Permit, unlike these cases' expected Indeterminate.
++		ConformanceManifest.Case testCase = testCase(suite, caseId, "IIA001", caseId);
++		AssertionError failure = assertThrows(AssertionError.class, () -> ConformanceCaseRunner.verifyOasis(testCase));
++		AssertionFailedError comparison = assertInstanceOf(AssertionFailedError.class, failure);
++		assertEquals("INDETERMINATE", comparison.getExpected().getValue().toString());
++		assertEquals("PERMIT", comparison.getActual().getValue().toString());
++	}
++
++	@ParameterizedTest
++	@CsvSource({"oasis20,IIA004", "oasis20,IIC012", "oasis30,IIA004", "oasis30,IIC012"})
++	public void acceptsTheResponseWhenPolicyLoadingSucceeds(String suite, String caseId) throws Exception
++	{
++		// A loadable control exercises the response branch using the same unmodified request and response.
++		assertDoesNotThrow(() -> ConformanceCaseRunner.verifyOasis(testCase(suite, caseId, "IIA001", "IIA001")));
++	}
++
++	@ParameterizedTest
++	@CsvSource({"oasis20,IIA004,IIC012", "oasis20,IIC012,IIA004",
++			"oasis30,IIA004,IIC012", "oasis30,IIC012,IIA004"})
++	public void rejectsAnUnrelatedPolicyLoadingFailure(String suite, String caseId, String unrelated) throws Exception
++	{
++		ConformanceManifest.Case testCase = testCase(suite, caseId, unrelated, caseId);
++		AssertionError failure = assertThrows(AssertionError.class, () -> ConformanceCaseRunner.verifyOasis(testCase));
++		assertTrue(failure.getMessage().contains("Cannot import " + suite + "/" + caseId));
++		assertTrue(failure.getMessage().contains(unrelated + "Policy.xml"));
++	}
++
++	private static ConformanceManifest.Case testCase(String suite, String caseId, String policyCase,
++			String responseCase) throws Exception
++	{
++		ConformanceManifest.Case original = ConformanceManifest.cases(suite)
++				.filter(testCase -> caseId.equals(testCase.caseId())).findFirst().orElseThrow();
++		String directory = original.requestFile().substring(0, original.requestFile().lastIndexOf('/') + 1);
++		return new ConformanceManifest.Case(suite, caseId, directory + policyCase + "Request.xml",
++				List.of(directory + policyCase + "Policy.xml"), directory + responseCase + "Response.xml",
++				"special-harness", true, "Verify the named static rejection or the response", "");
++	}
++}
+diff --git a/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv b/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+--- a/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
++++ b/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+@@ -2,7 +2,7 @@
+ oasis20,IIA001,oasis-xacml20-compat-test/IIA001Request.xml,oasis-xacml20-compat-test/IIA001Policy.xml,oasis-xacml20-compat-test/IIA001Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIA002,oasis-xacml20-compat-test/IIA002Request.xml,oasis-xacml20-compat-test/IIA002Policy.xml,oasis-xacml20-compat-test/IIA002Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIA003,oasis-xacml20-compat-test/IIA003Request.xml,oasis-xacml20-compat-test/IIA003Policy.xml,oasis-xacml20-compat-test/IIA003Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis20,IIA004,oasis-xacml20-compat-test/IIA004Request.xml,oasis-xacml20-compat-test/IIA004Policy.xml,oasis-xacml20-compat-test/IIA004Response.xml,skipped,false,Fixture/spec issue: Deliberately invalid policy omits AttributeId; importer rejects it; IIA004Special.txt permits validation-time rejection but the response-only path cannot evaluate it,policy4j-the.3.9
++oasis20,IIA004,oasis-xacml20-compat-test/IIA004Request.xml,oasis-xacml20-compat-test/IIA004Policy.xml,oasis-xacml20-compat-test/IIA004Response.xml,special-harness,true,IIA004Special.txt permits a syntax-error rejection for the missing AttributeId or the vendored response,
+ oasis20,IIA005,oasis-xacml20-compat-test/IIA005Request.xml,oasis-xacml20-compat-test/IIA005Policy.xml,oasis-xacml20-compat-test/IIA005Response.xml,skipped,false,Request syntax error: Missing AttributeId is rejected with SyntaxException; mapping request syntax errors to a response remains pending decision,policy4j-the.4.17
+ oasis20,IIA006,oasis-xacml20-compat-test/IIA006Request.xml,oasis-xacml20-compat-test/IIA006Policy.xml,oasis-xacml20-compat-test/IIA006Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIA007,oasis-xacml20-compat-test/IIA007Request.xml,oasis-xacml20-compat-test/IIA007Policy.xml,oasis-xacml20-compat-test/IIA007Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -84,7 +84,7 @@
+ oasis20,IIC009,oasis-xacml20-compat-test/IIC009Request.xml,oasis-xacml20-compat-test/IIC009Policy.xml,oasis-xacml20-compat-test/IIC009Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIC010,oasis-xacml20-compat-test/IIC010Request.xml,oasis-xacml20-compat-test/IIC010Policy.xml,oasis-xacml20-compat-test/IIC010Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIC011,oasis-xacml20-compat-test/IIC011Request.xml,oasis-xacml20-compat-test/IIC011Policy.xml,oasis-xacml20-compat-test/IIC011Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis20,IIC012,oasis-xacml20-compat-test/IIC012Request.xml,oasis-xacml20-compat-test/IIC012Policy.xml,oasis-xacml20-compat-test/IIC012Response.xml,skipped,false,Fixture/spec issue: Fixture declares a non-boolean Condition; static policy validation rejects its integer result before the supplied runtime Indeterminate response can be produced,policy4j-the.3.9
++oasis20,IIC012,oasis-xacml20-compat-test/IIC012Request.xml,oasis-xacml20-compat-test/IIC012Policy.xml,oasis-xacml20-compat-test/IIC012Response.xml,special-harness,true,IIC012Special.txt permits a static non-boolean Condition rejection or the vendored response,
+ oasis20,IIC013,oasis-xacml20-compat-test/IIC013Request.xml,oasis-xacml20-compat-test/IIC013Policy.xml,oasis-xacml20-compat-test/IIC013Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIC014,oasis-xacml20-compat-test/IIC014Request.xml,oasis-xacml20-compat-test/IIC014Policy.xml,oasis-xacml20-compat-test/IIC014Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIC015,oasis-xacml20-compat-test/IIC015Request.xml,oasis-xacml20-compat-test/IIC015Policy.xml,oasis-xacml20-compat-test/IIC015Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -376,7 +376,7 @@
+ oasis30,IIA001,xacml3.0-ct-v.0.4/IIA001Request.xml,xacml3.0-ct-v.0.4/IIA001Policy.xml,xacml3.0-ct-v.0.4/IIA001Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA002,xacml3.0-ct-v.0.4/IIA002Request.xml,xacml3.0-ct-v.0.4/IIA002Policy.xml,xacml3.0-ct-v.0.4/IIA002Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA003,xacml3.0-ct-v.0.4/IIA003Request.xml,xacml3.0-ct-v.0.4/IIA003Policy.xml,xacml3.0-ct-v.0.4/IIA003Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis30,IIA004,xacml3.0-ct-v.0.4/IIA004Request.xml,xacml3.0-ct-v.0.4/IIA004Policy.xml,xacml3.0-ct-v.0.4/IIA004Response.xml,skipped,false,Fixture/spec issue: Deliberately invalid policy omits AttributeId; importer rejects it; IIA004Special.txt permits validation-time rejection but the response-only path cannot evaluate it,policy4j-the.3.9
++oasis30,IIA004,xacml3.0-ct-v.0.4/IIA004Request.xml,xacml3.0-ct-v.0.4/IIA004Policy.xml,xacml3.0-ct-v.0.4/IIA004Response.xml,special-harness,true,IIA004Special.txt permits a syntax-error rejection for the missing AttributeId or the vendored response,
+ oasis30,IIA005,xacml3.0-ct-v.0.4/IIA005Request.xml,xacml3.0-ct-v.0.4/IIA005Policy.xml,xacml3.0-ct-v.0.4/IIA005Response.xml,skipped,false,Request syntax error: Missing AttributeId is rejected with SyntaxException; mapping request syntax errors to a response remains pending decision,policy4j-the.4.17
+ oasis30,IIA006,xacml3.0-ct-v.0.4/IIA006Request.xml,xacml3.0-ct-v.0.4/IIA006Policy.xml,xacml3.0-ct-v.0.4/IIA006Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA007,xacml3.0-ct-v.0.4/IIA007Request.xml,xacml3.0-ct-v.0.4/IIA007Policy.xml,xacml3.0-ct-v.0.4/IIA007Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -463,7 +463,7 @@
+ oasis30,IIC009,xacml3.0-ct-v.0.4/IIC009Request.xml,xacml3.0-ct-v.0.4/IIC009Policy.xml,xacml3.0-ct-v.0.4/IIC009Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIC010,xacml3.0-ct-v.0.4/IIC010Request.xml,xacml3.0-ct-v.0.4/IIC010Policy.xml,xacml3.0-ct-v.0.4/IIC010Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIC011,xacml3.0-ct-v.0.4/IIC011Request.xml,xacml3.0-ct-v.0.4/IIC011Policy.xml,xacml3.0-ct-v.0.4/IIC011Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis30,IIC012,xacml3.0-ct-v.0.4/IIC012Request.xml,xacml3.0-ct-v.0.4/IIC012Policy.xml,xacml3.0-ct-v.0.4/IIC012Response.xml,skipped,false,Fixture/spec issue: Fixture declares a non-boolean Condition; static policy validation rejects its integer result before the supplied runtime Indeterminate response can be produced,policy4j-the.3.9
++oasis30,IIC012,xacml3.0-ct-v.0.4/IIC012Request.xml,xacml3.0-ct-v.0.4/IIC012Policy.xml,xacml3.0-ct-v.0.4/IIC012Response.xml,special-harness,true,IIC012Special.txt permits a static non-boolean Condition rejection or the vendored response,
+ oasis30,IIC013,xacml3.0-ct-v.0.4/IIC013Request.xml,xacml3.0-ct-v.0.4/IIC013Policy.xml,xacml3.0-ct-v.0.4/IIC013Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIC014,xacml3.0-ct-v.0.4/IIC014Request.xml,xacml3.0-ct-v.0.4/IIC014Policy.xml,xacml3.0-ct-v.0.4/IIC014Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIC015,xacml3.0-ct-v.0.4/IIC015Request.xml,xacml3.0-ct-v.0.4/IIC015Policy.xml,xacml3.0-ct-v.0.4/IIC015Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+diff --git a/xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java b/xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java
+--- a/xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java
++++ b/xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java
+@@ -29,10 +29,18 @@
+ import javax.xml.bind.JAXBContext;
+ import javax.xml.bind.JAXBElement;
+ import javax.xml.bind.JAXBException;
++import javax.xml.bind.UnmarshallerHandler;
+ import javax.xml.bind.ValidationEvent;
+ import javax.xml.bind.ValidationEventHandler;
+ import javax.xml.stream.XMLStreamReader;
+ import javax.xml.transform.Source;
++import javax.xml.transform.TransformerException;
++import javax.xml.transform.TransformerFactory;
++import javax.xml.transform.dom.DOMSource;
++import javax.xml.transform.sax.SAXResult;
++import javax.xml.transform.sax.SAXSource;
++import javax.xml.transform.stax.StAXSource;
++import javax.xml.transform.stream.StreamSource;
+ 
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+@@ -70,31 +78,30 @@
+ 				}
+ 			});
+ 
+-			JAXBElement<?> jaxbInstance = null;
++			if (source instanceof JAXBElement<?>) {
++				return create((JAXBElement<?>) source);
++			}
++			Source xmlSource;
+ 			if (source instanceof InputSource) {
+-				jaxbInstance = (JAXBElement<?>) u.unmarshal((InputSource) source);
++				xmlSource = new SAXSource((InputSource) source);
+ 			} else if (source instanceof InputStream) {
+-				jaxbInstance = (JAXBElement<?>) u.unmarshal((InputStream) source);
+-			} else if (source instanceof JAXBElement<?>) {
+-				jaxbInstance = (JAXBElement<?>) source;
++				xmlSource = new StreamSource((InputStream) source);
+ 			} else if (source instanceof XMLStreamReader) {
+-				jaxbInstance = (JAXBElement<?>) u.unmarshal((XMLStreamReader) source);
++				xmlSource = new StAXSource((XMLStreamReader) source);
+ 			} else if (source instanceof Node) {
+-				jaxbInstance = (JAXBElement<?>) u.unmarshal((Node) source);
++				xmlSource = new DOMSource((Node) source);
+ 			} else if (source instanceof Source) {
+-				jaxbInstance = (JAXBElement<?>) u.unmarshal((Source) source);
++				xmlSource = (Source) source;
+ 			} else if (source instanceof byte[]) {
+-				jaxbInstance = (JAXBElement<?>) u.unmarshal(new ByteArrayInputStream((byte[]) source));
+-			} else if (source instanceof JAXBElement<?>) {
+-				jaxbInstance = (JAXBElement<?>)source;
++				xmlSource = new StreamSource(new ByteArrayInputStream((byte[]) source));
++			} else {
++				throw new IllegalArgumentException(String.format("Unsupported source=\"%s\"", source.getClass().getName()));
+ 			}
+-			if (jaxbInstance != null) {
+-				return create(jaxbInstance);
+-			}
+-			throw new IllegalArgumentException(
+-					String.format("Unsupported source=\"%s\"",
+-							source.getClass().getName()));
+-		}catch(JAXBException e){
++			UnmarshallerHandler handler = u.getUnmarshallerHandler();
++			TransformerFactory.newInstance().newTransformer().transform(xmlSource,
++					new SAXResult(new BooleanAttributeValidationFilter(handler)));
++			return create((JAXBElement<?>) handler.getResult());
++		}catch(JAXBException | TransformerException e){
+ 			throw new SyntaxException(e);
+ 		}
+ 	}
+diff --git a/xacml-xml/src/main/java/org/xacml4j/v30/xml/BooleanAttributeValidationFilter.java b/xacml-xml/src/main/java/org/xacml4j/v30/xml/BooleanAttributeValidationFilter.java
+--- /dev/null
++++ b/xacml-xml/src/main/java/org/xacml4j/v30/xml/BooleanAttributeValidationFilter.java
+@@ -0,0 +1,82 @@
++package org.xacml4j.v30.xml;
++
++/*
++ * #%L
++ * Xacml4J Core Engine Implementation
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import org.xacml4j.v30.SyntaxException;
++import org.xacml4j.v30.types.BooleanVal;
++import org.xml.sax.Attributes;
++import org.xml.sax.ContentHandler;
++import org.xml.sax.SAXException;
++import org.xml.sax.helpers.XMLFilterImpl;
++
++/** Checks typed XACML boolean attributes before JAXB's permissive converter sees them. */
++final class BooleanAttributeValidationFilter extends XMLFilterImpl
++{
++	private static final String POLICY20 = "urn:oasis:names:tc:xacml:2.0:policy:schema:os";
++	private static final String CORE30 = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
++
++	BooleanAttributeValidationFilter(ContentHandler handler)
++	{
++		setContentHandler(handler);
++	}
++
++	@Override
++	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
++	{
++		if (CORE30.equals(uri)) {
++			switch (localName) {
++				case "Request":
++					validate(attributes, "ReturnPolicyIdList");
++					validate(attributes, "CombinedDecision");
++					break;
++				case "Attribute":
++					validate(attributes, "IncludeInResult");
++					break;
++				case "AttributeDesignator", "AttributeSelector":
++					validate(attributes, "MustBePresent");
++					break;
++			}
++		} else if (POLICY20.equals(uri)) {
++			switch (localName) {
++				case "SubjectAttributeDesignator", "ResourceAttributeDesignator", "ActionAttributeDesignator",
++						"EnvironmentAttributeDesignator", "AttributeSelector":
++					validate(attributes, "MustBePresent");
++					break;
++			}
++		}
++		super.startElement(uri, localName, qName, attributes);
++	}
++
++	private static void validate(Attributes attributes, String name) throws SAXException
++	{
++		String lexical = attributes.getValue("", name);
++		if (lexical != null) {
++			try {
++				// XML Schema Part 2 sections 3.2.2 and 4.3.6: true/false/1/0 with XML whitespace collapse.
++				BooleanVal.ofAny(lexical);
++			} catch (SyntaxException failure) {
++				throw new SAXException(new SyntaxException("Invalid xs:boolean attribute " + name, failure));
++			}
++		}
++	}
++}
+diff --git a/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java b/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
+--- a/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
++++ b/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
+@@ -714,6 +714,9 @@
+ 	private AttributeDesignator createDesignator(CategoryId categoryId,
+ 			AttributeDesignatorType ref) throws SyntaxException
+ 	{
++		if (ref.getAttributeId() == null) {
++			throw new SyntaxException("Policy AttributeDesignator is missing AttributeId");
++		}
+ 		return AttributeDesignator
+ 				.builder()
+ 				.key(AttributeDesignatorKey.builder().
+diff --git a/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromJaxbToObjectModelMapper.java b/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromJaxbToObjectModelMapper.java
+--- a/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromJaxbToObjectModelMapper.java
++++ b/xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromJaxbToObjectModelMapper.java
+@@ -574,6 +574,9 @@
+ 		}
+ 		if (ref instanceof AttributeDesignatorType) {
+ 			AttributeDesignatorType desig = (AttributeDesignatorType) ref;
++			if (desig.getAttributeId() == null) {
++				throw new SyntaxException("Policy AttributeDesignator is missing AttributeId");
++			}
+ 			java.util.Optional<ValueType> type = XacmlTypes.getType(desig.getDataType());
+ 			Preconditions.checkState(type.isPresent());
+ 			return AttributeDesignator.builder().
+diff --git a/xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanAttributeLexicalTest.java b/xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanAttributeLexicalTest.java
+--- /dev/null
++++ b/xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanAttributeLexicalTest.java
+@@ -0,0 +1,207 @@
++package org.xacml4j.v30.xml;
++
++/*
++ * #%L
++ * Xacml4J Core Engine Implementation
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++import java.io.ByteArrayInputStream;
++import java.io.StringReader;
++import java.nio.charset.StandardCharsets;
++import java.util.stream.Stream;
++
++import javax.xml.parsers.DocumentBuilderFactory;
++import javax.xml.stream.XMLInputFactory;
++import javax.xml.transform.dom.DOMSource;
++import javax.xml.transform.sax.SAXSource;
++import javax.xml.transform.stax.StAXSource;
++import javax.xml.transform.stream.StreamSource;
++
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.Arguments;
++import org.junit.jupiter.params.provider.MethodSource;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.w3c.dom.Document;
++import org.xacml4j.v30.RequestContext;
++import org.xacml4j.v30.StatusCodeId;
++import org.xacml4j.v30.SyntaxException;
++import org.xacml4j.v30.policy.Apply;
++import org.xacml4j.v30.policy.AttributeReference;
++import org.xacml4j.v30.policy.Policy;
++import org.xml.sax.InputSource;
++
++public class BooleanAttributeLexicalTest
++{
++	private static final String NAMESPACE30 = "urn:oasis:names:tc:xacml:3.0:core:schema:wd-17";
++	private static final String BOOLEAN = "http://www.w3.org/2001/XMLSchema#boolean";
++	private static final String ONE_AND_ONLY = "urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only";
++	private static final String[] LOCATIONS = {"ReturnPolicyIdList", "CombinedDecision", "IncludeInResult",
++			"20-designator", "20-selector", "30-designator", "30-selector"};
++
++	// XML Schema Part 2 sections 3.2.2 and 4.3.6: exactly true/false/1/0, after XML whitespace collapse.
++	@ParameterizedTest(name = "{0} accepts [{1}] as {2}")
++	@MethodSource("validAttributes")
++	public void acceptsValidLexicalForms(String location, String lexical, boolean expected) throws Exception
++	{
++		assertEquals(expected, parse(location, lexical));
++	}
++
++	@ParameterizedTest(name = "{0} rejects [{1}]")
++	@MethodSource("invalidAttributes")
++	public void rejectsInvalidLexicalFormsWithSyntaxError(String location, String lexical)
++	{
++		SyntaxException failure = assertThrows(SyntaxException.class, () -> parse(location, lexical));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, failure.getStatus().getStatusCode().getValue());
++		String attribute = location.contains("-") ? "MustBePresent" : location;
++		assertTrue(failure.getMessage().contains(attribute), failure::getMessage);
++	}
++
++	@ParameterizedTest
++	@ValueSource(strings = {"input-source", "stream-source", "sax-source", "dom-source", "stax-source",
++			"stream-reader", "document", "element", "bytes"})
++	public void rejectsInvalidAttributesForEveryXmlInputForm(String format) throws Exception
++	{
++		Object source = source(format, request("ReturnPolicyIdList", "yes"));
++		SyntaxException failure = assertThrows(SyntaxException.class,
++				() -> new Xacml30RequestContextUnmarshaller().unmarshal(source));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, failure.getStatus().getStatusCode().getValue());
++		assertTrue(failure.getMessage().contains("ReturnPolicyIdList"), failure::getMessage);
++	}
++
++	@ParameterizedTest
++	@ValueSource(strings = {"input-source", "stream-source", "sax-source", "dom-source", "stax-source",
++			"stream-reader", "document", "element", "bytes"})
++	public void preservesValidAttributesForEveryXmlInputForm(String format) throws Exception
++	{
++		RequestContext result = new Xacml30RequestContextUnmarshaller().unmarshal(source(format,
++				request("ReturnPolicyIdList", " true ")));
++		assertTrue(result.isReturnPolicyIdList());
++	}
++
++	@ParameterizedTest
++	@ValueSource(ints = {20, 30})
++	public void missingDesignatorAttributeIdIsAnIdentifiedSyntaxError(int version)
++	{
++		String xml = policy(version, false, "false").replace(" AttributeId=\"urn:test:boolean\"", "");
++		SyntaxException failure = assertThrows(SyntaxException.class,
++				() -> new XacmlPolicyUnmarshaller(true).unmarshal(bytes(xml)));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, failure.getStatus().getStatusCode().getValue());
++		assertEquals("Policy AttributeDesignator is missing AttributeId", failure.getMessage());
++	}
++
++	@ParameterizedTest
++	@ValueSource(strings = {"20-designator", "20-selector"})
++	public void optionalXacml20MustBePresentKeepsItsFalseDefault(String location) throws Exception
++	{
++		String xml = policy(20, location.endsWith("selector"), "false").replace(" MustBePresent=\"false\"", "");
++		Policy result = (Policy) new XacmlPolicyUnmarshaller(true).unmarshal(bytes(xml));
++		assertEquals(false, reference(result).isMustBePresent());
++	}
++
++	private static Stream<Arguments> validAttributes()
++	{
++		return Stream.of(LOCATIONS).flatMap(location -> Stream.of("true", "false", "1", "0", " true ")
++				.map(lexical -> Arguments.of(location, lexical, "true".equals(lexical.trim()) || "1".equals(lexical))));
++	}
++
++	private static Stream<Arguments> invalidAttributes()
++	{
++		return Stream.of(LOCATIONS).flatMap(location -> Stream.of("yes", "TRUE", "10", "")
++				.map(lexical -> Arguments.of(location, lexical)));
++	}
++
++	private static boolean parse(String location, String lexical) throws Exception
++	{
++		if (location.contains("-")) {
++			Policy result = (Policy) new XacmlPolicyUnmarshaller(true).unmarshal(bytes(
++					policy(Integer.parseInt(location.substring(0, 2)), location.endsWith("selector"), lexical)));
++			return reference(result).isMustBePresent();
++		}
++		RequestContext result = new Xacml30RequestContextUnmarshaller().unmarshal(bytes(request(location, lexical)));
++		return switch (location) {
++			case "ReturnPolicyIdList" -> result.isReturnPolicyIdList();
++			case "CombinedDecision" -> result.isCombinedDecision();
++			case "IncludeInResult" -> !result.getIncludeInResultAttributes().isEmpty();
++			default -> throw new IllegalArgumentException(location);
++		};
++	}
++
++	private static AttributeReference reference(Policy policy)
++	{
++		return (AttributeReference) ((Apply) policy.getRules().get(0).getCondition().getExpression()).getArguments().get(0);
++	}
++
++	private static String request(String attribute, String lexical)
++	{
++		return ("<Request xmlns=\"" + NAMESPACE30 + "\" ReturnPolicyIdList=\"false\" CombinedDecision=\"false\">"
++				+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">"
++				+ "<Attribute AttributeId=\"urn:test:boolean\" IncludeInResult=\"false\">"
++				+ "<AttributeValue DataType=\"" + BOOLEAN + "\">true</AttributeValue>"
++				+ "</Attribute></Attributes></Request>").replace(attribute + "=\"false\"", attribute + "=\"" + lexical + "\"");
++	}
++
++	private static String policy(int version, boolean selector, String lexical)
++	{
++		String reference = selector
++				? "<AttributeSelector " + (version == 20 ? "RequestContextPath=\"//test:flag/text()\""
++						: "Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\" Path=\"/test:flag/text()\"")
++				: version == 20 ? "<SubjectAttributeDesignator AttributeId=\"urn:test:boolean\""
++						: "<AttributeDesignator Category=\"urn:oasis:names:tc:xacml:1.0:subject-category:access-subject\""
++								+ " AttributeId=\"urn:test:boolean\"";
++		reference += " DataType=\"" + BOOLEAN + "\" MustBePresent=\"" + lexical + "\"/>";
++		String condition = "<Condition><Apply FunctionId=\"" + ONE_AND_ONLY + "\">" + reference + "</Apply></Condition>";
++		return "<Policy xmlns=\"" + (version == 20 ? "urn:oasis:names:tc:xacml:2.0:policy:schema:os" : NAMESPACE30)
++				+ "\" xmlns:test=\"urn:test:content\" PolicyId=\"urn:test:boolean-policy\" Version=\"1.0\""
++				+ " RuleCombiningAlgId=\"urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:deny-overrides\">"
++				+ "<Target/><Rule RuleId=\"urn:test:rule\" Effect=\"Permit\">" + condition + "</Rule></Policy>";
++	}
++
++	private static Object source(String format, String xml) throws Exception
++	{
++		return switch (format) {
++			case "input-source" -> new InputSource(new StringReader(xml));
++			case "stream-source" -> new StreamSource(new StringReader(xml));
++			case "sax-source" -> new SAXSource(new InputSource(new StringReader(xml)));
++			case "stax-source" -> new StAXSource(XMLInputFactory.newFactory().createXMLStreamReader(new StringReader(xml)));
++			case "stream-reader" -> XMLInputFactory.newFactory().createXMLStreamReader(new StringReader(xml));
++			case "dom-source" -> new DOMSource(document(xml));
++			case "document" -> document(xml);
++			case "element" -> document(xml).getDocumentElement();
++			case "bytes" -> xml.getBytes(StandardCharsets.UTF_8);
++			default -> throw new IllegalArgumentException(format);
++		};
++	}
++
++	private static Document document(String xml) throws Exception
++	{
++		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
++		factory.setNamespaceAware(true);
++		return factory.newDocumentBuilder().parse(bytes(xml));
++	}
++
++	private static ByteArrayInputStream bytes(String xml)
++	{
++		return new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
++	}
++}

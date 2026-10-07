@@ -1,0 +1,8 @@
+CHECK lexical PT0.5S -> java.time.Duration=PT0.5S
+GAP ISO8601Duration.getSeconds(PT0.5S)=0
+GAP ISO8601Duration.isZero(PT0.5S)=true
+GAP DateTimeDurationUtils.toXmlDayTimeDuration(500ms)=P0DT0H0M0S
+GAP ISO8601DayTimeDuration.of(java.time.Duration.ofMillis(500))=P0DT0H0M0S
+[[36mDEBUG[m] 2026-10-01 14:24:44,377 [36mDateTimeDurationUtils.parseISO8601DayTimeDuration()[m:(DateTimeDurationUtils.java:257) - PT-0.5S
+506GAP JDK-style PT-0.5S lexical fallback throws java.lang.IllegalArgumentException: SECONDS field is negative
+OBSERVATION sub-nanosecond conversion is rejected exactly: java.lang.ArithmeticException: Rounding necessary

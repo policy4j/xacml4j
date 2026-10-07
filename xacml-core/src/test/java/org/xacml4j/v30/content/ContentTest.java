@@ -25,8 +25,8 @@ package org.xacml4j.v30.content;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Content;
 
 import com.google.common.truth.Truth8;
@@ -100,7 +100,7 @@ public class ContentTest
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testXmlBase64(){
 		String base64 = new String(Base64.getEncoder()
 		                      .encode(XML_DATA.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8);

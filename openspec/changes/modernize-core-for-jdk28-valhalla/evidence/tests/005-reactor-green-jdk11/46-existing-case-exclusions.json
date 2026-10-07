@@ -1,0 +1,86 @@
+{
+  "Xacml20ConformanceTest": {
+    "IIA": [
+      "IIA004",
+      "IIA005"
+    ],
+    "IIIA": [
+      "IIIA001",
+      "IIIA002",
+      "IIIA003",
+      "IIIA004",
+      "IIIA005"
+    ],
+    "IIC": [
+      "IIC003",
+      "IIC012",
+      "IIC014",
+      "IIC020",
+      "IIC023",
+      "IIC028",
+      "IIC029",
+      "IIC032",
+      "IIC033",
+      "IIC054",
+      "IIC055",
+      "IIC088",
+      "IIC089",
+      "IIC092",
+      "IIC093",
+      "IIC098",
+      "IIC099"
+    ],
+    "IID": [
+      "IID029"
+    ],
+    "IIIG": [
+      "IIIG001",
+      "IIIG002",
+      "IIIG003",
+      "IIIG004",
+      "IIIG005"
+    ]
+  },
+  "Xacml30ConformanceTest": {
+    "IIA": [
+      "IIA004",
+      "IIA005"
+    ],
+    "IIIA": [
+      "IIIA001",
+      "IIIA002",
+      "IIIA003",
+      "IIIA004",
+      "IIIA005"
+    ],
+    "IIC": [
+      "IIC003",
+      "IIC012",
+      "IIC014",
+      "IIC020",
+      "IIC023",
+      "IIC028",
+      "IIC029",
+      "IIC032",
+      "IIC033",
+      "IIC054",
+      "IIC055",
+      "IIC088",
+      "IIC089",
+      "IIC092",
+      "IIC093",
+      "IIC098",
+      "IIC099"
+    ],
+    "IID": [
+      "IID029"
+    ],
+    "IIIG": [
+      "IIIG001",
+      "IIIG002",
+      "IIIG003",
+      "IIIG004",
+      "IIIG005"
+    ]
+  }
+}

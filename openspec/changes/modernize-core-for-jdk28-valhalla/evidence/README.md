@@ -16,21 +16,22 @@ task 1.6.
 | --- | --- | --- |
 | attribute-resolution | attribute-resolution tests (task 4.1); conformance | - |
 | condition-evaluation | condition tests (task 4.2); conformance | - |
-| function-semantics | function tests (task 4.3); conformance | - |
+| function-semantics | function tests (task 4.3); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6) |
 | datatype-registry | registry tests (task 4.4) | - |
-| combining-algorithm-registry | registry tests (task 4.4); URN set check (task 6.3) | - |
-| conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6) | - |
-| test-framework | per-module test counts; no JUnit 4 or EasyMock imports (task 2.7) | - |
+| combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
+| conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6) | 015, 023 |
+| test-framework | per-module test counts; no JUnit 4 or EasyMock imports (task 2.7) | 009, 010, 011, 012, 013, 017 |
 | jdk28-valhalla-build | JDK 28 reactor build and CI job (tasks 8.1-8.5); JMH before/after per value-class family (tasks 9.2-9.4) | - |
 
 ## Gate tasks to proof
 
 | Task | Run(s) | Status |
 | --- | --- | --- |
-| 1.6 baseline test counts | - | pending |
-| 2.7 test-stack removal gate | - | pending |
-| 3.6 conformance gate | - | pending |
-| 4.7 safety-net gate | - | pending |
+| 1.6 baseline test counts | `tests/008-baseline-jdk11-jdk21`, `reviews/code/rv012-g1-release21-agy` | done |
+| 2.7 test-stack removal gate | `tests/017-legacy-stack-removed`, `tests/023-conformance-manifest` (step 15), `reviews/code/rv026-g2-legacy-removal-agy` | done |
+| 3.6 conformance gate | `tests/023-conformance-manifest`, `reviews/code/rv034-g3-conformance-manifest-agy`, `reviews/code/rv035-g3-conformance-manifest-grok` | done: 836 enabled cases pass on JDK 21 (baseline); 44 disabled with bug ids |
+| 4.6 numeric and combining decisions | `tests/069-task46-spec-compliance`, `reviews/code/rv078-task46-spec-compliance` | done: reactor green and independent reviews APPROVE; separate spec addendum approved |
+| 4.7 safety-net gate | `tests/069-task46-spec-compliance` is a partial checkpoint | pending: remaining semantics and applicable JMH; zero-argument bags 4.53 and nested failure/reference proof 4.54 block closure |
 | 5.5, 6.7, 7.4 refactor gates | - | pending |
 | 8.4 JDK 28 gate | - | pending |
 | 9.3, 9.4 value-class gates (JMH) | - | pending |
@@ -41,10 +42,175 @@ task 1.6.
 | --- | --- | --- | --- |
 | `builds/001-donor-preservation` | task 1.1 | git plumbing (see command.txt) | PASS: donor tree equals working tree; HEAD, index, status unchanged |
 | `builds/002-integration-branch` | task 1.2 | `git worktree add -b integration/modernize-core-jdk28-valhalla … a8a90d46` | PASS |
+| `tests/003-xacml-xml-compile-jdk11` | task 1.3 (xacml-xml) | JDK 11 `mvn verify` (see command.txt) | PASS for xacml-xml (29 tests); reactor then blocked in xacml-pdp, continued in run 005 |
+| `builds/004-vendored-fixtures` | tasks 1.4, 1.5 | git history and blob comparison (see command.txt) | PASS: 1.4 paths already equal their add commits; six 1.5 fixtures restored to their add-commit blobs; unreferenced `xacml-json/src/test/resources/policy.json` deleted |
+| `tests/005-reactor-green-jdk11` | task 1.3 (reactor) | JDK 11 `mvn -Dlicense.skipUpdateLicense=true verify`, repeated (see command.txt) | PASS: two consecutive full gates, 936 tests, 0 failures, 0 errors, 9 existing skips; OASIS 2.0 347, OASIS 3.0 347, RSA 17, examples 2, no failed case. Includes conductor-approved repairs (POM JUnit scope, date/time arithmetic, XML mixed content, selector context node, XACML 3.0 duration and higher-order ids, variadic A.3.12 higher-order functions, test-harness comparison, repository listener test barrier: 26/30 before, 30/30 after) with tests-first red/green receipts (`summary.md`, `review-fixes.md`) |
+| `builds/006-test-stack-inventory` | prepares group 2 | `rg`/ast-grep (see command.txt) | 136 test files, 660 `@Test` methods; one migration lane per module |
+| `builds/007-conformance-manifest-draft` | prepares task 3.1 | fixture enumeration (see command.txt) | 880 cases: OASIS 2.0 374 (346 executed), OASIS 3.0 487 (346 executed, 119 not reached by loop bounds), RSA 17, examples 2 |
+| `reviews/code/rv001-g1-xml-fixtures-agy` | review 1.3 (xml), 1.4, 1.5 | Agy | APPROVE, no findings |
+| `reviews/code/rv002-g1-xml-fixtures-grok` | review 1.3 (xml), 1.4, 1.5 | Grok, adversarial | APPROVE; 1 LOW (indentation) fixed |
+| `reviews/code/rv003-g1-downstream-agy` | review 1.3 (downstream) | Agy | APPROVE, no findings |
+| `reviews/code/rv004-g1-downstream-grok` | review 1.3 (downstream) | Grok, adversarial | REQUEST_CHANGES: 2 MEDIUM (selector context node, fractional seconds), both fixed; verified in rv007 |
+| `reviews/code/rv005-g1-identifiers-agy` | review 1.3 (identifiers) | Agy | APPROVE with MEDIUM (3.0 higher-order arity) and LOW (lookup-only tests), both fixed |
+| `reviews/code/rv006-g1-identifiers-grok` | review 1.3 (identifiers) | Grok, adversarial | REQUEST_CHANGES: HIGH (3.0 higher-order ids bound to 1.0 arity), MEDIUM (lookup-only tests), both fixed |
+| `reviews/code/rv007-g1-round2-fix-verification-grok` | verify rv004 fixes | Grok, adversarial | APPROVE; LOW (lexical scale) and sub-nanosecond limit fixed, verified in rv010 |
+| `reviews/code/rv008-g1-higher-order-agy` | review variadic fix | Agy | APPROVE (shared-machinery coverage PARTIAL) |
+| `reviews/code/rv009-g1-higher-order-grok` | review variadic fix | Grok, adversarial | REQUEST_CHANGES: MEDIUM is pre-existing engine-wide or/and semantics, deferred as bug policy4j-the.4.12; LOW fixed, verified in rv010 |
+| `reviews/code/rv010-g1-followups-agy` | verify 1.3i, 1.3j fixes | Agy | APPROVE, no findings |
+| `reviews/code/rv011-g1-listener-barrier-grok` | review listener test barrier | Grok, adversarial | APPROVE; found pre-existing bug policy4j-the.4.13 |
+| `tests/008-baseline-jdk11-jdk21` | task 1.6 | JDK 11 `verify` before; `<release>21</release>` in both compiler configs; JDK 11 and JDK 21 `clean verify` after (see command.txt) | PASS: JDK 11 before 936 tests, 0 failures, 0 errors, 9 skips; JDK 11 after fails at xacml-core compile (release 21 not supported), as expected; JDK 21 clean build 936 tests, 0 failures, 96 errors (all EasyMock class-proxy errors in 11 xacml-core test classes), 9 skips, conformance 347/347/17/2; bytecode major version 65 |
+| `reviews/code/rv012-g1-release21-agy` | review 1.6 | Agy | APPROVE; doc drift in AGENTS.md (preview flag) fixed |
+| `tests/009-dual-engine` | task 2.1 | JDK 21 `clean verify -Dmaven.test.failure.ignore=true`; focused dual-engine probe in xacml-json (see command.txt) | PASS: Jupiter 5.14.4 and Vintage both execute; Mockito 5.24.0 with the documented startup agent; counts equal run 008 (936 tests, the same 96 EasyMock errors), conformance unchanged; probe removed |
+| `reviews/code/rv013-g2-dual-engine-agy` | review 2.1 | Agy | APPROVE, no findings |
+| `tests/012-test-support-jupiter` | task 2.5 (lane copy, applied after review) | OpenRewrite JUnit4to5Migration and EasyMockToMockito, hand fixes; JDK 21 `-pl xacml-test -am test` (see command.txt) | PASS: xacml-test 20 tests, 0 failures, 0 errors; junit 4.13.2 compile dependency replaced by junit-jupiter-api (BOM version, compile scope); headers identical |
+| `tests/013-xml-json-conformance-jupiter` | task 2.6 (lane copy, applied after review) | same recipes; JDK 21 module and reactor runs (see command.txt) | PASS: xml 34, json 5 (1 existing skip), conformance 41 Surefire tests (42 @Test incl. the excluded performance class), 0 failures, 0 errors; OASIS 2.0 347, 3.0 347, RSA 17, examples 2; loop bounds and exclusions unchanged |
+| `reviews/code/rv014-g2-pdp-migration-agy` | review 2.4 lane | Agy | REQUEST_CHANGES: 5 weakening findings; fixed, verified in rv020 |
+| `reviews/code/rv015-g2-pdp-migration-grok` | review 2.4 lane | Grok, adversarial | REQUEST_CHANGES: 3 HIGH, 3 MEDIUM, 2 LOW (lost oracles); fixed, verified in rv020 and rv021 |
+| `reviews/code/rv016-g2-downstream-agy` | review 2.5, 2.6 | Agy | APPROVE, no findings |
+| `reviews/code/rv017-g2-downstream-grok` | review 2.5, 2.6 | Grok, adversarial | APPROVE, no findings; residual: test-support API change for out-of-repo JUnit 4 subclasses |
+| `tests/011-pdp-junit5-mockito` | task 2.4 (lane copy, applied after re-review) | OpenRewrite recipes, hand fixes, repair for rv014/rv015 with mutation checks; JDK 21 `-pl xacml-pdp -am test` (see command.txt) | PASS: xacml-pdp 73 tests (75 @Test; the Vintage-only count of an ignored helper class TestObject is gone), 0 failures, 0 errors, 3 skips; headers identical; main code unchanged |
+| `tests/010-core-junit5-mockito` | tasks 2.2, 2.3 | OpenRewrite dry run and run, hand conversion per D4, oracle audit with 6 mutation checks; JDK 21 `-pl xacml-core test` (see command.txt) | PASS: 760 tests, 0 failures, 0 errors, 2 skips (550 @Test unchanged; two ignored helper classes no longer counted); 96 EasyMock errors gone; rv019 repair (Target spies for exception injection) verified in rv024 |
+| `reviews/code/rv018-g2-core-migration-agy` | review 2.2, 2.3 | Agy | APPROVE, no findings |
+| `reviews/code/rv019-g2-core-migration-grok` | review 2.2, 2.3 | Grok, adversarial | REQUEST_CHANGES: HIGH and MEDIUM (isMatch catch no longer exercised); fixed, verified in rv024 |
+| `reviews/code/rv020-g2-pdp-rereview-agy` | re-review 2.4 | Agy | APPROVE; all rv014/rv015 findings fixed |
+| `reviews/code/rv021-g2-pdp-fix-verification-grok` | verify rv015 fixes | Grok, adversarial | APPROVE; all 8 fixed, mutation logs bite |
+| `tests/015-fixture-integrity` | task 3.5 | VendoredFixtureIntegrityTest and GenerateVendoredFixtureManifest; JDK 21 integrity test and conformance module (see command.txt) | PASS: 2,911-entry git-blob manifest over the conformance resources and the XSDs; 17/17 restored ids equal run 004; byte-flip mutation fails with the changed file and both ids; conformance 347/347/17/2 |
+| `reviews/code/rv022-g3-fixture-integrity-agy` | review 3.5 | Agy | APPROVE, no findings |
+| `reviews/code/rv023-g3-fixture-integrity-grok` | review 3.5 | Grok, adversarial | APPROVE; LOW: empty directories invisible (as in git), accepted |
+| `reviews/code/rv024-g2-core-fix-verification-grok` | verify rv019 fixes | Grok, adversarial | APPROVE; both findings fixed |
+| `tests/018-bug-4.13-policyset-removed` | bug policy4j-the.4.13 (lane, applied after review) | latch-based listener test, red then green (see command.txt) | PASS: notifyPolicySetRemoved now calls policySetRemoved; red run showed policySetAdded twice |
+| `tests/019-bug-4.11-time-in-range` | bug policy4j-the.4.11 (lane, applied after review) | lookup and evaluation tests, red then green; rv027 round-trip fix (see command.txt) | PASS: 2.0 URN canonical, 1.0 alias; inclusive range, midnight wrap, context zone for an unzoned first argument, unzoned bounds take the first argument's zone; unzoned times serialize without a zone |
+| `reviews/code/rv025-g4-bugs-4.13-4.11-agy` | review 4.13, 4.11 | Agy | APPROVE, no findings |
+| `reviews/code/rv026-g2-legacy-removal-agy` | review 2.7 | Agy | REQUEST_CHANGES: HIGH Objenesis exclusion unsafe; exclusion removed by the conductor; Truth 1.1.5 approved |
+| `reviews/code/rv027-g4-bugs-4.13-4.11-grok` | review 4.13, 4.11 | Grok, adversarial | REQUEST_CHANGES: MEDIUM unzoned time serialized with Z; fixed, verified in rv031 |
+| `reviews/code/rv028-g3-advice-comparison-agy` | review 3.8 | Agy | REQUEST_CHANGES: MEDIUM multi-valued assignments keyed by AttributeId; fixed, verified in rv032 |
+| `reviews/code/rv029-g4-bugs-4.9-4.10-agy` | review 4.9, 4.10 | Agy | APPROVE, no findings |
+| `reviews/code/rv030-g4-bugs-4.9-4.10-grok` | review 4.9, 4.10 | Grok, adversarial | REQUEST_CHANGES: 2 HIGH (syntax-error swallowed before evaluation; negative-scale seconds break duration formatting); fixed, verified in rv036 |
+| `reviews/code/rv031-g4-time-roundtrip-fix-agy` | verify rv027 fix | Agy | APPROVE |
+| `tests/020-bug-3.8-advice-comparison` | bug policy4j-the.3.8 (lane, applied after review) | comparator tests red then green; conformance in the lane (see command.txt) | PASS: AssociatedAdvice compared; advice, obligations and assignments compared as multisets on all fields; conformance 347/347/17/2 unchanged under the stricter comparison |
+| `reviews/code/rv032-g3-advice-fix-verification-agy` | verify rv028 fix | Agy | APPROVE |
+| `reviews/code/rv033-g3-advice-comparison-grok` | review 3.8 | Grok, adversarial | APPROVE, no findings |
+| `builds/014-docs-test-stack` | task 2.8 | docs edit; link and removed-API checks (see summary.md) | DONE: AGENTS.md and docs/ai/TESTING.md describe JUnit 5 + Mockito, the startup agent, mocking rules, and the Surefire count note; conductor confirmed the post-2.7 sentence (Objenesis transitive via Mockito) |
+| `builds/016-legacy-stack-removal-plan` | prepares 2.7 | read-only pom inventory and dependency:tree (see command.txt) | Plan; two claims proven wrong in 2.7 (Truth 0.45 needs junit 4.12; Mockito brings Objenesis) |
+| `tests/017-legacy-stack-removed` | task 2.7 | JDK 21 `clean verify`; dependency:tree per module (see command.txt) | PASS: junit:junit, Vintage, EasyMock and direct Objenesis removed; Truth 0.45 -> 1.1.5; Objenesis exclusion reverted after rv026 (transitive via Mockito only); full gate 1,801 tests, 0 failures, 0 errors (run 023 step 15) |
+| `tests/023-conformance-manifest` | tasks 3.1-3.4, 3.6 | manifest-driven parameterized runners; JDK 21 clean verify (see command.txt) | PASS: 880 cases; 836 enabled pass (833 executed + 3 special-harness); 44 disabled with reasons and beads ids; all 711 previously passing distinct cases still run; reactor 1,801 tests, 0 failures, 50 skips |
+| `reviews/code/rv034-g3-conformance-manifest-agy` | review group 3 | Agy | APPROVE, no findings |
+| `reviews/code/rv035-g3-conformance-manifest-grok` | review group 3 | Grok, adversarial | APPROVE; LOW: IIC012 is an engine defect (bug policy4j-the.4.23); LOW: assert IIA004 rejection (policy4j-the.3.9); found the 2.0 obligation self-compare (policy4j-the.3.10) |
+| `builds/026-donor-slice-map` | prepares groups 5-7 | read-only git diff analysis of `wip/feature_xacml_20-donor` vs `a8a90d46` (Agy) | 493 donor files (+17,510/-14,080; 339 M, 67 A, 64 R, 23 D) mapped to slices 5.1-7.3; order 5.1, 5.2, 5.3, 5.4, 6.1, 6.3, 6.4, 6.6, 6.2, 6.5 (three parts), 7.1, 7.2, 7.3; top 10 conflicts where the integration branch must win; donor defects for 5.4 and 7.1 located |
+| `builds/032-semantic-decisions-grok` | decision memo (tasks 4.6, bugs 4.12, 4.23) | read-only spec analysis with secondary evidence (Grok) | Recommendations: integer-divide returns xs:integer (toward zero; remainder sign of dividend); or/and/n-of and higher-order: a later deciding value wins over an earlier error; IIC012 keeps load-time rejection (IIC012Special.txt); double-equal(NaN, NaN) true as a recorded deviation, +0.0 equals -0.0; on-permit-apply-second is CS01 profile, register only after combine() matches it |
+| `builds/033-profile-decisions-agy` | decision memo (bugs 4.17, 4.18, 4.20, 3.9) | read-only spec analysis (Agy) | Recommendations: hierarchical resource scope and 2.0 whole-request XPath documented as unsupported (optional profile / legacy); keep PDP.decide(RequestContext) and map unmarshal syntax errors to a response in the adapter/harness; IIA004 special-harness, IIA023 and 3.0 IID029 skipped; IIIG300 disagrees with rv037 (needs maintainer decision) |
+| `tests/021-bug-4.9-context-selector` | bug policy4j-the.4.9 (lane, applied after review) | red/green tests through AttributeSelector.evaluate, Match, PIP path; conformance (see command.txt) | PASS in lane: zero or several context-selector nodes give Indeterminate syntax-error regardless of MustBePresent; no ContextSelectorId uses the Content document node (also for the attribute-selector Entity overload); conformance unchanged. Worktree verification in the next full gate |
+| `tests/022-bug-4.10-fractional-seconds` | bug policy4j-the.4.10 (lane, applied after review) | red/green duration tests; XML/JSON round trips (see command.txt) | PASS in lane: fractional seconds kept in getSeconds (BigDecimal), isZero, Java Duration conversion; integral seconds use scale 0; negative sub-second values handled |
+| `reviews/code/rv036-g4-bugs-4.9-4.10-fix-verification-agy` | verify rv030 fixes | Agy | APPROVE |
+| `tests/024-bugs-string-functions` | bugs policy4j-the.4.15, 4.14 | truth-table tests red then green (see command.txt) | PASS: string search argument order per A.3.9; anyURI-starts-with/ends-with/contains, string-substring, anyURI-substring added; 16 conformance cases re-enabled; full reactor 5,373 tests, 0 failures. AnyURI lexical-form repair (rv038) pending |
+| `tests/025-bug-4.21-combining` | bug policy4j-the.4.21 | 3,048-case Appendix C decision matrix, red then green | PASS: permit-overrides Deny + Indeterminate{P} -> Indeterminate{DP}; Deny + Indeterminate{D} -> Deny; IID300 passes |
+| `tests/027-bug-4.16-lexical-forms` | bug policy4j-the.4.16 (lane, applied after review) | lexical round-trip matrix; string-from-* through Apply | PASS in lane: integer lexical value, INF/-INF/NaN for double, x500Name; merged 2026-10-02 |
+| `tests/028-bug-4.17-missing-attributeid` | bug policy4j-the.4.17 (lane, applied after review) | XML 2.0/3.0 and JSON tests | PARTIAL: missing AttributeId -> SyntaxException (syntax-error); Indeterminate response mapping pending decision |
+| `tests/029-bug-4.22-policy-id-list` | bug policy4j-the.4.22 (lane, applied after review) | RootEvaluationContext tests; direct IIIG300/IIIG301 checks | PASS in lane: only Permit/Deny policies recorded; IIIG301 passes; IIIG300 fixture conflicts with Plus Errata 01 5.48 (policy4j-the.3.9) |
+| `tests/030-harness-comparators` | bugs policy4j-the.3.10, 3.11, IIIE302 | comparator tests red then green; full reactor (see command.txt) | PASS: 2.0 obligations compared; typed value comparison; absent Content; categories as multiset; 5,426 tests, 0 failures; IIIE302 passes; IIIA030/IIIA330 exposed (policy4j-the.4.24) |
+| `reviews/code/rv037-g4-bugs-4.16-4.17-4.22-agy` | review bugs3 lane | Agy | REQUEST_CHANGES: MEDIUM string-from-double Infinity; fixed, verified in rv041 |
+| `reviews/code/rv038-g4-string-combining-grok` | review 4.15, 4.14, 4.21 | Grok, adversarial | REQUEST_CHANGES: MEDIUM AnyURI normalized lexical form; repair queued |
+| `reviews/code/rv039-g4-string-combining-agy` | review 4.15, 4.14, 4.21 | Agy | APPROVE (LOW unused flag) |
+| `reviews/code/rv040-g4-xml-mapping-agy` | review 4.19, IIIE301, IIIE303 | Agy | APPROVE (2 LOW) |
+| `reviews/code/rv041-g4-bugs3-fix-verification-agy` | verify rv037 fix | Agy | APPROVE |
+| `tests/034-registry-tests` | task 4.4 (lane, applied after review) | `-pl xacml-core test` (see command.txt) | PASS: 19 type ids with aliases, 23 combining URNs, ServiceLoader functions; 3 disabled (duplicate ids policy4j-the.4.26; on-permit-apply-second task 4.6); combining provider not ServiceLoader-registered (policy4j-the.4.27) |
+| `tests/031-xml-mapping-bugs` | bugs policy4j-the.4.19, 3.7 (IIIE301, IIIE303) (lane, applied 2026-10-02) | XML/core/pdp/json tests; lane conformance (see command.txt) | PASS in lane: 2.0 Result/@ResourceId for 1.0 and 2.0 scope URNs; 3.0 Attributes xml:id kept and references resolved; duplicate xml:id -> syntax-error; RequestContext.equals fixed; IIIC001 passes; IIIE301/IIIE303 decisions correct (harness fix merged separately). Merged tree in lane g4eq: core 4,459, pdp 77, xml 53, json 21 tests, 0 failures |
+| `builds/036-safety-net-design-4.1-4.2-agy` | design input for tasks 4.1, 4.2 | Agy audit, conductor adjudication | 43 test cases; defects filed policy4j-the.4.32, 4.33, decision 4.34 (PIP failure fails open); 2 claims rejected (MissingAttributeDetail optional; Condition must be boolean) |
+| `builds/040-slice-map-refresh-agy` | planning input for tasks 5.1-7.3 | Agy, read-only git | 38 main files overlap; 12 donor regression risks; slice order adopted; conductor correction on AnyURI |
+| `builds/037-function-audit-4.3-grok` | design input for task 4.3 | Grok audit (A.3 line-cited, jshell probes) | 15 new defects (filed policy4j-the.4.35-4.46; overflow noted on 5.4), 60 test rows, 8 decisions C1-C8 |
+| `builds/041-identifier-preaudit-5.1-agy` | planning input for task 5.1 | Agy, donor read-only | donor identifier hunks not applicable as-is: alias-intersection equality without matching hashCode, inverted Issuer.match, case-insensitive issuers, getById by short id; 38 test rows |
+| `builds/043-value-preaudit-5.2-agy` | planning input for task 5.2 | Agy, donor read-only | 20 reported defects; top defect rejected by conductor (A.3.11 set functions require no duplicates); bridge plan and caller counts |
+| `builds/044-registry-preaudit-5.3-agy` | planning input for task 5.3 | Agy, donor read-only | 15 reported defects; conductor confirmed Primitives lacks anyURI/ipAddress/rfc822Name/entity and DNSName uses a 1.0 id; integer claim rejected (Int64) |
+| `builds/045-numeric-preaudit-5.4-agy` | planning input for task 5.4 | Agy, donor read-only (shallow) | conductor confirmed Int64 mul identity 0, eight null stubs, ceilMod; overflow citations rejected (A.3.2 silent, decision C3) |
+| `builds/046-resultshape-preaudit-6.1-agy` | planning input for task 6.1 | Agy, donor read-only (79 tool calls) | 22 reported defects; conductor confirmed asSingle=findFirst and obligation/advice assignments never added in BaseDecisionRuleResponseExpression |
+| `builds/047-combining-preaudit-6.3-agy` | planning input for task 6.3 | Agy, donor read-only (47 tool calls) | 10 reported defects; legacy deny-overrides claim rejected (spec returns Deny on Indeterminate); PermitOverrides regression consistent with 4.21 |
+| `builds/048-temporal-preaudit-6.6-agy` | planning input for task 6.6 | Agy, donor read-only (60+ tool calls) | 13 reported defects; conductor confirmed inverted dateTime minus(dayTimeDuration) and Duration.compareTo returning INDETERMINATE |
+| `builds/050-seqof-preaudit-6.4-agy` | planning input for task 6.4 | Agy, donor read-only (59 tool calls) | 7 Stream implementors; conductor confirmed donor Streams discards its concatenation |
+| `builds/052-entity-preaudit-6.5-agy` | planning input for task 6.5 | Agy, donor read-only (125 tool calls) | 19 reported defects across core model, PDP runtime, marshalling lanes; reversions consistent with runs 040/043; JSON-array claim unverified |
+| `builds/054-model-schemas-preaudit-7.1-7.2-agy` | planning input for tasks 7.1, 7.2 | Agy, donor read-only (~80 tool calls) | 24 reported defects; conductor confirmed double-colon resource-parent/ancestor URNs and an EntitySchema compile break |
+| `builds/057-functions-preaudit-6.2-agy` | planning input for task 6.2 | Agy, donor read-only (~120 tool calls) | 15 annotation renames (~650 uses); donor function bodies would undo 4.35, 4.38, 4.40, 4.42, 4.43; plan: rename only |
+| `builds/059-identity-preaudit-9.1-agy` | planning input for task 9.1 | Agy, read-only on pre-refactor types | 25 types: no hard identity blockers; 23 need structural changes (superclass fields, non-final fields, Externalizable mutation, cached hashes, assertSame tests); Binary claim confirmed |
+| `builds/060-jdk28-toolchain-survey-agy` | planning input for tasks 8.1-8.6 | Agy, read-only (resend; first attempt discarded) | JDK 28 build installed and matches the pinned id; change list and risks; plugin versions UNVERIFIED (8.1 confirms) |
+| `builds/061-pending-decisions` | maintainer decisions for the group 4 gate | conductor consolidation of runs 032, 033, 036, 037 and reviews | 15 decisions (D1-D15) with options, recommendations and the beads/tests each blocks |
+| `builds/063-security-sweep-agy` | security sweep of XML/JSON input paths | Agy, read-only (86 tool calls) | most paths SAFE; pre-existing UNSAFE: HIGH multiple-resources cartesian expansion (4.50, conductor-confirmed), MEDIUM ReDoS/unbounded regex cache (4.51), MEDIUM XPathProvider without secure processing/limits (4.52) |
+| `builds/065-gate-4.7-manifest-audit-agy` | gate prep for task 4.7 | Agy, read-only manifest/beads audit | improved: enabled 836 -> 863, disabled 44 -> 17; 0 path changes; no vendored fixture touched; oasis20 IIIC001 still skipped under closed 4.19 (to enable) |
+| `reviews/code/rv042-g3-harness-comparators-agy` | review 3.10, 3.11, IIIE302 | Agy | APPROVE (1 LOW, superseded by rv044 finding 3) |
+| `reviews/code/rv043-g4-xml-mapping-grok` | review 4.19, IIIE301, IIIE303 | Grok, adversarial | REQUEST_CHANGES: 3 MEDIUM (duplicate xml:id, RequestContext.equals, 2.0 scope URN); repair sent |
+| `reviews/code/rv044-g3-harness-comparators-grok` | review 3.10, 3.11, IIIE302 | Grok, adversarial | REQUEST_CHANGES: 2 MEDIUM, 3 LOW; conductor correction on the double rule; engine bugs policy4j-the.4.28-4.31 filed |
+| `reviews/code/rv045-g4-registry-tests-agy` | review task 4.4 | Agy | APPROVE (2 LOW, fixed by conductor) |
+| `reviews/code/rv046-g4-xml-mapping-fix-verification-agy` | verify rv043/rv040 fixes | Agy | APPROVE |
+| `reviews/code/rv047-g4-function-audit-crosscheck-agy` | cross-check run 037 NEW-5..15 | Agy | 10 CONFIRMED, 1 PARTIAL (NEW-14, spec silent: decision C4) |
+| `reviews/code/rv048-g4-registry-tests-grok` | review task 4.4 | Grok, adversarial | REQUEST_CHANGES: HIGH self-referential round trip; MEDIUM alias, combining swap, function ids not looked up; conductor: behavioral fingerprint instead of class names |
+| `reviews/code/rv049-g4-safety-net-4.1-4.2-agy` | review tasks 4.1, 4.2 | Agy | APPROVE (2 LOW) |
+| `reviews/code/rv050-g4-safety-net-4.1-4.2-grok` | review tasks 4.1, 4.2 | Grok, adversarial | REQUEST_CHANGES: 3 MEDIUM (PIP not observed, designator function MustBePresent, issuer/Deny rows); follow-up queued |
+| `tests/035-boolean-lexical` | bug policy4j-the.4.25; manifest follow-ups | boolean lexical tests red then green; full reactor clean verify (see command.txt) | PASS: strict XML Schema boolean; 5,594 tests, 0 failures; conformance 857 pass; six cases re-enabled |
+| `reviews/code/rv051-g4-boolean-lexical-grok` | review bug 4.25 | Grok, adversarial | APPROVE; new bug policy4j-the.4.47 (JAXB boolean attributes) |
+| `reviews/code/rv052-g4-boolean-lexical-agy` | review bug 4.25 | Agy | APPROVE (2 non-blocking, filed 4.43/4.47) |
+| `tests/039-engine-equality` | bugs policy4j-the.4.24, 4.28, 4.30, 4.31, 4.32 (lane g4eq, applied 2026-10-02) | red then green per bug; full reactor clean verify and conformance in lane (see command.txt) | PASS: UTC-normalized temporal equality with zone kept; Locale.ROOT ignore-case; strict yearMonthDuration; selector precedence; XPathCategory on assignments (IIIA030/IIIA330 pass when enabled) |
+| `tests/042-functions-4.3` | task 4.3; bugs policy4j-the.4.35-4.43, 4.45, 4.46 (lane g43, author Grok; applied 2026-10-02) | 60-row safety net red then green; rv056 and rv063 fix rounds; lane conformance (see command.txt) | PASS: 88/109 rows active, decision rows disabled with ids; merged tree core 4,885 / pdp 98 tests, 0 failures |
+| `reviews/code/rv053-g4-engine-equality-agy` | review bugs 4.24, 4.28, 4.30, 4.31, 4.32 | Agy | APPROVE (no findings); adversarial review pending |
+| `tests/038-safety-net-4.1-4.2` | tasks 4.1, 4.2 (lane g41, applied 2026-10-02) | safety-net tests, red runs for the rv050 rows; -pl xacml-core,xacml-pdp -am test (see command.txt) | PASS: designator matrix with PIP verification, selector, issuer, attribute-designator function, Deny/Permit condition outcomes; disabled with ids 4.33, 4.34, 4.43; 4.32 test enabled after the 4.32 fix merge |
+| `reviews/code/rv054-g4-safety-net-4.1-4.2-fix-verification-agy` | verify rv049/rv050 fixes | Agy | APPROVE |
+| `reviews/code/rv055-g4-anyuri-harness-fix-verification-agy` | verify rv038/rv039/rv042/rv044 fixes | Agy | APPROVE |
+| `reviews/code/rv056-g4-functions-4.3-agy` | review task 4.3 and bugs 4.35-4.43, 4.45, 4.46 (lane g43) | Agy | REQUEST_CHANGES: MEDIUM 4.43 keeps only syntax-error; LOW empty rfc822Name pattern throws |
+| `tests/049-registry-followup-4.33-4.27` | task 4.4 follow-up (rv048), bugs 4.33, 4.27 (lane g44f, applied 2026-10-02) | red then green; full reactor clean verify in lane (see command.txt) | PASS: 5,913 tests, 0 failures; expected lexical strings, behavioral combining fingerprints, 236 function ids; 4.33 absent category; 4.27 ServiceLoader |
+| `reviews/code/rv057-g4-engine-equality-grok` | review bugs 4.24, 4.28, 4.30, 4.31, 4.32 | Grok, adversarial | REQUEST_CHANGES: HIGH ISO8601Time equality drops the UTC day (op:time-equal) |
+| `reviews/code/rv058-g4-registry-followup-agy` | review lane g44f | Agy | APPROVE (2 LOW: unpadded base64 accepted, filed 4.48; fingerprints lack Indeterminate inputs) |
+| `tests/051-static-rejection-jaxb-boolean` | bugs policy4j-the.3.9 (IIA004, IIC012), 4.47 | harness and lexical tests red then green; full reactor clean verify (see command.txt) | PASS: special-harness for static rejection; strict schema booleans; 6,041 tests, 0 failures; conformance 863 executed |
+| `reviews/code/rv059-g4-static-rejection-jaxb-boolean-agy` | review 3.9, 4.47 | Agy | APPROVE (1 LOW); conductor routed an XXE check to the adversarial review |
+| `tests/053-duplicate-ids` | bug policy4j-the.4.26 (lane g426, applied 2026-10-02) | red then green; full reactor clean verify in lane (see command.txt) | PASS: duplicate type/function ids fail fast naming both claimants; same-instance re-registration idempotent; merged tree core 4,768 / pdp 98 tests, 0 failures |
+| `reviews/code/rv060-g4-duplicate-ids-agy` | review bug 4.26 | Agy | APPROVE (no findings) |
+| `reviews/code/rv061-g4-functions-4.3-fix-verification-agy` | verify rv056 fixes (lane g43) | Agy | APPROVE |
+| `reviews/code/rv062-g4-registry-followup-grok` | review g44f (4.4 follow-up, 4.33, 4.27) | Grok, adversarial | REQUEST_CHANGES: MEDIUM fingerprints do not separate several algorithms; 3 LOW; queued to the author |
+| `reviews/code/rv063-g4-functions-4.3-sol` | review task 4.3 and function bugs (lane g43) | Sol (Codex) | REQUEST_CHANGES: 3 MEDIUM (Long.MAX_VALUE exactness, regexp substring/anchors, XPath Content check order) |
+| `reviews/code/rv064-g4-static-rejection-jaxb-boolean-grok` | review 3.9, 4.47 (security focus) | Grok, adversarial | REQUEST_CHANGES: HIGH XXE regression (insecure TransformerFactory path), MEDIUM shared XMLReaderManager; priority fix sent |
+| `reviews/code/rv065-g4-time-base64-registry-agy` | review lane gtime (rv057, 4.48, rv058/rv062) | Agy | REQUEST_CHANGES: HIGH time-in-range shifts bounds for positive offsets (conductor-confirmed trace) |
+| `reviews/code/rv066-g4-functions-4.3-rv063-verification-agy` | verify rv063 fixes (lane g43) | Agy | APPROVE (1 LOW, filed 4.49) |
+| `tests/055-time-day-base64` | rv057 (time equality keeps the day), bug 4.48 (base64), rv058/rv062 follow-ups, rv065 (time-in-range) (lane gtime, applied 2026-10-02) | red then green per item; full reactor verify and conformance in lane (see command.txt) | PASS: day-preserving time equality and ordering, cycle-aligned time-in-range, strict base64, 23 combining URNs x 4 vectors, literal lexical rows, lexical missing-attribute messages; merged tree core 4,985 / pdp 98, 0 failures |
+| `reviews/code/rv067-g4-time-in-range-fix-verification-agy` | verify rv065 fix (lane gtime) | Agy | APPROVE |
+| `reviews/code/rv068-g4-duplicate-ids-grok` | review bug 4.26 | Grok, adversarial | APPROVE (residual: unused accumulate, case-insensitive alias index) |
+| `tests/062-regexp-dollar` | bug policy4j-the.4.49 (lane g449, applied 2026-10-02) | red then green; core clean test and full reactor verify (see command.txt) | PASS: unescaped $ outside classes -> \\z; core 4,889 tests, conformance 917 / 0 failures in lane |
+| `reviews/code/rv069-g4-regexp-dollar-grok` | review bug 4.49 | Grok, adversarial | APPROVE |
+| `tests/064-xpath-secure-processing` | bug policy4j-the.4.52 (lane g452, applied 2026-10-02) | focused tests and conformance in lane (see command.txt); the lane xacml-xml gate was blocked by another lane in-progress work | PASS (core): FEATURE_SECURE_PROCESSING on the only XPathFactory; extension calls -> processing-error / Indeterminate; conformance 375/488/17/2, 0 failures |
+| `reviews/code/rv070-g4-xpath-secure-processing-agy` | review bug 4.52 | Agy | APPROVE (enhancement: direct feature assertion) |
+| `reviews/code/rv074-g4-xpath-secure-processing-grok` | review bug 4.52 | Grok, adversarial | APPROVE (2 LOW: the tests do not lock the flag; MatchTest pins missing-attribute for an XPath error) |
+| `tests/064-xpath-secure-processing/review-fix` | rv070/rv074 fixes for 4.52 (lane g452b, Luna; applied 2026-10-02) | red with setFeature removed (1 failure: expected true, was false), then green; core clean test (see command.txt) | PASS: getFeature(FEATURE_SECURE_PROCESSING) asserted on the engine factory; MatchTest no longer pins missing-attribute; core 5,755 tests, 0 failures, 17 skipped |
+| `reviews/code/rv076-g4-xpath-secure-fix-agy` | verify rv070/rv074 fixes for 4.52 | Agy | APPROVE (both LOW findings fixed) |
+| `builds/067-merged-tree-check` | merged tree after 4.5, 4.47, 4.52 (check lane chk8) | JDK 21 full reactor clean verify | PASS: 7,137 tests, 0 failures, 39 skipped; conformance module 917/0/16 |
+| `tests/068-resume-jdk21-baseline` | resumed task 4.6 preflight, 2026-10-04 | JDK 21 full reactor clean verify; strict OpenSpec validation; source hash comparison | PASS: 7,137 tests, 0 failures, 0 errors, 39 skipped; 3,753 source hashes unchanged. At preflight task 4.6 awaited decisions, subsequently resolved in rv077; gate 4.7 stays open |
+| `reviews/plan/rv077-resume-ntm` | task 4.6 choices and research guidance, 2026-10-04 | eight requested NTM model lanes; primary OASIS MCP retrieval; guidance review | COMPLETE: eight reports and terminal/model receipts retained; spec compliance selected; IEEE double equality, integer return type, CS01 profile table, unchanged vendored fixtures; XPath missing-content delta corrected. Astra self-report/model pin conflict retained. Tavily 429 and Deep Research rate limit disclosed; DuckDuckGo fallback supported. New guidance checks pass; repository-wide path gate has pre-existing failures |
+| `tests/069-task46-spec-compliance` | task 4.6 implementation, 2026-10-04 | tests-first NTM writers; JDK21 focused tests and full clean verify; exact manifest/runtime identity and source hashes | PASS: 7,589 tests, 0 failures/errors, 30 skips; 866/880 enabled identities observed, all 864 prior IDs retained; 4 explicit static-rejection passes. IEEE policy equality, integer result, CS01 decision table and nested response leak fixed; vendored bytes unchanged; 4.7 stays open |
+| `reviews/code/rv078-task46-spec-compliance` | task 4.6 numeric, harness, combining and traceability review | Opus5.5, Astra, Grok4.7; frozen source packets, supplied reactor proof, separate spec addendum checks | APPROVE: no reachable code blocker; follow-ups applied or tracked in 4.53/4.54. Final spec addendum and wording approved; serving variants UNVERIFIED; production/test hashes unchanged from green gate |
+| `reviews/code/rv071-g4-xxe-fix-agy` | review rv064 XXE fix | Agy | APPROVE (102 security tests, 60 red before the fix; reactor 6,367 tests, 0 failures) |
+| `reviews/code/rv072-g4-xxe-fix-grok` | verify rv064 XXE fix | Grok, adversarial | APPROVE (JDK 21 call order traced; no open findings) |
+| `tests/058-datetime-subtract-4.5` | task 4.5 (main worktree, Sol) | 771 arithmetic tests red then green; full reactor clean verify (see command.txt) | PASS: all six add/subtract functions, both URN versions, signed durations, month ends, leap days; unzoned dateTime keeps no timezone; 7,136 tests, 0 failures, 39 skipped; conformance 864 passed (OASIS 2.0 365, 3.0 480, RSA 17, examples 2), 16 skipped |
+| `reviews/code/rv073-g4-datetime-arithmetic-agy` | review task 4.5 | Agy | APPROVE (a8a90d46 sign bug confirmed by the historical probe) |
+| `reviews/code/rv075-g4-datetime-arithmetic-grok` | review task 4.5 | Grok, adversarial | APPROVE (no findings; three test gaps noted) |
+| `tests/066-oasis20-iiic001` | manifest follow-up (run 065 audit): oasis20 IIIC001 | OASIS 2.0 runner + ConformanceManifestTest (see command.txt) | PASS: oasis20 IIIC001 executed and passing; only that row changed |
+| `tests/051-static-rejection-jaxb-boolean/rv064-fix` | rv064 XXE fix (bug 4.47 follow-up) | security tests red then green; full reactor clean verify (see command.txt) | PASS (author): method-local secure SAX reader, external entities/DTD/XInclude off, external declarations rejected, no TransformerFactory; conformance outcomes unchanged; verification pending |
+| `tests/024-bugs-string-functions/review-rv038-rv039` | rv038/rv039 fixes (AnyURI lexical form, PermitOverrides flag) | red then green; full reactor clean verify | PASS: 5,660 tests, 0 failures; conformance 859 pass (IIIA030/IIIA330 re-enabled); verification pending |
+| `tests/030-harness-comparators/review-rv042-rv044` | rv042/rv044 harness fixes | comparator tests red then green | PASS (same gate); verification pending |
+| `builds/070-maintainer-rulings` | maintainer rulings on the run 061 decisions, 2026-10-07 | conversation receipt (see command.txt) | RECORDED: D3-D9 and D11-D18 accepted as recommended; D1, D2, D10 stand as ruled in rv077 (D2 is IEEE equality, not the run 061 recommendation); 13 beads carry the ruling; no code changed; gate 4.7 stays open |
+
+Raw `*.log` files are excluded by the maintainer's global git ignore, so they
+stay local; the committed raw output is each run's `surefire-summary.txt` and
+JSON receipts.
+
+Review-found gaps tracked as beads bugs (not part of group 1): policy4j-the.3.7
+(IIIE301-303 outside loop bounds), policy4j-the.3.8 (no AssociatedAdvice
+comparison), policy4j-the.4.8 (variadic higher-order: fixed in run 005),
+policy4j-the.4.9 (context selector cardinality), policy4j-the.4.10 (remaining
+fractional-second truncation), policy4j-the.4.11 (time-in-range URN),
+policy4j-the.4.12 (or/and and higher-order Indeterminate propagation).
+Task 4.5 (`dateTime-subtract-*` sign) was fixed early in run 005; group 4
+still owns its safety-net tests (4.3).
 
 ## Not applicable
 
-- JMH for groups 1-4 and 8: NOT APPLICABLE: they change tests, fixtures,
-  semantics fixes, and the toolchain, not hot paths.
+- JMH for groups 1-3 and 8: NOT APPLICABLE for their tests, fixture and
+  toolchain changes.
+- JMH for task 4.6: APPLICABLE because double bag/set scans and composite
+  evaluation change hot paths. Unrun; recorded in run 069. Gate 4.7 stays
+  pending; no performance acceptance follows from the reactor test gate.
 - JMH for groups 5-7: decided per gate task (the refactor touches value
   types and function invocation); group 9 records the value-class baselines.

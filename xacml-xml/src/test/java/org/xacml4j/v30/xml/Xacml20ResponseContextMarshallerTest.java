@@ -24,8 +24,8 @@ package org.xacml4j.v30.xml;
 
 import java.io.InputStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.marshal.Marshaller;
 import org.xacml4j.v30.marshal.Unmarshaller;
@@ -40,7 +40,7 @@ public class Xacml20ResponseContextMarshallerTest {
 	private Marshaller<ResponseContext> responseMarshaller;
 	private Unmarshaller<RequestContext> requestUnmarshaller;
 
-	@Before
+	@BeforeEach
 	public void SetUp() throws Exception
 	{
 		responseMarshaller = new Xacml20ResponseContextMarshaller();

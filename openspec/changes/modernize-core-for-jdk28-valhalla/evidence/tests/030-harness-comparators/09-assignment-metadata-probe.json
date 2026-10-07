@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "receipts": [
+    "METADATA oasis30/IIIA030 attribute=urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA030:assignment2 expected={XPathCategory=urn:oasis:names:tc:xacml:3.0:attribute-category:resource} actual={}",
+    "METADATA oasis30/IIIA330 attribute=urn:oasis:names:tc:xacml:2.0:conformance-test:IIIA330:assignment2 expected={XPathCategory=urn:oasis:names:tc:xacml:3.0:attribute-category:resource} actual={}"
+  ],
+  "interpretation": "Diagnostic confirmation of an output defect; not a passing conformance case"
+}

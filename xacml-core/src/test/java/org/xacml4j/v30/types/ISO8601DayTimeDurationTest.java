@@ -22,19 +22,21 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
+import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import javax.xml.datatype.Duration;
 
 public class ISO8601DayTimeDurationTest
 {
 	private DatatypeFactory f;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception{
 		this.f = DatatypeFactory.newInstance();
 	}
@@ -46,13 +48,13 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(3, v1.getDays());
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
-		assertEquals(0, v1.getSeconds());
+		assertEquals(BigDecimal.ZERO, v1.getSeconds());
 		assertEquals("P3DT10H30M0S", v1.toXacmlString());
 		ISO8601DayTimeDuration v2 = ISO8601DayTimeDuration.of("PT10H10S");
 		assertEquals(0, v2.getDays());
 		assertEquals(10, v2.getHours());
 		assertEquals(0, v2.getMinutes());
-		assertEquals(10, v2.getSeconds());
+		assertEquals(BigDecimal.TEN, v2.getSeconds());
 		assertEquals("P0DT10H0M10S", v2.toXacmlString());
 	}
 
@@ -63,7 +65,7 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(3, v1.getDays());
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
-		assertEquals(0, v1.getSeconds());
+		assertEquals(BigDecimal.ZERO, v1.getSeconds());
 		assertFalse(v1.isNegative());
 		ISO8601DayTimeDuration v2 = ISO8601DayTimeDuration.of("P3DT10H30M");
 		assertEquals(v1, v2);
@@ -78,7 +80,7 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(3, v3.getDays());
 		assertEquals(20, v3.getHours());
 		assertEquals(30, v3.getMinutes());
-		assertEquals(10, v3.getSeconds());
+		assertEquals(BigDecimal.TEN, v3.getSeconds());
 		assertEquals("P3DT10H30M0S", v1.toXacmlString());
 	}
 
@@ -91,7 +93,7 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(3, v3.getDays());
 		assertEquals(0, v3.getHours());
 		assertEquals(29, v3.getMinutes());
-		assertEquals(50, v3.getSeconds());
+		assertEquals(BigDecimal.valueOf(50), v3.getSeconds());
 	}
 
 	@Test
@@ -104,7 +106,7 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(0, v3.getDays());
 		assertEquals(0, v3.getHours());
 		assertEquals(0, v3.getMinutes());
-		assertEquals(0, v3.getSeconds());
+		assertEquals(BigDecimal.ZERO, v3.getSeconds());
 	}
 
 	@Test
@@ -114,13 +116,13 @@ public class ISO8601DayTimeDurationTest
 		assertEquals(3, v1.getDays());
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
-		assertEquals(0, v1.getSeconds());
+		assertEquals(BigDecimal.ZERO, v1.getSeconds());
 		assertEquals("P3DT10H30M0S", v1.toXacmlString());
 		v1 = ISO8601DayTimeDuration.of("P3DT10H30M10S");
 		assertEquals(3, v1.getDays());
 		assertEquals(10, v1.getHours());
 		assertEquals(30, v1.getMinutes());
-		assertEquals(10, v1.get().getSeconds());
+		assertEquals(BigDecimal.TEN, v1.get().getSeconds());
 	}
 
 	@Test

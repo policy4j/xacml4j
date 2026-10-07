@@ -1,0 +1,93 @@
+# Working directory: <repo>. Commands below were run as plain commands.
+# No commit, staging, install, br, task ticks or issue closures.
+
+# Task-start source hashes and historical run 030 comparison receipts.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py initial
+
+# Replace only the two .4.24 placeholders in the manifest and run 030 blockers.
+# Initial guard after that change: exit 0; 13 tests, 0 failures/errors/skips.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=ConformanceManifestTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/01-manifest-guard.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py focused 01-manifest-guard-results manifest
+
+# Scoped parser inventory; candidates were read at the ranges in parser-audit.md.
+rtk rg -n 'parseBoolean|Boolean\.valueOf|getAsBoolean\(' xacml-core/src xacml-xml/src xacml-json/src
+rtk rg -n 'Boolean\.valueOf|new (java\.lang\.)?Boolean|BooleanUtils|toBoolean' xacml-core/src xacml-xml/src xacml-json/src
+
+# Failing tests FIRST, before BooleanVal/GsonUtil/harness changes.
+rtk python3 -c 'from pathlib import Path; import hashlib,json; run=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical"); source=Path("xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java"); before=json.loads((run/"00-source-hashes.json").read_text()); assert hashlib.sha256(source.read_bytes()).hexdigest()==before[str(source)]; target=run/"00-before-GsonUtil.java"; assert not target.exists(); target.write_bytes(source.read_bytes()); print("GsonUtil backup matches the task-start hash")'
+# Intentionally ignore failures ONLY for this red receipt to reach all three modules.
+# Maven exit 0; Surefire RED: 52 tests, 41 failures, 0 errors, 0 skips.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-xml,xacml-json -am -Dtest=BooleanValTest,BooleanLexicalTest,BooleanRequestLexicalTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/02-boolean-lexical-red.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py focused 02-boolean-lexical-red-results lexical
+# A structured Python SHA256 check confirmed BooleanVal, GsonUtil and the harness
+# still matched 00-source-hashes.json. Saved as 02-red-production-hashes.json.
+rtk python3 -c 'from pathlib import Path; import hashlib,json; run=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical"); before=json.loads((run/"00-source-hashes.json").read_text()); paths=["xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java","xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java","xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java"]; checked={p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in paths}; assert all(checked[p]==before[p] for p in paths); (run/"02-red-production-hashes.json").write_text(json.dumps(checked,indent=2)+"\n"); print("Red tests ran against task-start production bytes")'
+
+# Smallest core parser + JSON text flag fixes, then focused green (no failure ignore).
+# Exit 0; 52 tests, 0 failures/errors/skips.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-xml,xacml-json -am -Dtest=BooleanValTest,BooleanLexicalTest,BooleanRequestLexicalTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/03-boolean-lexical-green.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py focused 03-boolean-lexical-green-results lexical
+
+# Remove the harness-only boolean special case; retain all comparator tests.
+# Exit 0; 77 comparator tests, 0 failures/errors/skips.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=Xacml20TestUtilityTest,Xacml30TestUtilityTest,XacmlPolicyTestSupportTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/04-harness-comparators.log test
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -version
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py focused 04-harness-comparator-results comparator
+
+# Four conductor-approved candidate cases enabled; prescribed skips/reasons retained.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py snapshot 05-pre-conformance-source-hashes
+# Exit 0; 855 conformance cases passed, 25 skipped, no regressions.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/05-conformance-gate.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py cases 05-conformance-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py modules 05-conformance-reactor-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py snapshot 05-post-conformance-source-hashes
+
+# Required FULL reactor gate, including the conductor's merged lanes.
+# Exit 0, BUILD SUCCESS; 5495 tests, 0 failures, 0 errors, 31 skips.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/06-full-reactor-clean-verify.log clean verify
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py modules 06-full-reactor-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py cases 06-final-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py snapshot 06-post-full-gate-source-hashes
+
+# Refresh the run 05 report receipt using only its actual selected modules.
+# The original collection included an unselected JSON report directory.
+# The narrowed receipt replaces that stale JSON entry; run 06 is fresh for every module.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py modules 05-conformance-reactor-results xacml-core,xacml-xml,xacml-pdp,xacml-test,xacml-conformance-tests
+
+# Scope, header, case outcome, byte stability and completed-log normalization audit.
+# First audit attempt caught a mismatched header-reference whitespace template,
+# not a source change. The helper now compares the actual copied XML test header.
+# Final exit 0; scope PASS. No production or test edit followed the final gate.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/audit-evidence.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/audit-evidence.py
+
+# Scoped final status; compared to hashes, not to a clean branch assumption.
+rtk git status --short -- xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java xacml-core/src/test/java/org/xacml4j/v30/types/BooleanLexicalTest.java xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java xacml-json/src/test/java/org/xacml4j/v30/marshal/json/BooleanRequestLexicalTest.java xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanRequestLexicalTest.java xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java xacml-conformance-tests/src/test/manifest/conformance-manifest.csv openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/conformance-blockers.md openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/
+rtk rg -n 'parseBoolean|Boolean\.valueOf|getAsBoolean\(' xacml-core/src xacml-xml/src xacml-json/src
+rtk git status --short
+
+# Primary specification lookup used the native Tavily extract MCP, not a shell wrapper:
+# https://www.w3.org/TR/xmlschema-2/#boolean
+# https://www.w3.org/TR/xmlschema-2/#rf-whiteSpace
+# Query: XML Schema boolean lexical forms and whiteSpace collapse.
+
+# Conductor merged reviewed XML lane and other concurrent tests after run 06.
+# The final source-byte check caught those external changes, not a Maven failure.
+rtk rg -n '^oasis30,(IIIC001|IIIE301|IIIE303),' xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py snapshot 08-merged-xml-source-hashes
+# Structured hash comparison saved 08-conductor-xml-merge-changes.json.
+# Historical audit files were retained with a 06- prefix before updating the final receipts.
+# IIIC001 was already executed; enable IIIE301 and IIIE303, clear their bug fields.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py snapshot 09-pre-xml-conformance-source-hashes
+# Exit 0; 857 conformance cases passed, 23 skipped.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/09-merged-xml-conformance.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py cases 09-merged-xml-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py snapshot 09-post-xml-conformance-source-hashes
+# Required repeated FULL gate after the XML merge. Exit 0, BUILD SUCCESS.
+# Final counts: 5594 tests, 0 failures, 0 errors, 32 skips.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/10-full-reactor-clean-verify.log clean verify
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py modules 10-full-reactor-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py cases 10-final-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/capture-evidence.py snapshot 10-post-full-gate-source-hashes
+# Updated audit separates this lane's nine files from the fourteen external changes.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/audit-evidence.py

@@ -1,0 +1,21 @@
+{
+  "log": "24-interface-boundaries-gate.log",
+  "build_success": false,
+  "counts": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "tests_executed": false,
+  "reports": {},
+  "problems": [],
+  "compiler_diagnostics": [
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ModelFixtures.java",
+      "line": "119",
+      "column": "30",
+      "message": "org.xacml4j.v30.policy.ModelFixtures.ExpressionReference is not abstract and does not override abstract method accept(org.xacml4j.v30.ExpressionVisitor) in org.xacml4j.v30.Expression"
+    }
+  ]
+}

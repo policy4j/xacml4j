@@ -22,17 +22,20 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Status;
@@ -44,94 +47,127 @@ import org.xacml4j.v30.types.XacmlTypes;
 /**
  * @author Giedrius Trumpickas
  */
+@ExtendWith(MockitoExtension.class)
 public class ConditionTest
 {
 	private Expression exp;
 	private EvaluationContext context;
-	private IMocksControl ctl;
 	private Rule rule;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		ctl = createStrictControl();
-		this.exp = ctl.createMock(Expression.class);
-		this.context = ctl.createMock(EvaluationContext.class);
-		this.rule = ctl.createMock(Rule.class);
+		this.exp = mock(Expression.class);
+		this.context = mock(EvaluationContext.class);
+		this.rule = Rule.builder("testRule", org.xacml4j.v30.Effect.DENY).build();
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithExpWhichReturnsNonBooleanValue() {
-		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.INTEGER);
+		when(exp.getEvaluatesTo()).thenReturn(XacmlTypes.INTEGER);
 
-		ctl.replay();
-		new Condition(exp);
-		ctl.verify();
+		InOrder order = inOrder(exp, context);
+		assertThrows(IllegalArgumentException.class, () -> new Condition(exp));
+		order.verify(exp).getEvaluatesTo();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(exp, times(1)).getEvaluatesTo();
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(exp, context);
 	}
 
 	@Test
 	public void testExpressionThrowsEvaluationException() {
 
-		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andThrow(new FunctionInvocationException(
-				ctl.createMock(FunctionSpec.class), new NullPointerException()));
-		Capture<Status> statusCapture = Capture.newInstance();
-		context.setEvaluationStatus(capture(statusCapture));
+		when(exp.getEvaluatesTo()).thenReturn(XacmlTypes.BOOLEAN);
+		when(exp.evaluate(context)).thenThrow(new FunctionInvocationException(
+				mock(FunctionSpec.class), new NullPointerException()));
+		ArgumentCaptor<Status> statusCapture = ArgumentCaptor.forClass(Status.class);
+		doNothing().when(context).setEvaluationStatus(statusCapture.capture());
 
-		ctl.replay();
+		InOrder order = inOrder(exp, context);
 		Condition c = Condition.condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
 		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, statusCapture.getValue().getStatusCode().getValue());
-		ctl.verify();
+		order.verify(exp).getEvaluatesTo();
+		order.verify(exp).evaluate(context);
+		order.verify(context).setEvaluationStatus(statusCapture.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(exp, times(1)).getEvaluatesTo();
+		verify(exp, times(1)).evaluate(context);
+		verify(context, times(1)).setEvaluationStatus(statusCapture.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(exp, context);
 	}
 
 	@Test
 	public void testExpressionThrowsRuntimeException() {
-		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());
+		when(exp.getEvaluatesTo()).thenReturn(XacmlTypes.BOOLEAN);
+		when(exp.evaluate(context)).thenThrow(new IllegalArgumentException());
 
-		Capture<Status> statusCapture = Capture.newInstance();
-		Capture<Rule> ruleCapture = Capture.newInstance();
-		expect(context.getCurrentRule()).andReturn(rule);
-		context.setEvaluationStatus(capture(ruleCapture), capture(statusCapture));
+		ArgumentCaptor<Status> statusCapture = ArgumentCaptor.forClass(Status.class);
+		ArgumentCaptor<Rule> ruleCapture = ArgumentCaptor.forClass(Rule.class);
+		when(context.getCurrentRule()).thenReturn(rule);
+		doNothing().when(context).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());
 
-		ctl.replay();
+		InOrder order = inOrder(exp, context);
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.INDETERMINATE, c.evaluate(context));
 		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, statusCapture.getValue().getStatusCode().getValue());
-		ctl.verify();
+		order.verify(exp).getEvaluatesTo();
+		order.verify(exp).evaluate(context);
+		order.verify(context).getCurrentRule();
+		order.verify(context).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(exp, times(1)).getEvaluatesTo();
+		verify(exp, times(1)).evaluate(context);
+		verify(context, times(1)).getCurrentRule();
+		verify(context, times(1)).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(exp, context);
+		assertSame(rule, ruleCapture.getValue());
 	}
 
 	@Test
 	public void testExpressionEvaluatesToFalse() {
-		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		when(exp.getEvaluatesTo()).thenReturn(XacmlTypes.BOOLEAN);
+		when(exp.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
 
-		ctl.replay();
+		InOrder order = inOrder(exp, context);
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.FALSE, c.evaluate(context));
-		ctl.verify();
+		order.verify(exp).getEvaluatesTo();
+		order.verify(exp).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(exp, times(1)).getEvaluatesTo();
+		verify(exp, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(exp, context);
 	}
 
 	@Test
 	public void testExpressionEvaluatesToTrue() {
-		expect(exp.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN);
-		expect(exp.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		when(exp.getEvaluatesTo()).thenReturn(XacmlTypes.BOOLEAN);
+		when(exp.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		ctl.replay();
+		InOrder order = inOrder(exp, context);
 		Condition c = new Condition(exp);
 		assertEquals(ConditionResult.TRUE, c.evaluate(context));
-		ctl.verify();
+		order.verify(exp).getEvaluatesTo();
+		order.verify(exp).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(exp, times(1)).getEvaluatesTo();
+		verify(exp, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(exp, context);
 	}
 
 	@Test
 	public void testObjectMethods() {
-		Value exp1 = ctl.createMock(Value.class);
-		Value exp2 = ctl.createMock(Value.class);
+		Value exp1 = org.xacml4j.v30.types.BooleanVal.of(true);
+		Value exp2 = org.xacml4j.v30.types.BooleanVal.of(false);
 
-		expect(exp1.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN).times(2);
-		expect(exp2.getEvaluatesTo()).andReturn(XacmlTypes.BOOLEAN).times(1);
+		assertEquals(XacmlTypes.BOOLEAN, exp1.getEvaluatesTo());
+		assertEquals(XacmlTypes.BOOLEAN, exp2.getEvaluatesTo());
 
-		ctl.replay();
 
 		Condition c1 = new Condition(exp1);
 		Condition c2 = new Condition(exp1);
@@ -144,6 +180,6 @@ public class ConditionTest
 
 		assertEquals(c1.hashCode(), c2.hashCode());
 		assertEquals(c1.toString(), c2.toString());
-		ctl.verify();
+		verifyNoMoreInteractions(exp, context);
 	}
 }

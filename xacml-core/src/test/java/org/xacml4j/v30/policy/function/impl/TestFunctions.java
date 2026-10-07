@@ -25,7 +25,7 @@ package org.xacml4j.v30.policy.function.impl;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -44,7 +44,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 
 @XacmlFunctionProvider(description="TestFunctions")
-@Ignore
+@Disabled
 public final class TestFunctions
 {
 	/** Private constructor for the utility class */

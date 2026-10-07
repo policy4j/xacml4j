@@ -29,7 +29,7 @@ import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.spi.pip.XacmlAttributeDescriptor;
 import org.xacml4j.v30.spi.pip.XacmlAttributeDesignator;
 import org.xacml4j.v30.spi.pip.XacmlAttributeResolverDescriptor;
-import org.xacml4j.v30.types.String;
+import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -49,7 +49,7 @@ public class Xacml20ConformanceAttributeResolver
 					attributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id",
 					dataType="http://www.w3.org/2001/XMLSchema#string") BagOfValues subjectId)
 	{
-		String name = BagOfValues.value(subjectId);
+		StringVal name = (StringVal)BagOfValues.value(subjectId);
 		Map<java.lang.String, BagOfValues> attributes = new HashMap<java.lang.String, BagOfValues>();
 		if(name.get().equalsIgnoreCase("Julius Hibbert")){
 			attributes.put("urn:oasis:names:tc:xacml:1.0:example:attribute:role",

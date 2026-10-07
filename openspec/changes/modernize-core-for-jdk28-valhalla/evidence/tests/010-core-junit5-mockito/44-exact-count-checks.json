@@ -1,0 +1,2088 @@
+[
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java",
+    "method": "testEvaluateAdviceExpression",
+    "line_before": 111,
+    "checks": [
+      "verify(expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java",
+    "method": "testApplyEvaluationFunctionThrowsRuntimeException",
+    "line_before": 59,
+    "checks": [
+      "verify(function, times(1)).invoke(context, XacmlTypes.INTEGER.ofAny(10L));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java",
+    "method": "testApplyEvaluationFunctionThrowsFunctionInvocationException",
+    "line_before": 72,
+    "checks": [
+      "verify(function, times(1)).invoke(context, XacmlTypes.INTEGER.ofAny(10L));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+    "line_before": 93,
+    "checks": [
+      "verify(context, times(1)).resolve(capture.capture());",
+      "verify(context, times(1)).setEvaluationStatusIfAbsent(status.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional",
+    "line_before": 120,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());",
+      "verify(context, times(1)).setEvaluationStatusIfAbsent(status.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueAttributeDoesExist",
+    "line_before": 143,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+    "line_before": 167,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull",
+    "line_before": 188,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+    "line_before": 206,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException",
+    "line_before": 228,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+    "line_before": 246,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseContextHandlerThrowsRuntimeException",
+    "line_before": 267,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresenTrueAndReturnsNonEmptyBag",
+    "line_before": 83,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresenFalseAndReturnsNonEmptyBag",
+    "line_before": 111,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndReturnsEmptyBag",
+    "line_before": 138,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+    "line_before": 167,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());",
+      "verify(context, times(1)).setEvaluationStatusIfAbsent(status.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentFalseAndReturnsEmptyBag",
+    "line_before": 196,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException",
+    "line_before": 225,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentFalseAndContextThrowsRuntimeException",
+    "line_before": 252,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+    "line_before": 276,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+    "line_before": 303,
+    "checks": [
+      "verify(context, times(1)).resolve(c.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testCreateWithExpWhichReturnsNonBooleanValue",
+    "line_before": 71,
+    "checks": [
+      "verify(exp, times(1)).getEvaluatesTo();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testExpressionThrowsEvaluationException",
+    "line_before": 91,
+    "checks": [
+      "verify(exp, times(1)).getEvaluatesTo();",
+      "verify(exp, times(1)).evaluate(context);",
+      "verify(context, times(1)).setEvaluationStatus(statusCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testExpressionThrowsRuntimeException",
+    "line_before": 113,
+    "checks": [
+      "verify(exp, times(1)).getEvaluatesTo();",
+      "verify(exp, times(1)).evaluate(context);",
+      "verify(context, times(1)).getCurrentRule();",
+      "verify(context, times(1)).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testExpressionEvaluatesToFalse",
+    "line_before": 128,
+    "checks": [
+      "verify(exp, times(1)).getEvaluatesTo();",
+      "verify(exp, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testExpressionEvaluatesToTrue",
+    "line_before": 142,
+    "checks": [
+      "verify(exp, times(1)).getEvaluatesTo();",
+      "verify(exp, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java",
+    "method": "testNoMatchStopsEvaluation",
+    "line_before": 73,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java",
+    "method": "testAllMatch",
+    "line_before": 99,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);",
+      "verify(m2Expression, times(1)).evaluate(context);",
+      "verify(m3Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java",
+    "method": "testAtLeastOneNoMatch1",
+    "line_before": 123,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);",
+      "verify(m2Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java",
+    "method": "testAtLeastOneNoMatchAndIndeterminate",
+    "line_before": 149,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);",
+      "verify(m2Expression, times(1)).evaluate(context);",
+      "verify(m3Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java",
+    "method": "testAllMatchAndAtLeastOneIndeterminate",
+    "line_before": 175,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);",
+      "verify(m2Expression, times(1)).evaluate(context);",
+      "verify(m3Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java",
+    "method": "testAtLeastOneMatch1",
+    "line_before": 74,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java",
+    "method": "testAtLeastOneMatch2",
+    "line_before": 100,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);",
+      "verify(m2Expression, times(1)).evaluate(context);",
+      "verify(m3Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java",
+    "method": "testNoMatchAndAtLeastOneIndeterminate",
+    "line_before": 126,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);",
+      "verify(m2Expression, times(1)).evaluate(context);",
+      "verify(m3Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java",
+    "method": "testAllNoMatch",
+    "line_before": 152,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(context);",
+      "verify(m2Expression, times(1)).evaluate(context);",
+      "verify(m3Expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+    "method": "testMatchEvaluation",
+    "line_before": 101,
+    "checks": [
+      "verify(context, times(1)).resolve(ref.getReferenceKey());",
+      "verify(context, times(2)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context,\n\t\t                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build());",
+      "verify(invocation, times(1)).invoke(spec, context,\n\t\t                         ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(1)).build());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+    "method": "testMatchEvaluationFailedToResolveAttributeException",
+    "line_before": 133,
+    "checks": [
+      "verify(context, times(1)).resolve(ref.getReferenceKey());",
+      "verify(context, times(1)).getCurrentRule();",
+      "verify(context, times(1)).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+    "method": "testAttributeAssignmentThrowsEvaluationException",
+    "line_before": 135,
+    "checks": [
+      "verify(expression, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReference",
+    "line_before": 75,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(1)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReference",
+    "line_before": 78,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReference",
+    "line_before": 81,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(3)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReference",
+    "line_before": 84,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(4)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+    "line_before": 101,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(1)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+    "line_before": 104,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+    "line_before": 107,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(3)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+    "line_before": 110,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(4)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateIfApplicableFailedToResolveReferenceViaException",
+    "line_before": 127,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(1)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateIfApplicableFailedToResolveReferenceViaException",
+    "line_before": 130,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateIfApplicableFailedToResolveReferenceReturnsNull",
+    "line_before": 147,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(1)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateIfApplicableFailedToResolveReferenceReturnsNull",
+    "line_before": 150,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testIsApplicableFailedToResolveReference",
+    "line_before": 167,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(1)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testIsApplicableFailedToResolveReference",
+    "line_before": 170,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testCreatePolicyIDReferenceEvaluatonConntext",
+    "line_before": 199,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testEvaluateIfApplicablePolicyCanBeResolved",
+    "line_before": 227,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);",
+      "verify(algorithm, times(1)).combine(refContext.capture(), eq(Collections.emptyList()));",
+      "verify(context, times(1)).addAdvices(Decision.PERMIT, Collections.emptyList());",
+      "verify(context, times(1)).addObligations(Decision.PERMIT, Collections.emptyList());",
+      "verify(context, times(1)).addEvaluationResult(refPolicy, Decision.PERMIT);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testIsApplicablePolicyCanBeResolved",
+    "line_before": 249,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicyIDReference();",
+      "verify(context, times(2)).getCurrentPolicy();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testEvaluateFailToResolveReferenceViaException",
+    "line_before": 74,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testEvaluateFailToResolveReferenceViaException",
+    "line_before": 80,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);",
+      "verify(context, times(1)).getCurrentPolicySet();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testEvaluateFailToResolveReferenceReturnsNull",
+    "line_before": 94,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testEvaluateFailToResolveReferenceReturnsNull",
+    "line_before": 100,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);",
+      "verify(context, times(1)).getCurrentPolicySet();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testIsApplicableFailToResolveReference",
+    "line_before": 114,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testIsApplicableFailToResolveReference",
+    "line_before": 120,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);",
+      "verify(context, times(1)).getCurrentPolicySet();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testIsApplicablePolicyIDReference",
+    "line_before": 149,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);",
+      "verify(context, times(2)).getCurrentPolicySet();",
+      "verify(context, times(1)).getCurrentPolicy();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testEvaluateIfApplicable",
+    "line_before": 179,
+    "checks": [
+      "verify(context, times(2)).getCurrentPolicySetIDReference();",
+      "verify(context, times(1)).resolve(ref);",
+      "verify(context, times(2)).getCurrentPolicySet();",
+      "verify(context, times(1)).getCurrentPolicy();",
+      "verify(algorithm, times(1)).combine(refContext.capture(), eq(Collections.emptyList()));",
+      "verify(context, times(1)).addAdvices(Decision.DENY, Collections.emptyList());",
+      "verify(context, times(1)).addObligations(Decision.DENY, Collections.emptyList());",
+      "verify(context, times(1)).addEvaluationResult(refPolicySet, Decision.DENY);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testIsApplicableTargetMatch",
+    "line_before": 136,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testIsApplicableTargetNoMatch",
+    "line_before": 148,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testIsApplicableTargetIndeterminate",
+    "line_before": 160,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testIsApplicableTargetException",
+    "line_before": 172,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionFalse",
+    "line_before": 188,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionTrue",
+    "line_before": 202,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+    "line_before": 218,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+    "line_before": 238,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+    "line_before": 256,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+    "line_before": 274,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+    "line_before": 302,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());",
+      "verify(denyAdviceAttributeExp, times(1)).evaluate(policyContext);",
+      "verify(denyObligationAttributeExp, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+    "line_before": 334,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());",
+      "verify(permitAdviceAttributeExp, times(1)).evaluate(policyContext);",
+      "verify(permitObligationAttributeExp, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+    "line_before": 361,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testIsApplicableTargetMatch",
+    "line_before": 138,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testIsApplicableTargetNoMatch",
+    "line_before": 150,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testIsApplicableTargetIndeterminate",
+    "line_before": 162,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testIsApplicableTargetException",
+    "line_before": 174,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionFalse",
+    "line_before": 188,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionTrue",
+    "line_before": 202,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+    "line_before": 218,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+    "line_before": 238,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+    "line_before": 256,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+    "line_before": 274,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+    "line_before": 302,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());",
+      "verify(denyAdviceAttributeExp, times(1)).evaluate(policyContext);",
+      "verify(denyObligationAttributeExp, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+    "line_before": 334,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());",
+      "verify(permitAdviceAttributeExp, times(1)).evaluate(policyContext);",
+      "verify(permitObligationAttributeExp, times(1)).evaluate(policyContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+    "line_before": 361,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(policyContext);",
+      "verify(conditionExpression, times(1)).evaluate(policyContext);",
+      "verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java",
+    "method": "testResolveDesignatorValueValueIsNotInContext",
+    "line_before": 109,
+    "checks": [
+      "verify(handler, times(1)).resolve(context, k);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleApplicabilityWithTargetMatch",
+    "line_before": 158,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleIsApplicableWithTargetIndeterminate",
+    "line_before": 170,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleIsApplicableWithTargetIndeterminate",
+    "line_before": 182,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleIsApplicableWithTargetMatch",
+    "line_before": 194,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleIsApplicableWithTargetNoMatch",
+    "line_before": 206,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleConditionTrue",
+    "line_before": 227,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);",
+      "verify(denyAdviceAttributeExp, times(1)).evaluate(ruleContext);",
+      "verify(denyObligationAttributeExp, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleObligationOrAdviceEvaluationFails",
+    "line_before": 263,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);",
+      "verify(denyAdviceAttributeExp, times(1)).evaluate(ruleContext);",
+      "verify(denyObligationAttributeExp, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleConditionFalse",
+    "line_before": 279,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleConditionIndeterminate",
+    "line_before": 294,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleConditionTrue",
+    "line_before": 316,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);",
+      "verify(permitAdviceAttributeExp, times(1)).evaluate(ruleContext);",
+      "verify(permitObligationAttributeExp, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleConditionFalse",
+    "line_before": 346,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleConditionIndeterminate",
+    "line_before": 360,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleEvaluateIfApplicableWithTargetIndeterminate",
+    "line_before": 373,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleEvaluateIfApplicableWithTargetNoMatch",
+    "line_before": 386,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testDenyRuleEvaluateIfApplicableWithTargetMatchConditionTrue",
+    "line_before": 409,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);",
+      "verify(denyAdviceAttributeExp, times(1)).evaluate(ruleContext);",
+      "verify(denyObligationAttributeExp, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleEvaluateIfApplicableWithTargetIndeterminate",
+    "line_before": 439,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleEvaluateIfApplicableWithTargetEvaluationException",
+    "line_before": 460,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleEvaluateIfApplicableWithTargetNoMatch",
+    "line_before": 475,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+    "method": "testPermitRuleEvaluateIfApplicableWithTargetMatchConditionTrue",
+    "line_before": 515,
+    "checks": [
+      "verify(targetExpression, times(1)).evaluate(ruleContext);",
+      "verify(conditionExpression, times(1)).evaluate(ruleContext);",
+      "verify(permitAdviceAttributeExp, times(1)).evaluate(ruleContext);",
+      "verify(permitObligationAttributeExp, times(1)).evaluate(ruleContext);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testAllMatch",
+    "line_before": 75,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(c1.capture());",
+      "verify(m2Expression, times(1)).evaluate(c2.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstMatchSecondIsNoMatch",
+    "line_before": 112,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(c1.capture());",
+      "verify(m2Expression, times(1)).evaluate(c2.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstMatchAndSecondIsIndeterminate",
+    "line_before": 139,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(c1.capture());",
+      "verify(m2Expression, times(1)).evaluate(c2.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstIsNoMatch",
+    "line_before": 163,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(c1.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstIsIndeterminate",
+    "line_before": 183,
+    "checks": [
+      "verify(m1Expression, times(1)).evaluate(c1.capture());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableDefinitionTest.java",
+    "method": "testVariableEvaluationValueNotAvailableInContext",
+    "line_before": 66,
+    "checks": [
+      "verify(context, times(1)).getVariableEvaluationResult(\"testId\");",
+      "verify(expression, times(1)).evaluate(context);",
+      "verify(context, times(1)).setVariableEvaluationResult(\"testId\", XacmlTypes.BOOLEAN.ofAny(true));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableDefinitionTest.java",
+    "method": "testVariableEvaluationValueAvailableInContext",
+    "line_before": 77,
+    "checks": [
+      "verify(context, times(1)).getVariableEvaluationResult(\"testId\");"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableReferenceTest.java",
+    "method": "testVariableEvaluationValueNotAvailableInContext",
+    "line_before": 68,
+    "checks": [
+      "verify(context, times(1)).getVariableEvaluationResult(\"testId\");",
+      "verify(expression, times(1)).evaluate(context);",
+      "verify(context, times(1)).setVariableEvaluationResult(\"testId\", XacmlTypes.BOOLEAN.ofAny(true));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableReferenceTest.java",
+    "method": "testVariableEvaluationValueAvailableInContext",
+    "line_before": 79,
+    "checks": [
+      "verify(context, times(1)).getVariableEvaluationResult(\"testId\");"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombineWithAllNotApplicable",
+    "line_before": 88,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);",
+      "verify(r3, times(1)).createContext(context);",
+      "verify(r3, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombineWithPermit",
+    "line_before": 109,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombineWithDeny",
+    "line_before": 126,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombineWithInderterminateP",
+    "line_before": 141,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombineWithInderterminateD",
+    "line_before": 156,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombineWithInderterminate",
+    "line_before": 171,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombinePermitWithInderterminate",
+    "line_before": 192,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombineInderterminateDPWithPermit",
+    "line_before": 213,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testCombinePermitWithInderterminateDP",
+    "line_before": 234,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+    "method": "testAnyDecisionDenyResultIsDeny",
+    "line_before": 252,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java",
+    "method": "testCombineWithPermit",
+    "line_before": 75,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java",
+    "method": "testCombineWithNotApplicable",
+    "line_before": 90,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java",
+    "method": "testCombineWithIndeterminate",
+    "line_before": 105,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java",
+    "method": "testCombineWithIndeterminateD",
+    "line_before": 121,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java",
+    "method": "testCombineWithIndeterminateP",
+    "line_before": 136,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java",
+    "method": "testCombineWithIndeterminateDP",
+    "line_before": 151,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java",
+    "method": "testCombineWithDenyAndPermit",
+    "line_before": 172,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java",
+    "method": "testNoApplicableDecisions",
+    "line_before": 83,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java",
+    "method": "testPermit",
+    "line_before": 100,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java",
+    "method": "testDeny",
+    "line_before": 117,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java",
+    "method": "testIndeterminate",
+    "line_before": 135,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java",
+    "method": "testIndeterminateD",
+    "line_before": 152,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java",
+    "method": "testIndeterminateP",
+    "line_before": 169,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java",
+    "method": "testIndeterminateDP",
+    "line_before": 186,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java",
+    "method": "testCombineWithNoDecisions",
+    "line_before": 66,
+    "checks": [
+      "verify(context, times(1)).setEvaluationStatus(Status.processingError().build());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java",
+    "method": "testCombineFirstPermitSecondNotApplicable",
+    "line_before": 90,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java",
+    "method": "testCombineFirstPermitSecondPermit",
+    "line_before": 114,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java",
+    "method": "testCombineFirstPermitSecondDeny",
+    "line_before": 138,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java",
+    "method": "testDecisionIsNoMatchContinueEvaluation",
+    "line_before": 77,
+    "checks": [
+      "verify(d1, times(1)).createContext(context);",
+      "verify(d1, times(1)).isMatch(c1);",
+      "verify(d2, times(1)).createContext(context);",
+      "verify(d2, times(1)).isMatch(c2);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java",
+    "method": "testDecisionIndeterminateStopsEvaluation",
+    "line_before": 96,
+    "checks": [
+      "verify(d1, times(1)).createContext(context);",
+      "verify(d1, times(1)).isMatch(c1);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java",
+    "method": "testMoreThanOneIsApplicable",
+    "line_before": 119,
+    "checks": [
+      "verify(d1, times(1)).createContext(context);",
+      "verify(d1, times(1)).isMatch(c1);",
+      "verify(d2, times(1)).createContext(context);",
+      "verify(d2, times(1)).isMatch(c2);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java",
+    "method": "testOnlyOneIsApplicableAndDecisionIsPermit",
+    "line_before": 144,
+    "checks": [
+      "verify(d1, times(1)).createContext(context);",
+      "verify(d1, times(1)).isMatch(c1);",
+      "verify(d2, times(1)).createContext(context);",
+      "verify(d2, times(1)).isMatch(c2);",
+      "verify(d1, times(1)).evaluate(c1);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java",
+    "method": "testOnlyOneIsApplicableAndDecisionIsDeny",
+    "line_before": 169,
+    "checks": [
+      "verify(d1, times(1)).createContext(context);",
+      "verify(d1, times(1)).isMatch(c1);",
+      "verify(d2, times(1)).createContext(context);",
+      "verify(d2, times(1)).isMatch(c2);",
+      "verify(d1, times(1)).evaluate(c1);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java",
+    "method": "testOnlyOneIsApplicableAndDecisionIsIndeterminate",
+    "line_before": 194,
+    "checks": [
+      "verify(d1, times(1)).createContext(context);",
+      "verify(d1, times(1)).isMatch(c1);",
+      "verify(d2, times(1)).createContext(context);",
+      "verify(d2, times(1)).isMatch(c2);",
+      "verify(d1, times(1)).evaluate(c1);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithAllNotApplicable",
+    "line_before": 88,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);",
+      "verify(r3, times(1)).createContext(context);",
+      "verify(r3, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithPermit",
+    "line_before": 105,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithDenyThenNotApplicable",
+    "line_before": 127,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithDenyThenPermit",
+    "line_before": 148,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithDenyThenIndeterminate",
+    "line_before": 169,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithInderterminateP",
+    "line_before": 184,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithInderterminateD",
+    "line_before": 199,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithInderterminate",
+    "line_before": 214,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java",
+    "method": "testCombineWithInderterminateDP",
+    "line_before": 235,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java",
+    "method": "testCombineWithDeny",
+    "line_before": 78,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java",
+    "method": "testCombineWithNotApplicable",
+    "line_before": 93,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java",
+    "method": "testCombineWithIndeterminate",
+    "line_before": 108,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java",
+    "method": "testCombineWithDenyAndPermit",
+    "line_before": 130,
+    "checks": [
+      "verify(r1, times(1)).createContext(context);",
+      "verify(r1, times(1)).evaluate(context);",
+      "verify(r2, times(1)).createContext(context);",
+      "verify(r2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+    "method": "testTest1And2FunctionsStaticProvider",
+    "line_before": 81,
+    "checks": [
+      "verify(context, times(2)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+    "method": "testTest1And2FunctionsInstanceProvider",
+    "line_before": 100,
+    "checks": [
+      "verify(context, times(2)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+    "method": "testLazyParamEvaluationPassingEvaluationContext",
+    "line_before": 116,
+    "checks": [
+      "verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java",
+    "method": "testDesignatorFunctionWithCategoryId",
+    "line_before": 92,
+    "checks": [
+      "verify(context, times(1)).resolveEntity(CategoryId.SUBJECT_ACCESS);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+    "method": "testInvokeNoEvaluationContextFunctionIsNotVariadic",
+    "line_before": 84,
+    "checks": [
+      "verify(spec, times(1)).getNumberOfParams();",
+      "verify(spec, times(2)).isVariadic();",
+      "verify(inv0, times(1)).invoke(p.toArray());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+    "method": "testInvokeInvocationThrowsRuntimeException",
+    "line_before": 103,
+    "checks": [
+      "verify(spec, times(1)).getNumberOfParams();",
+      "verify(spec, times(2)).isVariadic();",
+      "verify(inv0, times(1)).invoke(p.toArray());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+    "method": "testInvokeWithEvaluationContextFunctionIsNotVariadic",
+    "line_before": 125,
+    "checks": [
+      "verify(spec, times(1)).getNumberOfParams();",
+      "verify(spec, times(2)).isVariadic();",
+      "verify(inv1, times(1)).invoke(params.toArray());"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+    "method": "testInvokeWithEvaluationContextFunctionIsVariadic",
+    "line_before": 156,
+    "checks": [
+      "verify(spec, times(1)).getNumberOfParams();",
+      "verify(spec, times(2)).isVariadic();",
+      "verify(inv1, times(1)).invoke(pArray);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+    "method": "testInvokeWithNoEvaluationContextFunctionIsVariadicAndMoreThanZeroVariadicParams",
+    "line_before": 185,
+    "checks": [
+      "verify(spec, times(1)).getNumberOfParams();",
+      "verify(spec, times(2)).isVariadic();",
+      "verify(inv0, times(1)).invoke(pArray);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+    "method": "testInvokeWithNoEvaluationContextFunctionIsVariadicAndZeroVariadicParams",
+    "line_before": 209,
+    "checks": [
+      "verify(spec, times(1)).getNumberOfParams();",
+      "verify(spec, times(2)).isVariadic();",
+      "verify(inv0, times(1)).invoke(pArray);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testInvokeSpecWithListParamArguments",
+    "line_before": 80,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context, params);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testInvokeSpecFailsWithInvocationException",
+    "line_before": 97,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context, params);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testInvokeSpecFailsWithRuntimeException",
+    "line_before": 114,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context, params);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testOptionalParameterWithDefaultValue",
+    "line_before": 131,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context, ImmutableList.<Expression>of(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true)));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testOptionalParameterWithNoDefaultValue",
+    "line_before": 148,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context, Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testOptionalParameterWithNoDefaultValueAndVarArg",
+    "line_before": 171,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context,\n\t\t\t\tArrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), null, null));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testOptionalParameterWithDefaultValueAndVarArg",
+    "line_before": 192,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "test2OptionalParameters",
+    "line_before": 215,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context,\n\t\t\t\tArrays.<Expression>asList(null, XacmlTypes.BOOLEAN.ofAny(true)));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "test2OptionalParameters1",
+    "line_before": 240,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context,\n\t\t\t\tArrays.<Expression>asList(XacmlTypes.INTEGER.ofAny(10), XacmlTypes.BOOLEAN.ofAny(false)));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "test2OptionalParametersTheSameType",
+    "line_before": 263,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(invocation, times(1)).invoke(spec, context,\n\t\t\t\tArrays.<Expression>asList(null, XacmlTypes.INTEGER.ofAny(10)));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+    "method": "testMapWithValidArguments",
+    "line_before": 104,
+    "checks": [
+      "verify(context, times(4)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+    "method": "testAnyOf",
+    "line_before": 126,
+    "checks": [
+      "verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+    "method": "testAllOfAny",
+    "line_before": 150,
+    "checks": [
+      "verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+    "method": "testAnyOfAll",
+    "line_before": 175,
+    "checks": [
+      "verify(context, times(8)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+    "method": "testAnyOfAllIIC168",
+    "line_before": 198,
+    "checks": [
+      "verify(context, times(3)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+    "method": "testAllOfAll",
+    "line_before": 222,
+    "checks": [
+      "verify(context, times(9)).isValidateFuncParamsAtRuntime();"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testLazyAndFunctionParamEvaluation",
+    "line_before": 106,
+    "checks": [
+      "verify(p1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testLazyAndFunctionParamEvaluation",
+    "line_before": 118,
+    "checks": [
+      "verify(p1, times(2)).evaluate(context);",
+      "verify(p2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testLazyAndFunctionParamEvaluation",
+    "line_before": 132,
+    "checks": [
+      "verify(p1, times(3)).evaluate(context);",
+      "verify(p2, times(2)).evaluate(context);",
+      "verify(p3, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testLazyOrFunctionParamEvaluation",
+    "line_before": 174,
+    "checks": [
+      "verify(p1, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testLazyOrFunctionParamEvaluation",
+    "line_before": 186,
+    "checks": [
+      "verify(p1, times(2)).evaluate(context);",
+      "verify(p2, times(1)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testLazyOrFunctionParamEvaluation",
+    "line_before": 198,
+    "checks": [
+      "verify(p1, times(3)).evaluate(context);",
+      "verify(p2, times(2)).evaluate(context);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+    "method": "testXPathCount",
+    "line_before": 128,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(context, times(1)).resolveEntity(xpath.getCategory().orElse(null));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+    "method": "testXPathCountXacml20",
+    "line_before": 144,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(context, times(1)).resolveEntity(CategoryId.RESOURCE);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+    "method": "testXPathCountExpressionReturnsEmptyNodeSet",
+    "line_before": 157,
+    "checks": [
+      "verify(context, times(1)).resolveEntity(xpath.getCategory().orElse(null));"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+    "method": "testXPathNodeMatch",
+    "line_before": 174,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(context, times(2)).resolveContent(xpath0.getCategory().orElse(null), Content.Type.XML_UTF8);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+    "method": "testXPathNodeMatchXacml1",
+    "line_before": 191,
+    "checks": [
+      "verify(context, times(1)).isValidateFuncParamsAtRuntime();",
+      "verify(context, times(2)).resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8);"
+    ],
+    "basis": "Cumulative ordered expectations, never observed invocation history"
+  }
+]

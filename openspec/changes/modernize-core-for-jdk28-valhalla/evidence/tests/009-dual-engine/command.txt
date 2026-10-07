@@ -1,0 +1,65 @@
+Task 2.1 exact execution commands (repository-relative; all Maven runs JDK 21).
+Run from the repository root. Maven -l files are raw console logs with only
+ANSI/path normalization by 02-capture-run.py. Paths use <repo>/<user-home>.
+Run 03 and direct tree run 10 failed due to the sandbox dependency-cache
+write restriction. Runs 04, 05 and 10b used approved require_escalated cache
+access. Run 04 precedes the startup-agent fix; runs 05 onward have it.
+The unquoted first dependency-tree command failed in zsh before Maven ran;
+the next quoted command preserved that environmental failure separately.
+
+rtk git status --short
+rtk git branch --show-current
+rtk git rev-parse HEAD
+rtk openspec status --change modernize-core-for-jdk28-valhalla --json
+rtk openspec instructions apply --change modernize-core-for-jdk28-valhalla --json
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/01-snapshot.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=DualEngineTransitionProbeTest,JsonEntityMarshallingTest,JsonRequestUnmarshallerTest,JsonResponseContextUnmarshallerTest,JsonResponseContextMarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-missing-dependencies-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 02-missing-dependencies-red.log
+rtk git status --short
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=DualEngineTransitionProbeTest,JsonEntityMarshallingTest,JsonRequestUnmarshallerTest,JsonResponseContextUnmarshallerTest,JsonResponseContextMarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/03-startup-agent-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 03-startup-agent-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=DualEngineTransitionProbeTest,JsonEntityMarshallingTest,JsonRequestUnmarshallerTest,JsonResponseContextUnmarshallerTest,JsonResponseContextMarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/04-startup-agent-red.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 04-startup-agent-red.log
+rtk git status --short
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=DualEngineTransitionProbeTest,JsonEntityMarshallingTest,JsonRequestUnmarshallerTest,JsonResponseContextUnmarshallerTest,JsonResponseContextMarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/05-dual-engine-green.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 05-dual-engine-green.log
+rtk git status --short
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=DualEngineTransitionProbeTest,JsonEntityMarshallingTest,JsonRequestUnmarshallerTest,JsonResponseContextUnmarshallerTest,JsonResponseContextMarshallerTest -Dsurefire.failIfNoSpecifiedTests=false -Dsurefire.includeJUnit5Engines=junit-jupiter test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/06-jupiter-only-green.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 06-jupiter-only-green.log
+rtk git status --short
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=DualEngineTransitionProbeTest,JsonEntityMarshallingTest,JsonRequestUnmarshallerTest,JsonResponseContextUnmarshallerTest,JsonResponseContextMarshallerTest -Dsurefire.failIfNoSpecifiedTests=false -Dsurefire.includeJUnit5Engines=junit-vintage test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/07-vintage-only-green.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 07-vintage-only-green.log
+rtk git status --short
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/08-remove-probe.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -Dmaven.test.failure.ignore=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/09-full-reactor-clean-verify-jdk21.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 09-full-reactor-clean-verify-jdk21.log
+rtk git status --short
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am dependency:tree -Dincludes=org.junit.jupiter:*,org.junit.vintage:*,org.junit.platform:*,org.mockito:*,junit:junit,org.easymock:easymock,org.objenesis:objenesis -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/10-test-dependency-tree.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am dependency:tree '-Dincludes=org.junit.jupiter:*,org.junit.vintage:*,org.junit.platform:*,org.mockito:*,junit:junit,org.easymock:easymock,org.objenesis:objenesis' -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/10-test-dependency-tree.log
+JAVA_HOME="$(jenv prefix 21)" rtk proxy sh -c '"$JAVA_HOME/bin/java" -version'
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 10-test-dependency-tree.log
+rtk git status --short
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am test-compile dependency:tree '-Dincludes=org.junit.jupiter:*,org.junit.vintage:*,org.junit.platform:*,org.mockito:*,junit:junit,org.easymock:easymock,org.objenesis:objenesis' -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/10b-test-dependency-tree.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/02-capture-run.py 10b-test-dependency-tree.log
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/12-finalize.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/13-audit.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/13-audit.py
+
+The first evidence audit detected its own generic path-prefix literals;
+the matcher was adjusted within evidence and the audit was repeated.
+
+12-finalize.py executes these read-only Git checks through RTK:
+rtk git branch --show-current
+rtk git rev-parse HEAD
+rtk git diff --cached --name-only
+rtk git diff --check -- pom.xml
+rtk git status --short
+
+Native MCP lookup (not a shell command):
+list_mcp_resource_templates({"server":"context7"})
+Result: UNAVAILABLE during initialize, HTTP 500/upstream DNS failure.
+No resolve-library-id/query-docs capability was exposed; no wrapper used.
+Fallback native DuckDuckGo MCP search/fetch: official JUnit/Mockito release
+pages and published Maven metadata, Mockito 5.24.0 Javadoc section 0.3,
+Surefire 3.0.0 Platform/test-goal docs, dependency-plugin properties docs.
+Exact primary URLs and chosen versions are recorded in documentation.md.

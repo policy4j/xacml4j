@@ -1,0 +1,733 @@
+Run: 06-pdp-tests.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 494, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentInRequestExistXPathReturnsEmptySet:255 » PathEvaluation Invalid path="/test" type="XPATH" contextSelectorId="null"
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest:132 » PathEvaluation Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet:151 » PathEvaluation Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+[INFO] 
+[ERROR] Tests run: 68, Failures: 0, Errors: 3, Skipped: 4
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.882 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  3.031 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.200 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.993 s]
+[INFO] Xacml4J PDP ........................................ FAILURE [  1.687 s]
+[INFO] BUILD FAILURE
+
+Run: 07-selector-characterization-before.txt
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentInRequestExistXPathReturnsEmptySet:305 » PathEvaluation Invalid path="/test" type="XPATH" contextSelectorId="null"
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest:182 » PathEvaluation Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet:201 » PathEvaluation Invalid path="/md:record/md:patient/md:patient-number/text()" type="XPATH" contextSelectorId="null"
+[INFO] 
+[ERROR] Tests run: 21, Failures: 0, Errors: 3, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.635 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.396 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.218 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.091 s]
+[INFO] Xacml4J PDP ........................................ FAILURE [  1.840 s]
+[INFO] BUILD FAILURE
+
+Run: 08-selector-characterization-after.txt
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 21, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.964 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.528 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.323 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.121 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  2.338 s]
+[INFO] BUILD SUCCESS
+
+Run: 10-reactor-verify.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 494, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.623 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.882 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.226 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.908 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.985 s]
+[INFO] Xacml4J Policy Unit Test Support ................... FAILURE [  0.378 s]
+[INFO] Xacml4J Conformance Tests .......................... SKIPPED
+[INFO] BUILD FAILURE
+
+Run: 13-reactor-verify-current-tree.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 494, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.610 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.673 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.210 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  1.811 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  1.253 s]
+[INFO] Xacml4J Policy Unit Test Support ................... FAILURE [  0.106 s]
+[INFO] Xacml4J Conformance Tests .......................... SKIPPED
+[INFO] BUILD FAILURE
+
+Run: 16-test-support-characterization-after.txt
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.567 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.377 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.205 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.071 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.068 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.292 s]
+[INFO] BUILD SUCCESS
+
+Run: 20-reactor-verify-approved-pom.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 494, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.596 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.620 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.203 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.924 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.922 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.427 s]
+[INFO] Xacml4J Conformance Tests .......................... FAILURE [  2.086 s]
+[INFO] BUILD FAILURE
+
+Run: 21-conformance-resolver-after-cast.txt
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.661 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.390 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.221 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.069 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.090 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  0.057 s]
+[INFO] Xacml4J Conformance Tests .......................... SUCCESS [  2.869 s]
+[INFO] BUILD SUCCESS
+
+Run: 22-reactor-verify-with-conformance.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 494, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Xacml20ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[ERROR]   Xacml30ConformanceTest.testExecuteIIIG006:205->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[ERROR]   Xacml30ConformanceTest.testIIIFTests:187->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<INDETERMINATE>
+[ERROR]   Xacml30ConformanceTest.testIIIGTests:199->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[ERROR] Errors: 
+[ERROR]   Xacml30ConformanceTest.testIIATests:125->executeXacmlConformanceTestCase:214->executeTestCase:235 » NullPointer
+[ERROR]   Xacml30ConformanceTest.testIIBTests:143->executeXacmlConformanceTestCase:214->executeTestCase:235 » NullPointer
+[ERROR]   Xacml30ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:235 » NullPointer
+[ERROR]   Xacml30ConformanceTest.testIIDTests:175->executeXacmlConformanceTestCase:214->executeTestCase:235 » NullPointer
+[ERROR]   Xacml30ConformanceTest.testIIETests:181->executeXacmlConformanceTestCase:214->executeTestCase:235 » NullPointer
+[ERROR]   Xacml30ConformanceTest.testIIIATests:137->executeXacmlConformanceTestCase:214->executeTestCase:235 » NullPointer
+[INFO] 
+[ERROR] Tests run: 41, Failures: 4, Errors: 6, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.615 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.738 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.214 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.871 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.877 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  0.817 s]
+[INFO] Xacml4J Conformance Tests .......................... FAILURE [  3.986 s]
+[INFO] BUILD FAILURE
+
+Run: 24-response-comparison-before.txt
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Xacml30TestUtilityTest.testDifferentObligationAssignmentRejected Expected exception: java.lang.AssertionError
+[ERROR]   Xacml30TestUtilityTest.testMissingObligationRejected Expected exception: java.lang.AssertionError
+[ERROR] Errors: 
+[ERROR]   Xacml30TestUtilityTest.testEmptyObligationsMatchAbsent:109 » NullPointer
+[ERROR]   Xacml30TestUtilityTest.testEmptyPolicyIdentifierListMatchesAbsent:55 » NullPointer
+[ERROR]   Xacml30TestUtilityTest.testMarshalledEmptyPermitMatchesAbsentOptionalCollections:146 » NullPointer
+[ERROR]   Xacml30TestUtilityTest.testMissingPolicyIdentifierRejected »  Unexpected exception, expected<java.lang.AssertionError> but was<java.lang.NullPointerException>
+[ERROR]   Xacml30TestUtilityTest.testUnexpectedObligationRejected »  Unexpected exception, expected<java.lang.AssertionError> but was<java.lang.NullPointerException>
+[ERROR]   Xacml30TestUtilityTest.testUnexpectedPolicyIdentifierRejected »  Unexpected exception, expected<java.lang.AssertionError> but was<java.lang.NullPointerException>
+[INFO] 
+[ERROR] Tests run: 14, Failures: 2, Errors: 6, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.632 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.428 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.220 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.072 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.073 s]
+[INFO] Xacml4J Policy Unit Test Support ................... FAILURE [  1.274 s]
+[INFO] BUILD FAILURE
+
+Run: 25-response-comparison-after.txt
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.628 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.417 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.205 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.070 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  0.069 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.433 s]
+[INFO] BUILD SUCCESS
+
+Run: 26-reactor-verify-response-comparison.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 494, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Xacml20ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[ERROR]   Xacml30ConformanceTest.testExecuteIIIG006:205->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[ERROR]   Xacml30ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[ERROR]   Xacml30ConformanceTest.testIIIFTests:187->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<INDETERMINATE>
+[ERROR]   Xacml30ConformanceTest.testIIIGTests:199->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[INFO] 
+[ERROR] Tests run: 41, Failures: 5, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.594 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.680 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.212 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.948 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  1.048 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  0.945 s]
+[INFO] Xacml4J Conformance Tests .......................... FAILURE [  4.764 s]
+[INFO] BUILD FAILURE
+
+Run: 28-baseline-restoration-before.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   ISO8601DateTimeArithmeticTest.subtractNegativeDayTimeDuration:65 expected:<2002-03-[27T10]:23:47-05:00> but was:<2002-03-[17T06]:23:47-05:00>
+[ERROR]   ISO8601DateTimeArithmeticTest.subtractPositiveDayTimeDuration:58 expected:<2002-03-[17T06]:23:47-05:00> but was:<2002-03-[27T10]:23:47-05:00>
+[INFO] 
+[ERROR] Tests run: 12, Failures: 2, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.699 s]
+[INFO] Xacml4J Core Engine Implementation ................. FAILURE [  2.501 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.204 s]
+[INFO] Xacml XML representation marshallers ............... SKIPPED
+[INFO] BUILD FAILURE
+
+Run: 29-xml-content-before.txt
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Xacml30RequestContentTest.whitespaceAroundElementRetainsXmlAndElementText:45
+[INFO] 
+[ERROR] Tests run: 5, Failures: 1, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.596 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.380 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.203 s]
+[INFO] Xacml XML representation marshallers ............... FAILURE [  1.583 s]
+[INFO] BUILD FAILURE
+
+Run: 30-baseline-restoration-after.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.573 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  3.425 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.199 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  1.218 s]
+[INFO] BUILD SUCCESS
+
+Run: 31-reactor-verify-baseline-restoration.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 506, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   Xacml20ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[ERROR]   Xacml30ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:235 expected:<PERMIT> but was:<NOT_APPLICABLE>
+[INFO] 
+[ERROR] Tests run: 41, Failures: 2, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.619 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  3.946 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.401 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  2.421 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  1.453 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.059 s]
+[INFO] Xacml4J Conformance Tests .......................... FAILURE [  4.830 s]
+[INFO] BUILD FAILURE
+
+Run: 34-date-arithmetic-before.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2019-01-2[9]T08:23:47-05:00> but was:<2019-01-2[8]T08:23:47-05:00>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2021-03-2[9]T08:23:47-05:00> but was:<2021-03-2[8]T08:23:47-05:00>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2021-03-2[9]T08:23:47-05:00> but was:<2021-03-2[8]T08:23:47-05:00>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2019-01-2[9]T08:23:47-05:00> but was:<2019-01-2[8]T08:23:47-05:00>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<200[1-01]-22> but was:<200[2-03]-22>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<200[3-05]-22> but was:<200[2-03]-22>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2020-0[2-29]> but was:<2020-0[1-31]>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<20[19-01]-29> but was:<20[20-02]-29>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<202[1-03]-29> but was:<202[0-02]-29>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2020-0[2-29]> but was:<2020-0[3-31]>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2021-0[2-28]> but was:<2021-0[1-31]>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2021-0[2-28]> but was:<2021-0[3-31]>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<200[3-05]-22> but was:<200[2-03]-22>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<200[1-01]-22> but was:<200[2-03]-22>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2020-0[2-29]> but was:<2020-0[1-31]>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<202[1-03]-29> but was:<202[0-02]-29>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<20[19-01]-29> but was:<20[20-02]-29>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2020-0[2-29]> but was:<2020-0[3-31]>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2021-0[2-28]> but was:<2021-0[1-31]>
+[ERROR]   DateTimeArithmeticBoundaryTest.arithmeticPreservesSignedCalendarBoundaries:152 expected:<2021-0[2-28]> but was:<2021-0[3-31]>
+[INFO] 
+[ERROR] Tests run: 65, Failures: 20, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+Run: 35-date-arithmetic-after.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 65, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Run: 36-reactor-verify-date-arithmetic.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 556, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   Xacml30ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:226 » PolicySyntax Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only"
+[INFO] 
+[ERROR] Tests run: 41, Failures: 0, Errors: 1, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.459 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.630 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.206 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  1.829 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  1.491 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.063 s]
+[INFO] Xacml4J Conformance Tests .......................... FAILURE [  4.695 s]
+[INFO] BUILD FAILURE
+
+Run: 39-duration-identifiers-before.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:dayTimeD...> but was:<...asis:names:tc:xacml:[1].0:function:dayTimeD...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:84 expected:<...asis:names:tc:xacml:[3].0:function:yearMont...> but was:<...asis:names:tc:xacml:[1].0:function:yearMont...>
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-at-least-one-member-of
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag-size
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-intersection
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-is-in
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-set-equals
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-subset
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-union
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-at-least-one-member-of
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag-size
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-intersection
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-is-in
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-one-and-only
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-set-equals
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-subset
+[ERROR]   DurationFunctionIdentifierTest.resolvesStandardAndLegacyNamesToSameFunction:83 Missing required function urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-union
+[INFO] 
+[ERROR] Tests run: 36, Failures: 36, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+Run: 40-duration-identifiers-after.txt
+[INFO] BUILD FAILURE
+
+Run: 41-duration-identifiers-after.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 42, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Run: 42-reactor-verify-duration-identifiers.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 592, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   Xacml30ConformanceTest.testIICTests:167->executeXacmlConformanceTestCase:214->executeTestCase:226 » PolicySyntax Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of"
+[INFO] 
+[ERROR] Tests run: 41, Failures: 0, Errors: 1, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.585 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.883 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.210 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  1.806 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  1.472 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.067 s]
+[INFO] Xacml4J Conformance Tests .......................... FAILURE [  4.706 s]
+[INFO] BUILD FAILURE
+
+Run: 44-higher-order-identifiers-before.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:85 expected:<...asis:names:tc:xacml:[3].0:function:all-of> but was:<...asis:names:tc:xacml:[1].0:function:all-of>
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:85 expected:<...asis:names:tc:xacml:[3].0:function:any-of-a...> but was:<...asis:names:tc:xacml:[1].0:function:any-of-a...>
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:85 expected:<...asis:names:tc:xacml:[3].0:function:any-of> but was:<...asis:names:tc:xacml:[1].0:function:any-of>
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:85 expected:<...asis:names:tc:xacml:[3].0:function:map> but was:<...asis:names:tc:xacml:[1].0:function:map>
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:84 Missing required function urn:oasis:names:tc:xacml:3.0:function:all-of
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:84 Missing required function urn:oasis:names:tc:xacml:3.0:function:any-of-any
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:84 Missing required function urn:oasis:names:tc:xacml:3.0:function:any-of
+[ERROR]   HigherOrderFunctionIdentifierTest.resolvesEveryStandardHigherOrderName:84 Missing required function urn:oasis:names:tc:xacml:3.0:function:map
+[INFO] 
+[ERROR] Tests run: 11, Failures: 8, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+Run: 45-higher-order-identifiers-after.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 53, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Run: 46-reactor-verify-higher-order-identifiers.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 603, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 71, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 41, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.638 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  2.953 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.232 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  1.852 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  1.448 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.116 s]
+[INFO] Xacml4J Conformance Tests .......................... SUCCESS [  4.970 s]
+[INFO] BUILD SUCCESS
+
+Run: 48-review-arithmetic-before.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   ISO8601DurationReviewTest.fractionalEqualityAndComparisonKeepSubsecondDifferences:63
+[ERROR]   ISO8601DurationReviewTest.fractionalLexicalRoundTripKeepsDecimalSeconds:46 expected:<0> but was:<1>
+[ERROR]   ISO8601DurationReviewTest.fractionalXmlDurationReachesDateTimeArithmetic:87 expected:<2002-03-22T08:23:48[.5]-05:00> but was:<2002-03-22T08:23:48[]-05:00>
+[ERROR]   ISO8601DurationReviewTest.javaDurationConversionKeepsFractionAndSign:76 expected:<PT1.5S> but was:<PT1S>
+[ERROR]   ISO8601DurationReviewTest.programmaticFourteenMonthsAreCountedOnce:99 expected:<14> but was:<26>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:4[6.999]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:4[6.5]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:4[5.5]-05:00> but was:<2002-03-22T08:23:4[6]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-23T10:26:48[.5]-05:00> but was:<2002-03-23T10:26:48[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:47[.000000001]-05:00> but was:<2002-03-22T08:23:47[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:47[.001]-05:00> but was:<2002-03-22T08:23:47[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:47[.5]-05:00> but was:<2002-03-22T08:23:47[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:48[.5]-05:00> but was:<2002-03-22T08:23:48[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<...002-03-22T08:23:47.2[49]-05:00> but was:<...002-03-22T08:23:47.2[5]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:4[6.7]5-05:00> but was:<2002-03-22T08:23:4[7.2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:4[5.7]5-05:00> but was:<2002-03-22T08:23:4[6.2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<...02-03-22T08:23:47.25[1]-05:00> but was:<...02-03-22T08:23:47.25[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:47.[7]5-05:00> but was:<2002-03-22T08:23:47.[2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2002-03-22T08:23:48.[7]5-05:00> but was:<2002-03-22T08:23:48.[2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds:82 expected:<2020-0[2-01T00:00:00.2]5-05:00> but was:<2020-0[1-31T23:59:59.7]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:47[.001]-05:00> but was:<2002-03-22T08:23:47[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:47[.5]-05:00> but was:<2002-03-22T08:23:47[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:48[.5]-05:00> but was:<2002-03-22T08:23:48[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-21T06:20:4[5.5]-05:00> but was:<2002-03-21T06:20:4[6]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:4[6.999999999]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:4[6.999]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:4[6.5]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:4[5.5]-05:00> but was:<2002-03-22T08:23:4[6]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<...02-03-22T08:23:47.25[1]-05:00> but was:<...02-03-22T08:23:47.25[]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:47.[7]5-05:00> but was:<2002-03-22T08:23:47.[2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:48.[7]5-05:00> but was:<2002-03-22T08:23:48.[2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<...002-03-22T08:23:47.2[49]-05:00> but was:<...002-03-22T08:23:47.2[5]-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:4[6.7]5-05:00> but was:<2002-03-22T08:23:4[7.2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2002-03-22T08:23:4[5.7]5-05:00> but was:<2002-03-22T08:23:4[6.2]5-05:00>
+[ERROR]   ISO8601FractionalDateTimeArithmeticTest.subtractPreservesFractionalSeconds:89 expected:<2020-01-31T23:59:59.[2]5-05:00> but was:<2020-01-31T23:59:59.[7]5-05:00>
+[INFO] 
+[ERROR] Tests run: 97, Failures: 35, Errors: 0, Skipped: 0
+[INFO] BUILD FAILURE
+
+Run: 49-review-context-before.txt
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DefaultEvaluationContextHandlerTest.testRelativePathWithoutContextSelectorUsesDocumentNode:111 expected:<BagOfValues{DataType=integer, Values=[]}> but was:<BagOfValues{DataType=integer, Values=[IntegerVal{type=integer, value=555555}]}>
+[INFO] 
+[ERROR] Tests run: 24, Failures: 1, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.594 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.390 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.217 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.074 s]
+[INFO] Xacml4J PDP ........................................ FAILURE [  1.750 s]
+[INFO] BUILD FAILURE
+
+Run: 51-review-arithmetic-after.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 97, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+Run: 52-review-context-after.txt
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.566 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.365 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.211 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  0.063 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  2.063 s]
+[INFO] BUILD SUCCESS
+
+Run: 53-reactor-verify-review-fixes.txt
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 638, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+Module: xacml-pdp
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 74, Failures: 0, Errors: 0, Skipped: 4
+Module: xacml-test
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+Module: xacml-conformance-tests
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 41, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.654 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  3.093 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.214 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  1.820 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  1.447 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.085 s]
+[INFO] Xacml4J Conformance Tests .......................... SUCCESS [  4.666 s]
+[INFO] BUILD SUCCESS
+
+Additional direct checks (outside unchanged OASIS loops):
+Runs 50 and 54: IIIE301, IIIE302, IIIE303; executed=3, failed=3, passed=0 in each run.

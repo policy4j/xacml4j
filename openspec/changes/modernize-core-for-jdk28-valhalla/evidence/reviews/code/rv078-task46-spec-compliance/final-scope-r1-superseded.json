@@ -1,0 +1,20 @@
+{
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java": "03486494c25776083f76496c13364fbc3e02229aa341992f5bc5db0e1c4692c9",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java": "dd4ffad9f30fd192bd7685856c4e2e8e2f247a2d6bd701b95ea35132deb3220b",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java": "38ee86d57c6b113b6fd6fde26036a41a298fe826b25617a1ef253724bb824158",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java": "17885af65b8029786d1db7eca7f70abf96ac4e0adf01e9d2c5db72062e79c585",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/ArtimeticFunctionsTest.java": "3c25948e34bbc2005961f389a991f52ce84cb1f38c2a1538d0cbd2f85488f932",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/FunctionSafetyNet43Test.java": "b616b869a9cf450c3a964e9201eb754aa008ac937f0f61c06c29b407f368ecd5",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DoubleBagSetEqualityTest.java": "080e5e0715fbf0690e0b1ffc9cc1e8b1266760572883f394f177b6e07338ed08",
+  "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java": "edb91204523c2a4c037f05c423f6fb4640c2f09cd07e4b543dba662e820d5bb3",
+  "xacml-conformance-tests/src/test/java/org/xacml4j/v20/NaNFixtureAdjudicationTest.java": "e68b11794fafca9cb5328aa320db35d5d3531978afa0139862327adfc541257b",
+  "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv": "2569ec32f318ccc414ad1fe2082a6985c532e0e40817ebd56735a9ec262a4b67",
+  "openspec/changes/modernize-core-for-jdk28-valhalla/specs/function-semantics/spec.md": "97d8afadcee210884b356b05d57119304dfb1e18bd5a16c68bbe75576b70ee9c",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/BaseCompositeDecisionRule.java": "7400d0840572e25a0d148e5a692c5a9723f88e7609389acf819c4a9b3a91b08e",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/DefaultXacml30DecisionCombiningAlgorithms.java": "68fc53475c779cea108431c0da9b5e8bf924f1a879f1b63f68e16b07025ffd44",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyCombiningAlgorithm.java": "6b62b9d52a01a9ff18694dee26287f87b6eb911878fcaaeb390f933886fa9c06",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java": "720dce8fad1cfe5424ec7bc1e5e5d2234cbcec28ef632271a5fd5bb2cd3660c1",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondDecisionTableTest.java": "f7738469f2a91c981c0548ead7173ae160086ff0530aaf5e2e6f27b0388fdf27",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java": "a6ba03c940fb51bee1dc4424c0dd5c7722da9557b3eea8d1a55d86ee51a09ed2",
+  "openspec/changes/modernize-core-for-jdk28-valhalla/specs/combining-algorithm-registry/spec.md": "12beb7a7299ce931e565284520cc797ea3723462928ac3537ffd0602b499cd6c"
+}

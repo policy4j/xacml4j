@@ -188,7 +188,7 @@ public abstract class AbstractPolicyRepository
 	private void notifyPolicySetRemoved(PolicySet p){
 		for(PolicyRepositoryListener l : listeners){
 			notificationExecutor.execute(
-					()->l.policySetAdded(p));
+					()->l.policySetRemoved(p));
 		}
 	}
 

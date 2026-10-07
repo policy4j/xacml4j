@@ -1,0 +1,50 @@
+{
+  "xacml": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "xacml-core": [
+    638,
+    0,
+    0,
+    4
+  ],
+  "xacml-xml-jaxb": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "xacml-xml": [
+    34,
+    0,
+    0,
+    0
+  ],
+  "xacml-json": [
+    5,
+    0,
+    0,
+    1
+  ],
+  "xacml-pdp": [
+    74,
+    0,
+    0,
+    4
+  ],
+  "xacml-test": [
+    20,
+    0,
+    0,
+    0
+  ],
+  "xacml-conformance-tests": [
+    41,
+    0,
+    0,
+    0
+  ]
+}

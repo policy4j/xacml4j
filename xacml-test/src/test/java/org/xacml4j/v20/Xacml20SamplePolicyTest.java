@@ -22,8 +22,8 @@ package org.xacml4j.v20;
  * #L%
  */
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.XacmlPolicyTestSupport;
 
@@ -32,7 +32,7 @@ public class Xacml20SamplePolicyTest extends XacmlPolicyTestSupport
 {
 	private PolicyDecisionPoint pdp;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception{
 
 		this.pdp = builder(

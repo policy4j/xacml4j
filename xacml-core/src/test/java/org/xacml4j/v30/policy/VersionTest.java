@@ -22,14 +22,12 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.Version;
 
@@ -71,16 +69,18 @@ public class VersionTest
 		assertEquals("1.0.0", v.getValue());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNegativeComponent() throws SyntaxException
 	{
-		Version.parse("-1.0");
+		assertThrows(IllegalArgumentException.class, () ->
+			Version.parse("-1.0"));
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testUnparseableVersion()
 	{
-		Version.parse("1.a....");
+		assertThrows(IllegalArgumentException.class, () ->
+			Version.parse("1.a...."));
 	}
 
 	@Test

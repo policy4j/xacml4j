@@ -22,13 +22,15 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.SyntaxException;
 
 
@@ -36,7 +38,7 @@ public class ISO8601DateTimeTest
 {
 	private TypeToString toString;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception{
 		this.toString = TypeToString.Types.DATETIME;
 	}
@@ -64,13 +66,14 @@ public class ISO8601DateTimeTest
 		assertEquals(30, value.get().getMinute());
 		assertEquals(10, value.get().getSecond());
 		assertEquals(0, value.get().getOffset().getTotalSeconds() * 60);
-		assertEquals("2002-05-30T09:30:10Z", toString.toString(value));
+		assertEquals("2002-05-30T09:30:10", toString.toString(value));
 
 	}
 
-	@Test(expected= SyntaxException.class)
-	public void testFromXacmlStringJustDate(){
-		toString.fromString("2002-09-24Z");
+	@Test
+	public void testFromXacmlStringJustDate() {
+		assertThrows(SyntaxException.class, () ->
+			toString.fromString("2002-09-24Z"));
 	}
 
 	@Test

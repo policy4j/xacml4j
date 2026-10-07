@@ -1,0 +1,103 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-core ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-core ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-core ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 249 source files with javac [debug target 10] to target/classes
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] bootstrap class path not set in conjunction with -source 10
+[INFO] 1 warning
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[586,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[596,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[606,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[616,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[626,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[636,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[646,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[656,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[666,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[676,10] cannot find symbol
+  symbol:   class XacmlLegacyFunc
+  location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[INFO] 10 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.770 s
+[INFO] Finished at: 2026-10-01T13:37:10-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project xacml-core: Compilation failure: Compilation failure: 
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[586,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[596,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[606,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[616,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[626,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[636,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[646,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[656,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[666,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java:[676,10] cannot find symbol
+[ERROR]   symbol:   class XacmlLegacyFunc
+[ERROR]   location: class org.xacml4j.v30.policy.function.impl.SetFunctions
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

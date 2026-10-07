@@ -1,0 +1,61 @@
+{
+  "log": "16-vintage-skip-bookkeeping.log",
+  "build_success": true,
+  "counts": [
+    7,
+    0,
+    0,
+    1
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.function.impl.BagFunctionsTest": {
+      "counts": [
+        7,
+        0,
+        0,
+        1
+      ],
+      "methods": [
+        {
+          "method": "",
+          "skip_reason": "",
+          "skipped": true
+        },
+        {
+          "method": "testIntegerBagFunctions",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testAnyURIBagFunctions",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testStringBagFunctions",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testFunctionIfImplemented",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testBooleanBagFunctions",
+          "skip_reason": null,
+          "skipped": false
+        },
+        {
+          "method": "testDoubleBagFunctions",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [],
+  "compiler_diagnostics": []
+}

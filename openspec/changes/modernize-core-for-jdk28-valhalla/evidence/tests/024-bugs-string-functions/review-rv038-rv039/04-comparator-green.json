@@ -1,0 +1,26 @@
+{
+  "xacml-test": {
+    "counts": {
+      "tests": 73,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v20.Xacml30TestUtilityTest": {
+        "tests": 64,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.XacmlPolicyTestSupportTest": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [],
+    "disabled": []
+  }
+}

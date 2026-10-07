@@ -1,0 +1,520 @@
+  ## A. Core Model Defects
+
+  ### 1. Record and Entity: Untyped Maps, Dropped Issuers, and Broken Equality
+
+  #### a. Record Keying Drops Issuer, DataType, and includeInResult
+
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Record.java:42-78
+  • Defect: The donor defines Record as:
+    public record Record(@Nonnull Map<AttributeId, BagOf<?, ?>> record,
+                         @Nullable Content<?> content)
+  In Record.Builder.attribute(Attribute a) (b9f114a3:Record.java:128-132):
+    AttributeId id = AttributeId.of(a.id());
+    BagOf<?, ?> bag = a.values();
+    this.builder.put(id, bag);
+  The map key is solely AttributeId. The attribute's Issuer (a.issuer()), DataType, and includeInResult
+  flag are completely dropped from the key. If an entity contains two attributes with the same AttributeId
+  but different issuers (e.g. Issuer="idp1" vs Issuer="idp2") or different data types, this.builder.put(id,
+  bag) silently overwrites or collides.
+  • Spec Citation: XACML 3.0 §5.45:
+  │ "The <Attribute> element contains... AttributeId [Required]... DataType [Required]... Issuer
+  │ [Optional]... IncludeInResult [Required]... The Issuer attribute SHALL specify the issuer of the
+  │ attribute... Attributes with different issuers are distinct."
+
+  • Worktree Comparison: Main worktree Attribute.java:44-52 preserves issuer, category, and includeInResult
+  as immutable fields. OpenSpec Design D8 requires an issuer-preserving, schema-aware Entity.
+  builder(EntityType) and Record.
+
+  #### b. Entity Broken equals and hashCode Contract
+
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Entity.java:133-144
+  • Defect:
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Entity entity)) return false;
+        if (eid != null) {
+            return Objects.equal(eid, entity.eid);
+        }
+        return Objects.equal(valueType, entity.valueType) &&
+               Objects.equal(record, entity.record) &&
+               Objects.equal(content, entity.content) &&
+               Objects.equal(parentId, entity.parentId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(valueType, eid, record, content, parentId);
+    }
+  If eid != null, equals() compares only eid. Meanwhile, hashCode() hashes all five fields (valueType, eid,
+  record, content, parentId). If two Entity instances share the same eid but differ in record attributes or
+  parentId, e1.equals(e2) evaluates to true, but e1.hashCode() != e2.hashCode(). This is a severe violation
+  of the java.lang.Object.hashCode contract, which corrupts any HashSet<Entity> or HashMap<Entity, ?>.
+  • Spec Citation: Java SE Specification Object.hashCode():
+  │ "If two objects are equal according to the equals(Object) method, then calling the hashCode method on
+  │ each of the two objects must produce the same integer result."
+
+
+  #### c. Unfinished Stubs and Runtime Exceptions in EntityType and EntityId
+
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/EntityType.java:52-54
+    private static Optional<EntitySchema> resolve(EntityTypeId<?> typeId){
+        return Optional.empty();
+    }
+  Calling EntityType.entity(EntityTypeQualifier) immediately throws NoSuchElementException via .
+  orElseThrow().
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/EntityId.java:41-45:
+    public EntityId {
+        Verify.verify(type.schema().isValidEid(eid),
+                "Expected value type=\"%s\" but got type=\"%s\"",
+                eid.valueType(), eid.valueType());
+        Verify.verifyNotNull(eid, "eid");
+        Verify.verifyNotNull(type, "entityType");
+    }
+  type.schema() and eid.valueType() dereference type and eid before the null checks execute, causing an
+  uninformative NullPointerException. Furthermore, the error format string prints eid.valueType() twice
+  instead of expected vs actual. Line 51 also invokes rejected donor type Int64.of(eid).
+  ──────
+  ### 2. Attribute, Category, and Issuer Identity
+
+  #### a. Case-Insensitive Issuer Comparison Violating XACML 3.0 §7.20
+
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Issuer.java:47-55
+    public static Issuer of(String issuer) {
+        return new Issuer(Identifier.StringIdCaseInsensitive.of(issuer));
+    }
+  The donor wraps issuer strings in StringIdCaseInsensitive. In XACML 3.0, the Issuer attribute is of type
+  xs:string, compared strictly with urn:oasis:names:tc:xacml:1.0:function:string-equal (case-sensitive
+  Unicode code-point matching).
+  • Spec Citation: XACML 3.0 §7.3.5 & §A.3.5:
+  │ "If Issuer is present in the <AttributeDesignator> element, then the Issuer of the attribute to be
+  │ matched SHALL match the Issuer of the <AttributeDesignator> element... string-equal: This function
+  SHALL
+  │ return 'True' if and only if each parameter is equal to the other according to the Unicode Collation
+  │ Algorithm with the default collation."
+
+
+  #### b. Issuer Matching Wildcard Flaw Violating XACML 3.0 §7.3.5
+
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Issuer.java:70-76
+    public boolean match(Issuer other) {
+        if (this.isAny() || other.isAny()) {
+            return true;
+        }
+        return this.equals(other);
+    }
+  If other.isAny() is true (e.g. an attribute in the request has no issuer), match returns true even when
+  this designator specifies an explicit Issuer! Conversely, if this.isAny() (designator specifies no
+  Issuer), it returns true matching an attribute in the request that does have an issuer!
+  • Spec Citation: XACML 3.0 §7.3.5:
+  │ "If the Issuer is not present in the <AttributeDesignator> element, but present in the context, then
+  the
+  │ attribute in the context SHALL NOT match the <AttributeDesignator> element. If Issuer is present in the
+  │ <AttributeDesignator> element, but not present in the context, then the attribute in the context SHALL
+  │ NOT match the <AttributeDesignator> element."
+  │ The donor's logic allows cross-issuer matching in both directions.
+
+  ──────
+  ### 3. AttributeDesignator and AttributeSelector
+
+  #### a. Gutted MustBePresent Error Handling and Status Suppression
+
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeDesignator.java:67-80
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeSelector.java:70-82
+    Optional<BagOf<?, ?>> v = context.resolve(designatorKey);
+    if(v.isEmpty()){
+        if(mustBePresent){
+            return Optional.empty();
+        }
+        return Optional.of(BagOf.empty(dataType));
+    }
+    return v;
+  Defects:
+      1. The donor deletes context.setEvaluationStatusIfAbsent(() -> Status.
+      missingAttribute(designatorKey).build()).
+      2. The donor deletes throw AttributeReferenceEvaluationException.forDesignator(designatorKey)
+      (compare worktree AttributeDesignator.java:93-99 and AttributeSelector.java:77-82).
+      3. If context.resolve(designatorKey) returns Optional.of(BagOf.empty(dataType)) (an empty bag), v.
+      isEmpty() evaluates to false! The donor returns v (the empty bag) even when mustBePresent=true!
+  • Spec Citation: XACML 3.0 §5.29:
+  │ "MustBePresent [Required]: This attribute governs the requirement for the presence of the included
+  │ attribute in the evaluation context... If MustBePresent is 'true' and no matching attribute is found,
+  │ then the <AttributeDesignator> SHALL result in 'Indeterminate' with status code
+  │ 'urn:oasis:names:tc:xacml:1.0:status:missing-attribute'."
+
+
+  #### b. XPath Context Node and Cardinality Violation (Bug 4.9)
+
+  • Donor file: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java:163-176
+    private static Node evaluateToNode(XPathExpression exp, Node node)
+            throws XPathExpressionException
+    {
+        Object v = exp.evaluate(node, XPathConstants.NODESET);
+        if(v instanceof NodeList){
+            NodeList l = (NodeList) v;
+            if(l.getLength() == 0){
+                return null;
+            }
+            return l.item(0);
+        }
+        if(v instanceof Node){
+            return (Node)v;
+        }
+        return null;
+    }
+  When the XPath expression for a context node matches multiple nodes, XmlContent.evaluateToNode silently
+  selects l.item(0) and ignores the rest!
+  • Spec Citation: XACML 3.0 §7.3.7:
+  │ "The ContextSelectorId attribute, if present, SHALL specify the attribute identifier of the attribute
+  in
+  │ the request context whose value SHALL be the context node for the XPath expression... The XPath
+  │ expression evaluated on the <Content> element SHALL evaluate to a single node. If the XPath expression
+  │ evaluates to more than one node, or to no node, then the evaluation of the <AttributeSelector> SHALL
+  │ result in 'Indeterminate' with status code 'urn:oasis:names:tc:xacml:1.0:status:processing-error'."
+  │ Silently picking l.item(0) directly violates §7.3.7 and undid Bug 4.9.
+
+
+  #### c. Absent Category Exception Bug (Bug 4.33)
+
+  • Donor file:
+  b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:
+  64-67
+    Entity entity = context.resolveCategory(categoryVal.id())
+            .orElseThrow(()->new EvaluationException(
+                    Status.processingError(),
+                    "Entity is null"));
+  If the category does not exist in the request context, AttributeDesignatorFunctions.designator(...)
+  immediately throws EvaluationException(Status.processingError(), "Entity is null") before checking
+  mustBePresent!
+  • Spec Citation: XACML 3.0 §5.29:
+  │ "If no <Attributes> element matches Category, then the result of the evaluation SHALL be an empty bag,
+  │ unless MustBePresent is 'true', in which case the result SHALL be 'Indeterminate' with status code
+  │ 'urn:oasis:names:tc:xacml:1.0:status:missing-attribute'."
+
+  • Worktree Test Citation: Main worktree AttributeDesignatorFunctionTest.java:160-184 and
+  AttributeResolutionSafetyNetTest.java:187-210 require absent category with MustBePresent=false to return
+  an empty bag (yielding NOT_APPLICABLE), and with MustBePresent=true to fail with MISSING_ATTRIBUTE. The
+  donor produces processing-error.
+  ──────
+  ## B. PDP Runtime Defects
+
+  ### 1. DefaultEvaluationContextHandler and PIP SPI
+
+  #### a. Swallowing PIP Retrieval Failures (Decision 4.34)
+
+  • Donor file:
+  b9f114a3:xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:160-163, 191-19
+  4
+  • Donor file:
+  b9f114a3:xacml-pdp/src/main/java/org/xacml4j/v30/spi/pip/DefaultPolicyInformationPoint.java:96-98
+    catch(Exception e){
+        LOG.debug(e.getMessage(), e);
+        return Optional.empty();
+    }
+  In both DefaultPolicyInformationPoint and DefaultEvaluationContextHandler, all exceptions thrown during
+  attribute resolution are caught, logged at DEBUG level, and swallowed to Optional.empty().
+      • When MustBePresent=false: An attribute resolver throws an error (e.g. database timeout or network
+      partition), the engine treats the attribute as absent, returns an empty bag, and evaluates to
+      NOT_APPLICABLE (fail-open!).
+      • When MustBePresent=true: The engine reports MISSING_ATTRIBUTE instead of PROCESSING_ERROR.
+  • Decision 4.34: As pinned in worktree AttributeResolutionSafetyNetTest.java:164-185, PIP retrieval
+  failures must fail-closed as INDETERMINATE with urn:oasis:names:tc:xacml:1.0:status:processing-error. The
+  donor completely ignores this requirement.
+
+  #### b. Silent Swallowing of Cyclic Resolutions
+
+  • Donor file:
+  b9f114a3:xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:150-152, 172-17
+  4
+    if(designatorResolutionStack.contains(key)){
+        LOG.warn("Cyclic designator=\"{}\" resolution detected", key);
+        return Optional.empty();
+    }
+  When cyclic attribute resolution occurs, it logs a warning and returns Optional.empty(), again treating
+  circular dependency as a missing attribute. In XACML 3.0 §7.3.5 / §7.3.7, circular attribute retrieval is
+  a processing error and must result in Indeterminate (processing-error).
+
+  #### c. Compilation Breakages and Non-Existent Class References
+
+  • Donor file:
+  b9f114a3:xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java:177-185
+    AttributeDesignatorKey entitySelector =
+            AttributeDesignatorKey
+                    .builder()
+                    .dataType(Primitives.Entity)
+                    .attributeId(ref.contextSelectorId())
+                    .category(ref.getCategory())
+                    .build();
+    v = resolve(context, entitySelector)
+              .flatMap(b->b.value())
+              .map(EntityValue.class::cast)
+              .map(EntityValue::get)
+              .flatMap(e->e.resolve(ref));
+
+      1. ref.contextSelectorId() does not exist on donor AttributeSelectorKey (the donor record dropped
+      contextSelectorId).
+      2. AttributeDesignatorKey.builder() does not exist on donor AttributeDesignatorKey (it was changed to
+      a canonical record constructor).
+      3. ref.getCategory() does not exist (the record method is categoryId()).
+      4. EntityValue.class does not exist anywhere in the codebase.
+      5. In b9f114a3:xacml-pdp/.../MultipleResourcesViaXPathExpressionHandler.java:132, entity.getContent()
+      references a non-existent variable entity.
+
+
+  ### 2. Decision Caches (PolicyDecisionCache, ResolverCacheKey)
+
+  #### a. Request Context Type Mismatch in Cache Keys
+
+  • Donor file: b9f114a3:xacml-pdp/src/main/java/org/xacml4j/v30/spi/pdp/PolicyDecisionCache.java:44-50
+    public interface PolicyDecisionCache {
+        void putDecision(MultiRequestContext request, Result result, Duration ttl);
+        Result getDecision(MultiRequestContext request);
+    }
+  The cache was rewritten to key on MultiRequestContext. However, b9f114a3:MultiRequestContext.java:51,55
+  contains syntax errors (this.requestReferences = b., this.entitiesByEid = b.), has broken equals() and
+  hashCode(), and nests Entity instances which have broken hashCode() as shown in section A.1.b.
+  Consequently, PolicyDecisionCache keys cannot reliably hit or expire across evaluation cycles.
+  ──────
+  ## C. Marshalling Defects
+
+  ### 1. XML 3.0 and 2.0 Mappers: Reversions of Merged Bug Fixes
+
+  #### a. Undoing Bug 4.17: Missing AttributeId Throws IllegalArgumentException / NullPointerException
+  instead of SyntaxException
+
+  • Donor file: b9f114a3:xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:556
+    Attribute.Builder b = Attribute.builder(attr.getAttributeId());
+
+  • Donor file:
+  b9f114a3:xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java:257
+    return Attribute.builder(a.getAttributeId())
+
+  • Defect: The donor calls Attribute.builder(...) without validating getAttributeId(). If AttributeId is
+  null, Preconditions.checkNotNull throws NullPointerException or IllegalArgumentException. If AttributeId
+  is empty string, it proceeds silently.
+  • Worktree Comparison: Main worktree Xacml30RequestContextFromJaxbToObjectModelMapper.java:518-520:
+    if (a.getAttributeId() == null || a.getAttributeId().isEmpty()) {
+        throw new SyntaxException("Request Attribute is missing AttributeId");
+    }
+  The donor completely undid the 4.17 fix in XML unmarshalling.
+
+  #### b. Undoing Bug 4.19: JAXB AttributesReferenceType ID Handling and 2.0 Scope
+
+  • Donor file:
+  b9f114a3:xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.jav
+  a:493-512
+  The donor casts r.getReferenceId() directly to EntityId or String, causing ClassCastException when JAXB
+  resolves the IDREF to an AttributesType object.
+  • Worktree Comparison: Main worktree Xacml30RequestContextFromJaxbToObjectModelMapper.java:498-510
+  properly unpacks AttributesType.getId(), handles String, and throws SyntaxException on unsupported types.
+  • Donor file:
+  b9f114a3:xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java:214-230 omits
+  the check for urn:oasis:names:tc:xacml:1.0:resource:scope, breaking single-resource hierarchical
+  evaluation in 2.0 responses.
+
+  #### c. Undoing Bug 4.24: XPathCategory Stripped from AttributeAssignment
+
+  • Donor file:
+  b9f114a3:xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.jav
+  a:424-434
+    private AttributeAssignmentType create(AttributeAssignment a)
+    {
+        AttributeAssignmentType attr = new AttributeAssignmentType();
+        attr.setAttributeId(a.getAttributeId());
+        attr.setIssuer(a.getIssuer());
+        a.getCategory().ifPresent(c->attr.setCategory(c.shortId()));
+        AttributeValueType av = toJaxb(a.getAttribute());
+        attr.setDataType(av.getDataType());
+        attr.getContent().addAll(av.getContent());
+        return attr;
+    }
+  Line 433 is missing: attr.getOtherAttributes().putAll(av.getOtherAttributes());!
+  av.getOtherAttributes() contains the required XPathCategory QName attribute. Dropping it strips
+  XPathCategory from obligation and advice attribute assignments in the response context.
+  • Worktree Comparison: Main worktree Xacml30RequestContextFromJaxbToObjectModelMapper.java:433 explicitly
+  preserves attr.getOtherAttributes().putAll(av.getOtherAttributes()). Reverting this breaks conformance
+  cases IIIA030 and IIIA330.
+
+  ### 2. JSON Mappers
+
+  #### a. Undoing Bug 4.25: Reversion to Permissive Gson Boolean Parsing
+
+  • Donor file: b9f114a3:xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java:41
+    return o.get(prop).getAsBoolean();
+  And in donor RequestContextAdapter.java:48-49:
+    boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, RETURN_POLICY_ID_LIST_PROPERTY, false);
+    boolean combinedDecision = GsonUtil.getAsBoolean(o, COMBINED_DECISION_PROPERTY, false);
+  The donor reverts to Gson's default getAsBoolean(), which allows arbitrary string coercions.
+  • Worktree Comparison: Main worktree GsonUtil.java:41-47 uses BooleanVal.of(o.get(prop).getAsString()).
+  booleanValue(), enforcing the strict OASIS lexical forms (true, false, 1, 0 with whitespace collapsed)
+  and throwing SyntaxException on invalid tokens.
+
+  #### b. JSON Category Attribute Serialization Schema Violation
+
+  • Donor file: b9f114a3:xacml-json/src/main/java/org/xacml4j/v30/marshal/json/CategoryAdapter.java:79-84
+    Record e = src.getRecord();
+    o.addProperty(JsonProperties.CATEGORY_ID_PROPERTY, src.getCategory().getAbbreviatedId());
+    o.add(JsonProperties.ATTRIBUTE_PROPERTY, context.serialize(e.record()));
+  e.record() is a Map<AttributeId, BagOf<?, ?>>. Serializing it produces a JSON Object mapping attribute
+  IDs to bags:
+  {"Attribute": {"urn:test": [...]}}.
+  • Spec Citation: OASIS XACML JSON Profile 1.0 §5.2:
+  │ "Attribute: An array of Attribute objects... Each Attribute object contains: Id [Required]... Value
+  │ [Required]... DataType [Optional]... Issuer [Optional]... IncludeInResult [Optional]..."
+  │ Serializing a JSON Object instead of an array of Attribute objects violates the normative JSON schema.
+
+
+  ### 3. JAXB Schema Bindings and Bug 4.47
+
+  #### a. Missing Custom Boolean Adapter for Schema Attributes
+
+  • Donor file: b9f114a3:xacml-xml-jaxb/src/main/resources/xsd/xacml.xjb:1-15
+  • Defect: The donor's xacml.xjb contains only package renamings. JAXB parses schema xs:boolean attributes
+  (ReturnPolicyIdList, CombinedDecision, MustBePresent, IncludeInResult) using default DatatypeConverter.
+  parseBoolean, which silently treats illegal tokens (like "10" or "assignment3") as false or true without
+  validation.
+  • Bug 4.47 Resolution: To prevent invalid XML attributes from silently passing, xacml.xjb must bind an
+  XmlAdapter that routes through BooleanVal's strict parser.
+  ──────
+  ## D. Test List for Task 6.5
+
+   #  │ Lane  │ Target Ar… │ Test File / Candidate     │ Assertion / Requirement
+  ────┼───────┼────────────┼───────────────────────────┼───────────────────────────────────────────────────
+   1  │ Core  │ Entity/Rec │ EntityTest                │ Schema-aware builder validates attribute types
+      │       │ ord        │                           │ against EntityType
+   2  │ Core  │ Entity/Rec │ EntityTest                │ Record preserves distinct attributes sharing same
+      │       │ ord        │                           │ ID but different Issuer
+   3  │ Core  │ Entity/Rec │ EntityTest                │ Record preserves includeInResult flag on distinct
+      │       │ ord        │                           │ attributes
+   4  │ Core  │ Entity/Rec │ EntityTest                │ Entity.equals and hashCode obey contract across
+      │       │ ord        │                           │ all fields (not just eid)
+   5  │ Core  │ Entity/Rec │ EntityIdTest              │ Constructor validates eid and type nullity before
+      │       │ ord        │                           │ schema verification
+   6  │ Core  │ Entity/Rec │ EntityIdTest              │ Error message displays expected vs actual type
+      │       │ ord        │                           │ correctly
+   7  │ Core  │ Identity   │ IssuerTest                │ Case-sensitive string equality per XACML 3.0
+      │       │            │                           │ §7.20 / §A.3.5
+   8  │ Core  │ Identity   │ IssuerTest                │ match() returns false when designator has issuer
+      │       │            │                           │ but context attribute has none
+   9  │ Core  │ Identity   │ IssuerTest                │ match() returns false when context attribute has
+      │       │            │                           │ issuer but designator has none
+   10 │ Core  │ Designator │ AttributeDesignatorTest   │ MustBePresent=false returns empty bag when
+      │       │            │                           │ attribute absent
+   11 │ Core  │ Designator │ AttributeDesignatorTest   │ MustBePresent=true fails closed with
+      │       │            │                           │ Status.missingAttribute when absent
+   12 │ Core  │ Designator │ AttributeDesignatorTest   │ MustBePresent=true fails when resolver returns an
+      │       │            │                           │ empty bag
+   13 │ Core  │ Designator │ AttributeDesignatorTest   │ Missing attribute sets missing-attribute status
+      │       │            │                           │ on EvaluationContext
+   14 │ Core  │ Designator │ AttributeDesignatorFuncti │ Absent Category with MustBePresent=false returns
+      │       │            │ onTest                    │ empty bag (unskips 4.33 test)
+   15 │ Core  │ Designator │ AttributeDesignatorFuncti │ Absent Category with MustBePresent=true fails
+      │       │            │ onTest                    │ with missing-attribute (unskips 4.33 test)
+   16 │ Core  │ Selector   │ AttributeSelectorTest     │ MustBePresent=false returns empty bag when XPath
+      │       │            │                           │ evaluates to empty
+   17 │ Core  │ Selector   │ AttributeSelectorTest     │ MustBePresent=true sets missing-attribute status
+      │       │            │                           │ and throws on missing node
+   18 │ Core  │ Selector   │ AttributeSelectorTest     │ XPath matching multiple nodes fails with
+      │       │            │                           │ Indeterminate (processing-error) (Bug 4.9)
+   19 │ Core  │ Selector   │ AttributeSelectorTest     │ Selector without contextSelectorId uses Category
+      │       │            │                           │ <Content> element (Bug 4.9)
+   20 │ Core  │ Condition  │ ConditionSafetyNetTest    │ selectorAbsentResultMustNotSetMissingAttributeSta
+      │       │            │                           │ tus passes
+   21 │ PDP   │ Resolver   │ AttributeResolutionSafety │ Resolver retrieval failure with
+      │       │            │ NetTest                   │ MustBePresent=false yields INDETERMINATE_P /
+      │       │            │                           │ processing-error (unskips 4.34)
+   22 │ PDP   │ Resolver   │ AttributeResolutionSafety │ Resolver retrieval failure with
+      │       │            │ NetTest                   │ MustBePresent=true yields INDETERMINATE_P /
+      │       │            │                           │ processing-error (unskips 4.34)
+   23 │ PDP   │ Resolver   │ DefaultEvaluationContextH │ Circular designator resolution yields
+      │       │            │ andlerTest                │ Indeterminate (processing-error)
+   24 │ PDP   │ Resolver   │ DefaultEvaluationContextH │ Circular selector resolution yields Indeterminate
+      │       │            │ andlerTest                │ (processing-error)
+   25 │ PDP   │ Resolver   │ DefaultEvaluationContextH │ Entity selector lookup by contextSelectorId
+      │       │            │ andlerTest                │ successfully invokes PIP
+   26 │ PDP   │ PIP SPI    │ DefaultPolicyInformationP │ Attribute resolver descriptor properly matches
+      │       │            │ ointTest                  │ issuer
+   27 │ PDP   │ Cache      │ PolicyDecisionCacheTest   │ MultiRequestContext cache hit matches identical
+      │       │            │                           │ attribute set
+   28 │ PDP   │ Cache      │ PolicyDecisionCacheTest   │ Differing attribute values or issuers produce
+      │       │            │                           │ cache miss
+   29 │ Marsh │ XML 3.0    │ Xacml30RequestUnmarshalle │ Missing or empty AttributeId throws
+      │ allin │            │ rTest                     │ SyntaxException (Bug 4.17)
+      │ g     │            │                           │
+   30 │ Marsh │ XML 2.0    │ Xacml20RequestUnmarshalle │ Missing or empty AttributeId throws
+      │ allin │            │ rTest                     │ SyntaxException (Bug 4.17)
+      │ g     │            │                           │
+   31 │ Marsh │ XML 3.0    │ Xacml30RequestUnmarshalle │ AttributesReferenceType IDREF correctly resolves
+      │ allin │            │ rTest                     │ AttributesType (Bug 4.19)
+      │ g     │            │                           │
+   32 │ Marsh │ XML 2.0    │ Xacml20RequestUnmarshalle │ Resource scope attribute sets IncludeInResult on
+      │ allin │            │ rTest                     │ ResourceId (Bug 4.19)
+      │ g     │            │                           │
+   33 │ Marsh │ XML 3.0    │ Xacml30ResponseMarshaller │ XPathCategory attribute preserved on advice
+      │ allin │            │ Test                      │ attribute assignments (Bug 4.24)
+      │ g     │            │                           │
+   34 │ Marsh │ XML 3.0    │ Xacml30ResponseMarshaller │ XPathCategory attribute preserved on obligation
+      │ allin │            │ Test                      │ attribute assignments (Bug 4.24)
+      │ g     │            │                           │
+   35 │ Marsh │ JSON       │ JsonRequestUnmarshallerTe │ Missing AttributeId throws SyntaxException (Bug
+      │ allin │            │ st                        │ 4.17)
+      │ g     │            │                           │
+   36 │ Marsh │ JSON       │ JsonRequestUnmarshallerTe │ Strict boolean parsing: rejects invalid strings
+      │ allin │            │ st                        │ like "TRUE", "yes", "10" (Bug 4.25)
+      │ g     │            │                           │
+   37 │ Marsh │ JSON       │ JsonRequestMarshallerTest │ Category attributes serialize as JSON Array of
+      │ allin │            │                           │ Attribute objects
+      │ g     │            │                           │
+   38 │ Marsh │ JAXB       │ JaxbBooleanAdapterTest    │ ReturnPolicyIdList="10" fails schema
+      │ allin │            │                           │ unmarshalling (Bug 4.47)
+      │ g     │            │                           │
+   39 │ Marsh │ JAXB       │ JaxbBooleanAdapterTest    │ MustBePresent="True" fails schema unmarshalling
+      │ allin │            │                           │ (Bug 4.47)
+      │ g     │            │                           │
+   40 │ Confo │ Engine     │ Xacml30ConformanceTest    │ Regressions IIIA030 and IIIA330 pass
+      │ rmanc │            │                           │
+      │ e     │            │                           │
+  ──────
+  ## FINAL REPORT (policy4j_code_review_agy, gemini-2.5-pro)
+
+  ### 1. Defect Counts per Lane
+
+  • Core Model Lane (A): 8 distinct defects (Record key collision / dropped metadata; Entity
+  equals/hashCode mismatch; EntityType stub; EntityId verify ordering & Int64; Case-insensitive Issuer;
+  Issuer.match() wildcard inversion; MustBePresent status suppression; XPath multiple nodes silent first-
+  item pick; Absent category processing-error bug 4.33).
+  • PDP Runtime Lane (B): 5 distinct defects (Resolver retrieval failure swallowed to Optional.empty()
+  violating Decision 4.34; Cyclic resolution treated as missing attribute instead of Indeterminate; Ghost
+  class reference EntityValue; Non-existent AttributeDesignatorKey.builder() calls; Corrupt
+  MultiRequestContext cache keys).
+  • Marshalling Lane (C): 6 distinct defects (Undid Bug 4.17 missing AttributeId in XML 3.0/2.0 and JSON;
+  Undid Bug 4.19 IDREF unmarshalling; Undid Bug 4.24 XPathCategory dropped from AttributeAssignment; Undid
+  Bug 4.25 lax Gson boolean parsing; Serialized Category attributes as JSON Object instead of Array;
+  Missing JAXB boolean adapter for Bug 4.47).
+
+  ### 2. Top 5 Critical Defects
+
+  1. Donor Reversion of Bug 4.24 (XPathCategory Dropped):
+  b9f114a3:Xacml30RequestContextFromJaxbToObjectModelMapper.java:424-434 omits attr.getOtherAttributes().
+  putAll(av.getOtherAttributes()), stripping XPathCategory from obligation/advice assignments and directly
+  breaking conformance tests IIIA030 and IIIA330.
+  2. Record Collisions and Dropped Metadata: b9f114a3:Record.java:42 keys solely by AttributeId, dropping
+  Issuer, DataType, and includeInResult. Attributes with identical IDs but distinct issuers overwrite each
+  other, violating XACML 3.0 §5.45.
+  3. Entity.equals / hashCode Contract Breakage: b9f114a3:Entity.java:133-144 compares only eid in equals(),
+  but hashes all five fields in hashCode(). Corrupts all hash-based collections when entities share an eid
+  but differ in attributes.
+  4. Suppression of MustBePresent and Swallowing of PIP Failures: b9f114a3:AttributeDesignator.java:71-77
+  deletes evaluation status reporting and returns empty bags when present.
+  b9f114a3:DefaultEvaluationContextHandler.java:160-163 swallows all resolver exceptions, turning PIP
+  failures into NOT_APPLICABLE (fail-open) and violating Decision 4.34.
+  5. Ghost References and Compilation Breakage: b9f114a3:DefaultEvaluationContextHandler.java:177-185
+  references non-existent EntityValue, non-existent AttributeDesignatorKey.builder(), and missing record
+  accessors; b9f114a3:MultipleResourcesViaXPathExpressionHandler.java:132 references non-existent variable
+  entity.
+
+  ### 3. Audit Metrics
+
+  • Files Opened / Inspected: 38 files across donor b9f114a3 and worktree.
+  • Tool Calls Used: 76 tool calls.
+

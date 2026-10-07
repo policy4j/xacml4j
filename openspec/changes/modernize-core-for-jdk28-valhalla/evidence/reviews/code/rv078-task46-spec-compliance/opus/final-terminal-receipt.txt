@@ -1,0 +1,41 @@
+Welcome to fish, the friendly interactiv
+e shell
+Type help for instructions on how to use
+ fish
+
+…n/modernize-c… *1 !217 ?86   11.0.32.1
+❮ cd '$HOME
+/Projects/Personal/xacml4j-worktrees/po
+licy4j' && NTM_SPAWN_ORDER=2 NTM_SPAWN_T
+OTAL=3 NTM_SPAWN_BATCH_ID='spawn-2026100
+  4. Overflow row: withdrawn; task 5.4 tracking accepted.
+  5. Fixture binding: fixed. The path is bound (ConformanceCaseRunner.java:178-182). The wrong-Permit path is
+     rejected; suite, disposition and case id are negative-controlled; PDP tests compare full marshalled
+     responses (NaNFixtureAdjudicationTest.java:236-288).
+  6. XPath wording: fixed (function-semantics/spec.md:95-114).
+
+  Verification
+
+  - Hash checks, file reads, rtk rg, and rtk proxy jq on receipts. No builds, tests, network or writes.
+  - Reactor receipt, not run by me: exit 0; 7589 tests, 0 failures, 0 errors, 30 skipped. Its frozen hashes
+    equal v2 for all 18 files.
+  - Scoped suites in it: policy test 12, decision table 289, registry 125, NaN adjudication 10, safety net 109
+    with 6 skipped, double bag 108.
+  - The receipt's mtime (13:31:27) is 91 seconds after the last scoped edit (13:29:56). I did not open
+    reactor-green.log to confirm the run start.
+
+  Remaining scope
+
+  - Gate 4.7: zero-argument bags, n-ary union, a real malformed XPath test, and JMH for the scan and staging
+    paths.
+  - Task 5.4: integer overflow.
+  - Whole-engine compliance is not claimed.
+
+  DONE_FINAL_OPUS_20261004
+
+✻ Baked for 1m 57s · done 1:44 PM
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯ 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts · ← 3 agents

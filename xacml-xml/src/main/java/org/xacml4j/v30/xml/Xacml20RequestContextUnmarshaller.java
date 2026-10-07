@@ -52,7 +52,7 @@ import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.types.PathValue;
+import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.Xacml20XPathTo30Transformer;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -200,10 +200,14 @@ public final class Xacml20RequestContextUnmarshaller extends
 		private Category createResource(ResourceType resource,
 				boolean multipleResources) throws SyntaxException
 		{
+			// Preserve the requested id for XACML 2.0 hierarchy Result/@ResourceId mapping.
+			boolean includeResourceId = multipleResources || resource.getAttribute().stream()
+					.anyMatch(a -> "urn:oasis:names:tc:xacml:1.0:resource:scope".equals(a.getAttributeId())
+							|| "urn:oasis:names:tc:xacml:2.0:resource:scope".equals(a.getAttributeId()));
 			Entity.Builder b = Entity
 					.builder()
 					.attributes(create(resource.getAttribute(),
-							CategoryId.RESOURCE, multipleResources));
+							CategoryId.RESOURCE, includeResourceId));
 			Node content = getResourceContent(resource);
 			if(content != null){
 				b.content(XmlContent.of(content));
@@ -243,10 +247,13 @@ public final class Xacml20RequestContextUnmarshaller extends
 		}
 
 		private Attribute createAttribute(AttributeType a, CategoryId category,
-					boolean includeInResultResourceId)
+				boolean includeInResultResourceId)
 			throws SyntaxException
 		{
-			Collection<Value> values = new LinkedList<Value>();
+			if (a.getAttributeId() == null || a.getAttributeId().isEmpty()) {
+				throw new SyntaxException("Request Attribute is missing AttributeId");
+			}
+			Collection<Value<?>> values = new LinkedList<Value<?>>();
 			for(org.oasis.xacml.v20.jaxb.context.AttributeValueType v : a.getAttributeValue()){
 				Value value = createValue(a, v);
 				if(log.isDebugEnabled()){
@@ -276,7 +283,7 @@ public final class Xacml20RequestContextUnmarshaller extends
 										.noContentFound();
 							}
 
-							PathValue xpath = Xacml20XPathTo30Transformer
+							Path xpath = Xacml20XPathTo30Transformer
 									.transform20PathTo30((String)(av.getContent().get(0)));
 							v30.getContent().add(xpath.getPath());
 							v30.getOtherAttributes().put(

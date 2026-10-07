@@ -22,18 +22,19 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.createStrictMock;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.CategoryId;
@@ -45,20 +46,19 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
+@ExtendWith(MockitoExtension.class)
 public class AdviceExpressionTest
 {
 	private EvaluationContext context;
 	private AttributeAssignmentExpression attrExp0;
 	private AttributeAssignmentExpression attrExp1;
-	private IMocksControl c;
 
 	private Expression expression;
 
-	@Before
+	@BeforeEach
 	public void init(){
-		this.c = createControl();
-		this.context = createStrictMock(EvaluationContext.class);
-		this.context = c.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 
 		attrExp0 = AttributeAssignmentExpression
 				.builder("attributeId0")
@@ -66,7 +66,7 @@ public class AdviceExpressionTest
 								.issuer("issuer0")
 						.expression(XacmlTypes.INTEGER.ofAny(1))
 						.build();
-		this.expression = c.createMock(Expression.class);
+		this.expression = mock(Expression.class);
 		attrExp1 = AttributeAssignmentExpression
 				.builder("attributeId1")
 				.category(CategoryId.RESOURCE)
@@ -78,20 +78,19 @@ public class AdviceExpressionTest
 	@Test
 	public void testCreateAdviceExpression() throws CoreException
 	{
-		c.replay();
 		AdviceExpression exp = AdviceExpression.builder("test",Effect.DENY).attribute(attrExp0).build();
 		assertTrue(exp.isApplicable(Decision.DENY));
 		assertFalse(exp.isApplicable(Decision.PERMIT));
 		assertFalse(exp.isApplicable(Decision.INDETERMINATE));
 		assertEquals("test", exp.getId());
-		c.verify();
+		verifyNoMoreInteractions(context, expression);
 	}
 
 	@Test
 	public void testEvaluateAdviceExpression() throws CoreException
 	{
-		expect(expression.evaluate(context)).andReturn(XacmlTypes.BOOLEAN.ofAny(false));
-		c.replay();
+		when(expression.evaluate(context)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(context, expression);
 
 		AdviceExpression exp = AdviceExpression.builder("test",Effect.DENY).attribute(attrExp0, attrExp1).build();
 		Advice advice = exp.evaluate(context);
@@ -108,6 +107,10 @@ public class AdviceExpressionTest
 		assertEquals(CategoryId.RESOURCE, a1.getCategory().get());
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), a1.getAttribute());
 
-		c.verify();
+		order.verify(expression).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(expression, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, expression);
 	}
 }

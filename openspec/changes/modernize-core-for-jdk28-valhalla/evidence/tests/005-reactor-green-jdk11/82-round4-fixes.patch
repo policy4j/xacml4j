@@ -1,0 +1,74 @@
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+@@ -356,7 +356,9 @@
+ 			Expression ref = arguments.get(0);
+ 			Preconditions.checkArgument(ref instanceof FunctionReference,
+ 					"First function argument must be function reference");
+-			Preconditions.checkArgument(!ref.getEvaluatesTo().isBag(), "The referenced function must return a primitive value");
++			if(ref.getEvaluatesTo().isBag()){
++				spec.validateParametersAndThrow(arguments);
++			}
+ 			return ref.getEvaluatesTo().getValueType().bagType();
+ 		}
+ 
+--- a/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java
++++ b/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java
+@@ -46,6 +46,7 @@
+ import org.xacml4j.v30.EvaluationException;
+ import org.xacml4j.v30.Expression;
+ import org.xacml4j.v30.Status;
++import org.xacml4j.v30.StatusCodeId;
+ import org.xacml4j.v30.SyntaxException;
+ import org.xacml4j.v30.ValueExp;
+ import org.xacml4j.v30.policy.Apply;
+@@ -290,7 +291,28 @@
+ 		FunctionSpec spec = higher("map");
+ 		List<Expression> arguments = Arrays.asList(ref("string-bag"), strings("a"));
+ 		assertFalse(spec.validateParameters(arguments));
+-		assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(arguments));
++		SyntaxException error = assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(arguments));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
++	}
++
++	@Test
++	public void mapRejectsBagReturningFunctionDuringApplyTypeResolution()
++	{
++		for(String version : new String[]{"3.0", "1.0"}){
++			FunctionSpec spec = FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:" + version + ":function:map").get();
++			List<Expression> arguments = Arrays.asList(ref("string-bag"), strings("a"));
++			SyntaxException validationError = assertThrows(SyntaxException.class,
++					() -> spec.validateParametersAndThrow(arguments));
++			assertEquals(StatusCodeId.SYNTAX_ERROR, validationError.getStatus().getStatusCode().getValue());
++			Apply apply = Apply.builder(spec).params(arguments).build();
++			assertEquals(arguments, apply.getArguments());
++			SyntaxException resolutionError = assertThrows(SyntaxException.class, apply::getEvaluatesTo);
++			assertEquals(validationError.getClass(), resolutionError.getClass());
++			assertEquals(validationError.getMessage(), resolutionError.getMessage());
++			assertEquals(StatusCodeId.SYNTAX_ERROR, resolutionError.getStatus().getStatusCode().getValue());
++			EvaluationException invocationError = assertThrows(EvaluationException.class, () -> apply.evaluate(context));
++			assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, invocationError.getStatus().getStatusCode().getValue());
++		}
+ 	}
+ 
+ 	private void assertValue(ValueExp expected, String operation, Expression... arguments) throws Exception
+@@ -307,14 +329,18 @@
+ 		FunctionSpec spec = higher(operation);
+ 		List<Expression> params = Arrays.asList(arguments);
+ 		assertFalse("Invalid parameters accepted for " + operation, spec.validateParameters(params));
+-		assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(params));
++		SyntaxException validationError = assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(params));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, validationError.getStatus().getStatusCode().getValue());
+ 		Apply apply = Apply.builder(spec).param(arguments).build();
+-		assertThrows(EvaluationException.class, () -> apply.evaluate(context));
++		EvaluationException invocationError = assertThrows(EvaluationException.class, () -> apply.evaluate(context));
++		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, invocationError.getStatus().getStatusCode().getValue());
+ 		Expression predicate = operation.equals("map")
+ 				? Apply.builder(FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in").get())
+ 						.param(string("a"), apply).build() : apply;
++		status.reset();
+ 		assertEquals(ConditionResult.INDETERMINATE, new Condition(predicate).evaluate(context));
+ 		assertTrue("Indeterminate must carry an evaluation status", status.hasCaptured());
++		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, status.getValue().getStatusCode().getValue());
+ 	}
+ 
+ 	private static FunctionSpec higher(String operation)

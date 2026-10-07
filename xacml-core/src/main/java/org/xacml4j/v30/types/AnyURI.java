@@ -43,6 +43,17 @@ public final class AnyURI extends Value.OtherValue<URI>
         super(XacmlTypes.ANYURI, value);
     }
 
+    @Override
+    public boolean equals(Object o){
+        // XACML anyURI equality compares the original spelling, rather than URI.equals.
+        return o == this || (o instanceof AnyURI && toXacmlString().equals(((AnyURI)o).toXacmlString()));
+    }
+
+    @Override
+    public int hashCode(){
+        return toXacmlString().hashCode();
+    }
+
     static AnyURI ofAny(Object v,
                         Object...params){
         if (v instanceof AnyURI) {
@@ -57,8 +68,8 @@ public final class AnyURI extends Value.OtherValue<URI>
         if (v instanceof URL) {
             return of((URL) v);
         }
-        if (v instanceof String) {
-            return of(v.toString());
+        if (v instanceof StringVal) {
+            return of((StringVal) v);
         }
         throw SyntaxException
                 .invalidAttributeValue(v,
@@ -78,7 +89,7 @@ public final class AnyURI extends Value.OtherValue<URI>
                     .invalidAttributeValue(v,
                             XacmlTypes.ANYURI);
         }
-        return new AnyURI(URI.create(v).normalize());
+        return new AnyURI(URI.create(v));
     }
 
     static AnyURI of(StringVal v){

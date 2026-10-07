@@ -22,14 +22,13 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.xacml4j.v30.StatusCodeId;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.BagOfValues;
 
 
@@ -47,14 +46,12 @@ public class BooleanValTest
 	@Test
 	public void fromToXacmlString()
 	{
-		BooleanVal v = XacmlTypes.BOOLEAN.ofAny("True");
-		assertEquals(java.lang.Boolean.TRUE, v.get());
-		v = XacmlTypes.BOOLEAN.ofAny("TRUE");
-		assertEquals(java.lang.Boolean.TRUE, v.get());
-		v = XacmlTypes.BOOLEAN.ofAny("FALSE");
-		assertEquals(java.lang.Boolean.FALSE, v.get());
-		v = XacmlTypes.BOOLEAN.ofAny("False");
-		assertEquals(java.lang.Boolean.FALSE, v.get());
+		// XML Schema Part 2 section 3.2.2 permits lowercase true/false and 1/0 only.
+		for (String lexical : new String[]{"True", "TRUE", "FALSE", "False"}) {
+			SyntaxException error = assertThrows(SyntaxException.class,
+					() -> XacmlTypes.BOOLEAN.ofAny(lexical));
+			assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
+		}
 	}
 
 	@Test

@@ -1,0 +1,68 @@
+{
+  "run": "52",
+  "label": "rv019-catch-mutant-red",
+  "workspace": "<scratch>",
+  "exit_code": 1,
+  "totals": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 3,
+    "skipped": 0
+  },
+  "classes": [
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    }
+  ],
+  "failed_tests": [
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "test": "testIsApplicableTargetException",
+      "kind": "error",
+      "type": "java.lang.NullPointerException",
+      "message": null
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "test": "testIsApplicableTargetException",
+      "kind": "error",
+      "type": "java.lang.NullPointerException",
+      "message": null
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "test": "testPermitRuleEvaluateIfApplicableWithTargetEvaluationException",
+      "kind": "error",
+      "type": "org.xacml4j.v30.EvaluationException",
+      "message": "Bad"
+    }
+  ],
+  "production_unchanged": true,
+  "catch_mutant_active_in_scratch": true,
+  "maven_result_lines": [
+    "[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.676 s <<< FAILURE! - in org.xacml4j.v30.policy.RuleTest",
+    "[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.004 s <<< FAILURE! - in org.xacml4j.v30.policy.PolicyTest",
+    "[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.006 s <<< FAILURE! - in org.xacml4j.v30.policy.PolicySetTest",
+    "[INFO] Results:",
+    "[ERROR] Tests run: 3, Failures: 0, Errors: 3, Skipped: 0",
+    "[INFO] BUILD FAILURE"
+  ]
+}

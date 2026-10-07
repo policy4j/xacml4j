@@ -1,0 +1,58 @@
+[
+  {
+    "lane": "agy_gemini_flash_3_8",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/agy_gemini_flash_3_8/report.md",
+    "sha256": "22165fcebc64de9064d52ff2765a01338eca12ab626c03ce7b88888cf1b6803c",
+    "words": 1190,
+    "terminal_marker_at_end": "DONE_AGY_GEMINI_FLASH_3_8_20261004"
+  },
+  {
+    "lane": "agy_gemini_pro_3_1",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/agy_gemini_pro_3_1/report.md",
+    "sha256": "60befaf2f33d23eecfa6ec6e167e1aa5338c3abe69f50f92c67787484925107e",
+    "words": 700,
+    "terminal_marker_at_end": "DONE_AGY_GEMINI_PRO_3_1_20261004"
+  },
+  {
+    "lane": "claude_fable_5_1",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/claude_fable_5_1/report.md",
+    "sha256": "4711bd621b58853a60b491bebffd0c96300b5289aaa00665b27867396bf7c3b3",
+    "words": 1023,
+    "terminal_marker_at_end": "DONE_CLAUDE_FABLE_5_1_20261004"
+  },
+  {
+    "lane": "claude_opus_5_5",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/claude_opus_5_5/report.md",
+    "sha256": "c57b107b6d25d91756379d96fc86e199f5085a37c5cf1e4855ce58c9507d7445",
+    "words": 1175,
+    "terminal_marker_at_end": "DONE_CLAUDE_OPUS_5_5_20261004"
+  },
+  {
+    "lane": "codex_astra",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/codex_astra/report.md",
+    "sha256": "c67e56610119625d46be5e8a0409464b91087b3cd496407f5f7b461576decc52",
+    "words": 934,
+    "terminal_marker_at_end": "DONE_CODEX_ASTRA_20261004"
+  },
+  {
+    "lane": "codex_sol_6_1",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/codex_sol_6_1/report.md",
+    "sha256": "e20b90826f5323e2172778b871001bf0014f592423a77abe2b737166c87ab3d8",
+    "words": 860,
+    "terminal_marker_at_end": "DONE_CODEX_SOL_6_1_20261004"
+  },
+  {
+    "lane": "grok_4_6",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/grok_4_6/report.md",
+    "sha256": "f65a81a049004a6be7e10a28746c35b8979347e1b5ce670f4ad8e8e34aec6266",
+    "words": 969,
+    "terminal_marker_at_end": "DONE_GROK_4_6_20261004"
+  },
+  {
+    "lane": "grok_4_7",
+    "path": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/plan/rv077-resume-ntm/lanes/grok_4_7/report.md",
+    "sha256": "7d916c66089281014a566d2f6fd56349027922659c5a86df2541aabff4a6c007",
+    "words": 1181,
+    "terminal_marker_at_end": "DONE_GROK_4_7_20261004"
+  }
+]

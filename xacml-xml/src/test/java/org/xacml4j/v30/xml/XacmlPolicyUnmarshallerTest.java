@@ -27,7 +27,8 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,9 +38,8 @@ import java.util.Iterator;
 
 import javax.xml.bind.JAXBElement;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.oasis.xacml.v30.jaxb.PolicyType;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeSelectorKey;
@@ -64,7 +64,7 @@ import org.xacml4j.v30.policy.Target;
 import org.xacml4j.v30.policy.VariableDefinition;
 import org.xacml4j.v30.policy.VariableReference;
 import org.xacml4j.v30.policy.function.FunctionProvider;
-import org.xacml4j.v30.types.String;
+import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
@@ -72,14 +72,12 @@ import com.google.common.collect.Iterables;
 
 public class XacmlPolicyUnmarshallerTest
 {
-	@org.junit.Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	private static Unmarshaller<CompositeDecisionRule> reader;
 	private static Marshaller<CompositeDecisionRule> writer;
 	private static FunctionProvider functionProvider;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init_static() throws Exception
 	{
 		functionProvider = FunctionProvider.builder()
@@ -166,9 +164,9 @@ public class XacmlPolicyUnmarshallerTest
 	}
 
 	@Test
-	public void testFeatures002Policy() throws Exception {
-		expectedException.expect(SyntaxException.class);
-		getPolicy("002B-Policy.xml");
+	public void testFeatures002Policy() {
+		assertThrows(SyntaxException.class, () ->
+			getPolicy("002B-Policy.xml"));
 	}
 
 	@Test
@@ -306,9 +304,9 @@ public class XacmlPolicyUnmarshallerTest
 	}
 
 	@Test
-	public void testPolicyWithVariables3_CyclicError() throws Exception {
-		expectedException.expect(SyntaxException.class);
-		getPolicy("v30-policy-with-variables-3.xml");
+	public void testPolicyWithVariables3_CyclicError() {
+		assertThrows(SyntaxException.class, () ->
+			getPolicy("v30-policy-with-variables-3.xml"));
 	}
 
 	@Test
@@ -355,7 +353,7 @@ public class XacmlPolicyUnmarshallerTest
 
 		AttributeAssignmentExpression o1AttrExp2 = Iterables.get(o1AttrExps, 1);
 		assertThat(o1AttrExp2.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));
-		assertThat(o1AttrExp2.getExpression(), instanceOf(String.class));
+		assertThat(o1AttrExp2.getExpression(), instanceOf(StringVal.class));
 
 		AttributeAssignmentExpression o1AttrExp3 = Iterables.get(o1AttrExps, 2);
 		assertThat(o1AttrExp3.getAttributeId(), is("urn:oasis:names:tc:xacml:2.0:example:attribute:text"));

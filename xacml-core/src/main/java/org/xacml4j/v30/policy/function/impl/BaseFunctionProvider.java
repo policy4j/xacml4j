@@ -47,31 +47,28 @@ public class BaseFunctionProvider implements FunctionProvider
 
 	protected BaseFunctionProvider(Collection<FunctionSpec> functions,
 								   Supplier<Map<String, FunctionSpec>> mapSupplier) {
-		this.functionsById = functions
-				.stream()
-				.collect(Collectors
-						.toMap(
-								v -> v.getId(),
-								v -> v,
-								(a, b) -> merge(a, b),
-								mapSupplier));
-		this.functionsByLegacyId = functions
-				.stream()
-				.filter(f->f.getLegacyId().isPresent())
-				.collect(Collectors
-						         .toMap(
-								         v -> v.getLegacyId().get(),
-								         v -> v,
-								         (a, b) -> merge(a, b),
-								         mapSupplier));
-		this.functionsByShortId = functions
-				.stream()
-				.collect(Collectors
-						.toMap(
-								v -> v.getShortId(),
-								v -> v,
-								(a, b) -> merge(a, b),
-								mapSupplier));
+		Map<String, FunctionSpec> identifiers = mapSupplier.get();
+		Map<String, FunctionSpec> byId = mapSupplier.get();
+		Map<String, FunctionSpec> byLegacyId = mapSupplier.get();
+		Map<String, FunctionSpec> byShortId = mapSupplier.get();
+		Set<FunctionSpec> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+		for (FunctionSpec function : functions) {
+			if (!seen.add(function)) {
+				continue;
+			}
+			register(identifiers, function.getId(), function);
+			register(byId, function.getId(), function);
+			if (function.getLegacyId().isPresent()) {
+				String legacyId = function.getLegacyId().get();
+				register(identifiers, legacyId, function);
+				register(byLegacyId, legacyId, function);
+			}
+			register(identifiers, function.getShortId(), function);
+			register(byShortId, function.getShortId(), function);
+		}
+		this.functionsById = Collections.unmodifiableMap(byId);
+		this.functionsByLegacyId = Collections.unmodifiableMap(byLegacyId);
+		this.functionsByShortId = Collections.unmodifiableMap(byShortId);
 
 	}
 
@@ -80,16 +77,61 @@ public class BaseFunctionProvider implements FunctionProvider
 
 	}
 
-	private static FunctionSpec merge(
-			FunctionSpec a, FunctionSpec b){
-		return a;
+	private static void register(Map<String, FunctionSpec> identifiers,
+							 String id, FunctionSpec function) {
+		FunctionSpec previous = identifiers.putIfAbsent(id, function);
+		if (previous != null && previous != function) {
+			throw new IllegalArgumentException("Duplicate function identifier '" + id
+					+ "' claimed by " + describe(previous) + " and " + describe(function));
+		}
+	}
+
+	private static String describe(FunctionSpec function) {
+		return "'" + function.getId() + "' (short id '" + function.getShortId()
+				+ "', legacy id '" + function.getLegacyId().orElse("") + "', "
+				+ function.getClass().getName() + ")";
 	}
 
 	protected static Collection<FunctionSpec> toFunctionSpec(Collection<FunctionProvider> providers){
-		return providers.stream()
-				.map(p->p.getProvidedFunctions())
-				.reduce(new LinkedList<>(),
-						(a, b)-> accumulate(a, b));
+		Map<String, FunctionRegistration> identifiers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		List<FunctionSpec> functions = new LinkedList<>();
+		Set<FunctionProvider> seenProviders = Collections.newSetFromMap(new IdentityHashMap<>());
+		Set<FunctionSpec> seenFunctions = Collections.newSetFromMap(new IdentityHashMap<>());
+		for (FunctionProvider provider : providers) {
+			if (!seenProviders.add(provider)) {
+				continue;
+			}
+			for (FunctionSpec function : provider.getProvidedFunctions()) {
+				registerProviderIdentifier(identifiers, function.getId(), function, provider);
+				function.getLegacyId().ifPresent(id ->
+						registerProviderIdentifier(identifiers, id, function, provider));
+				registerProviderIdentifier(identifiers, function.getShortId(), function, provider);
+				if (seenFunctions.add(function)) {
+					functions.add(function);
+				}
+			}
+		}
+		return functions;
+	}
+
+	private static void registerProviderIdentifier(Map<String, FunctionRegistration> identifiers,
+												String id, FunctionSpec function,
+												FunctionProvider provider) {
+		FunctionRegistration current = new FunctionRegistration(function, provider);
+		FunctionRegistration previous = identifiers.putIfAbsent(id, current);
+		if (previous != null && previous.function() != function) {
+			throw new IllegalArgumentException("Duplicate function identifier '" + id
+					+ "' claimed by " + describe(previous.function()) + " from "
+					+ providerSource(previous.provider()) + " and " + describe(function)
+					+ " from " + providerSource(provider));
+		}
+	}
+
+	private record FunctionRegistration(FunctionSpec function, FunctionProvider provider) { }
+
+	private static String providerSource(FunctionProvider provider) {
+		return "provider '" + provider.getId() + "'@"
+				+ Integer.toHexString(System.identityHashCode(provider));
 	}
 	protected static <T>  Collection<T> accumulate(
 			Collection<T> identity,  Collection<T> v){

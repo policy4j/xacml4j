@@ -24,12 +24,9 @@ package org.xacml4j.v30.policy.function.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xacml4j.v30.Content;
-import org.xacml4j.v30.EvaluationException;
-import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.*;
 
@@ -61,16 +58,12 @@ public class XPathFunctions
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path)
 	{
-		try{
-			Optional<Content> c  = context
-					.resolveEntity(path.getCategory().orElse(null))
-					.flatMap(Entity::getContent);
-			return XacmlTypes.INTEGER.ofAny(c.filter(v->v.getType().equals(path.getContentType()))
-					.map(v->v.evaluateToNodeSet(path.getPath()).size())
-					.orElse(0));
-		}catch(EvaluationException e){
-			return XacmlTypes.INTEGER.ofAny(0);
-		}
+		Optional<Content> c  = context
+				.resolveEntity(path.getCategory().orElse(null))
+				.flatMap(Entity::getContent);
+		return XacmlTypes.INTEGER.ofAny(c.filter(v->v.getType().equals(path.getContentType()))
+				.map(v->v.evaluateToNodeSet(path.getPath()).size())
+				.orElse(0));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-count")
@@ -90,28 +83,23 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path0,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path1)
 	{
-		try{
-
-			Optional<List<Node>> content0 =  getNodes(context, path0);
-			Optional<List<Node>> content1 =  getNodes(context, path1);
-
-			if(!content0.isPresent() ||
-					!content1.isPresent()){
-				return XacmlTypes.BOOLEAN.ofAny(false);
-			}
-			List<Node> nodes0 = content0.get();
-			List<Node> nodes1 = content1.get();
-			for(int i = 0; i < nodes0.size(); i++){
-				for(int j = 0; j < nodes1.size(); j++){
-					if(nodes0.get(i).isSameNode(nodes1.get(j))){
-						return XacmlTypes.BOOLEAN.ofAny(true);
-					}
-				}
-			}
-			return XacmlTypes.BOOLEAN.ofAny(false);
-		}catch(EvaluationException e){
+		Optional<Content> content0 = contentOf(context, path0);
+		Optional<Content> content1 = contentOf(context, path1);
+		// A.3.15: either missing Content is false, before either XPath runs.
+		if(!content0.isPresent() ||
+				!content1.isPresent()){
 			return XacmlTypes.BOOLEAN.ofAny(false);
 		}
+		List<Node> nodes0 = content0.get().evaluateToNodeSet(path0.getPath());
+		List<Node> nodes1 = content1.get().evaluateToNodeSet(path1.getPath());
+		for(int i = 0; i < nodes0.size(); i++){
+			for(int j = 0; j < nodes1.size(); j++){
+				if(nodes0.get(i).isSameNode(nodes1.get(j))){
+					return XacmlTypes.BOOLEAN.ofAny(true);
+				}
+			}
+		}
+		return XacmlTypes.BOOLEAN.ofAny(false);
 	}
 
 
@@ -134,47 +122,28 @@ public class XPathFunctions
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path0,
 			@XacmlFuncParam(typeId="urn:oasis:names:tc:xacml:3.0:data-type:xpathExpression") Path path1)
 	{
-		try{
-
-			Optional<List<Node>> content0 =  getNodes(context, path0);
-			Optional<List<Node>> content1 =  getNodes(context, path1);
-			if(!content0.isPresent()||
-					!content1.isPresent()){
-				return XacmlTypes.BOOLEAN.ofAny(false);
-			}
-			List<Node> nodes0 = content0.get();
-			List<Node> nodes1 = content1.get();
-			LOg.debug("NodeSet0 size={} NodeSet1 size={}", nodes0.size(), nodes1.size());
-			for(int i = 0; i < nodes0.size(); i++)
-			{
-				for(int j = 0; j < nodes1.size(); j++)
-				{
-					Node node0 = nodes0.get(i);
-					Node node1 = nodes1.get(j);
-					if(node0.isEqualNode(node1)){
-						return XacmlTypes.BOOLEAN.ofAny(true);
-					}
-					NamedNodeMap a = node0.getAttributes();
-					NamedNodeMap b = node1.getAttributes();
-					if((a != null && b != null)){
-						for(int ii = 0; ii < a.getLength(); ii++){
-							for(int jj = 0; jj < b.getLength(); jj++){
-								if(a.item(ii).isEqualNode(b.item(jj))){
-									return XacmlTypes.BOOLEAN.ofAny(true);
-								}
-							}
-						}
-					}
-					if(compareChildNodes(node0, node1)){
-						LOg.debug("Child nodes match");
-						return XacmlTypes.BOOLEAN.ofAny(true);
-					}
-				}
-			}
-			return XacmlTypes.BOOLEAN.ofAny(false);
-		}catch(EvaluationException e){
+		Optional<Content> content0 = contentOf(context, path0);
+		Optional<Content> content1 = contentOf(context, path1);
+		// A.3.15: either missing Content is false, before either XPath runs.
+		if(!content0.isPresent()||
+				!content1.isPresent()){
 			return XacmlTypes.BOOLEAN.ofAny(false);
 		}
+		List<Node> nodes0 = content0.get().evaluateToNodeSet(path0.getPath());
+		List<Node> nodes1 = content1.get().evaluateToNodeSet(path1.getPath());
+		LOg.debug("NodeSet0 size={} NodeSet1 size={}", nodes0.size(), nodes1.size());
+		for(int i = 0; i < nodes0.size(); i++)
+		{
+			for(int j = 0; j < nodes1.size(); j++)
+			{
+				Node node0 = nodes0.get(i);
+				Node node1 = nodes1.get(j);
+				if(node0.isSameNode(node1) || compareChildNodes(node0, node1)){
+					return XacmlTypes.BOOLEAN.ofAny(true);
+				}
+			}
+		}
+		return XacmlTypes.BOOLEAN.ofAny(false);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:xpath-node-match")
@@ -213,11 +182,9 @@ public class XPathFunctions
 		return false;
 	}
 
-	static Optional<List<Node>> getNodes(org.xacml4j.v30.EvaluationContext context,
+	static Optional<Content> contentOf(org.xacml4j.v30.EvaluationContext context,
                                          Path path){
-		return context
-				.resolveContent(path.getCategory()
-						.orElse(null), path.getPathType().getContentType())
-				.map(c->c.evaluateToNodeSet(path.getPath()));
+		return context.resolveContent(path.getCategory()
+						.orElse(null), path.getPathType().getContentType());
 	}
 }

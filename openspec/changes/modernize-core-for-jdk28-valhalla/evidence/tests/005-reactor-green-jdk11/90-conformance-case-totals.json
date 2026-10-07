@@ -1,0 +1,60 @@
+{
+  "88": {
+    "Xacml30ConformanceTest": {
+      "executed": 347,
+      "failed": 0,
+      "failed_case_ids": [],
+      "IIIG006_executions": 2
+    },
+    "Xacml20ConformanceTest": {
+      "executed": 347,
+      "failed": 0,
+      "failed_case_ids": [],
+      "IIIG006_executions": 2
+    },
+    "RSA2008InteropTest": {
+      "executed_test_methods": 17,
+      "failed": 0,
+      "failed_case_ids": []
+    },
+    "Xacml20ConformanceAttributeResolverTest": {
+      "executed_test_methods": 2,
+      "failed": 0,
+      "failed_case_ids": []
+    },
+    "XacmlExampleTest": {
+      "executed_test_methods": 2,
+      "failed": 0,
+      "failed_case_ids": []
+    }
+  },
+  "89": {
+    "Xacml30ConformanceTest": {
+      "executed": 347,
+      "failed": 0,
+      "failed_case_ids": [],
+      "IIIG006_executions": 2
+    },
+    "Xacml20ConformanceTest": {
+      "executed": 347,
+      "failed": 0,
+      "failed_case_ids": [],
+      "IIIG006_executions": 2
+    },
+    "RSA2008InteropTest": {
+      "executed_test_methods": 17,
+      "failed": 0,
+      "failed_case_ids": []
+    },
+    "Xacml20ConformanceAttributeResolverTest": {
+      "executed_test_methods": 2,
+      "failed": 0,
+      "failed_case_ids": []
+    },
+    "XacmlExampleTest": {
+      "executed_test_methods": 2,
+      "failed": 0,
+      "failed_case_ids": []
+    }
+  }
+}

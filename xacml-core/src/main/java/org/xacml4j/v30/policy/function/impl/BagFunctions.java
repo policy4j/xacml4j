@@ -93,6 +93,15 @@ public final class BagFunctions
 		return XacmlTypes.BOOLEAN.ofAny(bag.contains(v));
 	}
 
+	static boolean doubleContains(DoubleVal value, Iterable<DoubleVal> values){
+		for(DoubleVal candidate : values){
+			if(EqualityPredicates.doubleEquals(value, candidate)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	static BooleanVal isEmpty(BagOfValues bag){
 
 		return XacmlTypes.BOOLEAN.ofAny(bag.isEmpty());
@@ -282,7 +291,8 @@ public final class BagFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double") DoubleVal v,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues bag)
 	{
-		return containsImpl(v, bag);
+		Preconditions.checkArgument(XacmlTypes.DOUBLE.equals(bag.getBagValueType()));
+		return BooleanVal.of(doubleContains(v, bag.<DoubleVal>values()));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-bag")
@@ -290,6 +300,10 @@ public final class BagFunctions
 	public static BagOfValues doubleBag(
 			@XacmlFuncParamVarArg(min=0, max= java.lang.Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#double")
 			DoubleVal...values){
+		// The registry invocation passes null varargs when there are zero arguments.
+		if(values == null){
+			return XacmlTypes.DOUBLE.emptyBag();
+		}
 		return XacmlTypes.DOUBLE
 				.bagBuilder()
 				.attribute(values)
@@ -488,7 +502,8 @@ public final class BagFunctions
 
 	// dayTimeDuration
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
 	public static ISO8601DayTimeDuration dayTimeDurationOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true) BagOfValues bag)
@@ -496,7 +511,8 @@ public final class BagFunctions
 		return oneAndOnlyImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag-size")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerVal dayTimeDurationBagSize(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true) BagOfValues bag)
@@ -504,7 +520,8 @@ public final class BagFunctions
 		return typeBagSizeImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-is-in")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal dayTimeDurationIsIn(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration") ISO8601DayTimeDuration v,
@@ -513,7 +530,8 @@ public final class BagFunctions
 		return containsImpl(v, bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration", isBag=true)
 	public static BagOfValues dayTimeDurationBag(
 			@XacmlFuncParamVarArg(min=0, max= java.lang.Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#dayTimeDuration")
@@ -526,7 +544,8 @@ public final class BagFunctions
 
 	// yearMonthDuration
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-one-and-only")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")
 	public static ISO8601YearMonthDuration yearMonthDurationOneAndOnly(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
@@ -535,7 +554,8 @@ public final class BagFunctions
 		return oneAndOnlyImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag-size")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
 	public static IntegerVal yearMonthDurationBagSize(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
@@ -544,7 +564,8 @@ public final class BagFunctions
 		return typeBagSizeImpl(bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-is-in")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal yearMonthDurationIsIn(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration") ISO8601YearMonthDuration v,
@@ -554,7 +575,8 @@ public final class BagFunctions
 		return containsImpl(v, bag);
 	}
 
-	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag")
+	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag")
+	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration", isBag=true)
 	public static BagOfValues yearMonthDurationBag(
 			@XacmlFuncParamVarArg(min=0, max= java.lang.Integer.MAX_VALUE, typeId="http://www.w3.org/2001/XMLSchema#yearMonthDuration")

@@ -1,0 +1,380 @@
+  ## A. Annotation Rename Map & Module Counts
+
+  All function, algorithm, and attribute resolver annotations migrate from scattered packages
+  (org.xacml4j.v30.policy.function.*, org.xacml4j.v30.policy.combine.*, org.xacml4j.v30.spi.pip.*) into a
+  single canonical package: org.xacml4j.v30.annotations.*.
+
+  ### 1. Function & Combining Annotations
+
+   Worktree Ann… │ Donor Annota… │ Target Packa… │ xacml-core │ xacml-pdp │ xacml-confor… │ Reader / Proc…
+  ───────────────┼───────────────┼───────────────┼────────────┼───────────┼───────────────┼────────────────
+   XacmlFunction │ PolicyFuncPro │ org.xacml4j.v │     31     │     0     │       0       │ JavaMethodToFu
+   Provider      │ vider         │ 30.annotation │            │           │               │ nctionSpecConv
+                 │               │ s             │            │           │               │ erter,
+                 │               │               │            │           │               │ AnnotationBase
+                 │               │               │            │           │               │ dFunctionProvi
+                 │               │               │            │           │               │ der
+   XacmlFuncSpec │ FuncSpec      │ org.xacml4j.v │    207     │     0     │       0       │ JavaMethodToFu
+                 │               │ 30.annotation │            │           │               │ nctionSpecConv
+                 │               │ s             │            │           │               │ erter
+   XacmlLegacyFu │ PolicyLegacyF │ org.xacml4j.v │     37     │     0     │       0       │ JavaMethodToFu
+   nc            │ unc           │ 30.annotation │            │           │               │ nctionSpecConv
+                 │               │ s             │            │           │               │ erter,
+                 │               │               │            │           │               │ FunctionSpecBu
+                 │               │               │            │           │               │ ilder
+   XacmlFuncRetu │ FuncReturnTyp │ org.xacml4j.v │    198     │     0     │       0       │ JavaMethodToFu
+   rnType        │ e             │ 30.annotation │            │           │               │ nctionSpecConv
+                 │               │ s             │            │           │               │ erter
+   XacmlFuncRetu │ FuncReturnTyp │ org.xacml4j.v │     8      │     0     │       0       │ JavaMethodToFu
+   rnTypeResolve │ eResolver     │ 30.annotation │            │           │               │ nctionSpecConv
+   r             │               │ s             │            │           │               │ erter
+   XacmlFuncPara │ FuncParam     │ org.xacml4j.v │    208     │     0     │       0       │ JavaMethodToFu
+   m             │ (dataType())  │ 30.annotation │            │           │               │ nctionSpecConv
+                 │               │ s             │            │           │               │ erter
+   XacmlFuncPara │ FuncParamAnyB │ org.xacml4j.v │     8      │     0     │       0       │ JavaMethodToFu
+   mAnyBag       │ ag            │ 30.annotation │            │           │               │ nctionSpecConv
+                 │               │ s             │            │           │               │ erter
+   XacmlFuncPara │ FuncParamAnyV │ org.xacml4j.v │     4      │     0     │       0       │ JavaMethodToFu
+   mAnyValue     │ alue          │ 30.annotation │            │           │               │ nctionSpecConv
+                 │               │ s             │            │           │               │ erter
+   XacmlEvaluati │ FuncParamEval │ org.xacml4j.v │     60     │     0     │       0       │ JavaMethodToFu
+   onContextPara │ Ctx           │ 30.annotation │            │           │               │ nctionSpecConv
+   m             │               │ s             │            │           │               │ erter
+   XacmlFuncPara │ FuncParamV │ org.xacml4j.v3 │     6      │     0     │      0      │ JavaMethodToFuncti
+   mValidator    │ alidator   │ 0.annotations  │            │           │             │ onSpecConverter
+   XacmlFuncPara │ FuncParamV │ org.xacml4j.v3 │     41     │     0     │      0      │ JavaMethodToFuncti
+   mVarArg       │ arArg      │ 0.annotations  │            │           │             │ onSpecConverter
+                 │ (dataType( │                │            │           │             │
+                 │ ))         │                │            │           │             │
+   XacmlRuleDeci │ RuleDecisi │ org.xacml4j.v3 │     23     │     0     │      0      │ AnnotatedCombining
+   sionCombining │ onCombineA │ 0.annotations  │            │           │             │ AlgorithmParser
+   Algorithm     │ lgo        │                │            │           │             │
+   XacmlPolicyDe │ PolicyDeci │ org.xacml4j.v3 │     21     │     0     │      0      │ AnnotatedCombining
+   cisionCombini │ sionCombin │ 0.annotations  │            │           │             │ AlgorithmParser
+   ngAlgorithm   │ eAlgo      │                │            │           │             │
+
+  ### 2. PIP & Attribute Resolver Annotations (Handled in Task 6.5)
+
+   Worktree Annotation /… │ Donor An… │ Target P… │ xacml-co… │ xacml-pdp │ xacml-co… │ Reader / Processor
+  ────────────────────────┼───────────┼───────────┼───────────┼───────────┼───────────┼────────────────────
+   XacmlAttributeResolver │ PolicyAtt │ org.xacml │     0     │     8     │     2     │ AnnotatedResolverF
+   Descriptor             │ rResolver │ 4j.v30.an │           │           │           │ actory
+                          │ Descr     │ notations │           │           │           │
+   XacmlAttributeDescript │ Attribute │ org.xacml │     0     │    24     │     2     │ AnnotatedResolverF
+   or                     │           │ 4j.v30.an │           │           │           │ actory
+                          │           │ notations │           │           │           │
+   XacmlAttributeDesignat │ Attribute │ org.xacml │     0     │     9     │     2     │ AnnotatedResolverF
+   or                     │ Desig     │ 4j.v30.an │           │           │           │ actory
+                          │ (id())    │ notations │           │           │           │
+   XacmlAttributeSelector │ Attribute │ org.xacml │     0     │     3     │     0     │ AnnotatedResolverF
+                          │ Select    │ 4j.v30.an │           │           │           │ actory
+                          │           │ notations │           │           │           │
+   XacmlContentResolverDe │ Removed   │ N/A       │     0     │     5     │     0     │ AnnotatedResolverF
+   scriptor               │ in donor  │           │           │           │           │ actory
+
+  Key Signature / Member Changes:
+
+  • FuncParam, FuncParamOptional, FuncParamVarArg: string parameter name changed from typeId() to
+  dataType().
+  • AttributeDesig: string parameter name changed from attributeId() to id().
+  ──────
+  ## B. Donor Implementations That Undo Merged or In-Flight Fixes
+
+  The donor tree b9f114a3 contains extensive regressions and uncompilable code across its function
+  implementations. Taking the donor's function bodies would revert 13 distinct bug fixes:
+
+  ### 1. Bead 4.35 (Higher-Order Functions - any-of-all Inverted Logic)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java:105-115
+  • Reversion: Implements anyOfAll as a.stream().anyMatch(v -> allOf(context, ref, v, b).value()) (checks
+  if there is an element in a that matches all elements in b).
+  • Correct Spec Behavior: XACML 3.0 §A.3.12 requires that for every element y ∈ b, there exists at least
+  one element x ∈ a such that f(x, y) = true. Lane g43 correctly implemented this as b.stream().allMatch(vb
+  -> a.stream().anyMatch(va -> ...)). Donor reverts 4.35.
+
+  ### 2. Bead 4.36 (RegExp Functions - Missing 2.0 Canonical Identifiers)
+
+  • Donor Location: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/RegExpFunctions.
+  java:56, 66, 76, 86, 96
+  • Reversion: Directly registers XACML 1.0 URNs (urn:oasis:names:tc:xacml:1.0:function:anyURI-regexp-match,
+  etc.) as primary IDs.
+  • Correct Spec Behavior: XACML 2.0 / 3.0 canonical IDs use urn:oasis:names:tc:xacml:2.0:function:* as
+  primary (@FuncSpec), with 1.0 IDs declared as legacy aliases (@PolicyLegacyFunc). Donor completely drops
+  the canonical 2.0 IDs.
+
+  ### 3. Bead 4.37 (String Functions - Missing :function: in Standard URNs)
+
+  • Donor Location: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.
+  java:145, 163, 181, 199, 217, 235, 253, 271, 289, 307, 325
+  • Reversion: Declares 11 string-from-* function IDs as urn:oasis:names:tc:xacml:3.0:string-from-*.
+  • Correct Spec Behavior: XACML 3.0 §A.3.1 explicitly specifies urn:oasis:names:tc:xacml:3.
+  0:function:string-from-*. Donor omits the mandatory :function: namespace token.
+
+  ### 4. Bead 4.38 (Numeric Conversions - Inverted Return Types and Missing Validation)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/impl/NumericConversionFunctions.java:42-56
+  • Reversion:
+      • Line 42: doubleToInteger is annotated with return type DOUBLE instead of INTEGER.
+      • Line 51: integerToDouble is annotated with return type INTEGER instead of DOUBLE.
+      • Missing bounds checks: does not validate Double.isInfinite() or Double.isNaN(), and ignores long
+      range overflow.
+
+
+  ### 5. Bead 4.39 (Special Match Functions - RFC 822 Matching & Out-of-Bounds Crash)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/impl/SpecialMatchFunctions.java:46, b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/types/RFC822Name.java:182-197
+  • Reversion: rfc822NameMatch delegates to RegExpFunctions.matches instead of RFC 822 domain/local-part
+  comparison rules. Furthermore, RFC822Name.java:188 crashes with StringIndexOutOfBoundsException on empty
+  pattern strings (xpr.charAt(0) without length check).
+
+  ### 6. Beads 4.8 & 4.40 (XPath Functions - Compile Error and EvaluationException Swallowing)
+
+  • Donor Location: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XPathFunctions.
+  java:57-64, 105-107, 143
+  • Reversion:
+      • Line 58 contains syntax error / unresolvable symbol: c is referenced before declaration and lacks a
+      terminating semicolon; the donor does not compile.
+      • Lines 62 and 105 catch EvaluationException and swallow it to 0 and false rather than re-throwing
+      EvaluationException, directly violating XACML 3.0 §A.3.15 indeterminate error handling.
+
+
+  ### 7. Bead 4.41 (RegExp Functions - Crash on Empty Regex & Anchor Normalization)
+
+  • Donor Location: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/RegExpFunctions.
+  java:188
+  • Reversion: if (xpr.charAt(0) != '^') throws StringIndexOutOfBoundsException on empty regex; regex
+  grouping logic is completely absent.
+
+  ### 8. Bead 4.42 (Numeric Comparison Functions - IEEE 754 NaN Compliance)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/impl/NumericComparisonFunctions.java:103, 113
+  • Reversion: Implements >= and <= as a.get().equals(b.get()) || a.get() > b.get(). In Java, Double.
+  valueOf(Double.NaN).equals(Double.valueOf(Double.NaN)) is true, causing NaN >= NaN and NaN <= NaN to
+  return true, violating IEEE 754 and XPath F&O where comparison against NaN must evaluate to false.
+
+  ### 9. Bead 4.43 (Function Invocation - Status Overwrite / Demotion)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/FunctionInvocationException.java:51-57,
+  b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/DefaultFunctionInvocation.java:122-125
+  • Reversion: The exception constructor unconditionally overwrites the failure status with Status.
+  processingError(), destroying specific error codes (such as syntax-error or missing-attribute) returned
+  by underlying expressions.
+
+  ### 10. Bead 4.45 (String Conversion - Locale Sensitivity)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/impl/StringConversionFunctions.java:57
+  • Reversion: normalizeToLowerCase calls v.toLowerCase() using the host platform's default locale instead
+  of Locale.ROOT, causing non-deterministic behavior in locales with special case mappings (e.g., Turkish
+  'i').
+
+  ### 11. Bead 4.46 (String Conversion - Whitespace Normalization)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/impl/StringConversionFunctions.java:47
+  • Reversion: normalizeSpace calls v.trim(), which only strips leading and trailing whitespace, failing to
+  collapse internal whitespace runs as required by W3C XPath F&O and XACML 3.0 §A.3.1.
+
+  ### 12. Beads 4.1 & 4.33 (Attribute Designator Functions - ClassCastException & Indeterminate Errors)
+
+  • Donor Location: b9f114a3:xacml-
+  core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:68-71
+  • Reversion: Unconditional cast (Record) categoryOrEntity throws ClassCastException when a category URI
+  is passed; if (entity == null) unconditionally throws processingError instead of respecting mustBePresent.
+
+  ### 13. Beads 4.14 & 4.15 (String & AnyURI Substring Functions)
+
+  • Donor Location: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.
+  java:62, 80, 98
+  • Reversion: Omits standard string-substring and anyURI-substring functions; uses non-standard names
+  (uri-starts-with); omits AnyURI normalization.
+  ──────
+  ### Legacy Alias Handling & Duplicate Detection
+
+  1. Legacy Alias Handling (@XacmlLegacyFunc vs @PolicyLegacyFunc):
+      • The worktree contains 37 declarations of @XacmlLegacyFunc to maintain backward compatibility with
+      XACML 1.0 function identifiers (e.g. urn:oasis:names:tc:xacml:1.0:function:string-equal).
+      • In the donor, @PolicyLegacyFunc exists in org.xacml4j.v30.annotations and is correctly read by
+      JavaMethodToFunctionSpecConverter.java:98 and indexed in BaseFunctionProvider.java:58-66
+      (functionsByLegacyId).
+      • However, the donor arbitrarily removed @PolicyLegacyFunc from several function classes.
+      • Requirement: We MUST mechanically rename @XacmlLegacyFunc to @PolicyLegacyFunc across all 37 sites,
+      preserving every legacy URN mapping.
+  2. Duplicate ID Detection (Bug 4.26):
+      • In both the worktree and donor BaseFunctionProvider.java:83-86, the collector merge function is:
+        (a, b) -> merge(a, b)
+      where merge() silently returns a while logging a debug/trace message, swallowing duplicate
+      registrations.
+      • Requirement: Bug 4.26 requires fail-fast validation. The merge function must throw
+      IllegalArgumentException:
+        (a, b) -> {
+            throw new IllegalArgumentException(String.format("Duplicate function registration for
+      id=\"%s\"", a.getId()));
+        }
+
+
+  ──────
+  ## C. Implementation Plan for Task 6.2
+
+  The execution strategy is strictly decoupled into a clean annotation rename pass followed by registry
+  verification. No function implementation bodies will be taken from the donor.
+
+  ### Step 1: Create New Annotations in xacml-core
+
+  Create the target annotation types under xacml-core/src/main/java/org/xacml4j/v30/annotations/:
+
+  • PolicyFuncProvider.java
+  • FuncSpec.java
+  • PolicyLegacyFunc.java
+  • FuncReturnType.java
+  • FuncReturnTypeResolver.java
+  • FuncParam.java (using member String dataType() with default "")
+  • FuncParamOptional.java (using member String dataType() with default "")
+  • FuncParamVarArg.java (using member String dataType() with default "")
+  • FuncParamFunctionRef.java
+  • FuncParamAnyBag.java
+  • FuncParamAnyValue.java
+  • FuncParamEvalCtx.java
+  • FuncParamValidator.java
+  • RuleDecisionCombineAlgo.java
+  • PolicyDecisionCombineAlgo.java
+
+  (Note: PIP annotations PolicyAttrResolverDescr, Attribute, AttributeDesig, AttributeSelect are created in
+  task 6.5).
+
+  ### Step 2: Update Converters & Registry Readers
+
+  1. Update JavaMethodToFunctionSpecConverter.java:
+      • Import new annotations from org.xacml4j.v30.annotations.*.
+      • Update parameter readers to access .dataType() instead of .typeId().
+      • Keep current AST and expression types (Expression, BagOfValues, ValueExp, ValueType) intact.
+  2. Update AnnotationBasedFunctionProvider.java:
+      • Import PolicyFuncProvider and FuncSpec.
+  3. Update BaseFunctionProvider.java:
+      • Apply fail-fast duplicate ID detection (Bug 4.26) by throwing IllegalArgumentException on duplicate
+      function ID or legacy ID collisions.
+  4. Update AnnotatedCombiningAlgorithmParser.java:
+      • Import RuleDecisionCombineAlgo and PolicyDecisionCombineAlgo.
+
+
+  ### Step 3: Mechanical Rename of Function & Combining Algorithm Providers
+
+  Update annotations and imports in all 17 function implementation classes and 14 combining algorithm
+  classes:
+
+  • Retain 100% of the function bodies from the worktree (including merged fixes 4.10, 4.11, 4.14, 4.15, 4.
+  21, 4.28, 4.30, 4.31 and lane g43 fixes 4.35–4.43, 4.45, 4.46).
+  • Update method-level annotations:
+      • @XacmlFuncSpec → @FuncSpec
+      • @XacmlLegacyFunc → @PolicyLegacyFunc
+      • @XacmlFuncReturnType → @FuncReturnType
+      • @XacmlFuncParam(typeId=...) → @FuncParam(dataType=...)
+      • @XacmlFuncParamOptional(typeId=...) → @FuncParamOptional(dataType=...)
+      • @XacmlFuncParamVarArg(typeId=...) → @FuncParamVarArg(dataType=...)
+      • @XacmlEvaluationContextParam → @FuncParamEvalCtx
+      • @XacmlFuncParamFunctionReference → @FuncParamFunctionRef
+      • @XacmlFuncParamAnyBag → @FuncParamAnyBag
+      • @XacmlFuncParamAnyValue → @FuncParamAnyValue
+
+
+  ### Step 4: Delete Deprecated Worktree Annotations
+
+  Remove obsolete annotations from org.xacml4j.v30.policy.function and org.xacml4j.v30.policy.combine.
+
+  ### Step 5: Donor Additions Evaluation
+
+  • FuncSpec.version(): Discard. In the donor, version is an unused stub field (default "3.0"), only
+  specified in a single place and never inspected by JavaMethodToFunctionSpecConverter or the runtime.
+  • FuncSpec.shortId(): Keep (already present in the worktree).
+  • Discard donor type model substitutions (BagOf, Int64, UriVal, Record); those are addressed in separate
+  tasks (5.2, 5.4, 6.1, 6.4, 6.5).
+  ──────
+  ## D. Test List for Task 6.2 (20 Rows)
+
+  These 20 focused tests verify annotation parsing, parameter validation, legacy aliases, and registry
+  fail-fast behavior:
+
+   #  │ Test Method Name               │ Scope / Target                  │ Verification Assertions
+  ────┼────────────────────────────────┼─────────────────────────────────┼─────────────────────────────────
+   1  │ testFuncSpecPrimaryIdRegistrat │ JavaMethodToFunctionSpecConvert │ @FuncSpec(id="...") correctly
+      │ ion                            │ er                              │ sets primary function ID in
+      │                                │                                 │ FunctionSpec.
+   2  │ testFuncSpecShortIdRegistratio │ JavaMethodToFunctionSpecConvert │ @FuncSpec(shortId="...")
+      │ n                              │ er                              │ populates short ID mapping in
+      │                                │                                 │ FunctionSpec.
+   3  │ testPolicyLegacyFuncRegistrati │ JavaMethodToFunctionSpecConvert │ @PolicyLegacyFunc(id="...")
+      │ on                             │ er                              │ attaches legacy alias to
+      │                                │                                 │ FunctionSpec.
+   4  │ testPolicyLegacyFuncResolution │ BaseFunctionProvider            │ Function lookup via legacy 1.0
+      │ InProvider                     │                                 │ URN returns the canonical 3.0
+      │                                │                                 │ FunctionSpec.
+   5  │ testPolicyFuncProviderClassAnn │ AnnotationBasedFunctionProvider │ Validates presence and
+      │ otation                        │                                 │ description field of
+      │                                │                                 │ @PolicyFuncProvider.
+   6  │ testPolicyFuncProviderNonStati │ JavaMethodToFunctionSpecConvert │ Non-static method without
+      │ cMethodFails                   │ er                              │ provider instance throws
+      │                                │                                 │ PolicySyntaxException.
+   7  │ testPolicyFuncProviderStateful │ JavaMethodToFunctionSpecConvert │ Non-static method with explicit
+      │ Instance                       │ er                              │ target instance succeeds.
+   8  │ testFuncParamDataTypeResolutio │ JavaMethodToFunctionSpecConvert │ @FuncParam(dataType="xs:string"
+      │ n                              │ er                              │ ) resolves to
+      │                                │                                 │ XacmlTypes.STRING.
+   9  │ testFuncParamUnknownDataTypeFa │ JavaMethodToFunctionSpecConvert │ @FuncParam(dataType="xs:unknown
+      │ ils                            │ er                              │ ") throws
+      │                                │                                 │ PolicySyntaxException.
+   10 │ testFuncParamOptionalWithDefau │ JavaMethodToFunctionSpecConvert │ @FuncParamOptional with default
+      │ ltLiteral                      │ er                              │ literal builds valid default
+      │                                │                                 │ value.
+   11 │ testFuncParamOptionalWithoutDe │ JavaMethodToFunctionSpecConvert │ @FuncParamOptional without
+      │ fault                          │ er                              │ default marks parameter
+      │                                │                                 │ optional in spec.
+   12 │ testFuncParamVarArgMinMaxBound │ JavaMethodToFunctionSpecConvert │ @FuncParamVarArg(min=2, max=5)
+      │ s                              │ er                              │ sets vararg bounds in
+      │                                │                                 │ FunctionSpec.
+   13 │ testFuncParamEvalCtxFirstParam │ JavaMethodToFunctionSpecConvert │ @FuncParamEvalCtx on first
+      │ Allowed                        │ er                              │ method parameter succeeds.
+   14 │ testFuncParamEvalCtxNonFirstPa │ JavaMethodToFunctionSpecConvert │ @FuncParamEvalCtx on non-first
+      │ ramFails                       │ er                              │ parameter throws
+      │                                │                                 │ PolicySyntaxException.
+   15 │ testFuncParamFunctionRefValida │ JavaMethodToFunctionSpecConvert │ @FuncParamFunctionRef validates
+      │ tion                           │ er                              │ parameter as FunctionReference.
+   16 │ testFuncParamAnyBagParameter   │ JavaMethodToFunctionSpecConvert │ @FuncParamAnyBag configures
+      │                                │ er                              │ parameter accepting bag of any
+      │                                │                                 │ type.
+   17 │ testFuncParamAnyValueParameter │ JavaMethodToFunctionSpecConvert │ @FuncParamAnyValue configures
+      │                                │ er                              │ parameter accepting single
+      │                                │                                 │ value of any type.
+   18 │ testFuncReturnTypeBagMismatchF │ JavaMethodToFunctionSpecConvert │ Scalar Java return type
+      │ ails                           │ er                              │ annotated with isBag=true
+      │                                │                                 │ throws PolicySyntaxException.
+   19 │ testDuplicatePrimaryFunctionId │ BaseFunctionProvider            │ Registering two methods with
+      │ FailsFast                      │                                 │ identical primary ID throws
+      │                                │                                 │ IllegalArgumentException (Bug
+      │                                │                                 │ 4.26).
+   20 │ testDuplicateLegacyFunctionIdF │ BaseFunctionProvider            │ Registering two methods with
+      │ ailsFast                       │                                 │ identical legacy alias ID
+      │                                │                                 │ throws IllegalArgumentException
+      │                                │                                 │ (Bug 4.26).
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, claude-3-5-sonnet-20241022)
+    - Annotation Rename Count: 15 annotations (610 usages in xacml-core, 37 in xacml-pdp, 4 in xacml-
+  conformance)
+    - Top 5 Reversion Risks in Donor:
+      1. Bead 4.35 (HigherOrderFunctions.java:105): Inverts any-of-all logic against XACML 3.0 §A.3.12.
+      2. Beads 4.8 & 4.40 (XPathFunctions.java:57-64): Uncompilable syntax error and swallowing
+  EvaluationException to 0/false.
+      3. Bead 4.38 (NumericConversionFunctions.java:42-56): Inverted return types (doubleToInteger returns
+  DOUBLE) and missing bounds checks.
+      4. Bead 4.42 (NumericComparisonFunctions.java:103, 113): Double.NaN comparison evaluates to true for
+  >= and <=, violating IEEE 754.
+      5. Bead 4.43 (FunctionInvocationException.java:51): Overwrites specific evaluation failure status
+  codes to processingError.
+    - Files Opened & Inspected: 43 files (donor: 24, worktree: 18, g43 patch: 1)
+    - Tool Calls Used: 122 calls
+

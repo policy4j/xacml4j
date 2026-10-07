@@ -1,0 +1,7 @@
+Focused final XML and JSON request tests passed as part of the full reactor.
+Full reactor:
+xacml-xml: 38 tests, 0 failures, 0 errors, 0 skipped
+xacml-json: 8 tests, 0 failures, 0 errors, 1 skipped
+xacml-conformance-tests: 44 test methods, 0 failures, 0 errors, 0 skipped
+
+The IIA005 malformed-request cases remain excluded, so these totals do not include end-to-end response comparisons for IIA005.

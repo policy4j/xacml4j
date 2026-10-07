@@ -1,0 +1,41 @@
+{
+  "log": "40-mutant-captured-rule-red.log",
+  "build_success": false,
+  "counts": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.ConditionTest": {
+      "counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testExpressionThrowsRuntimeException",
+          "class": "org.xacml4j.v30.policy.ConditionTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "method": "testExpressionThrowsRuntimeException",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "expected: <Rule{id=testRule, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], effect=DENY}> but was: <Rule{id=wrong-rule, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], effect=DENY}>",
+      "trace": "org.opentest4j.AssertionFailedError: expected: <Rule{id=testRule, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], effect=DENY}> but was: <Rule{id=wrong-rule, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], effect=DENY}>\n\tat org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n\tat org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n\tat org.junit.jupiter.api.AssertSame.failNotSame(AssertSame.java:50)\n\tat org.junit.jupiter.api.AssertSame.assertSame(AssertSame.java:35)\n\tat org.junit.jupiter.api.AssertSame.assertSame(AssertSame.java:30)\n\tat org.junit.jupiter.api.Assertions.assertSame(Assertions.java:2860)\n\tat org.xacml4j.v30.policy.ConditionTest.testExpressionThrowsRuntimeException(ConditionTest.java:115)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+    }
+  ],
+  "compiler_diagnostics": []
+}

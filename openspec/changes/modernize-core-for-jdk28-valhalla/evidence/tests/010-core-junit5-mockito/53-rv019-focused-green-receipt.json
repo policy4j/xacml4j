@@ -1,0 +1,50 @@
+{
+  "run": "53",
+  "label": "rv019-focused-green",
+  "workspace": "<repo>",
+  "jdk_versions": [
+    "21.0.6"
+  ],
+  "surefire_report_count": 3,
+  "exit_code": 0,
+  "totals": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "classes": [
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "failed_tests": [],
+  "production_unchanged": true,
+  "catch_mutant_active_in_scratch": false,
+  "maven_result_lines": [
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.985 s - in org.xacml4j.v30.policy.RuleTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.PolicyTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.PolicySetTest",
+    "[INFO] Results:",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0",
+    "[INFO] BUILD SUCCESS"
+  ]
+}

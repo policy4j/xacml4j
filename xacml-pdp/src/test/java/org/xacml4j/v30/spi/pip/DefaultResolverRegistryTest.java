@@ -22,19 +22,19 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
@@ -46,20 +46,15 @@ import com.google.common.collect.Iterables;
 public class DefaultResolverRegistryTest
 {
 	private DefaultResolverRegistry r;
-	private IMocksControl control;
 	private EvaluationContext context;
 
 
 	private AttributeResolverDescriptor d1;
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
-
-	@Before
+	@BeforeEach
 	public void init(){
 		this.r = new DefaultResolverRegistry();
-		this.control = createStrictControl();
-		this.context = control.createMock(EvaluationContext.class);
+		this.context = Mockito.mock(EvaluationContext.class);
 		this.d1 = AttributeResolverDescriptor.builder(
 				"testId1", "Test1", CategoryId.SUBJECT_ACCESS)
 		                                     .attribute("testAttr1", XacmlTypes.INTEGER)
@@ -79,37 +74,32 @@ public class DefaultResolverRegistryTest
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build((c)-> ImmutableMap.of());
 
-		control.replay();
-
 		r.addResolver(d1);
 		r.addResolver(d2);
-
-		control.verify();
+		Mockito.verifyNoInteractions(context);
 	}
 
 	@Test
 	public void testAddResolversWithTheSameIdsAndAttributesNoIssuer()
 	{
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Attribute resolver with id=\"test1\" is already registered with this registry");
+		Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
 
-		AttributeResolverDescriptor d1 = AttributeResolverDescriptor
-				.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
-				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build(c->ImmutableMap.of());
+			AttributeResolverDescriptor d1 = AttributeResolverDescriptor
+					.builder("test1", "Test1", CategoryId.SUBJECT_ACCESS)
+					.attribute("testAttr1", XacmlTypes.INTEGER)
+					.build(c -> ImmutableMap.of());
 
-		AttributeResolverDescriptor d2 =
-				AttributeResolverDescriptor
-				.builder("test1", "Test2", CategoryId.SUBJECT_ACCESS)
-				.attribute("testAttr1", XacmlTypes.INTEGER)
-				.build(c->ImmutableMap.of());
+			AttributeResolverDescriptor d2 =
+					AttributeResolverDescriptor
+							.builder("test1", "Test2", CategoryId.SUBJECT_ACCESS)
+							.attribute("testAttr1", XacmlTypes.INTEGER)
+							.build(c -> ImmutableMap.of());
 
-		control.replay();
-
-		r.addResolver(d1);
-		r.addResolver(d2);
-
-		control.verify();
+			r.addResolver(d1);
+			r.addResolver(d2);
+		});
+		assertThat(exception.getMessage(), containsString("Attribute resolver with id=\"test1\" is already registered with this registry"));
+		Mockito.verifyNoInteractions(context);
 	}
 
 	@Test
@@ -123,8 +113,6 @@ public class DefaultResolverRegistryTest
 				.builder("test2", "Test2", "Issuer2", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build(c->ImmutableMap.of());
-
-		control.replay();
 
 		r.addResolver(d1);
 		r.addResolver(d2);
@@ -149,8 +137,7 @@ public class DefaultResolverRegistryTest
 
 		assertEquals(1, Iterables.size(matchWithtMatchingIssuer2));
 		assertSame(d2, Iterables.get(matchWithtMatchingIssuer2, 0));
-
-		control.verify();
+		Mockito.verifyNoInteractions(context);
 	}
 
 	@Test
@@ -164,8 +151,6 @@ public class DefaultResolverRegistryTest
 				.builder("test2", "Test2", "Issuer", CategoryId.SUBJECT_ACCESS)
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build(c->ImmutableMap.of());
-
-		control.replay();
 
 		AttributeDesignatorKey.Builder keyB = AttributeDesignatorKey.builder()
 				.category(CategoryId.SUBJECT_ACCESS)
@@ -188,8 +173,7 @@ public class DefaultResolverRegistryTest
 		Iterable<AttributeResolverDescriptor> matchWithNotMatchingIssuer = r.getMatchingAttributeResolver(context, keyB.issuer("Issuer1").build());
 
 		assertEquals(0, Iterables.size(matchWithNotMatchingIssuer));
-
-		control.verify();
+		Mockito.verifyNoInteractions(context);
 	}
 
 	@Test
@@ -205,9 +189,6 @@ public class DefaultResolverRegistryTest
 				.attributeId("testAttr1")
 				.dataType(XacmlTypes.INTEGER);
 
-
-		control.replay();
-
 		r.addResolver(d1);
 		r.addResolver(d);
 
@@ -216,8 +197,7 @@ public class DefaultResolverRegistryTest
 		assertFalse(Iterables.isEmpty(resolvers));
 		assertTrue(resolvers.contains(d1));
 		assertTrue(resolvers.contains(d));
-
-		control.verify();
+		Mockito.verifyNoInteractions(context);
 	}
 
 }

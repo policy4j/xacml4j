@@ -1,0 +1,30 @@
+JDK 21. All commands used -Dmaven.test.failure.ignore=true for the -am reactor
+because xacml-core remains unconverted in this lane. Owned modules were green.
+
+xacml-xml: 34 run, 0 failures, 0 errors, 0 skipped
+  ExpressionBuilderTest 1/0/0/0
+  Xacml20RequestContextUnmarshallerTest 6/0/0/0
+  Xacml30RequestContentTest 5/0/0/0
+  Xacml20ResponseContextUnmarshallerTest 1/0/0/0
+  Xacml30ResponseContextUnmarshallerTest 1/0/0/0
+  Xacml20ResponseContextMarshallerTest 1/0/0/0
+  XacmlPolicyUnmarshallerTest 16/0/0/0
+  TypeToXacml30Test 3/0/0/0
+
+xacml-json: 5 run, 0 failures, 0 errors, 1 skipped
+  JsonRequestUnmarshallerTest 1/0/0/0
+  JsonResponseContextUnmarshallerTest 1/0/0/0
+  JsonEntityMarshallingTest 2/0/0/1 (existing disabled test retained)
+  JsonResponseContextMarshallerTest 1/0/0/0
+
+xacml-conformance-tests: 41 run, 0 failures, 0 errors, 0 skipped
+  RSA2008InteropTest 17/0/0/0
+  Xacml20ConformanceTest 10/0/0/0; 347 case executions
+  Xacml20ConformanceAttributeResolverTest 2/0/0/0
+  Xacml30ConformanceTest 10/0/0/0; 347 case executions
+  XacmlExampleTest 2/0/0/0
+  RSA2008PerformanceTestCase: source annotation count 1; excluded by existing
+    root Surefire rule **/*TestCase.java
+
+Format per class: tests/failures/errors/skipped. Raw output:
+xml-jdk21-test.log, json-jdk21-test.log, conformance-jdk21-test.log.

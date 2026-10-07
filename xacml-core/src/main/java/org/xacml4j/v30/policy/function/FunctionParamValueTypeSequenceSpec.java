@@ -26,6 +26,7 @@ import java.util.ListIterator;
 
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 import org.xacml4j.v30.policy.function.impl.BaseFunctionParamSpec;
 
@@ -53,10 +54,19 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 			Integer min, 
 			Integer max,
 			ValueExpTypeInfo paramType){
+		this(min, max, paramType, false);
+	}
+
+	public FunctionParamValueTypeSequenceSpec(Integer min, Integer max){
+		this(min, max, null, true);
+	}
+
+	private FunctionParamValueTypeSequenceSpec(Integer min, Integer max,
+			ValueExpTypeInfo paramType, boolean anyValueType){
 		super((min == null || min == 0), true, null);
 		this.min = min == null?0:min;
 		this.max = max == null?Integer.MAX_VALUE:max;
-		this.paramType = java.util.Objects.requireNonNull(paramType, "paramType");;
+		this.paramType = anyValueType ? null : java.util.Objects.requireNonNull(paramType, "paramType");
 	}
 
 	public FunctionParamValueTypeSequenceSpec(int min,
@@ -89,7 +99,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 
 	@Override
 	public boolean isValidParamType(ValueExpTypeInfo type){
-		return this.paramType.equals(type);
+		return paramType == null ? type != null && type.getValueType() != null : paramType.equals(type);
 	}
 
 	@Override
@@ -113,7 +123,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 			}
 			ValueExpTypeInfo expType = exp.getEvaluatesTo();
 			// variadic param is always last
-			if(!expType.equals(paramType))
+			if(!isValidParamType(expType) || (paramType == null && exp instanceof FunctionReference))
 			{
 				if(suppressExceptions){
 					return false;
@@ -170,7 +180,7 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 		FunctionParamValueTypeSequenceSpec s = (FunctionParamValueTypeSequenceSpec)o;
 		return Objects.equal(min, s.min) &&
 				Objects.equal(max, s.max) &&
-				paramType.equals(s.paramType);
+				Objects.equal(paramType, s.paramType);
 	}
 	
 	public void accept(FunctionParamSpecVisitor v){

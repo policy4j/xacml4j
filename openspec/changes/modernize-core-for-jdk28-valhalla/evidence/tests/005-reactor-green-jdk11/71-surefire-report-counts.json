@@ -1,0 +1,872 @@
+{
+  "xacml-core": {
+    "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest": [
+      22,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest": [
+      11,
+      0,
+      0,
+      1
+    ],
+    "org.xacml4j.util.ISO8601DurationTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.AttributeTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.PolicyIDReferenceTest": [
+      12,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.BooleanValTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.CombinerParameterTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.content.JsonContentTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.MatchTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.content.XmlContentTest": [
+      14,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.DoubleValTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.PolicySetIDReferenceTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest": [
+      3,
+      0,
+      0,
+      1
+    ],
+    "org.xacml4j.v30.types.HexTypeTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.PolicyTest": [
+      14,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.AttributesTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.RuleTest": [
+      23,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.ContentTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.AttributeIndexTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest": [
+      10,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601YearMonthDurationTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest": [
+      8,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.DecisionTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.TypeToStringCapabilityTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.DNSNameTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest": [
+      11,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.SetFunctionTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.PolicySetTest": [
+      14,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.util.DOMUtilTest": [
+      9,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.XacmlTypesTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.ObligationExpressionTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.ObligationTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.AdviceExpressionTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest": [
+      72,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.PolicyDefaultsTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.TargetTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest": [
+      52,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.AnyURITest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.EUI48Test": [
+      11,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.BinaryTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.util.JSONUtilTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.RequestTest": [
+      8,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601DateTimeTest": [
+      8,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.content.ContentTest": [
+      4,
+      0,
+      0,
+      1
+    ],
+    "org.xacml4j.v30.types.PathTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.RootEvaluationContextTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.TypeToStringTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.VariableDefinitionTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.VariableReferenceTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.MatchAnyOfTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.ResultTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.BagFunctionsTest": [
+      7,
+      0,
+      0,
+      1
+    ],
+    "org.xacml4j.v30.policy.AttributeAssignmentTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.StatusCodeIdTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.IPAddressTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.AttributeSelectorTest": [
+      9,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.Base64BinaryTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.EntityTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601TimeTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.TypeCapabilityTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.VersionTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.PortRangeTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.XPathTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.ParamTypeSequenceTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601DayTimeDurationTest": [
+      9,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.IntegerTypeTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest": [
+      50,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest": [
+      12,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.VersionMatchTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest": [
+      46,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.ApplyTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601DurationReviewTest": [
+      9,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.RFC822NameTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.MatchAllOfTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.StringValTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.AdviceTest": [
+      7,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.CategoryIdTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest": [
+      8,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest": [
+      11,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.WellKnownAttributeIdsTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.ConditionTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.BagOfValuesTest": [
+      11,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.types.ISO8601DateTest": [
+      4,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.policy.AttributeDesignatorTest": [
+      9,
+      0,
+      0,
+      0
+    ]
+  },
+  "xacml-xml": {
+    "org.xacml4j.v30.xml.ExpressionBuilderTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.xml.Xacml30RequestContentTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest": [
+      16,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.xml.TypeToXacml30Test": [
+      3,
+      0,
+      0,
+      0
+    ]
+  },
+  "xacml-json": {
+    "org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest": [
+      2,
+      0,
+      0,
+      1
+    ],
+    "org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest": [
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "xacml-pdp": {
+    "org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.pip.BaseAttributeResolverTest": [
+      1,
+      0,
+      0,
+      1
+    ],
+    "org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.pip.AttributeSetTest": [
+      3,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest": [
+      5,
+      0,
+      0,
+      2
+    ],
+    "org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest": [
+      5,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest": [
+      6,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest": [
+      18,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest": [
+      5,
+      0,
+      0,
+      1
+    ]
+  },
+  "xacml-test": {
+    "org.xacml4j.v20.Xacml20SamplePolicyTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.AttributeResolverTestSupportTest": [
+      1,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.ExpectedAttributeResolverBuilderTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v20.Xacml30TestUtilityTest": [
+      14,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v30.Xacml30SamplePolicyTest": [
+      2,
+      0,
+      0,
+      0
+    ]
+  },
+  "xacml-conformance-tests": {
+    "org.xacml4j.v20.Xacml30ConformanceTest": [
+      10,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v20.Xacml20ConformanceTest": [
+      10,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v20.RSA2008InteropTest": [
+      17,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "org.xacml4j.v20.XacmlExampleTest": [
+      2,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source_hashes_checked_during_gate": 548,
+  "source_files_changed_during_gate": [
+    "xacml-core/src/main/java/org/xacml4j/v30/types/Base64Binary.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisonFunctions.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601TimeTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/Base64BinaryTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeRegistryTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java"
+  ],
+  "existing_header_unchanged": true,
+  "new_test_header_matches": true,
+  "production_files_changed_by_this_fix": [
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java"
+  ],
+  "new_test_files": [
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/BaseJAXBUnmarshallerSecurityTest.java"
+  ],
+  "manifest_sha256": "be4b25dabe9185ff213255461ba05e36a7fa93b2251b10923bba5ea1796cab08"
+}

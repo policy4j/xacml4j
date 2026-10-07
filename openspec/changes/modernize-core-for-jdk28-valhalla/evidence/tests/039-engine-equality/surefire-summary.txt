@@ -1,0 +1,21 @@
+JDK 21 (jenv prefix 21); all Maven commands passed -Dlicense.skipUpdateLicense=true.
+
+Focused bug runs:
+4.24 red: Xacml30ResponseContextUnmarshallerTest, 2 run / 1 failed / 0 errors; green 2 / 0 / 0.
+4.28 red: TemporalEqualityTest, 3 run / 2 failed / 0 errors; final green 4 / 0 / 0.
+4.30 red: StringEqualIgnoreCaseTest, 3 run / 2 failed / 0 errors; green 3 / 0 / 0.
+4.31 red: ISO8601YearMonthDurationTest, 4 run / 1 failed / 0 errors; green 4 / 0 / 0.
+4.32 red: AttributeSelectorTest, 10 run / 1 failed / 0 errors; green 10 / 0 / 0.
+4.10/4.11 regression selection: 47 run / 0 failed / 0 errors / 0 skipped.
+
+Full reactor clean verify: BUILD SUCCESS; every listed reactor module succeeded. Conformance test module: 901 run / 0 failed / 0 errors / 25 skipped.
+
+Separate conformance module run:
+OASIS 2.0: 375 test invocations / 0 failed / 0 errors / 12 skipped; 362 case PASS markers and testName passed.
+OASIS 3.0: 488 test invocations / 0 failed / 0 errors / 13 skipped; 474 case PASS markers and testName passed.
+RSA 2008: 17 / 0 failed / 0 errors / 0 skipped.
+Examples: 2 / 0 failed / 0 errors / 0 skipped.
+Aggregate: 901 / 0 failed / 0 errors / 25 skipped; BUILD SUCCESS.
+
+Temporary IIIA030/IIIA330 activation run:
+Xacml30ConformanceTest: 488 invocations / 0 failed / 0 errors / 11 skipped; both IIIA030 and IIIA330 emitted CONFORMANCE PASS. Manifest restored and verified byte-identical.

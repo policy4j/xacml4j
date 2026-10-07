@@ -1,0 +1,16 @@
+Working directory for all commands: <lane>
+
+rtk mkdir -p openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601TimeTest,NonNumericComparisionFunctionTest,TypeRegistryTest,DecisionCombiningAlgorithmRegistryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/focused-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601TimeTest,NonNumericComparisionFunctionTest,TypeRegistryTest,Base64BinaryTest,DecisionCombiningAlgorithmRegistryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/focused-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DecisionCombiningAlgorithmRegistryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/combining-followup.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/full-reactor-clean-verify.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/conformance.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeRegistryTest,AttributeDesignatorFunctionTest,DecisionCombiningAlgorithmRegistryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv062-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeRegistryTest,AttributeDesignatorFunctionTest,DecisionCombiningAlgorithmRegistryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv062-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv062-full-reactor-clean-verify.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv062-conformance.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=NonNumericComparisionFunctionTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv065-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=NonNumericComparisionFunctionTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv065-focused-green.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core clean test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv065-core-clean-test.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/055-time-day-base64/rv065-full-reactor-verify.log

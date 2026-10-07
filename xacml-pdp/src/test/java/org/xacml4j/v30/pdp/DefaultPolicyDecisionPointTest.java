@@ -22,19 +22,17 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createControl;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.time.Duration;
 
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
@@ -61,20 +59,18 @@ public class DefaultPolicyDecisionPointTest
 	private PolicyDecisionAuditor decisionAuditor;
 	private XPathProvider xpathProvider;
 
-	private IMocksControl control;
 
 	private PolicyDecisionPointBuilder pdpBuilder;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
-		this.control = createControl();
-		this.pip = control.createMock(PolicyInformationPoint.class);
-		this.repository = control.createMock(PolicyRepository.class);
-		this.policyDomain = control.createMock(CompositeDecisionRule.class);
-		this.decisionAuditor = control.createMock(PolicyDecisionAuditor.class);
-		this.decisionCache = control.createMock(PolicyDecisionCache.class);
-		this.xpathProvider = control.createMock(XPathProvider.class);
+		this.pip = Mockito.mock(PolicyInformationPoint.class);
+		this.repository = Mockito.mock(PolicyRepository.class);
+		this.policyDomain = Mockito.mock(CompositeDecisionRule.class);
+		this.decisionAuditor = Mockito.mock(PolicyDecisionAuditor.class);
+		this.decisionCache = Mockito.mock(PolicyDecisionCache.class);
+		this.xpathProvider = Mockito.mock(XPathProvider.class);
 		this.pdpBuilder = PolicyDecisionPointBuilder
 		.builder("testPdp")
 			.decisionAuditor(decisionAuditor)
@@ -93,29 +89,35 @@ public class DefaultPolicyDecisionPointTest
 				.returnPolicyIdList(false)
 				.build();
 
-		Capture<PolicyRepositoryListener> c = Capture.newInstance();
-		repository.addPolicyRepositoryListener(capture(c));
+		ArgumentCaptor<PolicyRepositoryListener> c = ArgumentCaptor.forClass(PolicyRepositoryListener.class);
+		// The listener registration is verified after the builder constructs the PDP.
 
-		expect(decisionCache.getDecision(req)).andReturn(null);
-		Capture<EvaluationContext> rootContext = Capture.newInstance();
-		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
-		Capture<EvaluationContext> policyContext = Capture.newInstance();
-		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.PERMIT);
-		Capture<Result> result0 = Capture.newInstance();
-		Capture<PolicyDecisionPoint> pdp1 = Capture.newInstance();
-		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
-		Capture<Result> result1 = Capture.newInstance();
-		decisionCache.putDecision(eq(req), capture(result1), eq(Duration.ofSeconds(30)));
-
-		control.replay();
+		when(decisionCache.getDecision(req)).thenReturn(null);
+		ArgumentCaptor<EvaluationContext> rootContext = ArgumentCaptor.forClass(EvaluationContext.class);
+		EvaluationContext evaluationContext = Mockito.mock(EvaluationContext.class);
+		when(policyDomain.createContext(Mockito.any())).thenReturn(evaluationContext);
+		ArgumentCaptor<EvaluationContext> policyContext = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(policyDomain.evaluate(Mockito.any())).thenReturn(Decision.PERMIT);
+		ArgumentCaptor<Result> result0 = ArgumentCaptor.forClass(Result.class);
+		ArgumentCaptor<PolicyDecisionPoint> pdp1 = ArgumentCaptor.forClass(PolicyDecisionPoint.class);
+		// Captured and verified after decide().
+		ArgumentCaptor<Result> result1 = ArgumentCaptor.forClass(Result.class);
+		// Captured and verified after decide().
 
 		this.pdp = pdpBuilder.build();
+		Mockito.verify(repository).addPolicyRepositoryListener(c.capture());
 
 		ResponseContext res = pdp.decide(req);
+		Mockito.verify(decisionCache).getDecision(req);
+		Mockito.verify(policyDomain).createContext(rootContext.capture());
+		Mockito.verify(policyDomain).evaluate(policyContext.capture());
+		Mockito.verify(decisionAuditor).audit(pdp1.capture(), result0.capture(), eq(req));
+		Mockito.verify(decisionCache).putDecision(eq(req), result1.capture(), eq(Duration.ofSeconds(30)));
 		assertEquals(1, res.getResults().size());
 		assertEquals(result0.getValue(), result1.getValue());
 		assertSame(pdp, pdp1.getValue());
-		control.verify();
+		Mockito.verifyNoInteractions(evaluationContext);
+		Mockito.verifyNoMoreInteractions(pip, repository, policyDomain, decisionAuditor, decisionCache, xpathProvider);
 	}
 
 	@Test
@@ -126,31 +128,36 @@ public class DefaultPolicyDecisionPointTest
 				.returnPolicyIdList(false)
 				.build();
 
-		Capture<PolicyRepositoryListener> c = Capture.newInstance();
-		repository.addPolicyRepositoryListener(capture(c));
+		ArgumentCaptor<PolicyRepositoryListener> c = ArgumentCaptor.forClass(PolicyRepositoryListener.class);
+		// The listener registration is verified after the builder constructs the PDP.
 
-		expect(decisionCache.getDecision(req)).andReturn(null);
-		Capture<EvaluationContext> rootContext = Capture.newInstance();
-		expect(policyDomain.createContext(capture(rootContext))).andReturn(control.createMock(EvaluationContext.class));
-		Capture<EvaluationContext> policyContext = Capture.newInstance();
-		expect(policyDomain.evaluate(capture(policyContext))).andReturn(Decision.DENY);
+		when(decisionCache.getDecision(req)).thenReturn(null);
+		ArgumentCaptor<EvaluationContext> rootContext = ArgumentCaptor.forClass(EvaluationContext.class);
+		EvaluationContext evaluationContext = Mockito.mock(EvaluationContext.class);
+		when(policyDomain.createContext(Mockito.any())).thenReturn(evaluationContext);
+		ArgumentCaptor<EvaluationContext> policyContext = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(policyDomain.evaluate(Mockito.any())).thenReturn(Decision.DENY);
 
-		Capture<Result> result0 = Capture.newInstance();
-		Capture<PolicyDecisionPoint> pdp1 = Capture.newInstance();
+		ArgumentCaptor<Result> result0 = ArgumentCaptor.forClass(Result.class);
+		ArgumentCaptor<PolicyDecisionPoint> pdp1 = ArgumentCaptor.forClass(PolicyDecisionPoint.class);
 
-		decisionAuditor.audit(capture(pdp1), capture(result0), eq(req));
-		Capture<Result> result1 = Capture.newInstance();
-		Capture<RequestContext> req1 = Capture.newInstance();
-		decisionCache.putDecision(capture(req1), capture(result1), eq(Duration.ofSeconds(30)));
-
-		control.replay();
+		// Captured and verified after decide().
+		ArgumentCaptor<Result> result1 = ArgumentCaptor.forClass(Result.class);
+		ArgumentCaptor<RequestContext> req1 = ArgumentCaptor.forClass(RequestContext.class);
+		// Captured and verified after decide().
 		this.pdp = pdpBuilder.build();
+		Mockito.verify(repository).addPolicyRepositoryListener(c.capture());
 
 		ResponseContext res = pdp.decide(req);
+		Mockito.verify(decisionCache).getDecision(req);
+		Mockito.verify(policyDomain).createContext(rootContext.capture());
+		Mockito.verify(policyDomain).evaluate(policyContext.capture());
+		Mockito.verify(decisionAuditor).audit(pdp1.capture(), result0.capture(), eq(req));
+		Mockito.verify(decisionCache).putDecision(req1.capture(), result1.capture(), eq(Duration.ofSeconds(30)));
 		assertEquals(1, res.getResults().size());
 		assertEquals(result0.getValue(), result1.getValue());
 		assertSame(pdp, pdp1.getValue());
-
-		control.verify();
+		Mockito.verifyNoInteractions(evaluationContext);
+		Mockito.verifyNoMoreInteractions(pip, repository, policyDomain, decisionAuditor, decisionCache, xpathProvider);
 	}
 }

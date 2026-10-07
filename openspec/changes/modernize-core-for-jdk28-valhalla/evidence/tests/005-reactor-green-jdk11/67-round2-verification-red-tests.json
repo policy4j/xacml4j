@@ -1,0 +1,7 @@
+{
+  "tests_executed": false,
+  "reason": "Compilation failed before tests; previous Surefire reports are stale and excluded",
+  "results": {},
+  "production_hash": "22e51c905a408d981d297213e7229bad9831de635e9605e9b86484a67efbe82f",
+  "production_matches_before_snapshot": true
+}

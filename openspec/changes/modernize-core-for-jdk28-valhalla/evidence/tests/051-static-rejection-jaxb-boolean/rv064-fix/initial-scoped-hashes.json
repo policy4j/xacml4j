@@ -1,0 +1,7 @@
+{
+  "xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java": "c2c5acd9b2d8128cfa2a49d2488c95e2001ff667586c5069ddd475849c9ef64d",
+  "xacml-xml/src/main/java/org/xacml4j/v30/xml/BooleanAttributeValidationFilter.java": "04e49f2f46327708096332db1e9e97cfde0d972b7bd973c3750e0684c74c8272",
+  "xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanAttributeLexicalTest.java": "e4c14c37ae0757555279d5c639e6eb1de417258afb566712a831e8e6209e06f7",
+  "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java": "dfa2cae59408713e1f953e1f9ff5a79b6ff984c21703e6037888fbc9483eae8f",
+  "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java": "3cd71e52ec4f83d06e74890976149d5ebbe29932daad06125f79c2119d1a1257"
+}

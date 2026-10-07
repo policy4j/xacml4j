@@ -22,20 +22,21 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.List;
 
-import org.easymock.Capture;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
@@ -49,12 +50,16 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.Iterables;
 
+@ExtendWith(MockitoExtension.class)
 public class PolicySetTest
 {
 	private EvaluationContext context;
 	private PolicySet policy;
+	private PolicySet.Builder builder;
 	private Target target;
+	private Expression targetExpression;
 	private Condition condition;
+	private Expression conditionExpression;
 
 
 	private DecisionCombiningAlgorithm<CompositeDecisionRule> combingingAlg;
@@ -66,29 +71,28 @@ public class PolicySetTest
 	private Expression permitAdviceAttributeExp;
 
 
-
 	private PolicyReferenceResolver referenceResolver;
 	private EvaluationContextHandler handler;
 
-	private IMocksControl c;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void init() throws SyntaxException
 	{
-		this.c = createStrictControl();
 
-		this.target = c.createMock(Target.class);
-		this.condition = c.createMock(Condition.class);
-		this.combingingAlg = c.createMock(DecisionCombiningAlgorithm.class);
+		this.targetExpression = ModelFixtures.reference();
+		this.target = ModelFixtures.target(targetExpression);
+		this.conditionExpression = mock(Expression.class);
+		this.condition = ModelFixtures.condition(conditionExpression);
+		this.combingingAlg = mock(DecisionCombiningAlgorithm.class);
 
-		this.permitAdviceAttributeExp = c.createMock(Expression.class);
-		this.denyAdviceAttributeExp = c.createMock(Expression.class);
+		this.permitAdviceAttributeExp = mock(Expression.class);
+		this.denyAdviceAttributeExp = mock(Expression.class);
 
-		this.denyObligationAttributeExp = c.createMock(Expression.class);
-		this.permitObligationAttributeExp = c.createMock(Expression.class);
+		this.denyObligationAttributeExp = mock(Expression.class);
+		this.permitObligationAttributeExp = mock(Expression.class);
 
-		this.policy = PolicySet.builder("TestPolicy")
+		this.builder = PolicySet.builder("TestPolicy")
 				.version("1.0")
 				.target(target)
 				.condition(condition)
@@ -104,11 +108,11 @@ public class PolicySetTest
 						.attribute("testId", denyAdviceAttributeExp))
 				.advice(AdviceExpression
 					.builder("permitAdvice", Effect.PERMIT)
-					.attribute("testId", permitAdviceAttributeExp))
-				.build();
+					.attribute("testId", permitAdviceAttributeExp));
+		this.policy = builder.build();
 
-		this.referenceResolver = c.createMock(PolicyReferenceResolver.class);
-		this.handler = c.createMock(EvaluationContextHandler.class);
+		this.referenceResolver = mock(PolicyReferenceResolver.class);
+		this.handler = mock(EvaluationContextHandler.class);
 		this.context = new RootEvaluationContext(true, Duration.ZERO, referenceResolver, handler);
 	}
 
@@ -126,40 +130,59 @@ public class PolicySetTest
 	public void testIsApplicableTargetMatch() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
-		c.replay();
+		when(targetExpression.evaluate(policyContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(MatchResult.MATCH, policy.isMatch(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 	}
 
 	@Test
 	public void testIsApplicableTargetNoMatch() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(target.match(policyContext)).andReturn(MatchResult.NOMATCH);
-		c.replay();
+		when(targetExpression.evaluate(policyContext)).thenReturn(ModelFixtures.matchValues(MatchResult.NOMATCH));
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(MatchResult.NOMATCH, policy.isMatch(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 	}
 
 	@Test
 	public void testIsApplicableTargetIndeterminate() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
-		c.replay();
+		when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(MatchResult.INDETERMINATE, policy.isMatch(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 	}
 
 	@Test
 	public void testIsApplicableTargetException() throws EvaluationException
 	{
-		EvaluationContext policyContext = policy.createContext(context);
-		expect(target.match(policyContext)).andThrow(new NullPointerException());
-		c.replay();
-		assertEquals(MatchResult.INDETERMINATE, policy.isMatch(policyContext));
-		c.verify();
+		// rv019: inject at Target.match so BaseDecisionRule.isMatch must catch the exception.
+		Target throwingTarget = spy(target);
+		PolicySet policyWithThrowingTarget = builder.target(throwingTarget).build();
+		EvaluationContext policyContext = policyWithThrowingTarget.createContext(context);
+		doThrow(new NullPointerException()).when(throwingTarget).match(policyContext);
+		InOrder order = inOrder(throwingTarget, targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
+		assertEquals(MatchResult.INDETERMINATE, policyWithThrowingTarget.isMatch(policyContext));
+		order.verify(throwingTarget).match(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(throwingTarget, times(1)).match(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(throwingTarget, targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Status.processingError(new NullPointerException())
 		                   .build(), policyContext.getEvaluationStatus().get());
 	}
@@ -168,77 +191,119 @@ public class PolicySetTest
 	public void testEvaluateTargetMatchConditionFalse() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.FALSE);
-		c.replay();
+		when(targetExpression.evaluate(policyContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(policyContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.NOT_APPLICABLE, policy.evaluate(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(conditionExpression).evaluate(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(conditionExpression, times(1)).evaluate(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 	}
 
 	@Test
 	public void testEvaluateTargetMatchConditionTrue() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.FALSE);
-		c.replay();
+		when(targetExpression.evaluate(policyContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(policyContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(false));
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.NOT_APPLICABLE, policy.evaluate(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(conditionExpression).evaluate(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(conditionExpression, times(1)).evaluate(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 	}
 
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<CompositeDecisionRule>> ruleCapture = Capture.newInstance();
-		Capture<EvaluationContext> contextCapture = Capture.newInstance();
-		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
-		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.NOT_APPLICABLE);
-		c.replay();
+		ArgumentCaptor<List<CompositeDecisionRule>> ruleCapture = ArgumentCaptor.forClass(List.class);
+		ArgumentCaptor<EvaluationContext> contextCapture = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());
+		when(combingingAlg.combine(contextCapture.capture(), ruleCapture.capture())).thenReturn(Decision.NOT_APPLICABLE);
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.NOT_APPLICABLE, policy.evaluate(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(combingingAlg).combine(contextCapture.capture(), ruleCapture.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
+		assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());
+		assertTrue(contextCapture.getValue().isExtendedIndeterminateEval());
+		assertSame(policy, contextCapture.getValue().getCurrentPolicySet());
 	}
 
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<CompositeDecisionRule>> ruleCapture = Capture.newInstance();
-		Capture<EvaluationContext> contextCapture = Capture.newInstance();
-		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
-		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
-		c.replay();
+		ArgumentCaptor<List<CompositeDecisionRule>> ruleCapture = ArgumentCaptor.forClass(List.class);
+		ArgumentCaptor<EvaluationContext> contextCapture = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());
+		when(combingingAlg.combine(contextCapture.capture(), ruleCapture.capture())).thenReturn(Decision.DENY);
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.INDETERMINATE_D, policy.evaluate(policyContext));
 		assertTrue(contextCapture.getValue().isExtendedIndeterminateEval());
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(combingingAlg).combine(contextCapture.capture(), ruleCapture.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
+		assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());
 	}
 
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<CompositeDecisionRule>> ruleCapture = Capture.newInstance();
-		Capture<EvaluationContext> contextCapture = Capture.newInstance();
-		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
-		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
-		c.replay();
+		ArgumentCaptor<List<CompositeDecisionRule>> ruleCapture = ArgumentCaptor.forClass(List.class);
+		ArgumentCaptor<EvaluationContext> contextCapture = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());
+		when(combingingAlg.combine(contextCapture.capture(), ruleCapture.capture())).thenReturn(Decision.PERMIT);
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.INDETERMINATE_P, policy.evaluate(policyContext));
 		assertTrue(contextCapture.getValue().isExtendedIndeterminateEval());
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(combingingAlg).combine(contextCapture.capture(), ruleCapture.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
+		assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());
 	}
 
 	@Test
 	public void testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
-		Capture<List<CompositeDecisionRule>> ruleCapture = Capture.newInstance();
-		Capture<EvaluationContext> contextCapture = Capture.newInstance();
-		expect(target.match(policyContext)).andReturn(MatchResult.INDETERMINATE);
-		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.INDETERMINATE);
-		c.replay();
+		ArgumentCaptor<List<CompositeDecisionRule>> ruleCapture = ArgumentCaptor.forClass(List.class);
+		ArgumentCaptor<EvaluationContext> contextCapture = ArgumentCaptor.forClass(EvaluationContext.class);
+		when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());
+		when(combingingAlg.combine(contextCapture.capture(), ruleCapture.capture())).thenReturn(Decision.INDETERMINATE);
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.INDETERMINATE_DP, policy.evaluate(policyContext));
 		assertTrue(contextCapture.getValue().isExtendedIndeterminateEval());
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(combingingAlg).combine(contextCapture.capture(), ruleCapture.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
+		assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());
 	}
 
 	@Test
@@ -246,25 +311,38 @@ public class PolicySetTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 
-		Capture<EvaluationContext> contextCapture = Capture.newInstance();
-		Capture<List<CompositeDecisionRule>> ruleCapture = Capture.newInstance();
+		ArgumentCaptor<EvaluationContext> contextCapture = ArgumentCaptor.forClass(EvaluationContext.class);
+		ArgumentCaptor<List<CompositeDecisionRule>> ruleCapture = ArgumentCaptor.forClass(List.class);
 
-		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
+		when(targetExpression.evaluate(policyContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(policyContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.DENY);
+		when(combingingAlg.combine(contextCapture.capture(), ruleCapture.capture())).thenReturn(Decision.DENY);
 
-		expect(denyAdviceAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.ofAny("testValue1"));
-		expect(denyObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.ofAny("testValue1"));
+		when(denyAdviceAttributeExp.evaluate(policyContext)).thenReturn(XacmlTypes.STRING.ofAny("testValue1"));
+		when(denyObligationAttributeExp.evaluate(policyContext)).thenReturn(XacmlTypes.STRING.ofAny("testValue1"));
 
-		c.replay();
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.DENY, policy.evaluate(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(conditionExpression).evaluate(policyContext);
+		order.verify(combingingAlg).combine(contextCapture.capture(), ruleCapture.capture());
+		order.verify(denyAdviceAttributeExp).evaluate(policyContext);
+		order.verify(denyObligationAttributeExp).evaluate(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(conditionExpression, times(1)).evaluate(policyContext);
+		verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());
+		verify(denyAdviceAttributeExp, times(1)).evaluate(policyContext);
+		verify(denyObligationAttributeExp, times(1)).evaluate(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertSame(policy, policyContext.getCurrentPolicySet());
 		assertSame(policyContext, contextCapture.getValue());
 
 		assertEquals(1, Iterables.size(context.getMatchingAdvices(Decision.DENY)));
 		assertEquals(1, Iterables.size(context.getMatchingObligations(Decision.DENY)));
+		assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());
 	}
 
 	@Test
@@ -272,23 +350,36 @@ public class PolicySetTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 
-		Capture<EvaluationContext> contextCapture = Capture.newInstance();
-		Capture<List<CompositeDecisionRule>> ruleCapture = Capture.newInstance();
+		ArgumentCaptor<EvaluationContext> contextCapture = ArgumentCaptor.forClass(EvaluationContext.class);
+		ArgumentCaptor<List<CompositeDecisionRule>> ruleCapture = ArgumentCaptor.forClass(List.class);
 
-		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
+		when(targetExpression.evaluate(policyContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(policyContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.PERMIT);
-		expect(permitAdviceAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.ofAny("testValue1"));
-		expect(permitObligationAttributeExp.evaluate(policyContext)).andReturn(XacmlTypes.STRING.ofAny("testValue1"));
+		when(combingingAlg.combine(contextCapture.capture(), ruleCapture.capture())).thenReturn(Decision.PERMIT);
+		when(permitAdviceAttributeExp.evaluate(policyContext)).thenReturn(XacmlTypes.STRING.ofAny("testValue1"));
+		when(permitObligationAttributeExp.evaluate(policyContext)).thenReturn(XacmlTypes.STRING.ofAny("testValue1"));
 
-		c.replay();
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.PERMIT, policy.evaluate(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(conditionExpression).evaluate(policyContext);
+		order.verify(combingingAlg).combine(contextCapture.capture(), ruleCapture.capture());
+		order.verify(permitAdviceAttributeExp).evaluate(policyContext);
+		order.verify(permitObligationAttributeExp).evaluate(policyContext);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(conditionExpression, times(1)).evaluate(policyContext);
+		verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());
+		verify(permitAdviceAttributeExp, times(1)).evaluate(policyContext);
+		verify(permitObligationAttributeExp, times(1)).evaluate(policyContext);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertSame(policy, policyContext.getCurrentPolicySet());
 		assertSame(policyContext, contextCapture.getValue());
 		assertEquals(1, Iterables.size(context.getMatchingAdvices(Decision.PERMIT)));
 		assertEquals(1, Iterables.size(context.getMatchingObligations(Decision.PERMIT)));
+		assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());
 	}
 
 	@Test
@@ -296,22 +387,31 @@ public class PolicySetTest
 	{
 		EvaluationContext policyContext = policy.createContext(context);
 
-		Capture<EvaluationContext> contextCapture = Capture.newInstance();
-		Capture<List<CompositeDecisionRule>> ruleCapture = Capture.newInstance();
+		ArgumentCaptor<EvaluationContext> contextCapture = ArgumentCaptor.forClass(EvaluationContext.class);
+		ArgumentCaptor<List<CompositeDecisionRule>> ruleCapture = ArgumentCaptor.forClass(List.class);
 
-		expect(target.match(policyContext)).andReturn(MatchResult.MATCH);
-		expect(condition.evaluate(policyContext)).andReturn(ConditionResult.TRUE);
+		when(targetExpression.evaluate(policyContext)).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));
+		when(conditionExpression.evaluate(policyContext)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
 
-		expect(combingingAlg.combine(capture(contextCapture), capture(ruleCapture))).andReturn(Decision.INDETERMINATE);
+		when(combingingAlg.combine(contextCapture.capture(), ruleCapture.capture())).thenReturn(Decision.INDETERMINATE);
 
-		c.replay();
+		InOrder order = inOrder(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertEquals(Decision.INDETERMINATE, policy.evaluate(policyContext));
-		c.verify();
+		order.verify(targetExpression).evaluate(policyContext);
+		order.verify(conditionExpression).evaluate(policyContext);
+		order.verify(combingingAlg).combine(contextCapture.capture(), ruleCapture.capture());
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(targetExpression, times(1)).evaluate(policyContext);
+		verify(conditionExpression, times(1)).evaluate(policyContext);
+		verify(combingingAlg, times(1)).combine(contextCapture.capture(), ruleCapture.capture());
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
 		assertSame(policy, policyContext.getCurrentPolicySet());
 		assertSame(policyContext, contextCapture.getValue());
 		assertEquals(0, Iterables.size(context.getMatchingAdvices(Decision.DENY)));
 		assertEquals(0, Iterables.size(context.getMatchingObligations(Decision.DENY)));
 		assertEquals(0, Iterables.size(context.getMatchingAdvices(Decision.PERMIT)));
 		assertEquals(0, Iterables.size(context.getMatchingObligations(Decision.PERMIT)));
+		assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());
 	}
 }

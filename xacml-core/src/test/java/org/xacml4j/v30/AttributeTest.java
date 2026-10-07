@@ -22,16 +22,13 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Attribute.Builder;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -43,7 +40,7 @@ public class AttributeTest
 {
 	private Collection<Value<?>> values;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
 		this.values = new LinkedList<>();

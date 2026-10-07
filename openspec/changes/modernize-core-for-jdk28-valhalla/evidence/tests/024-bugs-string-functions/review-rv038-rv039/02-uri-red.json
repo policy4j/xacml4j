@@ -1,0 +1,227 @@
+{
+  "xacml-core": {
+    "counts": {
+      "tests": 34,
+      "failures": 19,
+      "errors": 4,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.types.AnyURILexicalTest": {
+        "tests": 34,
+        "failures": 19,
+        "errors": 4,
+        "skipped": 0
+      }
+    },
+    "failures": [
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "lexicalEqualityAndHashingKeepDistinctUriSpellings(String, String)[1]",
+        "kind": "failure",
+        "message": "expected: not equal but was: <AnyURI{type=anyURI, value=http://example.com/b}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "lexicalEqualityAndHashingKeepDistinctUriSpellings(String, String)[2]",
+        "kind": "failure",
+        "message": "expected: not equal but was: <AnyURI{type=anyURI, value=http://example.com/a}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "lexicalEqualityAndHashingKeepDistinctUriSpellings(String, String)[3]",
+        "kind": "failure",
+        "message": "expected: not equal but was: <AnyURI{type=anyURI, value=http://example.com/%2F}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "uriSubstringReturnsOriginalSpelling(String, boolean)[1]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/a/../b}> but was: <StringVal{type=string, value=http://example.com/b}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "uriSubstringReturnsOriginalSpelling(String, boolean)[2]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/a/../b}> but was: <StringVal{type=string, value=http://example.com/b}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "uriSubstringReturnsOriginalSpelling(String, boolean)[3]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/./a}> but was: <StringVal{type=string, value=http://example.com/a}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "uriSubstringReturnsOriginalSpelling(String, boolean)[4]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/./a}> but was: <StringVal{type=string, value=http://example.com/a}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[1]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/a/../b}> but was: <StringVal{type=string, value=http://example.com/b}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[2]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/a/../b}> but was: <StringVal{type=string, value=http://example.com/b}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[3]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/./a}> but was: <StringVal{type=string, value=http://example.com/a}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[4]",
+        "kind": "failure",
+        "message": "expected: <StringVal{type=string, value=http://example.com/./a}> but was: <StringVal{type=string, value=http://example.com/a}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[5]",
+        "kind": "error",
+        "message": ""
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[6]",
+        "kind": "error",
+        "message": ""
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[7]",
+        "kind": "error",
+        "message": ""
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "stringConversionKeepsDotSegmentsAndCase(String, boolean)[8]",
+        "kind": "error",
+        "message": ""
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "anyUriEqualUsesCodepointEquality(String, String, boolean)[1]",
+        "kind": "failure",
+        "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "anyUriEqualUsesCodepointEquality(String, String, boolean)[2]",
+        "kind": "failure",
+        "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "anyUriEqualUsesCodepointEquality(String, String, boolean)[3]",
+        "kind": "failure",
+        "message": "expected: <BooleanVal{type=boolean, value=false}> but was: <BooleanVal{type=boolean, value=true}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "uriSearchUsesOriginalSpelling(String, String, String, boolean)[1]",
+        "kind": "failure",
+        "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "uriSearchUsesOriginalSpelling(String, String, String, boolean)[2]",
+        "kind": "failure",
+        "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "uriSearchUsesOriginalSpelling(String, String, String, boolean)[5]",
+        "kind": "failure",
+        "message": "expected: <BooleanVal{type=boolean, value=true}> but was: <BooleanVal{type=boolean, value=false}>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "factoriesAndUriGetterKeepOriginalSpelling(String)[1]",
+        "kind": "failure",
+        "message": "expected: <http://example.com/a/../b> but was: <http://example.com/b>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.AnyURILexicalTest",
+        "test": "factoriesAndUriGetterKeepOriginalSpelling(String)[2]",
+        "kind": "failure",
+        "message": "expected: <http://example.com/./a> but was: <http://example.com/a>"
+      }
+    ],
+    "disabled": []
+  },
+  "xacml-xml": {
+    "counts": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 3,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.xml.AnyURIRequestLexicalTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 3,
+        "skipped": 0
+      }
+    },
+    "failures": [
+      {
+        "class": "org.xacml4j.v30.xml.AnyURIRequestLexicalTest",
+        "test": "xmlRequestRoundTripKeepsUriSpelling(String)[1]",
+        "kind": "error",
+        "message": "Unsupported source=\"java.io.StringReader\""
+      },
+      {
+        "class": "org.xacml4j.v30.xml.AnyURIRequestLexicalTest",
+        "test": "xmlRequestRoundTripKeepsUriSpelling(String)[2]",
+        "kind": "error",
+        "message": "Unsupported source=\"java.io.StringReader\""
+      },
+      {
+        "class": "org.xacml4j.v30.xml.AnyURIRequestLexicalTest",
+        "test": "xmlRequestRoundTripKeepsUriSpelling(String)[3]",
+        "kind": "error",
+        "message": "Unsupported source=\"java.io.StringReader\""
+      }
+    ],
+    "disabled": []
+  },
+  "xacml-json": {
+    "counts": {
+      "tests": 3,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.marshal.json.AnyURIRequestLexicalTest": {
+        "tests": 3,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [
+      {
+        "class": "org.xacml4j.v30.marshal.json.AnyURIRequestLexicalTest",
+        "test": "jsonRequestRoundTripKeepsUriSpelling(String)[1]",
+        "kind": "failure",
+        "message": "expected: <http://example.com/a/../b> but was: <http://example.com/b>"
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.AnyURIRequestLexicalTest",
+        "test": "jsonRequestRoundTripKeepsUriSpelling(String)[2]",
+        "kind": "failure",
+        "message": "expected: <http://example.com/./a> but was: <http://example.com/a>"
+      }
+    ],
+    "disabled": []
+  }
+}

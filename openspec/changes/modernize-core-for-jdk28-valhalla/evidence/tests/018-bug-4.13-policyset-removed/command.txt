@@ -1,0 +1,12 @@
+Working directory: <lane>
+JDK version check:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Red regression (expected failure before production fix):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dlicense.skipUpdateLicense=true -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l evidence/tests/018-bug-4.13-policyset-removed/red.log
+
+Focused green regression:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dlicense.skipUpdateLicense=true -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l evidence/tests/018-bug-4.13-policyset-removed/green-focused.log
+
+Requested full PDP gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dlicense.skipUpdateLicense=true test -l evidence/tests/018-bug-4.13-policyset-removed/surefire-summary.txt

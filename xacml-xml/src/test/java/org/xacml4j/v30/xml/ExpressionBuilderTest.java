@@ -22,10 +22,9 @@ package org.xacml4j.v30.xml;
  * #L%
  */
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 

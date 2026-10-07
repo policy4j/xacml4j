@@ -1,0 +1,1153 @@
+{
+  "xacml-core": {
+    "counts": {
+      "tests": 4323,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    "classes": {
+      "org.xacml4j.util.DOMUtilTest": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.util.ISO8601DurationTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.util.JSONUtilTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.AttributeIndexTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.AttributeTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.CategoryIdTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.ContentTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.EntityTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.ObligationTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.WellKnownAttributeIdsTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.content.ContentTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "org.xacml4j.v30.content.JsonContentTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.content.XmlContentTest": {
+        "tests": 15,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.AdviceExpressionTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.AdviceTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.ApplyTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.AttributeAssignmentTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.AttributeDesignatorTest": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.AttributeSelectorTest": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.AttributesTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.BagOfValuesTest": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.CombinerParameterTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.ConditionTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.DecisionTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.MatchAllOfTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.MatchAnyOfTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.MatchTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.ObligationExpressionTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.PolicyDefaultsTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.PolicyIDReferenceTest": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.PolicySetIDReferenceTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.PolicySetTest": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.PolicyTest": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.RequestTest": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.ResultTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.RootEvaluationContextTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.RuleTest": {
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.StatusCodeIdTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.TargetTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.VariableDefinitionTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.VariableReferenceTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.VersionMatchTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.VersionTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.XPathTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.OverrideDecisionTableTest": {
+        "tests": 3048,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.ParamTypeSequenceTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.BagFunctionsTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest": {
+        "tests": 50,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest": {
+        "tests": 72,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest": {
+        "tests": 22,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest": {
+        "tests": 54,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.SetFunctionTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.StringFunctionSemanticsTest": {
+        "tests": 505,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.AnyURITest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.Base64BinaryTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.BinaryTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.BooleanValTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.DNSNameTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.DoubleValTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.EUI48Test": {
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.HexTypeTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.IPAddressTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601DateTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601DateTimeTest": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601DayTimeDurationTest": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601DurationReviewTest": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest": {
+        "tests": 46,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601TimeTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.ISO8601YearMonthDurationTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.IntegerTypeTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.PathTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.PortRangeTest": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.RFC822NameTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.StringValTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.TypeCapabilityTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.TypeToStringCapabilityTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.TypeToStringTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "org.xacml4j.v30.types.XacmlTypesTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "disabled": [
+      {
+        "class": "org.xacml4j.v30.content.ContentTest",
+        "test": "testXmlBase64",
+        "reason": "public void org.xacml4j.v30.content.ContentTest.testXmlBase64() is @Disabled"
+      },
+      {
+        "class": "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest",
+        "test": "testXPathTransformationWithFunctions",
+        "reason": "public void org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest.testXPathTransformationWithFunctions() is @Disabled"
+      }
+    ],
+    "failures": []
+  },
+  "xacml-xml": {
+    "counts": {
+      "tests": 36,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.xml.ExpressionBuilderTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.xml.TypeToXacml30Test": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.xml.Xacml30RequestContentTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "disabled": [],
+    "failures": []
+  },
+  "xacml-json": {
+    "counts": {
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "classes": {
+      "org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "disabled": [
+      {
+        "class": "org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest",
+        "test": "testEntityMarshall",
+        "reason": "public void org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest.testEntityMarshall() throws java.lang.Exception is @Disabled"
+      }
+    ],
+    "failures": []
+  },
+  "xacml-pdp": {
+    "counts": {
+      "tests": 76,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3
+    },
+    "classes": {
+      "org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest": {
+        "tests": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.pip.AttributeSetTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.pip.BaseAttributeResolverTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 2
+      },
+      "org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "disabled": [
+      {
+        "class": "org.xacml4j.v30.spi.pip.BaseAttributeResolverTest",
+        "test": "testMBeanInvocationStats",
+        "reason": "public void org.xacml4j.v30.spi.pip.BaseAttributeResolverTest.testMBeanInvocationStats() throws java.lang.Exception is @Disabled"
+      },
+      {
+        "class": "org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest",
+        "test": "testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet",
+        "reason": "public void org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet() throws java.lang.Exception is @Disabled"
+      },
+      {
+        "class": "org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest",
+        "test": "testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable",
+        "reason": "public void org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable() throws java.lang.Exception is @Disabled"
+      }
+    ],
+    "failures": []
+  },
+  "xacml-test": {
+    "counts": {
+      "tests": 83,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v20.Xacml20SamplePolicyTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v20.Xacml20TestUtilityTest": {
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v20.Xacml30TestUtilityTest": {
+        "tests": 53,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.AttributeResolverTestSupportTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.ExpectedAttributeResolverBuilderTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.Xacml30SamplePolicyTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.XacmlPolicyTestSupportTest": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "disabled": [],
+    "failures": []
+  },
+  "xacml-conformance-tests": {
+    "counts": {
+      "tests": 901,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 29
+    },
+    "classes": {
+      "org.xacml4j.v20.ConformanceManifestTest": {
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v20.ConformancePolicyImportTest": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v20.RSA2008InteropTest": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v20.VendoredFixtureIntegrityTest": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v20.Xacml20ConformanceTest": {
+        "tests": 375,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 12
+      },
+      "org.xacml4j.v20.Xacml30ConformanceTest": {
+        "tests": 488,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 17
+      },
+      "org.xacml4j.v20.XacmlExampleTest": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "disabled": [
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[4]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[5]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[86]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[94]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[359]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[360]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[361]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[369]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[370]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[371]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[372]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml20ConformanceTest",
+        "test": "testConformance(Case)[373]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[4]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[5]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[22]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[23]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[24]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[91]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[99]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[369]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[435]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[465]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[466]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[468]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[469]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[470]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[472]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[486]",
+        "reason": ""
+      },
+      {
+        "class": "org.xacml4j.v20.Xacml30ConformanceTest",
+        "test": "testConformance(Case)[487]",
+        "reason": ""
+      }
+    ],
+    "failures": []
+  }
+}

@@ -69,10 +69,20 @@ public final class DoubleVal extends Value.OtherValue<Double>
     }
 
     public StringVal toStringExp(){
-        return StringVal.of(get().toString());
+        return StringVal.of(toXacmlString());
     }
     public String toXacmlString(){
-        return get().toString();
+        double value = get();
+        if (Double.isNaN(value)) {
+            return "NaN";
+        }
+        if (value == Double.POSITIVE_INFINITY) {
+            return "INF";
+        }
+        if (value == Double.NEGATIVE_INFINITY) {
+            return "-INF";
+        }
+        return Double.toString(value);
     }
     public IntegerVal toIntegerValue(){
         return IntegerVal.of(get().intValue());

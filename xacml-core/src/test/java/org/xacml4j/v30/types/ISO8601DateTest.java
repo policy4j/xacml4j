@@ -22,13 +22,15 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ISO8601DateTest
 {
@@ -40,13 +42,14 @@ public class ISO8601DateTest
 		assertEquals(9, value.getMonthValue());
 		assertEquals(24, value.get().getDayOfMonth());
 		TypeToString toString = TypeToString.Types.DATE;
-		assertEquals("2002-09-24", toString.toString(value));
+		assertEquals("2002-09-24Z", toString.toString(value));
 	}
 
 
-	@Test(expected= DateTimeParseException.class)
-	public void testFromXacmlStringJustDate(){
-		XacmlTypes.DATE.ofAny("2002-05-30T09:30:10-06:00");
+	@Test
+	public void testFromXacmlStringJustDate() {
+		assertThrows(DateTimeParseException.class, () ->
+			XacmlTypes.DATE.ofAny("2002-05-30T09:30:10-06:00"));
 	}
 
 	@Test
@@ -70,4 +73,3 @@ public class ISO8601DateTest
 		XacmlTypes.DATE.ofAny(now);
 	}
 }
-

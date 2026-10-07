@@ -23,7 +23,7 @@ package org.xacml4j.v30.policy.function.impl;
  */
 
 
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
@@ -35,7 +35,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 
 @XacmlFunctionProvider(description="TestInstanceFunctions", nonStaticFunctions = true)
-@Ignore
+@Disabled
 public class TestInstanceFunctions
 {
 	@XacmlFuncSpec(id="test1")

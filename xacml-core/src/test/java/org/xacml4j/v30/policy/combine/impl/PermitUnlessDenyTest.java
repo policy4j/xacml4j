@@ -22,16 +22,18 @@ package org.xacml4j.v30.policy.combine.impl;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
@@ -39,81 +41,107 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 
 
+@ExtendWith(MockitoExtension.class)
 public class PermitUnlessDenyTest {
 
-	private IMocksControl mockCtl;
 
 	private List<DecisionRule> decisions;
 	private DecisionCombiningAlgorithm<DecisionRule> algorithm;
 	private EvaluationContext context;
 
-	@Before
+	@BeforeEach
 	public void init(){
 		this.decisions = new LinkedList<DecisionRule>();
 		this.algorithm = new PermitUnlessDeny<DecisionRule>("aaaa");
 
-		mockCtl = createStrictControl();
-		this.context = mockCtl.createMock(EvaluationContext.class);
+		this.context = mock(EvaluationContext.class);
 	}
 
 	@Test
 	public void testCombineWithNoDecisions()
 	{
-		mockCtl.replay();
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
-		mockCtl.verify();
+		verifyNoMoreInteractions(context);
 	}
 
 	@Test
 	public void testCombineWithDeny() throws EvaluationException
 	{
-		DecisionRule r1 = mockCtl.createMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
 		decisions.add(r1);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.DENY);
-		mockCtl.replay();
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.DENY);
+		InOrder order = inOrder(context, r1);
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
-		mockCtl.verify();
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1);
 	}
 
 	@Test
 	public void testCombineWithNotApplicable() throws EvaluationException
 	{
-		DecisionRule r1 = mockCtl.createMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
 		decisions.add(r1);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.NOT_APPLICABLE);
-		mockCtl.replay();
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.NOT_APPLICABLE);
+		InOrder order = inOrder(context, r1);
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
-		mockCtl.verify();
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1);
 	}
 
 	@Test
 	public void testCombineWithIndeterminate() throws EvaluationException
 	{
-		DecisionRule r1 = mockCtl.createMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
 		decisions.add(r1);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.INDETERMINATE);
-		mockCtl.replay();
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.INDETERMINATE);
+		InOrder order = inOrder(context, r1);
 		assertEquals(Decision.PERMIT, algorithm.combine(context, decisions));
-		mockCtl.verify();
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1);
 	}
 
 
 	@Test
 	public void testCombineWithDenyAndPermit() throws EvaluationException
 	{
-		DecisionRule r1 = mockCtl.createMock(DecisionRule.class);
-		DecisionRule r2 = mockCtl.createMock(DecisionRule.class);
+		DecisionRule r1 = mock(DecisionRule.class);
+		DecisionRule r2 = mock(DecisionRule.class);
 		decisions.add(r1);
 		decisions.add(r2);
-		expect(r1.createContext(context)).andReturn(context);
-		expect(r1.evaluate(context)).andReturn(Decision.PERMIT);
-		expect(r2.createContext(context)).andReturn(context);
-		expect(r2.evaluate(context)).andReturn(Decision.DENY);
-		mockCtl.replay();
+		when(r1.createContext(context)).thenReturn(context);
+		when(r1.evaluate(context)).thenReturn(Decision.PERMIT);
+		when(r2.createContext(context)).thenReturn(context);
+		when(r2.evaluate(context)).thenReturn(Decision.DENY);
+		InOrder order = inOrder(context, r1, r2);
 		assertEquals(Decision.DENY, algorithm.combine(context, decisions));
-		mockCtl.verify();
+		order.verify(r1).createContext(context);
+		order.verify(r1).evaluate(context);
+		order.verify(r2).createContext(context);
+		order.verify(r2).evaluate(context);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(r1, times(1)).createContext(context);
+		verify(r1, times(1)).evaluate(context);
+		verify(r2, times(1)).createContext(context);
+		verify(r2, times(1)).evaluate(context);
+		order.verifyNoMoreInteractions();
+		verifyNoMoreInteractions(context, r1, r2);
 	}
 }

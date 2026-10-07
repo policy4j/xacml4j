@@ -1,0 +1,11 @@
+{
+  "case": "exception_verify",
+  "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+  "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+  "intent": "Throw the expected exception without invoking the designator; assertThrows succeeds and the following resolve verification must fail.",
+  "mutation_boundary": "Owned test stimulus/collaborator only; no production source was mutated",
+  "backup": "36-mutation-backups/AttributeDesignatorTest.java",
+  "original_sha256": "13edb59cb1b1b069c7d037ce47c17e9465c1ff615385855b565b8cad6c140667",
+  "mutant_sha256": "d8afe64d00f143afe4a51e9c5b50f015c773a320205b45a7e13763d3c2c3db24",
+  "restored_exact_bytes": true
+}

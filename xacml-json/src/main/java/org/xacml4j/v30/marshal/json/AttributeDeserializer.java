@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.xacml4j.v30.Attribute;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -55,7 +56,10 @@ class AttributeDeserializer implements JsonDeserializer<Attribute>
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
 		String attrId = GsonUtil.getAsString(o, ATTRIBUTE_ID_PROPERTY, null);
-		checkArgument(attrId != null, "Property '%s' is mandatory.", ATTRIBUTE_ID_PROPERTY);
+		if (attrId == null || attrId.isEmpty()) {
+			throw new JsonParseException(new SyntaxException(
+					String.format("Property '%s' is mandatory.", ATTRIBUTE_ID_PROPERTY)));
+		}
 		String issuer = GsonUtil.getAsString(o, ISSUER_PROPERTY, null);
 		boolean inclInRes = GsonUtil.getAsBoolean(o, INCLUDE_IN_RESULT_PROPERTY, false);
 		return Attribute

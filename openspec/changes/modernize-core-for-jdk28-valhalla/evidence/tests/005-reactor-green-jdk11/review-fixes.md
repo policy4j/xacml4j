@@ -1,0 +1,239 @@
+# Review fixes: round 2
+
+Both MEDIUM findings are repaired. Focused tests were written and run before
+production edits. Run 48 has 97 arithmetic tests / 35 failures; run 49 has
+24 selector/expansion tests / 1 failure. The unchanged production hashes were
+checked when recording those red reports in 49-review-red-tests.json.
+Runs 51 and 52 repeat the same commands: 97/97 and 24/24 pass.
+Run 53 repeats them in the full JDK 11 reactor: 812 tests / 0 failures /
+0 errors / 9 existing skips. Compiler diagnostics: zero in runs 48–53.
+
+| Finding / original file:line -> repair | Tests written first | Red -> green |
+| --- | --- | --- |
+| MEDIUM context node; DefaultEvaluationContextHandler.java:127–134 before review -> branch only on a null ContextSelectorId; resolve directly against Content in that branch. Keep entity.resolve for an explicit ID. | DefaultEvaluationContextHandlerTest.testRelativePathWithoutContextSelectorUsesDocumentNode changes the requested relative-path assertion to an empty integer bag; testRelativePathWithExplicitContextSelectorUsesSelectedNode asserts 555555 with the same path and explicit ID. | No-ID test fails in run 49 (555555 instead of empty bag); explicit-ID test already passes. Both pass in runs 52/53. |
+| MEDIUM fractional seconds; ISO8601DateTime.java:162–184 and DateTimeDurationUtils.java:210–228, :249–259 before review -> retain BigDecimal SECONDS during lexical parsing and XML-to-Java conversion, then apply signed whole seconds plus nanos through plus/minus(java.time.Duration). | ISO8601FractionalDateTimeArithmeticTest.addPreservesFractionalSeconds and subtractPreservesFractionalSeconds; ISO8601DurationReviewTest's four fractional preservation methods. | All 30 parameterized arithmetic checks and all four fraction-preservation methods fail in run 48; all pass in runs 51/53. |
+| Conditional reviewer note, programmatic P14M; DateTimeDurationUtils.java:244 before review -> add normalized d.getMonths(), rather than the original 14 months, to the normalized year count. | ISO8601DurationReviewTest.programmaticFourteenMonthsAreCountedOnce checks raw getMonths()==14, conversion to +14/-14 total months, and dateTime add/subtract. | Run 48: expected 14, actual 26. Runs 51/53: pass. ISO8601YearMonthDuration itself is unchanged. |
+
+The fraction matrix covers PT1.5S, PT0.5S and PT0.001S, each positive and
+negative, addition and subtraction, both whole-second and .250 base values.
+It also covers month-end rollover, combined days/hours/minutes/seconds,
+offset preservation and a one-nanosecond duration. Round-trip, decimal
+equality, hash equivalence, ordering and XML-to-Java conversion checks pass.
+53-review-green-tests.json and the stripped green XML reports retain every
+test name. 53-review-fixes.patch contains exactly this review's six-file delta.
+
+## Every arithmetic operation checked
+
+The unchanged DateTimeArithmeticBoundaryTest tests all six functions defined
+by XACML 3.0 Appendix A.3.7 through DateTimeArithmeticFunctions; all 50 pass
+again. The twelve existing ISO8601DateTimeArithmeticTest checks also pass.
+
+| Operation | Test / parameter family | Checks |
+| --- | --- | ---: |
+| date-add-yearMonthDuration / ISO8601Date.plus | arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH, ...] | 9 |
+| date-subtract-yearMonthDuration / ISO8601Date.minus | arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH, ...] | 9 |
+| dateTime-add-yearMonthDuration / ISO8601DateTime.plus | arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH, ...] | 9 |
+| dateTime-subtract-yearMonthDuration / ISO8601DateTime.minus | arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH, ...] | 9 |
+| dateTime-add-dayTimeDuration / ISO8601DateTime.plus | arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME, ...]; addPreservesFractionalSeconds[...] | 7 + 15 |
+| dateTime-subtract-dayTimeDuration / ISO8601DateTime.minus | arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME, ...]; subtractPreservesFractionalSeconds[...] | 7 + 15 |
+
+The calendar checks cover positive/negative/zero periods, leap and non-leap
+month ends, and combined year/month boundaries. The programmatic P14M test
+adds both signs and both dateTime directions. The standard defines no time
+duration arithmetic functions and no date/day-time duration functions; none
+were added. Existing arithmetic evidence and operation inventories are kept.
+
+## Explicitly retained gaps and reviewer notes
+
+* DefaultEvaluationContextHandlerTest.testZeroNodeContextSelectorCurrentlyFallsBackToDocument
+  and testTwoNodeContextSelectorCurrentlyUsesFirstNode pass before/after and
+  record unsupported cardinality behavior. Zero nodes fall back to the
+  document; two nodes select the first and yield 555555. XACML 3.0 section
+  7.3.7 requires Indeterminate syntax-error. The packet explicitly permits
+  recording this gap; XmlContent.java and XPathProvider are unchanged.
+* MultipleResourcesViaXacmlXPathHandlerTest's six tests pass before/after and
+  in the full gate. IIIE301–303 are not part of the configured OASIS loops;
+  direct unchanged-fixture checks run before/after and fail identically.
+  Their classifications and concrete repair proposals are in review-proposals.md.
+* ISO8601Duration.getSeconds():59–60 still returns integer 0 for PT0.5S.
+  Its isZero() delegates to DateTimeDurationUtils.isZero():74–81, which still
+  classifies PT0.5S as zero. Neither is used by the repaired dateTime arithmetic.
+* DateTimeDurationUtils.toXmlDayTimeDuration():296–297 and the
+  ISO8601DayTimeDuration.of(java.time.Duration) factory still turn 500ms into
+  P0DT0H0M0S. The JDK-style PT-0.5S fallback throws an IllegalArgumentException
+  for a negative SECONDS field; XSD-style -PT0.5S is covered and passes.
+  These other conversion gaps are recorded only, as requested.
+* The sub-nanosecond rejection observed in round 2 is RESOLVED by the
+  conductor-approved truncation toward zero, verified in runs 69/70/71 below.
+* Xacml30TestUtility.assertResults():73–81 has no AssociatedAdvice comparison.
+  This pre-existing gap is recorded only; its body matches a8a90d46.
+* Mixed Content whose first non-whitespace item is a comment or processing
+  instruction remains UNVERIFIED. No XML mapper change was made this review.
+
+Fraction observations: 55-fractional-duration-gaps.txt. Base-source proof:
+55-review-baseline-snippets.json. Literal accessor search of production core,
+PDP, XML, JSON and test-support sources finds the remaining getSeconds /
+toSecondsPart truncation sites listed above; this is not an exhaustive audit
+of every possible precision conversion.
+
+Normative references: [XACML 3.0 section 7.3.7 and Appendix A.3.7](https://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html),
+[XML Schema Part 2 Appendix E.1](https://www.w3.org/TR/xmlschema-2/#adding-durations-to-dateTimes).
+
+## Round 2 verification follow-up
+
+Started after packet 1.3h: round 3 implementation, run 63 full gate and run 65
+final audit were complete. Grok's rv007 approves both original MEDIUM fixes.
+The conductor's packet 1.3i authorizes these two refinements and their tests.
+
+Decision: truncate XML duration fractional seconds toward zero at nanosecond
+precision when converting to java.time.Duration. Apply RoundingMode.DOWN to
+the nanos magnitude, then retain the existing duration sign handling. This is
+the conductor's java.time precision/compatibility decision, not a claim that
+XML Schema requires truncation. The XML duration value retains all nonzero
+decimal digits; the precision reduction occurs only at the java.time boundary.
+
+| Finding / original file:line -> fix | Tests written first | Result |
+| --- | --- | --- |
+| LOW integral lexical scale; DateTimeDurationUtils.java:260-264 -> if the fractional remainder is zero, pass new BigDecimal(seconds.toBigInteger()) to newDuration; no stripTrailingZeros. Final lines 262-264. | ISO8601DurationReviewTest.integralSecondsDiscardZeroFractionalScale covers PT1.0S/PT1S, negative mirrors, 10 and zero; checks lexical form, SECONDS scale, equality/hash/ordering. nonzeroFractionalLexicalFormStaysDecimal retains +/-P0DT0H0M1.5S. | Run 69: expected P0DT0H0M1S, actual P0DT0H0M1.0S. Runs 70/71: PASS. |
+| Valid sub-nanosecond duration throws ArithmeticException; DateTimeDurationUtils.java:227 -> setScale(0, RoundingMode.DOWN) before intValueExact; whole seconds and sign handling unchanged. Final lines 228-229. | subNanosecondConversionTruncatesTowardZero tests +/-PT0.0000000001S -> 0ns, +/-PT1.0000000019S -> +/-1s1ns and +/-PT0.9999999999S -> +/-999999999ns, parsed and raw XML conversions. subNanosecondArithmeticEvaluatesThroughApply runs add/subtract on the default provider, both aliases and validation modes. Fractional arithmetic test adds eight signed rows with both directions and whole/.250 bases. | Run 69: 18 ArithmeticException-related errors, including wrapped Apply invocation failure. Runs 70/71: PASS; no runtime exception or Indeterminate. |
+
+Tests were written before production edits. Run 69 is the behavior-red receipt:
+117 tests / 1 failure / 18 errors / 0 skips. Its recorded utility hash equals
+the pre-test snapshot. Run 70 repeats the same focused command: 117/0/0/0.
+Run 71 repeats all 117 in the full reactor: 934/0/0/9, BUILD SUCCESS on JDK 11.
+The four added duration-review methods and sixteen arithmetic rows add twenty
+tests; the existing 97 checks pass unchanged in red and green. Per-test names
+and stripped XML are retained in 69-, 70- and 71-*-tests.json/XML receipts.
+
+Run 67 stopped during new-test compilation: ISO8601DurationReviewTest.java:115:57
+and :116:67 assigned Apply.evaluate's ValueExp directly to ISO8601DateTime.
+Explicit ISO8601DateTime casts fix both setup diagnostics. No test ran; its
+receipt excludes stale Surefire reports. Runs 69/70/71 have zero compiler
+diagnostics. compile-diagnostics.json and the raw logs retain every diagnostic.
+
+Operation inventory: DateTimeArithmeticBoundaryTest retains all six standard
+functions (50 checks), and ISO8601DateTimeArithmeticTest retains twelve type
+checks. ISO8601FractionalDateTimeArithmeticTest now runs 23 add and 23 subtract
+checks through DateTimeArithmeticFunctions, including the sixteen new signed
+precision rows. subNanosecondArithmeticEvaluatesThroughApply additionally
+checks both day-time operations with four signed operands, both 3.0/1.0 aliases
+and runtime validation off/on. Fractional round-trip/equality/hash/ordering,
+programmatic P14M and all prior month-end boundaries pass again.
+
+Scope: only DateTimeDurationUtils.java and the two existing focused test files
+changed. Three license headers and all prior test method bodies are preserved;
+3541 protected source/POM/resource/run003 files are unchanged. Delta:
+72-round2-followup-fixes.patch. Neither fixtures nor expected responses changed.
+Both OASIS suites still execute 347 cases, RSA 17 and examples 2, all passed.
+The thirty exclusions per OASIS suite, loop bounds and emitted case order match
+run 63. No new failed case ID. Earlier direct IIIE301-303 proposals and other
+recorded selector/fraction/advice gaps remain outside this follow-up; those
+additional cases were not rerun. No commit, br, task tick or issue closure.
+
+## Round 4 review fixes
+
+Started after packet 1.3i: run 71 full gate and run 73 final audit were complete.
+Reviews: rv008 Agy APPROVE; rv009 Grok REQUEST_CHANGES. The conductor defers
+the pre-existing engine-wide first-error behavior under policy4j-the.4.12;
+this packet repairs only the LOW resolver escape and strengthens status tests.
+
+| Finding / original file:line -> change | Tests first / observed result |
+| --- | --- |
+| LOW HigherOrderFunctions.java:359; map type resolution leaked IllegalArgumentException for a bag-returning reference. -> replace that precondition with a bag-only call to spec.validateParametersAndThrow(arguments), final :359-361. | mapRejectsBagReturningFunctionDuringApplyTypeResolution constructs Apply(map, string-bag, bag) with both 3.0/1.0 IDs, in runtime-checks off/on rows. getEvaluatesTo must produce the same exception class, message and syntax-error status as explicit validation; evaluate must retain processing-error. Run 75: both rows fail on IllegalArgumentException. Runs 77/78/80: both pass. |
+| Strengthen status-only variadic assertions; HigherOrderVariadicFunctionsTest.java:317 before review. -> retain hasCaptured and add exact StatusCodeId comparisons; reset capture before each Condition evaluation. | assertInvalid covers no bag, two bags, missing operands, referenced arity/types/return type and the packet's malformed binary predicate. Explicit validation asserts syntax-error; Apply invocation and captured INDETERMINATE Condition status assert processing-error. mapRejectsBagReturningFunctionAtValidation also asserts syntax-error. All stronger assertions already pass in run 75 and again in runs 77/78/80. |
+| MEDIUM first predicate error stops or/and/higher-order loops. | DEFERRED by conductor as policy4j-the.4.12. Every loop, helper and logical/invocation class is byte-identical to the round 4 snapshot; no behavior change or claim of error-order conformance. |
+
+Smallest-change choice: return-type resolution is a separate entrypoint from
+validation. Only a reference whose declared return type is already a bag is
+delegated to the same validation path; its existing validator returns false
+and FunctionSpecBuilder.java:435-437 raises PolicySyntaxException (syntax-error).
+Valid map calls keep the existing type-resolution path and return type.
+No new global validation, invocation behavior or exception mapping is added.
+The engine's syntax exception is a structured EvaluationException; this fix
+removes the raw IllegalArgumentException escape rather than changing that
+exception hierarchy. Reflection invocation still maps failures to
+FunctionInvocationException processing-error at DefaultFunctionInvocation:136-138.
+
+Tests first: 75-round4-red.txt is 63/2/0/0 with the production hash equal to
+the pre-test snapshot. Only the two new map-resolution rows fail. Run 77
+repeats the focused command: 63/0/0/0. The 54 variadic rows, three invocation
+checks and six legacy controls also pass inside both reactor attempts.
+No compiler diagnostics in runs 75/77/78/80. No assertion was removed/weakened.
+
+Full gate is BLOCKED outside this LOW-only scope. Run 78 reaches 875 tests /
+2 failures / 0 errors / 9 skips; testOnePolicyDifferentVersion:143 and
+testFindAllPoliciesWithTheSameId:219 fail listener verification in xacml-pdp.
+With no intervening source edits, run 80 reaches 875/1/0/9; only the second
+test fails. Core passes 762/0/0/4 in both; XML 34/0/0/0, JSON 5/0/0/1.
+Both test-support and conformance are reactor SKIPPED, hence NOT RUN.
+Prior conformance reports are stale for this round and excluded.
+
+The repository and test match a8a90d46 byte for byte. Async notifications
+run on an executor; immediate mock verification has no completion barrier.
+The race cause is INFERRED from this path and differing failure counts.
+No map call occurs in these test policies. Source proof and failed reports:
+79-repository-race-proof.json, 80-repository-race-proof.json,
+78-InMemoryPolicyRepositoryTest.xml and 80-InMemoryPolicyRepositoryTest.xml.
+Concrete proposal: round4-gate-blocker-proposal.md and the unapplied,
+UNVERIFIED required-repository-listener-barrier-fix.patch. No PDP edit made.
+
+Scope: two authorized source/test files, two headers preserved, 3542 protected
+files unchanged. Incremental delta: 82-round4-fixes.patch. Conformance fixture
+bytes, loop bounds and thirty exclusions per suite remain unchanged; run 80
+has zero case executions because conformance was not reached, not a conformance
+pass. Last complete gate was run 71 (934/0/0/9; cases 347+347+17+2).
+No commit, br, task tick, issue closure or evidence-index edit.
+
+## Round 4 gate
+
+The conductor approved required-repository-listener-barrier-fix.patch and
+extended the scope to every listener-verifying test in this class. Status:
+**APPROVED / APPLIED / VERIFIED**. The original two-test proposal is retained
+as historical evidence; 90-round4-gate-fixes.patch is the extended applied delta.
+
+InMemoryPolicyRepositoryTest.java:94 now has one helper that registers a
+forwarding listener and returns a per-test CountDownLatch. Each callback
+forwards to the existing EasyMock listener, then counts down after it returns.
+Each test awaits completion for at most five seconds, with an explicit
+callback timeout message, before its original c.verify(). No callback mock
+expectation, repository assertion, verification, fixture or exclusion changed.
+
+| Test | Callback count | Original verify -> final await / verify |
+| --- | ---: | --- |
+| testOnePolicyDifferentVersion | 4 added | :143 -> :174 / :175 |
+| testAddRemove | 1 added + 1 removed | :166 -> :199 / :200 |
+| testAddPolicyWithTheSameIdAndSameVersion | 1 added | :183 -> :218 / :219 |
+| testFindAllPoliciesWithTheSameId | 4 added | :219 -> :256 / :257 |
+
+Tests first: run 85 uses unchanged current source for thirty single-class
+JDK 11 Maven runs. **26 pass / 4 fail**, 120 tests / 4 failures / 0 errors /
+0 skips. Iterations 20, 21, 22 and 25 fail listener verification;
+testAddRemove fails once and testFindAllPoliciesWithTheSameId three times.
+Every failure is retained with its stack and original source hash. Earlier
+full red gates 78/80 remain unchanged historical evidence. Run 87 repeats
+the same thirty invocations after the fix: **30 pass / 0 fail**, 120/0/0/0.
+All sixty reports are fresh and attest JDK 11.0.32.1; no compiler diagnostics.
+The selected-class command runs four methods without skips. Full discovery
+still reports the existing empty Vintage skip in this class; it is unchanged.
+
+Runs 88 and 89 execute the full reactor with identical source, both
+**936 tests / 0 failures / 0 errors / 9 existing skips, BUILD SUCCESS**.
+Each gate executes OASIS 2.0 347 and OASIS 3.0 347 cases, RSA 17 and examples
+2, all passed; the two resolver characterization methods also pass. No failed
+configured case IDs. Case order, thirty exclusions per OASIS suite and loop
+bounds match run 71. IIIG006 still executes twice in each OASIS suite.
+Both gates repeat all 63 higher-order/status checks from the prior LOW fix.
+Fresh receipts, per-module JDK properties and stripped repository reports
+are retained separately for each gate before the repeat overwrites targets.
+
+Scope proof: 3543 protected source/POM/resource/run003 files unchanged;
+only this approved PDP test changed. All four original test bodies are
+identical after removing the new barriers and checked-exception declaration.
+All four c.verify() calls have barriers, the license header and tabs are kept,
+and scoped git diff --check passes. No production threading change, sleep,
+fixture/expected-result change, exclusion, commit, br, task tick or closure.
+
+Residual limits: this finite repetition is not a proof against every possible
+scheduler. First-error semantics remain DEFERRED as policy4j-the.4.12.
+Configured conformance exclusions/bounds and previously recorded additional
+IIIE301-303 proposals are unchanged; those additional cases were not rerun.

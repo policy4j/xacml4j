@@ -1,0 +1,1117 @@
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+@@ -28,17 +28,21 @@
+ import org.xacml4j.v30.BagOfValues;
+ import org.xacml4j.v30.EvaluationException;
+ import org.xacml4j.v30.Expression;
++import org.xacml4j.v30.ExpressionVisitor;
++import org.xacml4j.v30.Status;
+ import org.xacml4j.v30.ValueExpTypeInfo;
+ import org.xacml4j.v30.policy.FunctionReference;
+ import org.xacml4j.v30.policy.FunctionSpec;
+ import org.xacml4j.v30.policy.function.*;
+ import org.xacml4j.v30.types.BooleanVal;
+ import org.xacml4j.v30.types.Value;
+-import org.xacml4j.v30.types.ValueType;
++import org.xacml4j.v30.types.XacmlTypes;
+ 
+ import java.util.ArrayList;
++import java.util.Arrays;
+ import java.util.Collection;
+ import java.util.List;
++import java.util.ListIterator;
+ 
+ /**
+  * XACML higher order functions
+@@ -54,15 +58,20 @@
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:any-of")
+ 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of")
+ 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++	@XacmlFuncParamValidator(validatorClass=SingleBagFunctionParametersValidator.class)
+ 	public static BooleanVal anyOf(
+ 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+ 			@XacmlFuncParamFunctionReference FunctionReference ref,
+-			@XacmlFuncParamAnyValue Value value,
+-			@XacmlFuncParamAnyBag BagOfValues bag)
+-		throws EvaluationException
+-	{
++			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
++		throws EvaluationException
++	{
++		requireValidArguments(ref, arguments, true, true);
++		int bagIndex = singleBagIndex(arguments);
++		BagOfValues bag = (BagOfValues)arguments[bagIndex];
++		Expression[] parameters = arguments.clone();
+ 		for(Value valueFromBag : bag.values()){
+-			BooleanVal r = ref.invoke(context, value, valueFromBag);
++			parameters[bagIndex] = valueFromBag;
++			BooleanVal r = ref.invoke(context, parameters);
+ 			if(r.get()){
+ 				return BooleanVal.of(true);
+ 			}
+@@ -73,15 +82,20 @@
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:all-of")
+ 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:all-of")
+ 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++	@XacmlFuncParamValidator(validatorClass=SingleBagFunctionParametersValidator.class)
+ 	public static BooleanVal allOf(
+ 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+ 			@XacmlFuncParamFunctionReference FunctionReference ref,
+-			@XacmlFuncParamAnyValue Value value,
+-			@XacmlFuncParamAnyBag BagOfValues bag)
+-		throws EvaluationException
+-	{
++			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
++		throws EvaluationException
++	{
++		requireValidArguments(ref, arguments, true, true);
++		int bagIndex = singleBagIndex(arguments);
++		BagOfValues bag = (BagOfValues)arguments[bagIndex];
++		Expression[] parameters = arguments.clone();
+ 		for(Value valueFromBag : bag.values()){
+-			BooleanVal r = ref.invoke(context, value, valueFromBag);
++			parameters[bagIndex] = valueFromBag;
++			BooleanVal r = ref.invoke(context, parameters);
+ 			if(!r.get()){
+ 				return BooleanVal.of(false);
+ 			}
+@@ -92,22 +106,15 @@
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:any-of-any")
+ 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
+ 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++	@XacmlFuncParamValidator(validatorClass=AnyOfAnyFunctionParametersValidator.class)
+ 	public static BooleanVal anyOfAny(
+ 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+ 			@XacmlFuncParamFunctionReference FunctionReference ref,
+-			@XacmlFuncParamAnyBag BagOfValues a,
+-			@XacmlFuncParamAnyBag BagOfValues b)
+-		throws EvaluationException
+-	{
+-		for(Value aValue : a.values()){
+-			for(Value bValue : b.values()){
+-				BooleanVal r = ref.invoke(context, aValue, bValue);
+-				if(r.get()){
+-					return BooleanVal.of(true);
+-				}
+-			}
+-		}
+-		return BooleanVal.of(false);
++			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
++		throws EvaluationException
++	{
++		requireValidArguments(ref, arguments, false, true);
++		return BooleanVal.of(anyOfAny(context, ref, arguments, new Expression[arguments.length], 0));
+ 	}
+ 
+ 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
+@@ -176,18 +183,149 @@
+ 	public static BagOfValues map(
+ 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
+ 			@XacmlFuncParamFunctionReference FunctionReference ref,
+-			@XacmlFuncParamAnyBag BagOfValues bag)
+-		throws EvaluationException
+-	{
++			@XacmlFuncParamVarArg(typeId="", min=1) Expression... arguments)
++		throws EvaluationException
++	{
++		requireValidArguments(ref, arguments, true, false);
++		int bagIndex = singleBagIndex(arguments);
++		BagOfValues bag = (BagOfValues)arguments[bagIndex];
++		Expression[] parameters = arguments.clone();
+ 		Collection<Value<?>> values = new ArrayList<>(bag.size());
+ 		for(Value<?> v : bag.values()){
+-			values.add(ref.invoke(context, v));
++			parameters[bagIndex] = v;
++			values.add(ref.invoke(context, parameters));
+ 		}
+ 		return ref.getEvaluatesTo()
+ 				.getValueType()
+ 				.bagBuilder()
+ 				.attributes(values)
+ 				.build();
++	}
++
++	private static int singleBagIndex(Expression[] arguments)
++	{
++		for(int i = 0; i < arguments.length; i++){
++			if(arguments[i] instanceof BagOfValues){
++				return i;
++			}
++		}
++		throw new IllegalArgumentException("A single bag argument is required");
++	}
++
++	private static boolean anyOfAny(org.xacml4j.v30.EvaluationContext context,
++			FunctionReference ref, Expression[] arguments, Expression[] parameters, int index)
++		throws EvaluationException
++	{
++		if(index == arguments.length){
++			BooleanVal result = ref.invoke(context, parameters);
++			return result.get();
++		}
++		if(arguments[index] instanceof BagOfValues){
++			for(Value value : ((BagOfValues)arguments[index]).values()){
++				parameters[index] = value;
++				if(anyOfAny(context, ref, arguments, parameters, index + 1)){
++					return true;
++				}
++			}
++			return false;
++		}
++		parameters[index] = arguments[index];
++		return anyOfAny(context, ref, arguments, parameters, index + 1);
++	}
++
++	private static void requireValidArguments(FunctionReference ref, Expression[] arguments,
++			boolean singleBag, boolean booleanResult) throws EvaluationException
++	{
++		List<Expression> parameters = new ArrayList<>();
++		parameters.add(ref);
++		if(arguments != null){
++			parameters.addAll(Arrays.asList(arguments));
++		}
++		if(!validateArguments(parameters, singleBag, booleanResult)){
++			throw new EvaluationException(Status.syntaxError().build(), "Invalid higher-order function arguments");
++		}
++	}
++
++	/** Validate the primitive signature after replacing each bag by its element type. */
++	private static boolean validateArguments(List<Expression> arguments,
++			boolean singleBag, boolean booleanResult)
++	{
++		if(arguments == null || arguments.size() < 2 || !(arguments.get(0) instanceof FunctionReference)){
++			return false;
++		}
++		FunctionReference ref = (FunctionReference)arguments.get(0);
++		if(ref.getEvaluatesTo().isBag() || (booleanResult && !XacmlTypes.BOOLEAN.equals(ref.getEvaluatesTo()))){
++			return false;
++		}
++		int bags = 0;
++		List<Expression> primitives = new ArrayList<>();
++		for(int i = 1; i < arguments.size(); i++){
++			Expression argument = arguments.get(i);
++			if(argument == null || argument instanceof FunctionReference || argument.getEvaluatesTo() == null){
++				return false;
++			}
++			ValueExpTypeInfo type = argument.getEvaluatesTo();
++			if(type.getValueType() == null){
++				return false;
++			}
++			if(type.isBag()){
++				bags++;
++			}
++			primitives.add(new PrimitiveTypeExpression(type.getValueType()));
++		}
++		if(singleBag && bags != 1){
++			return false;
++		}
++		ListIterator<Expression> it = primitives.listIterator();
++		try{
++			for(int i = 0; i < ref.getNumberOfParams(); i++){
++				if(!ref.getParamSpecAt(i).validate(it, true)){
++					return false;
++				}
++			}
++			return !it.hasNext();
++		}catch(RuntimeException e){
++			return false;
++		}
++	}
++
++	private static class PrimitiveTypeExpression implements Expression
++	{
++		private final ValueExpTypeInfo type;
++
++		PrimitiveTypeExpression(ValueExpTypeInfo type){
++			this.type = type;
++		}
++
++		@Override
++		public ValueExpTypeInfo getEvaluatesTo(){
++			return type;
++		}
++
++		@Override
++		public <T extends Expression> T evaluate(org.xacml4j.v30.EvaluationContext context){
++			throw new IllegalStateException("A validation-only expression cannot be evaluated");
++		}
++
++		@Override
++		public void accept(ExpressionVisitor visitor){
++		}
++	}
++
++	public static class SingleBagFunctionParametersValidator implements FunctionParametersValidator
++	{
++		@Override
++		public boolean validate(FunctionSpec spec, List<Expression> arguments){
++			return validateArguments(arguments, true, true);
++		}
++	}
++
++	public static class AnyOfAnyFunctionParametersValidator implements FunctionParametersValidator
++	{
++		@Override
++		public boolean validate(FunctionSpec spec, List<Expression> arguments){
++			return validateArguments(arguments, false, true);
++		}
+ 	}
+ 
+ 	/**
+@@ -212,14 +350,14 @@
+ 			Preconditions.checkArgument(arguments != null,
+ 					"Can't resolve function=\"%s\" return type " +
+ 					"dynamically, arguments must be specified", spec.getId());
+-			Preconditions.checkArgument(arguments.size() == spec.getNumberOfParams(),
++			Preconditions.checkArgument(!arguments.isEmpty(),
+ 					"Can't resolve function=\"%s\" return type " +
+-					"dynamically, function requires 2 parameters to be specified", spec.getId());
++					"dynamically, a function reference must be specified", spec.getId());
+ 			Expression ref = arguments.get(0);
+ 			Preconditions.checkArgument(ref instanceof FunctionReference,
+ 					"First function argument must be function reference");
+-			ValueType type = (ValueType)ref.getEvaluatesTo();
+-			return type.bagType();
++			Preconditions.checkArgument(!ref.getEvaluatesTo().isBag(), "The referenced function must return a primitive value");
++			return ref.getEvaluatesTo().getValueType().bagType();
+ 		}
+ 
+ 		@Override
+@@ -228,16 +366,7 @@
+ 			if(log.isDebugEnabled()){
+ 				log.debug("Validating function=\"{}\" parameters", spec.getId());
+ 			}
+-			if(arguments == null ||
+-					arguments.size() != 2){
+-				return false;
+-			}
+-			Expression exp = arguments.get(0);
+-			if(!(exp instanceof FunctionReference)){
+-				return false;
+-			}
+-			FunctionReference ref = (FunctionReference)exp;
+-			return ref.getNumberOfParams() == 1;
++			return validateArguments(arguments, true, false);
+ 		}
+ 	}
+ }
+--- a/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java
++++ b/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java
+@@ -31,12 +31,23 @@
+ import java.util.List;
+ import java.util.Optional;
+ 
++import static org.easymock.EasyMock.createMock;
++import static org.easymock.EasyMock.expect;
++import static org.easymock.EasyMock.replay;
++
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+ import org.junit.runners.Parameterized;
++import org.xacml4j.v30.EvaluationContext;
++import org.xacml4j.v30.Expression;
++import org.xacml4j.v30.ValueExp;
++import org.xacml4j.v30.policy.Apply;
++import org.xacml4j.v30.policy.FunctionReference;
+ import org.xacml4j.v30.policy.FunctionSpec;
+ import org.xacml4j.v30.policy.function.FunctionProvider;
+ import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
++import org.xacml4j.v30.types.BooleanVal;
++import org.xacml4j.v30.types.XacmlTypes;
+ 
+ /**
+  * XACML 3.0 Appendix A.3.12 specifies four 3.0 names and three unchanged
+@@ -90,4 +101,46 @@
+ 			assertSame(resolved.get(), FUNCTIONS.getFunction(legacy).get());
+ 		}
+ 	}
++
++	@Test
++	public void evaluatesStandardAndLegacyNamesIdentically() throws Exception
++	{
++		String operation = canonical.substring(canonical.lastIndexOf(':') + 1);
++		boolean map = operation.equals("map");
++		FunctionReference ref = new FunctionReference(FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:1.0:function:"
++				+ (map ? "string-normalize-to-lower-case" : "string-equal")).get());
++		Expression[] arguments;
++		ValueExp expected;
++		if (map) {
++			arguments = new Expression[]{ref, XacmlTypes.STRING.bagBuilder().value("Hello", "World!").build()};
++			expected = XacmlTypes.STRING.bagBuilder().value("hello", "world!").build();
++		} else if (operation.equals("any-of")) {
++			arguments = new Expression[]{ref, XacmlTypes.STRING.ofAny("Paul"), XacmlTypes.STRING.bagBuilder().value("John", "Paul", "George", "Ringo").build()};
++			expected = BooleanVal.of(true);
++		} else if (operation.equals("all-of")) {
++			arguments = new Expression[]{ref, XacmlTypes.STRING.ofAny("a"), XacmlTypes.STRING.bagBuilder().value("a", "a").build()};
++			expected = BooleanVal.of(true);
++		} else {
++			arguments = new Expression[]{ref, XacmlTypes.STRING.bagBuilder().value("a").build(), XacmlTypes.STRING.bagBuilder().value("a").build()};
++			expected = BooleanVal.of(true);
++		}
++		for (boolean validate : new boolean[]{false, true}) {
++			EvaluationContext context = createMock(EvaluationContext.class);
++			expect(context.isValidateFuncParamsAtRuntime()).andStubReturn(validate);
++			replay(context);
++			ValueExp actual = evaluate(identifier, arguments, context);
++			assertEquals(expected, actual);
++			assertEquals(actual, evaluate(canonical, arguments, context));
++			if (legacy != null) {
++				assertEquals(actual, evaluate(legacy, arguments, context));
++			}
++		}
++	}
++
++	private static ValueExp evaluate(String identifier, Expression[] arguments, EvaluationContext context) throws Exception
++	{
++		FunctionSpec spec = FUNCTIONS.getFunction(identifier).get();
++		spec.validateParametersAndThrow(java.util.Arrays.asList(arguments));
++		return Apply.builder(spec).param(arguments).build().evaluate(context);
++	}
+ }
+--- a/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java
++++ b/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java
+@@ -31,12 +31,25 @@
+ import java.util.List;
+ import java.util.Optional;
+ 
++import static org.easymock.EasyMock.createMock;
++import static org.easymock.EasyMock.expect;
++import static org.easymock.EasyMock.replay;
++
+ import org.junit.Test;
+ import org.junit.runner.RunWith;
+ import org.junit.runners.Parameterized;
++import org.xacml4j.v30.BagOfValues;
++import org.xacml4j.v30.EvaluationContext;
++import org.xacml4j.v30.Expression;
++import org.xacml4j.v30.ValueExp;
++import org.xacml4j.v30.policy.Apply;
+ import org.xacml4j.v30.policy.FunctionSpec;
+ import org.xacml4j.v30.policy.function.FunctionProvider;
+ import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
++import org.xacml4j.v30.types.BooleanVal;
++import org.xacml4j.v30.types.Value;
++import org.xacml4j.v30.types.ValueType;
++import org.xacml4j.v30.types.XacmlTypes;
+ 
+ /**
+  * XACML 3.0 Appendix A.3.10 and A.3.11 define duration bag and set functions.
+@@ -87,4 +100,48 @@
+ 		assertSame(resolved.get(), FUNCTIONS.getFunction(canonical).get());
+ 		assertSame(resolved.get(), FUNCTIONS.getFunction(legacy).get());
+ 	}
++
++	@Test
++	public void evaluatesStandardAndLegacyNamesIdentically() throws Exception
++	{
++		String name = canonical.substring(canonical.lastIndexOf(':') + 1);
++		boolean dayTime = name.startsWith("dayTimeDuration-");
++		ValueType type = dayTime ? XacmlTypes.DAYTIMEDURATION : XacmlTypes.YEARMONTHDURATION;
++		String operation = name.substring(name.indexOf('-') + 1);
++		Value a = type.ofAny(dayTime ? "PT1S" : "P1M");
++		Value b = type.ofAny(dayTime ? "PT2S" : "P2M");
++		Value c = type.ofAny(dayTime ? "PT3S" : "P3M");
++		BagOfValues ab = type.bagOf(a, b);
++		BagOfValues bc = type.bagOf(b, c);
++		Expression[] arguments;
++		ValueExp expected;
++		switch (operation) {
++		case "one-and-only": arguments = new Expression[]{type.bagOf(a)}; expected = a; break;
++		case "bag-size": arguments = new Expression[]{ab}; expected = XacmlTypes.INTEGER.ofAny(2); break;
++		case "is-in": arguments = new Expression[]{b, ab}; expected = BooleanVal.of(true); break;
++		case "bag": arguments = new Expression[]{a, b}; expected = ab; break;
++		case "intersection": arguments = new Expression[]{ab, bc}; expected = type.bagOf(b); break;
++		case "union": arguments = new Expression[]{ab, bc}; expected = type.bagOf(a, b, c); break;
++		case "subset": arguments = new Expression[]{type.bagOf(a), ab}; expected = BooleanVal.of(true); break;
++		case "at-least-one-member-of": arguments = new Expression[]{ab, bc}; expected = BooleanVal.of(true); break;
++		case "set-equals": arguments = new Expression[]{ab, type.bagOf(b, a)}; expected = BooleanVal.of(true); break;
++		default: throw new AssertionError("Uncovered duration operation " + operation);
++		}
++		for (boolean validate : new boolean[]{false, true}) {
++			EvaluationContext context = createMock(EvaluationContext.class);
++			expect(context.isValidateFuncParamsAtRuntime()).andStubReturn(validate);
++			replay(context);
++			ValueExp actual = evaluate(identifier, arguments, context);
++			assertEquals(expected, actual);
++			assertEquals(actual, evaluate(canonical, arguments, context));
++			assertEquals(actual, evaluate(legacy, arguments, context));
++		}
++	}
++
++	private static ValueExp evaluate(String identifier, Expression[] arguments, EvaluationContext context) throws Exception
++	{
++		FunctionSpec spec = FUNCTIONS.getFunction(identifier).get();
++		spec.validateParametersAndThrow(java.util.Arrays.asList(arguments));
++		return Apply.builder(spec).param(arguments).build().evaluate(context);
++	}
+ }
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+@@ -190,6 +190,17 @@
+ 					.invalidFunctionParameter(functionId, spec);
+ 		}
+ 		paramSpec.add(spec);
++		return this;
++	}
++
++	/** A variadic sequence of primitive values or bags, for higher-order functions. */
++	public FunctionSpecBuilder anyValuesVarArg(int min, int max) {
++		Preconditions.checkArgument(min >= 0 && max > min);
++		if (hadVarArg) {
++			throw new SyntaxException("Can't add vararg parameter after vararg parameter");
++		}
++		hadVarArg = true;
++		paramSpec.add(new FunctionParamValueTypeSequenceSpec(min, max));
+ 		return this;
+ 	}
+ 
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java
+@@ -26,6 +26,7 @@
+ 
+ import org.xacml4j.v30.Expression;
+ import org.xacml4j.v30.ValueExpTypeInfo;
++import org.xacml4j.v30.policy.FunctionReference;
+ import org.xacml4j.v30.policy.PolicySyntaxException;
+ import org.xacml4j.v30.policy.function.impl.BaseFunctionParamSpec;
+ 
+@@ -53,10 +54,19 @@
+ 			Integer min, 
+ 			Integer max,
+ 			ValueExpTypeInfo paramType){
++		this(min, max, paramType, false);
++	}
++
++	public FunctionParamValueTypeSequenceSpec(Integer min, Integer max){
++		this(min, max, null, true);
++	}
++
++	private FunctionParamValueTypeSequenceSpec(Integer min, Integer max,
++			ValueExpTypeInfo paramType, boolean anyValueType){
+ 		super((min == null || min == 0), true, null);
+ 		this.min = min == null?0:min;
+ 		this.max = max == null?Integer.MAX_VALUE:max;
+-		this.paramType = java.util.Objects.requireNonNull(paramType, "paramType");;
++		this.paramType = anyValueType ? null : java.util.Objects.requireNonNull(paramType, "paramType");
+ 	}
+ 
+ 	public FunctionParamValueTypeSequenceSpec(int min,
+@@ -89,7 +99,7 @@
+ 
+ 	@Override
+ 	public boolean isValidParamType(ValueExpTypeInfo type){
+-		return this.paramType.equals(type);
++		return paramType == null ? type != null && type.getValueType() != null : paramType.equals(type);
+ 	}
+ 
+ 	@Override
+@@ -113,7 +123,7 @@
+ 			}
+ 			ValueExpTypeInfo expType = exp.getEvaluatesTo();
+ 			// variadic param is always last
+-			if(!expType.equals(paramType))
++			if(!isValidParamType(expType) || (paramType == null && exp instanceof FunctionReference))
+ 			{
+ 				if(suppressExceptions){
+ 					return false;
+@@ -170,7 +180,7 @@
+ 		FunctionParamValueTypeSequenceSpec s = (FunctionParamValueTypeSequenceSpec)o;
+ 		return Objects.equal(min, s.min) &&
+ 				Objects.equal(max, s.max) &&
+-				paramType.equals(s.paramType);
++				Objects.equal(paramType, s.paramType);
+ 	}
+ 	
+ 	public void accept(FunctionParamSpecVisitor v){
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java
+@@ -105,6 +105,7 @@
+ 				         (legacyFuncId == null) ? null : legacyFuncId.id());
+ 		Annotation[][] params = m.getParameterAnnotations();
+ 		Class<?>[] types = m.getParameterTypes();
++		Class<?> varArgComponentType = m.isVarArgs() ? types[types.length - 1].getComponentType() : null;
+ 		boolean evalContextParamFound = false;
+ 		for (int i = 0; i < params.length; i++)
+ 		{
+@@ -190,6 +191,12 @@
+ 									+ "varArg parameter must be a last parameter in the method");
+ 				}
+ 				XacmlFuncParamVarArg param = (XacmlFuncParamVarArg) params[i][0];
++				// An empty type id denotes the mixed primitive/bag sequence used by higher-order functions.
++				if (param.typeId().isEmpty() && !param.isBag()
++						&& Expression.class.isAssignableFrom(types[i].getComponentType())) {
++					b.anyValuesVarArg(param.min(), param.max());
++					continue;
++				}
+ 				java.util.Optional<ValueType> type = XacmlTypes.getType(param.typeId());
+ 				if(!type.isPresent()){
+ 					throw SyntaxException.invalidDataTypeId(param.typeId());
+@@ -231,7 +238,7 @@
+ 					(validator != null) ? createValidator(m, validator
+ 							.validatorClass()) : null,
+ 					new DefaultFunctionInvocation(invocationFactory.create(instance, m),
+-					                              evalContextParamFound));
++					                              evalContextParamFound, varArgComponentType));
+ 		}
+ 		if (returnTypeResolver != null) {
+ 			return b.build(createResolver(m, returnTypeResolver.resolverClass()),
+@@ -239,7 +246,7 @@
+ 							.validatorClass()) : null,
+ 					new DefaultFunctionInvocation(invocationFactory
+ 							.<ValueExp>create(instance, m),
+-							evalContextParamFound));
++							evalContextParamFound, varArgComponentType));
+ 		}
+ 		throw SyntaxException.invalidResolverMethod(m,
+ 		                                            "Either static return type or " +
+--- a/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java
+@@ -45,6 +45,7 @@
+ 
+ 	private boolean evalContextRequired;
+ 	private PolicyToPlatformFunctionInvocation<ValueExp> invocation;
++	private final Class<?> varArgComponentType;
+ 
+ 	/**
+ 	 * Constructs XACML function invoker
+@@ -57,8 +58,16 @@
+ 			PolicyToPlatformFunctionInvocation<ValueExp> invocation,
+ 			boolean evalContextRequired)
+ 	{
++		this(invocation, evalContextRequired, null);
++	}
++
++	DefaultFunctionInvocation(
++			PolicyToPlatformFunctionInvocation<ValueExp> invocation,
++			boolean evalContextRequired, Class<?> varArgComponentType)
++	{
+ 		this.invocation = Objects.requireNonNull(invocation, "invocation");
+ 		this.evalContextRequired = evalContextRequired;
++		this.varArgComponentType = varArgComponentType;
+ 	}
+ 
+ 	@Override
+@@ -102,7 +111,9 @@
+ 						          size, numOfParms - 1);
+ 					}
+ 					Expression exp = arguments.get(numOfParms - 1);
+-					if(exp == null){
++					if(varArgComponentType != null){
++						varArgArray = (Object[])Array.newInstance(varArgComponentType, size);
++					}else if(exp == null){
+ 						varArgArray = (Object[])Array.newInstance(Object.class, size);
+ 					}else {
+ 						varArgArray = (Object[])Array.newInstance(exp.getClass(), size);
+--- /dev/null
++++ b/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java
+@@ -0,0 +1,386 @@
++package org.xacml4j.v30.policy.function.impl;
++
++/*
++ * #%L
++ * Xacml4J Core Engine Implementation
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import static org.easymock.EasyMock.capture;
++import static org.easymock.EasyMock.createNiceMock;
++import static org.easymock.EasyMock.expect;
++import static org.easymock.EasyMock.expectLastCall;
++import static org.easymock.EasyMock.replay;
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertThrows;
++import static org.junit.Assert.assertTrue;
++
++import java.util.Arrays;
++import java.util.Collection;
++import java.util.List;
++
++import org.easymock.Capture;
++import org.junit.Before;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++import org.junit.runners.Parameterized;
++import org.xacml4j.v30.BagOfValues;
++import org.xacml4j.v30.EvaluationContext;
++import org.xacml4j.v30.EvaluationException;
++import org.xacml4j.v30.Expression;
++import org.xacml4j.v30.Status;
++import org.xacml4j.v30.SyntaxException;
++import org.xacml4j.v30.ValueExp;
++import org.xacml4j.v30.policy.Apply;
++import org.xacml4j.v30.policy.Condition;
++import org.xacml4j.v30.policy.ConditionResult;
++import org.xacml4j.v30.policy.FunctionReference;
++import org.xacml4j.v30.policy.FunctionSpec;
++import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
++import org.xacml4j.v30.policy.function.FunctionProvider;
++import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
++import org.xacml4j.v30.policy.function.XacmlFuncParam;
++import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
++import org.xacml4j.v30.policy.function.XacmlFuncSpec;
++import org.xacml4j.v30.types.BooleanVal;
++import org.xacml4j.v30.types.StringVal;
++import org.xacml4j.v30.types.Value;
++import org.xacml4j.v30.types.XacmlTypes;
++
++/**
++ * XACML 3.0 A.3.12: substitute the one bag in its original argument position;
++ * any-of-any takes the cross product of every bag. All calls use Apply and
++ * the default provider with runtime parameter checking both disabled/enabled.
++ * https://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html
++ */
++@RunWith(Parameterized.class)
++public class HigherOrderVariadicFunctionsTest
++{
++	private static final FunctionProvider FUNCTIONS =
++			FunctionProviderBuilder.builder().withDefaultFunctions().build();
++	private final boolean runtimeValidation;
++	private EvaluationContext context;
++	private Capture<Status> status;
++
++	public HigherOrderVariadicFunctionsTest(boolean runtimeValidation)
++	{
++		this.runtimeValidation = runtimeValidation;
++	}
++
++	@Parameterized.Parameters(name="runtimeValidation={0}")
++	public static Collection<Object[]> modes()
++	{
++		return Arrays.asList(new Object[]{false}, new Object[]{true});
++	}
++
++	@Before
++	public void context()
++	{
++		context = createNiceMock(EvaluationContext.class);
++		expect(context.isValidateFuncParamsAtRuntime()).andStubReturn(runtimeValidation);
++		status = Capture.newInstance();
++		context.setEvaluationStatus(capture(status));
++		expectLastCall().anyTimes();
++		replay(context);
++	}
++
++	@Test
++	public void anyOfSpecExample() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of", ref("string-equal"), string("Paul"),
++				strings("John", "Paul", "George", "Ringo"));
++	}
++
++	@Test
++	public void anyOfThreeArgumentPredicate() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of", orderedStrings(), string("prefix"),
++				string("suffix"), strings("other", "match"));
++	}
++
++	@Test
++	public void anyOfBagFirst() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of", ref("string-equal"), strings("a", "b"), string("b"));
++	}
++
++	@Test
++	public void anyOfPreservesEveryBagPosition() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of", orderedStrings(), strings("other", "prefix"),
++				string("suffix"), string("match"));
++		assertValue(BooleanVal.of(true), "any-of", orderedStrings(), string("prefix"),
++				strings("other", "suffix"), string("match"));
++		assertValue(BooleanVal.of(false), "any-of", orderedStrings(), string("suffix"),
++				string("prefix"), strings("match"));
++	}
++
++	@Test
++	public void allOfSpecExample() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "all-of", ref("integer-greater-than"), integer(10), integers(9, 3, 4, 2));
++	}
++
++	@Test
++	public void allOfPreservesEveryBagPosition() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "all-of", orderedStrings(), strings("prefix", "prefix"),
++				string("suffix"), string("match"));
++		assertValue(BooleanVal.of(true), "all-of", orderedStrings(), string("prefix"),
++				strings("suffix", "suffix"), string("match"));
++		assertValue(BooleanVal.of(false), "all-of", orderedStrings(), string("prefix"),
++				string("suffix"), strings("match", "other"));
++	}
++
++	@Test
++	public void unaryPredicateNeedsOnlyOneBag() throws Exception
++	{
++		FunctionReference unary = testRef("nonEmpty", StringVal.class);
++		assertValue(BooleanVal.of(true), "any-of", unary, strings("", "a"));
++		assertValue(BooleanVal.of(false), "all-of", unary, strings("a", ""));
++	}
++
++	@Test
++	public void variadicPredicateAcceptsMatchingOperandTypes() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of", ref("and"), BooleanVal.of(true),
++				XacmlTypes.BOOLEAN.bagOf(BooleanVal.of(false), BooleanVal.of(true)), BooleanVal.of(true));
++	}
++
++	@Test
++	public void anyOfAnySpecExample() throws Exception
++	{
++		// The normative example has two bags, not a primitive plus two bags.
++		assertValue(BooleanVal.of(true), "any-of-any", ref("string-equal"),
++				strings("Ringo", "Mary"), strings("John", "Paul", "George", "Ringo"));
++	}
++
++	@Test
++	public void anyOfAnyMixedCrossProduct() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of-any", orderedStrings(), string("prefix"),
++				strings("other", "suffix"), strings("other", "match"));
++		assertValue(BooleanVal.of(false), "any-of-any", orderedStrings(), string("prefix"),
++				strings("suffix"), strings("other"));
++	}
++
++	@Test
++	public void anyOfAnyThreeBags() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of-any", orderedStrings(), strings("other", "prefix"),
++				strings("other", "suffix"), strings("other", "match"));
++	}
++
++	@Test
++	public void anyOfAnyAllowsAllPrimitiveOperands() throws Exception
++	{
++		assertValue(BooleanVal.of(true), "any-of-any", ref("string-equal"), string("a"), string("a"));
++		assertValue(BooleanVal.of(false), "any-of-any", ref("string-equal"), string("a"), string("b"));
++	}
++
++	@Test
++	public void mapSpecExample() throws Exception
++	{
++		assertValue(strings("hello", "world!"), "map", ref("string-normalize-to-lower-case"), strings("Hello", "World!"));
++	}
++
++	@Test
++	public void mapConcatenateWithPrimitive() throws Exception
++	{
++		assertValue(strings("Hello A", "Hello B"), "map", ref("string-concatenate", "2.0"),
++				string("Hello "), strings("A", "B"));
++	}
++
++	@Test
++	public void mapBagFirstPreservesOrderAndMultiplicity() throws Exception
++	{
++		assertValue(strings("A!", "A!", "B!"), "map", ref("string-concatenate", "2.0"),
++				strings("A", "A", "B"), string("!"));
++	}
++
++	@Test
++	public void emptyBagsHaveIdentityResults() throws Exception
++	{
++		assertValue(BooleanVal.of(false), "any-of", ref("string-equal"), string("a"), strings());
++		assertValue(BooleanVal.of(true), "all-of", ref("string-equal"), string("a"), strings());
++		assertValue(BooleanVal.of(false), "any-of-any", ref("string-equal"), strings(), strings("a"));
++		assertValue(strings(), "map", ref("string-normalize-to-lower-case"), strings());
++	}
++
++	@Test
++	public void anyOfNoBagIsSyntaxErrorAndIndeterminate() throws Exception
++	{
++		assertInvalid("any-of", ref("string-equal"), string("a"), string("a"));
++	}
++
++	@Test
++	public void allOfNoBagIsSyntaxErrorAndIndeterminate() throws Exception
++	{
++		assertInvalid("all-of", ref("string-equal"), string("a"), string("a"));
++	}
++
++	@Test
++	public void mapNoBagIsSyntaxErrorAndIndeterminate() throws Exception
++	{
++		assertInvalid("map", ref("string-normalize-to-lower-case"), string("a"));
++	}
++
++	@Test
++	public void anyOfTwoBagsIsSyntaxErrorAndIndeterminate() throws Exception
++	{
++		assertInvalid("any-of", ref("string-equal"), strings("a"), strings("a"));
++	}
++
++	@Test
++	public void allOfTwoBagsIsSyntaxErrorAndIndeterminate() throws Exception
++	{
++		assertInvalid("all-of", ref("string-equal"), strings("a"), strings("a"));
++	}
++
++	@Test
++	public void mapTwoBagsIsSyntaxErrorAndIndeterminate() throws Exception
++	{
++		assertInvalid("map", ref("string-concatenate", "2.0"), strings("a"), strings("b"));
++	}
++
++	@Test
++	public void missingOperandsAreSyntaxErrorAndIndeterminate() throws Exception
++	{
++		assertInvalid("any-of", ref("string-equal"));
++		assertInvalid("all-of", ref("string-equal"));
++		assertInvalid("any-of-any", ref("string-equal"));
++		assertInvalid("map", ref("string-normalize-to-lower-case"));
++	}
++
++	@Test
++	public void packetBinaryPredicateWithThreeOperandsIsArityError() throws Exception
++	{
++		assertInvalid("any-of-any", ref("string-equal"), string("Ringo"),
++				strings("John", "Paul"), strings("George", "Ringo"));
++	}
++
++	@Test
++	public void referencedPredicateTypesAndReturnTypeAreChecked() throws Exception
++	{
++		assertInvalid("any-of", ref("string-equal"), integer(1), strings("a"));
++		assertInvalid("any-of", ref("string-equal"), string("a"), integers());
++		assertInvalid("any-of", ref("string-normalize-to-lower-case"), strings("a"));
++	}
++
++	@Test
++	public void mapRejectsBagReturningFunctionAtValidation()
++	{
++		FunctionSpec spec = higher("map");
++		List<Expression> arguments = Arrays.asList(ref("string-bag"), strings("a"));
++		assertFalse(spec.validateParameters(arguments));
++		assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(arguments));
++	}
++
++	private void assertValue(ValueExp expected, String operation, Expression... arguments) throws Exception
++	{
++		FunctionSpec spec = higher(operation);
++		spec.validateParametersAndThrow(Arrays.asList(arguments));
++		Apply apply = Apply.builder(spec).param(arguments).build();
++		assertEquals(expected.getEvaluatesTo(), apply.getEvaluatesTo());
++		assertEquals(expected, apply.evaluate(context));
++	}
++
++	private void assertInvalid(String operation, Expression... arguments) throws Exception
++	{
++		FunctionSpec spec = higher(operation);
++		List<Expression> params = Arrays.asList(arguments);
++		assertFalse("Invalid parameters accepted for " + operation, spec.validateParameters(params));
++		assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(params));
++		Apply apply = Apply.builder(spec).param(arguments).build();
++		assertThrows(EvaluationException.class, () -> apply.evaluate(context));
++		Expression predicate = operation.equals("map")
++				? Apply.builder(FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in").get())
++						.param(string("a"), apply).build() : apply;
++		assertEquals(ConditionResult.INDETERMINATE, new Condition(predicate).evaluate(context));
++		assertTrue("Indeterminate must carry an evaluation status", status.hasCaptured());
++	}
++
++	private static FunctionSpec higher(String operation)
++	{
++		return FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:3.0:function:" + operation).get();
++	}
++
++	private static FunctionReference ref(String operation)
++	{
++		return ref(operation, "1.0");
++	}
++
++	private static FunctionReference ref(String operation, String version)
++	{
++		return new FunctionReference(FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:" + version + ":function:" + operation).get());
++	}
++
++	private static StringVal string(String value)
++	{
++		return StringVal.of(value);
++	}
++
++	private static Value integer(long value)
++	{
++		return XacmlTypes.INTEGER.ofAny(value);
++	}
++
++	private static BagOfValues strings(String... values)
++	{
++		return XacmlTypes.STRING.bagBuilder().value((Object[]) values).build();
++	}
++
++	private static BagOfValues integers(Integer... values)
++	{
++		return XacmlTypes.INTEGER.bagBuilder().value((Object[]) values).build();
++	}
++
++	private static FunctionReference orderedStrings() throws Exception
++	{
++		return testRef("orderedStrings", StringVal.class, StringVal.class, StringVal.class);
++	}
++
++	private static FunctionReference testRef(String name, Class<?>... types) throws Exception
++	{
++		return new FunctionReference(new JavaMethodToFunctionSpecConverter(FunctionInvocationFactory.defaultFactory())
++				.createFunctionSpec(Predicates.class.getMethod(name, types)));
++	}
++
++	public static class Predicates
++	{
++		@XacmlFuncSpec(id="urn:xacml4j:test:ordered-strings")
++		@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++		public static BooleanVal orderedStrings(
++				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal prefix,
++				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal suffix,
++				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal element)
++		{
++			return BooleanVal.of(prefix.get().equals("prefix") && suffix.get().equals("suffix") && element.get().equals("match"));
++		}
++
++		@XacmlFuncSpec(id="urn:xacml4j:test:non-empty")
++		@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++		public static BooleanVal nonEmpty(
++				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal value)
++		{
++			return BooleanVal.of(!value.get().isEmpty());
++		}
++	}
++}
+--- /dev/null
++++ b/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java
+@@ -0,0 +1,121 @@
++package org.xacml4j.v30.policy.function.impl;
++
++/*
++ * #%L
++ * Xacml4J Core Engine Implementation
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import static org.easymock.EasyMock.createMock;
++import static org.easymock.EasyMock.expect;
++import static org.easymock.EasyMock.replay;
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertThrows;
++
++import java.util.Arrays;
++
++import org.junit.Test;
++import org.xacml4j.v30.BagOfValues;
++import org.xacml4j.v30.EvaluationContext;
++import org.xacml4j.v30.Expression;
++import org.xacml4j.v30.SyntaxException;
++import org.xacml4j.v30.policy.Apply;
++import org.xacml4j.v30.policy.FunctionReference;
++import org.xacml4j.v30.policy.FunctionSpec;
++import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
++import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
++import org.xacml4j.v30.policy.function.XacmlFuncParamVarArg;
++import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
++import org.xacml4j.v30.policy.function.XacmlFuncSpec;
++import org.xacml4j.v30.types.BooleanVal;
++import org.xacml4j.v30.types.StringVal;
++import org.xacml4j.v30.types.XacmlTypes;
++
++/** Characterizes the mixed varargs metadata/packing required by XACML 3.0 A.3.12. */
++public class HigherOrderVariadicInvocationTest
++{
++	@Test
++	public void mixedValuesReachDeclaredExpressionArray() throws Exception
++	{
++		FunctionSpec spec = mixedSpec();
++		Expression[] arguments = {StringVal.of("prefix"), XacmlTypes.STRING.bagOf(StringVal.of("a")), StringVal.of("suffix")};
++		spec.validateParametersAndThrow(Arrays.asList(arguments));
++		for (boolean validate : new boolean[]{false, true}) {
++			assertEquals(BooleanVal.of(true), Apply.builder(spec).param(arguments).build().evaluate(context(validate)));
++		}
++	}
++
++	@Test
++	public void mixedSequenceStillChecksMinimumAndExcludesFunctionReferences() throws Exception
++	{
++		FunctionSpec spec = mixedSpec();
++		assertFalse(spec.validateParameters(Arrays.asList()));
++		assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(Arrays.asList()));
++		FunctionReference ref = new FunctionReference(FunctionProviderBuilder.builder().withDefaultFunctions().build()
++				.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-equal").get());
++		assertFalse(spec.validateParameters(Arrays.asList(ref)));
++	}
++
++	@Test
++	public void typedVariadicValidationIsUnchanged() throws Exception
++	{
++		FunctionSpec spec = converter().createFunctionSpec(Methods.class.getMethod("strings", StringVal[].class));
++		assertFalse(spec.validateParameters(Arrays.asList(StringVal.of("a"), XacmlTypes.INTEGER.ofAny(1))));
++		assertEquals(BooleanVal.of(true), Apply.builder(spec).param(StringVal.of("a"), StringVal.of("b"))
++				.build().evaluate(context(true)));
++	}
++
++	private static FunctionSpec mixedSpec() throws Exception
++	{
++		return converter().createFunctionSpec(Methods.class.getMethod("mixed", Expression[].class));
++	}
++
++	private static JavaMethodToFunctionSpecConverter converter()
++	{
++		return new JavaMethodToFunctionSpecConverter(FunctionInvocationFactory.defaultFactory());
++	}
++
++	private static EvaluationContext context(boolean validate)
++	{
++		EvaluationContext context = createMock(EvaluationContext.class);
++		expect(context.isValidateFuncParamsAtRuntime()).andStubReturn(validate);
++		replay(context);
++		return context;
++	}
++
++	public static class Methods
++	{
++		@XacmlFuncSpec(id="urn:xacml4j:test:mixed-values")
++		@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++		public static BooleanVal mixed(@XacmlFuncParamVarArg(typeId="", min=1) Expression... values)
++		{
++			return BooleanVal.of(values.getClass() == Expression[].class && values.length == 3
++					&& values[0].equals(StringVal.of("prefix")) && values[1] instanceof BagOfValues
++					&& values[2].equals(StringVal.of("suffix")));
++		}
++
++		@XacmlFuncSpec(id="urn:xacml4j:test:typed-strings")
++		@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
++		public static BooleanVal strings(@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#string", min=1) StringVal... values)
++		{
++			return BooleanVal.of(values.length == 2 && values[0].get().equals("a") && values[1].get().equals("b"));
++		}
++	}
++}

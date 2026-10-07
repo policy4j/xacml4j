@@ -1,0 +1,53 @@
+{
+  "oasis20": {
+    "nonempty_expected_obligations": [
+      "IIIA001",
+      "IIIA002",
+      "IIIA005",
+      "IIIA006",
+      "IIIA009",
+      "IIIA010",
+      "IIIA013",
+      "IIIA014",
+      "IIIA016",
+      "IIIA017",
+      "IIIA018",
+      "IIIA021",
+      "IIIA022",
+      "IIIA025",
+      "IIIA026"
+    ],
+    "nonempty_status_details": [],
+    "included_attributes": []
+  },
+  "oasis30": {
+    "nonempty_expected_obligations": [
+      "IID302",
+      "IID303",
+      "IID307",
+      "IID308",
+      "IID311",
+      "IID312",
+      "IID316",
+      "IID317",
+      "IIIA001",
+      "IIIA002",
+      "IIIA005",
+      "IIIA006",
+      "IIIA009",
+      "IIIA010",
+      "IIIA013",
+      "IIIA014",
+      "IIIA017",
+      "IIIA018",
+      "IIIA021",
+      "IIIA022",
+      "IIIA025",
+      "IIIA026"
+    ],
+    "nonempty_status_details": [],
+    "included_attributes": [
+      "IIIE302"
+    ]
+  }
+}

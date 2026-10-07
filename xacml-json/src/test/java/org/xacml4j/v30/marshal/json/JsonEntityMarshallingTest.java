@@ -22,26 +22,35 @@ package org.xacml4j.v30.marshal.json;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.xacml4j.v30.types.XacmlTypes.STRING;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.ISO8601DayTimeDuration;
+import org.xacml4j.v30.types.ISO8601Time;
+import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.collect.Iterables;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
+import java.time.Duration;
+
 public class JsonEntityMarshallingTest 
 {
 	private Gson json;
 	
-	@Before
+	@BeforeEach
 	public void init(){
 		this.json = new GsonBuilder()
 				.registerTypeAdapter(Category.class, new CategoryAdapter())
@@ -55,7 +64,7 @@ public class JsonEntityMarshallingTest
 	 * @throws Exception
 	 */
 	@Test
-	@Ignore
+	@Disabled
 	public void testEntityMarshall() throws Exception
 	{
 		Entity entity = Entity.builder()
@@ -131,5 +140,49 @@ public class JsonEntityMarshallingTest
 		assertEquals(a2,  b2);
 		assertEquals(a2,  b1);
 		assertEquals(a1,  b2);
+	}
+
+	@Test
+	public void testUnzonedTimeValueRoundTripPreservesLexicalForm()
+	{
+		Entity entity = Entity.builder().attribute(Attribute.builder("urn:example:time")
+				.value(XacmlTypes.TIME.ofAny("23:00:00")).build()).build();
+		Category category = Category.builder().category(CategoryId.SUBJECT_ACCESS).entity(entity).build();
+		JsonElement jsonValue = json.toJsonTree(category);
+		assertTrue(jsonValue.toString().contains("23:00:00"));
+		Category restored = json.fromJson(jsonValue, Category.class);
+		ISO8601Time time = Iterables.getOnlyElement(restored.getEntity()
+				.findValues("urn:example:time", XacmlTypes.TIME));
+		assertEquals("23:00:00", time.toXacmlString());
+		assertFalse(time.isTimeZoneDefined());
+	}
+
+	@Test
+	public void dayTimeDurationRoundTripPreservesWholeSecondDuration()
+	{
+		ISO8601DayTimeDuration duration = ISO8601DayTimeDuration.of(Duration.ofSeconds(20));
+		Entity entity = Entity.builder().attribute(Attribute.builder("duration")
+				.value(duration).build()).build();
+		Category category = Category.builder().category(CategoryId.SUBJECT_ACCESS).entity(entity).build();
+
+		JsonElement encoded = json.toJsonTree(category);
+		Category restored = json.fromJson(encoded, Category.class);
+
+		assertEquals(category, restored);
+		ISO8601DayTimeDuration restoredDuration = Iterables.getOnlyElement(
+				restored.getEntity().findValues("duration", XacmlTypes.DAYTIMEDURATION));
+		assertEquals("P0DT0H0M20S", restoredDuration.toXacmlString());
+	}
+
+	@Test
+	public void integerUsesXmlSchemaLexicalFormInJson()
+	{
+		Entity entity = Entity.builder().attribute(Attribute.builder("integer")
+				.value(XacmlTypes.INTEGER.ofAny(56)).build()).build();
+		Category category = Category.builder().category(CategoryId.SUBJECT_ACCESS).entity(entity).build();
+		JsonElement encoded = json.toJsonTree(category);
+		assertEquals("56", encoded.getAsJsonObject().getAsJsonArray("Attribute")
+				.get(0).getAsJsonObject().get("Value").getAsString());
+		assertEquals(category, json.fromJson(encoded, Category.class));
 	}
 }

@@ -1,0 +1,613 @@
+[
+  {
+    "suite": "oasis20",
+    "case_id": "IIA004",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis20/IIA004 policy oasis-xacml20-compat-test/IIA004Policy.xml",
+    "classification": "fixture/spec issue",
+    "reason": "Deliberately invalid policy omits AttributeId; importer rejects it; IIA004Special.txt permits validation-time rejection but the response-only path cannot evaluate it",
+    "bug_id": "BUG-TBD-IIA004",
+    "evidence": [
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIA004Policy.xml:1",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIA004Special.txt:3"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIA005",
+    "observed_outcome": "error",
+    "message": "",
+    "classification": "engine defect",
+    "reason": "Request omits AttributeId; XML mapping throws IllegalArgumentException before the PDP can return the expected syntax-error Indeterminate",
+    "bug_id": "BUG-TBD-IIA005",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/Attribute.java:163",
+      "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java:257"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIC012",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis20/IIC012 policy oasis-xacml20-compat-test/IIC012Policy.xml",
+    "classification": "fixture/spec issue",
+    "reason": "Fixture declares a non-boolean Condition; static policy validation rejects its integer result before the supplied runtime Indeterminate response can be produced",
+    "bug_id": "BUG-TBD-IIC012",
+    "evidence": [
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIC012Policy.xml:17",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/Condition.java:59"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIC020",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <INDETERMINATE>",
+    "classification": "engine defect",
+    "reason": "integer-divide returns DoubleVal; integer-greater-than-or-equal then fails invocation type matching and returns Indeterminate instead of Permit",
+    "bug_id": "BUG-TBD-IIC020",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java:166"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIC001",
+    "observed_outcome": "failed",
+    "message": "expected: <urn:root> but was: <null>",
+    "classification": "engine defect",
+    "reason": "2.0 hierarchy response loses ResourceId urn:root; the XML mapper reads only included resource attributes but this single-resource request does not include them",
+    "bug_id": "BUG-TBD-IIIC001",
+    "evidence": [
+      "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java:156",
+      "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java:202"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIC002",
+    "observed_outcome": "failed",
+    "message": "expected: <3> but was: <1>",
+    "classification": "engine defect",
+    "reason": "Configured default multiple-resource chain does not expand hierarchical Children/Descendants scope; expected 3 results but received one; IIICSpecial.txt describes the required resource tree",
+    "bug_id": "BUG-TBD-IIIC002",
+    "evidence": [
+      "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandler.java:42",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIICSpecial.txt:1"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIC003",
+    "observed_outcome": "failed",
+    "message": "expected: <7> but was: <1>",
+    "classification": "engine defect",
+    "reason": "Configured default multiple-resource chain does not expand hierarchical Children/Descendants scope; expected 7 results but received one; IIICSpecial.txt describes the required resource tree",
+    "bug_id": "BUG-TBD-IIIC003",
+    "evidence": [
+      "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandler.java:42",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIICSpecial.txt:1"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIG001",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <NOT_APPLICABLE>",
+    "classification": "engine defect",
+    "reason": "Legacy XPath over full request Attribute/Subject nodes is transformed into category Content lookup; it finds no request nodes or fails invocation instead of the vendored expected decision",
+    "bug_id": "BUG-TBD-IIIG001",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XPathFunctions.java:76",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG001Policy.xml:20"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIG002",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <NOT_APPLICABLE>",
+    "classification": "engine defect",
+    "reason": "Legacy XPath over full request Attribute/Subject nodes is transformed into category Content lookup; it finds no request nodes or fails invocation instead of the vendored expected decision",
+    "bug_id": "BUG-TBD-IIIG002",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XPathFunctions.java:76",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG002Policy.xml:20"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIG003",
+    "observed_outcome": "failed",
+    "message": "expected: <NOT_APPLICABLE> but was: <INDETERMINATE>",
+    "classification": "engine defect",
+    "reason": "Legacy XPath over full request Attribute/Subject nodes is transformed into category Content lookup; it finds no request nodes or fails invocation instead of the vendored expected decision",
+    "bug_id": "BUG-TBD-IIIG003",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XPathFunctions.java:76",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG003Policy.xml:20"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIG004",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <NOT_APPLICABLE>",
+    "classification": "engine defect",
+    "reason": "Legacy XPath over full request Attribute/Subject nodes is transformed into category Content lookup; it finds no request nodes or fails invocation instead of the vendored expected decision",
+    "bug_id": "BUG-TBD-IIIG004",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XPathFunctions.java:76",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG004Policy.xml:20"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis20",
+    "case_id": "IIIG005",
+    "observed_outcome": "failed",
+    "message": "expected: <NOT_APPLICABLE> but was: <INDETERMINATE>",
+    "classification": "engine defect",
+    "reason": "Legacy XPath over full request Attribute/Subject nodes is transformed into category Content lookup; it finds no request nodes or fails invocation instead of the vendored expected decision",
+    "bug_id": "BUG-TBD-IIIG005",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XPathFunctions.java:76",
+      "xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG005Policy.xml:20"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA004",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIA004 policy xacml3.0-ct-v.0.4/IIA004Policy.xml",
+    "classification": "fixture/spec issue",
+    "reason": "Deliberately invalid policy omits AttributeId; importer rejects it; IIA004Special.txt permits validation-time rejection but the response-only path cannot evaluate it",
+    "bug_id": "BUG-TBD-IIA004",
+    "evidence": [
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIA004Policy.xml:1",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIA004Special.txt:3"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA005",
+    "observed_outcome": "error",
+    "message": "",
+    "classification": "engine defect",
+    "reason": "Request omits AttributeId; XML mapping throws IllegalArgumentException before the PDP can return the expected syntax-error Indeterminate",
+    "bug_id": "BUG-TBD-IIA005",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/Attribute.java:163",
+      "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:504"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA022",
+    "observed_outcome": "failed",
+    "message": "expected: <[56]> but was: <[IntegerVal{type=integer, value=56}]>",
+    "classification": "engine defect",
+    "reason": "Integer response value 56 is serialized as the IntegerVal debug string instead of the XML Schema integer lexical value 56",
+    "bug_id": "BUG-TBD-IIA022",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:198",
+      "xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:341"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA023",
+    "observed_outcome": "error",
+    "message": "Invalid value -870 for Timezone field.",
+    "classification": "fixture/spec issue",
+    "reason": "Fixture expects Permit but request dateTime 1056-11-05T19:08:12-14:30 uses a timezone beyond the XML Schema maximum -14:00; JAXP rejects -870 minutes",
+    "bug_id": "BUG-TBD-IIA023",
+    "evidence": [
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIA023Request.xml:42",
+      "https://www.w3.org/TR/xmlschema-2/#dateTime-timezones"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIA024",
+    "observed_outcome": "failed",
+    "message": "expected: <[56]> but was: <[IntegerVal{type=integer, value=56}]>",
+    "classification": "engine defect",
+    "reason": "Integer response value 56 is serialized as the IntegerVal debug string instead of the XML Schema integer lexical value 56",
+    "bug_id": "BUG-TBD-IIA024",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:198",
+      "xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:341"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC012",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC012 policy xacml3.0-ct-v.0.4/IIC012Policy.xml",
+    "classification": "fixture/spec issue",
+    "reason": "Fixture declares a non-boolean Condition; static policy validation rejects its integer result before the supplied runtime Indeterminate response can be produced",
+    "bug_id": "BUG-TBD-IIC012",
+    "evidence": [
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC012Policy.xml:17",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/Condition.java:59"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC020",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <INDETERMINATE>",
+    "classification": "engine defect",
+    "reason": "integer-divide returns DoubleVal; integer-greater-than-or-equal then fails invocation type matching and returns Indeterminate instead of Permit",
+    "bug_id": "BUG-TBD-IIC020",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java:166"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC300",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <NOT_APPLICABLE>",
+    "classification": "engine defect",
+    "reason": "string-starts-with applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit",
+    "bug_id": "BUG-TBD-IIC300",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:54",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC300Policy.xml:19"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC302",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC302 policy xacml3.0-ct-v.0.4/IIC302Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-starts-with; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC302",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC303",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC303 policy xacml3.0-ct-v.0.4/IIC303Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-starts-with; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC303",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC310",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <NOT_APPLICABLE>",
+    "classification": "engine defect",
+    "reason": "string-ends-with applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit",
+    "bug_id": "BUG-TBD-IIC310",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:54",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC310Policy.xml:19"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC312",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC312 policy xacml3.0-ct-v.0.4/IIC312Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-ends-with; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC312",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC313",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC313 policy xacml3.0-ct-v.0.4/IIC313Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-ends-with; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC313",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC320",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <NOT_APPLICABLE>",
+    "classification": "engine defect",
+    "reason": "string-contains applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit",
+    "bug_id": "BUG-TBD-IIC320",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:54",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC320Policy.xml:19"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC322",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC322 policy xacml3.0-ct-v.0.4/IIC322Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-contains; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC322",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC323",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC323 policy xacml3.0-ct-v.0.4/IIC323Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-contains; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC323",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC330",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC330 policy xacml3.0-ct-v.0.4/IIC330Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC330",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC331",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC331 policy xacml3.0-ct-v.0.4/IIC331Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC331",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC332",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC332 policy xacml3.0-ct-v.0.4/IIC332Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC332",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC333",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC333 policy xacml3.0-ct-v.0.4/IIC333Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC333",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC334",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC334 policy xacml3.0-ct-v.0.4/IIC334Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC334",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIC335",
+    "observed_outcome": "failed",
+    "message": "Cannot import oasis30/IIC335 policy xacml3.0-ct-v.0.4/IIC335Policy.xml",
+    "classification": "engine defect",
+    "reason": "Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException",
+    "bug_id": "BUG-TBD-IIC335",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/marshal/PolicyUnmarshallerSupport.java:71",
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IID029",
+    "observed_outcome": "failed",
+    "message": "expected: <PERMIT> but was: <INDETERMINATE>",
+    "classification": "fixture/spec issue",
+    "reason": "Policy1 requires action-id in access-subject while the request supplies action-id in the action category; initial Target matching becomes Indeterminate instead of the expected Permit",
+    "bug_id": "BUG-TBD-IID029",
+    "evidence": [
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IID029Policy1.xml:13",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IID029Request.xml:19"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IID300",
+    "observed_outcome": "failed",
+    "message": "expected: <INDETERMINATE> but was: <DENY>",
+    "classification": "engine defect",
+    "reason": "3.0 policy permit-overrides loses the Indeterminate-P plus Deny combination and returns Deny instead of the expected Indeterminate",
+    "bug_id": "BUG-TBD-IID300",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java:93",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IID300Policy.xml:10"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIA340",
+    "observed_outcome": "failed",
+    "message": "expected: <[INF]> but was: <[Infinity]>",
+    "classification": "engine defect",
+    "reason": "Positive infinity is serialized as Infinity instead of the XML Schema double lexical form INF in included attributes",
+    "bug_id": "BUG-TBD-IIIA340",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:177"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIC002",
+    "observed_outcome": "failed",
+    "message": "expected: <3> but was: <1>",
+    "classification": "engine defect",
+    "reason": "Configured default multiple-resource chain does not expand hierarchical Children/Descendants scope; expected 3 results but received one; IIICSpecial.txt describes the required resource tree",
+    "bug_id": "BUG-TBD-IIIC002",
+    "evidence": [
+      "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandler.java:42",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIICSpecial.txt:1"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIC003",
+    "observed_outcome": "failed",
+    "message": "expected: <7> but was: <1>",
+    "classification": "engine defect",
+    "reason": "Configured default multiple-resource chain does not expand hierarchical Children/Descendants scope; expected 7 results but received one; IIICSpecial.txt describes the required resource tree",
+    "bug_id": "BUG-TBD-IIIC003",
+    "evidence": [
+      "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandler.java:42",
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIICSpecial.txt:1"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIE301",
+    "observed_outcome": "failed",
+    "message": "expected: <2> but was: <1>",
+    "classification": "fixture/spec issue",
+    "reason": "Draft fixture uses urn:oasis:names:tc:xacml:3.0:multiple:content-selector; engine recognizes the final profile:multiple:content-selector identifier; expected two results but received one",
+    "bug_id": "policy4j-the.3.7",
+    "evidence": [
+      "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE301Request.xml:65",
+      "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:59"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIE302",
+    "observed_outcome": "failed",
+    "message": "expected: <urn:oasis:names:tc:xacml:3.0:attribute-category:resource> but was: <urn:oasis:names:tc:xacml:1.0:subject-category:access-subject>",
+    "classification": "harness defect",
+    "reason": "xacml-test compares included category lists by position; actual subject-first and expected resource-first categories fail despite order-independent XACML category meaning; comparison is outside this lane",
+    "bug_id": "policy4j-the.3.7",
+    "evidence": [
+      "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:86"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIE303",
+    "observed_outcome": "error",
+    "message": "class org.oasis.xacml.v30.jaxb.AttributesType cannot be cast to class java.lang.String (org.oasis.xacml.v30.jaxb.AttributesType is in unnamed module of loader 'app'; java.lang.String is in module java.base of loader 'bootstrap')",
+    "classification": "engine defect",
+    "reason": "RequestReference JAXB IDREF resolves to AttributesType; XML request mapper casts it to String and throws ClassCastException before evaluation",
+    "bug_id": "policy4j-the.3.7",
+    "evidence": [
+      "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java:495"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIG300",
+    "observed_outcome": "failed",
+    "message": "expected: <2> but was: <5>",
+    "classification": "engine defect",
+    "reason": "Returned PolicyIdentifierList contains 5 policy references instead of the expected 2; non-applicable/evaluated reference tracking includes extra policies",
+    "bug_id": "BUG-TBD-IIIG300",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java:201",
+      "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:128"
+    ],
+    "status": "disabled pending conductor bug triage"
+  },
+  {
+    "suite": "oasis30",
+    "case_id": "IIIG301",
+    "observed_outcome": "failed",
+    "message": "expected: <3> but was: <4>",
+    "classification": "engine defect",
+    "reason": "Returned PolicyIdentifierList contains 4 policy references instead of the expected 3; non-applicable/evaluated reference tracking includes extra policies",
+    "bug_id": "BUG-TBD-IIIG301",
+    "evidence": [
+      "xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java:201",
+      "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java:128"
+    ],
+    "status": "disabled pending conductor bug triage"
+  }
+]

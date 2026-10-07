@@ -23,19 +23,20 @@ package org.xacml4j.v30.types;
  */
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.SyntaxException;
 
 
 public class Base64BinaryTest
 {
 
-	@Test(expected=IllegalArgumentException.class)
-	public void testIncorrectlyBase64EncodedString(){
-		XacmlTypes.BASE64BINARY.ofAny("AAEDBQ+++");
+	@Test
+	public void testIncorrectlyBase64EncodedString() {
+		assertThrows(SyntaxException.class, () ->
+			XacmlTypes.BASE64BINARY.ofAny("AAEDBQ+++"));
 	}
 
 	@Test
@@ -62,5 +63,4 @@ public class Base64BinaryTest
 		assertEquals(value1, value2);
 	}
 }
-
 

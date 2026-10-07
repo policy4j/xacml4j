@@ -158,13 +158,14 @@ public final class ArithmeticFunctions
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-divide", shortId = "integer-divide")
-	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#double")
-	public static DoubleVal divideInteger(
+	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#integer")
+	public static IntegerVal divideInteger(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal b)
 	{
 		Preconditions.checkArgument(b.get() != 0);
-		return a.divide(b);
+		// A.3.2 requires xs:integer; quotient toward zero is the approved project interpretation.
+		return IntegerVal.of(a.get() / b.get());
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod", shortId = "integer-mod")

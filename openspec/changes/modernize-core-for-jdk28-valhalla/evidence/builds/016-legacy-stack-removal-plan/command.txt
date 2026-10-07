@@ -1,0 +1,53 @@
+## Commands run for this read-only prep
+
+# Dependency tree: first sandboxed invocation failed with local Maven
+# resolver-status.properties Operation not permitted. The same command was
+# rerun with elevated execution and completed BUILD SUCCESS for all 8 modules.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/016-legacy-stack-removal-plan/deptree.log
+
+# POM declaration/version inventory
+rtk rg -n -i 'junit:junit|junit-vintage-engine|org\.easymock|org\.objenesis|easymock\.version|objenesis\.version|hamcrest|truth' -g 'pom.xml' .
+rtk rg -n -C 2 'easymock\.version|objenesis\.version|google\.truth\.version|hamcrest\.version|junit-vintage-engine|org\.easymock|org\.objenesis|hamcrest-all|com\.google\.truth' pom.xml xacml-core/pom.xml
+
+# Legacy JUnit 4 / EasyMock APIs and mentions in Java source. Exit status 1
+# with no output is the expected no-match result.
+rtk rg -n -i 'EasyMock|org\.easymock|org\.junit\.(experimental|internal|runners|runner|rules|Assume|Assert|Test|Before|After|BeforeClass|AfterClass|Ignore|Rule|ClassRule)|org\.hamcrest\.junit|junit\.framework' --glob '*.java' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+rtk rg -n '@Before([[:space:]]|\()|@After([[:space:]]|\()|@Ignore([[:space:]]|\()|@Rule([[:space:]]|\()|@ClassRule([[:space:]]|\()|@RunWith|@Test[[:space:]]*\([[:space:]]*expected|ExpectedException|TemporaryFolder' --glob '*.java' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+
+# ast-grep JUnit 4 annotations, expected exceptions, runner/rules, EasyMock
+# calls, and imports; each command returned no matches at the scan snapshot.
+ast-grep run --lang java --pattern 'import org.junit.Test;' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern 'import static org.junit.Assert.$A;' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern 'import org.easymock.$A;' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@Before' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@After' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@BeforeClass' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@AfterClass' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@Ignore' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@Rule' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@ClassRule' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@RunWith($RUNNER)' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern '@Test(expected = $EXCEPTION)' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+ast-grep run --lang java --pattern 'EasyMock.$METHOD($$$ARGS)' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+
+# Live Truth/Hamcrest references
+rtk rg -l 'com\.google\.common\.truth' --glob '*.java' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+rtk rg -l 'org\.hamcrest' --glob '*.java' xacml-core/src xacml-pdp/src xacml-xml-jaxb/src xacml-xml/src xacml-json/src xacml-test/src xacml-conformance-tests/src
+
+# Concurrent edit state and unapplied patch validation
+rtk git status --short -- xacml-core/src/test/java xacml-pdp/src/test/java
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/016-legacy-stack-removal-plan/proposed-2.7-pom.patch
+
+## Proposed task 2.7 gate commands (not run in this prep)
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/016-legacy-stack-removal-plan/jdk21-clean-verify.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true dependency:tree -Dscope=test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/016-legacy-stack-removal-plan/jdk21-dependency-tree.log
+
+# Parse fresh per-class Surefire reports after clean verify; compare per-module
+# method/test identities to evidence/tests/010, 011, 012, and 013.
+rtk python3 -c 'from pathlib import Path; import xml.etree.ElementTree as ET; modules=("xacml-core","xacml-pdp","xacml-xml","xacml-json","xacml-test","xacml-conformance-tests");
+for module in modules:
+ reports=sorted((Path(module)/"target/surefire-reports").glob("TEST-*.xml")); totals=[0,0,0,0];
+ for report in reports:
+  root=ET.parse(report).getroot(); totals=[totals[0]+int(root.get("tests","0")),totals[1]+int(root.get("failures","0")),totals[2]+int(root.get("errors","0")),totals[3]+int(root.get("skipped","0"))]
+ print(module,"classes",len(reports),"tests/failures/errors/skipped",*totals)' 

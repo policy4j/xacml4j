@@ -1,0 +1,302 @@
+{
+  "results": {
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest": {
+      "counts": [
+        54,
+        2,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "mapTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfPreservesEveryBagPosition[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "unaryPredicateNeedsOnlyOneBag[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "emptyBagsHaveIdentityResults[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyAllowsAllPrimitiveOperands[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "variadicPredicateAcceptsMatchingOperandTypes[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfBagFirst[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyMixedCrossProduct[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "missingOperandsAreSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionDuringApplyTypeResolution[runtimeValidation=false]",
+          "problems": [
+            {
+              "kind": "failure",
+              "message": "unexpected exception type thrown; expected:<org.xacml4j.v30.SyntaxException> but was:<java.lang.IllegalArgumentException>",
+              "type": "java.lang.AssertionError",
+              "trace": "java.lang.AssertionError: unexpected exception type thrown; expected:<org.xacml4j.v30.SyntaxException> but was:<java.lang.IllegalArgumentException>\n\tat org.junit.Assert.assertThrows(Assert.java:1020)\n\tat org.junit.Assert.assertThrows(Assert.java:981)\n\tat org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest.mapRejectsBagReturningFunctionDuringApplyTypeResolution(HigherOrderVariadicFunctionsTest.java:309)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:566)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)\n\tat org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)\n\tat org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)\n\tat org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)\n\tat org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)\n\tat org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)\n\tat org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)\n\tat org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)\n\tat org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)\nCaused by: java.lang.IllegalArgumentException: The referenced function must return a primitive value\n\tat com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)\n\tat org.xacml4j.v30.policy.function.impl.HigherOrderFunctions$MapFunctionResolverValidator.resolve(HigherOrderFunctions.java:359)\n\tat org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.resolveReturnType(FunctionSpecBuilder.java:355)\n\tat org.xacml4j.v30.policy.Apply.getEvaluatesTo(Apply.java:94)\n\tat org.junit.Assert.assertThrows(Assert.java:1001)\n\t... 53 more\n"
+            }
+          ]
+        },
+        {
+          "name": "anyOfThreeArgumentPredicate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapBagFirstPreservesOrderAndMultiplicity[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfPreservesEveryBagPosition[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapConcatenateWithPrimitive[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyThreeBags[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnySpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "referencedPredicateTypesAndReturnTypeAreChecked[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "packetBinaryPredicateWithThreeOperandsIsArityError[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionAtValidation[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfPreservesEveryBagPosition[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "unaryPredicateNeedsOnlyOneBag[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "emptyBagsHaveIdentityResults[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyAllowsAllPrimitiveOperands[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "variadicPredicateAcceptsMatchingOperandTypes[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfBagFirst[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyMixedCrossProduct[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "missingOperandsAreSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionDuringApplyTypeResolution[runtimeValidation=true]",
+          "problems": [
+            {
+              "kind": "failure",
+              "message": "unexpected exception type thrown; expected:<org.xacml4j.v30.SyntaxException> but was:<java.lang.IllegalArgumentException>",
+              "type": "java.lang.AssertionError",
+              "trace": "java.lang.AssertionError: unexpected exception type thrown; expected:<org.xacml4j.v30.SyntaxException> but was:<java.lang.IllegalArgumentException>\n\tat org.junit.Assert.assertThrows(Assert.java:1020)\n\tat org.junit.Assert.assertThrows(Assert.java:981)\n\tat org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest.mapRejectsBagReturningFunctionDuringApplyTypeResolution(HigherOrderVariadicFunctionsTest.java:309)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:566)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runners.Suite.runChild(Suite.java:128)\n\tat org.junit.runners.Suite.runChild(Suite.java:27)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)\n\tat org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)\n\tat org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)\n\tat org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)\n\tat org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)\n\tat org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)\n\tat org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)\n\tat org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)\n\tat org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)\nCaused by: java.lang.IllegalArgumentException: The referenced function must return a primitive value\n\tat com.google.common.base.Preconditions.checkArgument(Preconditions.java:145)\n\tat org.xacml4j.v30.policy.function.impl.HigherOrderFunctions$MapFunctionResolverValidator.resolve(HigherOrderFunctions.java:359)\n\tat org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.resolveReturnType(FunctionSpecBuilder.java:355)\n\tat org.xacml4j.v30.policy.Apply.getEvaluatesTo(Apply.java:94)\n\tat org.junit.Assert.assertThrows(Assert.java:1001)\n\t... 53 more\n"
+            }
+          ]
+        },
+        {
+          "name": "anyOfThreeArgumentPredicate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapBagFirstPreservesOrderAndMultiplicity[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfPreservesEveryBagPosition[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapConcatenateWithPrimitive[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyThreeBags[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnySpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "referencedPredicateTypesAndReturnTypeAreChecked[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "packetBinaryPredicateWithThreeOperandsIsArityError[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionAtValidation[runtimeValidation=true]",
+          "problems": []
+        }
+      ]
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "mixedValuesReachDeclaredExpressionArray",
+          "problems": []
+        },
+        {
+          "name": "mixedSequenceStillChecksMinimumAndExcludesFunctionReferences",
+          "problems": []
+        },
+        {
+          "name": "typedVariadicValidationIsUnchanged",
+          "problems": []
+        }
+      ]
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "testAllOfAll",
+          "problems": []
+        },
+        {
+          "name": "testAllOfAny",
+          "problems": []
+        },
+        {
+          "name": "testAnyOf",
+          "problems": []
+        },
+        {
+          "name": "testMapWithValidArguments",
+          "problems": []
+        },
+        {
+          "name": "testAnyOfAllIIC168",
+          "problems": []
+        },
+        {
+          "name": "testAnyOfAll",
+          "problems": []
+        }
+      ]
+    }
+  },
+  "production_hash": "61f22b3dfcd90f400f0baf374fc4b9aa8989006865ea151c45681cac5c547309",
+  "production_matches_before_snapshot": true
+}

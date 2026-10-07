@@ -28,15 +28,15 @@
 	</modules>
 
 	<properties>
-		<junit.version>5.9.1</junit.version>
+		<junit.version>5.14.4</junit.version>
+		<mockito.version>5.24.0</mockito.version>
+		<argLine></argLine>
 		<slf4j.version>1.7.30</slf4j.version>
 		<log4j.version>2.14.0</log4j.version>
-		<easymock.version>5.1.0</easymock.version>
-		<objenesis.version>3.3</objenesis.version>
 		<google.guava.version>31.1-jre</google.guava.version>
 		<google.auto.version>1.0.1</google.auto.version>
 		<google.gson.version>2.8.9</google.gson.version>
-		<google.truth.version>0.45</google.truth.version>
+		<google.truth.version>1.1.5</google.truth.version>
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.licenseName>lgpl_v3</license.licenseName>
@@ -81,8 +81,21 @@
 	</issueManagement>
 	<dependencies>
 		<dependency>
-			<groupId>org.junit.vintage</groupId>
-			<artifactId>junit-vintage-engine</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -99,14 +112,6 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.easymock</groupId>
-			<artifactId>easymock</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.objenesis</groupId>
-			<artifactId>objenesis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.codahale.metrics</groupId>
@@ -129,10 +134,11 @@
 		<dependencies>
 
 			<dependency>
-				<groupId>org.junit.vintage</groupId>
-				<artifactId>junit-vintage-engine</artifactId>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
 				<version>${junit.version}</version>
-				<scope>test</scope>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.protobuf</groupId>
@@ -222,18 +228,6 @@
 				<version>${euij4j.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.easymock</groupId>
-				<artifactId>easymock</artifactId>
-				<version>${easymock.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.objenesis</groupId>
-				<artifactId>objenesis</artifactId>
-				<version>${objenesis.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.hamcrest</groupId>
 				<artifactId>hamcrest-all</artifactId>
 				<version>${hamcrest.version}</version>
@@ -244,6 +238,12 @@
 				<artifactId>truth</artifactId>
 				<version>${google.truth.version}</version>
 				<scope>test</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>junit</groupId>
+						<artifactId>junit</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>com.google.truth.extensions</groupId>
@@ -271,8 +271,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<release>21</release>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>com.google.auto.service</groupId>
@@ -284,9 +283,22 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.11.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>properties</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
+					<argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
 					<excludes>
 						<exclude>**/*TestCase.java</exclude>
 					</excludes>

@@ -1,0 +1,20 @@
+{
+  "enabled_manifest_count": 866,
+  "observed_distinct_pass_count": 866,
+  "missing_enabled_ids": [],
+  "extra_pass_ids": [],
+  "static_rejection_pass_ids": [
+    "oasis20/IIA004",
+    "oasis20/IIC012",
+    "oasis30/IIA004",
+    "oasis30/IIC012"
+  ],
+  "adjudicated_ids": [
+    "oasis30/IIC350",
+    "oasis30/IIC358"
+  ],
+  "restored_ids": [
+    "oasis20/IIC020",
+    "oasis30/IIC020"
+  ]
+}

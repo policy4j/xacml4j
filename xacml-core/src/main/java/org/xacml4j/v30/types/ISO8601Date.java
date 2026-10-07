@@ -27,8 +27,11 @@ import org.xacml4j.v30.SyntaxException;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.ChronoField;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import com.google.common.base.Objects;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -39,9 +42,13 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
     implements Comparable<ISO8601Date>
 {
     private static final long serialVersionUID = -4744947303379182831L;
+    private final ZoneOffset offset;
+    private final boolean timeZoneDefined;
 
-    private ISO8601Date(LocalDate value) {
+    private ISO8601Date(LocalDate value, ZoneOffset offset, boolean timeZoneDefined) {
         super(XacmlTypes.DATE, value);
+        this.offset = offset;
+        this.timeZoneDefined = timeZoneDefined;
     }
 
     public static ISO8601Date ofAny(Object v,
@@ -73,15 +80,19 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
     }
 
     public static ISO8601Date of(java.lang.String v){
-        return new ISO8601Date(LocalDate.parse(v, DateTimeFormatter.ISO_DATE));
+        TemporalAccessor parsed = DateTimeFormatter.ISO_DATE.parse(v);
+        LocalDate date = LocalDate.from(parsed);
+        boolean hasOffset = parsed.isSupported(ChronoField.OFFSET_SECONDS);
+        ZoneOffset offset = hasOffset ? ZoneOffset.from(parsed) : ZoneOffset.UTC;
+        return new ISO8601Date(date, offset, hasOffset);
     }
 
     public static ISO8601Date of(LocalDate date){
-        return new ISO8601Date(date);
+        return new ISO8601Date(date, ZoneOffset.UTC, false);
     }
 
     public static ISO8601Date of(StringVal v){
-        return new ISO8601Date(LocalDate.parse(v.get(), DateTimeFormatter.ISO_DATE));
+        return of(v.get());
     }
 
     public static ISO8601Date of(Date v){
@@ -89,19 +100,22 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
     }
 
     public static ISO8601Date of(XMLGregorianCalendar v){
-        return new ISO8601Date(DateTimeDurationUtils.toISO860Date(v));
+        boolean hasOffset = v.getTimezone() != javax.xml.datatype.DatatypeConstants.FIELD_UNDEFINED;
+        ZoneOffset offset = hasOffset ? ZoneOffset.ofTotalSeconds(v.getTimezone() * 60) : ZoneOffset.UTC;
+        return new ISO8601Date(DateTimeDurationUtils.toISO860Date(v), offset, hasOffset);
     }
 
     public static ISO8601Date of(ZonedDateTime v){
-        return new ISO8601Date(v.toLocalDate());
+        return new ISO8601Date(v.toLocalDate(), v.getOffset(), true);
     }
 
     public static ISO8601Date of(OffsetDateTime v){
-        return new ISO8601Date(v.toLocalDate());
+        return new ISO8601Date(v.toLocalDate(), v.getOffset(), true);
     }
 
     public static ISO8601Date of(GregorianCalendar v){
-        return new ISO8601Date(DateTimeDurationUtils.toISO860Date(v));
+        ZoneOffset offset = ZoneOffset.ofTotalSeconds(v.getTimeZone().getOffset(v.getTimeInMillis()) / 1000);
+        return new ISO8601Date(DateTimeDurationUtils.toISO860Date(v), offset, true);
     }
 
     public StringVal toStringExp(){
@@ -113,7 +127,9 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
     }
 
     public String toXacmlString(){
-        return value.format(DateTimeFormatter.ISO_DATE);
+        return timeZoneDefined
+                ? value.atStartOfDay().atOffset(offset).format(DateTimeFormatter.ISO_DATE)
+                : value.format(DateTimeFormatter.ISO_DATE);
     }
 
 
@@ -139,14 +155,28 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
 
     @Override
     public int compareTo(ISO8601Date o) {
-        return get().compareTo(o.get());
+        return instant().compareTo(o.instant());
+    }
+
+    private java.time.Instant instant() {
+        return value.atStartOfDay().toInstant(offset);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof ISO8601Date && instant().equals(((ISO8601Date)other).instant());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(instant(), getEvaluatesTo());
     }
 
     public ISO8601Date plus(ISO8601YearMonthDuration duration){
-        return ISO8601Date.of(value.plus(duration.toDuration()));
+        return new ISO8601Date(value.plus(duration.toPeriod()), offset, timeZoneDefined);
     }
 
     public ISO8601Date minus(ISO8601YearMonthDuration duration){
-        return ISO8601Date.of(value.minus(duration.toDuration()));
+        return new ISO8601Date(value.minus(duration.toPeriod()), offset, timeZoneDefined);
     }
 }

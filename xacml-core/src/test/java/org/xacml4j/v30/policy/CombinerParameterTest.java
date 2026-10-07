@@ -22,13 +22,12 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.createStrictControl;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-import org.easymock.IMocksControl;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.types.Value;
 
 /**
@@ -37,15 +36,14 @@ import org.xacml4j.v30.types.Value;
 public class CombinerParameterTest {
 	@Test
 	public void testObjectMethods() {
-		IMocksControl ctl = createStrictControl();
-		Value exp1 = ctl.createMock(Value.class);
-		Value exp2 = ctl.createMock(Value.class);
+		Value exp1 = org.xacml4j.v30.types.BooleanVal.of(true);
+		Value exp2 = org.xacml4j.v30.types.BooleanVal.of(false);
 
 		CombinerParameter p1 = new CombinerParameter("name1", exp1);
 		CombinerParameter p2 = new CombinerParameter("name1", exp1);
 		CombinerParameter p3 = new CombinerParameter("name1", exp2);
 
-		ctl.replay();
+
 		assertTrue(p1.equals(p2));
 		assertFalse(p1.equals(p3));
 		assertFalse(p1.equals(exp1));
@@ -53,6 +51,6 @@ public class CombinerParameterTest {
 
 		assertEquals(p1.hashCode(), p2.hashCode());
 		assertEquals(p1.toString(), p2.toString());
-		ctl.verify();
+
 	}
 }

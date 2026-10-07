@@ -1,0 +1,514 @@
+{
+  "results": {
+    "org.xacml4j.v30.types.ISO8601DurationReviewTest": {
+      "counts": [
+        9,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "nonzeroFractionalLexicalFormStaysDecimal",
+          "problems": []
+        },
+        {
+          "name": "integralSecondsDiscardZeroFractionalScale",
+          "problems": []
+        },
+        {
+          "name": "fractionalEqualityAndComparisonKeepSubsecondDifferences",
+          "problems": []
+        },
+        {
+          "name": "fractionalLexicalRoundTripKeepsDecimalSeconds",
+          "problems": []
+        },
+        {
+          "name": "javaDurationConversionKeepsFractionAndSign",
+          "problems": []
+        },
+        {
+          "name": "fractionalXmlDurationReachesDateTimeArithmetic",
+          "problems": []
+        },
+        {
+          "name": "programmaticFourteenMonthsAreCountedOnce",
+          "problems": []
+        },
+        {
+          "name": "subNanosecondArithmeticEvaluatesThroughApply",
+          "problems": []
+        },
+        {
+          "name": "subNanosecondConversionTruncatesTowardZero",
+          "problems": []
+        }
+      ]
+    },
+    "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest": {
+      "counts": [
+        46,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT1.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.001S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2020-01-31T23:59:59.75-05:00, PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2020-01-31T23:59:59.75-05:00, PT0.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, P1DT2H3M1.5S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, P1DT2H3M1.5S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.000000001S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.000000001S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.0000000001S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.0000000001S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.0000000001S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.0000000001S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT1.0000000019S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT1.0000000019S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT1.0000000019S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT1.0000000019S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.9999999999S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.9999999999S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.9999999999S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.9999999999S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT1.0000000019S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT1.0000000019S]",
+          "problems": []
+        },
+        {
+          "name": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT1.0000000019S]",
+          "problems": []
+        },
+        {
+          "name": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT1.0000000019S]",
+          "problems": []
+        }
+      ]
+    },
+    "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest": {
+      "counts": [
+        12,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "subtractNegativeDayTimeDuration",
+          "problems": []
+        },
+        {
+          "name": "subtractNegativeYearMonthDuration",
+          "problems": []
+        },
+        {
+          "name": "subtractZeroDayTimeDuration",
+          "problems": []
+        },
+        {
+          "name": "addPositiveYearMonthDuration",
+          "problems": []
+        },
+        {
+          "name": "addPositiveDayTimeDuration",
+          "problems": []
+        },
+        {
+          "name": "addZeroDayTimeDuration",
+          "problems": []
+        },
+        {
+          "name": "addZeroYearMonthDuration",
+          "problems": []
+        },
+        {
+          "name": "subtractPositiveYearMonthDuration",
+          "problems": []
+        },
+        {
+          "name": "addNegativeDayTimeDuration",
+          "problems": []
+        },
+        {
+          "name": "addNegativeYearMonthDuration",
+          "problems": []
+        },
+        {
+          "name": "subtractPositiveDayTimeDuration",
+          "problems": []
+        },
+        {
+          "name": "subtractZeroYearMonthDuration",
+          "problems": []
+        }
+      ]
+    },
+    "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest": {
+      "counts": [
+        50,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2002-03-22, P1Y2M -> 2003-05-22]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2002-03-22, -P1Y2M -> 2001-01-22]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2002-03-22, P0M -> 2002-03-22]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-01-31, P1M -> 2020-02-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2021-01-31, P1M -> 2021-02-28]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-03-31, -P1M -> 2020-02-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2021-03-31, -P1M -> 2021-02-28]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-02-29, P1Y1M -> 2021-03-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_ADD_YEAR_MONTH: 2020-02-29, -P1Y1M -> 2019-01-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2002-03-22, P1Y2M -> 2001-01-22]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2002-03-22, -P1Y2M -> 2003-05-22]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2002-03-22, P0M -> 2002-03-22]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-01-31, -P1M -> 2020-02-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2021-01-31, -P1M -> 2021-02-28]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-03-31, P1M -> 2020-02-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2021-03-31, P1M -> 2021-02-28]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-02-29, -P1Y1M -> 2021-03-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATE_SUBTRACT_YEAR_MONTH: 2020-02-29, P1Y1M -> 2019-01-29]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P1Y2M -> 2003-05-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2002-03-22T08:23:47-05:00, -P1Y2M -> 2001-01-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P0M -> 2002-03-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-01-31T08:23:47-05:00, P1M -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2021-01-31T08:23:47-05:00, P1M -> 2021-02-28T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-03-31T08:23:47-05:00, -P1M -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2021-03-31T08:23:47-05:00, -P1M -> 2021-02-28T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-02-29T08:23:47-05:00, P1Y1M -> 2021-03-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_YEAR_MONTH: 2020-02-29T08:23:47-05:00, -P1Y1M -> 2019-01-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P1Y2M -> 2001-01-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2002-03-22T08:23:47-05:00, -P1Y2M -> 2003-05-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2002-03-22T08:23:47-05:00, P0M -> 2002-03-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-01-31T08:23:47-05:00, -P1M -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2021-01-31T08:23:47-05:00, -P1M -> 2021-02-28T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-03-31T08:23:47-05:00, P1M -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2021-03-31T08:23:47-05:00, P1M -> 2021-02-28T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-02-29T08:23:47-05:00, -P1Y1M -> 2021-03-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_YEAR_MONTH: 2020-02-29T08:23:47-05:00, P1Y1M -> 2019-01-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2002-03-22T08:23:47-05:00, P5DT2H -> 2002-03-27T10:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2002-03-22T08:23:47-05:00, -P5DT2H -> 2002-03-17T06:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2002-03-22T08:23:47-05:00, PT0S -> 2002-03-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-01-31T23:30:00-05:00, PT2H -> 2020-02-01T01:30:00-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-03-01T00:30:00-05:00, -PT2H -> 2020-02-29T22:30:00-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-02-28T08:23:47-05:00, P1D -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_ADD_DAY_TIME: 2020-03-01T08:23:47-05:00, -P1D -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2002-03-22T08:23:47-05:00, P5DT2H -> 2002-03-17T06:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2002-03-22T08:23:47-05:00, -P5DT2H -> 2002-03-27T10:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2002-03-22T08:23:47-05:00, PT0S -> 2002-03-22T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-01-31T23:30:00-05:00, -PT2H -> 2020-02-01T01:30:00-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-03-01T00:30:00-05:00, PT2H -> 2020-02-29T22:30:00-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-02-28T08:23:47-05:00, -P1D -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        },
+        {
+          "name": "arithmeticPreservesSignedCalendarBoundaries[DATETIME_SUBTRACT_DAY_TIME: 2020-03-01T08:23:47-05:00, P1D -> 2020-02-29T08:23:47-05:00]",
+          "problems": []
+        }
+      ]
+    }
+  },
+  "production_hash": "417dfa5341dff354e64816837804d20a3d4d1334caaa4cd7bd2f09f12bda3bc8",
+  "production_matches_before_snapshot": false
+}

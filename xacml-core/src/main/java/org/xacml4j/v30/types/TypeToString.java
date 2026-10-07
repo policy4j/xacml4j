@@ -171,7 +171,7 @@ public interface TypeToString extends TypeCapability
 			public java.lang.String toString(Value v) {
 				Objects.requireNonNull(v);
 				DoubleVal d = (DoubleVal)v;
-				return d.get().toString();
+				return d.toXacmlString();
 			}
 		},
 		HEXBINARY(XacmlTypes.HEXBINARY){
@@ -197,7 +197,7 @@ public interface TypeToString extends TypeCapability
 			public java.lang.String toString(Value v) {
 				Objects.requireNonNull(v);
 				IntegerVal d = (IntegerVal)v;
-				return d.toString();
+				return d.toXacmlString();
 			}
 		},
 		IPADDRESS(XacmlTypes.IPADDRESS){
@@ -262,7 +262,7 @@ public interface TypeToString extends TypeCapability
 			public java.lang.String toString(Value v) {
 				Objects.requireNonNull(v);
 				X500Name d = (X500Name)v;
-				return d.toString();
+				return d.toXacmlString();
 			}
 		},
 		YEARMONTHDURATION(XacmlTypes.YEARMONTHDURATION){

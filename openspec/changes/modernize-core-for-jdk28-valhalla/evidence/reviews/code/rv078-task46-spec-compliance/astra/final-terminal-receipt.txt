@@ -1,0 +1,32 @@
+› Full JDK21 clean verify now exit0. reactor-green-receipt.json: 7589 total,0 failures,0 errors,30 skips; core6197/10skips; conformance927/14skips, manifest866 enabled. All18 final source hashes still match. 2911 vendo…
+  • Full NaN response comparisons: resolved in v2. The helper marshals the actual ResponseContext through the production JAXB marshaller before invoking the typed comparator. xacml-conformance-tests/src/test/java/org/
+    xacml4j/v20/NaNFixtureAdjudicationTest.java:270
+
+  • Numeric acceptance retained. The four numeric production hashes are unchanged from my prior review. Tests now exercise full and empty wrong-type bags with generic validation disabled at xacml-core/src/test/java/org/
+    xacml4j/v30/policy/function/impl/DoubleBagSetEqualityTest.java:329; modulo-zero row 43 is enabled. Primitive policy equality, separate Java equality, NaN multiplicity and the recorded integer truncation convention
+    remain accepted.
+
+  • XPath wording: resolved. Failure requires Content to be present; missing Content explicitly takes precedence. openspec/changes/modernize-core-for-jdk28-valhalla/specs/function-semantics/spec.md:94
+
+  • Manifest preservation retained. Its hash is unchanged from the previously verified 880-row manifest: all 864 prior enabled identities remain, with both IIC020 cases bringing enabled coverage to 866.
+
+  Verification: reviewer execution comprised read-only hashing, source/diff inspection, receipt parsing and scoped ast-grep scan—exit 0, no diagnostics. No builds, tests, external research or writes were performed.
+
+  The supplied completed reactor receipt:3 (openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/069-task46-spec-compliance/reactor-green-receipt.json:3) records JDK21 clean verify, exit 0, 7,589 tests, zero
+  failures/errors, 30 skips. I independently summed its suite entries and module totals; both agree. It includes 289 decision-table tests, 12 combining policy tests, 10 NaN adjudication tests and six remaining
+  FunctionSafetyNet43 skips. The supplied preservation receipt (openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/069-task46-spec-compliance/source-preservation.json:1) reports all 2,911 vendored files
+  unchanged and 3,736/3,753 existing baseline files unchanged.
+
+  Residual limits: new combining response assertions inspect ID sets, not complete assignment values. Dedicated nested reference-plus-failing-response-expression coverage would strengthen the staging proof; source
+  tracing and general reference-suite success are not that specific test. Other zero-argument bag functions, integer overflow, n-ary union, real malformed XPath and controlled performance/JDK28 verification remain
+  outside this approval. This verdict does not establish whole-engine compliance or close gate 4.7.
+
+  DONE_FINAL_ASTRA_20261004
+
+  Worked for 8m 10s • 1:37 PM
+
+
+› Ask Codex to do anything
+
+  GPT-6-Astra max · ~/Projects/Personal/xacml4j-worktrees/policy4j · Review task4.6 numeric harness
+  ? for shortcuts                                                                                                                                                                                 ⚠ 4 warnings · f2 to view

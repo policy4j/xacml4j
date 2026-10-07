@@ -1,0 +1,42 @@
+**APPROVE** task 4.6 for closure of the hashed numeric, harness, and on-permit-apply-second scope. No reachable defect. Gate 4.7 items stay outside this approval. Exact serving variant: UNVERIFIED. Session label: Grok 4.7.
+
+FINAL REPORT (grok, Grok 4.7; exact serving variant UNVERIFIED)
+
+## Result
+
+The v2 bytes implement Core A.3.1 / A.3.10 / A.3.11 double policy equality, integer-divide as `xs:integer` with the recorded toward-zero convention, the A.3.15 missing-content split, and CS01 §2.1 with Core §7.18 obligation ancestry. JDK 21 `clean verify` is exit 0 on those bytes.
+
+## Hash revision
+
+`final-scope-r1-superseded.json` recorded `NaNFixtureAdjudicationTest.java` as `e68b1179…`. The opening check in this lane matched that r1 digest. v2 changes only that file, to `d8f9f2db…`, after the production JAXB marshaller fix. The other 17 digests are identical in both manifests. Closing `rtk proxy shasum -a 256` matches all 18 digests in `final-scope-hashes.json`. `reactor-green-receipt.json` freezes the same `d8f9f2db…` digest.
+
+## Combining
+
+No numbered finding.
+
+`OnPermitApplySecondPolicyCombiningAlgorithm.java:67-85` returns `Indeterminate{DP}` with `processing-error` for any length other than 2 or 3 before a child is evaluated. A first `Permit` evaluates only child 1. A first `NotApplicable`, `Deny`, or `Indeterminate{D}` returns `NotApplicable` for two children and evaluates only child 2 for three. `Indeterminate{P}`, `Indeterminate{DP}`, and plain `Indeterminate` return `Indeterminate{DP}` and leave the first child's status in place. The URN is registered once, as a policy algorithm (`DefaultXacml30DecisionCombiningAlgorithms.java:59`).
+
+`BaseCompositeDecisionRule.StagedResponses` (`BaseCompositeDecisionRule.java:143-161`, `265-318`) buffers advice and obligations by `Permit` and `Deny` only when a policy-set context is above the rule. `publish` runs only for a final `Permit` or `Deny` that is not an extended-indeterminate pass, and it forwards that bucket through `getParent()`. An obligation or advice failure returns extended indeterminate without publishing (`:156-158`). The extended pass is itself staged when enclosed (`:188-191`) and is never published. `getParentContext` (`:282-284`) skips this wrapper so an ancestry walk does not count it twice; `isEnclosed` still sees an outer `PolicySetDescendantEvaluationContext`. Variable lookup and the current policy delegate to the wrapped policy context. A nested set therefore still stages its children, and a discarded child does not publish.
+
+`DefaultPolicyDecisionPoint.java:177-198` emits `ok` for `NotApplicable`, the context status for indeterminate, and only obligations and advice for the returned decision. A discarded `Indeterminate{D}` cannot attach its status to `NotApplicable`.
+
+`OnPermitApplySecondDecisionTableTest.java:179-214` checks arity with zero child calls, order, and that an indeterminate result keeps the deciding child's status, including plain `Indeterminate`. `OnPermitApplySecondPolicyTest.java:191-300` checks real policies: a `Permit` gate dropped by a `NotApplicable` second child, a `Deny` gate dropped before a later `Deny` sibling, and a nested set's own `Permit` obligation kept with the selected child while the `Deny` bucket stays empty.
+
+## Prior dispositions
+
+1. `FunctionSafetyNet43Test.java:604-610` `row43IntegerModByZeroIsIndeterminate` is enabled and expects `processing-error`. Six `@Disabled` rows remain (`C5`, two `C3` task 5.4, `C8`, `C7`, `C4`).
+2. `DoubleBagSetEqualityTest.java:327-335` runs full and empty wrong-type bags with validation off and expects `processing-error`.
+3. `NaNFixtureAdjudicationTest.java:270-276` marshals `ResponseContext` with the XACML 3.0 response marshaller and compares the full typed response. The v2 test class is 10 tests, 0 failures, in the green receipt.
+4. `ConformanceCaseRunner.java:175-182` adjudicates only `oasis30` + `special-harness` + `IIC350` or `IIC358` when the file is `xacml3.0-ct-v.0.4/<id>Response.xml`. Another `Permit` path throws (`NaNFixtureAdjudicationTest.java:280-287`). Suite, disposition, and id are independent negative controls (`:254-266`).
+5. `function-semantics/spec.md:94-112` requires `Content` before an XPath failure is indeterminate, and missing `Content` wins over evaluation. Production `XPathFunctions.java` was not in this 18-file delta.
+6. Numeric production behavior from the prior review is unchanged: `EqualityPredicates.java:194-196`, `ArithmeticFunctions.java:160-168`, `IntegerVal.divide` still returns `DoubleVal`.
+
+## Verification
+
+No Maven, tests, network, or git writes in this lane. Receipt `evidence/tests/069-task46-spec-compliance/reactor-green-receipt.json`: exit 0; 7589 tests, 0 failures, 0 errors, 30 skips; core 6197/10 skips; conformance 927/14 skips. Conductor-reported 2911 unchanged vendored files and 3736/3753 unchanged baseline files were not rehashed here.
+
+## Remaining scope
+
+Still outside task 4.6: the other 16 zero-argument typed bag functions, integer overflow (task 5.4), n-ary union, and a real malformed-XPath plus performance pass (gate 4.7). This approval does not close gate 4.7.
+
+DONE_FINAL_GROK_20261004

@@ -22,21 +22,18 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import static org.easymock.EasyMock.capture;
-import static org.easymock.EasyMock.createStrictControl;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
 
-import org.easymock.Capture;
-import org.easymock.EasyMock;
-import org.easymock.IAnswer;
-import org.easymock.IMocksControl;
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Collections;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.xacml4j.v30.CoreException;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
@@ -44,172 +41,177 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyResolutionException;
 import org.xacml4j.v30.Version;
+import org.xacml4j.v30.VersionMatch;
 
-
+@ExtendWith(MockitoExtension.class)
 public class PolicySetIDReferenceTest
 {
 	private EvaluationContext context;
 	private PolicySet policySet;
 	private PolicySet refPolicySet;
-	private IMocksControl c;
-	@Before
-	public void init(){
-		this.c = createStrictControl();
-		this.policySet = c.createMock(PolicySet.class);
-		this.refPolicySet = c.createMock(PolicySet.class);
-		this.context = c.createMock(EvaluationContext.class);
+	private DecisionCombiningAlgorithm<org.xacml4j.v30.CompositeDecisionRule> algorithm;
 
+	@BeforeEach
+	public void init()
+	{
+		context = mock(EvaluationContext.class);
+		algorithm = mock(DecisionCombiningAlgorithm.class);
+		policySet = PolicySet.builder("otherTestId").version("1.0").withCombiningAlgorithm(algorithm).build();
+		refPolicySet = PolicySet.builder("testId").version("1.0").withCombiningAlgorithm(algorithm).build();
 	}
 
 	@Test
 	public void testEvaluateFailToResolveReferenceViaException() throws CoreException
 	{
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));
-
-
-		c.replay();
+		when(context.getCurrentPolicySetIDReference()).thenReturn(null);
+		when(context.resolve(ref)).thenThrow(new PolicyResolutionException(null));
+		InOrder order = inOrder(context, algorithm);
 		EvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
-
-		c.verify();
-		c.reset();
-
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
-		expect(policySet.getId()).andReturn("otherTestId");
-		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
-		c.replay();
+		order.verify(context, times(2)).getCurrentPolicySetIDReference();
+		order.verify(context).resolve(ref);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verifyNoMoreInteractions(context, algorithm);
+		when(context.getCurrentPolicySet()).thenReturn(policySet);
+		assertEquals("otherTestId", policySet.getId());
+		assertEquals(Version.parse("1.0"), policySet.getVersion());
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
-		c.verify();
+		order.verify(context).getCurrentPolicySet();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verify(context, times(1)).getCurrentPolicySet();
+		verifyNoMoreInteractions(context, algorithm);
 	}
 
 	@Test
 	public void testEvaluateFailToResolveReferenceReturnsNull() throws CoreException
 	{
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.resolve(ref)).andReturn(null);
-
-		c.replay();
-
+		when(context.getCurrentPolicySetIDReference()).thenReturn(null);
+		when(context.resolve(ref)).thenReturn(null);
+		InOrder order = inOrder(context, algorithm);
 		EvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
-
-		c.verify();
-
-		c.reset();
-
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
-		expect(policySet.getId()).andReturn("otherTestId");
-		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
-
-		c.replay();
-
+		order.verify(context, times(2)).getCurrentPolicySetIDReference();
+		order.verify(context).resolve(ref);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verifyNoMoreInteractions(context, algorithm);
+		when(context.getCurrentPolicySet()).thenReturn(policySet);
+		assertEquals("otherTestId", policySet.getId());
+		assertEquals(Version.parse("1.0"), policySet.getVersion());
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
-
-		c.verify();
+		order.verify(context).getCurrentPolicySet();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verify(context, times(1)).getCurrentPolicySet();
+		verifyNoMoreInteractions(context, algorithm);
 	}
 
 	@Test
 	public void testIsApplicableFailToResolveReference() throws CoreException
 	{
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));
-
-		c.replay();
-
+		when(context.getCurrentPolicySetIDReference()).thenReturn(null);
+		when(context.resolve(ref)).thenThrow(new PolicyResolutionException(null));
+		InOrder order = inOrder(context, algorithm);
 		EvaluationContext policyRefContext = ref.createContext(context);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
-
-		c.verify();
-		c.reset();
-
-		expect(context.getCurrentPolicySet()).andReturn(policySet);
-		expect(policySet.getId()).andReturn("otherTestId");
-		expect(policySet.getVersion()).andReturn(Version.parse("1.0"));
-
-		c.replay();
+		order.verify(context, times(2)).getCurrentPolicySetIDReference();
+		order.verify(context).resolve(ref);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verifyNoMoreInteractions(context, algorithm);
+		when(context.getCurrentPolicySet()).thenReturn(policySet);
+		assertEquals("otherTestId", policySet.getId());
+		assertEquals(Version.parse("1.0"), policySet.getVersion());
 		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
-		c.verify();
+		order.verify(context).getCurrentPolicySet();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verify(context, times(1)).getCurrentPolicySet();
+		verifyNoMoreInteractions(context, algorithm);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testPolicyIDResolutionViaWrongEvaluationContext() throws EvaluationException
 	{
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
-		ref.evaluate(context);
+		assertThrows(IllegalArgumentException.class, () -> ref.evaluate(context));
+		verify(context).getCurrentPolicySetIDReference();
+		verifyNoMoreInteractions(context, algorithm);
 	}
 
 	@Test
 	public void testIsApplicablePolicyIDReference() throws CoreException
 	{
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
-
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.resolve(ref)).andReturn(refPolicySet);
-		Capture<EvaluationContext> refContext = Capture.newInstance();
-		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
-			@Override
-			public EvaluationContext answer() throws Throwable {
-				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
-				return refPolicySet.new PolicySetDescendantEvaluationContext(ctx);
-	        }
-		});
-
-		expect(context.getCurrentPolicySet()).andReturn(policySet).anyTimes();
-		expect(context.getCurrentPolicy()).andReturn(null).anyTimes();
-
-		expect(refPolicySet.getId()).andReturn("testId");
-		expect(refPolicySet.getVersion()).andReturn(Version.parse("1.0"));
-		expect(refPolicySet.isMatch(isA(EvaluationContext.class))).andReturn(MatchResult.MATCH);
-
-		c.replay();
-
+		when(context.getCurrentPolicySetIDReference()).thenReturn(null);
+		when(context.getCurrentPolicySet()).thenReturn(policySet);
+		when(context.getCurrentPolicy()).thenReturn(null);
+		when(context.resolve(ref)).thenReturn(refPolicySet);
 		EvaluationContext policyRefContext = ref.createContext(context);
+		assertEquals("testId", refPolicySet.getId());
+		assertEquals(Version.parse("1.0"), refPolicySet.getVersion());
 		assertEquals(MatchResult.MATCH, ref.isMatch(policyRefContext));
-		c.verify();
-
-
+		InOrder order = inOrder(context, algorithm);
+		order.verify(context, times(2)).getCurrentPolicySetIDReference();
+		order.verify(context).resolve(ref);
+		order.verify(context, times(2)).getCurrentPolicySet();
+		order.verify(context).getCurrentPolicy();
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verify(context, times(2)).getCurrentPolicySet();
+		verify(context, times(1)).getCurrentPolicy();
+		verifyNoMoreInteractions(context, algorithm);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
 		assertSame(refPolicySet, policyRefContext.getCurrentPolicySet());
-
 	}
 
 	@Test
 	public void testEvaluateIfApplicable() throws CoreException
 	{
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
-
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.getCurrentPolicySetIDReference()).andReturn(null);
-		expect(context.resolve(ref)).andReturn(refPolicySet);
-		Capture<EvaluationContext> refContext = Capture.newInstance();
-		expect(refPolicySet.createContext(capture(refContext))).andAnswer(new IAnswer<EvaluationContext>() {
-			@Override
-			public EvaluationContext answer() throws Throwable {
-				EvaluationContext ctx = (EvaluationContext)EasyMock.getCurrentArguments()[0];
-				return refPolicySet.new PolicySetDescendantEvaluationContext(ctx);
-	        }
-		});
-
-		expect(context.getCurrentPolicySet()).andReturn(policySet).anyTimes();
-		expect(context.getCurrentPolicy()).andReturn(null).anyTimes();
-
-		expect(refPolicySet.getId()).andReturn("testId");
-		expect(refPolicySet.getVersion()).andReturn(Version.parse("1.0"));
-		expect(refPolicySet.evaluate(isA(EvaluationContext.class))).andReturn(Decision.DENY);
-
-		c.replay();
+		when(context.getCurrentPolicySetIDReference()).thenReturn(null);
+		when(context.getCurrentPolicySet()).thenReturn(policySet);
+		when(context.getCurrentPolicy()).thenReturn(null);
+		when(context.resolve(ref)).thenReturn(refPolicySet);
+		when(algorithm.combine(any(EvaluationContext.class), eq(Collections.emptyList()))).thenReturn(Decision.DENY);
 		EvaluationContext policyRefContext = ref.createContext(context);
+		assertEquals("testId", refPolicySet.getId());
+		assertEquals(Version.parse("1.0"), refPolicySet.getVersion());
 		assertEquals(Decision.DENY, ref.evaluate(policyRefContext));
-		c.verify();
-
+		InOrder order = inOrder(context, algorithm);
+		order.verify(context, times(2)).getCurrentPolicySetIDReference();
+		order.verify(context).resolve(ref);
+		order.verify(context, times(2)).getCurrentPolicySet();
+		order.verify(context).getCurrentPolicy();
+		ArgumentCaptor<EvaluationContext> refContext = ArgumentCaptor.forClass(EvaluationContext.class);
+		order.verify(algorithm).combine(refContext.capture(), eq(Collections.emptyList()));
+		assertSame(policyRefContext, refContext.getValue());
+		verify(context, never()).isExtendedIndeterminateEval();
+		order.verify(context).addAdvices(Decision.DENY, Collections.emptyList());
+		order.verify(context).addObligations(Decision.DENY, Collections.emptyList());
+		order.verify(context).addEvaluationResult(refPolicySet, Decision.DENY);
+		// Count all calls; strict stubs can otherwise mark extra calls as verified.
+		verify(context, times(2)).getCurrentPolicySetIDReference();
+		verify(context, times(1)).resolve(ref);
+		verify(context, times(2)).getCurrentPolicySet();
+		verify(context, times(1)).getCurrentPolicy();
+		verify(algorithm, times(1)).combine(refContext.capture(), eq(Collections.emptyList()));
+		verify(context, times(1)).addAdvices(Decision.DENY, Collections.emptyList());
+		verify(context, times(1)).addObligations(Decision.DENY, Collections.emptyList());
+		verify(context, times(1)).addEvaluationResult(refPolicySet, Decision.DENY);
+		verifyNoMoreInteractions(context, algorithm);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
 		assertSame(refPolicySet, policyRefContext.getCurrentPolicySet());
 	}

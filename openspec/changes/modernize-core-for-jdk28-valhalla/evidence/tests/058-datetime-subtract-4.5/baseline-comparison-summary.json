@@ -1,0 +1,43 @@
+{
+  "baseline": "a8a90d46",
+  "scope": "seven unmodified arithmetic sources with current infrastructure jars",
+  "rows": 184,
+  "functions": {
+    "dateTime-add-dayTimeDuration": {
+      "rows": 28,
+      "same": 15,
+      "different": 13,
+      "errors": 0
+    },
+    "dateTime-subtract-dayTimeDuration": {
+      "rows": 28,
+      "same": 3,
+      "different": 25,
+      "errors": 0
+    },
+    "dateTime-add-yearMonthDuration": {
+      "rows": 32,
+      "same": 18,
+      "different": 14,
+      "errors": 0
+    },
+    "dateTime-subtract-yearMonthDuration": {
+      "rows": 32,
+      "same": 18,
+      "different": 14,
+      "errors": 0
+    },
+    "date-add-yearMonthDuration": {
+      "rows": 32,
+      "same": 1,
+      "different": 31,
+      "errors": 0
+    },
+    "date-subtract-yearMonthDuration": {
+      "rows": 32,
+      "same": 1,
+      "different": 31,
+      "errors": 0
+    }
+  }
+}

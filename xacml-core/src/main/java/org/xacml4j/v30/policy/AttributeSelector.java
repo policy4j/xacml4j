@@ -74,8 +74,7 @@ public class AttributeSelector extends
 	protected Optional<BagOfValues> doContextResolve(EvaluationContext context)
 	{
 		Optional<BagOfValues> v = context.resolve(selectorKey);
-		if((v == null || !v.isPresent() &&
-				isMustBePresent())){
+		if((v == null || !v.isPresent()) && isMustBePresent()){
 			context.setEvaluationStatusIfAbsent(()->Status.missingAttribute(selectorKey)
 			                                              .build());
 			throw AttributeReferenceEvaluationException

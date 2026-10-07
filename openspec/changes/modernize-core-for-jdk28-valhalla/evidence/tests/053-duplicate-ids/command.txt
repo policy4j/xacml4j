@@ -1,0 +1,17 @@
+Working directory: <lane>
+
+JDK check:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Behavioral red run, before production changes (exit 1; 5 failures, 0 errors;
+the evidence directory did not yet exist, so Maven did not retain this log):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeRegistryTest,FunctionProviderDuplicateIdTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/053-duplicate-ids/type-function-duplicates-red.log
+
+Focused green run (exit 0; 69 tests, 0 failures/errors/skips):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeRegistryTest,FunctionProviderDuplicateIdTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/053-duplicate-ids/type-function-duplicates-green.log
+
+Full reactor and conformance (exit 0):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/053-duplicate-ids/full-reactor-clean-verify.log
+
+Construction-path audit:
+rtk rg -n "FunctionProviderBuilder\.builder|FunctionProvider\.builder|new AggregatingFunctionProvider|extends BaseFunctionProvider|new TypeFactory\.BaseTypeFactory|TypeFactory\.BaseTypeFactory" --glob '*.java' xacml-core/src/main xacml-pdp/src/main xacml-xml/src/main xacml-json/src/main

@@ -1,0 +1,71 @@
+No Maven command was run.
+
+```sh
+rtk rg --files xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test -g '*Request.xml' | rtk wc -l
+rtk rg --files xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4 -g '*Request.xml' | rtk wc -l
+rtk rg --files xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4 -g '*Request.xml' -g '!**/xacml3.0-deprecated/**' | rtk wc -l
+rtk rg --files xacml-conformance-tests/src/test/resources/rsa2008-interop -g '*Request*.xml' | rtk sort
+rtk rg --files xacml-conformance-tests/src/test/java
+rtk rg -n 'skipTests.add|for' xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java
+rtk rg -n -A16 'private static void addPolicy' xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java
+rtk rg -n 'urn:oasis:names:tc:xacml:3.0:function:(any-of-any|any-of|all-of|map)|urn:oasis:names:tc:xacml:1.0:function:(any-of-any|any-of|all-of|map)' xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4 -g '*Policy.xml'
+ast-grep run --lang java --pattern 'for (int $I = 1; $I < $BOUND; $I++) { $$$ }' xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java
+```
+
+Exact Python generator command for `manifest-draft.csv`:
+
+```sh
+rtk python3 -c 'from pathlib import Path
+import csv, json, re, collections
+R=Path("xacml-conformance-tests/src/test/resources")
+E=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11")
+O=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/007-conformance-manifest-draft/manifest-draft.csv")
+run=json.loads((E/"46-conformance-testcases.json").read_text()); ex=json.loads((E/"46-existing-case-exclusions.json").read_text()); rows=[]
+def p(x): return x.as_posix()
+def oasis(suite,folder,cls):
+ d=R/folder; src=Path("xacml-conformance-tests/src/test/java/org/xacml4j/v20")/(cls+".java"); lines=src.read_text().splitlines(); key="org.xacml4j.v20."+cls
+ seen={c for t in run[key]["testcases"] for c in t.get("case_ids",[])}; skips={c for xs in ex[cls].values() for c in xs}; group=""; sl={}
+ gs={"testIIATests":"IIA","testIIIATests":"IIIA","testIICTests":"IIC","testIIDTests":"IID","testIIIGTests":"IIIG"}
+ for n,line in enumerate(lines,1):
+  m=re.search(r"public void (test[A-Za-z]+)",line)
+  if m: group=gs.get(m.group(1),"")
+  m=re.search(r"skipTests[.]add[(]([0-9]+)[)]",line)
+  if m and group: sl[group+str(int(m.group(1))).zfill(3)]=n
+ bounds={"IIA":22,"IIB":54,"IIC":233,"IID":30,"IIE":3,"IIIA":28,"IIIF":7,"IIIG":7}
+ for req in sorted(d.glob("*Request.xml")):
+  c=req.name[:-11]
+  if not(c[:-3].isalpha() and c[-3:].isdigit()): continue
+  special=c in {"IID029","IID030"}
+  if special: pol=[d/(c+"Policy1.xml"),d/(c+"Policy2.xml")]
+  elif suite=="oasis20" and c in {"IIE001","IIE002"}: pol=[d/(c+"Policy.xml"),d/(c+"PolicyId1.xml"),d/(c+"PolicySetId1.xml")]
+  else: pol=[d/(c+"Policy.xml")]
+  resp=d/(c+"Response.xml"); miss=[x for x in [req,*pol,resp] if not x.is_file()]; m=re.match(r"([A-Z]+)([0-9]+)",c); pref,num=m.group(1),int(m.group(2))
+  if special:
+   disp="special-harness"; why="Multi-root Policy1/Policy2 fixture needs a special harness"
+   if c=="IID029": why+="; inherited skip entry also exists"
+   if c=="IID030": why+="; testCount=30 with i < testCount stops before 030"
+   if c in sl: why+=f"; skipTests.add at {src}:{sl[c]}"
+  elif miss: disp="missing-file"; why="Missing required fixture(s): "+"; ".join(p(x) for x in miss)
+  elif c in seen: disp="executed"; why=f"Run 46 case_ids contains {c}; containing test method has failure=null"
+  elif c in skips: disp="skipped-exclusion"; why=f"skipTests.add({num}) at {src}:{sl.get(c,0)}; no inline reason comment"
+  else:
+   disp="not-reached-loop-bound"
+   if pref not in bounds: why=f"No harness test loop for prefix {pref}"
+   else:
+    b=bounds[pref]; why=f"testCount={b}; loop at {src}:210 executes 1..{b-1}; case {num} not reached"
+    if num==b: why+=" (off-by-one: fixture equals exclusive bound)"
+    elif num>b: why+=" (case exceeds hard-coded group bound)"
+  rows.append([suite,c,p(req),";".join(map(p,pol)),p(resp),disp,why,"yes" if c in seen else "no","yes" if c in seen else "no"])
+oasis("oasis20","oasis-xacml20-compat-test","Xacml20ConformanceTest"); oasis("oasis30","xacml3.0-ct-v.0.4","Xacml30ConformanceTest")
+d=R/"rsa2008-interop"; pol=sorted(d.glob("XacmlPolicySet-*.xml"))
+for req in sorted(d.glob("XacmlRequest-*-*.xml")):
+ a=req.stem.split("-"); c=a[-2]+"-"+a[-1]; resp=d/f"XacmlResponse-{c}.xml"; rows.append(["rsa2008",c,p(req),";".join(map(p,pol)),p(resp),"executed","RSA2008InteropTest runs this request; run 46 summary reports all 17 pass","yes","yes"])
+examples={"Example_1":["Example_1/Rule_1.xml"],"Example_2":["Example_2/Policy_set.xml","Example_2/Rule_1.xml","Example_2/Rule_2.xml","Example_2/Rule_3.xml","Example_2/Rule_4.xml"]}
+for c,pol in examples.items():
+ d=R/c; rows.append(["example",c,p(d/"Request.xml"),";".join(p(R/x) for x in pol),p(d/"Response.xml"),"executed","XacmlExampleTest runs this example; run 46 summary reports both pass","yes","yes"])
+order=["oasis20","oasis30","rsa2008","example"]; rows.sort(key=lambda r:(order.index(r[0]),r[1]))
+with O.open("w",newline="") as f:
+ w=csv.writer(f); w.writerow(["suite","case_id","request_file","policy_files","expected_response_file","disposition","reason","executed_latest_green_run","passed_latest_green_run"]); w.writerows(rows)
+counts=collections.Counter((r[0],r[5]) for r in rows); print("rows",len(rows))
+for s in order: print(s,{d:counts[s,d] for d in ["executed","skipped-exclusion","not-reached-loop-bound","special-harness","missing-file"]})'
+```

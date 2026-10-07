@@ -6,15 +6,19 @@ record results as evidence.
 
 ## Current state
 
-- The `feature_xacml_20` working tree does not compile. Implementation work
-  follows the change `modernize-core-for-jdk28-valhalla`, which first builds
-  a green baseline on an integration branch (tasks 1.x). Until that exists,
-  a test run proves nothing about the working tree.
-- Stack today: the JUnit 4 API on the JUnit Platform through
-  `junit-vintage-engine`, EasyMock, Google Truth, and Hamcrest. There is
-  no Jupiter dependency yet.
-- Target stack (change group 2): JUnit 5 (Jupiter) and Mockito; Truth and
-  Hamcrest stay; JUnit 4, Vintage, EasyMock, and Objenesis go away.
+- Implementation follows `modernize-core-for-jdk28-valhalla` on the
+  integration branch.
+- Stack: JUnit 5 (Jupiter, `junit-bom` 5.14.4) and Mockito 5.24.0.
+  Google Truth (1.1.5) and Hamcrest stay.
+- Mockito starts as a JVM agent. The `maven-dependency-plugin` `properties`
+  goal supplies the JAR path; Surefire uses
+  `@{argLine} -javaagent:${org.mockito:mockito-core:jar}`. See
+  [run 009](../../openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/summary.md)
+  for the setup proof.
+- JUnit 4, Vintage, and EasyMock are removed, and Objenesis is no longer a
+  direct dependency (task 2.7). Mockito still brings Objenesis in
+  transitively; do not exclude it, because Mockito needs it to create class
+  mocks.
 - No coverage tool is configured. Adding JaCoCo is a build change and needs
   its own task.
 
@@ -70,24 +74,39 @@ before you change production code.
   `test1`.
 - Cite the XACML section in a comment when the expected value comes from
   the standard. Never copy an expected value from the code under test.
-- Build real value and model objects. Mock only interfaces and SPI types
-  (repositories, resolvers, evaluation contexts). Value types may become
-  JEP 401 value classes, which cannot be mocked.
+- Use real policy model and value objects. Mock interfaces and collaborators
+  such as repositories, resolvers, and evaluation contexts. Value types may
+  become JEP 401 value classes, which cannot be mocked.
 - No network, no wall-clock sleeps, no dependence on the default locale,
-  time zone, or hash iteration order. Use `@TempDir` (JUnit 5) or
-  `TemporaryFolder` (JUnit 4) for files.
-- Never weaken, delete, or `@Ignore` an assertion to make a test pass. A
-  skip needs a written reason and an issue.
+  time zone, or hash iteration order. Use `@TempDir` for files.
+- Never weaken or delete an assertion, or disable a test to make it pass.
+  `@Disabled` needs a written reason and an issue.
 - New fixtures go in the module's own `src/test/resources`. The OASIS and
   RSA fixtures (`xacml-conformance-tests/src/test/resources/**`) and the
-  XSDs are read-only.
+  XSDs are read-only. `VendoredFixtureIntegrityTest` fails on any change to
+  them; after a deliberate upstream update, refresh the manifest with
+  `GenerateVendoredFixtureManifest --write` (change evidence run 015).
 
-JUnit 5 and Mockito rules (after change task 2.1): `@Test`,
-`@BeforeEach`/`@BeforeAll`, `@Nested`, `@ParameterizedTest` with
-`@MethodSource` or `@CsvSource` for truth tables, `assertThrows`,
-`@Disabled("reason")`; `@ExtendWith(MockitoExtension.class)` with strict
-stubs, `InOrder` only where order matters, `ArgumentCaptor` for captures.
-Until task 2.1 lands, write new tests with the JUnit 4 API.
+Use Jupiter's `@Test`, `@BeforeEach`/`@BeforeAll`, `@Nested`, and
+`@ParameterizedTest` with `@MethodSource` or `@CsvSource` for truth tables.
+Use `assertThrows` for expected exceptions. Wrap only the throwing call;
+put verifications after `assertThrows`.
+
+Mockito rules:
+
+- Prefer `@ExtendWith(MockitoExtension.class)` with strict stubs. Any
+  `lenient()` stub needs a comment explaining why.
+- Create fresh mocks in `@BeforeEach` instead of resetting them.
+- Verify every interaction the test depends on with the exact count,
+  including stubbed calls. Keep total count checks alongside `InOrder`:
+  strict stubs can mark extra stubbed calls as verified.
+- Use `InOrder` and `verifyNoMoreInteractions` where order or strictness
+  matters.
+- Use `verifyNoInteractions` for collaborators that must not be touched.
+- Assert the values captured by every `ArgumentCaptor`.
+- Do not call a collaborator mock to set up an interaction that a later
+  `verify(...)` would count. Stub return values with `when(...)` and put
+  verifications after the code under test.
 
 ## Test migration parity
 
@@ -95,6 +114,11 @@ While tests move to JUnit 5 and Mockito, each converted module keeps at
 least its baseline test-method count, and conformance keeps at least its
 baseline executed-case count. A lower number fails the gate until each
 missing test is accounted for.
+
+Jupiter does not report a `@Disabled` class with no test methods in
+Surefire; Vintage did. This accounts for the core count changing from
+762 to 760 and the PDP count from 74 to 73. Record this difference while
+keeping the declared test methods and real skips unchanged.
 
 ## Recording results
 

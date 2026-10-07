@@ -1,0 +1,2 @@
+Exit code: 1; Maven did not start.
+zsh:1: no matches found: -Dincludes=org.junit.jupiter:*,org.junit.vintage:*,org.junit.platform:*,org.mockito:*,junit:junit,org.easymock:easymock,org.objenesis:objenesis
