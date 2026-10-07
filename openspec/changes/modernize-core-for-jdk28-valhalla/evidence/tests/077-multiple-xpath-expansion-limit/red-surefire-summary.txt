@@ -1,0 +1,18 @@
+Red run, JDK 21: MultipleResourcesXPathExpansionLimitTest with the limits stored but not enforced (10 tests at that time).
+
+[ERROR] Tests run: 10, Failures: 6, Errors: 1, Skipped: 0, Time elapsed: 1.219 s <<< FAILURE! - in org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest.productOfManyCategoriesDoesNotOverflow  Time elapsed: 0.971 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest.indeterminateResultKeepsTheIncludeInResultAttributes  Time elapsed: 0.059 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest.limitsMustBePositive  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest.morePathsThanTheLimitInOneCategoryAreIndeterminate  Time elapsed: 0.035 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest.limitsAreConfigurable  Time elapsed: 0.033 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest.productAboveTheLimitIsIndeterminate  Time elapsed: 0.019 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesXPathExpansionLimitTest.publicHandlerChainTakesTheLimits  Time elapsed: 0.007 s  <<< FAILURE!
+[ERROR]   MultipleResourcesXPathExpansionLimitTest.indeterminateResultKeepsTheIncludeInResultAttributes:186->assertLimitExceeded:194 expected: <1> but was: <101>
+[ERROR]   MultipleResourcesXPathExpansionLimitTest.limitsAreConfigurable:149->assertLimitExceeded:194 expected: <1> but was: <3>
+[ERROR]   MultipleResourcesXPathExpansionLimitTest.limitsMustBePositive:159 Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+[ERROR]   MultipleResourcesXPathExpansionLimitTest.morePathsThanTheLimitInOneCategoryAreIndeterminate:97->assertLimitExceeded:194 expected: <1> but was: <101>
+[ERROR]   MultipleResourcesXPathExpansionLimitTest.productAboveTheLimitIsIndeterminate:123->assertLimitExceeded:194 expected: <1> but was: <121>
+[ERROR]   MultipleResourcesXPathExpansionLimitTest.publicHandlerChainTakesTheLimits:169->assertLimitExceeded:194 expected: <1> but was: <3>
+[ERROR]   MultipleResourcesXPathExpansionLimitTest.productOfManyCategoriesDoesNotOverflow:133 » IllegalArgument Cartesian product too large; must have size at most Integer.MAX_VALUE
+[ERROR] Tests run: 10, Failures: 6, Errors: 1, Skipped: 0

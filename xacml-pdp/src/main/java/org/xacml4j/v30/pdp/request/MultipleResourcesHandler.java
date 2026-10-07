@@ -41,10 +41,26 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 
 	public MultipleResourcesHandler()
 	{
+		this(MultipleResourcesViaXPathExpressionHandler.DEFAULT_MAX_PATHS_PER_CATEGORY,
+				MultipleResourcesViaXPathExpressionHandler.DEFAULT_MAX_EXPANDED_REQUESTS);
+	}
+
+	/**
+	 * Creates the handler chain with limits for the expansion of
+	 * {@code multiple:content-selector} requests. Beyond a limit the
+	 * request gets one Indeterminate result with status processing-error.
+	 *
+	 * @param maxPathsPerCategory the largest number of node paths that one
+	 * selector may select in its category
+	 * @param maxExpandedRequests the largest number of individual requests
+	 * that one request may expand to
+	 */
+	public MultipleResourcesHandler(int maxPathsPerCategory, int maxExpandedRequests)
+	{
 		super(new MultipleResourcesViaRequestReferencesHandler(),
 				new MultipleResourcesViaRepeatingAttributesHandler(),
 				new MultipleResourcesViaXPathExpressionLegacyHandler(),
-				new MultipleResourcesViaXPathExpressionHandler());
+				new MultipleResourcesViaXPathExpressionHandler(maxPathsPerCategory, maxExpandedRequests));
 	}
 
 	@Override

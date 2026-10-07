@@ -44,9 +44,11 @@ import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestSyntaxException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -60,8 +62,34 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 	private final static String DRAFT_MULTIPLE_CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:multiple:content-selector";
 	final static String CONTENT_SELECTOR = "urn:oasis:names:tc:xacml:3.0:content-selector";
 
+	/** Default limits (maintainer ruling 2026-10-07, run 061 D16). */
+	final static int DEFAULT_MAX_PATHS_PER_CATEGORY = 100;
+	final static int DEFAULT_MAX_EXPANDED_REQUESTS = 100;
+
+	/** The status message of the result when a limit is exceeded. It names no request data. */
+	final static String LIMIT_EXCEEDED_MESSAGE = "Multiple decision request expansion limit exceeded";
+
+	private final int maxPathsPerCategory;
+	private final int maxExpandedRequests;
+
 	public MultipleResourcesViaXPathExpressionHandler(){
+		this(DEFAULT_MAX_PATHS_PER_CATEGORY, DEFAULT_MAX_EXPANDED_REQUESTS);
+	}
+
+	/**
+	 * @param maxPathsPerCategory the largest number of node paths that one
+	 * {@code multiple:content-selector} may select in its category
+	 * @param maxExpandedRequests the largest number of individual requests
+	 * that one request may expand to
+	 */
+	MultipleResourcesViaXPathExpressionHandler(int maxPathsPerCategory, int maxExpandedRequests){
 		super(FEATURE_ID);
+		Preconditions.checkArgument(maxPathsPerCategory > 0,
+				"maxPathsPerCategory=\"%s\" must be positive", maxPathsPerCategory);
+		Preconditions.checkArgument(maxExpandedRequests > 0,
+				"maxExpandedRequests=\"%s\" must be positive", maxExpandedRequests);
+		this.maxPathsPerCategory = maxPathsPerCategory;
+		this.maxExpandedRequests = maxExpandedRequests;
 	}
 
 	@Override
@@ -82,12 +110,33 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		try
 		{
 			List<Set<Category>> all = new LinkedList<Set<Category>>();
+			boolean emptySelection = false;
 			for(Category c : request.getCategory()){
 				Set<Category> categories = getCategories(c);
 				if(LOG.isDebugEnabled()){
 					LOG.debug("Categories=\"{}\"", categories);
 				}
+				emptySelection |= categories.isEmpty();
 				all.add(categories);
+			}
+			if(emptySelection){
+				// A selector that selects no node gives no individual request,
+				// whatever the other categories select. Returned here, because
+				// the cross product of large sets can not be built even when
+				// one of them is empty.
+				return new LinkedList<Result>();
+			}
+			// The number of individual requests is the product of the sizes. It is
+			// checked after every category, before the product is built, so it
+			// stays below maxExpandedRequests * maxPathsPerCategory and does not
+			// overflow.
+			long expandedRequests = 1;
+			for(Set<Category> categories : all){
+				expandedRequests *= categories.size();
+				if(expandedRequests > maxExpandedRequests){
+					throw new ExpansionLimitExceededException(String.format(
+							"more than maxExpandedRequests=\"%d\" individual requests", maxExpandedRequests));
+				}
 			}
 			Set<List<Category>> cartesian = Sets.cartesianProduct(all);
 			if(LOG.isDebugEnabled()){
@@ -109,6 +158,26 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 					Result.indeterminate(e.getStatus())
 					.includeInResultAttr(request.getIncludeInResultAttributes())
 					.build());
+		}catch(ExpansionLimitExceededException e){
+			// The request is well-formed; the PDP declines to process it. The
+			// status message is a fixed text: which limit and by how much is
+			// logged, not returned.
+			LOG.warn("Multiple decision request rejected: {}", e.getMessage());
+			return Collections.singleton(
+					Result.indeterminate(Status.processingError()
+							.message(LIMIT_EXCEEDED_MESSAGE)
+							.build())
+					.includeInResultAttr(request.getIncludeInResultAttributes())
+					.build());
+		}
+	}
+
+	/** A limit of the expansion was exceeded. */
+	@SuppressWarnings("serial")
+	private static final class ExpansionLimitExceededException extends Exception
+	{
+		ExpansionLimitExceededException(String message){
+			super(message);
 		}
 	}
 
@@ -125,7 +194,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 	}
 
 	private Set<Category> getCategories(Category category)
-		throws RequestSyntaxException
+		throws RequestSyntaxException, ExpansionLimitExceededException
 	{
 		Entity entity = category.getEntity();
 		Optional<Value<?>> value = entity.attributes().stream()
@@ -151,6 +220,11 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 			List<String> paths =  content
 					.map(c->c.evaluateToNodePathList(path.getPath()))
 					.orElse(Collections.<String>emptyList());
+			if(paths.size() > maxPathsPerCategory){
+				throw new ExpansionLimitExceededException(String.format(
+						"category=\"%s\" selects %d node paths, more than maxPathsPerCategory=\"%d\"",
+						category.getCategoryId(), paths.size(), maxPathsPerCategory));
+			}
 			if(LOG.isDebugEnabled()){
 				LOG.debug("Found node paths=\"{}\" for path=\"{}\"", paths, path);
 			}

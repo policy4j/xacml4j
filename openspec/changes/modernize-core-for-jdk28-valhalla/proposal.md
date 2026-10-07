@@ -72,6 +72,9 @@ test stack that runs on modern JDKs.
   and test-discovery parity.
 - `jdk28-valhalla-build`: JDK 28 preview build and CI, and the rules for
   converting types to value classes.
+- `request-limits`: limits on the work that one request can cause
+  (expansion of multiple-decision requests), added by the maintainer
+  rulings of 2026-10-07.
 
 ### Modified Capabilities
 

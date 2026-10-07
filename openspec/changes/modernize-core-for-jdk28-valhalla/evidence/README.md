@@ -21,6 +21,7 @@ task 1.6.
 | combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
 | conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6); adjudicated dispositions | 015, 023, 073, 075 |
 | test-framework | per-module test counts; no JUnit 4 or EasyMock imports (task 2.7) | 009, 010, 011, 012, 013, 017 |
+| request-limits | expansion-limit and regular-expression limit tests (beads 4.50, 4.51) | 077, rv085, rv086 |
 | jdk28-valhalla-build | JDK 28 reactor build and CI job (tasks 8.1-8.5); JMH before/after per value-class family (tasks 9.2-9.4) | - |
 
 ## Gate tasks to proof
@@ -203,6 +204,9 @@ task 1.6.
 | `reviews/code/rv083-request-syntax-error-codex` | review run 075 | Codex, adversarial | APPROVE (no defect; two suggested tightenings applied after the review and not reviewed again) |
 | `tests/076-zero-argument-bags` | bead policy4j-the.4.53 (rv078 follow-up), 2026-10-07 | registry test red then green; A.3.10 text from the OASIS copy of run 074; full reactor on JDK 21 (see command.txt) | PASS: 18 type-bag ids that failed with a NullPointerException for a call without arguments return an empty bag of their type (double-bag already did); a variadic parameter with a minimum still gets null, so integer-add() still fails; 7,745 tests, 0 failures, 22 skipped |
 | `reviews/code/rv084-zero-argument-bags-codex` | review run 076 | Codex, adversarial, two rounds | APPROVE in both rounds; the fix was narrowed by the author between them |
+| `tests/077-multiple-xpath-expansion-limit` | bead policy4j-the.4.50 (ruling D16, security), 2026-10-07 | test red then green; Multiple Decision Profile text fetched; full reactor on JDK 21 (see command.txt) | PASS: limits of 100 node paths per category and 100 individual requests, configurable; beyond a limit one Indeterminate processing-error and no individual request; an empty selection is not a violation; 7,774 tests, 0 failures, 22 skipped; conformance unchanged; the repeated-categories handler is still unbounded (policy4j-the.4.57) |
+| `reviews/code/rv085-multiple-xpath-limit-codex` | review run 077 | Codex, adversarial, two rounds | APPROVE in round 2 (round 1: an empty selection after large ones was rejected; fixed) |
+| `reviews/code/rv086-multiple-xpath-limit-grok` | review run 077 | Grok grok-4.7, adversarial | APPROVE (no finding; one test added afterwards) |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and
