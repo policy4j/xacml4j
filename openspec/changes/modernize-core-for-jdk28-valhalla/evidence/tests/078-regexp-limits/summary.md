@@ -125,10 +125,13 @@ REQUEST_CHANGES; every finding was fixed except the second HIGH of round
 2, which is bug policy4j-the.4.58. The reviewer accepted that scope in
 round 3. Round 6 APPROVE, no finding.
 
-A second review by another model family (Grok) was started on the
-approved diff. It had given no report after 20 minutes when this run was
-recorded. If it reports, its record is
-`reviews/code/rv089-regexp-limits-grok`.
+A second review of the approved diff by another model family was tried
+three times on 2026-10-07 and gave no report: Grok grok-4.7 (stopped
+after 80 minutes; the network dropped in that time), Grok again (stopped
+after 32 minutes), Agy gemini-3.1-pro-high (stopped after 30 minutes; its
+15-minute print timeout did not end it). The machine was under high load
+(load average above 25) during the last attempt. The lane is recorded as
+failed. Codex is the only reviewer of this run.
 
 ## Course of rounds 2 to 5
 

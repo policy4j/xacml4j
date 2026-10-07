@@ -28,6 +28,10 @@ The prompts state that `or(regexp-match(slow), true)` is true after at most
 one time limit. That holds only for a match that reads its input (see
 policy4j-the.4.58).
 
+No second reviewer: three attempts with other model families on the
+approved diff gave no report (`tests/078-regexp-limits/summary.md`,
+"Review").
+
 Limits: the reviewer saw the diff and the facts in the prompts only. It
 ran no build, no test, and no probe; the measurements in the prompts are
 the author's. Its statement that no further way to hide a repetition was
