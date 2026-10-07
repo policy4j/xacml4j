@@ -195,8 +195,10 @@ scripts/agent-doctor.sh serena     # one tool: ast-grep | ripwire | tgrep | sere
 | Literal or regex text search | `rtk rg` | Default for one-off searches |
 | Repeated whole-repo regex searches | tgrep | `tgrep <pattern> .` (ripgrep flags) |
 
-Project MCP servers are declared in `.mcp.json`: `serena`, `ast-grep`, and
-`ripwire` (all stdio).
+Project MCP servers `serena`, `ast-grep`, and `ripwire` (all stdio) are
+declared once per CLI: `.mcp.json` (Claude, Kimi, Copilot),
+`.codex/config.toml` (Codex), and `.grok/config.toml` (Grok). Keep the three
+files in step. Agy has no project MCP file; use the CLI forms above.
 
 ### ripwire
 

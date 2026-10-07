@@ -271,6 +271,12 @@ poms when the task says so) plus your run directories under the change's
 file outside your packet, and stop with `BLOCKER:` if the task needs one.
 You may run focused Maven builds and tests (docs/ai/TESTING.md).
 
+For a refactoring inside your packet you may use Serena's symbol tools
+(`rename_symbol`, `replace_symbol_body`, `insert_before_symbol`,
+`insert_after_symbol`, `safe_delete_symbol`). A rename edits every
+reference: list them first with `find_referencing_symbols`, and stop with
+`BLOCKER:` when one is outside your packet.
+
 ## Role
 
 Implement the OpenSpec task(s) in your task packet (docs/ai/OPENSPEC.md,
@@ -395,7 +401,10 @@ with Valhalla, JEP 401 value classes, `--enable-preview`).
 
 Do not create, edit, or delete files anywhere. Do not run builds,
 formatters, or git commands that write. Inspect with file reads, `rtk rg`,
-`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena.
+`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena. Serena's
+symbol-editing tools (`rename_symbol`, `replace_symbol_body`,
+`insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) write
+files: do not call them.
 
 NTM does not enforce read-only access (Codex runs in a workspace-write
 sandbox, and other CLIs follow their own permission settings). The
@@ -528,7 +537,10 @@ with Valhalla, JEP 401 value classes, `--enable-preview`).
 
 Do not create, edit, or delete files anywhere. Do not run builds,
 formatters, or git commands that write. Inspect with file reads, `rtk rg`,
-`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena.
+`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena. Serena's
+symbol-editing tools (`rename_symbol`, `replace_symbol_body`,
+`insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) write
+files: do not call them.
 
 NTM does not enforce read-only access (Codex runs in a workspace-write
 sandbox, and other CLIs follow their own permission settings). The
@@ -797,7 +809,10 @@ with Valhalla, JEP 401 value classes, `--enable-preview`).
 
 Do not create, edit, or delete files anywhere. Do not run builds,
 formatters, or git commands that write. Inspect with file reads, `rtk rg`,
-`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena.
+`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena. Serena's
+symbol-editing tools (`rename_symbol`, `replace_symbol_body`,
+`insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) write
+files: do not call them.
 
 NTM does not enforce read-only access (Codex runs in a workspace-write
 sandbox, and other CLIs follow their own permission settings). The

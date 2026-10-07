@@ -56,6 +56,12 @@ poms when the task says so) plus your run directories under the change's
 file outside your packet, and stop with `BLOCKER:` if the task needs one.
 You may run focused Maven builds and tests (docs/ai/TESTING.md).
 
+For a refactoring inside your packet you may use Serena's symbol tools
+(`rename_symbol`, `replace_symbol_body`, `insert_before_symbol`,
+`insert_after_symbol`, `safe_delete_symbol`). A rename edits every
+reference: list them first with `find_referencing_symbols`, and stop with
+`BLOCKER:` when one is outside your packet.
+
 ## Role
 
 Implement the OpenSpec task(s) in your task packet (docs/ai/OPENSPEC.md,

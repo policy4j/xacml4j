@@ -1,0 +1,16 @@
+# Project MCP servers for Codex: the code-intelligence tools of AGENTS.md.
+# Each stanza resolves the checkout root when it starts, so the file works in
+# every checkout and worktree. Keep it in step with .mcp.json.
+
+[mcp_servers.ast-grep]
+command = "bash"
+args = ["-lc", "exec ast-grep-mcp-server --config \"$(git rev-parse --show-toplevel)/sgconfig.yml\""]
+
+[mcp_servers.ripwire]
+command = "bash"
+args = ["-lc", "exec ripwire \"$(git rev-parse --show-toplevel)\" --mcp"]
+
+[mcp_servers.serena]
+command = "bash"
+args = ["-lc", "exec mcp.sh -q -m serena attach --project \"$(git rev-parse --show-toplevel)\""]
+startup_timeout_sec = 30
