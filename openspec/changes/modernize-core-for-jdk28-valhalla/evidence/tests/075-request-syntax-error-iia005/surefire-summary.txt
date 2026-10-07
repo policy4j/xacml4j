@@ -1,0 +1,22 @@
+JDK 21 full reactor, mvn -Dlicense.skipUpdateLicense=true verify from <repo>. Gate for runs 074 and 075 (both changes in the tree).
+
+xacml-core                 Tests run: 6272, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 135, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 935, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,709 tests, 0 failures, 0 errors, 22 skipped.
+Baseline (run 071, gate 5): 7,638 tests, 24 skipped; conformance 927 with 14 skipped.
+Conformance now: 935 tests (8 new harness tests), 12 skipped (oasis20/IIA005 and oasis30/IIA005 run and pass).
+
+== Gate 2: after the review (only the request parsing is mapped; one more test); runs 074 and 076 also in the tree ==
+
+xacml-core                 Tests run: 6294, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 137, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,735 tests, 0 failures, 0 errors, 22 skipped.
+Conformance: 937 tests (10 in ConformanceRequestSyntaxErrorTest), 12 skipped.

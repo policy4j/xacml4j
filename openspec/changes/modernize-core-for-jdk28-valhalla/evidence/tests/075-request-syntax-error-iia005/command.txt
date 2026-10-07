@@ -1,0 +1,15 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red: the new harness test, harness and manifest unchanged
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -pl xacml-conformance-tests -am -Dtest=ConformanceRequestSyntaxErrorTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Gate: full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true verify
+
+# Manifest rows
+rtk rg -n 'IIA005' xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+
+# Review (one shot, redacted packet = prompt + diff; run from a scratch directory)
+codex exec -s read-only --skip-git-repo-check - < packet.md

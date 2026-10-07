@@ -40,6 +40,8 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.ResponseContext;
+import org.xacml4j.v30.Result;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.MarshallingProvider;
 import org.xacml4j.v30.marshal.MediaType;
@@ -152,9 +154,24 @@ final class ConformanceCaseRunner
 			throw rejected;
 		}
 		boolean xacml30 = "oasis30".equals(testCase.suite());
-		RequestContext request = xacml30 ? Xacml30TestUtility.getRequest(testCase.requestFile())
-				: Xacml20TestUtility.getRequest(testCase.requestFile());
-		ResponseContext response = pdp.decide(request);
+		RequestContext request = null;
+		try {
+			request = xacml30 ? Xacml30TestUtility.getRequest(testCase.requestFile())
+					: Xacml20TestUtility.getRequest(testCase.requestFile());
+		} catch (SyntaxException invalidRequest) {
+			if (!expectedRequestSyntaxError(testCase, invalidRequest)) {
+				throw invalidRequest;
+			}
+			System.out.println("CONFORMANCE REQUEST REJECTION " + testCase + ": " + invalidRequest);
+		}
+		// Maintainer ruling 2026-10-07 (run 061 D12): PolicyDecisionPoint.decide takes a parsed request,
+		// so the adapter in front of it maps a request that cannot be parsed to an Indeterminate response
+		// with status syntax-error. The harness is that adapter here. Only the parsing is mapped: a
+		// SyntaxException from decide() is not.
+		ResponseContext response = request != null ? pdp.decide(request)
+				: ResponseContext.builder()
+						.result(Result.indeterminate(Status.syntaxError().build()).build())
+						.build();
 		ResponseMarshaller marshaller = MarshallingProvider.discoverProviders()
 				.get(mediaType(testCase.suite())).newResponseMarshaller().orElseThrow();
 		if (xacml30) {
@@ -193,6 +210,15 @@ final class ConformanceCaseRunner
 					+ " before standards adjudication");
 		}
 		return expected;
+	}
+
+	static boolean expectedRequestSyntaxError(ConformanceManifest.Case testCase, SyntaxException failure)
+	{
+		// Only the case that demonstrates this request defect may use the mapping.
+		return "special-harness".equals(testCase.disposition())
+				&& "IIA005".equals(testCase.caseId())
+				&& failure.getStatus().getStatusCode().isSyntaxError()
+				&& "Request Attribute is missing AttributeId".equals(failure.getMessage());
 	}
 
 	private static boolean expectedStaticRejection(ConformanceManifest.Case testCase, Throwable failure)
