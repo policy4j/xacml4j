@@ -65,6 +65,7 @@ case.
 - [ ] 6.5 Implement schema-aware, issuer-preserving `Entity.builder(EntityType)` and `Record` (design D8), then re-apply designator/selector changes with the MustBePresent and status behavior from the spec; update JSON and XML adapters
 - [ ] 6.6 Re-apply date/time/duration type changes (`Duration`, day-time and year-month types) against the group 4 tests
 - [ ] 6.7 Gate: full reactor and conformance green on JDK 21
+- [ ] 6.8 Invoke functions through `java.lang.invoke` instead of `Method.invoke`: `FunctionInvocationFactory` resolves each annotated method once to a `MethodHandle` (`Lookup.unreflect`, `bindTo` for instance providers, `asFixedArity`, `asSpreader`, `asType(MethodType.methodType(Object.class, Object[].class))`) and calls `invokeExact`; the signature is checked with `MethodType` when the provider is built; target exceptions arrive without `InvocationTargetException`; tests first for static and instance providers, variadic and optional parameters, lazy functions, and exception status; JMH `FunctionInvocationBenchmark` before and after (needs the `xacml-jmh` module of 9.2); after 6.2
 
 ## 7. Re-apply the refactor: model, schemas, and cleanup
 
