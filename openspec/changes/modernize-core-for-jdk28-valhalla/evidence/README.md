@@ -19,7 +19,7 @@ task 1.6.
 | function-semantics | function tests (task 4.3); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6); 072, rv079, rv080 (rulings D5-D9) |
 | datatype-registry | registry tests (task 4.4) | - |
 | combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
-| conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6) | 015, 023 |
+| conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6); adjudicated dispositions | 015, 023, 073 |
 | test-framework | per-module test counts; no JUnit 4 or EasyMock imports (task 2.7) | 009, 010, 011, 012, 013, 017 |
 | jdk28-valhalla-build | JDK 28 reactor build and CI job (tasks 8.1-8.5); JMH before/after per value-class family (tasks 9.2-9.4) | - |
 
@@ -195,6 +195,7 @@ task 1.6.
 | `reviews/code/rv079-rulings-codex` | review runs 071, 072, 073 | Codex, adversarial, six rounds on the full diff | APPROVE in round 6; rounds 1-5 REQUEST_CHANGES, all findings fixed |
 | `reviews/code/rv080-rulings-grok` | review runs 071, 072, 073 | Grok grok-4.7, adversarial, five rounds (round 1 stopped without a report) | APPROVE in rounds 4 and 5; did not see the round-5 fix, which Codex verified |
 | `tests/072-function-rulings` | bead policy4j-the.4.44 and decisions C4, C5, C7 (rulings D5, D6, D8, D9), 2026-10-07 | red then green; gate of run 071 | PASS: x500Name-match compares RDN sequences; round uses IEEE ties-to-even and keeps NaN and infinities; double-to-integer of NaN or an infinity is Indeterminate; ipAddress set functions pinned as extensions; FunctionSafetyNet43Test 122 tests, 2 skipped (C3, task 5.4); JMH unmeasured for x500Name-match |
+| `builds/073-manifest-dispositions` | beads policy4j-the.4.18, policy4j-the.4.20, policy4j-the.3.9 (rulings D13, D14, D15), 2026-10-07 | reason column of 12 manifest rows; gate of run 071 | DONE: IIIC002/003 and IIIG001-005 named unsupported features; IIIG300, IIA023, IID029 named adjudications; no id, disposition, or fixture changed; conformance 927 with 14 skipped |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and

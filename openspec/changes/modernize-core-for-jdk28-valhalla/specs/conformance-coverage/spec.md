@@ -17,6 +17,27 @@ the manifest.
 - **WHEN** a manifest entry is `skipped` without a reason
 - **THEN** the conformance test fails
 
+### Requirement: Unsupported features and disputed fixtures are named
+A case that needs a feature the engine does not support SHALL be `skipped`
+with a reason that names the feature as unsupported. The unsupported
+features are the hierarchical multiple-resource scopes `Children` and
+`Descendants`, and XACML 2.0 XPath over request `Attribute` or `Subject`
+nodes outside category content. A case whose fixture conflicts with the
+standard or with XML Schema SHALL NOT be executed against the vendored
+response, and its reason SHALL state the conflict.
+
+#### Scenario: Hierarchical resource scope
+- **WHEN** the manifest lists IIIC002 or IIIC003 of either OASIS suite
+- **THEN** the case is `skipped` and its reason names the unsupported `Children`/`Descendants` scope
+
+#### Scenario: XACML 2.0 XPath over the request document
+- **WHEN** the manifest lists IIIG001 to IIIG005 of the OASIS 2.0 suite
+- **THEN** the case is `skipped` and its reason names the unsupported request-document XPath
+
+#### Scenario: Fixture that conflicts with the standard
+- **WHEN** the manifest lists IIIG300, IIA023, or IID029 of the OASIS 3.0 suite
+- **THEN** the case is not executed against the vendored response and its reason states the conflict
+
 ### Requirement: Case enumeration comes from fixtures
 Conformance tests SHALL enumerate cases from the fixture inventory, not
 from hard-coded numeric loop bounds, and SHALL execute the last case of
