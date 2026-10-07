@@ -1,0 +1,45 @@
+Red run, JDK 21: IntegerOverflowTest and FunctionSafetyNet43Test (rows 35 and 36 enabled) on the wrapping arithmetic.
+
+[ERROR] Tests run: 122, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 5.314 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test
+[ERROR] org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test.row35IntegerAbsOfMinLongDoesNotStayNegative  Time elapsed: 1.426 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test.row36IntegerAddDoesNotWrapToMinLong  Time elapsed: 0.017 s  <<< FAILURE!
+[ERROR] Tests run: 43, Failures: 18, Errors: 0, Skipped: 0, Time elapsed: 0.368 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.IntegerOverflowTest
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.integerValueArithmeticDoesNotWrap  Time elapsed: 0.004 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[1]  Time elapsed: 0.007 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[2]  Time elapsed: 0.003 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[3]  Time elapsed: 0.003 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[4]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[5]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[6]  Time elapsed: 0.003 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[7]  Time elapsed: 0.006 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[8]  Time elapsed: 0.005 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[9]  Time elapsed: 0.004 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[10]  Time elapsed: 0.006 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[11]  Time elapsed: 0.008 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[12]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[13]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[14]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[15]  Time elapsed: 0.009 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[16]  Time elapsed: 0.003 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate(String, String, long[])[17]  Time elapsed: 0.004 s  <<< FAILURE!
+[ERROR]   FunctionSafetyNet43Test.row35IntegerAbsOfMinLongDoesNotStayNegative:542->assertIndeterminate:989 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   FunctionSafetyNet43Test.row36IntegerAddDoesNotWrapToMinLong:550->assertIndeterminate:989 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.integerValueArithmeticDoesNotWrap:147 Expected java.lang.ArithmeticException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR]   IntegerOverflowTest.resultOutsideTheRangeIsIndeterminate:106 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR] Tests run: 165, Failures: 20, Errors: 0, Skipped: 0

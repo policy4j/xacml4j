@@ -22,7 +22,11 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import java.math.BigInteger;
+
 import com.google.common.base.Preconditions;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.DoubleVal;
 import org.xacml4j.v30.types.IntegerVal;
@@ -60,11 +64,69 @@ public final class ArithmeticFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)
 			IntegerVal...values)
 	{
-		Long sum = 0L;
-		for(IntegerVal v : values){
-			sum += v.get();
+		try{
+			return XacmlTypes.INTEGER.ofAny(sum(values));
+		}catch(ArithmeticException e){
+			throw outsideIntegerRange("integer-add", e);
 		}
-		return XacmlTypes.INTEGER.ofAny(sum);
+	}
+
+	/**
+	 * The sum of the values. A sum of the first values can leave the 64-bit
+	 * range while the sum of all values is inside it, so the sum is then
+	 * taken without a bound and checked at the end.
+	 *
+	 * @throws ArithmeticException if the sum is outside the 64-bit range
+	 */
+	private static long sum(IntegerVal[] values)
+	{
+		try{
+			long sum = 0L;
+			for(IntegerVal v : values){
+				sum = Math.addExact(sum, v.get());
+			}
+			return sum;
+		}catch(ArithmeticException e){
+			BigInteger sum = BigInteger.ZERO;
+			for(IntegerVal v : values){
+				sum = sum.add(BigInteger.valueOf(v.get()));
+			}
+			return sum.longValueExact();
+		}
+	}
+
+	/**
+	 * The product of the values, as {@link #sum(IntegerVal[])} for a sum.
+	 *
+	 * @throws ArithmeticException if the product is outside the 64-bit range
+	 */
+	private static long product(IntegerVal[] values)
+	{
+		try{
+			long product = 1L;
+			for(IntegerVal v : values){
+				product = Math.multiplyExact(product, v.get());
+			}
+			return product;
+		}catch(ArithmeticException e){
+			BigInteger product = BigInteger.ONE;
+			for(IntegerVal v : values){
+				product = product.multiply(BigInteger.valueOf(v.get()));
+			}
+			return product.longValueExact();
+		}
+	}
+
+	/**
+	 * XACML integers are 64-bit signed integers here. A result outside that
+	 * range is Indeterminate with status processing-error, never a wrapped
+	 * value (maintainer ruling 2026-10-07, run 061 D4). The message names
+	 * the function, not the operands.
+	 */
+	private static EvaluationException outsideIntegerRange(String function, ArithmeticException cause)
+	{
+		String message = function + " result is outside the xs:integer range";
+		return new EvaluationException(Status.processingError().message(message).build(), message, cause);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-multiply", shortId = "integer-multiply")
@@ -73,11 +135,11 @@ public final class ArithmeticFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#integer", min=2)
 			IntegerVal...values)
 	{
-		Long value = 1L;
-		for(IntegerVal v : values){
-			value *= v.get();
+		try{
+			return IntegerVal.of(product(values));
+		}catch(ArithmeticException e){
+			throw outsideIntegerRange("integer-multiply", e);
 		}
-		return IntegerVal.of(value);
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-add", shortId = "double-add")
@@ -111,7 +173,11 @@ public final class ArithmeticFunctions
 	public static IntegerVal abs(
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal v)
 	{
-		return v.abs();
+		try{
+			return v.abs();
+		}catch(ArithmeticException e){
+			throw outsideIntegerRange("integer-abs", e);
+		}
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-abs", shortId = "double-abs")
@@ -167,7 +233,12 @@ public final class ArithmeticFunctions
 	{
 		Preconditions.checkArgument(b.get() != 0);
 		// A.3.2 requires xs:integer; quotient toward zero is the approved project interpretation.
-		return IntegerVal.of(a.get() / b.get());
+		try{
+			// The smallest integer divided by -1 is outside the range.
+			return IntegerVal.of(Math.divideExact(a.get(), b.get()));
+		}catch(ArithmeticException e){
+			throw outsideIntegerRange("integer-divide", e);
+		}
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-mod", shortId = "integer-mod")
@@ -185,6 +256,10 @@ public final class ArithmeticFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal a,
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#integer") IntegerVal b)
 	{
-		return a.subtract(b);
+		try{
+			return a.subtract(b);
+		}catch(ArithmeticException e){
+			throw outsideIntegerRange("integer-subtract", e);
+		}
 	}
 }

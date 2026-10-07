@@ -28,6 +28,37 @@ and SHALL compute the product of all of them.
 - **WHEN** `integer-multiply` is applied to `2`, `3`, and `4`
 - **THEN** the result is `24`
 
+### Requirement: Integer arithmetic does not wrap
+`integer-add`, `integer-subtract`, `integer-multiply`, `integer-divide`,
+`integer-mod`, and `integer-abs` SHALL compute on 64-bit signed integers.
+When the mathematical result is less than -2^63 or greater than 2^63 - 1,
+the function SHALL evaluate to Indeterminate with status code
+`urn:oasis:names:tc:xacml:1.0:status:processing-error`; it SHALL NOT return
+a wrapped value. For a function with more than two arguments only the
+result counts: an intermediate value outside the range SHALL NOT make the
+function Indeterminate when the result is inside the range. The status
+message SHALL name the function and SHALL NOT contain the operands.
+
+#### Scenario: Sum above the largest integer
+- **WHEN** `integer-add` is applied to `9223372036854775807` and `1`
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: Absolute value of the smallest integer
+- **WHEN** `integer-abs` is applied to `-9223372036854775808`
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: Smallest integer divided by minus one
+- **WHEN** `integer-divide` is applied to `-9223372036854775808` and `-1`
+- **THEN** evaluation is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: Intermediate value outside the range
+- **WHEN** `integer-add` is applied to `9223372036854775807`, `1`, and `-1`
+- **THEN** the result is `9223372036854775807`
+
+#### Scenario: Result at the edge of the range
+- **WHEN** `integer-multiply` is applied to `4611686018427387904` and `-2`
+- **THEN** the result is `-9223372036854775808`
+
 ### Requirement: Double equality follows IEEE 754
 `double-equal` and double comparisons SHALL follow IEEE 754 (XACML 3.0
 §A.3.1): NaN SHALL NOT equal any value, including NaN, and `0.0` SHALL

@@ -37,7 +37,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -66,7 +65,8 @@ import org.xacml4j.v30.types.XacmlTypes;
 /**
  * Table B of run 037, resolved by URN through the default function provider.
  * XACML 3.0 Core OS (22 January 2013), Appendix A.3.
- * The two rows of decision C3 stay disabled until task 5.4.
+ * The two rows of decision C3 (35, 36) follow ruling D4 of run 061
+ * (bead policy4j-the.4.59); IntegerOverflowTest has the other boundaries.
  */
 @ExtendWith(MockitoExtension.class)
 public class FunctionSafetyNet43Test
@@ -535,29 +535,21 @@ public class FunctionSafetyNet43Test
 				invoke(F + "3.0:function:boolean-from-string", XacmlTypes.STRING.ofAny(" true ")));
 	}
 
-	@Disabled("C3 task 5.4")
 	@Test
 	public void row35IntegerAbsOfMinLongDoesNotStayNegative()
 	{
-		try {
-			ValueExp result = invoke(F + "1.0:function:integer-abs", XacmlTypes.INTEGER.ofAny(Long.MIN_VALUE));
-			assertTrue(!result.equals(XacmlTypes.INTEGER.ofAny(Long.MIN_VALUE)));
-		} catch (EvaluationException ex) {
-			assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, ex.getStatus().getStatusCode().getValue());
-		}
+		// Ruling D4 of run 061: a result outside 64 bits is Indeterminate.
+		assertIndeterminate(StatusCodeId.STATUS_PROCESSING_ERROR,
+				F + "1.0:function:integer-abs", XacmlTypes.INTEGER.ofAny(Long.MIN_VALUE));
 	}
 
-	@Disabled("C3 task 5.4")
 	@Test
 	public void row36IntegerAddDoesNotWrapToMinLong()
 	{
-		try {
-			ValueExp result = invoke(F + "1.0:function:integer-add",
-					XacmlTypes.INTEGER.ofAny(Long.MAX_VALUE), XacmlTypes.INTEGER.ofAny(1));
-			assertTrue(!result.equals(XacmlTypes.INTEGER.ofAny(Long.MIN_VALUE)));
-		} catch (EvaluationException ex) {
-			assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, ex.getStatus().getStatusCode().getValue());
-		}
+		// Ruling D4 of run 061: a result outside 64 bits is Indeterminate.
+		assertIndeterminate(StatusCodeId.STATUS_PROCESSING_ERROR,
+				F + "1.0:function:integer-add",
+				XacmlTypes.INTEGER.ofAny(Long.MAX_VALUE), XacmlTypes.INTEGER.ofAny(1));
 	}
 
 	@Test

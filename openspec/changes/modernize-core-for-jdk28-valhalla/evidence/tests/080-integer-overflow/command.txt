@@ -1,0 +1,18 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red: the new tests and the two enabled safety-net rows on the old arithmetic
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-core -am \
+  -Dtest='IntegerOverflowTest,FunctionSafetyNet43Test' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Green: the same command after the change
+
+# Gate: clean full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict
+
+# Review (one shot, redacted packet = prompt + diff; run from a scratch directory)
+codex exec -s read-only --skip-git-repo-check - < packet.md

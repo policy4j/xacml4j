@@ -94,16 +94,25 @@ public final class IntegerVal
         return DoubleVal.of(get());
     }
 
+    /**
+     * @throws ArithmeticException if the sum is outside the 64-bit range
+     */
     public IntegerVal add(IntegerVal d){
-        return  new IntegerVal(get() + d.get());
+        return  new IntegerVal(Math.addExact(get(), d.get()));
     }
 
+    /**
+     * @throws ArithmeticException if the difference is outside the 64-bit range
+     */
     public IntegerVal subtract(IntegerVal d){
-        return  new IntegerVal(get() - d.get());
+        return  new IntegerVal(Math.subtractExact(get(), d.get()));
     }
 
+    /**
+     * @throws ArithmeticException if the product is outside the 64-bit range
+     */
     public IntegerVal multiply(IntegerVal d){
-        return  new IntegerVal(get() * d.get());
+        return  new IntegerVal(Math.multiplyExact(get(), d.get()));
     }
 
     public DoubleVal divide(IntegerVal d){
@@ -116,7 +125,11 @@ public final class IntegerVal
         return IntegerVal.of(get() % d.get());
     }
 
+    /**
+     * @throws ArithmeticException for the smallest value, whose absolute
+     * value is outside the 64-bit range
+     */
     public IntegerVal abs(){
-        return IntegerVal.of(Math.abs(get()));
+        return IntegerVal.of(Math.absExact(get()));
     }
 }
