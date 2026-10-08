@@ -35,6 +35,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.RequestContext;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
@@ -44,8 +45,21 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 
 	private final static Logger LOG = LoggerFactory.getLogger(MultipleResourcesViaRepeatingAttributesHandler.class);
 
+	private final int maxExpandedRequests;
+
 	public MultipleResourcesViaRepeatingAttributesHandler(){
+		this(MultipleResourcesViaXPathExpressionHandler.DEFAULT_MAX_EXPANDED_REQUESTS);
+	}
+
+	/**
+	 * @param maxExpandedRequests the largest number of individual requests
+	 * that the repeated categories of one request may expand to
+	 */
+	MultipleResourcesViaRepeatingAttributesHandler(int maxExpandedRequests){
 		super(FEATURE_ID);
+		Preconditions.checkArgument(maxExpandedRequests > 0,
+				"maxExpandedRequests=\"%s\" must be positive", maxExpandedRequests);
+		this.maxExpandedRequests = maxExpandedRequests;
 	}
 
 	@Override
@@ -56,13 +70,27 @@ final class MultipleResourcesViaRepeatingAttributesHandler extends AbstractReque
 			return handleNext(request, context);
 		}
 		List<Set<Category>> byCategory = new LinkedList<>();
+		// The number of individual requests is the product of the repeats. It is
+		// checked after every category, before the product is built, so it
+		// stays below maxExpandedRequests * Integer.MAX_VALUE and does not
+		// overflow.
+		long expandedRequests = 1;
 		for(CategoryId categoryId : request.getCategoriesByCategoryId().keySet()){
 			Collection<Category> attributes = request.getCategory(categoryId);
 			if(attributes == null ||
 					attributes.isEmpty()) {
 				continue;
 			}
-			byCategory.add(ImmutableSet.copyOf(attributes));
+			Set<Category> repeats = ImmutableSet.copyOf(attributes);
+			expandedRequests *= repeats.size();
+			if(expandedRequests > maxExpandedRequests){
+				// The request is well-formed; the PDP declines to process it. The
+				// status message is a fixed text that names no request data.
+				LOG.warn("Multiple decision request rejected: repeated categories give " +
+						"more than maxExpandedRequests=\"{}\" individual requests", maxExpandedRequests);
+				return MultipleResourcesBudgetHandler.limitExceeded(request);
+			}
+			byCategory.add(repeats);
 		}
 		Collection<Result> results = new LinkedList<>();
 		Set<List<Category>> cartesian = Sets.cartesianProduct(byCategory);

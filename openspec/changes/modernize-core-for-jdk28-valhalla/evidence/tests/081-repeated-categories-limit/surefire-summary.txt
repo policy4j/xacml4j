@@ -1,0 +1,56 @@
+== Gate: clean build with the limit on the repeated-categories expansion ==
+
+xacml-core                 Tests run: 6374, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 163, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,841 tests, 0 failures, 0 errors, 20 skipped.
+xacml-pdp 163 holds MultipleResourcesRepeatedCategoriesLimitTest (12 tests).
+
+== Gate 2 (2026-10-08): clean build with one limit for the whole handler chain ==
+
+xacml-core                 Tests run: 6399, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 174, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,877 tests, 0 failures, 0 errors, 20 skipped.
+xacml-pdp 174 holds MultipleResourcesRepeatedCategoriesLimitTest (22 tests).
+The tree also held the fix of bead policy4j-the.4.60 (xacml-core, 25 + 1 tests); the two beads share no file.
+
+== Gate 3 (2026-10-08): clean build of the final code, after review round 1 ==
+
+xacml-core                 Tests run: 6404, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 179, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,887 tests, 0 failures, 0 errors, 20 skipped.
+xacml-pdp 179 holds MultipleResourcesRepeatedCategoriesLimitTest (27 tests).
+The tree also held the fix of bead policy4j-the.4.60 (xacml-core 30 tests, xacml-pdp 1 test); the two beads share no file.
+
+== Gate 4 (2026-10-08): clean build of the tree as committed ==
+
+xacml-core                 Tests run: 6406, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 179, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,889 tests, 0 failures, 0 errors, 20 skipped.
+The handler code is the code of gate 3. Between gates 3 and 4 the spec text of this bead changed, and the fix of bead policy4j-the.4.60 got two more tests and its last code change (xacml-core 6406).
+
+== Gate 5 (2026-10-08): clean build of the tree as committed ==
+
+xacml-core                 Tests run: 6406, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 179, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,889 tests, 0 failures, 0 errors, 20 skipped.
+After gate 4 one Javadoc sentence of MultipleResourcesBudgetHandler changed; no code.

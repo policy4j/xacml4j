@@ -21,7 +21,7 @@ task 1.6.
 | combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6, 4.54); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
 | conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6); adjudicated dispositions | 015, 023, 073, 075 |
 | test-framework | per-module test counts; no JUnit 4 or EasyMock imports (task 2.7) | 009, 010, 011, 012, 013, 017 |
-| request-limits | expansion-limit and regular-expression limit tests (beads 4.50, 4.51) | 077, rv085, rv086; 078, rv087 |
+| request-limits | expansion-limit and regular-expression limit tests (beads 4.50, 4.51, 4.57) | 077, rv085, rv086; 078, rv087; 081, rv090 |
 | jdk28-valhalla-build | JDK 28 reactor build and CI job (tasks 8.1-8.5); JMH before/after per value-class family (tasks 9.2-9.4) | - |
 
 ## Gate tasks to proof
@@ -32,7 +32,7 @@ task 1.6.
 | 2.7 test-stack removal gate | `tests/017-legacy-stack-removed`, `tests/023-conformance-manifest` (step 15), `reviews/code/rv026-g2-legacy-removal-agy` | done |
 | 3.6 conformance gate | `tests/023-conformance-manifest`, `reviews/code/rv034-g3-conformance-manifest-agy`, `reviews/code/rv035-g3-conformance-manifest-grok` | done: 836 enabled cases pass on JDK 21 (baseline); 44 disabled with bug ids |
 | 4.6 numeric and combining decisions | `tests/069-task46-spec-compliance`, `reviews/code/rv078-task46-spec-compliance` | done: reactor green and independent reviews APPROVE; separate spec addendum approved |
-| 4.7 safety-net gate | `tests/069-task46-spec-compliance` and runs 071 to 080 are checkpoints; last full reactor in `tests/080-integer-overflow` (7,829 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped) | pending: bugs policy4j-the.4.56 (function arguments not validated at policy load), policy4j-the.4.57 (repeated-categories expansion unbounded) and policy4j-the.4.58 (a regular expression that works without reading the input is not stopped) wait for a maintainer decision; JMH is unmeasured for runs 072, 074, 078, 080 (no JMH module before task 9.2); the two C3 rows run since run 080; the conversions and the lexing of xs:integer stay with task 5.4 |
+| 4.7 safety-net gate | `tests/069-task46-spec-compliance` and runs 071 to 081 are checkpoints; last full reactor in `tests/081-repeated-categories-limit` (7,889 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped) | pending: bugs policy4j-the.4.56 (function arguments not validated at policy load), policy4j-the.4.58 (a regular expression that works without reading the input is not stopped) and policy4j-the.4.60 (XML content comparison, found in run 081); JMH is unmeasured for runs 072, 074, 078, 080 (no JMH module before task 9.2); the two C3 rows run since run 080; the conversions and the lexing of xs:integer stay with task 5.4 |
 | 5.5, 6.7, 7.4 refactor gates | - | pending |
 | 8.4 JDK 28 gate | - | pending |
 | 9.3, 9.4 value-class gates (JMH) | - | pending |
@@ -213,6 +213,8 @@ task 1.6.
 | `reviews/code/rv088-nested-response-staging-grok` | review run 079 | Grok grok-4.7, adversarial test review | APPROVE in round 2 (round 1: five assertions missing, all added; its claim that scenario 1 does not depend on staging was refuted by a mutation check) |
 | `tests/080-integer-overflow` | bead policy4j-the.4.59 (ruling D4), 2026-10-07 | tests red then green; clean full reactor on JDK 21 (see command.txt) | PASS: integer-add, integer-subtract, integer-multiply, integer-divide and integer-abs are Indeterminate processing-error when the result is outside 64 bits, never a wrapped value; an intermediate value outside the range does not matter; rows 35 and 36 of the 4.3 safety net run (no disabled row left); 7,829 tests, 0 failures, 20 skipped; conformance unchanged; JMH unmeasured; the factories of IntegerVal and integer lexing stay with task 5.4 |
 | `reviews/code/rv089-integer-overflow-kimi` | review run 080 | Kimi CLI 2.1.1, adversarial, two rounds | APPROVE in both rounds (LOW notes only; two applied); Codex gave no report in two attempts |
+| `tests/081-repeated-categories-limit` | bead policy4j-the.4.57 (security; the session's recommendation, no separate ruling), 2026-10-07 and 2026-10-08 | tests red then green (three red runs); mutation check of the final code; five clean full reactors on JDK 21 (see command.txt) | PASS: for one request at most 100 request references, at most 100 individual requests after the references and repeated categories (also those that select no node), at most 100 evaluations and at most 100 results, one configurable limit; beyond it one Indeterminate processing-error; the cross product no longer overflows; 7,889 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped, unchanged; JMH unmeasured |
+| `reviews/code/rv090-repeated-categories-limit-kimi` | review run 081 | Kimi CLI 2.1.1, adversarial, two rounds | APPROVE in round 2; round 1 REQUEST_CHANGES (one MEDIUM, two LOW), all applied; an attempt on 2026-10-07 gave no report |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and

@@ -50,6 +50,13 @@ public abstract class AbstractRequestContextHandler
 		this.next = new AtomicReference<>();
 	}
 
+	/** A handler of this package that implements no feature of a profile. */
+	AbstractRequestContextHandler()
+	{
+		this.features = ImmutableList.of();
+		this.next = new AtomicReference<>();
+	}
+
 	@Override
 	public Collection<String> getFeatures(){
 		return features;

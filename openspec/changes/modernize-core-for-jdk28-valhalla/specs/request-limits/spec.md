@@ -29,6 +29,94 @@ attributes of the request that are marked `IncludeInResult`.
 - **WHEN** the handler chain is created with 200 node paths per category and 200 individual requests, and a selector selects 101 nodes
 - **THEN** 101 individual requests are evaluated
 
+### Requirement: Repeated-categories expansion is bounded
+The PDP SHALL limit the expansion of a request with repeated attribute
+categories (`urn:oasis:names:tc:xacml:3.0:profile:multiple:repeated-attribute-categories`).
+The number of individual requests that the repeated categories of one
+request expand to SHALL NOT exceed a limit. The limit SHALL be the
+configurable limit on individual requests of the content-selector
+expansion and SHALL default to 100. A request that exceeds the limit SHALL
+get exactly one result with Decision Indeterminate and status code
+`urn:oasis:names:tc:xacml:1.0:status:processing-error`, and the PDP SHALL
+NOT evaluate any individual request of it. The status message SHALL be the
+fixed text of the content-selector limit. The result SHALL carry the
+attributes of the request that are marked `IncludeInResult`.
+
+#### Scenario: More repeats of one category than the limit
+- **WHEN** a request has 101 different `<Attributes>` elements of one category and the limit is the default
+- **THEN** the response has one result with Decision Indeterminate and status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and no individual request is evaluated
+
+#### Scenario: The product of the repeats is too large
+- **WHEN** a request has 11 different `<Attributes>` elements in each of two categories and the limit is the default
+- **THEN** the response has one result with Decision Indeterminate and status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and no individual request is evaluated
+
+#### Scenario: A request at the limit is expanded
+- **WHEN** a request has 10 different `<Attributes>` elements in each of two categories and the limit is the default
+- **THEN** 100 individual requests are evaluated and the response has 100 results
+
+#### Scenario: Equal elements count once
+- **WHEN** a request has 101 equal `<Attributes>` elements of one category and the limit is the default
+- **THEN** one individual request is evaluated and the response has one result
+
+### Requirement: One request has one limit on individual requests
+The limit on individual requests SHALL hold for one request as a whole,
+whatever combination of request references
+(`urn:oasis:names:tc:xacml:3.0:profile:multiple:reference`), repeated
+attribute categories and `multiple:content-selector` attributes the
+request uses. For one request the PDP SHALL NOT expand the request
+references and the repeated categories into more individual requests than
+the limit, SHALL NOT evaluate more individual requests than the limit, and
+SHALL NOT return more results than the limit. An individual request whose
+content selectors select no node gives no result; it SHALL count as an
+individual request all the same. A request with more `<RequestReference>`
+elements than the limit SHALL get exactly one result with Decision
+Indeterminate and status code
+`urn:oasis:names:tc:xacml:1.0:status:processing-error`, and the PDP SHALL
+NOT evaluate any individual request of it. A request whose expansion steps
+are each inside the limit and that is beyond one of the three counts in
+total SHALL get exactly one result with Decision Indeterminate and status
+code `urn:oasis:names:tc:xacml:1.0:status:processing-error`; the PDP SHALL
+stop at the limit and SHALL NOT return the results of the individual
+requests that it evaluated before. The status message SHALL be the fixed
+text of the content-selector limit. The result SHALL carry the attributes
+of the request that are marked `IncludeInResult`.
+
+#### Scenario: More request references than the limit
+- **WHEN** a request has 101 `<RequestReference>` elements and the limit is the default
+- **THEN** the response has one result with Decision Indeterminate and status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and no individual request is evaluated
+
+#### Scenario: Request references at the limit
+- **WHEN** a request has 100 `<RequestReference>` elements that each reference one resource category, and the limit is the default
+- **THEN** 100 individual requests are evaluated and the response has 100 results
+
+#### Scenario: Repeats with content selectors at the limit
+- **WHEN** the limit on individual requests is 6 and a request has 2 `<Attributes>` elements of one category, each with a `multiple:content-selector` that selects 3 nodes
+- **THEN** 6 individual requests are evaluated and the response has 6 results
+
+#### Scenario: Repeats with content selectors beyond the limit in total
+- **WHEN** the limit on individual requests is 6 and a request has 2 `<Attributes>` elements of one category, each with a `multiple:content-selector` that selects 5 nodes
+- **THEN** the response has one result with Decision Indeterminate and status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and 6 individual requests are evaluated
+
+#### Scenario: Request references with repeated categories beyond the limit in total
+- **WHEN** the limit on individual requests is 6 and a request has 3 `<RequestReference>` elements that each reference 3 `<Attributes>` elements of one category
+- **THEN** the response has one result with Decision Indeterminate and status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and 6 individual requests are evaluated
+
+#### Scenario: Results without an evaluation count
+- **WHEN** the limit on individual requests is 4 and a request has 4 `<Attributes>` elements of one category, three with a `multiple:content-selector` that selects 5 nodes and one with a selector that selects 4 nodes
+- **THEN** the response has one result with Decision Indeterminate and status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and 4 individual requests are evaluated
+
+#### Scenario: Individual requests that select no node count
+- **WHEN** the limit on individual requests is 4 and a request has 3 `<RequestReference>` elements that each reference 2 `<Attributes>` elements of one category, each with a `multiple:content-selector` that selects no node
+- **THEN** the response has one result with Decision Indeterminate and status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and no individual request is evaluated
+
+#### Scenario: Individual requests that select no node, inside the limit
+- **WHEN** the limit on individual requests is 4 and a request has 2 `<RequestReference>` elements that each reference 2 `<Attributes>` elements of one category, each with a `multiple:content-selector` that selects no node
+- **THEN** the response has no result and no individual request is evaluated
+
+#### Scenario: A request without expansion
+- **WHEN** the limit on individual requests is 1 and a request has no request references, no repeated categories and no `multiple:content-selector`
+- **THEN** the request is evaluated once and the response has its result
+
 ### Requirement: Regular-expression matching is bounded
 The `*-regexp-match` functions SHALL limit the length of the pattern, the
 length of the input, and the time of one match. The limits SHALL be

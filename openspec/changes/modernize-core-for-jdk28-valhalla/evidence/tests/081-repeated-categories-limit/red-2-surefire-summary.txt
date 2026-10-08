@@ -1,0 +1,6 @@
+Red run 2, JDK 21, 2026-10-08: responseHasNoMoreResultsThanTheLimit before the budget handler counted the results.
+
+[ERROR] Tests run: 22, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.688 s <<< FAILURE! - in org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.responseHasNoMoreResultsThanTheLimit  Time elapsed: 0.019 s  <<< FAILURE!
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.responseHasNoMoreResultsThanTheLimit:329->assertLimitExceeded:386 expected: <1> but was: <7>
+[ERROR] Tests run: 22, Failures: 1, Errors: 0, Skipped: 0

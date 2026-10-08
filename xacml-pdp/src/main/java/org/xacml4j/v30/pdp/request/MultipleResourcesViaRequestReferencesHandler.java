@@ -35,14 +35,29 @@ import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
 import org.xacml4j.v30.RequestSyntaxException;
 
+import com.google.common.base.Preconditions;
+
 
 final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequestContextHandler
 {
 	private final static String FEATURE_ID = "urn:oasis:names:tc:xacml:3.0:profile:multiple:reference";
 	private final static Logger LOG = LoggerFactory.getLogger(MultipleResourcesViaRequestReferencesHandler.class);
 
+	private final int maxExpandedRequests;
+
 	public MultipleResourcesViaRequestReferencesHandler() {
+		this(MultipleResourcesViaXPathExpressionHandler.DEFAULT_MAX_EXPANDED_REQUESTS);
+	}
+
+	/**
+	 * @param maxExpandedRequests the largest number of request references
+	 * of one request
+	 */
+	MultipleResourcesViaRequestReferencesHandler(int maxExpandedRequests) {
 		super(FEATURE_ID);
+		Preconditions.checkArgument(maxExpandedRequests > 0,
+				"maxExpandedRequests=\"%s\" must be positive", maxExpandedRequests);
+		this.maxExpandedRequests = maxExpandedRequests;
 	}
 
 	@Override
@@ -52,6 +67,12 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 		Collection<RequestReference> references = request.getRequestReferences();
 		if(references.isEmpty()){
 			return handleNext(request, context);
+		}
+		// Every request reference is one individual request at least.
+		if(references.size() > maxExpandedRequests){
+			LOG.warn("Multiple decision request rejected: more than " +
+					"maxExpandedRequests=\"{}\" request references", maxExpandedRequests);
+			return MultipleResourcesBudgetHandler.limitExceeded(request);
 		}
 		for(RequestReference ref : references){
 			try

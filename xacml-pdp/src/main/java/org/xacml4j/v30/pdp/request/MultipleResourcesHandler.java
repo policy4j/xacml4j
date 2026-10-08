@@ -46,19 +46,34 @@ public class MultipleResourcesHandler extends RequestContextHandlerChain
 	}
 
 	/**
-	 * Creates the handler chain with limits for the expansion of
-	 * {@code multiple:content-selector} requests. Beyond a limit the
+	 * Creates the handler chain with limits for the expansion of requests
+	 * with request references, with repeated categories and with
+	 * {@code multiple:content-selector} attributes. Beyond a limit the
 	 * request gets one Indeterminate result with status processing-error.
+	 * <p>
+	 * At most {@code maxExpandedRequests} individual requests are evaluated
+	 * for one request, whatever combination of the three it uses, and its
+	 * response has at most {@code maxExpandedRequests} results. Each
+	 * step checks its own count before it builds its individual requests:
+	 * the number of request references, the product of the repeated
+	 * categories, the product of the selected nodes. What the steps give
+	 * together is counted while the request is handled: the individual
+	 * requests that reach the selector step (also those that select no
+	 * node), and the individual requests that are evaluated. A request
+	 * that passes each step and is beyond the limit in total is rejected
+	 * after at most {@code maxExpandedRequests} evaluations.
 	 *
 	 * @param maxPathsPerCategory the largest number of node paths that one
 	 * selector may select in its category
 	 * @param maxExpandedRequests the largest number of individual requests
-	 * that one request may expand to
+	 * that are evaluated for one request, and of results in its response
 	 */
 	public MultipleResourcesHandler(int maxPathsPerCategory, int maxExpandedRequests)
 	{
-		super(new MultipleResourcesViaRequestReferencesHandler(),
-				new MultipleResourcesViaRepeatingAttributesHandler(),
+		super(new MultipleResourcesBudgetHandler(maxExpandedRequests),
+				new MultipleResourcesViaRequestReferencesHandler(maxExpandedRequests),
+				new MultipleResourcesViaRepeatingAttributesHandler(maxExpandedRequests),
+				new MultipleResourcesBudgetHandler.Checkpoint(),
 				new MultipleResourcesViaXPathExpressionLegacyHandler(),
 				new MultipleResourcesViaXPathExpressionHandler(maxPathsPerCategory, maxExpandedRequests));
 	}
