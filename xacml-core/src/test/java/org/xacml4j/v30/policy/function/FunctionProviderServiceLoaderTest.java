@@ -30,7 +30,6 @@ import java.util.stream.Stream;
 
 import com.google.common.truth.Truth;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -131,6 +130,7 @@ public class FunctionProviderServiceLoaderTest
 		assertTrue(provider.getFunction(identifier).isPresent(), identifier);
 	}
 
+	/** The ids that bead policy4j-the.4.37 corrected; they lacked the "function:" segment. */
 	public static Stream<String> knownMissingStringFromIds()
 	{
 		return Stream.of("double", "time", "date", "dateTime", "anyURI", "dayTimeDuration",
@@ -140,13 +140,13 @@ public class FunctionProviderServiceLoaderTest
 
 	@ParameterizedTest(name = "string conversion id resolves: {0}")
 	@MethodSource("knownMissingStringFromIds")
-	@Disabled("policy4j-the.4.37: correct XACML 3.0 string-from-* identifiers are being repaired")
 	public void stringFromIdentifierResolves(String identifier)
 	{
 		FunctionProvider provider = FunctionProvider.builder().withDefaultFunctions().build();
 		assertTrue(provider.getFunction(identifier).isPresent());
 	}
 
+	/** The ids that bead policy4j-the.4.36 corrected; they were registered under 1.0 URNs. */
 	public static Stream<String> xacml20RegexIdentifiers()
 	{
 		return Stream.of("anyURI", "ipAddress", "dnsName", "rfc822Name", "x500Name")
@@ -155,7 +155,6 @@ public class FunctionProviderServiceLoaderTest
 
 	@ParameterizedTest(name = "XACML 2.0 regexp-match id resolves: {0}")
 	@MethodSource("xacml20RegexIdentifiers")
-	@Disabled("policy4j-the.4.36: XACML 2.0 regexp-match identifiers are being repaired")
 	public void xacml20RegexIdentifierResolves(String identifier)
 	{
 		FunctionProvider provider = FunctionProvider.builder().withDefaultFunctions().build();

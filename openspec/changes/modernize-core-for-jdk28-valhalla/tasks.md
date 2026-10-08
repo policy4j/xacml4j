@@ -46,7 +46,7 @@ case.
 - [x] 4.4 Add registry tests: every `a8a90d46` data type id and alias resolves and round-trips; duplicate ids fail; every combining algorithm class resolves by URN (including `on-permit-apply-second`); `ServiceLoader` finds the default providers
 - [x] 4.5 Fix `dateTime-subtract-*` sign handling
 - [x] 4.6 Fix `integer-divide` to return a truncated `xs:integer`, NaN equality, and `on-permit-apply-second` registration (caller impact documented; implementation and reviews in evidence/tests/069 and evidence/reviews/code/rv078; separate commits remain maintainer-owned under the no-automatic-Git rule)
-- [ ] 4.7 Gate: all safety-net tests pass on JDK 21; conformance manifest unchanged or improved
+- [x] 4.7 Gate: all safety-net tests pass on JDK 21; conformance manifest unchanged or improved (evidence/builds/085-phase4-gate: 7,966 tests, 0 failures, 18 skipped; 868 of 880 manifest rows enabled, 866 at task 4.6; JMH unmeasured before task 9.2)
 
 ## 5. Re-apply the refactor: identifiers, values, and the datatype registry
 
