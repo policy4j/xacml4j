@@ -1,0 +1,23 @@
+== Gate (2026-10-08): clean build with the fixed XML content comparison ==
+
+xacml-core                 Tests run: 6404, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 179, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,887 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6404 holds DOMUtilEqualityTest (30 tests) and DOMUtilTest (9); xacml-pdp 179 holds MultipleResourcesContentOnlyRepeatsTest (1).
+The tree also held the change of bead policy4j-the.4.57 (xacml-pdp); the two beads share no file.
+
+== Gate 2 (2026-10-08): clean build of the tree as committed ==
+
+xacml-core                 Tests run: 6407, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 179, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,890 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6407 holds DOMUtilEqualityTest (33 tests) and DOMUtilTest (9); xacml-pdp 179 holds MultipleResourcesContentOnlyRepeatsTest (1).
+After gate 1: the fixes of review round 2 (document fragments, attribute nodes) and the CDATA test of round 3. Bead policy4j-the.4.57 was committed before this gate (9d6d12bc).

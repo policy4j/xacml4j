@@ -1,0 +1,48 @@
+Red run 1, JDK 21, 2026-10-07: DOMUtilEqualityTest and MultipleResourcesContentOnlyRepeatsTest against the old comparison.
+
+[ERROR] Tests run: 21, Failures: 20, Errors: 0, Skipped: 0, Time elapsed: 0.391 s <<< FAILURE! - in org.xacml4j.util.DOMUtilEqualityTest
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.comparisonDoesNotChangeTheNodes  Time elapsed: 0.306 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[1]  Time elapsed: 0.005 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[2]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[3]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[4]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[5]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[6]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[7]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[8]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[9]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[10]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[11]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[12]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.hashCodeTellsDifferentDocumentsApart  Time elapsed: 0.029 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode(String, String, String)[1]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode(String, String, String)[2]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode(String, String, String)[3]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode(String, String, String)[4]  Time elapsed: 0 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode(String, String, String)[5]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode(String, String, String)[6]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR]   DOMUtilEqualityTest.comparisonDoesNotChangeTheNodes:123 expected: <5> but was: <2>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:56 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode:90 expected: <1209451152> but was: <1228963996>
+[ERROR]   DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode:90 expected: <813131188> but was: <1251897263>
+[ERROR]   DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode:90 expected: <2093319848> but was: <2109027570>
+[ERROR]   DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode:90 expected: <2125470482> but was: <793269462>
+[ERROR]   DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode:90 expected: <1843743552> but was: <1139609587>
+[ERROR]   DOMUtilEqualityTest.equalDocumentsAreEqualAndHaveTheSameHashCode:90 expected: <1720797452> but was: <562561015>
+[ERROR]   DOMUtilEqualityTest.hashCodeTellsDifferentDocumentsApart:140 expected: <50> but was: <100>
+[ERROR] Tests run: 21, Failures: 20, Errors: 0, Skipped: 0
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.469 s <<< FAILURE! - in org.xacml4j.v30.pdp.request.MultipleResourcesContentOnlyRepeatsTest
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesContentOnlyRepeatsTest.repeatsThatDifferOnlyInContentAreAllExpanded  Time elapsed: 0.462 s  <<< FAILURE!
+[ERROR]   MultipleResourcesContentOnlyRepeatsTest.repeatsThatDifferOnlyInContentAreAllExpanded:67 repeats=5 ==> expected: <5> but was: <4>
+[ERROR] Tests run: 1, Failures: 1, Errors: 0, Skipped: 0

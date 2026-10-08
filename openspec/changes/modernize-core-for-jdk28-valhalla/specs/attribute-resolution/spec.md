@@ -145,3 +145,31 @@ duplicate values; only the set functions remove duplicates.
 #### Scenario: Duplicate attribute values
 - **WHEN** a request attribute carries the value `"a"` twice
 - **THEN** the designator returns a bag of size 2
+
+### Requirement: XML content compares by structure
+Two XML `<Content>` values of a request SHALL be equal when and only when
+their documents have the same structure: the names and namespaces of the
+elements, their attributes (namespace, name and value), their child nodes
+in order, the text, and the comments and processing instructions. The
+namespace prefixes, the namespace declarations, the order of the
+attributes, text nodes of white space only and white space around text
+SHALL NOT count. Equal contents SHALL have the same hash code. Comparing
+two contents or computing a hash code SHALL NOT change them. Two request
+categories that differ only in their content SHALL be different
+categories.
+
+#### Scenario: Different text in a child element
+- **WHEN** one content is `<r><i>1</i></r>` and the other is `<r><i>2</i></r>`
+- **THEN** the contents are not equal
+
+#### Scenario: Different namespace prefix
+- **WHEN** one content is `<a:r xmlns:a="urn:x"><a:i>1</a:i></a:r>` and the other is `<b:r xmlns:b="urn:x"><b:i>1</b:i></b:r>`
+- **THEN** the contents are equal and have the same hash code
+
+#### Scenario: White space between elements
+- **WHEN** one content is `<r><i>1</i><j/></r>` and the other has line breaks and indentation between the same elements
+- **THEN** the contents are equal and have the same hash code, and neither document is changed by the comparison
+
+#### Scenario: Repeated categories that differ only in content
+- **WHEN** a request has 5 `<Attributes>` elements of one category with the same attributes and different `<Content>`
+- **THEN** 5 individual requests are evaluated

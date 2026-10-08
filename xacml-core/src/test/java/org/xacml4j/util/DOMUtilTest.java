@@ -163,8 +163,11 @@ public class DOMUtilTest
 		assertTrue(DOMUtil.isEqual(null, null));
 		assertFalse(DOMUtil.isEqual(content1, null));
 		assertFalse(DOMUtil.isEqual(null, content1));
-		assertTrue(DOMUtil.isEqual(content1, content2));
-		assertTrue(DOMUtil.isEqual(content2, content1));
+		// The two documents differ in the text of their leaf elements. Before bead
+		// policy4j-the.4.60 the comparison did not look at children and called them equal.
+		assertFalse(DOMUtil.isEqual(content1, content2));
+		assertFalse(DOMUtil.isEqual(content2, content1));
+		assertTrue(DOMUtil.isEqual(content1, DOMUtil.copyNode(content1).getDocumentElement()));
 	}
 
 	@Test

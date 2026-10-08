@@ -1,0 +1,24 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red 1: the two new test classes against the old comparison
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-pdp -am \
+  -Dtest='DOMUtilEqualityTest,MultipleResourcesContentOnlyRepeatsTest' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Red 2, 3, 4: new rows and tests, each against the code before its fix
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true -pl xacml-core \
+  -Dtest='DOMUtil*Test' -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Green: the DOM and content tests
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true -pl xacml-core \
+  -Dtest='DOMUtil*Test,XmlContent*Test' -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Gate: clean full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict
+
+# Review (one shot, redacted packet = prompt + diff; run from a directory that holds only the packet)
+codex exec -s read-only --skip-git-repo-check - < packet.md

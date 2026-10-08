@@ -28,8 +28,11 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.AbstractList;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -67,6 +70,8 @@ import org.xml.sax.SAXParseException;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 
 public class DOMUtil
@@ -417,9 +422,18 @@ public class DOMUtil
 	}
 
 	/**
-	 * Test two DOM nodes for equality, if both
-	 * nodes are not equal to {@code null}
-	 * then they are compared via {@link Node#isEqualNode(Node)}
+	 * Tests two DOM nodes for equality. Two documents, and two document
+	 * fragments, are equal when their children are equal; for a document
+	 * that is the document element and the comments and processing
+	 * instructions beside it. Two attribute nodes are equal when their
+	 * namespace, name and value are equal. Two elements are equal when
+	 * their names, namespaces, attributes (namespace declarations apart)
+	 * and children are equal, the children in their order. Two text nodes
+	 * are equal when their trimmed text is equal. Text nodes of white
+	 * space only are not compared. Two comments are equal when their text
+	 * is equal, two processing instructions when their target and data
+	 * are equal. Namespace prefixes do not matter. The nodes are not
+	 * changed.
 	 *
 	 * @param a a DOM node
 	 * @param b a DOM node
@@ -430,6 +444,109 @@ public class DOMUtil
 				: b != null && compareNodes(a, b, true);
 	}
 
+	/**
+	 * A hash code that agrees with {@link #isEqual(Node, Node)}: nodes
+	 * that are equal have the same hash code. A document that has its
+	 * document element only has the hash code of that element.
+	 *
+	 * @param n a DOM node
+	 * @return the hash code, 0 for {@code null}
+	 */
+	public static int hashCode(Node n){
+		if(n == null){
+			return 0;
+		}
+		int hash = 1;
+		// Nodes in document order; END_OF_ELEMENT closes a node that can have
+		// children, so that <a><b/></a><c/> and <a><b/><c/></a> give different
+		// sequences. A document adds nothing of its own.
+		Deque<Object> pending = new ArrayDeque<>();
+		pending.push(n);
+		while(!pending.isEmpty()){
+			Object next = pending.pop();
+			if(next == END_OF_ELEMENT){
+				hash = 31 * hash + 1;
+			}else if(next instanceof Text){
+				hash = 31 * hash + ((Text)next).getData().trim().hashCode();
+			}else if(next instanceof Attr){
+				hash = 31 * hash + attributeKey((Attr)next).hashCode();
+			}else{
+				Node node = (Node)next;
+				if(node instanceof Element){
+					hash = 31 * hash + elementHashCode((Element)node);
+				}else if(!(node instanceof Document)){
+					hash = 31 * hash + Objects.hash(node.getNodeType(), node.getNodeName(), node.getNodeValue());
+				}
+				if(!(node instanceof Document)){
+					pending.push(END_OF_ELEMENT);
+				}
+				List<Node> children = children(node, true);
+				for(int i = children.size() - 1; i >= 0; i--){
+					pending.push(children.get(i));
+				}
+			}
+		}
+		return hash;
+	}
+
+	private static final Object END_OF_ELEMENT = new Object();
+
+	/** The name, the namespace and the attributes of an element; the order of the attributes does not matter. */
+	private static int elementHashCode(Element e){
+		return 31 * Objects.hash(elementName(e), e.getNamespaceURI()) + attributes(e).hashCode();
+	}
+
+	/**
+	 * The attributes of an element, namespace declarations apart: for
+	 * each one its namespace, name and value. A multiset, because a DOM
+	 * that was not made by a parser can hold two attributes with the same
+	 * namespace and local name under different prefixes.
+	 */
+	private static Multiset<List<String>> attributes(Element e){
+		Multiset<List<String>> attributes = HashMultiset.create();
+		NamedNodeMap attrs = e.getAttributes();
+		for(int i = 0; i < attrs.getLength(); i++){
+			Attr attr = (Attr)attrs.item(i);
+			if(!isNamespaceDeclaration(attr)){
+				attributes.add(attributeKey(attr));
+			}
+		}
+		return attributes;
+	}
+
+	/** The namespace, the name and the value of an attribute. The prefix is not part of it. */
+	private static List<String> attributeKey(Attr attr){
+		return Arrays.asList(attr.getNamespaceURI(), attributeName(attr), attr.getValue());
+	}
+
+	private static String elementName(Element e){
+		return (e.getLocalName() != null)?e.getLocalName():e.getNodeName();
+	}
+
+	/** The local name of an attribute in a namespace, the whole name of one without. */
+	private static String attributeName(Attr attr){
+		return (attr.getNamespaceURI() == null)?attr.getName():attr.getLocalName();
+	}
+
+	/** {@code xmlns} and {@code xmlns:prefix} declare a namespace; another name that starts with xmlns does not. */
+	private static boolean isNamespaceDeclaration(Attr attr){
+		String name = attr.getName();
+		return name.equals("xmlns") || name.startsWith("xmlns:");
+	}
+
+	/** The child nodes of a node, without the text nodes of white space only when asked so. */
+	private static List<Node> children(Node parent, boolean skipBlankText){
+		NodeList nodes = parent.getChildNodes();
+		List<Node> children = new ArrayList<>(nodes.getLength());
+		for(int i = 0; i < nodes.getLength(); i++){
+			Node child = nodes.item(i);
+			if(skipBlankText && child instanceof Text && ((Text)child).getData().trim().isEmpty()){
+				continue;
+			}
+			children.add(child);
+		}
+		return children;
+	}
 
 	/**
 	 * Creates a {@link String} representation
@@ -481,125 +598,69 @@ public class DOMUtil
 			return "Unidentified";
 	}
 
-	private static void trimEmptyTextNodes(Node node) {
-		Element element = null;
-		if (node instanceof Document) {
-			element = ((Document) node).getDocumentElement();
-		} else if (node instanceof Element) {
-			element = (Element) node;
-		} else {
-			return;
-		}
-
-		List<Node> nodesToRemove = new ArrayList<>();
-		NodeList children = element.getChildNodes();
-		for (int i = 0; i < children.getLength(); i++) {
-			Node child = children.item(i);
-			if (child instanceof Element) {
-				trimEmptyTextNodes(child);
-			} else if (child instanceof Text) {
-				Text t = (Text) child;
-				if (t.getData().trim().length() == 0) {
-					nodesToRemove.add(child);
-				}
-			}
-		}
-
-		for (Node n : nodesToRemove) {
-			element.removeChild(n);
-		}
-	}
-
+	/**
+	 * Compares two DOM nodes as {@link #isEqual(Node, Node)} does.
+	 *
+	 * @param trimEmptyTextNodes if {@code true}, text nodes of white space
+	 * only are not compared; the nodes are not changed
+	 */
 	public static boolean compareNodes(Node expected, Node actual, boolean trimEmptyTextNodes)
 	{
-		if (trimEmptyTextNodes) {
-			trimEmptyTextNodes(expected);
-			trimEmptyTextNodes(actual);
-		}
-		return compareNodes(expected, actual);
-	}
-
-	public static boolean compareNodes(Node expected, Node actual){
-		if (expected.getNodeType() != actual.getNodeType()) {
-			return false;
-		}
-		if (expected instanceof Document) {
-			Document expectedDoc = (Document) expected;
-			Document actualDoc = (Document) actual;
-			compareNodes(expectedDoc.getDocumentElement(), actualDoc.getDocumentElement());
-		} else if (expected instanceof Element) {
-			Element expectedElement = (Element) expected;
-			Element actualElement = (Element) actual;
-
-			// compare element names
-			if ( expectedElement.getLocalName() != null &&
-					(!expectedElement.getLocalName().equals(actualElement.getLocalName()))) {
+		// Pairs of nodes that still have to be compared. Not recursive: the
+		// depth of a document from a request is not bounded here.
+		Deque<Node[]> pending = new ArrayDeque<>();
+		pending.push(new Node[]{expected, actual});
+		while(!pending.isEmpty()){
+			Node[] pair = pending.pop();
+			Node a = pair[0];
+			Node b = pair[1];
+			if(a.getNodeType() != b.getNodeType()){
 				return false;
 			}
-			// compare element ns
-			String expectedNS = expectedElement.getNamespaceURI();
-			String actualNS = actualElement.getNamespaceURI();
-			if ((expectedNS == null && actualNS != null)
-					|| (expectedNS != null && !expectedNS.equals(actualNS))) {
-				return false;
-			}
-
-			// compare attributes
-			NamedNodeMap expectedAttrs = expectedElement.getAttributes();
-			NamedNodeMap actualAttrs = actualElement.getAttributes();
-			if (countNonNamespaceAttribures(expectedAttrs) != countNonNamespaceAttribures(actualAttrs)) {
-				return false;
-			}
-			for (int i = 0; i < expectedAttrs.getLength(); i++) {
-				Attr expectedAttr = (Attr) expectedAttrs.item(i);
-				if (expectedAttr.getName().startsWith("xmlns")) {
-					continue;
-				}
-				Attr actualAttr = null;
-				if (expectedAttr.getNamespaceURI() == null) {
-					actualAttr = (Attr) actualAttrs.getNamedItem(expectedAttr.getName());
-				} else {
-					actualAttr = (Attr) actualAttrs.getNamedItemNS(expectedAttr.getNamespaceURI(),
-					                                               expectedAttr.getLocalName());
-				}
-				if (actualAttr == null) {
+			if(a instanceof Text){
+				if(!((Text)a).getData().trim().equals(((Text)b).getData().trim())){
 					return false;
 				}
-				if (!expectedAttr.getValue().equals(actualAttr.getValue())) {
+				continue;
+			}
+			if(a instanceof Attr){
+				if(!attributeKey((Attr)a).equals(attributeKey((Attr)b))){
 					return false;
 				}
+				continue;
 			}
-			// compare children
-			NodeList expectedChildren = expectedElement.getChildNodes();
-			NodeList actualChildren = actualElement.getChildNodes();
-			if (expectedChildren.getLength() != actualChildren.getLength()) {
+			if(a instanceof Element){
+				Element ae = (Element)a;
+				Element be = (Element)b;
+				if(!Objects.equals(elementName(ae), elementName(be)) ||
+						!Objects.equals(ae.getNamespaceURI(), be.getNamespaceURI()) ||
+						!attributes(ae).equals(attributes(be))){
+					return false;
+				}
+			}else if(!Objects.equals(a.getNodeName(), b.getNodeName()) ||
+					!Objects.equals(a.getNodeValue(), b.getNodeValue())){
+				// a comment (its text), a processing instruction (its target and
+				// data); the same for every document and every document fragment
 				return false;
 			}
-			for (int i = 0; i < expectedChildren.getLength(); i++) {
-				Node expectedChild = expectedChildren.item(i);
-				Node actualChild = actualChildren.item(i);
-				compareNodes(expectedChild, actualChild);
-			}
-		} else if (expected instanceof Text) {
-			String expectedData = ((Text) expected).getData().trim();
-			String actualData = ((Text) actual).getData().trim();
-
-			if (!expectedData.equals(actualData)) {
+			// The children of every other kind of node: of an element, of a
+			// document (its document element and the comments and processing
+			// instructions beside it), of a document fragment.
+			List<Node> ac = children(a, trimEmptyTextNodes);
+			List<Node> bc = children(b, trimEmptyTextNodes);
+			if(ac.size() != bc.size()){
 				return false;
+			}
+			for(int i = 0; i < ac.size(); i++){
+				pending.push(new Node[]{ac.get(i), bc.get(i)});
 			}
 		}
 		return true;
 	}
 
-	private static int countNonNamespaceAttribures(NamedNodeMap attrs) {
-		int n = 0;
-		for (int i = 0; i < attrs.getLength(); i++) {
-			Attr attr = (Attr) attrs.item(i);
-			if (!attr.getName().startsWith("xmlns")) {
-				n++;
-			}
-		}
-		return n;
+	/** Compares two DOM nodes; text nodes of white space only are compared too. */
+	public static boolean compareNodes(Node expected, Node actual){
+		return compareNodes(expected, actual, false);
 	}
 
 	public static NamespaceContext createNamespaceContext(Node n){

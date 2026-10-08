@@ -1,0 +1,10 @@
+Red run 4, JDK 21, 2026-10-08: the three findings of review round 1 (Codex).
+
+[ERROR] Tests run: 30, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.49 s <<< FAILURE! - in org.xacml4j.util.DOMUtilEqualityTest
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.hashCodeOfXmlContentFollowsTheDocument  Time elapsed: 0.004 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.attributesWithTheSameExpandedNameAreComparedAsAMultiset  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.nodesBesideTheDocumentElementAreCompared  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR]   DOMUtilEqualityTest.attributesWithTheSameExpandedNameAreComparedAsAMultiset:187 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.hashCodeOfXmlContentFollowsTheDocument:287 expected: <5351376> but was: <5351407>
+[ERROR]   DOMUtilEqualityTest.nodesBesideTheDocumentElementAreCompared:215 expected: <false> but was: <true>
+[ERROR] Tests run: 30, Failures: 3, Errors: 0, Skipped: 0

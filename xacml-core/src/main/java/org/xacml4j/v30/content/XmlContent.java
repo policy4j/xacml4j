@@ -56,6 +56,13 @@ import com.google.common.base.Preconditions;
 
 /**
  * {@link Content} implementation for XML content type
+ * <p>
+ * The content owns its document: it copies the node that it is made
+ * from. {@link #toNode()} and the XPath methods return nodes of that
+ * document. They are for reading. A caller MUST NOT change them:
+ * {@code equals} and {@code hashCode} follow the document, and the
+ * objects that hold a content ({@code Entity}, {@code RequestContext})
+ * keep their hash codes and are used as keys.
  *
  * @author Giedrius Trumpickas
  */
@@ -157,8 +164,14 @@ public final class XmlContent implements Content
                 contextNode, true);
     }
 
+    /**
+     * Agrees with {@link #equals(Object)}: the hash code of the XML
+     * structure, not of the DOM object. It is computed on every call,
+     * because the document can be reached through {@link #toNode()} and
+     * the nodes that the XPath methods return.
+     */
     public int hashCode(){
-        return contextNode.hashCode();
+        return DOMUtil.hashCode(contextNode);
     }
 
     public String toString(){

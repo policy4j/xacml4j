@@ -14,7 +14,7 @@ task 1.6.
 
 | Capability | Proof (planned) | Run |
 | --- | --- | --- |
-| attribute-resolution | attribute-resolution tests (task 4.1); resolver and path failures (4.34); conformance | 071, rv079, rv080 |
+| attribute-resolution | attribute-resolution tests (task 4.1); resolver and path failures (4.34); XML content comparison (4.60); conformance | 071, rv079, rv080; 082, rv091 |
 | condition-evaluation | condition tests (task 4.2); conformance | - |
 | function-semantics | function tests (task 4.3); zero-argument bags (4.53); numeric task 4.6 and conformance; remaining semantic work is gate 4.7 | 068, 069, rv077, rv078 (bounded task 4.6); 072, rv079, rv080 (rulings D5-D9); 074, rv081, rv082 (ruling D11); 076, rv084 (bead 4.53); 080, rv089 (ruling D4) |
 | datatype-registry | registry tests (task 4.4) | - |
@@ -32,7 +32,7 @@ task 1.6.
 | 2.7 test-stack removal gate | `tests/017-legacy-stack-removed`, `tests/023-conformance-manifest` (step 15), `reviews/code/rv026-g2-legacy-removal-agy` | done |
 | 3.6 conformance gate | `tests/023-conformance-manifest`, `reviews/code/rv034-g3-conformance-manifest-agy`, `reviews/code/rv035-g3-conformance-manifest-grok` | done: 836 enabled cases pass on JDK 21 (baseline); 44 disabled with bug ids |
 | 4.6 numeric and combining decisions | `tests/069-task46-spec-compliance`, `reviews/code/rv078-task46-spec-compliance` | done: reactor green and independent reviews APPROVE; separate spec addendum approved |
-| 4.7 safety-net gate | `tests/069-task46-spec-compliance` and runs 071 to 081 are checkpoints; last full reactor in `tests/081-repeated-categories-limit` (7,889 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped) | pending: bugs policy4j-the.4.56 (function arguments not validated at policy load), policy4j-the.4.58 (a regular expression that works without reading the input is not stopped) and policy4j-the.4.60 (XML content comparison, found in run 081); JMH is unmeasured for runs 072, 074, 078, 080 (no JMH module before task 9.2); the two C3 rows run since run 080; the conversions and the lexing of xs:integer stay with task 5.4 |
+| 4.7 safety-net gate | `tests/069-task46-spec-compliance` and runs 071 to 082 are checkpoints; last full reactor in `tests/082-xml-content-equality` (7,890 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped) | pending: bugs policy4j-the.4.56 (function arguments not validated at policy load) and policy4j-the.4.58 (a regular expression that works without reading the input is not stopped); JMH is unmeasured for runs 072, 074, 078, 080 (no JMH module before task 9.2); the two C3 rows run since run 080; the conversions and the lexing of xs:integer stay with task 5.4 |
 | 5.5, 6.7, 7.4 refactor gates | - | pending |
 | 8.4 JDK 28 gate | - | pending |
 | 9.3, 9.4 value-class gates (JMH) | - | pending |
@@ -215,6 +215,8 @@ task 1.6.
 | `reviews/code/rv089-integer-overflow-kimi` | review run 080 | Kimi CLI 2.1.1, adversarial, two rounds | APPROVE in both rounds (LOW notes only; two applied); Codex gave no report in two attempts |
 | `tests/081-repeated-categories-limit` | bead policy4j-the.4.57 (security; the session's recommendation, no separate ruling), 2026-10-07 and 2026-10-08 | tests red then green (three red runs); mutation check of the final code; five clean full reactors on JDK 21 (see command.txt) | PASS: for one request at most 100 request references, at most 100 individual requests after the references and repeated categories (also those that select no node), at most 100 evaluations and at most 100 results, one configurable limit; beyond it one Indeterminate processing-error; the cross product no longer overflows; 7,889 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped, unchanged; JMH unmeasured |
 | `reviews/code/rv090-repeated-categories-limit-kimi` | review run 081 | Kimi CLI 2.1.1, adversarial, two rounds | APPROVE in round 2; round 1 REQUEST_CHANGES (one MEDIUM, two LOW), all applied; an attempt on 2026-10-07 gave no report |
+| `tests/082-xml-content-equality` | bead policy4j-the.4.60 (found in run 081), 2026-10-07 and 2026-10-08 | tests red then green (five red runs); two clean full reactors on JDK 21 (see command.txt) | PASS: two XML contents are equal when their trees are equal (before: any two were); equal contents have the same hash code (before: the identity hash code of the DOM document); the comparison changes no node; repeats that differ only in content all expand; 7,890 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped, unchanged; JMH unmeasured |
+| `reviews/code/rv091-xml-content-equality-codex` | review run 082 | Codex CLI 0.160.1, adversarial, three rounds | APPROVE in round 3; rounds 1 and 2 REQUEST_CHANGES (one HIGH, four MEDIUM, one LOW): five fixed, one answered with a documented contract that the reviewer accepted |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and
