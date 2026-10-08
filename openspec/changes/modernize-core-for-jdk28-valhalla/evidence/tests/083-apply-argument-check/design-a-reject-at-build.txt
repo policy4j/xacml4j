@@ -1,0 +1,19 @@
+Full reactor with design A, JDK 21, 2026-10-08: Apply.Builder.build() rejects an expression whose arguments
+do not fit (PolicySyntaxException). Failures were not allowed to stop the build (-Dmaven.test.failure.ignore=true).
+Design A was not kept: the four conformance cases need the policy to load.
+
+[ERROR] Tests run: 2, Failures: 2, Errors: 0, Skipped: 0 <<< FAILURE! - in org.xacml4j.v30.policy.ApplyTest
+[ERROR] Tests run: 54, Failures: 0, Errors: 20, Skipped: 0 <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[ERROR] Tests run: 6437, Failures: 2, Errors: 20, Skipped: 4
+[INFO] Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+[WARNING] Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+[ERROR] Tests run: 27, Failures: 0, Errors: 5, Skipped: 0 <<< FAILURE! - in org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest
+[ERROR] Tests run: 179, Failures: 0, Errors: 5, Skipped: 3
+[INFO] Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+[ERROR] Tests run: 375, Failures: 2, Errors: 0, Skipped: 7 <<< FAILURE! - in org.xacml4j.v20.Xacml20ConformanceTest
+[ERROR] Tests run: 488, Failures: 2, Errors: 0, Skipped: 5 <<< FAILURE! - in org.xacml4j.v20.Xacml30ConformanceTest
+[ERROR]   Xacml20ConformanceTest.testConformance:47 Cannot import oasis20/IIC003 policy oasis-xacml20-compat-test/IIC003Policy.xml
+[ERROR]   Xacml20ConformanceTest.testConformance:47 Cannot import oasis20/IIC014 policy oasis-xacml20-compat-test/IIC014Policy.xml
+[ERROR]   Xacml30ConformanceTest.testConformance:47 Cannot import oasis30/IIC003 policy xacml3.0-ct-v.0.4/IIC003Policy.xml
+[ERROR]   Xacml30ConformanceTest.testConformance:47 Cannot import oasis30/IIC014 policy xacml3.0-ct-v.0.4/IIC014Policy.xml
+[ERROR] Tests run: 937, Failures: 4, Errors: 0, Skipped: 12

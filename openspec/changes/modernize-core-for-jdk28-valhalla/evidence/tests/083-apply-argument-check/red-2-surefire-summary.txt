@@ -1,0 +1,6 @@
+Red run 2, JDK 21, 2026-10-08: an argument whose type is known only at evaluation, before the check at evaluation existed (review round 1).
+
+[ERROR] Tests run: 35, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.72 s <<< FAILURE! - in org.xacml4j.v30.policy.ApplyArgumentValidationTest
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.argumentWhoseTypeIsKnownOnlyAtEvaluationIsCheckedAtEvaluation  Time elapsed: 0.012 s  <<< FAILURE!
+[ERROR]   ApplyArgumentValidationTest.argumentWhoseTypeIsKnownOnlyAtEvaluationIsCheckedAtEvaluation:240->assertNotTypeCorrectAtEvaluation:253 Expected org.xacml4j.v30.EvaluationException to be thrown, but nothing was thrown.
+[ERROR] Tests run: 35, Failures: 1, Errors: 0, Skipped: 0

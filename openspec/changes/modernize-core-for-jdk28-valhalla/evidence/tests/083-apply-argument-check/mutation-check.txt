@@ -1,0 +1,42 @@
+Mutation check of the final code, JDK 21, 2026-10-08.
+Test classes run: ApplyArgumentValidationTest (40), ApplyTest (2), HigherOrderVariadicFunctionsTest (54),
+InvalidApplyPolicyUnmarshallerTest (8), InvalidApplyDecisionTest (13), AttributeResolutionSafetyNetTest (27).
+Files mutated for one run each: xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java and
+function/impl/AttributeDesignatorFunctions.java. After every run the files were put back from a copy; a search for
+the word "mutation" in the package finds nothing.
+
+M1: Apply does not check its arguments against the function when it is built (the code before the bead)
+  ApplyArgumentValidationTest          40 tests, 22 failures
+  ApplyTest                             2 tests,  2 failures (the call of validateParametersAndThrow is missing)
+  HigherOrderVariadicFunctionsTest     54 tests, 19 failures
+  InvalidApplyPolicyUnmarshallerTest    8 tests,  4 failures
+  InvalidApplyDecisionTest             13 tests, 10 failures
+    permitRuleWithAnInvalidExpressionIsIndeterminate: expected: <INDETERMINATE_P> but was: <PERMIT>
+    denyRuleWithAnInvalidExpressionIsIndeterminate:   expected: <INDETERMINATE_D> but was: <DENY>
+
+M2: the evaluation ignores a type error that was found when the expression was built (`if(false)`)
+  ApplyArgumentValidationTest          40 tests, 24 failures
+  HigherOrderVariadicFunctionsTest     54 tests, 19 failures
+  InvalidApplyPolicyUnmarshallerTest    8 tests,  2 failures
+  InvalidApplyDecisionTest             13 tests, 12 failures
+
+M3: attribute-designator and attribute-selector declare the data type, not a bag of it (the code before the bead)
+  ApplyArgumentValidationTest          40 tests,  1 failure (attributeDesignatorFunctionsHaveTheTypeOfABag)
+  AttributeResolutionSafetyNetTest     27 tests,  5 failures (uses of the functions as a bag are Indeterminate)
+
+M4: an argument whose type can not be told, and a check that fails, are not type errors
+  ApplyArgumentValidationTest          40 tests,  3 failures
+    argumentWhoseTypeIsNotKnownWhenTheExpressionIsBuiltIsATypeError
+    higherOrderFunctionWithABagOfUnknownTypeIsATypeError
+    knownViolationNextToAnArgumentOfUnknownTypeIsATypeError
+  InvalidApplyDecisionTest             13 tests,  2 failures
+    or(true, any-of(string-equal, 1, bag of unknown type)): <PERMIT> and <DENY> (the case of review round 4)
+
+M5: a type error of an expression inside is not inherited
+  ApplyArgumentValidationTest          40 tests,  5 failures
+  InvalidApplyPolicyUnmarshallerTest    8 tests,  4 failures
+  InvalidApplyDecisionTest             13 tests,  6 failures (the rows with the wrong expression behind a deciding
+                                                             operand: <PERMIT> and <DENY>)
+
+M1 is also the red run of the two new test classes of xacml-xml and xacml-pdp: they were written after the
+check, and M1 shows that they fail on the code before it. M4 is the red run for the case of review round 4.

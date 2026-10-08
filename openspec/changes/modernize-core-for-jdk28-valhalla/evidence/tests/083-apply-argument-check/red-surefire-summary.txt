@@ -1,0 +1,40 @@
+Red run, JDK 21, 2026-10-08: ApplyArgumentValidationTest against Apply with the accessor and the evaluation path but no check (the behaviour before the bead).
+
+[ERROR] Tests run: 33, Failures: 18, Errors: 0, Skipped: 0, Time elapsed: 0.769 s <<< FAILURE! - in org.xacml4j.v30.policy.ApplyArgumentValidationTest
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[1]  Time elapsed: 0.276 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[2]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[3]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[4]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[5]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[6]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[7]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[8]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[9]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[10]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[11]  Time elapsed: 0 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[12]  Time elapsed: 0 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[13]  Time elapsed: 0 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[14]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[15]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate(String, String, Expression[])[16]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.attributeDesignatorFunctionsHaveTheTypeOfABag  Time elapsed: 0.014 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.invalidApplyInsideAnApplyMakesTheOuterOneIndeterminate  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.applyWithArgumentsThatDoNotFitIsIndeterminate:85 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.attributeDesignatorFunctionsHaveTheTypeOfABag:209 expected: <BagOfValuesType{TypeId=http://www.w3.org/2001/XMLSchema#string}> but was: <string>
+[ERROR]   ApplyArgumentValidationTest.invalidApplyInsideAnApplyMakesTheOuterOneIndeterminate:179 expected: <false> but was: <true>
+[ERROR] Tests run: 33, Failures: 18, Errors: 0, Skipped: 0

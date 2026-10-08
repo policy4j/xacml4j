@@ -383,8 +383,11 @@ public class HigherOrderVariadicFunctionsTest
 		SyntaxException validationError = assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(params));
 		assertEquals(StatusCodeId.SYNTAX_ERROR, validationError.getStatus().getStatusCode().getValue());
 		Apply apply = Apply.builder(spec).param(arguments).build();
+		assertFalse(apply.isTypeCorrect(), "Invalid parameters not found when the expression is built");
 		EvaluationException invocationError = assertThrows(EvaluationException.class, () -> apply.evaluate(context));
 		assertEquals(evaluationStatus(), invocationError.getStatus().getStatusCode().getValue());
+		// The function is not invoked.
+		verify(context, never()).isValidateFuncParamsAtRuntime();
 		Expression predicate = operation.equals("map")
 				? Apply.builder(FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in").get())
 						.param(string("a"), apply).build() : apply;
@@ -393,21 +396,21 @@ public class HigherOrderVariadicFunctionsTest
 				.filter(invocation -> invocation.getMethod().getName().equals("setEvaluationStatus")).count();
 		assertEquals(ConditionResult.INDETERMINATE, new Condition(predicate).evaluate(context));
 		verify(context, times((int)previousStatuses + 1)).setEvaluationStatus(status.capture());
-		verify(context, atLeastOnce()).isValidateFuncParamsAtRuntime();
 		assertTrue(!status.getAllValues().isEmpty(), "Indeterminate must carry an evaluation status");
 		assertEquals(evaluationStatus(), status.getValue().getStatusCode().getValue());
 	}
 
 	/**
-	 * Runtime validation builds a message-only function failure, so the
-	 * status stays processing-error. With validation off, invoke keeps the
-	 * first evaluation exception, and these calls are syntax-error.
+	 * An expression whose arguments do not fit its function is found when
+	 * it is built (bead policy4j-the.4.56). Its evaluation is
+	 * processing-error with and without runtime validation (XACML 3.0
+	 * core, section 7.19.2), and the function is not invoked. Before that
+	 * bead these calls were syntax-error with runtime validation off: the
+	 * function was invoked and its own check failed.
 	 */
 	private StatusCodeId evaluationStatus()
 	{
-		return runtimeValidation
-				? StatusCodeId.STATUS_PROCESSING_ERROR
-				: StatusCodeId.SYNTAX_ERROR;
+		return StatusCodeId.STATUS_PROCESSING_ERROR;
 	}
 
 	private static FunctionSpec higher(String operation)

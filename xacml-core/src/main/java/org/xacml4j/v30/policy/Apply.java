@@ -28,10 +28,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
+import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
 
@@ -48,8 +51,17 @@ import com.google.common.collect.ImmutableList;
  */
 public final class Apply implements Expression
 {
+	private final static Logger LOG = LoggerFactory.getLogger(Apply.class);
+
 	private final FunctionSpec spec;
 	private final List<Expression> arguments;
+
+	/**
+	 * The function of the expression that is not type correct: of this
+	 * expression, or of one that it holds. Empty when the check that is
+	 * made when the expression is built found no type error.
+	 */
+	private final Optional<String> typeError;
 
 	private int hashCode = 0;
 
@@ -63,6 +75,88 @@ public final class Apply implements Expression
 	{
 		this.spec = b.func;
 		this.arguments = b.paramsBuilder.build();
+		Optional<String> inside = typeErrorInside(arguments);
+		this.typeError = inside.isPresent()?inside:typeErrorOf(spec, arguments);
+	}
+
+	/**
+	 * Expressions compose greater expressions, and a valid expression is
+	 * type correct (XACML 3.0 core, section 7.4). An expression that holds
+	 * an expression with a type error is therefore not valid, also when
+	 * its function would not evaluate that argument: {@code or(true, x)}
+	 * with a type error in {@code x} is Indeterminate, not true. A
+	 * reference to a variable stands for the expression of its definition.
+	 *
+	 * @return the function of the first argument expression that has a
+	 * type error
+	 */
+	private static Optional<String> typeErrorInside(List<Expression> arguments)
+	{
+		for(Expression argument : arguments){
+			Expression e = argument;
+			// A definition can be a reference again. The chain ends: a
+			// definition is built before a reference to it can be.
+			while(e instanceof VariableReference){
+				e = ((VariableReference)e).getDefinition().getExpression();
+			}
+			if(e instanceof Apply && ((Apply)e).typeError.isPresent()){
+				return ((Apply)e).typeError;
+			}
+		}
+		return Optional.empty();
+	}
+
+	/**
+	 * Checks the arguments against the function, once, when the expression
+	 * is built.
+	 *
+	 * @return the function, when its arguments are not shown to fit it
+	 */
+	private static Optional<String> typeErrorOf(FunctionSpec spec, List<Expression> arguments)
+	{
+		// Every expression has a type that is known when the policy is
+		// loaded. Where the type of an argument can not be told (the data
+		// type of the attribute-designator function is an expression, or
+		// names no data type), the arguments are not shown to fit.
+		for(int i = 0; i < arguments.size(); i++){
+			try{
+				arguments.get(i).getEvaluatesTo();
+			}catch(RuntimeException e){
+				LOG.warn("Function=\"{}\": the type of argument {} is not known when the policy is loaded. " +
+						"The expression will evaluate to Indeterminate: {}", spec.getId(), i, e.toString());
+				return Optional.of(spec.getId());
+			}
+		}
+		try{
+			spec.validateParametersAndThrow(arguments);
+			return Optional.empty();
+		}catch(SyntaxException e){
+			LOG.warn("Function=\"{}\" is applied to arguments that do not fit it. " +
+					"The expression will evaluate to Indeterminate: {}", spec.getId(), e.getMessage());
+			return Optional.of(spec.getId());
+		}catch(RuntimeException e){
+			// The check itself failed, so the arguments are not shown to fit.
+			LOG.warn("Function=\"{}\": the arguments can not be checked. " +
+					"The expression will evaluate to Indeterminate: {}", spec.getId(), e.toString());
+			return Optional.of(spec.getId());
+		}
+	}
+
+	/**
+	 * Tests if the number and the types of the arguments agree with the
+	 * function (XACML 3.0 core, section 7.4: "Valid expressions SHALL be
+	 * type correct"). An expression that holds an expression that is not
+	 * type correct is not type correct either, and so is one with an
+	 * argument whose type can not be told when the expression is built.
+	 * Such an expression can be built. Its evaluation is Indeterminate
+	 * with status processing-error (section 7.19.2), and its function is
+	 * not invoked.
+	 *
+	 * @return {@code false} if the arguments were not shown to fit when
+	 * the expression was built
+	 */
+	public boolean isTypeCorrect(){
+		return !typeError.isPresent();
 	}
 
 	/**
@@ -115,6 +209,12 @@ public final class Apply implements Expression
 	public ValueExp evaluate(EvaluationContext context)
 		throws EvaluationException
 	{
+		if(typeError.isPresent()){
+			// The reason was logged when the expression was built. The
+			// status message names the function only.
+			throw new FunctionInvocationException(spec,
+					"Function=\"%s\" is applied to arguments that do not fit it", typeError.get());
+		}
 		try{
 			return spec.invoke(context, arguments.toArray(new Expression[]{}));
 		}catch(EvaluationException e){

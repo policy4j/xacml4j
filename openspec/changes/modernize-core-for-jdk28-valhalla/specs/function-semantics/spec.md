@@ -243,3 +243,80 @@ XACML 3.0 §A.3.15.
 #### Scenario: Missing content for node equality
 - **WHEN** either `xpath-node-equal` argument refers to a category with no `Content`
 - **THEN** the result is `false`
+
+### Requirement: Function arguments are checked when the expression is built
+The number and the types of the arguments of an `<Apply>` SHALL be checked
+against the function once, when the expression is built. A policy with an
+`<Apply>` whose arguments do not fit SHALL still be loaded. The evaluation
+of such an expression SHALL be Indeterminate with status code
+`urn:oasis:names:tc:xacml:1.0:status:processing-error`; its function SHALL
+NOT be invoked and its arguments SHALL NOT be evaluated. The status
+message SHALL name the function and nothing else. A call without
+arguments SHALL stay valid for a function that allows it. An expression
+that holds an expression whose arguments do not fit, directly or through
+variable references of any number, SHALL be treated in the same way, also
+when its function would not evaluate that argument.
+
+Every argument of an `<Apply>` SHALL have a type that is known when the
+expression is built. An argument whose type cannot be told then SHALL
+make the expression that takes it a type error, treated as above. This is
+the case for the bag of an `attribute-designator` or `attribute-selector`
+function whose data-type argument is not a literal or names no data type.
+A check of the arguments that fails for another reason than a mismatch
+SHALL be treated as a mismatch.
+
+#### Scenario: Fewer arguments than the function needs
+- **WHEN** a condition holds `integer-add` with the single argument 5
+- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and not the value 5
+
+#### Scenario: More arguments than the function takes
+- **WHEN** an expression is `string-equal` with three string arguments
+- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: An argument of another type
+- **WHEN** an expression is `integer-add` with an integer and a string (conformance test IIC014)
+- **THEN** the policy is loaded and the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A bag where a value is needed
+- **WHEN** an expression is `string-equal` with a string and a bag of strings (conformance test IIC003)
+- **THEN** the policy is loaded and the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A bag of another type
+- **WHEN** an expression is `integer-bag-size` with a bag of strings
+- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and not the size of the bag
+
+#### Scenario: A rule with such a condition
+- **WHEN** a Permit rule has the condition `integer-equal(integer-add(5), 5)`
+- **THEN** the rule is Indeterminate{P} with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A type error behind a deciding operand
+- **WHEN** a Permit rule has the condition `or(true, string-equal(a, string-bag(a)))`
+- **THEN** the rule is Indeterminate{P} with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and not Permit
+
+#### Scenario: A type error in a variable definition
+- **WHEN** an expression is `or` of true and a reference to a variable whose definition is `string-equal` with a string and a bag
+- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A call without arguments that the function allows
+- **WHEN** an expression is `or` without arguments
+- **THEN** the expression is valid and evaluates to false
+
+#### Scenario: The data type of a designator function is an expression
+- **WHEN** `string-bag-size` is applied to the bag of an `attribute-designator` function whose data-type argument is an expression
+- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and no argument is evaluated
+
+#### Scenario: An argument of unknown type behind a deciding operand
+- **WHEN** a Permit rule has the condition `or(true, any-of(string-equal, 1, bag))`, and `bag` is the bag of an `attribute-designator` function whose data-type argument is an expression
+- **THEN** the rule is Indeterminate{P} with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and not Permit
+
+#### Scenario: The data type of a designator function does not exist
+- **WHEN** `string-is-in` is applied to a string and to the bag of an `attribute-designator` function whose data-type argument is a literal that names no data type
+- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A type error behind many variable references
+- **WHEN** a Permit rule has the condition `or` of true and a variable reference, and the type error is 65 variable definitions away
+- **THEN** the rule is Indeterminate{P} with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A failure of the evaluation behind a deciding operand
+- **WHEN** `or` is applied to true and to `boolean-one-and-only` of an empty bag, which is type correct and fails when it is evaluated
+- **THEN** the result is true and the second argument is not evaluated
