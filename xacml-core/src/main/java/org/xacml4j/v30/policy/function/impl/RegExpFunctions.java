@@ -39,6 +39,20 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Preconditions;
 
+/**
+ * The XACML regular-expression match functions.
+ * <p>
+ * The pattern, the first argument of each function, is policy content.
+ * The limits of this class bound the length of the pattern, the length of
+ * the input, the time of a match that reads its input, and nested counted
+ * repetitions. They do not bound every pattern: a pattern can make the
+ * matcher work without a read of the input, and that work is not stopped
+ * (bug policy4j-the.4.58, accepted as a limit; see
+ * {@link #repetitionWeight(java.lang.String)}). A policy must therefore
+ * not take the pattern from the request, as with an attribute designator
+ * or selector as the first argument: the request would then control the
+ * processor time of the PDP. Nothing checks that.
+ */
 @XacmlFunctionProvider(description="XACML regular expression functions")
 public final class RegExpFunctions
 {

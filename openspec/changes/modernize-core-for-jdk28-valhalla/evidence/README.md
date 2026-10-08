@@ -21,7 +21,7 @@ task 1.6.
 | combining-algorithm-registry | registry tests (task 4.4); on-permit decision table and nested responses (4.6, 4.54); rename URN check still task 6.3 | 069, rv078 (bounded task 4.6) |
 | conformance-coverage | conformance manifest and fixture integrity check (tasks 3.1-3.6); adjudicated dispositions | 015, 023, 073, 075 |
 | test-framework | per-module test counts; no JUnit 4 or EasyMock imports (task 2.7) | 009, 010, 011, 012, 013, 017 |
-| request-limits | expansion-limit and regular-expression limit tests (beads 4.50, 4.51, 4.57) | 077, rv085, rv086; 078, rv087; 081, rv090 |
+| request-limits | expansion-limit and regular-expression limit tests (beads 4.50, 4.51, 4.57); the regular-expression residual is an accepted limit (4.58) | 077, rv085, rv086; 078, rv087; 081, rv090; 084 |
 | jdk28-valhalla-build | JDK 28 reactor build and CI job (tasks 8.1-8.5); JMH before/after per value-class family (tasks 9.2-9.4) | - |
 
 ## Gate tasks to proof
@@ -219,6 +219,7 @@ task 1.6.
 | `reviews/code/rv091-xml-content-equality-codex` | review run 082 | Codex CLI 0.160.1, adversarial, three rounds | APPROVE in round 3; rounds 1 and 2 REQUEST_CHANGES (one HIGH, four MEDIUM, one LOW): five fixed, one answered with a documented contract that the reviewer accepted |
 | `tests/083-apply-argument-check` | bead policy4j-the.4.56 (found in run 076), 2026-10-08 | probe before the fix; design A (reject at load) run and not kept; tests red then green (four red runs); mutation check of the final code; six clean full reactors on JDK 21 (see command.txt) | PASS: an `<Apply>` whose arguments do not fit its function, or that holds such an expression, is Indeterminate processing-error and its function is not invoked (before: `integer-add(5)` was 5, and a Permit rule with it gave Permit); the policy still loads, as conformance IIC003 and IIC014 need; an argument whose type can not be told at load is a type error; 7,952 tests, 0 failures, 20 skipped; conformance 937 with 12 skipped, unchanged; JMH unmeasured |
 | `reviews/code/rv092-apply-argument-check-codex` | review run 083 | Codex CLI 0.160.1, adversarial, five rounds | APPROVE in round 5; rounds 1 to 4 REQUEST_CHANGES (five MEDIUM in all), which led to a simpler design after round 4 |
+| `builds/084-regexp-residual-accepted` | bead policy4j-the.4.58 (rv087 round 2; the session's recommendation, no separate ruling), 2026-10-08 | a class comment of `RegExpFunctions`; gate of run 085 | ACCEPTED AS A LIMIT: a pattern that makes the matcher work without reading the input is not stopped; the pattern is policy content, and a policy must not take it from the request; options b, c and d of the bead were not carried out; no behaviour changed |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and
