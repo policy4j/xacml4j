@@ -5,7 +5,9 @@
 #   scripts/agent-doctor.sh [all|ast-grep|ripwire|tgrep|serena]
 #
 # Each tool prints PASS or FAIL. The exit status is non-zero when a selected
-# check fails. The Serena check runs the mcp.sh transport doctor, then a live
+# check fails. A WARN line names a limit of a PASS and does not change the
+# exit status: the tgrep check prints one when files are newer than its
+# snapshot index. The Serena check runs the mcp.sh transport doctor, then a live
 # JDTLS canary (get_symbols_overview on one tracked Java file), so a PASS
 # covers symbol lookup and not only the HTTP route. With an attach stanza in
 # .mcp.json, the check first starts Serena on demand.
@@ -18,6 +20,7 @@ ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 WORKDIR=""
 
 pass() { printf 'PASS %s\n' "$*"; }
+warn() { printf 'WARN %s\n' "$*"; }
 fail() { printf 'FAIL %s\n' "$*" >&2; }
 
 need() {
@@ -63,12 +66,27 @@ check_ripwire() {
   pass "ripwire: doctor ${BASH_REMATCH[2]}/${BASH_REMATCH[1]}"
 }
 
+# Count the files that git does not ignore and that changed after the tgrep
+# index was written. tgrep honors .gitignore, so these are the files whose
+# current content an indexed search can miss.
+tgrep_newer_files() {
+  local meta="$1" file count=0
+  while IFS= read -r -d '' file; do
+    if [[ "${ROOT}/${file}" -nt "${meta}" ]]; then
+      count=$((count + 1))
+    fi
+  done < <(git -C "${ROOT}" ls-files -co --exclude-standard -z)
+  printf '%s\n' "${count}"
+}
+
 # Without `tgrep serve`, the index is a snapshot: edits and new files made
-# after `tgrep index` are invisible to indexed searches.
+# after `tgrep index` are invisible to indexed searches. A snapshot that is
+# older than files in the tree still passes, with a WARN.
 check_tgrep() {
-  local status mode="snapshot (refresh: tgrep index . | live: tgrep serve .)"
-  need tgrep || return 1
-  if [[ ! -f "${ROOT}/.tgrep/meta.json" ]]; then
+  local status meta="${ROOT}/.tgrep/meta.json" age="" newer=0
+  local mode="snapshot (refresh: tgrep index . | live: tgrep serve .)"
+  need tgrep git || return 1
+  if [[ ! -f "${meta}" ]]; then
     fail "tgrep: no index; run: tgrep index ${ROOT}"
     return 1
   fi
@@ -77,10 +95,18 @@ check_tgrep() {
     return 1
   fi
   status="$(cd -- "${ROOT}" && tgrep status 2>&1 || true)"
-  if [[ "${status}" =~ Server:[[:space:]]+running ]]; then
-    mode="live (tgrep serve)"
+  if [[ "${status}" =~ Updated:[[:space:]]+([0-9]+[a-z]+[[:space:]]ago) ]]; then
+    age=", updated ${BASH_REMATCH[1]}"
   fi
-  pass "tgrep: index present, canary matched, mode ${mode}"
+  if [[ "${status}" =~ Server:[[:space:]]+running ]]; then
+    pass "tgrep: index present${age}, canary matched, mode live (tgrep serve)"
+    return 0
+  fi
+  pass "tgrep: index present${age}, canary matched, mode ${mode}"
+  newer="$(tgrep_newer_files "${meta}")"
+  if ((newer > 0)); then
+    warn "tgrep: ${newer} files are newer than the snapshot index; indexed searches do not see their changes (run: tgrep index .)"
+  fi
 }
 
 # Print one compact JSON-RPC message from a streamable-HTTP response body,

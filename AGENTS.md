@@ -17,7 +17,8 @@ symlink to it.
 - A search hit or index result is a candidate. Confirm it in the opened
   source, then in compiler or test output.
 - Run shell commands through `rtk` (for example `rtk mvn`, `rtk git`,
-  `rtk rg`).
+  `rtk rg`). Run the code-intelligence commands directly: `ripwire`,
+  `ast-grep`, `tgrep`, `mcp.sh`, and `scripts/agent-doctor.sh`.
 
 ## Modules
 
@@ -185,29 +186,57 @@ scripts/agent-doctor.sh            # all tools
 scripts/agent-doctor.sh serena     # one tool: ast-grep | ripwire | tgrep | serena
 ```
 
+A `PASS` says that the tool answers. It does not say that the answer covers
+your edits. Read the `WARN` lines: the tgrep check prints one when files are
+newer than its snapshot index.
+
 | Need | Tool | How |
 | --- | --- | --- |
-| Orient in the codebase, rank the code for a task | ripwire | `ripwire . --for="<task>"`, or `--pack-task="<task>"` for one-call context |
-| Callers, blast radius, call paths | ripwire | `--callers=SYM`, `--impact=SYM` (transitive), `--uses=SYM`, `--path=A,B` |
-| Check your change before you call it done | ripwire | `ripwire . --quality-delta` |
-| Java symbols, references, hierarchy (type-aware) | Serena | MCP `serena`: `find_symbol`, `find_referencing_symbols`, `get_symbols_overview` |
-| Structural code patterns, lint rules | ast-grep | `ast-grep run --lang java --pattern '<pattern>' <path>`, `ast-grep scan`, MCP `ast-grep` |
+| Orient in the codebase, rank the code for a task | ripwire | `ripwire . --for="<task>"`, or `--pack-task="<task>"` for one-call context; MCP `for`, `explore` |
+| Callers, blast radius, call paths | ripwire | `--callers=SYM`, `--impact=SYM` (transitive), `--uses=SYM`, `--path=A,B`; MCP `find_referencing_symbols`, `impact`, `uses`, `path_between`, and `batch` for several queries in one call |
+| Check your change before you call it done | ripwire | `ripwire . --edit-check=SYM`, `ripwire . --quality-delta`; MCP `edit_check`, `quality_delta` |
+| Java symbols, references, hierarchy (type-aware) | Serena | MCP `serena`: `find_symbol`, `find_declaration`, `find_referencing_symbols`, `find_implementations`, `get_symbols_overview`, `get_diagnostics_for_file` |
+| Structural code patterns, lint rules | ast-grep | `ast-grep run --lang java --pattern '<pattern>' <path>`, `ast-grep scan`; MCP `ast-grep`: `find_code`, `find_code_by_rule`, `dump_syntax_tree`, `test_match_code_rule` |
 | Literal or regex text search | `rtk rg` | Default for one-off searches |
-| Repeated whole-repo regex searches | tgrep | `tgrep <pattern> .` (ripgrep flags) |
+| Repeated whole-repo regex searches | tgrep | `tgrep '<pattern>' .` from the repository root (ripgrep flags) |
 
 Project MCP servers `serena`, `ast-grep`, and `ripwire` (all stdio) are
 declared once per CLI: `.mcp.json` (Claude, Kimi, Copilot),
 `.codex/config.toml` (Codex), and `.grok/config.toml` (Grok). Keep the three
 files in step. Agy has no project MCP file; use the CLI forms above.
 
+Each stanza finds the checkout with `git rev-parse --show-toplevel` in the
+directory where the client was started. The MCP tools serve that checkout.
+When you edit another worktree from the same client:
+
+- ripwire: pass the worktree (MCP `path`, CLI `ripwire <worktree> ...`).
+- ast-grep: pass the worktree (MCP `project_folder`, CLI path argument).
+- tgrep: run it inside the worktree. Each checkout has its own index.
+- Serena cannot be pointed at another checkout. Its answers describe the
+  checkout of the client, which can hold another code line. Start the
+  client in the worktree, or label Serena `UNAVAILABLE` for the worktree. To
+  check which checkout Serena serves, ask it for a file that exists only in
+  the worktree.
+
 ### ripwire
 
 - No project config. It honors `.gitignore` and keeps a warm cache in
   `$TMPDIR/ripwire`.
 - Call edges are name based. Rows marked `amb=` or `prov="split"` are
-  guesses; confirm them with Serena or in source.
+  guesses; confirm them with Serena or in source. The `incompatible=` rows
+  of `--edit-check` are name based too: a caller of another method with the
+  same name can be listed.
+- Every count is a floor (`counts_floor="1"`). An empty result is not proof
+  of absence.
 - For "is it safe to change X", use `--impact=SYM`. `--callers` is one hop
   only.
+- Evidence runs keep copies of Java sources under
+  `openspec/changes/*/evidence/`. ripwire lists them as callers and as
+  duplicates. On the CLI, pass `--exclude=/evidence/`. The MCP tools take no
+  exclude option; discard those rows.
+- `--quality-delta` reports JUnit test methods as dead code, and also
+  methods that nothing calls by name, such as `equals` and `toString`. Read
+  each finding before you act on it.
 
 ### Serena
 
@@ -218,16 +247,24 @@ files in step. Agy has no project MCP file; use the CLI forms above.
 - Starts on first use. The `.mcp.json` stanza runs `mcp.sh -m serena attach`
   for the current checkout, so each worktree has its own Serena and port.
   The controller stops an idle Serena. `mcp.sh -m serena status` shows the
-  URL.
+  checkout (`project=`), the port, and the URL.
+- If the client reports `serena` as not connected, run
+  `scripts/agent-doctor.sh serena`, then reconnect the server in the client
+  (Claude Code: `/mcp`). Until its tools are listed, label the lane
+  `UNAVAILABLE` and work with ripwire and the source.
 - After changes to a `pom.xml`, the JDK, or `.serena/project.yml`, stop it
   with `mcp.sh -m serena stop`. The next call starts it again.
 - Serena's symbol tools (`rename_symbol`, `replace_symbol_body`,
   `insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) are
   enabled for refactoring. Its file-creation, text-replace, shell, and memory
   tools are disabled; use the agent's native tools for those.
-- JDTLS results can be incomplete when the working tree has compile errors.
-  Then label Serena results `PARTIAL` and confirm them in source. An empty
-  result is not proof of absence.
+- JDTLS results can be incomplete when the working tree has compile errors;
+  `get_diagnostics_for_file` shows them. Then label Serena results `PARTIAL`
+  and confirm them in source.
+- An empty result is not proof of absence, also on a tree that compiles.
+  `find_implementations` on an interface method can return an empty list
+  while classes override the method. Ask for the implementations of the
+  type, then read the overrides.
 
 ### ast-grep
 
@@ -239,26 +276,47 @@ files in step. Agy has no project MCP file; use the CLI forms above.
 - Quote patterns with single quotes so the shell does not expand `$VAR`
   metavariables.
 - ast-grep parses Java syntax only. It does not resolve types or overloads.
+- Test a pattern on a known match before you trust a no-match. A pattern
+  that can never match gives the same empty output and exit status 1 as a
+  pattern with no match in the tree. A pattern that does not parse only
+  prints a warning ("Pattern contains an ERROR node"), so do not hide
+  stderr. MCP `dump_syntax_tree` with `format=pattern` shows how ast-grep
+  reads a pattern.
 
 ### tgrep
 
 - Trigram index in `.tgrep/` (gitignored). Build or refresh it with
-  `tgrep index .` (about 2 s).
+  `tgrep index .` (a few seconds).
+- Search from the repository root and narrow with `-g`, for example
+  `tgrep '<pattern>' -g 'xacml-core/src/main/java/**' .`. With a
+  subdirectory as the path, tgrep finds no index there, prints a warning,
+  and scans the files instead. The two forms can then disagree.
+- The index holds the copies of Java sources in the evidence runs. Exclude
+  them with `-g '!openspec/**'`.
 - The index is a snapshot. Files edited or added after `tgrep index` are
   invisible to indexed searches until you re-index. `tgrep serve .` keeps the
-  index live by watching the file system; `tgrep status` shows
-  `Server: running` while it runs.
+  index live by watching the file system; `tgrep status` shows the age of
+  the index, and `Server: running` while the server runs.
 - Before you trust a tgrep no-match, confirm the server is running or
   re-index. Or use `tgrep --no-index` or `rtk rg`.
+  `scripts/agent-doctor.sh tgrep` prints a `WARN` with the number of files
+  that are newer than the index.
 
 ## Evidence Labels
 
 State which tool produced each claim, and label its coverage:
 
-- `SUPPORTED`: the tool represents the syntax and returned a scoped result.
-- `PARTIAL`: the tool is healthy, but its model is incomplete (for example,
-  JDTLS on files that do not compile).
-- `UNAVAILABLE`: the tool or service cannot be reached.
+- `SUPPORTED`: a healthy tool returned a scoped result, and the opened
+  source or the build output confirmed it.
+- `PARTIAL`: the tool ran with a known gap: files that do not compile, a
+  stale index, name-based rows (`amb=`), or a boundary that was not
+  searched. Name the gap.
+- `UNAVAILABLE`: the tool or service cannot be reached, or it serves another
+  checkout. Name the fallback.
+
+"No callers" and "unused" are `SUPPORTED` only when two lanes agree: Serena
+references, and a text search that includes configuration and resources.
+ripwire alone never supports an absence claim.
 
 A passing compile shows only that the code compiles. It does not prove that
 a caller, reference, or rename inventory is complete.
