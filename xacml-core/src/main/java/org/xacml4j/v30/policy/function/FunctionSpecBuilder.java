@@ -411,6 +411,11 @@ public final class FunctionSpecBuilder {
 				LOG.debug("Function=\"{}\" normalized parameters=\"{}\"",
 				          shortId, normalizedParameters);
 			}
+			// The loop below finds an argument too many after the last
+			// parameter. A function without parameters has none.
+			if (parameters.isEmpty() && !arguments.isEmpty()) {
+				throw PolicySyntaxException.invalidFunction(shortId, "the function takes no arguments");
+			}
 			while (it.hasNext()) {
 				FunctionParamSpec p = it.next();
 				if(!p.validate(expIt)){
@@ -450,6 +455,10 @@ public final class FunctionSpecBuilder {
 			if (LOG.isDebugEnabled()) {
 				LOG.debug("Function=\"{}\" normalized parameters=\"{}\"",
 				          shortId, normalizedParameters);
+			}
+			if (parameters.isEmpty() && !normalizedParameters.isEmpty()) {
+				LOG.debug("Function=\"{}\" takes no arguments", shortId);
+				return false;
 			}
 			while (it.hasNext()) {
 				FunctionParamSpec p = it.next();

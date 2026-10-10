@@ -31,6 +31,7 @@ import static org.mockito.Mockito.mock;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.xacml4j.v30.EvaluationContext;
@@ -96,6 +97,31 @@ public class InvalidApplyPolicyUnmarshallerTest
 		Apply condition = (Apply) policy.getRules().get(0).getCondition().getExpression();
 		assertTrue(condition.isTypeCorrect());
 		assertTrue(((Apply) condition.getArguments().get(0)).isTypeCorrect());
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), condition.evaluate(mock(EvaluationContext.class)));
+	}
+
+	/**
+	 * Bead policy4j-the.4.61: the data type of the attribute-designator
+	 * function is an expression. The policy is loaded, the expression that
+	 * takes the bag is type correct, and it is evaluated.
+	 */
+	@Test
+	public void policyWithADesignatorFunctionWhoseDataTypeIsAnExpressionIsEvaluated() throws Exception
+	{
+		String anyURI = "http://www.w3.org/2001/XMLSchema#anyURI";
+		String designator = "<Apply FunctionId=\"urn:oasis:names:tc:xacml:3.0:function:attribute-designator\">"
+				+ value(anyURI, "urn:oasis:names:tc:xacml:3.0:attribute-category:resource")
+				+ value(anyURI, "urn:test:attribute")
+				+ "<Apply FunctionId=\"" + F1 + "anyURI-one-and-only\"><Apply FunctionId=\"" + F1 + "anyURI-bag\">"
+				+ value(anyURI, STRING) + "</Apply></Apply></Apply>";
+
+		Policy policy = (Policy) new XacmlPolicyUnmarshaller(true).unmarshal(bytes(policy(30,
+				"<Apply FunctionId=\"" + F1 + "integer-equal\"><Apply FunctionId=\"" + F1 + "string-bag-size\">"
+						+ designator + "</Apply>" + value(INTEGER, "0") + "</Apply>")));
+
+		Apply condition = (Apply) policy.getRules().get(0).getCondition().getExpression();
+		assertTrue(condition.isTypeCorrect());
+		// The request has no such category: the bag is empty.
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), condition.evaluate(mock(EvaluationContext.class)));
 	}
 

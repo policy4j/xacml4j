@@ -29,6 +29,7 @@ import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 import org.xacml4j.v30.policy.function.impl.BaseFunctionParamSpec;
+import org.xacml4j.v30.types.DynamicType;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -99,7 +100,8 @@ final class FunctionParamValueTypeSequenceSpec extends BaseFunctionParamSpec
 
 	@Override
 	public boolean isValidParamType(ValueExpTypeInfo type){
-		return paramType == null ? type != null && type.getValueType() != null : paramType.equals(type);
+		return paramType == null ? type != null && type.getValueType() != null
+				: DynamicType.isConsistent(paramType, type);
 	}
 
 	@Override

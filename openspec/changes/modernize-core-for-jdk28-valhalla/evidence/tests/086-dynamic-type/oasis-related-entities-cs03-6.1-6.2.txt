@@ -1,0 +1,33 @@
+XACML v3.0 Related and Nested Entities Profile Version 1.0
+Committee Specification 03, 30 January 2024
+https://docs.oasis-open.org/xacml/xacml-3.0-related-entities/v1.0/cs03/xacml-3.0-related-entities-v1.0-cs03.html
+Fetched 2026-10-09. SHA-256 of the HTML file:
+047aa1aa477a60bce31a4366f7d03757e6aa1f59bd8991dfa49dc969c9f72550
+
+Excerpt, text of the HTML with line breaks as extracted.
+
+6.1 The attribute-designator function
+
+  This function SHALL take three to five arguments. If any argument
+  evaluates to "Indeterminate", then the function evaluates to
+  "Indeterminate".
+
+  [...]
+
+  The third argument SHALL be of data-type
+  http://www.w3.org/2001/XMLSchema#anyURI. The value of the argument
+  specifies the value of the DataType XML attribute of the XACML attribute
+  values returned by the function. The value of the third argument MUST
+  match the value of the DataType XML attribute according to identifier
+  equality.
+
+6.2 The attribute-selector function
+
+  The third argument SHALL be of data-type
+  http://www.w3.org/2001/XMLSchema#anyURI. The value of the argument
+  specifies the data-type of the attribute values returned from the
+  evaluation of this function.
+
+Reading used in run 086: the data type of the bag is the value of an
+argument. The profile does not require that argument to be a literal, so
+the data type can be known only when the argument is evaluated.

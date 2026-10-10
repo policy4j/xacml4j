@@ -1,0 +1,33 @@
+Run 086, red run 1: the dynamic-type tests against the code of commit e927c465 with a DynamicType whose consistency is plain equality
+
+[ERROR] Tests run: 17, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.069 s <<< FAILURE! - in org.xacml4j.v30.types.DynamicTypeTest
+[ERROR] org.xacml4j.v30.types.DynamicTypeTest.noValueAndNoBagHasTheDynamicType  Time elapsed: 0.004 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.types.DynamicTypeTest.consistency(String, ValueExpTypeInfo, ValueExpTypeInfo, boolean)[3]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.types.DynamicTypeTest.consistency(String, ValueExpTypeInfo, ValueExpTypeInfo, boolean)[7]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] Tests run: 46, Failures: 5, Errors: 2, Skipped: 0, Time elapsed: 0.771 s <<< FAILURE! - in org.xacml4j.v30.policy.ApplyArgumentValidationTest
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.higherOrderFunctionWithTwoBagsChecksItsOperands(String)[1]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.higherOrderFunctionWithTwoBagsChecksItsOperands(String)[2]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.higherOrderFunctionWithTwoBagsChecksItsOperands(String)[3]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.referenceToADesignatorFunctionHasTheDynamicBagType  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.dynamicOperandBehindADecidingOperandIsNotEvaluated  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.dynamicBagIsAcceptedWhereABagFitsAndCheckedAtEvaluation  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.higherOrderFunctionWithADynamicBag  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR]   ApplyArgumentValidationTest.dynamicOperandBehindADecidingOperandIsNotEvaluated:412 expected: <true> but was: <false>
+[ERROR]   ApplyArgumentValidationTest.higherOrderFunctionWithADynamicBag:275->assertEvaluatesTo:429 expected: <true> but was: <false>
+[ERROR]   ApplyArgumentValidationTest.higherOrderFunctionWithTwoBagsChecksItsOperands:297->assertHoldsTypeError:319 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.higherOrderFunctionWithTwoBagsChecksItsOperands:297->assertHoldsTypeError:319 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.higherOrderFunctionWithTwoBagsChecksItsOperands:297->assertHoldsTypeError:319 expected: <false> but was: <true>
+[ERROR]   DynamicTypeTest.consistency:60 expected: <true> but was: <false>
+[ERROR]   DynamicTypeTest.consistency:60 expected: <true> but was: <false>
+[ERROR]   DynamicTypeTest.noValueAndNoBagHasTheDynamicType:131 Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+[ERROR]   ApplyArgumentValidationTest.dynamicBagIsAcceptedWhereABagFitsAndCheckedAtEvaluation:371 » ClassCast class org.xacml4j.v30.policy.Apply cannot be cast to class org.xacml4j.v30.types.AnyURI (org.xacml4j.v30.policy.Apply and org.xacml4j.v30.types.AnyURI are in unnamed module of loader 'app')
+[ERROR]   ApplyArgumentValidationTest.referenceToADesignatorFunctionHasTheDynamicBagType:423->function:508 » ArrayIndexOutOfBounds Index 2 out of bounds for length 0
+[ERROR] Tests run: 63, Failures: 8, Errors: 2, Skipped: 0
+[ERROR] Tests run: 9, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.877 s <<< FAILURE! - in org.xacml4j.v30.xml.InvalidApplyPolicyUnmarshallerTest
+[ERROR] org.xacml4j.v30.xml.InvalidApplyPolicyUnmarshallerTest.policyWithADesignatorFunctionWhoseDataTypeIsAnExpressionIsEvaluated  Time elapsed: 0.018 s  <<< FAILURE!
+[ERROR]   InvalidApplyPolicyUnmarshallerTest.policyWithADesignatorFunctionWhoseDataTypeIsAnExpressionIsEvaluated:123 expected: <true> but was: <false>
+[ERROR] Tests run: 9, Failures: 1, Errors: 0, Skipped: 0
+[ERROR] Tests run: 16, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.818 s <<< FAILURE! - in org.xacml4j.v30.pdp.InvalidApplyDecisionTest
+[ERROR] org.xacml4j.v30.pdp.InvalidApplyDecisionTest.ruleWithADynamicBagOfTheRightDataTypeGivesItsEffect  Time elapsed: 0.014 s  <<< FAILURE!
+[ERROR]   InvalidApplyDecisionTest.ruleWithADynamicBagOfTheRightDataTypeGivesItsEffect:127 expected: <PERMIT> but was: <INDETERMINATE_P>
+[ERROR] Tests run: 16, Failures: 1, Errors: 0, Skipped: 0

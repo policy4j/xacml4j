@@ -31,6 +31,7 @@ import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 import org.xacml4j.v30.policy.function.impl.BaseFunctionParamSpec;
+import org.xacml4j.v30.types.DynamicType;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -97,7 +98,7 @@ final class FunctionParamValueTypeSpec extends BaseFunctionParamSpec
 	
 	@Override
 	public boolean isValidParamType(ValueExpTypeInfo type) {
-		return this.type.equals(type);
+		return DynamicType.isConsistent(this.type, type);
 	}
 
 	@Override

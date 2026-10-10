@@ -26,8 +26,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -36,14 +43,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCodeId;
+import org.xacml4j.v30.policy.function.FunctionInvocation;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
+import org.xacml4j.v30.types.DynamicType;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Bead policy4j-the.4.56: an {@code <Apply>} whose arguments do not fit
@@ -232,39 +245,86 @@ public class ApplyArgumentValidationTest
 		}
 	}
 
-	/** An argument of unknown type next to another violation: a type error all the same. */
+	/** What is known is checked when the expression is built, also next to a dynamic bag. */
 	@Test
-	public void knownViolationNextToAnArgumentOfUnknownTypeIsATypeError()
+	public void knownViolationNextToADynamicBagIsATypeError()
 	{
-		// A string where or takes booleans. Before the fix the or was true.
-		assertHoldsTypeError((Apply) apply(F1 + "or", bool(true), string("a"), stringBagOfUnknownType()), F1 + "or");
+		// A string where or takes booleans.
+		assertHoldsTypeError((Apply) apply(F1 + "or", bool(true), string("a"), dynamicBag(XacmlTypes.BOOLEAN)),
+				F1 + "or");
 		// One argument too many.
-		assertHoldsTypeError((Apply) apply(F1 + "string-bag-size", stringBagOfUnknownType(), integer(99)),
+		assertHoldsTypeError((Apply) apply(F1 + "string-bag-size", dynamicBag(XacmlTypes.STRING), integer(99)),
 				F1 + "string-bag-size");
 		// An argument is missing.
-		assertHoldsTypeError((Apply) apply(F1 + "string-is-in", stringBagOfUnknownType()), F1 + "string-is-in");
-		// The argument of unknown type stands where a function reference is needed.
-		assertHoldsTypeError((Apply) apply(F3 + "any-of", stringBagOfUnknownType(), string("a"),
+		assertHoldsTypeError((Apply) apply(F1 + "string-is-in", dynamicBag(XacmlTypes.STRING)), F1 + "string-is-in");
+		// A bag stands where a function reference is needed.
+		assertHoldsTypeError((Apply) apply(F3 + "any-of", dynamicBag(XacmlTypes.STRING), string("a"),
 				apply(F1 + "string-bag", string("a"))), F3 + "any-of");
 	}
 
 	/**
-	 * A higher-order function with a bag of unknown type, behind the
-	 * deciding operand of an or. The integer can not be an argument of
-	 * string-equal whatever the bag holds. Both expressions are type
-	 * errors, and the or is not true.
+	 * A higher-order function with a dynamic bag. An operand that can not
+	 * fit the predicate is found when the expression is built. What
+	 * depends on the data type of the bag is checked by the function when
+	 * it has the bag.
 	 */
 	@Test
-	public void higherOrderFunctionWithABagOfUnknownTypeIsATypeError()
+	public void higherOrderFunctionWithADynamicBag()
 	{
-		Apply anyOf = (Apply) apply(F3 + "any-of", function(F1 + "string-equal"), integer(1),
-				stringBagOfUnknownType());
-
-		assertHoldsTypeError(anyOf, F3 + "any-of");
-		assertHoldsTypeError((Apply) apply(F1 + "or", bool(true), anyOf), F3 + "any-of");
-		// With a bag of a known type the function's own validation finds the integer.
+		// The integer can not be an argument of string-equal whatever the bag holds.
+		Apply wrong = (Apply) apply(F3 + "any-of", function(F1 + "string-equal"), integer(1),
+				dynamicBag(XacmlTypes.STRING));
+		assertHoldsTypeError(wrong, F3 + "any-of");
+		assertHoldsTypeError((Apply) apply(F1 + "or", bool(true), wrong), F3 + "any-of");
+		// With a bag of a known type the function's own validation finds the integer too.
 		assertHoldsTypeError((Apply) apply(F3 + "any-of", function(F1 + "string-equal"), integer(1),
 				apply(F1 + "string-bag", string("a"))), F3 + "any-of");
+
+		assertEvaluatesTo(XacmlTypes.BOOLEAN.ofAny(false), apply(F3 + "any-of", function(F1 + "string-equal"),
+				string("a"), dynamicBag(XacmlTypes.STRING)));
+
+		// The bag turns out to hold integers: the function finds it before it applies the predicate.
+		Apply anyOf = (Apply) apply(F3 + "any-of", function(F1 + "string-equal"), string("a"),
+				dynamicBag(XacmlTypes.INTEGER));
+		assertTrue(anyOf.isTypeCorrect());
+		EvaluationException e = assertThrows(EvaluationException.class,
+				() -> anyOf.evaluate(mock(EvaluationContext.class)));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, e.getStatus().getStatusCode().getValue());
+	}
+
+	/**
+	 * all-of-any, any-of-all and all-of-all take a predicate and two bags.
+	 * They had no check of the bags against the predicate, neither when
+	 * the expression is built nor when the function is invoked.
+	 */
+	@ParameterizedTest
+	@ValueSource(strings = {"all-of-any", "any-of-all", "all-of-all"})
+	public void higherOrderFunctionWithTwoBagsChecksItsOperands(String name)
+	{
+		// The predicate takes two strings; the first bag holds integers.
+		assertHoldsTypeError((Apply) apply(F1 + name, function(F1 + "string-equal"),
+				apply(F1 + "integer-bag", integer(1)), apply(F1 + "string-bag", string("a"))), F1 + name);
+		assertHoldsTypeError((Apply) apply(F1 + name, function(F1 + "string-equal"),
+				apply(F1 + "string-bag", string("a")), apply(F1 + "integer-bag")), F1 + name);
+		assertEvaluatesTo(XacmlTypes.BOOLEAN.ofAny(true), apply(F1 + name, function(F1 + "string-equal"),
+				apply(F1 + "string-bag", string("a")), apply(F1 + "string-bag", string("a"))));
+
+		// With a dynamic bag the check waits for the bag. The bag is empty: without the check
+		// all-of-any and all-of-all are true over it.
+		Apply dynamic = (Apply) apply(F1 + name, function(F1 + "string-equal"),
+				dynamicBag(XacmlTypes.INTEGER), apply(F1 + "string-bag", string("a")));
+		assertTrue(dynamic.isTypeCorrect());
+		assertEquals(StatusCodeId.SYNTAX_ERROR, assertThrows(EvaluationException.class,
+				() -> dynamic.evaluate(mock(EvaluationContext.class))).getStatus().getStatusCode().getValue());
+		// Both bags empty: no value reaches the predicate or the any-of that any-of-all uses.
+		Apply empty = (Apply) apply(F1 + name, function(F1 + "string-equal"),
+				dynamicBag(XacmlTypes.INTEGER), apply(F1 + "string-bag"));
+		assertTrue(empty.isTypeCorrect());
+		assertEquals(StatusCodeId.SYNTAX_ERROR, assertThrows(EvaluationException.class,
+				() -> empty.evaluate(mock(EvaluationContext.class))).getStatus().getStatusCode().getValue());
+		assertEvaluatesTo(XacmlTypes.BOOLEAN.ofAny(!name.equals("any-of-all")),
+				apply(F1 + name, function(F1 + "string-equal"),
+						dynamicBag(XacmlTypes.STRING), apply(F1 + "string-bag", string("a"))));
 	}
 
 	private static void assertHoldsTypeError(Apply apply, String functionOfTheWrongExpression)
@@ -272,11 +332,17 @@ public class ApplyArgumentValidationTest
 		EvaluationContext context = mock(EvaluationContext.class);
 
 		assertFalse(apply.isTypeCorrect());
-		EvaluationException e = assertThrows(EvaluationException.class, () -> apply.evaluate(context));
-		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
-		assertEquals(Optional.of("Function=\"" + functionOfTheWrongExpression
-				+ "\" is applied to arguments that do not fit it"), e.getStatus().getMessage());
+		assertDoesNotFit(functionOfTheWrongExpression,
+				assertThrows(EvaluationException.class, () -> apply.evaluate(context)));
 		verifyNoInteractions(context);
+	}
+
+	/** The status of an expression whose arguments do not fit. The message names the function only. */
+	private static void assertDoesNotFit(String functionId, EvaluationException e)
+	{
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of("Function=\"" + functionId + "\" is applied to arguments that do not fit it"),
+				e.getStatus().getMessage());
 	}
 
 	/** An unknown function is rejected when the expression is built, as before. */
@@ -310,27 +376,263 @@ public class ApplyArgumentValidationTest
 	}
 
 	/**
-	 * Every expression has a type that is known when the policy is loaded.
-	 * The data type of the {@code attribute-designator} function can be
-	 * written as an expression; then the type of its bag can not be told,
-	 * and an expression that takes the bag as an argument is not shown to
-	 * be type correct. It is a type error, whatever the data type would
-	 * be at evaluation.
+	 * Bead policy4j-the.4.61. The bag of an {@code attribute-designator}
+	 * function whose data type is an expression has the dynamic type: a
+	 * bag of a data type that is known only at evaluation (Related and
+	 * Nested Entities Profile, section 6.1: "The value of the argument
+	 * specifies the value of the DataType XML attribute of the XACML
+	 * attribute values returned by the function."). Where a parameter
+	 * takes a bag the expression is accepted, and the bag is checked
+	 * against the parameter when it is evaluated, before the function is
+	 * invoked.
 	 */
 	@Test
-	public void argumentWhoseTypeIsNotKnownWhenTheExpressionIsBuiltIsATypeError()
+	public void dynamicBagIsAcceptedWhereABagFitsAndCheckedAtEvaluation()
 	{
-		// The designator function itself is applied to arguments that fit it.
-		assertTrue(((Apply) stringBagOfUnknownType()).isTypeCorrect());
+		assertEquals(DynamicType.INSTANCE.bagType(), dynamicBag(XacmlTypes.STRING).getEvaluatesTo());
+		assertTrue(((Apply) dynamicBag(XacmlTypes.STRING)).isTypeCorrect());
 
-		assertHoldsTypeError((Apply) apply(F1 + "string-is-in", string("a"), stringBagOfUnknownType()),
-				F1 + "string-is-in");
-		assertHoldsTypeError((Apply) apply(F1 + "string-bag-size", stringBagOfUnknownType()),
-				F1 + "string-bag-size");
-		// Before the check this was the value 0: the size of a bag of strings.
-		assertHoldsTypeError((Apply) apply(F1 + "integer-bag-size", stringBagOfUnknownType()),
+		// The request has no such category: the designator gives an empty bag of its data type.
+		assertEvaluatesTo(XacmlTypes.INTEGER.ofAny(0), apply(F1 + "string-bag-size", dynamicBag(XacmlTypes.STRING)));
+		assertEvaluatesTo(XacmlTypes.BOOLEAN.ofAny(false),
+				apply(F1 + "string-is-in", string("a"), dynamicBag(XacmlTypes.STRING)));
+		assertEvaluatesTo(XacmlTypes.INTEGER.ofAny(0), apply(F1 + "integer-bag-size", dynamicBag(XacmlTypes.INTEGER)));
+
+		// A bag of strings where a bag of integers is needed. Before bead 4.56 this was the value 0.
+		assertFailsAtEvaluation(apply(F1 + "integer-bag-size", dynamicBag(XacmlTypes.STRING)),
 				F1 + "integer-bag-size");
-		assertHoldsTypeError((Apply) apply(F1 + "or", bool(true), stringBagOfUnknownType()), F1 + "or");
+		assertFailsAtEvaluation(apply(F1 + "string-is-in", string("a"), dynamicBag(XacmlTypes.INTEGER)),
+				F1 + "string-is-in");
+	}
+
+	/** The shape of a dynamic bag is known: it is a type error where a single value is needed. */
+	@Test
+	public void dynamicBagIsATypeErrorWhereAValueIsNeeded()
+	{
+		assertHoldsTypeError((Apply) apply(F1 + "string-equal", string("a"), dynamicBag(XacmlTypes.STRING)),
+				F1 + "string-equal");
+		assertHoldsTypeError((Apply) apply(F1 + "or", bool(true), dynamicBag(XacmlTypes.BOOLEAN)), F1 + "or");
+		assertHoldsTypeError((Apply) apply(F1 + "integer-add", integer(1), dynamicBag(XacmlTypes.INTEGER)),
+				F1 + "integer-add");
+	}
+
+	/**
+	 * An operand that holds a dynamic bag, behind the deciding operand:
+	 * it is not evaluated, so its value is not checked (ruling D11). It
+	 * is no type error when the expression is built.
+	 */
+	@Test
+	public void dynamicOperandBehindADecidingOperandIsNotEvaluated()
+	{
+		EvaluationContext context = mock(EvaluationContext.class);
+		// integer-bag-size on a bag of strings fails when it is evaluated.
+		Expression fails = apply(F1 + "integer-equal",
+				apply(F1 + "integer-bag-size", dynamicBag(XacmlTypes.STRING)), integer(0));
+		Apply or = (Apply) apply(F1 + "or", bool(true), fails);
+
+		assertTrue(or.isTypeCorrect());
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), or.evaluate(context));
+		// The request was not asked for the category of the designator.
+		verify(context, never()).resolveEntity(any());
+		assertThrows(EvaluationException.class, () -> fails.evaluate(mock(EvaluationContext.class)));
+	}
+
+	/** A reference to a designator function has no arguments that tell its data type: a dynamic bag. */
+	@Test
+	public void referenceToADesignatorFunctionHasTheDynamicBagType()
+	{
+		assertEquals(DynamicType.INSTANCE.bagType(), function(F3 + "attribute-designator").getEvaluatesTo());
+		assertEquals(DynamicType.INSTANCE.bagType(), function(F3 + "attribute-selector").getEvaluatesTo());
+	}
+
+	/**
+	 * Every function that takes a function reference refuses one that
+	 * returns a bag. So none is given a reference of dynamic type.
+	 */
+	@ParameterizedTest(name = "{0}")
+	@MethodSource("higherOrderFunctionsWithOperands")
+	public void referenceToADesignatorFunctionIsNoPredicate(String functionId, Expression[] operands)
+	{
+		Expression[] arguments = new Expression[operands.length + 1];
+		arguments[0] = function(F3 + "attribute-designator");
+		System.arraycopy(operands, 0, arguments, 1, operands.length);
+
+		assertHoldsTypeError((Apply) apply(functionId, arguments), functionId);
+	}
+
+	static Stream<Arguments> higherOrderFunctionsWithOperands()
+	{
+		Expression value = uri("urn:test:a");
+		Expression bag = apply(F1 + "anyURI-bag", uri("urn:test:a"));
+		return Stream.of(
+				Arguments.of(F3 + "any-of", new Expression[]{value, bag}),
+				Arguments.of(F3 + "all-of", new Expression[]{value, bag}),
+				Arguments.of(F3 + "any-of-any", new Expression[]{bag, bag}),
+				Arguments.of(F1 + "all-of-any", new Expression[]{bag, bag}),
+				Arguments.of(F1 + "any-of-all", new Expression[]{bag, bag}),
+				Arguments.of(F1 + "all-of-all", new Expression[]{bag, bag}),
+				Arguments.of(F3 + "map", new Expression[]{bag}));
+	}
+
+	/** The other higher-order functions check a dynamic bag when they have it, as any-of does. */
+	@ParameterizedTest(name = "{0}")
+	@MethodSource("higherOrderFunctionsWithADynamicBagOfAnotherDataType")
+	public void higherOrderFunctionFindsADynamicBagOfAnotherDataType(String functionId, Expression[] arguments)
+	{
+		Apply apply = (Apply) apply(functionId, arguments);
+
+		assertTrue(apply.isTypeCorrect());
+		EvaluationException e = assertThrows(EvaluationException.class,
+				() -> apply.evaluate(mock(EvaluationContext.class)));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, e.getStatus().getStatusCode().getValue());
+	}
+
+	static Stream<Arguments> higherOrderFunctionsWithADynamicBagOfAnotherDataType()
+	{
+		Expression equal = function(F1 + "string-equal");
+		return Stream.of(
+				Arguments.of(F3 + "all-of", new Expression[]{equal, string("a"), dynamicBag(XacmlTypes.INTEGER)}),
+				Arguments.of(F3 + "any-of-any", new Expression[]{equal, dynamicBag(XacmlTypes.INTEGER),
+						apply(F1 + "string-bag", string("a"))}),
+				Arguments.of(F3 + "map", new Expression[]{function(F1 + "string-normalize-space"),
+						dynamicBag(XacmlTypes.INTEGER)}));
+	}
+
+	/** A dynamic bag behind a variable reference is checked like the bag itself. */
+	@Test
+	public void dynamicBagBehindAVariableReferenceIsChecked()
+	{
+		Expression strings = new VariableReference(new VariableDefinition("strings", dynamicBag(XacmlTypes.STRING)));
+
+		assertEquals(DynamicType.INSTANCE.bagType(), strings.getEvaluatesTo());
+		assertEvaluatesTo(XacmlTypes.INTEGER.ofAny(0), apply(F1 + "string-bag-size", strings));
+		assertFailsAtEvaluation(apply(F1 + "integer-bag-size", strings), F1 + "integer-bag-size");
+	}
+
+	/**
+	 * The expression gives a data type that does not exist. The designator
+	 * function finds that when it is evaluated.
+	 */
+	@Test
+	public void dynamicDataTypeThatDoesNotExistIsFoundAtEvaluation()
+	{
+		Expression type = apply(F1 + "anyURI-one-and-only",
+				apply(F1 + "anyURI-bag", uri("urn:test:no-such-data-type")));
+		Apply size = (Apply) apply(F1 + "string-bag-size", apply(F3 + "attribute-designator",
+				uri(CategoryId.RESOURCE.getId()), uri("urn:test:attribute"), type));
+
+		assertTrue(size.isTypeCorrect());
+		assertThrows(EvaluationException.class, () -> size.evaluate(mock(EvaluationContext.class)));
+	}
+
+	/**
+	 * An argument beyond the last parameter belongs to the variadic
+	 * parameter, and a dynamic one is checked against it. The function is
+	 * not invoked with a bag that does not fit.
+	 */
+	@Test
+	public void dynamicArgumentOfAVariadicParameterIsChecked() throws Exception
+	{
+		FunctionInvocation invocation = mock(FunctionInvocation.class);
+		FunctionSpec bags = FunctionSpecBuilder.builder("urn:test:function:string-bags")
+				.varArg(XacmlTypes.STRING.bagType(), 1, 10)
+				.build(XacmlTypes.BOOLEAN, invocation);
+		when(invocation.invoke(eq(bags), any(), anyList())).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		Expression strings = apply(F1 + "string-bag", string("a"));
+
+		Apply fits = Apply.builder(bags)
+				.param(strings, dynamicBag(XacmlTypes.STRING), dynamicBag(XacmlTypes.STRING)).build();
+		assertTrue(fits.isTypeCorrect());
+		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), fits.evaluate(mock(EvaluationContext.class)));
+		verify(invocation, times(1)).invoke(eq(bags), any(), anyList());
+
+		Apply wrong = Apply.builder(bags)
+				.param(strings, dynamicBag(XacmlTypes.STRING), dynamicBag(XacmlTypes.INTEGER)).build();
+		assertFailsAtEvaluation(wrong, "urn:test:function:string-bags");
+		// Still the one invocation of the expression that fits.
+		verify(invocation, times(1)).invoke(eq(bags), any(), anyList());
+
+		// A bag of a known other data type is found when the expression is built.
+		assertFalse(Apply.builder(bags).param(strings, apply(F1 + "integer-bag", integer(1))).build()
+				.isTypeCorrect());
+	}
+
+	/**
+	 * An extension function can return a single value of dynamic type. A
+	 * function that evaluates its own arguments checks such an operand
+	 * when it evaluates it, and not when it does not need it.
+	 */
+	@Test
+	public void dynamicValueIsCheckedWhenItIsEvaluated() throws Exception
+	{
+		FunctionInvocation invocation = mock(FunctionInvocation.class);
+		FunctionSpec value = FunctionSpecBuilder.builder("urn:test:function:dynamic-value")
+				.build(DynamicType.INSTANCE, invocation);
+		Expression dynamic = Apply.builder(value).build();
+		assertEquals(DynamicType.INSTANCE, dynamic.getEvaluatesTo());
+
+		// A bag is needed: the shape is known when the expression is built.
+		assertHoldsTypeError((Apply) apply(F1 + "string-bag-size", dynamic), F1 + "string-bag-size");
+
+		// The deciding operand comes first: the dynamic one is not evaluated.
+		assertEvaluatesTo(bool(true), apply(F1 + "or", bool(true), dynamic));
+		verifyNoInteractions(invocation);
+
+		when(invocation.invoke(eq(value), any(), anyList())).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		assertEvaluatesTo(bool(true), apply(F1 + "or", bool(false), dynamic));
+		assertFailsAtEvaluation(apply(F1 + "string-equal", string("a"), dynamic), F1 + "string-equal");
+
+		when(invocation.invoke(eq(value), any(), anyList())).thenReturn(XacmlTypes.STRING.ofAny("a"));
+		assertFailsAtEvaluation(apply(F1 + "or", bool(false), dynamic), F1 + "or");
+		assertEvaluatesTo(bool(true), apply(F1 + "string-equal", string("a"), dynamic));
+	}
+
+	/** A function without parameters takes no argument, a dynamic one included. */
+	@Test
+	public void functionWithoutParametersTakesNoArguments()
+	{
+		FunctionInvocation invocation = mock(FunctionInvocation.class);
+		String id = "urn:test:function:no-parameters";
+		FunctionSpec none = FunctionSpecBuilder.builder(id).build(XacmlTypes.BOOLEAN, invocation);
+
+		assertTrue(Apply.builder(none).build().isTypeCorrect());
+		assertHoldsTypeError(Apply.builder(none).param(string("a")).build(), id);
+		assertHoldsTypeError(Apply.builder(none).param(dynamicBag(XacmlTypes.STRING)).build(), id);
+		// The check without an exception, which a context can ask for at every invocation.
+		assertTrue(none.validateParameters(ImmutableList.of()));
+		assertFalse(none.validateParameters(ImmutableList.of(string("a"))));
+		verifyNoInteractions(invocation);
+	}
+
+	/** The check that a context can ask for at every invocation sees the checked arguments and accepts them. */
+	@Test
+	public void dynamicArgumentPassesTheValidationAtInvocation()
+	{
+		EvaluationContext context = mock(EvaluationContext.class);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(true);
+
+		Object size = apply(F1 + "string-bag-size", dynamicBag(XacmlTypes.STRING)).evaluate(context);
+		Object anyOf = apply(F3 + "any-of", function(F1 + "string-equal"),
+				string("a"), dynamicBag(XacmlTypes.STRING)).evaluate(context);
+
+		assertEquals(integer(0), size);
+		assertEquals(bool(false), anyOf);
+		assertThrows(EvaluationException.class,
+				() -> apply(F1 + "integer-bag-size", dynamicBag(XacmlTypes.STRING)).evaluate(context));
+	}
+
+	private static void assertEvaluatesTo(Object expected, Expression expression)
+	{
+		assertTrue(((Apply) expression).isTypeCorrect());
+		assertEquals(expected, expression.evaluate(mock(EvaluationContext.class)));
+	}
+
+	/** Type correct when the expression is built; the value does not fit when it arrives. */
+	private static void assertFailsAtEvaluation(Expression expression, String functionId)
+	{
+		assertTrue(((Apply) expression).isTypeCorrect());
+		assertDoesNotFit(functionId, assertThrows(EvaluationException.class,
+				() -> expression.evaluate(mock(EvaluationContext.class))));
 	}
 
 	/**
@@ -353,22 +655,23 @@ public class ApplyArgumentValidationTest
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), and.evaluate(mock(EvaluationContext.class)));
 	}
 
-	/** The bag of an {@code attribute-designator} function whose data type, string, is an expression. */
-	private static Expression stringBagOfUnknownType()
+	/**
+	 * The bag of an {@code attribute-designator} function whose data type
+	 * is an expression. At evaluation the expression gives {@code dataType}.
+	 */
+	private static Expression dynamicBag(XacmlTypes dataType)
 	{
-		Expression dataType = apply(F1 + "anyURI-one-and-only",
-				apply(F1 + "anyURI-bag", uri(XacmlTypes.STRING.getTypeId())));
-		Expression designator = apply(F3 + "attribute-designator", uri(CategoryId.RESOURCE.getId()),
-				uri("urn:test:attribute"), dataType);
-		assertThrows(RuntimeException.class, designator::getEvaluatesTo);
-		return designator;
+		Expression type = apply(F1 + "anyURI-one-and-only",
+				apply(F1 + "anyURI-bag", uri(dataType.getTypeId())));
+		return apply(F3 + "attribute-designator", uri(CategoryId.RESOURCE.getId()),
+				uri("urn:test:attribute"), type);
 	}
 
 	/**
-	 * The data type of the designator function names no data type. The
-	 * type of the bag can not be told, so the expression that takes the
-	 * bag is a type error. Before the check its evaluation invoked the
-	 * designator function, which failed with status syntax-error.
+	 * The data type of the designator function is a literal that names no
+	 * data type. That is known when the expression is built: the type of
+	 * the bag can not be told, and the expression that takes the bag is a
+	 * type error.
 	 */
 	@Test
 	public void argumentWithADataTypeThatDoesNotExistIsATypeError()

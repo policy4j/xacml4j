@@ -130,11 +130,18 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 	
 	/**
 	 * Both functions return a bag of the data type that the third argument
-	 * names. The type is known before the evaluation only when that
-	 * argument is a literal.
+	 * names (Related and Nested Entities Profile, section 6.1: "The value
+	 * of the argument specifies the value of the DataType XML attribute of
+	 * the XACML attribute values returned by the function"). A literal
+	 * names it when the expression is built. An expression gives it at
+	 * evaluation, and a reference to the function has no arguments: the
+	 * type is then a bag of the dynamic type.
 	 */
 	@Override
 	public ValueExpTypeInfo resolve(FunctionSpec spec, List<Expression> arguments) {
-		return getType((AnyURI)arguments.get(2)).bagType();
+		if(arguments.size() > 2 && arguments.get(2) instanceof AnyURI){
+			return getType((AnyURI)arguments.get(2)).bagType();
+		}
+		return DynamicType.INSTANCE.bagType();
 	}
 }

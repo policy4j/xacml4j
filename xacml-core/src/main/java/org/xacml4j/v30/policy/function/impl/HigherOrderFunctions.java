@@ -120,6 +120,7 @@ public final class HigherOrderFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	@XacmlFuncParamValidator(validatorClass=AnyOfAnyFunctionParametersValidator.class)
 	public static BooleanVal allOfAny(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
@@ -127,6 +128,8 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues b)
 		throws EvaluationException
 	{
+		// The bags are checked against the predicate also when one is empty.
+		requireValidArguments(ref, new Expression[]{a, b}, false, true);
 		// any-of for each value of the first bag, combined with "and".
 		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a.values(),
 				v -> anyOf(context, ref, v, b).get()));
@@ -134,6 +137,7 @@ public final class HigherOrderFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:any-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	@XacmlFuncParamValidator(validatorClass=AnyOfAnyFunctionParametersValidator.class)
 	public static BooleanVal anyOfAll(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
@@ -141,6 +145,8 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues b)
 		throws EvaluationException
 	{
+		// The bags are checked against the predicate also when one is empty.
+		requireValidArguments(ref, new Expression[]{a, b}, false, true);
 		// any-of for each value of the second bag, combined with "and".
 		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(b.values(),
 				vb -> anyOf(context, ref, a, vb).get()));
@@ -148,6 +154,7 @@ public final class HigherOrderFunctions
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:all-of-all")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+	@XacmlFuncParamValidator(validatorClass=AnyOfAnyFunctionParametersValidator.class)
 	public static BooleanVal allOfAll(
 			@XacmlEvaluationContextParam org.xacml4j.v30.EvaluationContext context,
 			@XacmlFuncParamFunctionReference FunctionReference ref,
@@ -155,6 +162,8 @@ public final class HigherOrderFunctions
 			@XacmlFuncParamAnyBag BagOfValues b)
 		throws EvaluationException
 	{
+		// The bags are checked against the predicate also when one is empty.
+		requireValidArguments(ref, new Expression[]{a, b}, false, true);
 		// Every pair, combined with "and".
 		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a.values(),
 				aValue -> DecidingOperands.<Value<?>>allTrue(b.values(),

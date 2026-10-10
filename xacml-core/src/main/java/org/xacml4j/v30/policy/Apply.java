@@ -37,6 +37,7 @@ import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.types.DynamicType;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -63,6 +64,15 @@ public final class Apply implements Expression
 	 */
 	private final Optional<String> typeError;
 
+	/**
+	 * The arguments as the function gets them: {@link #arguments}, with a
+	 * {@link TypeAssertion} around each argument of dynamic type.
+	 */
+	private final List<Expression> invocationArguments;
+
+	/** The status message of an expression that is not type correct. It names the function only. */
+	static final String NOT_TYPE_CORRECT = "Function=\"%s\" is applied to arguments that do not fit it";
+
 	private int hashCode = 0;
 
 	/**
@@ -77,6 +87,40 @@ public final class Apply implements Expression
 		this.arguments = b.paramsBuilder.build();
 		Optional<String> inside = typeErrorInside(arguments);
 		this.typeError = inside.isPresent()?inside:typeErrorOf(spec, arguments);
+		this.invocationArguments = typeError.isPresent()?arguments:withTypeAssertions(spec, arguments);
+	}
+
+	/**
+	 * The check that is made when the expression is built accepts an
+	 * argument of dynamic type where a parameter needs a data type of the
+	 * same shape (see {@link DynamicType#isConsistent}). The value of such
+	 * an argument is checked against its parameter when it is evaluated.
+	 *
+	 * @return the arguments, each one of dynamic type wrapped in a
+	 * {@link TypeAssertion}
+	 */
+	private static List<Expression> withTypeAssertions(FunctionSpec spec, List<Expression> arguments)
+	{
+		boolean dynamic = false;
+		for(Expression argument : arguments){
+			dynamic |= DynamicType.isDynamic(argument.getEvaluatesTo());
+		}
+		if(!dynamic){
+			return arguments;
+		}
+		// The expression is type correct, so every argument has a
+		// parameter. Parameters come in the order mandatory, optional,
+		// variadic, and arguments are bound by position: an argument
+		// beyond the last parameter belongs to the variadic one.
+		int last = spec.getNumberOfParams() - 1;
+		ImmutableList.Builder<Expression> checked = ImmutableList.builder();
+		for(int i = 0; i < arguments.size(); i++){
+			Expression argument = arguments.get(i);
+			checked.add(DynamicType.isDynamic(argument.getEvaluatesTo())
+					?new TypeAssertion(argument, spec.getParamSpecAt(Math.min(i, last)), spec)
+					:argument);
+		}
+		return checked.build();
 	}
 
 	/**
@@ -114,10 +158,10 @@ public final class Apply implements Expression
 	 */
 	private static Optional<String> typeErrorOf(FunctionSpec spec, List<Expression> arguments)
 	{
-		// Every expression has a type that is known when the policy is
-		// loaded. Where the type of an argument can not be told (the data
-		// type of the attribute-designator function is an expression, or
-		// names no data type), the arguments are not shown to fit.
+		// Every argument has a type when the expression is built: a data
+		// type, or the dynamic type. Where the type can not be told at all
+		// (the data type of the attribute-designator function is a literal
+		// that names no data type), the arguments are not shown to fit.
 		for(int i = 0; i < arguments.size(); i++){
 			try{
 				arguments.get(i).getEvaluatesTo();
@@ -146,11 +190,13 @@ public final class Apply implements Expression
 	 * Tests if the number and the types of the arguments agree with the
 	 * function (XACML 3.0 core, section 7.4: "Valid expressions SHALL be
 	 * type correct"). An expression that holds an expression that is not
-	 * type correct is not type correct either, and so is one with an
-	 * argument whose type can not be told when the expression is built.
-	 * Such an expression can be built. Its evaluation is Indeterminate
-	 * with status processing-error (section 7.19.2), and its function is
-	 * not invoked.
+	 * type correct is not type correct either. Such an expression can be
+	 * built. Its evaluation is Indeterminate with status processing-error
+	 * (section 7.19.2), and its function is not invoked.
+	 * <p>
+	 * An argument of {@linkplain DynamicType dynamic type} is type correct
+	 * where its shape fits the parameter. Its value is checked at every
+	 * evaluation, with the same result when it does not fit.
 	 *
 	 * @return {@code false} if the arguments were not shown to fit when
 	 * the expression was built
@@ -212,11 +258,10 @@ public final class Apply implements Expression
 		if(typeError.isPresent()){
 			// The reason was logged when the expression was built. The
 			// status message names the function only.
-			throw new FunctionInvocationException(spec,
-					"Function=\"%s\" is applied to arguments that do not fit it", typeError.get());
+			throw new FunctionInvocationException(spec, NOT_TYPE_CORRECT, typeError.get());
 		}
 		try{
-			return spec.invoke(context, arguments.toArray(new Expression[]{}));
+			return spec.invoke(context, invocationArguments.toArray(new Expression[]{}));
 		}catch(EvaluationException e){
 			throw e;
 		}catch(Exception e){

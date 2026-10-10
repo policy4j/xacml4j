@@ -257,13 +257,27 @@ that holds an expression whose arguments do not fit, directly or through
 variable references of any number, SHALL be treated in the same way, also
 when its function would not evaluate that argument.
 
-Every argument of an `<Apply>` SHALL have a type that is known when the
-expression is built. An argument whose type cannot be told then SHALL
-make the expression that takes it a type error, treated as above. This is
-the case for the bag of an `attribute-designator` or `attribute-selector`
-function whose data-type argument is not a literal or names no data type.
-A check of the arguments that fails for another reason than a mismatch
-SHALL be treated as a mismatch.
+An expression whose data type is known only at evaluation SHALL have the
+dynamic type: a single value, or a bag, of a data type that is not known
+yet. This is the case for the bag of an `attribute-designator` or
+`attribute-selector` function whose data-type argument is not a literal.
+The dynamic type SHALL be consistent with every data type of the same
+shape, a single value with a single value and a bag with a bag, and with
+nothing else. When the expression is built, an argument of dynamic type
+SHALL be accepted where its parameter needs a type that it is consistent
+with. Everything else SHALL be checked as for any other argument: the
+shape, the other arguments, and the number of arguments. When an argument
+of dynamic type is evaluated, its value SHALL be checked against its
+parameter before the function is invoked; a value that does not fit SHALL
+make the expression Indeterminate with status code
+`urn:oasis:names:tc:xacml:1.0:status:processing-error`. An argument that
+is not evaluated is not checked. A policy or a request SHALL NOT be able
+to name the dynamic type as a data type, and no value SHALL have it.
+
+A data-type argument that is a literal and names no data type SHALL make
+the expression that takes the bag a type error. A check of the arguments
+that fails for another reason than a mismatch SHALL be treated as a
+mismatch.
 
 #### Scenario: Fewer arguments than the function needs
 - **WHEN** a condition holds `integer-add` with the single argument 5
@@ -272,6 +286,10 @@ SHALL be treated as a mismatch.
 #### Scenario: More arguments than the function takes
 - **WHEN** an expression is `string-equal` with three string arguments
 - **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: An argument of a function without parameters
+- **WHEN** an expression applies a function that has no parameters to one argument
+- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and the function is not invoked
 
 #### Scenario: An argument of another type
 - **WHEN** an expression is `integer-add` with an integer and a string (conformance test IIC014)
@@ -301,13 +319,25 @@ SHALL be treated as a mismatch.
 - **WHEN** an expression is `or` without arguments
 - **THEN** the expression is valid and evaluates to false
 
-#### Scenario: The data type of a designator function is an expression
-- **WHEN** `string-bag-size` is applied to the bag of an `attribute-designator` function whose data-type argument is an expression
-- **THEN** the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and no argument is evaluated
+#### Scenario: A dynamic bag of the right data type
+- **WHEN** `string-bag-size` is applied to the bag of an `attribute-designator` function whose data-type argument is an expression that gives the string type
+- **THEN** the policy is loaded and the expression evaluates to the size of the bag
 
-#### Scenario: An argument of unknown type behind a deciding operand
+#### Scenario: A dynamic bag of another data type
+- **WHEN** `integer-bag-size` is applied to the bag of an `attribute-designator` function whose data-type argument is an expression that gives the string type
+- **THEN** the policy is loaded, and the expression is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error` when it is evaluated, and not the size of the bag
+
+#### Scenario: A dynamic bag where a single value is needed
+- **WHEN** `string-equal` is applied to a string and to the bag of an `attribute-designator` function whose data-type argument is an expression
+- **THEN** the expression is a type error when it is built: it is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and no argument is evaluated
+
+#### Scenario: A wrong operand next to a dynamic bag
 - **WHEN** a Permit rule has the condition `or(true, any-of(string-equal, 1, bag))`, and `bag` is the bag of an `attribute-designator` function whose data-type argument is an expression
 - **THEN** the rule is Indeterminate{P} with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`, and not Permit
+
+#### Scenario: A dynamic operand behind a deciding operand
+- **WHEN** `or` is applied to true and to `integer-equal(integer-bag-size(bag), 0)`, and `bag` is a dynamic bag that holds strings at evaluation
+- **THEN** the result is true and the second operand is not evaluated
 
 #### Scenario: The data type of a designator function does not exist
 - **WHEN** `string-is-in` is applied to a string and to the bag of an `attribute-designator` function whose data-type argument is a literal that names no data type
@@ -320,3 +350,23 @@ SHALL be treated as a mismatch.
 #### Scenario: A failure of the evaluation behind a deciding operand
 - **WHEN** `or` is applied to true and to `boolean-one-and-only` of an empty bag, which is type correct and fails when it is evaluated
 - **THEN** the result is true and the second argument is not evaluated
+
+### Requirement: Higher-order functions with two bags check their operands
+`all-of-any`, `any-of-all` and `all-of-all` SHALL check that the data types
+of their two bags fit the two parameters of the function they are given and
+that this function returns a boolean. The check SHALL be made when the
+expression is built, as for the other higher-order functions, and again
+with the evaluated bags when the function is invoked, also when a bag is
+empty.
+
+#### Scenario: A bag of another data type
+- **WHEN** an expression is `all-of-all(string-equal, integer-bag(1), string-bag(a))`
+- **THEN** the expression is a type error when it is built: it is Indeterminate with status `urn:oasis:names:tc:xacml:1.0:status:processing-error`
+
+#### Scenario: A dynamic bag that is empty and of another data type
+- **WHEN** `all-of-all` is applied to `string-equal`, to a dynamic bag that is an empty bag of integers at evaluation, and to a bag of strings
+- **THEN** the expression is Indeterminate, and not true
+
+#### Scenario: Bags that fit
+- **WHEN** an expression is `all-of-all(string-equal, string-bag(a), string-bag(a))`
+- **THEN** the expression evaluates to true

@@ -104,15 +104,36 @@ public class InvalidApplyDecisionTest
 				Arguments.of("or(true, variable): the type error is 65 variable references away",
 						apply("or", XacmlTypes.BOOLEAN.ofAny(true), references(65,
 								apply("string-equal", string("a"), apply("string-bag", string("a")))))),
-				// The data type of the designator function is an expression: the type of its bag is not known.
-				Arguments.of("or(true, any-of(string-equal, 1, bag of unknown type)): an argument of unknown type",
+				// The integer can not be an argument of string-equal, whatever the dynamic bag holds.
+				Arguments.of("or(true, any-of(string-equal, 1, dynamic bag)): a wrong operand next to a dynamic bag",
 						apply("or", XacmlTypes.BOOLEAN.ofAny(true), applyById(F3 + "any-of",
 								new FunctionReference(FUNCTIONS.getFunction(F1 + "string-equal").orElseThrow()),
-								integer(1), bagOfUnknownType()))));
+								integer(1), dynamicBagOfStrings()))),
+				// Type correct when the policy is loaded; the bag holds strings when it is evaluated.
+				Arguments.of("integer-equal(integer-bag-size(dynamic bag of strings), 0): found at evaluation",
+						apply("integer-equal", apply("integer-bag-size", dynamicBagOfStrings()), integer(0))));
 	}
 
-	/** The bag of an attribute-designator function whose data type is an expression. */
-	private static Expression bagOfUnknownType()
+	/**
+	 * Bead policy4j-the.4.61: the bag of a designator function whose data
+	 * type is an expression can be used where its data type fits.
+	 */
+	@Test
+	public void ruleWithADynamicBagOfTheRightDataTypeGivesItsEffect()
+	{
+		Result result = decide(apply("integer-equal", apply("string-bag-size", dynamicBagOfStrings()), integer(0)),
+				Effect.PERMIT);
+
+		assertEquals(Decision.PERMIT, result.getDecision());
+		assertEquals(StatusCodeId.OK, result.getStatus().getStatusCode().getValue());
+	}
+
+	/**
+	 * The bag of an attribute-designator function whose data type is an
+	 * expression that gives the string type. The request has no such
+	 * category, so the bag is empty.
+	 */
+	private static Expression dynamicBagOfStrings()
 	{
 		Expression dataType = apply("anyURI-one-and-only",
 				apply("anyURI-bag", XacmlTypes.ANYURI.ofAny(XacmlTypes.STRING.getTypeId())));

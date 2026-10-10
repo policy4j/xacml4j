@@ -193,6 +193,42 @@ references, Guava interners, reflective mutation by Gson or JAXB) and JMH
 before/after results. Under JEP 401, `synchronized` and weak references on
 value objects throw `IdentityException`; `==` compares state.
 
+### D12. A data type that is known only at evaluation is the dynamic type
+
+Added 2026-10-09 (bead `policy4j-the.4.61`, evidence run 086).
+
+The bag of the `attribute-designator` and `attribute-selector` functions has
+the data type that their third argument names, and that argument can be an
+expression (Related and Nested Entities Profile v1.0, section 6.1). Such an
+expression has no data type when the policy is loaded.
+
+- `DynamicType` is one more `ValueType`, a singleton: "a data type that is
+  known only at evaluation". The shape of D7 stays: a single value is
+  `DynamicType.INSTANCE`, a bag is its bag type. It is the form that cel-java
+  (`SimpleType.DYN`) and Trino (`UnknownType.UNKNOWN`) use: an instance of
+  the ordinary type abstraction, not a null, an `Optional`, or a second
+  hierarchy. It is not in the type registry, and no value has it.
+- Checks follow gradual typing (Siek and Taha 2006: a consistency relation
+  in place of type equality, and a cast where the type of an argument is
+  consistent with the parameter type and not equal to it), as Saxon
+  (`TypeChecker.staticTypeCheck`) and AuthzForce
+  (`BaseFirstOrderFunctionCall`) apply it. When the expression is built, the
+  dynamic type is *consistent* with every data type of the same shape; all
+  that is known is checked and rejected as before. `Apply` puts a
+  `TypeAssertion` around every argument of dynamic type: its value is
+  checked against the parameter when it is evaluated.
+- An operand that is not evaluated is not checked (XPath 3.1, sections 2.3.3
+  and 3.1.5.1; CEL, logical operators; ruling D11 of this change, run 074).
+- The sources, with the quoted passages and the checksums of the fetched
+  files, are in `evidence/tests/086-dynamic-type/research.md`.
+- Rejected alternatives: no dynamic type, so the expression is a type error
+  (run 083, rule 2; it forbids a form the profile allows); a check of every
+  call at evaluation (cost on the decision path for all calls); `Optional`
+  or a sealed hierarchy for the type (about 60 call sites; task 6.1 reworks
+  these interfaces).
+
+Task 6.1 carries `DynamicType` over to `ValueExprType`.
+
 ## Risks / Trade-offs
 
 - [Re-applying the refactor loses useful donor work] → Keep the donor branch

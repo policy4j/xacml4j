@@ -39,6 +39,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.DynamicType;
 import org.xacml4j.v30.types.ValueType;
 
 /**
@@ -280,10 +281,14 @@ public final class BagOfValues
 
 		public Builder(BagOfValuesType type){
 			this.bagType = Preconditions.checkNotNull(type);
+			// A bag has the data type of its values. The dynamic type is the
+			// type of an expression, never of a value.
+			Preconditions.checkArgument(!DynamicType.isDynamic(type),
+					"A bag can not have the dynamic data type");
 		}
 
 		public Builder(ValueType type){
-			this.bagType = Preconditions.checkNotNull(type).bagType();
+			this(Preconditions.checkNotNull(type).bagType());
 		}
 
 
