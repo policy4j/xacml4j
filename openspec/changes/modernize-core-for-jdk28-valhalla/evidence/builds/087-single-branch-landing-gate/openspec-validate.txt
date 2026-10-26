@@ -1,0 +1,6 @@
+$ openspec validate modernize-core-for-jdk28-valhalla --strict
+Change 'modernize-core-for-jdk28-valhalla' is valid
+exit=0
+$ openspec validate add-desktop-deep-research --strict
+Change 'add-desktop-deep-research' is valid
+exit=0

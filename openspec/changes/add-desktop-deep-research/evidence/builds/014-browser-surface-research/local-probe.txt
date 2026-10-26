@@ -1,0 +1,10 @@
+# Local probe, 2026-10-09. Versions and names only; read-only; nothing installed or started.
+node: v26.11.1
+npx: 11.6.4
+Google Chrome: 155.0.8059.40
+Microsoft Edge: 155.0.4283.45
+global npm packages matching playwright|chrome-devtools|oracle|agent-browser:
+@playwright/mcp@0.0.73
+chrome-devtools-mcp@0.25.0
+Playwright MCP profile directories in the user cache: 2
+project MCP servers (.mcp.json): ast-grep, ripwire, serena

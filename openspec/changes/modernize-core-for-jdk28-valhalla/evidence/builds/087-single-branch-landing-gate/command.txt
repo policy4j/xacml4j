@@ -1,0 +1,28 @@
+# run 087, 2026-10-24, from the integration worktree (<checkouts> is the directory that holds
+# the checkouts). Toolchain: toolchain.txt; validation and doctor output: openspec-validate.txt,
+# agent-doctor.txt
+
+# Port session (one writer)
+NTM_PROJECTS_BASE=<checkouts>/xacml4j-worktrees \
+  ntm spawn policy4j --label landing-port --no-user --safety --verify-boot \
+  --persona=policy4j_implementer_codex_sol
+ntm send policy4j--landing-port --pane=0 --file <packet P1>
+#   the lane ran: git restore --source=a0ec46838420052332f4e0495b10f54d437633f3 --worktree --overlay \
+#     -- .beads .agents/skills/desktop-deep-research openspec/changes/add-desktop-deep-research
+#   python3 scripts/gen-cao-profiles.py (approved outside the Codex sandbox once: the sandbox
+#   refuses writes to .agents/)
+ntm kill policy4j--landing-port --force
+
+# Conductor checks
+python3 check_port.py <worktree> a0ec46838420052332f4e0495b10f54d437633f3 \
+  .beads .agents/skills/desktop-deep-research openspec/changes/add-desktop-deep-research   # port-check.txt
+git status --porcelain                     # before and after the build: identical
+JAVA_HOME="$(jenv prefix 21)" \
+  "<IntelliJ IDEA>/plugins/maven-plugin/lib/maven3/bin/mvn" \
+  -o -B -Dlicense.skipUpdateLicense=true clean test                # exit 0, surefire-summary.txt
+openspec validate modernize-core-for-jdk28-valhalla --strict      # valid
+openspec validate add-desktop-deep-research --strict              # valid
+python3 -m unittest discover -s .agents/skills/desktop-deep-research/tests -v   # 3 red tests of run 013 (lane P1)
+scripts/agent-doctor.sh                    # ast-grep, ripwire, tgrep PASS; serena FAIL
+mcp.sh -m serena start; scripts/agent-doctor.sh serena; mcp.sh -m serena stop
+#   log: KeyError: 'languages' in ProjectConfig.load (.serena/project.yml), Serena 1.5.3

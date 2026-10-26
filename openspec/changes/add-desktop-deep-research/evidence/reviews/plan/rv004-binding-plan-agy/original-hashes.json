@@ -1,0 +1,13 @@
+{
+  "report.md": "5ded62b21fc1d11955cc3774c5282df6a426cef28c5713f0f8ac98492a3a054a",
+  "prompt.txt": "3fda7b01f7b883c1b42a69ef8495142f1e5282517d8527dfe08dd30b0c8715f8",
+  "invocation.json": "4575599611e5210405523f4c5b230bf572daf4ff6da9d98c65d26268d452b87e",
+  "exit.json": "f50143e0f5269b18c6e0fa3f8c1e22c4e4f8b03896c4df2e6a45503ade9e8467",
+  "packet-hashes-before.json": "0c6e50a865e2b0afe6795085d5e7657e1ff23d3b02963d6f6f47ee8ff4f413a0",
+  "packet-hashes-after.json": "0c6e50a865e2b0afe6795085d5e7657e1ff23d3b02963d6f6f47ee8ff4f413a0",
+  "packet-sections.json": "8370605b1ef1507ef2cb8a37e9138a2554a507b36803020e3f7d7879e6d179df",
+  "model-receipt.json": "6b5ec3903c00ae6c5a02276b346b52a20d61ac587d7dabd505d68c8ec6e79bf9",
+  "session-receipt.json": "185274e2e543d7f5ea799b8c83873d2f7c371812faf2fc8cda43dfe35bbf585a",
+  "receipt-checks.json": "c8ba926781d02664c0455b9522a1b804729c3a207e4ecd2f5e4ba6763ddfcdc5",
+  "coordinator-summary.md": "e497baae5f33b427637039219ef57a08b90c2259dff7e29763402227e1609dc7"
+}

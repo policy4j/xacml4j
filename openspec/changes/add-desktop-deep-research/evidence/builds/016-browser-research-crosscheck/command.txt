@@ -1,0 +1,29 @@
+# Run 016, 2026-10-09. Read-only except for the gateway restart, which is a
+# service action through the maintainer's MCP controller.
+
+# 1. Retry of the two failed research servers (same error as in run 014)
+tavily tavily_search ...      -> backends required DNS resolution which failed
+context7 resolve-library-id   -> backends required DNS resolution which failed
+
+# 2. Diagnosis
+mcp.sh status                          # names and state; secret values not printed
+mcp.sh doctor                          # gateway routes: tavily FAIL, gemini-search FAIL, deep-research-mcp PASS
+python3 -c 'socket.getaddrinfo(<host>, 443)'   # the two service hosts resolve from the shell
+
+# 3. Client connector that does not use the gateway
+claude.ai Context7 resolve-library-id  libraryName="Playwright MCP"     -> answered
+
+# 4. Restart through the controller, then re-check
+mcp.sh -m mcp-proxy restart
+mcp.sh -m mcp-proxy doctor             # routes tavily, gemini-search, deep-research-mcp, arxiv, duckduckgo: PASS
+
+# 5. Cross-check after the restart
+tavily tavily_search  query="automating ChatGPT Deep Research or Claude Research or Gemini Deep Research web UI with Playwright persistent profile: account ban risk, terms of service, bot detection headless"
+context7 resolve-library-id  libraryName="Playwright MCP"
+
+# 6. Driver probe (no browser started)
+npm view @playwright/mcp@0.0.73 version dist.integrity --json
+npm view @playwright/mcp version
+jq '.name, .version, .bin, .dependencies, .engines, .license' <global npm root>/@playwright/mcp/package.json
+playwright-mcp --version
+playwright-mcp --help                  # -> driver-help-0.0.73.txt

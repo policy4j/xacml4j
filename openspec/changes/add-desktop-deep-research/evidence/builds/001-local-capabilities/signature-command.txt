@@ -1,0 +1,18 @@
+rtk python3 - <<'PY'
+import json, plistlib, subprocess, pathlib
+run = pathlib.Path("openspec/changes/add-desktop-deep-research/evidence/builds/001-local-capabilities")
+observations = {}
+for provider, app in (("chatgpt", pathlib.Path("/Applications/ChatGPT.app")), ("claude", pathlib.Path("/Applications/Claude.app"))):
+    info = plistlib.loads((app / "Contents/Info.plist").read_bytes())
+    proc = subprocess.run(["rtk", "proxy", "codesign", "-dv", "--verbose=4", str(app)], capture_output=True, text=True)
+    if proc.returncode:
+        raise SystemExit(f"{provider}: signing metadata failed: {proc.returncode}")
+    lines = [line for line in (proc.stdout + proc.stderr).splitlines() if line.startswith(("Identifier=", "TeamIdentifier=", "Signature="))]
+    dictionary = info.get("OSAScriptingDefinition")
+    observations[provider] = {"signing_metadata": lines, "full_signature_validated": False, "url_schemes": [scheme for entry in info.get("CFBundleURLTypes", []) for scheme in entry.get("CFBundleURLSchemes", [])], "scripting_dictionary": dictionary is not None, "services_count": len(info.get("NSServices", []))}
+    if dictionary:
+        content = (app / "Contents/Resources" / dictionary).read_text()
+        observations[provider]["dictionary_observations"] = {"window_class_declared": 'name="window"' in content, "tab_class_declared": 'name="tab"' in content, "url_property_declared": 'name="URL"' in content, "execute_command_declared": 'name="execute"' in content, "research_term_present": "research" in content.casefold(), "runtime_tested": False}
+(run / "signature-output.json").write_text(json.dumps(observations, indent=2) + "\n")
+print(json.dumps(observations, indent=2))
+PY

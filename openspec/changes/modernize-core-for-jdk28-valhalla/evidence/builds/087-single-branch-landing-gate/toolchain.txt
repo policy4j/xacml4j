@@ -1,0 +1,10 @@
+$ java -version
+java version "21.0.6" 2025-01-21 LTS
+Java(TM) SE Runtime Environment Oracle GraalVM 21.0.6+8.1 (build 21.0.6+8-LTS-jvmci-23.1-b55)
+Java HotSpot(TM) 64-Bit Server VM Oracle GraalVM 21.0.6+8.1 (build 21.0.6+8-LTS-jvmci-23.1-b55, mixed mode, sharing)
+$ mvn -version (IntelliJ bundled)
+Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+Maven home: <home>/Applications/IntelliJ IDEA.app/Contents/plugins/maven-plugin/lib/maven3
+Java version: 21.0.6, vendor: Oracle Corporation, runtime: /Library/Java/JavaVirtualMachines/graalvm-21.jdk/Contents/Home
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "26.6.1", arch: "aarch64", family: "mac"

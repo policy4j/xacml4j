@@ -1,0 +1,377 @@
+test_authorized_plan_can_start_research (test_execution.ExecutionContract.test_authorized_plan_can_start_research) ... FAIL
+test_batch_preserves_per_provider_outcomes (test_execution.ExecutionContract.test_batch_preserves_per_provider_outcomes) ... FAIL
+test_batch_rerun_resumes_without_resubmission (test_execution.ExecutionContract.test_batch_rerun_resumes_without_resubmission) ... FAIL
+test_bridge_guard_schema_and_modal_handling (test_execution.ExecutionContract.test_bridge_guard_schema_and_modal_handling) ... FAIL
+test_concurrent_job_updates_keep_state (test_execution.ExecutionContract.test_concurrent_job_updates_keep_state) ... FAIL
+test_crash_after_send_requires_reconciliation (test_execution.ExecutionContract.test_crash_after_send_requires_reconciliation) ... FAIL
+test_default_diagnostics_redact_unrelated_data (test_execution.ExecutionContract.test_default_diagnostics_redact_unrelated_data) ... FAIL
+test_desktop_lock_serializes_processes (test_execution.ExecutionContract.test_desktop_lock_serializes_processes) ... FAIL
+test_doctor_reports_observed_capabilities (test_execution.ExecutionContract.test_doctor_reports_observed_capabilities) ... FAIL
+test_focus_change_preserves_draft_and_stops_input (test_execution.ExecutionContract.test_focus_change_preserves_draft_and_stops_input) ... FAIL
+test_intent_and_multiline_entry_guard_send (test_execution.ExecutionContract.test_intent_and_multiline_entry_guard_send) ... FAIL
+test_missing_or_ambiguous_rebind_preserves_state (test_execution.ExecutionContract.test_missing_or_ambiguous_rebind_preserves_state) ... FAIL
+test_mutation_deferred_while_user_active (test_execution.ExecutionContract.test_mutation_deferred_while_user_active) ... FAIL
+test_pre_send_binding_bootstrap_and_upgrade (test_execution.ExecutionContract.test_pre_send_binding_bootstrap_and_upgrade) ... FAIL
+test_provider_uncertainty_blocks_across_checkouts (test_execution.ExecutionContract.test_provider_uncertainty_blocks_across_checkouts) ... FAIL
+test_public_source_selection_is_in_receipt (test_execution.ExecutionContract.test_public_source_selection_is_in_receipt) ... FAIL
+test_quota_state_does_not_resubmit (test_execution.ExecutionContract.test_quota_state_does_not_resubmit) ... FAIL
+test_source_selection_side_effects_restored (test_execution.ExecutionContract.test_source_selection_side_effects_restored) ... FAIL
+test_start_blocks_on_unconstrainable_private_source (test_execution.ExecutionContract.test_start_blocks_on_unconstrainable_private_source) ... FAIL
+test_start_blocks_when_source_scope_unverifiable (test_execution.ExecutionContract.test_start_blocks_when_source_scope_unverifiable) ... FAIL
+test_start_blocks_without_research_readiness (test_execution.ExecutionContract.test_start_blocks_without_research_readiness) ... FAIL
+test_start_requires_observed_receipt (test_execution.ExecutionContract.test_start_requires_observed_receipt) ... FAIL
+test_start_retry_after_killed_start_does_not_resubmit (test_execution.ExecutionContract.test_start_retry_after_killed_start_does_not_resubmit) ... FAIL
+test_synthetic_receipts_are_rejected_by_live_audit (test_execution.ExecutionContract.test_synthetic_receipts_are_rejected_by_live_audit) ... FAIL
+test_target_trust_version_and_caller_isolation (test_execution.ExecutionContract.test_target_trust_version_and_caller_isolation) ... FAIL
+test_transaction_lock_is_cross_checkout_and_temp_independent (test_execution.ExecutionContract.test_transaction_lock_is_cross_checkout_and_temp_independent) ... FAIL
+test_transition_table_and_command_ownership (test_execution.ExecutionContract.test_transition_table_and_command_ownership) ... FAIL
+test_unresolved_question_or_plan_scope_stops (test_execution.ExecutionContract.test_unresolved_question_or_plan_scope_stops) ... FAIL
+test_wait_polling_never_activates (test_execution.ExecutionContract.test_wait_polling_never_activates) ... FAIL
+test_wait_timeout_preserves_job_and_resume_does_not_submit (test_execution.ExecutionContract.test_wait_timeout_preserves_job_and_resume_does_not_submit) ... FAIL
+test_wrong_conversation_blocks_mutation_and_collection (test_execution.ExecutionContract.test_wrong_conversation_blocks_mutation_and_collection) ... FAIL
+
+======================================================================
+FAIL: test_authorized_plan_can_start_research (test_execution.ExecutionContract.test_authorized_plan_can_start_research)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_batch_preserves_per_provider_outcomes (test_execution.ExecutionContract.test_batch_preserves_per_provider_outcomes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_batch_rerun_resumes_without_resubmission (test_execution.ExecutionContract.test_batch_rerun_resumes_without_resubmission)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_bridge_guard_schema_and_modal_handling (test_execution.ExecutionContract.test_bridge_guard_schema_and_modal_handling)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_concurrent_job_updates_keep_state (test_execution.ExecutionContract.test_concurrent_job_updates_keep_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_crash_after_send_requires_reconciliation (test_execution.ExecutionContract.test_crash_after_send_requires_reconciliation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_default_diagnostics_redact_unrelated_data (test_execution.ExecutionContract.test_default_diagnostics_redact_unrelated_data)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_desktop_lock_serializes_processes (test_execution.ExecutionContract.test_desktop_lock_serializes_processes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_doctor_reports_observed_capabilities (test_execution.ExecutionContract.test_doctor_reports_observed_capabilities)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_focus_change_preserves_draft_and_stops_input (test_execution.ExecutionContract.test_focus_change_preserves_draft_and_stops_input)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_intent_and_multiline_entry_guard_send (test_execution.ExecutionContract.test_intent_and_multiline_entry_guard_send)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_missing_or_ambiguous_rebind_preserves_state (test_execution.ExecutionContract.test_missing_or_ambiguous_rebind_preserves_state)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_mutation_deferred_while_user_active (test_execution.ExecutionContract.test_mutation_deferred_while_user_active)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_pre_send_binding_bootstrap_and_upgrade (test_execution.ExecutionContract.test_pre_send_binding_bootstrap_and_upgrade)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_provider_uncertainty_blocks_across_checkouts (test_execution.ExecutionContract.test_provider_uncertainty_blocks_across_checkouts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_public_source_selection_is_in_receipt (test_execution.ExecutionContract.test_public_source_selection_is_in_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_quota_state_does_not_resubmit (test_execution.ExecutionContract.test_quota_state_does_not_resubmit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_source_selection_side_effects_restored (test_execution.ExecutionContract.test_source_selection_side_effects_restored)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_start_blocks_on_unconstrainable_private_source (test_execution.ExecutionContract.test_start_blocks_on_unconstrainable_private_source)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_start_blocks_when_source_scope_unverifiable (test_execution.ExecutionContract.test_start_blocks_when_source_scope_unverifiable)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_start_blocks_without_research_readiness (test_execution.ExecutionContract.test_start_blocks_without_research_readiness)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_start_requires_observed_receipt (test_execution.ExecutionContract.test_start_requires_observed_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_start_retry_after_killed_start_does_not_resubmit (test_execution.ExecutionContract.test_start_retry_after_killed_start_does_not_resubmit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_synthetic_receipts_are_rejected_by_live_audit (test_execution.ExecutionContract.test_synthetic_receipts_are_rejected_by_live_audit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_target_trust_version_and_caller_isolation (test_execution.ExecutionContract.test_target_trust_version_and_caller_isolation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_transaction_lock_is_cross_checkout_and_temp_independent (test_execution.ExecutionContract.test_transaction_lock_is_cross_checkout_and_temp_independent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_transition_table_and_command_ownership (test_execution.ExecutionContract.test_transition_table_and_command_ownership)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_unresolved_question_or_plan_scope_stops (test_execution.ExecutionContract.test_unresolved_question_or_plan_scope_stops)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_wait_polling_never_activates (test_execution.ExecutionContract.test_wait_polling_never_activates)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_wait_timeout_preserves_job_and_resume_does_not_submit (test_execution.ExecutionContract.test_wait_timeout_preserves_job_and_resume_does_not_submit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+======================================================================
+FAIL: test_wrong_conversation_blocks_mutation_and_collection (test_execution.ExecutionContract.test_wrong_conversation_blocks_mutation_and_collection)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 150, in setUp
+    self.module = load_production()
+                  ~~~~~~~~~~~~~~~^^
+  File "<USER_HOME>/Projects/Personal/xacml4j/.agents/skills/desktop-deep-research/tests/test_execution.py", line 124, in load_production
+    raise AssertionError("NOT_IMPLEMENTED: production desktop_research.py is absent")
+AssertionError: NOT_IMPLEMENTED: production desktop_research.py is absent
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.006s
+
+FAILED (failures=31)

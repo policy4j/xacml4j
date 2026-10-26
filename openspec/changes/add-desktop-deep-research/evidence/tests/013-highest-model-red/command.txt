@@ -1,0 +1,4 @@
+rtk proxy python3 -m unittest discover -s .agents/skills/desktop-deep-research/tests -p test_execution.py -v > openspec/changes/add-desktop-deep-research/evidence/tests/013-highest-model-red/execution-red.txt 2>&1
+
+Exit status: 1
+Output normalization: checkout path -> <repo>; user home -> <USER_HOME>.

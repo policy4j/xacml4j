@@ -1,0 +1,51 @@
+# Research run 014, 2026-10-09. MCP tool calls, in order. Queries are public
+# terms only. No shell wrapper was used for a research tool.
+
+# 1. Lanes that failed (one call each, not retried)
+context7 resolve-library-id  libraryName="Playwright MCP"
+  -> error: backends required DNS resolution which failed
+tavily tavily_search  query="open source browser automation for AI agents comparison ..."
+  -> error: backends required DNS resolution which failed
+
+# 2. GitHub MCP: repository search
+search_repositories  "gemini deep research mcp in:name,description"
+search_repositories  "topic:browser-automation stars:>3000"
+search_repositories  "playwright-cli OR chrome-devtools-mcp OR agent-browser OR playwriter OR dev-browser in:name stars:>1000"
+search_repositories  "user:steipete oracle"
+search_repositories  "deep research playwright in:name,description"
+search_repositories  "chatgpt deep research automation in:name,description"
+search_repositories  "topic:deep-research stars:>5000"
+# Four more searches with long boolean queries returned nothing or only
+# unrelated list repositories; they support no statement.
+
+# 3. GitHub MCP: file fetch (owner/repo path)
+get_file_contents  microsoft/playwright-mcp README.md
+get_file_contents  microsoft/playwright packages/extension/README.md
+get_file_contents  microsoft/playwright-cli README.md
+get_file_contents  ChromeDevTools/chrome-devtools-mcp README.md
+get_file_contents  ChromeDevTools/chrome-devtools-mcp docs/advanced-usage.md
+get_file_contents  vercel-labs/agent-browser README.md
+get_file_contents  steipete/oracle README.md
+get_file_contents  steipete/oracle docs/browser-mode.md
+get_file_contents  steipete/oracle docs/followup.md
+get_file_contents  zamabama/claude-code-deep-research README.md
+get_file_contents  luxiaolei/browser-research-skill README.md
+get_file_contents  halanhuang2025-lgtm/chatgpt-deep-research /   (directory listing only)
+
+# 4. DuckDuckGo MCP
+search         "open source tool automate ChatGPT Deep Research Claude Research Gemini Deep Research web UI with Playwright logged-in browser profile"
+fetch_content  https://www.anthropic.com/legal/consumer-terms            (characters 0-14000 of 28641)
+fetch_content  https://openai.com/policies/row-terms-of-use/             (characters 0-12000 of 20472)
+fetch_content  https://policies.google.com/terms?hl=en-US                (characters 3800-18000 of 29045)
+fetch_content  https://gemini.google.com/robots.txt
+fetch_content  https://support.google.com/gemini/answer/15719111?hl=en
+fetch_content  https://blog.google/innovation-and-ai/technology/developers-tools/deep-research-agent-gemini-api/  (characters 0-3500)
+
+# 5. Provider documentation MCP
+search_openai_docs       "deep research API models Responses API background mode"
+search_claude_code_docs  "add Playwright MCP server project scope .mcp.json stdio"
+
+# 6. Local probe (read-only): see local-probe.txt
+node --version; npx --version; npm ls -g --depth=0
+/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' <browser Info.plist>
+jq -r '.mcpServers | keys' .mcp.json

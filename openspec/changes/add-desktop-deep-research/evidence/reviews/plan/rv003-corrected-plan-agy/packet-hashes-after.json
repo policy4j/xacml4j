@@ -1,0 +1,13 @@
+{
+  "openspec/changes/add-desktop-deep-research/proposal.md": "545b9d0f96692309183e18e64052fcc53414a58c484e74f594fc821126f033e9",
+  "openspec/changes/add-desktop-deep-research/research/README.md": "4f4b32bbf4c2af7378701361eb8357893b59306f692a334bf760633c603826c6",
+  "openspec/changes/add-desktop-deep-research/design.md": "fe281e9af5ce409cb75e65e51660bf4b6c5faa9772f68ebef091b784523099c7",
+  "openspec/changes/add-desktop-deep-research/tasks.md": "531ab8dd9c6020e950df777c86289b117eb683a4b08830da97f12a2965839c59",
+  "openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md": "2c5f45544b3e7bc30bc9537addf4b2d908f0a7db1c7e49c206bd4609a29f4819",
+  "openspec/changes/add-desktop-deep-research/specs/desktop-research-collection/spec.md": "02fa4e53de7d0d95de7adcb72aea21823d6cf5c0ab002fdf064bedf30daed609",
+  "openspec/changes/add-desktop-deep-research/evidence/README.md": "8c6464a7aae78c8d87802a83d24605e11868301cd83f08afc6565990c417b57e",
+  "openspec/changes/add-desktop-deep-research/evidence/reviews/plan/rv001-architecture-claude/report.md": "13704964d4b0c436e27479c62e07a0c945eda7526f11543738d336e8c44474eb",
+  "openspec/changes/add-desktop-deep-research/evidence/reviews/plan/rv001-architecture-claude/disposition.md": "19ccfdb25ce9c7f939b26d269d872589753b2c4b97eec13e29fb288372cbceed",
+  "openspec/changes/add-desktop-deep-research/evidence/builds/003-revised-plan-validation/summary.md": "c556034d74dcf68dfe4e9bb54b8c7bd2e5b31a1db5467f455a045ee856ebbd02",
+  "openspec/changes/add-desktop-deep-research/evidence/builds/003-revised-plan-validation/validation.json": "3a7d91b25da52b28b6809c650aaad3b9730a359f1e28d86d1a71a7e30ee2c3d4"
+}

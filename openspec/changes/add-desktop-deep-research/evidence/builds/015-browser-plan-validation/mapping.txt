@@ -1,0 +1,15 @@
+Select the surface explicitly: scenarios=4 tests=4 live=1 shall=True index_row=True all_names_in_row=True
+Use a dedicated browser session that the operator signed in: scenarios=4 tests=4 live=1 shall=True index_row=True all_names_in_row=True
+Verify the browser target before every action: scenarios=4 tests=4 live=0 shall=True index_row=True all_names_in_row=True
+Run headed or headless under the same guards: scenarios=2 tests=2 live=1 shall=True index_row=True all_names_in_row=True
+Bind a browser job to its conversation address: scenarios=4 tests=4 live=2 shall=True index_row=True all_names_in_row=True
+Continue a conversation with follow-up turns: scenarios=5 tests=5 live=1 shall=True index_row=True all_names_in_row=True
+Pass context between providers only by explicit reference: scenarios=3 tests=3 live=0 shall=True index_row=True all_names_in_row=True
+Keep page content out of command output: scenarios=1 tests=1 live=0 shall=True index_row=True all_names_in_row=True
+Collect the browser report from the bound conversation: scenarios=3 tests=3 live=2 shall=True index_row=True all_names_in_row=True
+Require an acknowledgement of provider terms for live browser runs: scenarios=3 tests=3 live=0 shall=True index_row=True all_names_in_row=True
+Apply the execution rules to every provider on the browser surface: scenarios=4 tests=4 live=1 shall=True index_row=True all_names_in_row=True
+requirements=11 scenarios=37 named_tests=37 distinct=37 clash_with_other_specs=[]
+tasks_5=5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9
+design_decisions=D1,D2,D3,D4,D5,D6,D7,D8,D9,D10,D11,D12,D13,D14,D15
+mapping_issues=none

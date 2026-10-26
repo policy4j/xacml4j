@@ -1,0 +1,12 @@
+{
+  "type": "system",
+  "subtype": "init",
+  "session_id": "122180db-83f7-43cc-81db-fad8495c00b8",
+  "model": "claude-fable-5-1",
+  "permissionMode": "plan",
+  "tools": [
+    "Read"
+  ],
+  "mcp_servers": [],
+  "claude_code_version": "2.1.287"
+}

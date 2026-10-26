@@ -1,0 +1,16 @@
+# Run 015, 2026-10-09, from the repository root.
+
+rtk proxy openspec validate add-desktop-deep-research --strict     # -> validate.txt
+rtk proxy openspec --version
+
+# mapping.txt: a standard-library Python check over
+#   openspec/changes/add-desktop-deep-research/specs/browser-research-session/spec.md
+#   openspec/changes/add-desktop-deep-research/evidence/README.md
+#   openspec/changes/add-desktop-deep-research/tasks.md
+#   openspec/changes/add-desktop-deep-research/design.md
+# For each requirement it counts scenarios, named tests (`test_*`) and live
+# checks (live `name`), requires a SHALL statement before the first scenario,
+# requires GIVEN/WHEN/THEN/Test in the block, and requires exactly one row
+# "| browser-research-session / <requirement> |" in the evidence index that
+# contains every test and live-check name. It also reports test names shared
+# with the two desktop specs, the task numbers 5.x and the design decision ids.

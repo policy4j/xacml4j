@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-04",
+  "source": "current user message following reviewed-plan approval request",
+  "text": "Ok let’s try to run sample research reports",
+  "change": "add-desktop-deep-research",
+  "public_research_submission_ceiling_per_provider": 2,
+  "characterization_ceiling_per_provider": 1,
+  "production_acceptance_ceiling_per_provider": 1,
+  "grants_provided_by_receipt": false
+}

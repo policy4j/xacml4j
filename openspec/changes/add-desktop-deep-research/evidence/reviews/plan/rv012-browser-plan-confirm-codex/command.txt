@@ -1,0 +1,6 @@
+# Review rv012, 2026-10-09 and 2026-10-10. Run from an empty scratch directory that
+# held only the packet.
+
+rtk proxy codex exec -s read-only --skip-git-repo-check - < packet.md > out 2> err
+
+# Codex CLI 0.162.1, its configured default model. Wall time about five minutes. Exit status 0.

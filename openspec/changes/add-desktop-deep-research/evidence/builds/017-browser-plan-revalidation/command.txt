@@ -1,0 +1,13 @@
+# Run 017, 2026-10-09, from the repository root.
+
+rtk proxy openspec validate add-desktop-deep-research --strict     # -> validate.txt
+rtk proxy openspec --version
+
+# mapping.txt: the standard-library Python check of run 015, extended. For
+# each requirement of specs/browser-research-session/spec.md it counts
+# scenarios, named tests and live checks, requires a SHALL statement and
+# GIVEN/WHEN/THEN/Test, requires exactly one row in evidence/README.md with
+# every test and live-check name, and requires every task number of that row
+# to exist in tasks.md. It reports test names shared with the desktop specs,
+# the task numbers 5.x, the design decision ids, and whether every
+# "task 5.x" reference in design.md, proposal.md and the spec exists.

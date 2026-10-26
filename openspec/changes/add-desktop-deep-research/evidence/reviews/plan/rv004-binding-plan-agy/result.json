@@ -1,0 +1,16 @@
+{
+  "event": "result",
+  "result": {
+    "conversation_id": "cdca3d8e-3cb4-4bf8-893e-71c06792f52d",
+    "status": "SUCCESS",
+    "duration_seconds": 2212.138365,
+    "num_turns": 3,
+    "usage": {
+      "input_tokens": 110540,
+      "output_tokens": 13784,
+      "thinking_tokens": 11917,
+      "cache_read_tokens": 87431,
+      "total_tokens": 124324
+    }
+  }
+}

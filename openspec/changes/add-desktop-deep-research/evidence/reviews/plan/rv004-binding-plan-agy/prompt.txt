@@ -1,0 +1,498 @@
+Continue the SAME native conversation as policy4j_arch_review_agy, requested Gemini 3.1 Pro (High) / gemini-3.1-pro-high, for a final NARROW architecture/privacy binding PLAN check.
+CONTEXT-ONLY READ-ONLY: Use only the immutable line-numbered packet below and your prior review context. Do not use tools or read files. No edits, builds/tests, GUI/app actions, provider research submissions, external search, configuration changes, dependencies, subdelegation or messages. The conductor stores the final report.
+The actual prior init.model matched gemini-3.1-pro-high; init.permission_mode advertised always-proceed despite requested native --mode plan --sandbox. Carry this as an enforcement limitation rather than claiming proven read-only tool enforcement. No tools are needed.
+Your previous corrected-packet report said APPROVE/F1-18 resolved, but the conductor identified a concrete remaining circularity: requiring a submitted-user-turn binding before first input. The latest frozen changes now distinguish:
+- new-conversation guarded by a durable authorized request plus signed target/idle/caller guards before a draft exists;
+- a verified newly-created dedicated EMPTY-composer receipt as a temporary draft binding;
+- mode/public-source evidence before prompt entry;
+- owned full composer hash and end markers after entry;
+- draft authority for restricted pre-send input and positively unsent same-draft resume only;
+- possible Send revokes draft authority until positively submitted or positively unsent reconciliation;
+- completion/collection require an upgraded verified submitted-job binding.
+Review whether the current exact text, transition guards, bridge contract, normative Rebind requirement/new scenario, task and evidence mapping remove the circularity without permitting input into arbitrary existing chats, unauthorized resends, or draft-only completion/collection. Check consistency between these narrow changes and prior F1/F2/F3/F10/F11 resolutions, without reopening unrelated already-resolved HIGH/MEDIUM findings. Source-scope/public-only and both-provider actual desktop final-report collection requirements remain intact. Existing authorization covers ordinary bounded actions; do not introduce new per-send confirmations or human-only narrowing.
+The supplied validation is retained structural evidence only, not a test run by you or runtime acceptance. The evidence index can be pending this final review.
+
+Return a concise self-contained severity-first report: numbered blockers (if any) with exact CURRENT repository-relative file:line evidence, concrete harm, fix and acceptance test; or no blockers. Explain briefly whether the pre-send bootstrap, authority revocation, receipt upgrade, and scenario/test mapping now resolve the gap. State requested/observed model, actual document-only checks, unrun gates, residual risk, and verdict APPROVE or REQUEST_CHANGES bounded to this narrow frozen packet.
+Final line MUST be exactly this marker, on its own line, with no punctuation or trailing text:
+DESKTOP_RESEARCH_AGY_BINDING_REVIEW_DONE
+
+FROZEN NARROW BINDING PACKET
+
+DOCUMENT openspec/changes/add-desktop-deep-research/design.md
+72: ### D3. Observe before each action; target identity is discovered
+73: 
+74: Resolve app paths and bundle identities from installed metadata and match them
+75: to running processes. Validate the app signature and pin the characterized
+76: TeamIdentifier; observed installed baselines are OpenAI `2DC432GLL2` and Anthropic
+77: `Q6L2SF6YDW`. Multiple candidates or signature mismatch block. Each version
+78: profile records controls/input, locator class, source checks, completion predicate
+79: and characterization evidence. The conductor promotes it after non-submitting
+80: checks and characterization; an update invalidates it until rechecked. A mid-job
+81: version/account change blocks observation while preserving provider state.
+82: Require fresh selected-window evidence before every
+83: mutation, with app version, PID, window identity, target control, and focus.
+84: Detect minimized windows; activation alone can leave them hidden. Restore the
+85: selected target window only when needed, recording its prior state. Read-only
+86: probes restore that prior state afterward. Routine `status`/`wait` never activate,
+87: unminimize, navigate, scroll or open menus; unreadable jobs return UNOBSERVABLE.
+88: Those actions are mutations under the transaction lock, requiring at least two
+89: seconds of measured local input idle time. New user input/focus changes stop
+90: the transaction. Restore prior app/window state when safe. Existing task
+91: authorization covers these actions without a new per-send confirmation.
+92: Use semantic Accessibility controls first. When a control is absent, use
+93: fresh app-window capture and exact allowlisted visual/OCR evidence only within
+94: a tested provider/version profile. Missing or ambiguous controls return a
+95: blocked outcome; do not click assumed coordinates or type into an unknown app.
+96: 
+97: Runtime captures stay in memory by default. Explicit troubleshooting captures
+98: are limited to the dedicated job window, private, ignored, and clearly marked.
+99: Never capture the whole desktop or log unrelated conversation titles/text.
+100: Screenshots, OCR, downloaded reports, and model output are data, not instructions.
+101: Both input and collection use the same app/window/job binding.
+102: 
+103: Composer entry preference: characterized native/Accessibility set-value without
+104: send, then a characterized paste operation with clipboard side effects disclosed.
+105: Do not synthesize multiline keystroke entry. Sync submission intent before any
+106: composer input; verify full value/hash and markers at both ends before one
+107: separate Send action. Truncated input or changed focus blocks. Pass prompt bytes
+108: through private files/pipes, never command-line arguments or diagnostic logs.
+109: 
+110: ### D4. Durable job identity with separate provider and collection states
+111: 
+112: Each job has a generated id, stable caller request id, provider/mode, question
+113: SHA-256, OCR-robust marker with check digit, source scope, timestamps, signed
+114: app identity/version, salted account-context hash when observable, and binding.
+115: Before the first Send, use a distinct draft binding: a characterized creation
+116: receipt for a new dedicated empty composer, the signed app/session/window/tab,
+117: and caller exclusion. Source/mode preparation completes this receipt before
+118: prompt entry. An existing nonempty draft blocks.
+119: The `new-conversation` action uses the durable request id and target/idle/caller
+120: guards before this receipt exists; it cannot reuse an arbitrary visible chat.
+121: After entry, the full owned composer hash and end markers extend the receipt.
+122: Draft authority permits only source/mode preparation, prompt entry and one
+123: verified first Send, or positively unsent same-draft resume. It never permits
+124: completion or collection. Possible Send revokes draft authority until positive
+125: submitted-turn or positively unsent evidence reconciles it.
+126: 
+127: Submitted-job binding classes are: (1) stable provider conversation id/URL observed
+128: locally without sharing; (2) app/version, PID/start time, window/tab id plus
+129: the exact marker in the submitted USER turn; (3) after relaunch, a characterized
+130: local locator or exact-marker search with exactly one submitted-user-turn match.
+131: The assistant's echoed marker is corroboration only. Zero/ambiguous matches or
+132: a different conversation in the same window are UNOBSERVABLE, preserving state.
+133: `rebind` establishes a new session binding without submission. Never publish,
+134: share, read unrelated chat titles, or use account-wide export to get identity.
+135: Process/window ids alone, without the verified new-draft receipt or a submitted
+136: job binding, never permit mutation; collection always needs submitted-job binding.
+137: 
+138: Provider states: `PREPARED`, `DRAFTING`, `SUBMISSION_UNCERTAIN`, `AWAITING_CLARIFICATION`,
+139: `AWAITING_PLAN`, `RUNNING`, `COMPLETED`, `BLOCKED`, `FAILED`, `CANCELLED`.
+140: Collection states: `NOT_STARTED`, `IN_PROGRESS`, `COLLECTED`, `FAILED`.
+141: Observation has its own last-result/time/deadline fields. A timeout leaves the
+142: provider state intact; a missing local runner is not provider cancellation.
+143: 
+144: Persist and sync submission intent before any composer input. Persist an
+145: observed receipt afterward. On restart, reconcile the same marker and
+146: conversation before submitting anything. Unknown or missing provider identity
+147: keeps the job uncertain. `CANCELLED` is observed-only in v1, after actual provider
+148: cancellation; there is no scripted cancellation. Blocked/failed jobs retain
+149: `prompt_possibly_sent` and a reason; exhausted quota is `BLOCKED:QUOTA`.
+150: Metadata records partial progress without claiming an export succeeded.
+151: 
+152: | Event / owner | Transition | Guard / mutation |
+153: | --- | --- | --- |
+154: | `start` / allocate request | new → PREPARED | Durable id/ledger returned before GUI action |
+155: | `start` / enter prompt | PREPARED → DRAFTING | Verified new dedicated empty draft binding, signed target, mode, public sources and idle; synced intent before input |
+156: | `start` / Send | DRAFTING → SUBMISSION_UNCERTAIN | Full composer verified; one guarded Send |
+157: | `status` / observed receipt | uncertain → RUNNING or AWAITING_* | Submitted-user-turn identity; no mutation |
+158: | `status` / positively unsent draft | uncertain → DRAFTING | Positive no-send evidence; never inferred from absence |
+159: | `start --job` / resume draft | DRAFTING → uncertain | Same verified request/binding; guarded input/send |
+160: | `respond` / authorized answer | AWAITING_CLARIFICATION → uncertain | Pending-question hash; answer from authorized input |
+161: | `approve-plan` / scoped plan | AWAITING_PLAN → RUNNING | Calling agent records plan hash and scope check; guarded Begin |
+162: | `status` / positive final result | RUNNING → COMPLETED | Characterized positive predicate; complete observation |
+163: | observation / quota, error, cancellation | current → BLOCKED, FAILED, CANCELLED | Positive provider evidence; preserve possible-send flag |
+164: | observation / timeout, unreadable target, app change | provider unchanged | Record timeout or UNOBSERVABLE; no mutation |
+165: | `rebind` / unique match | provider unchanged | Serialized idle-safe navigation; verify submitted user turn |
+166: | `collect` / valid output | collection → COLLECTED | Complete bound job; citation/file/hash checks pass |
+167: | `collect` / invalid output | collection → FAILED | Preserve provider completion and prior attempts |
+168: 
+169: Named tests cover every transition row. Only `start`, `respond`, and `approve-plan`
+170: may perform composer/research-start interactions. The script does not judge plan
+171: meaning: the invoking agent reads the bound job's plan with `inspect --job
+172: --job-content`, treats it as untrusted data, and passes the exact plan hash to
+173: `approve-plan` after checking scope. Missing user choices stay pending. No reply
+174: or plan action expands source scope or follows instructions embedded in a report.
+175: 
+176: ### D5. Command interface and desktop ownership
+177: 
+178: Invoke `rtk python3 .agents/skills/desktop-deep-research/scripts/desktop_research.py`:
+179: 
+180: | Command | Behavior |
+181: | --- | --- |
+182: | `doctor --provider chatgpt\|claude\|all` | Capability and permission checks; no prompt |
+183: | `inspect --provider <provider>` | Redacted current control/state observations |
+184: | `start --provider <provider> --request-id <id> --prompt-file <file>` | Create/resume an idempotent request; print id before mutation |
+185: | `start --job <id>` | Resume a positively verified unsent draft of the same job |
+186: | `list` | Redacted local lookup for lost job-id recovery |
+187: | `status --job <id>` | Reobserve the same job; no submission |
+188: | `wait --job <id> --timeout <seconds>` | Bounded observation; preserve state on deadline |
+189: | `rebind --job <id>` | Locate and verify the existing conversation without resubmission |
+190: | `respond --job <id> --answer-file <file>` | Answer a pending question within prior authorization |
+191: | `approve-plan --job <id> --plan-hash <hash>` | Begin the exact scope-checked plan |
+192: | `collect --job <id>` | Verify final result and save its report/exports |
+193: | `batch --request-file <file>` | Persist entry-to-job mapping; submit/resume, observe and collect; return partial results on bounded exit |
+194: 
+195: `--source-scope` accepts only `public-web` in v1, without connected private
+196: data sources. Select sources in the UI when supported and verify the selection;
+197: prompt wording alone cannot establish source isolation. If an account enables
+198: unrequested private sources and the UI cannot constrain them, report blocked
+199: source-scope readiness. Unobservable selection also blocks. Record and safely
+200: restore per-conversation persistent toggle side effects after the job; never
+201: change account-wide source settings. A request file has a stable batch id and
+202: entry idempotency keys, provider/question/scope; validate it before input.
+203: Same-provider jobs run serially and each job keeps its own outcome.
+204: 
+205: Use fixed owner-only platform user application data, independent of checkout and
+206: temporary-directory settings, for the ledger and OS advisory locks. Lock order:
+207: ledger → job → desktop when multiple locks are needed. Hold the desktop lock
+208: for each whole transaction: verify mode/sources and enter/send; verify Copy and
+209: copy/read/clear; or export/validate. Per-job locks/revision checks prevent lost
+210: updates; atomic replacements sync file and parent directory.
+211: 
+212: Under the ledger lock, request-id/batch-id retries resume existing jobs. Persist
+213: and print ids before first mutation. An uncertain provider job blocks a new
+214: start even from another checkout. Existing nonterminal provider/question/scope
+215: fingerprints resume; completed same-id retries return prior results. A different
+216: id may intentionally repeat a completed question within the authorized budget.
+217: No id overrides uncertainty. OS process exit releases locks; stored PIDs do not
+218: prove ownership. Read-only polling interleaves without changing focus.
+219: 
+278: ### D8. Bridge contract, provenance and data boundaries
+279: 
+280: Every mutating bridge call carries a closed action and preconditions: signed
+281: identity/version, PID/start time, window/control, job binding, focus and local
+282: input generation. Creation uses the authorized request/target guards; pre-send
+283: input uses the dedicated draft receipt; later actions require the submitted-job
+284: binding. Recheck and hit-test in-process immediately before the event;
+285: return before/after evidence. Actions are activate/restore-window,
+286: new-conversation, select-research/public-sources, set-composer, send/answer/
+287: begin-research, navigate-bound-job, copy-final and export-final. Unexpected
+288: dialogs block. Never accept arbitrary keys, coordinates, shell or JavaScript
+289: from an agent or retrieved report.
+290: 
+291: Filter UI text and match markers inside the bridge. Default output is a closed
+292: schema of ids, flags, geometry, hashes and allowlisted controls; raw UI text never
+293: reaches default stdout. `--job-content` returns only the verified job's public
+294: plan/question/report. Persisted troubleshooting capture requires an explicit user
+295: request, is cropped to the job region without sidebar/account chrome, and never
+296: prints to stdout. Whole-desktop capture and account sharing/export are prohibited.
+297: 
+298: Build the helper in owner-only user cache keyed by source/build hash and verify
+299: ownership/integrity before use. `doctor --self-test` exercises actual helper
+300: label/coordinate/schema/filter and guard logic. All receipts/manifests stamp
+301: `boundary=live|synthetic`, helper source/binary hashes and profile id. Synthetic
+302: mode writes only temporary jobs and cannot satisfy live acceptance. Detect
+303: caller ancestry belonging to the target app and exclude its window, or block
+304: when that exclusion cannot be established. Never quit a caller-hosting app.
+305: 
+306: Retain sanitized transitions, actual interaction resolver, submission counts,
+307: salted binding/account hashes, app/profile/build identity, file hashes and public
+308: URLs. Full reports stay private local artifacts. The independent duplicate
+309: oracle is exactly one submitted-user-turn marker match, without logging other
+310: titles; otherwise label counts self-attested. Reports are secondary synthesis:
+311: OpenSpec research still fetches cited primary sources through native research MCP.
+312: 
+313: ADR decision: no separate ADR is proposed. This project schema does not require
+314: an ADR, and all decisions are confined to additive local tooling. Revisit if
+315: the implementation requires global client integration or an external service.
+316: 
+317: ## Test Strategy
+318: 
+319: Invoke the production CLI with temporary local jobs and inject only the desktop
+320: boundary. Assert saved state and artifacts independently; fake boundary tests
+321: are labeled offline. Cover every named scenario in the two delta specs.
+322: Include cross-process/cross-checkout transaction locks, request/batch retry
+323: idempotency, concurrent updates, crash recovery, source-scope refusal,
+324: focus changes, quota, questions/plans, stale clipboard, partial downloads,
+325: citations, path safety, and tampered hashes. Compile and self-test the actual
+326: Swift helper. Provider fixtures come from characterization, never guessed controls.
+327: 
+328: Live test question for each provider: "Using only public official OpenAI and
+329: Anthropic sources, compare ChatGPT Deep Research and Claude Research: available
+330: desktop interfaces, initiation, source control, and report export. Include
+331: dated citations and this job marker." One acceptance submission per provider
+332: after the separate authorized characterization run.
+333: Verify the mode and receipt, deliberately expire an observation wait, resume
+334: the same conversation, close/reopen only the dedicated window and rebind without
+335: resubmission. Never quit a caller-hosting app. Collect and independently inspect
+336: the report/sources. Run both acceptance jobs via a persisted batch; force zero
+337: receipt-observation budget after Send to exercise uncertainty/reconciliation.
+338: Record non-activating wait counts, source evidence and submitted-user-turn
+339: duplicate oracle. Do not use private connectors or upload repository files.
+340: 
+341: Skill evaluations cover: (1) both-provider cited report collection; (2) resume
+342: an existing job after timeout without another submit; (3) honest refusal when
+343: research mode is absent. Run with-skill and baseline lanes and store their
+344: outputs. Force synthetic boundaries in all six lanes (three with-skill/baseline
+345: pairs, one trial each) and deny real desktop access. Assertions check both cited
+346: reports, zero resume submissions, and an honest blocked outcome respectively.
+347: These evaluations supplement, not replace, live desktop acceptance.
+348: 
+
+DOCUMENT openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md
+150: ### Requirement: Rebind the existing conversation safely
+151: 
+152: The workflow SHALL bind actions to a stable locally observed conversation id
+153: or a verified session plus the job marker in its submitted user turn. After
+154: relaunch it SHALL accept exactly one verified match. An assistant-echoed marker
+155: or a window id alone SHALL NOT permit an action. Sharing/publication or
+156: account-wide export SHALL NOT be used to obtain a binding.
+157: 
+158: Before first submission, input SHALL require a verified newly created dedicated
+159: empty-composer receipt with target/caller/mode/source guards. After entry it
+160: SHALL verify the complete owned draft. Possible Send SHALL suspend draft input
+161: authority until reconciliation. Draft binding SHALL NOT authorize completion
+162: or collection and SHALL be upgraded only by verified submitted-job evidence.
+163: 
+164: #### Scenario: A new conversation has no submitted turn yet
+165: - **GIVEN** a new dedicated empty composer is verified or an unrelated nonempty draft is visible
+166: - **WHEN** first input and the later receipt are processed
+167: - **THEN** only the verified dedicated draft can accept input, possible Send disables further draft input, and completion/collection require submitted-job binding
+168: - **Test:** `test_pre_send_binding_bootstrap_and_upgrade`.
+169: 
+170: #### Scenario: The job cannot be relocated
+171: - **GIVEN** reopening the app yields zero or ambiguous submitted-user-turn matches
+172: - **WHEN** observation is resumed
+173: - **THEN** it reports UNOBSERVABLE, preserves provider state and never resubmits
+174: - **Test:** `test_missing_or_ambiguous_rebind_preserves_state`.
+175: 
+176: #### Scenario: The same window shows another conversation
+177: - **GIVEN** the window is now displaying a different conversation
+178: - **WHEN** an action or collection is requested
+179: - **THEN** the workflow rejects it until the bound job is verified
+180: - **Test:** `test_wrong_conversation_blocks_mutation_and_collection`; live `conversation_rebind_after_reopen` for both providers.
+181: 
+
+DOCUMENT openspec/changes/add-desktop-deep-research/tasks.md
+1: Beads: epic `policy4j-971`; task X.Y is issue `policy4j-971.X.Y`.
+2: Gate: `rtk python3 -m unittest discover -s .agents/skills/desktop-deep-research/tests -v`;
+3: Swift helper compilation and `doctor --self-test`; provider live checks;
+4: `rtk openspec validate add-desktop-deep-research --strict`.
+5: Maven/module/conformance/JMH gates: NOT APPLICABLE; no Java behavior or build changes.
+6: 
+7: Implementation is pending maintainer approval. Every checked task must have
+8: indexed evidence. Future task issues are created in this order before claiming.
+9: Paths ending at a review lane name are parents; every actual review uses a
+10: fresh `rvNNN-<scope>-<lane>` subdirectory. `<next>` means the next unused run
+11: number, assigned when the run starts.
+12: 
+13: ## 1. Capability research and plan
+14: 
+15: - [ ] 1.1 Inspect local automation and write the proposal, research, specs, design, tasks, and evidence index; check: redacted local probes, independent plan review, and strict validation; evidence: `evidence/builds/001-local-capabilities/`, `evidence/builds/002-plan-validation/`, `evidence/builds/003-revised-plan-validation/`, `evidence/builds/004-binding-plan-validation/`.
+16: - [ ] 1.2 Gate: independent architecture and privacy review of the plan, resolve findings, check scenario/test mapping and docs consistency, record module/conformance/JMH non-applicability; evidence: `evidence/reviews/plan/`.
+17: - [ ] 1.3 Obtain and record maintainer approval of this reviewed plan before implementation; retain the two prompt templates, budget of two public submissions per provider, attended dedicated windows and operator-only macOS permission grants; check: explicit approval receipt in `evidence/final/<next>-maintainer-approval/`.
+18: - [ ] 1.4 After approval, characterize both signed app/version interfaces with non-submitting discovery and at most one public Research submission per provider; record locator/input/source/completion/export observations, window/caller isolation and profile go/no-go. Derive later fixtures from these observations; check: characterization receipt and remaining acceptance budget; evidence: `evidence/builds/<next>-live-characterization/`.
+19: 
+20: ## 2. Job execution and native desktop control
+21: 
+22: - [ ] 2.1 Write failing production-entrypoint tests for every execution scenario and transition row, including source scope, draft binding bootstrap/upgrade and conversation rebinding, stable request/batch ids, cross-checkout ledger/transaction locks, concurrent state updates, target/caller trust, helper guards/filtering, input intent/truncation, non-activating waits, and provenance; check: named execution-spec tests; evidence: `evidence/tests/<next>-execution-red/`.
+23: - [ ] 2.2 Implement the standard-library orchestrator, atomic job receipts, private run directories, user-scoped desktop lock, and resumable commands; check: execution tests; evidence: `evidence/tests/<next>-execution-green/`.
+24: - [ ] 2.3 Implement and compile the macOS bridge and characterized provider adapters; check signed app/window/job preconditions, mode/source guards, native input methods, transaction ownership, non-activating observations and closed-schema filtering; check: `doctor --self-test`, helper preflight and recorded characterization fixtures; evidence: `evidence/builds/<next>-native-bridge/`.
+25: - [ ] 2.4 Gate: independent code/security review, all execution tests, helper self-tests/readiness, docs/spec consistency; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/reviews/code/`, `evidence/tests/<next>-execution-gate/`.
+26: 
+27: ## 3. Report collection and reusable skill
+28: 
+29: - [ ] 3.1 Write failing production-entrypoint tests for every collection scenario, including partial observation, foreign clipboard writes, exact public link provenance, attempt-preserving retries, reports outside skill discovery, escaped index data, cropped opt-in captures, file/hash integrity, and unsafe paths; check: named collection-spec tests; evidence: `evidence/tests/<next>-collection-red/`.
+30: - [ ] 3.2 Implement report-specific native exports and Copy/extraction, source preservation, independent file validation, hashes, and the local index; check: collection tests; evidence: `evidence/tests/<next>-collection-green/`.
+31: - [ ] 3.3 Write the canonical skill, provider references, three synthetic evaluation prompts/assertions, relative discovery link and `docs/ai/DESKTOP_RESEARCH.md`; document trust boundaries, secondary-source status, clipboard effects, local report/cache/lock ownership and rollback; check: exactly one skill per requested CLI and link/reference resolution; evidence: `evidence/tests/<next>-skill-discovery/`.
+32: - [ ] 3.4 Gate: independent code/security/test review, full script tests, skill evaluations with baseline counterparts, and docs/spec consistency; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/reviews/`, `evidence/tests/<next>-collection-skill-gate/`.
+33: 
+34: ## 4. Live acceptance and close out
+35: 
+36: - [ ] 4.1 Run the one authorized ChatGPT acceptance question through the production batch workflow; verify public sources, mode, binding, uncertain-send reconciliation, non-activating expired wait, same-job resume/window rebind, completion, citations, saved report and actual exports; check live named scenarios and one submitted-user-turn match; evidence: `evidence/tests/<next>-chatgpt-live/`.
+37: - [ ] 4.2 Run the one authorized Claude acceptance question through that production batch; verify public sources, mode, binding, uncertain-send reconciliation, non-activating expired wait, same-job resume/window rebind, completion, exact citations and actual saved format; check live named scenarios and one submitted-user-turn match; evidence: `evidence/tests/<next>-claude-live/`.
+38: - [ ] 4.3 Gate: independently inspect both reports, sources, manifests, hashes, per-provider outcomes, and duplicate-submission counts; check: both-provider live acceptance and final review; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/final/<next>-live-acceptance/`, `evidence/reviews/final/`.
+39: - [ ] 4.4 Run strict OpenSpec validation and the requirement-to-task-to-test-to-evidence completion audit; check every explicit requirement and preserve unresolved live blockers; evidence: `evidence/final/<next>-completion-audit/`.
+40: - [ ] 4.5 Close completed Beads children and epic only after the full objective passes; run `rtk br sync --flush-only`; check: Beads closure receipts. No stage, commit, push, branch switch, or archive is authorized.
+
+DOCUMENT openspec/changes/add-desktop-deep-research/evidence/README.md
+1: # Evidence
+2: 
+3: Planning evidence only. Production skill/scripts and both-provider live research
+4: acceptance are not implemented or verified. No provider research was submitted.
+5: 
+6: ## Requirements to proof
+7: 
+8: All named tests and live checks below are planned, not passing tests. The local
+9: capability probe is PARTIAL and cannot satisfy any live acceptance requirement.
+10: 
+11: | Capability / requirement | Tasks | Named tests or live checks | Run status |
+12: | --- | --- | --- | --- |
+13: | desktop-research-execution / Verify provider readiness and scope | 2.1, 2.2, 2.3, 4.1, 4.2 | `test_doctor_reports_observed_capabilities`, `test_start_blocks_without_research_readiness`; live `provider_readiness` | UNRUN |
+14: | desktop-research-execution / Submit only to an identified research conversation | 2.1, 2.2, 2.3, 4.1, 4.2 | `test_start_requires_observed_receipt`, `test_focus_change_preserves_draft_and_stops_input`; live `research_submission` | UNRUN |
+15: | desktop-research-execution / Handle provider interaction states explicitly | 2.1, 2.2, 2.3 | `test_authorized_plan_can_start_research`, `test_unresolved_question_or_plan_scope_stops`, `test_quota_state_does_not_resubmit` | UNRUN |
+16: | desktop-research-execution / Resume observations without duplicate submission | 2.1, 2.2, 2.3, 4.1, 4.2 | `test_wait_timeout_preserves_job_and_resume_does_not_submit`, `test_crash_after_send_requires_reconciliation`; live `timeout_resume` | UNRUN |
+17: | desktop-research-execution / Serialize desktop actions and isolate job data | 2.1, 2.2, 2.3 | `test_desktop_lock_serializes_processes`, `test_batch_preserves_per_provider_outcomes`, `test_default_diagnostics_redact_unrelated_data` | UNRUN |
+18: | desktop-research-execution / Constrain and verify public source scope | 2.1, 2.2, 2.3, 4.1, 4.2 | `test_public_source_selection_is_in_receipt`, `test_start_blocks_on_unconstrainable_private_source`, `test_start_blocks_when_source_scope_unverifiable`, `test_source_selection_side_effects_restored`; live `source_scope_verified` | UNRUN |
+19: | desktop-research-execution / Rebind the existing conversation safely | 2.1, 2.2, 2.3, 4.1, 4.2 | `test_pre_send_binding_bootstrap_and_upgrade`, `test_missing_or_ambiguous_rebind_preserves_state`, `test_wrong_conversation_blocks_mutation_and_collection`; live `conversation_rebind_after_reopen` | UNRUN |
+20: | desktop-research-execution / Make requests and batch reruns idempotent | 2.1, 2.2, 2.3 | `test_start_retry_after_killed_start_does_not_resubmit`, `test_provider_uncertainty_blocks_across_checkouts`, `test_batch_rerun_resumes_without_resubmission`, `test_concurrent_job_updates_keep_state` | UNRUN |
+21: | desktop-research-execution / Own interactions and observation transitions explicitly | 2.1, 2.2, 2.3 | `test_transition_table_and_command_ownership`, `test_intent_and_multiline_entry_guard_send` | UNRUN |
+22: | desktop-research-execution / Observe without taking user focus | 2.1, 2.2, 2.3 | `test_wait_polling_never_activates`, `test_mutation_deferred_while_user_active`, `test_transaction_lock_is_cross_checkout_and_temp_independent`, `test_bridge_guard_schema_and_modal_handling` | UNRUN |
+23: | desktop-research-execution / Distinguish trusted live proof from synthetic output | 2.1, 2.2, 2.3 | `test_synthetic_receipts_are_rejected_by_live_audit`, `test_target_trust_version_and_caller_isolation` | UNRUN |
+24: | desktop-research-collection / Establish provider completion before collecting | 3.1, 3.2, 4.1, 4.2 | `test_collect_requires_identified_final_research_result`, `test_collect_rejects_in_progress_or_pending_interaction`; live `provider_completion` | UNRUN |
+25: | desktop-research-collection / Save cited reports and supported exports with integrity | 3.1, 3.2, 4.1, 4.2 | `test_native_export_is_complete_and_hashed`, `test_copy_collection_rejects_stale_clipboard_and_missing_sources`, `test_failed_export_keeps_provider_completion`; live `native_export`, `report_collection` | UNRUN |
+26: | desktop-research-collection / Maintain resumable local report storage | 3.1, 3.2, 4.1, 4.2 | `test_index_keeps_reports_separate`, `test_tampered_report_and_unsafe_output_are_rejected`; live `dual_provider_collection` | UNRUN |
+27: | desktop-research-collection / Require complete observations and exact citation provenance | 3.1, 3.2 | `test_incomplete_observation_cannot_establish_completion`, `test_copy_rejects_foreign_write_and_preserves_clipboard`, `test_exact_public_citation_provenance_is_required`, `test_storage_index_capture_and_retry_preserve_boundaries` | UNRUN |
+28: 
+29: ## Gate tasks to proof
+30: 
+31: | Task | Run(s) | Status |
+32: | --- | --- | --- |
+33: | 1.1 | `builds/001-local-capabilities/`, `builds/002-plan-validation/`, `builds/003-revised-plan-validation/`, `builds/004-binding-plan-validation/`, `reviews/plan/` | IN PROGRESS |
+34: | 1.2 | `reviews/plan/rv001-architecture-claude/`, `reviews/plan/rv002-architecture-agy/`, `reviews/plan/rv003-corrected-plan-agy/`; final binding review pending | IN PROGRESS |
+35: | 1.3 | `final/<next>-maintainer-approval/` | PENDING maintainer approval |
+36: | 1.4 | `builds/<next>-live-characterization/` | UNRUN; approval required |
+37: | 2.4 | `reviews/code/rv<next>-<scope>-<lane>/`, `tests/<next>-execution-gate/` | UNRUN |
+38: | 3.4 | `reviews/<lane>/rv<next>-<scope>-<lane>/`, `tests/<next>-collection-skill-gate/` | UNRUN |
+39: | 4.3 | `final/<next>-live-acceptance/`, `reviews/final/rv<next>-<scope>-<lane>/` | UNRUN |
+40: | 4.4 | `final/<next>-completion-audit/` | UNRUN |
+41: 
+42: ## Runs
+43: 
+44: | Run | Kind | Command / method | Result |
+45: | --- | --- | --- | --- |
+46: | `builds/001-local-capabilities/` | Local app and permission probes | Swift, app plist/signing queries, local app launch, app-window capture/OCR | PARTIAL: identities, permission and window access; no research-mode, send or collection proof |
+47: | `builds/002-plan-validation/` | Initial structural checks | OpenSpec 1.3.1 strict validation; initial scenario mapping | PASS of initial packet: 8 requirements, 19 scenarios/tests; superseded for current-plan checking |
+48: | `reviews/plan/rv001-architecture-claude/` | Independent initial architecture/privacy review | Native Claude Fable 5.1, restricted Read, plan mode | REQUEST_CHANGES: 6 HIGH, 12 MEDIUM, 9 LOW; disposition retained; independent delta review pending |
+49: | `reviews/plan/rv002-architecture-agy/` | Independent initial architecture review | Native Gemini 3.1 Pro High inline snapshot | APPROVE old snapshot; 1 LOW; advertised permission-mode and raw marker limitations retained |
+50: | `builds/003-revised-plan-validation/` | Corrected-packet structural checks | OpenSpec 1.3.1 strict validation; current scenario/evidence mapping | PASS: 15 requirements, 41 scenarios/tests, no missing/invalid mapping; planning structure only |
+51: | `reviews/plan/rv003-corrected-plan-agy/` | Independent corrected-packet review | Same native Gemini conversation, inline frozen packet | APPROVE with no original HIGH/MEDIUM unresolved; subsequently identified draft bootstrap gap requires final correction/review |
+52: | `builds/004-binding-plan-validation/` | Draft-bootstrap structural checks | OpenSpec strict validation and current mapping | PASS: 15 requirements, 42 scenarios/tests, zero mapping issues; all implementation/live checks UNRUN |
+53: 
+54: Every run retains its summary, command or invocation receipt, and supporting
+55: output. Actual review runs use fresh numbered children; parent lane paths and
+56: `<next>` placeholders above do not preassign a future run number. Capability
+57: outputs contain only fixed allowlisted labels and counts. Full live reports
+58: remain private user-owned artifacts outside skills/Git; retained proof is
+59: summarized/redacted. Original hashes and normalized-path qualifications remain
+60: with reviewer receipts.
+61: 
+62: ## Not applicable
+63: 
+64: - Maven/module tests, JDK migration, XACML conformance, and JMH: NOT APPLICABLE;
+65:   additive agent tooling has no Java runtime or build effect.
+66: - No archive or Git history action is requested.
+
+DOCUMENT openspec/changes/add-desktop-deep-research/evidence/reviews/plan/rv001-architecture-claude/disposition.md
+1: # Conductor disposition
+2: 
+3: The initial review requested changes: 6 HIGH, 12 MEDIUM, 9 LOW. The table below
+4: describes planning corrections, not executed runtime proof. Design/research
+5: changed while that review ran; its original snapshot and qualification remain
+6: retained. A separate independent delta review must accept the revised packet.
+7: 
+8: | Finding | Disposition | Revised plan and planned proof |
+9: | --- | --- | --- |
+10: | 1 HIGH: identity/re-location | ADDRESSED IN PLAN | D4 distinct dedicated draft bootstrap/upgrade, ordered submitted-job locators, exact submitted-user-turn binding and guarded `rebind`; execution Rebind requirement and live reopen check |
+11: | 2 HIGH: commands/transitions | ADDRESSED IN PLAN | D4 transition table, command ownership, pending-question/plan hashes, invoking-agent scope evaluator; execution interaction tests |
+12: | 3 HIGH: duplicate/retry bypass | ADDRESSED IN PLAN | D5 stable request/batch ids, user-wide uncertainty ledger, fingerprint resume and per-job serialization; four idempotency scenarios |
+13: | 4 HIGH: public sources only design-level | ADDRESSED IN PLAN | Execution Constrain source scope requirement has positive, private, unobservable and restoration scenarios; D5 public-only UI evidence |
+14: | 5 HIGH: no live characterization | ADDRESSED IN PLAN | D7 budget and task 1.4 require one characterization per app after approval and before adapters; one later production acceptance per app. Manual-only narrowing is rejected because the requested outcome is automated scripts |
+15: | 6 HIGH: focus stealing | ADDRESSED IN PLAN | D3/D5 non-activating observation, two-second idle guard and whole-transaction mutations; execution focus/transaction scenarios |
+16: | 7 MEDIUM: provenance | ADDRESSED IN PLAN | D8 live/synthetic stamps with source/binary/profile hashes; execution provenance rejection scenario |
+17: | 8 MEDIUM: live duplicate/batch proof | ADDRESSED IN PLAN | Test Strategy and 4.1/4.2 use production batch, zero receipt-observation budget, resume/rebind and one matching submitted user turn; self-attested counts labeled separately |
+18: | 9 MEDIUM: app trust/promotion | ADDRESSED IN PLAN | D3 signed TeamIdentifier/version profiles, characterization promotion and update/account invalidation; execution trust scenario. Local signing metadata is explicitly weaker than full validation |
+19: | 10 MEDIUM: bridge boundary | ADDRESSED IN PLAN | D8 closed actions/preconditions, in-process recheck/hit-test, default filtering inside helper and unexpected-dialog refusal; helper and production guard tests |
+20: | 11 MEDIUM: input/write-ahead | ADDRESSED IN PLAN | D3 native/AX set-value then characterized paste, intent before first composer input, full hash/end-marker check and separate Send; multiline interruption scenario |
+21: | 12 MEDIUM: Copy/citation provenance | ADDRESSED IN PLAN | D6 exact pasteboard-change count, report corroboration, actual link targets and conditional clear; two collection provenance scenarios |
+22: | 13 MEDIUM: absence under partial view | ADDRESSED IN PLAN | D6 positive completion predicate plus complete-observation flag; collection incomplete-view refusal test |
+23: | 14 MEDIUM: report/capture trust | ADDRESSED IN PLAN | D6 artifacts outside skill/repository, escaped index, attempt directories; D8 opt-in job-region capture; collection storage/capture test |
+24: | 15 MEDIUM: lock semantics | ADDRESSED IN PLAN | D5 fixed user root independent of checkout/TMP, whole transactions, lock order and revision/fsync checks; cross-process and concurrency tests |
+25: | 16 MEDIUM: evaluations touch live desktop | ADDRESSED IN PLAN | Test Strategy and task 3.3/3.4 require six synthetic-only evaluations with GUI access denied |
+26: | 17 MEDIUM: caller is target app | ADDRESSED IN PLAN | D8 ancestry/window exclusion or block, never quit caller host; execution caller-isolation test and window-only live reopen |
+27: | 18 MEDIUM: helper only compiled | ADDRESSED IN PLAN | D8 actual-helper `doctor --self-test`, task 2.3 and gate header cover labels, coordinates, schema, filtering and guards |
+28: | 19 LOW: download details | ADDRESSED IN PLAN | D6 save-panel preference, before/after snapshot, Downloads access and original preservation |
+29: | 20 LOW: prohibitions only in design | ADDRESSED IN PLAN | Execution Rebind requirement prohibits sharing/publication/account export; Observe requirement prohibits whole-desktop capture |
+30: | 21 LOW: per-job/readiness/batch wording | ADDRESSED IN PLAN | Execution per-job outcomes and readiness for both providers; D5 batch submit/resume/wait/collect and same-provider serialization |
+31: | 22 LOW: evidence process | ADDRESSED IN PLAN | Defined `reviews/code/` lane for security concerns, future `<next>` numbering, indexed validation runs and probe authorization in builds/001 summary |
+32: | 23 LOW: discovery/clients | ADDRESSED IN PLAN | D1 relative canonical link and one-inventory-entry check; task 3.3 verifies actual clients. Other clients and unrequested OpenSpec regeneration are outside scope |
+33: | 24 LOW: research policy/docs link | ADDRESSED IN PLAN | D8 desktop reports are secondary synthesis; OpenSpec fetches primary sources through MCP. New docs are linked from the skill; no AGENTS widening is required |
+34: | 25 LOW: approval receipt | PARTLY ACCEPTED | D7/task 1.3 enumerate public prompt templates, two-submission budget, attended windows and operator grants. Fresh confirmation before each send is rejected: existing task/plan authorization covers ordinary actions within budget |
+35: | 26 LOW: rollback residue | ADDRESSED IN PLAN | Rollback documents optional idle-cache cleanup, active lock-path protection, separate ledger/report deletion authority and manual macOS grant revocation |
+36: | 27 LOW: marker/account/tool versions | ADDRESSED IN PLAN | D2 minimum Python/toolchain preflight, D4 OCR-robust marker/check digit and salted account context |
+37: 
+38: Provider controls, entitlement, runtime scripting, actual input, final-result
+39: predicates, exports and compiled-helper permission identity remain UNVERIFIED.
+40: Task 1.4 resolves feasibility after approval. No fixture or review result can
+41: satisfy the required two-provider live acceptance.
+42: 
+43: After the first delta review, the conductor and runner confirmed a bootstrap
+44: gap: a new empty conversation cannot yet provide a submitted-user-turn marker.
+45: D4/D8 now distinguish verified dedicated-draft authority from submitted-job
+46: authority and revoke draft input after possible Send. The new
+47: `test_pre_send_binding_bootstrap_and_upgrade` covers the transition. This
+48: correction requires its own final independent check; the earlier delta's
+49: APPROVE is qualified by the subsequently identified gap.
+
+DOCUMENT openspec/changes/add-desktop-deep-research/evidence/builds/004-binding-plan-validation/summary.md
+1: # Draft-binding plan validation
+2: 
+3: Date: 2026-10-04. Conductor: GPT-6. JDK: NOT APPLICABLE.
+4: 
+5: Strict OpenSpec 1.3.1 validation passed: one change valid, zero issues.
+6: Current mapping passed for 15 requirements, 42 GIVEN/WHEN/THEN scenarios and
+7: 42 unique named planned tests, including dedicated-draft bootstrap and upgrade.
+8: No missing mappings, private home/temp paths or trailing whitespace were found
+9: in the current planning files. Retained hashes precede index bookkeeping.
+10: 
+11: Build 003 remains the earlier 41-scenario corrected packet. This run checks
+12: the additional binding correction structurally; all production, synthetic and
+13: live tests are still UNRUN. The final independent binding review is separate.
+
+DOCUMENT openspec/changes/add-desktop-deep-research/evidence/builds/004-binding-plan-validation/validation.json
+1: {
+2:   "items": [
+3:     {
+4:       "id": "add-desktop-deep-research",
+5:       "type": "change",
+6:       "valid": true,
+7:       "issues": [],
+8:       "durationMs": 2
+9:     }
+10:   ],
+11:   "summary": {
+12:     "totals": {
+13:       "items": 1,
+14:       "passed": 1,
+15:       "failed": 0
+16:     },
+17:     "byType": {
+18:       "change": {
+19:         "items": 1,
+20:         "passed": 1,
+21:         "failed": 0
+22:       }
+23:     }
+24:   },
+25:   "version": "1.0"
+26: }
+
+DOCUMENT openspec/changes/add-desktop-deep-research/evidence/builds/004-binding-plan-validation/mapping-output.json
+1: {
+2:   "counts": {
+3:     "requirements": 15,
+4:     "scenarios": 42,
+5:     "named_tests": 42
+6:   },
+7:   "missing_or_invalid": [],
+8:   "coverage": "structural planning only; all implementation/live checks UNRUN",
+9:   "packet_hashes": {
+10:     "openspec/changes/add-desktop-deep-research/proposal.md": "545b9d0f96692309183e18e64052fcc53414a58c484e74f594fc821126f033e9",
+11:     "openspec/changes/add-desktop-deep-research/research/README.md": "4f4b32bbf4c2af7378701361eb8357893b59306f692a334bf760633c603826c6",
+12:     "openspec/changes/add-desktop-deep-research/design.md": "82d8a4c5169e17ea4cd4e1413a4de4aded9364a0a8de42b25099bd31a9158416",
+13:     "openspec/changes/add-desktop-deep-research/tasks.md": "4aec3bd1cf04c4cdb5fb5594873637866640c857dcaac3bb7f7bda54cfe6f77f",
+14:     "openspec/changes/add-desktop-deep-research/evidence/README.md": "8c25ac641ab5974c2f9369789cdb6beb379901457197ba4e39b33709e9b63339",
+15:     "openspec/changes/add-desktop-deep-research/specs/desktop-research-collection/spec.md": "02fa4e53de7d0d95de7adcb72aea21823d6cf5c0ab002fdf064bedf30daed609",
+16:     "openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md": "a7e6fac5c7587f52bfb6f44201a906c2e98fc284b14814df446ea6169335e1b5"
+17:   }
+18: }

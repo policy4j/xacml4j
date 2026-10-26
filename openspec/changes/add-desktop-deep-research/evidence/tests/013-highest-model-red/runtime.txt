@@ -1,0 +1,2 @@
+Python 3.14.7
+macOS-26.6.1-arm64-arm-64bit-Mach-O

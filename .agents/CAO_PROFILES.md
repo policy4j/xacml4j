@@ -115,11 +115,16 @@ Team presets (`[[persona_sets]]`):
 | `policy4j-bench-pair` | JMH engineer plus a reviewer from another family | `policy4j_jmh_claude_opus`, `policy4j_jmh_codex_astra` |
 | `policy4j-sol-luna-swarm` | Implementation swarm: Sol 6.1 implementer, Luna 6 test writer, Agy reviewer (add --grok=1:grok-4.7:xhigh for the adversarial lane) | `policy4j_implementer_codex_sol`, `policy4j_test_writer_codex_luna`, `policy4j_code_review_agy` |
 
-Use them from the repository root with `NTM_PROJECTS_BASE` set
-(docs/ai/SWARMS.md):
+Use them from the main checkout `<checkouts>/xacml4j`
+(branch `feature_xacml_20`) with `NTM_PROJECTS_BASE` set to `<checkouts>`,
+its parent (docs/ai/SWARMS.md has POSIX and fish setup). Spawn `xacml4j`
+sessions, named `xacml4j--<label>`. Never spawn `policy4j` with this base:
+that name selects an unrelated repository. Persona names keep the
+`policy4j_` prefix. The donor is `wip/feature_xacml_20-donor` plus tag
+`archive/feature_xacml_20-2026-10-24`; `feature_xacml_20` is the line of work.
 
-- `ntm spawn policy4j --label <label> --persona=policy4j_code_review_claude_opus --persona=policy4j_code_review_codex_astra`
-- `ntm spawn policy4j --label <label> --profile-set policy4j-review-team --grok=1:grok-4.7:xhigh --kimi=1:kimi-code/k3`
+- `ntm spawn xacml4j --label <label> --persona=policy4j_code_review_claude_opus --persona=policy4j_code_review_codex_astra`
+- `ntm spawn xacml4j --label <label> --profile-set policy4j-review-team --grok=1:grok-4.7:xhigh --kimi=1:kimi-code/k3`
 
 Limits:
 

@@ -6,8 +6,8 @@ record results as evidence.
 
 ## Current state
 
-- Implementation follows `modernize-core-for-jdk28-valhalla` on the
-  integration branch.
+- Implementation follows `modernize-core-for-jdk28-valhalla` on
+  `feature_xacml_20` (design D1).
 - Stack: JUnit 5 (Jupiter, `junit-bom` 5.14.4) and Mockito 5.24.0.
   Google Truth (1.1.5) and Hamcrest stay.
 - Mockito starts as a JVM agent. The `maven-dependency-plugin` `properties`

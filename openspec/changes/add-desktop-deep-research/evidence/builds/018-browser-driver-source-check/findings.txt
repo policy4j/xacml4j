@@ -1,0 +1,32 @@
+# Lines of playwright-core/lib/coreBundle.js in @playwright/mcp 0.0.73 (playwright-core 1.60.0-alpha-1777669338000), cut to 150 characters.
+# bundle sha256: f634d9d1bc8509ed9412cb25d3c2c0c4e41b1a8489bec93c7378e439fb3c653d
+
+## download listener and handler
+57927:          eventsHelper.addEventListener(p, "download", (download) => {
+57990:      async _downloadStarted(download) {
+57991:        const outputFile2 = await this.context.outputFile({ suggestedFilename: sanitizeForFilePath2(download.suggestedFilename()), prefix: "down
+
+## console log file
+57466:        await import_fs40.default.promises.appendFile(this._file, logLine);
+57933:        this._consoleLog = new LogFile(this.context, wallTime, "console", "Console");
+58012:        this._consoleLog = new LogFile(this.context, wallTime, "console", "Console");
+58034:          this._consoleLog.appendLine(wallTime, message.toString());
+
+## environment configuration
+distinct PLAYWRIGHT_MCP_ variables: 37
+57964:            const { default: func } = require(initPage);
+65423:  const initPage = envToString(e.PLAYWRIGHT_MCP_INIT_PAGE);
+
+## evaluate tool schema
+59406:    evaluateSchema = optionalElementSchema.extend({
+59413:        name: "browser_evaluate",
+
+## default launch switches
+32165:      "--password-store=basic",
+32166:      "--use-mock-keychain",
+
+## library options
+19960:      ignoreDefaultArgs: tOptional(tArray(tString)),
+19989:      ignoreDefaultArgs: tOptional(tArray(tString)),
+strict mode violation message present: 1 line
+20050:      acceptDownloads: tOptional(tEnum(["accept", "deny", "internal-browser-default"])),

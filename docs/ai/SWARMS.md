@@ -145,20 +145,31 @@ Known provider issues (details in `.agents/CAO_PROFILES.md`):
 ## NTM procedure
 
 NTM maps a session name to `<projects_base>/<name>`. Swarms for this
-project (policy4j) run in the integration worktree
-`<checkouts>/xacml4j-worktrees/policy4j` (branch
-`integration/modernize-core-jdk28-valhalla`), so set the base to the
-worktree directory and name sessions `policy4j`:
+project run in the main checkout `<checkouts>/xacml4j` (branch
+`feature_xacml_20`). Set `NTM_PROJECTS_BASE` to `<checkouts>`, the parent
+of the main checkout, and name sessions `xacml4j`. Run the setup from the
+main checkout, then check the base: the check fails when the base points
+elsewhere (the user config's `projects_base` is not this directory).
+
+POSIX shells:
 
 ```sh
-export NTM_PROJECTS_BASE="$(dirname "$(git rev-parse --show-toplevel)")"   # run from the worktree
+export NTM_PROJECTS_BASE="$(dirname "$(rtk git rev-parse --show-toplevel)")"
+test "$(rtk git -C "$NTM_PROJECTS_BASE/xacml4j" rev-parse --abbrev-ref HEAD)" = feature_xacml_20 && echo base-ok
 ```
 
-Never set `NTM_PROJECTS_BASE` to the parent of the worktrees directory for a
-`policy4j` session: a separate, unrelated repository named `policy4j` lives
-there, and NTM would start the agents in it. The original checkout
-(`xacml4j`, branch `feature_xacml_20`) is the donor tree; its work is
-preserved on branch `wip/feature_xacml_20-donor`.
+fish:
+
+```fish
+set -gx NTM_PROJECTS_BASE (dirname (rtk git rev-parse --show-toplevel))
+test (rtk git -C "$NTM_PROJECTS_BASE/xacml4j" rev-parse --abbrev-ref HEAD) = feature_xacml_20; and echo base-ok
+```
+
+Never spawn a session named `policy4j` with this base: a separate,
+unrelated repository named `policy4j` lives in `<checkouts>`, and NTM
+would start the agents in it. `feature_xacml_20` is the line of work; the
+donor is `wip/feature_xacml_20-donor` plus tag
+`archive/feature_xacml_20-2026-10-24`.
 
 Project personas live in `.ntm/personas.toml`, generated with the CAO
 profiles by `scripts/gen-cao-profiles.py` (matrix and limits in
@@ -169,18 +180,19 @@ Terra, Codex Sol 6.1, and Agy. Grok and Kimi have no persona. The same role prom
 `.ntm/roles/policy4j_<category>.md`. List them with `ntm personas list`.
 
 Spawn one labeled session per change and group. Session names come out as
-`policy4j--<label>`:
+`xacml4j--<label>`:
 
 ```sh
+# Session name xacml4j, never policy4j (that name selects the unrelated repository)
 # Implementers in isolated worktrees (branch ntm/<session>/<agent> each)
-ntm spawn policy4j --label <change>-g<N> --profile-set policy4j-implement-team --worktrees --verify-boot
+ntm spawn xacml4j --label <change>-g<N> --profile-set policy4j-implement-team --worktrees --verify-boot
 
 # Review gate in the shared tree, plus Grok and Kimi lanes without personas
-ntm spawn policy4j --label <change>-g<N>-review --profile-set policy4j-review-team \
+ntm spawn xacml4j --label <change>-g<N>-review --profile-set policy4j-review-team \
   --grok=1:grok-4.7:xhigh --kimi=1:kimi-code/k3 --verify-boot
 
 # Any mix of personas
-ntm spawn policy4j --label <label> --persona=policy4j_test_writer_claude_opus \
+ntm spawn xacml4j --label <label> --persona=policy4j_test_writer_claude_opus \
   --persona=policy4j_test_review_codex_terra --verify-boot
 ```
 
@@ -194,11 +206,12 @@ Kimi panes. (Codex needs the NTM Codex launch template that passes
 Then wait:
 
 ```sh
-ntm send policy4j--<label> --pane=1 --file <packet-1.md>        # Claude or Codex pane
-ntm send policy4j--<label> --pane=3 --base-prompt-file .ntm/roles/policy4j_code_review.md --file <packet-3.md>   # Agy, Grok, Kimi
-ntm wait policy4j--<label> --until=idle --timeout=60m --exit-on-error
-ntm status policy4j--<label>
-ntm save policy4j--<label> --all -o "${TMPDIR:-/tmp}/ntm-<label>"   # raw pane dumps for fan-in
+ntm send xacml4j--<label> --pane=1 --file <packet-1.md>        # Claude or Codex pane
+ntm send xacml4j--<label> --pane=3 --base-prompt-file .ntm/roles/policy4j_code_review.md --file <packet-3.md>   # Agy, Grok, Kimi
+ntm wait xacml4j--<label> --until=idle --timeout=60m --exit-on-error
+ntm status xacml4j--<label>
+ntm save xacml4j--<label> --all -o "${TMPDIR:-/tmp}/ntm-<label>"   # raw pane dumps for fan-in
+# fish: ntm save xacml4j--<label> --all -o $TMPDIR/ntm-<label>
 ```
 
 - A first Agy launch in this directory stops on Antigravity's "Do you
@@ -211,7 +224,7 @@ ntm save policy4j--<label> --all -o "${TMPDIR:-/tmp}/ntm-<label>"   # raw pane d
 - `ntm save` writes to `./outputs` by default; always pass `-o` outside
   the repository. Pane dumps are raw input for the conductor, not
   evidence: copy only each lane's final report into the change.
-- `ntm conflicts policy4j--<label>` shows files that several agents
+- `ntm conflicts xacml4j--<label>` shows files that several agents
   touched; stop and reassign if it lists anything.
 - `ntm spawn ... --assign` hands ready beads issues to agents; use it only
   when the ready issues touch disjoint files.
@@ -220,7 +233,7 @@ ntm save policy4j--<label> --all -o "${TMPDIR:-/tmp}/ntm-<label>"   # raw pane d
   maintainer asks. Merging is a git write.
 - Do not run `ntm init` in this repository without the maintainer's
   approval; it installs git hooks.
-- Finish with `ntm kill policy4j--<label>` and `ntm worktrees clean` once the
+- Finish with `ntm kill xacml4j--<label>` and `ntm worktrees clean` once the
   maintainer has taken what they want from the worktrees.
 
 ## Conductor checklist

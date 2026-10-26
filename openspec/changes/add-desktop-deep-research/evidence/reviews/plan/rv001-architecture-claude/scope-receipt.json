@@ -1,0 +1,16 @@
+{
+  "reviewed_snapshot": {
+    "proposal.md": "ade68a6662998fb320e2cf16f14921b8bd9269d052e91cdf35804ee1e5c8d158",
+    "design.md": "b2da9982db4e0e765dcacfd80491edb46e05398d3c219caf2bd173240d014eb1",
+    "tasks.md": "ee87788b91ceb375ab9d3eb246be73a83bde629468416198929ed444072b97e4",
+    "research/README.md": "4cc9722f1fb96bc663cb4c068d53c3a0031a311e6759d36dd343427af8a837c1",
+    "specs/desktop-research-execution/spec.md": "001c4d866f932f1a08ac3210e5383969528fd849f45f1efac812df7a138e12eb",
+    "specs/desktop-research-collection/spec.md": "63991cf6f97c0cca4f864727880a081f8cb2dc2faea1e4c21580fecdadf4feb7",
+    "evidence/README.md": "10dcbfcf512cffb2066c64ef7d29d751a94417c372faa60dce1244ec282a0d51"
+  },
+  "conductor_edits_during_review": {
+    "design.md": "e46023364d9b596310da8d648b46bebb27f2cfa006ab9f8ff0c2ae8a7cedb367",
+    "research/README.md": "19c3f35e5a442c8c9f2b25d38557f291ec4011dba16f54d22bb943f1f8451c1d"
+  },
+  "qualification": "The Claude report assesses the 16:40 UTC packet snapshot. Conductor subsequently updated design and research. Capability/evidence facts must be adjudicated against the current artifacts; no automatic second review was started."
+}

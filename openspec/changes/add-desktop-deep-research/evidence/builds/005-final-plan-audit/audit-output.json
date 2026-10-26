@@ -1,0 +1,18 @@
+{
+  "planning_checked_tasks": [
+    "1.1",
+    "1.2"
+  ],
+  "unchanged_semantic_inputs": [
+    "openspec/changes/add-desktop-deep-research/proposal.md",
+    "openspec/changes/add-desktop-deep-research/research/README.md",
+    "openspec/changes/add-desktop-deep-research/design.md",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-collection/spec.md",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md"
+  ],
+  "production_files_absent": true,
+  "provider_research_submissions": 0,
+  "reviewer_lanes_terminal": true,
+  "errors": [],
+  "coverage": "final planning bookkeeping only; full objective pending approval and implementation"
+}

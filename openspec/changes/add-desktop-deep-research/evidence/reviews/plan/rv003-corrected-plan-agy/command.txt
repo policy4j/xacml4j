@@ -1,0 +1,2 @@
+agy --conversation cdca3d8e-3cb4-4bf8-893e-71c06792f52d --mode plan --sandbox --model gemini-3.1-pro-high --output-format stream-json --print-timeout 180s --print "<literal contents of prompt.txt>"
+See invocation.json for the exact argv prefix; this display uses the retained prompt file in place of its inline argument. Paths are normalized.

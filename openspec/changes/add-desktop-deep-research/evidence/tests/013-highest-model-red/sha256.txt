@@ -1,0 +1,3 @@
+6f0c13fa3dbde448ab7a49c0c82a81a64041c80919fef8e1af6c25936b48f8f7  .agents/skills/desktop-deep-research/tests/test_execution.py
+5eeb0be43c941a674eb5a2e1552809f215308c8b301f2712089d34b86d12afe8  .agents/skills/desktop-deep-research/scripts/desktop_research.py
+0817181b6b712993da6d5109fe41ebe1c2737579d3d7fff07750af7d9dffe1a2  openspec/changes/add-desktop-deep-research/evidence/tests/013-highest-model-red/execution-red.txt

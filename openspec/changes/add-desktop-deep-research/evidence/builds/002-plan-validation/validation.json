@@ -1,0 +1,5 @@
+{
+  "items": [{"id": "add-desktop-deep-research", "type": "change", "valid": true, "issues": [], "durationMs": 1}],
+  "summary": {"totals": {"items": 1, "passed": 1, "failed": 0}, "byType": {"change": {"items": 1, "passed": 1, "failed": 0}}},
+  "version": "1.0"
+}

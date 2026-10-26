@@ -1,0 +1,57 @@
+{
+  "chatgpt": {
+    "accessibility_trusted": true,
+    "allowlisted_controls": [
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 20,
+        "path": "app/0/0/0/0/0/0/0/0/0/0/0/1/0/1/1/0/0/1/0/1",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "727cfe349b9a59ef16f18641b1f14bfe03d7e7ffa22a395332a5942a4c3d68bf",
+        "value_length": 15,
+        "w": 72,
+        "x": 1626,
+        "y": 1083
+      },
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 44,
+        "path": "app/1/0/0/0/0/0/0/0/0/0/0/0/1/3/1/0/0/0/0/0/0/0/0/1/0/1/1/0/0/0",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "fb280cd67734099f9b808ae0b1bf551f41c4eab3dbe9eab16d8b58cc01301360",
+        "value_length": 12,
+        "w": 713,
+        "x": 621,
+        "y": 912
+      },
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 44,
+        "path": "app/2/0/0/0/0/0/0/0/0/0/0/0/1/3/1/0/0/0/0/0/0/0/1/0/0/1/0/3/0/0/0/0",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "fb280cd67734099f9b808ae0b1bf551f41c4eab3dbe9eab16d8b58cc01301360",
+        "value_length": 12,
+        "w": 508,
+        "x": -1979,
+        "y": 789
+      }
+    ],
+    "any_input_idle_seconds": 21.745246458,
+    "nodes": 2734,
+    "provider": "chatgpt",
+    "truncated": false
+  },
+  "claude": {
+    "chunk_id": "39cf91",
+    "wall_time_seconds": 0.525518875,
+    "exit_code": 0,
+    "original_token_count": 114,
+    "output": "{\"provider_state\": \"COMPLETED\", \"collection_state\": \"COLLECTED\", \"report_hash_matches\": true, \"attempts\": 1, \"restoration\": {\"connector_toggles_restored\": 10, \"connector_verification_evidence\": \"scoped fresh AX inventory after ten guarded native changes\", \"global_settings_changed\": false, \"memory_restoration\": \"UNOBSERVABLE_AFTER_SUBMISSION_CONTROL_NOT_EXPOSED\", \"research_restored_off\": true, \"timestamp\": 1791141017.0311599}, \"copy_change_delta\": 1}\n"
+  }
+}

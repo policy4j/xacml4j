@@ -1,0 +1,27 @@
+[INFO] Xacml4J Project                                                    [pom]
+[INFO] Xacml4J Core Engine Implementation                                 [jar]
+[INFO] Xacml4J XML representation JAXB classes                            [jar]
+[INFO] Xacml XML representation marshallers                               [jar]
+[INFO] Xacml4J Json based request/response and policy format support      [jar]
+[INFO] Xacml4J PDP                                                        [jar]
+[INFO] Xacml4J Policy Unit Test Support                                   [jar]
+[INFO] Xacml4J Conformance Tests                                          [jar]
+[WARNING] Tests run: 6501, Failures: 0, Errors: 0, Skipped: 2
+[INFO] Tests run: 253, Failures: 0, Errors: 0, Skipped: 0
+[WARNING] Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+[WARNING] Tests run: 195, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+[WARNING] Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  1.186 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [ 12.550 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.954 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  3.495 s]
+[INFO] Xacml4J Json based request/response and policy format support SUCCESS [  1.141 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  4.678 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  2.010 s]
+[INFO] Xacml4J Conformance Tests .......................... SUCCESS [  8.514 s]
+[INFO] BUILD SUCCESS
+start 2026-10-24T23:52:52-0400
+exit=0
+end 2026-10-24T23:53:29-0400

@@ -778,11 +778,16 @@ Team presets (`[[persona_sets]]`):
 | --- | --- | --- |
 {sets}
 
-Use them from the repository root with `NTM_PROJECTS_BASE` set
-(docs/ai/SWARMS.md):
+Use them from the main checkout `<checkouts>/xacml4j`
+(branch `feature_xacml_20`) with `NTM_PROJECTS_BASE` set to `<checkouts>`,
+its parent (docs/ai/SWARMS.md has POSIX and fish setup). Spawn `xacml4j`
+sessions, named `xacml4j--<label>`. Never spawn `policy4j` with this base:
+that name selects an unrelated repository. Persona names keep the
+`{PREFIX}_` prefix. The donor is `wip/feature_xacml_20-donor` plus tag
+`archive/feature_xacml_20-2026-10-24`; `feature_xacml_20` is the line of work.
 
-- `ntm spawn policy4j --label <label> --persona={PREFIX}_code_review_claude_opus --persona={PREFIX}_code_review_codex_astra`
-- `ntm spawn policy4j --label <label> --profile-set {PREFIX}-review-team --grok=1:grok-4.7:xhigh --kimi=1:kimi-code/k3`
+- `ntm spawn xacml4j --label <label> --persona={PREFIX}_code_review_claude_opus --persona={PREFIX}_code_review_codex_astra`
+- `ntm spawn xacml4j --label <label> --profile-set {PREFIX}-review-team --grok=1:grok-4.7:xhigh --kimi=1:kimi-code/k3`
 
 Limits:
 

@@ -1,0 +1,11 @@
+{
+  "report.md": "e7978532ae33d48ff0963c3d9c2137fcd8821e086e75a484cc3c2b5f0d13221e",
+  "prompt.txt": "306146adbb615a6cf7eee4aebf241a032fa08c98203c850ec327952e9ef58f89",
+  "invocation.json": "abf69875e1fd33408da70750680c35184b9a6018482668529b6817b5e32c7a3c",
+  "exit.json": "f50143e0f5269b18c6e0fa3f8c1e22c4e4f8b03896c4df2e6a45503ade9e8467",
+  "packet-hashes-before.json": "e07fc5506fb619bbd75f1ad85cf82619cd2b5882c4c5aa7d1bed3b0a53d4e5fd",
+  "packet-hashes-after.json": "e07fc5506fb619bbd75f1ad85cf82619cd2b5882c4c5aa7d1bed3b0a53d4e5fd",
+  "model-receipt.json": "04add5a6db80b0095c2594d7474c828575cf36b4a389ef055e4f0b1ed102d8e5",
+  "session-receipt.json": "185274e2e543d7f5ea799b8c83873d2f7c371812faf2fc8cda43dfe35bbf585a",
+  "receipt-checks.json": "fb4eff94821e8bae256c2e4c1db5b04e5c66d65160314eb8fa616be1553fa6c7"
+}

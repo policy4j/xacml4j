@@ -1,0 +1,8 @@
+{
+  "chunk_id": "4b834d",
+  "wall_time_seconds": 0.41792325,
+  "exit_code": 0,
+  "original_token_count": 104,
+  "output": "{\n  \"result\": \"COLLECTED\",\n  \"report_path\": \"<USER_HOME>/Library/Application Support/desktop-deep-research/reports/claude-DRC-7UH3F2EPV7W9A/report.md\",\n  \"bytes\": 19011,\n  \"sha256\": \"2f404a2f040846d2fe25f7508c71b890e193b34d43e9d23e6b1633201b1e1469\",\n  \"cited_sources\": 20,\n  \"native_targets\": 25,\n  \"clipboard_restored\": true,\n  \"submission_count\": 1,\n  \"native_PDF_DOCX_exports\": \"UNRUN\"\n}\n",
+  "normalization": "User home path redacted; original report hashes and results unchanged"
+}

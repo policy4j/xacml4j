@@ -1,0 +1,36 @@
+# rv094 plan review, 2026-10-24 (<checkouts> is the directory that holds the checkouts)
+# CLI versions: cli-versions.txt (taken after the run; Grok 1.0.67 and Kimi 2.2.0 ran then, both
+# updated themselves later the same evening)
+
+# Kimi lane check before the run, Kimi CLI 2.2.0 (failed). The same error came for
+# -m kimi-code/kimi-for-coding earlier the same day, and again at 23:31 with Kimi 2.3.1.
+kimi -p "Reply with the single word OK." -m kimi-code/k3.1-pro --output-format text
+#   error: failed to run prompt: provider.auth_error: 403 Your current subscription does not
+#   have access to Kimi Code right now. Upgrade your plan to keep coding with Kimi Code
+
+# Session (from the worktree)
+NTM_PROJECTS_BASE=<checkouts>/xacml4j-worktrees \
+  ntm spawn policy4j --label landing-plan --no-user --safety --verify-boot \
+  --persona=policy4j_arch_review --persona=policy4j_arch_review_codex_sol \
+  --persona=policy4j_arch_review_codex_astra \
+  --agyx=1:gemini-4-argon-high --grok=1:grok-4.7:xhigh
+
+# Packets (packets/L1-L5); Agy and Grok got the role prompt in front
+ntm send policy4j--landing-plan --pane=<n> --file packets/<lane>.md
+ntm send policy4j--landing-plan --pane=<n> --base-prompt-file .ntm/roles/policy4j_arch_review.md --file packets/<lane>.md
+
+# Reports were taken from each CLI's session record, between
+# "FINAL REPORT (" and "END FINAL REPORT L<n>": Claude project JSONL,
+# Codex rollout JSONL, Grok chat_history.jsonl, Agy conversation store.
+ntm kill policy4j--landing-plan --force
+
+# Conductor checks of lane findings
+git ls-files --others --ignored --exclude-standard -- openspec    # 146 *.log, 580.4 MiB
+git check-ignore -v <evidence>/x.log                             # global ignore rule *.log
+git grep -l -I -e '<home path>' integration/modernize-core-jdk28-valhalla -- .   # 203 files
+git log --format=%h -G'<home path>' a8a90d46..integration/modernize-core-jdk28-valhalla   # dd1320e2, 97d4fe37
+git hash-object <main>/.serena/project.yml <worktree>/.serena/project.yml   # both 14ce71e3
+
+# git reset --keep probe in a scratch repository (OLD: p, t, c; local edit of t; untracked u)
+#   target keeps t and c unchanged -> exit 0; t keeps the local edit; u kept; p updated
+#   target lacks t and c           -> "error: Entry 't' not uptodate. Cannot merge."; nothing changed

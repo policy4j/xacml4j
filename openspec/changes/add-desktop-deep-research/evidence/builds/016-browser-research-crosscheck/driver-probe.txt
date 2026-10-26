@@ -1,0 +1,9 @@
+# npm registry view, 2026-10-09 (registry host removed)
+{
+  "version": "0.0.73",
+  "dist.integrity": "sha512-2hq+nPq8esA3mi3bjEpBH5A3LkVqnSCJXw7NO2N7frJTzKsu8qdTQyvPl1jk83rPuIY6ALCdEBI60tdTODeNEA=="
+}
+newest version: 0.0.83
+installed package.json: name=@playwright/mcp version=0.0.73 license=Apache-2.0 bin=playwright-mcp engines.node>=18
+installed dependencies: playwright 1.60.0-alpha-1777669338000, playwright-core 1.60.0-alpha-1777669338000
+help output sha256: 6a233190a75d3576357a2cfacba2689df99bdd8c2a39332429932014d32987f8

@@ -76,6 +76,16 @@ where it is correct.
   with the staged and unstaged work as separate commits, plus a patch file
   outside the repo. Nothing is reset or deleted without the maintainer's
   explicit approval.
+- Landing (maintainer ruling 2026-10-24): after phase 4, the integration
+  line replaces `feature_xacml_20` instead of waiting until the end. The
+  landing commit also carries the feature-only agent tooling, the beads
+  export, and the `add-desktop-deep-research` change. The old tip
+  `a0ec4683` stays as tag `archive/feature_xacml_20-2026-10-24`.
+  Phases 5-10 continue on `feature_xacml_20`. The donor rule is unchanged:
+  code comes from `wip/feature_xacml_20-donor` in reviewed slices, and task
+  7.3 confirms that no donor hunk is left unreviewed. A merge commit was
+  rejected because it would make `1b1e67ac` an ancestor and make the 2023
+  rewrite look merged although phases 5-7 re-apply it by hand.
 
 ### D2. Green slices with a fixed gate
 
@@ -229,6 +239,35 @@ expression has no data type when the policy is loaded.
 
 Task 6.1 carries `DynamicType` over to `ValueExprType`.
 
+### D13. Generic bounds of the value-type API
+
+Added 2026-10-24 (task 5.6, bead `policy4j-the.5.6`, evidence runs 087 and
+rv098).
+
+`Value<T>` is a `Supplier<T>`, so its `T` is the payload type. A bound
+`<T extends Value<T>>` accepts only self-valued types (`RFC822Name` is a
+`SelfValue<RFC822Name>`) and rejects values that wrap a payload
+(`BooleanVal` is a `Value<Boolean>`), so the typed call sites did not
+compile; raw types hid this. `Value<?>` accepts both kinds.
+
+- `ValueType.ofAny` and `DynamicType.ofAny` take `<T extends Value<?>>`;
+  `ValueType` is a `Function<Object, Value<?>>`.
+- The capability family is self-typed: `forType`, `discoverCapabilities`,
+  `AbstractCapabilityFactory`, and `TypeCapabilityFactory` take
+  `T extends TypeCapability<T>`; `TypeToString`, `TypeToGSon`, and
+  `TypeToXacml30` take and return `Value<?>`.
+- Compatibility: the erasures do not change, so compiled callers keep
+  working. Some source callers need a change: `ValueType` was a
+  `Function<Object, Value>` with a raw `Value`, and generic arguments are
+  invariant, so
+  `Function<Object, Value> f = XacmlTypes.STRING;` no longer compiles;
+  write `Function<Object, Value<?>>`. Every call site in the reactor
+  compiles. Behavior does not change (gate run 087: 8,009 tests, 0
+  failures; conformance unchanged).
+- Rejected: keeping raw types (they hide wrong pairings of a type and its
+  capability), and waiting for task 5.3 (the facade of D5 builds on these
+  signatures).
+
 ## Risks / Trade-offs
 
 - [Re-applying the refactor loses useful donor work] → Keep the donor branch
@@ -256,19 +295,23 @@ Task 6.1 carries `DynamicType` over to `ValueExprType`.
 1. Preserve the donor (branch + patch) with the maintainer's approval.
 2. Create the integration branch from `a8a90d46`; land the baseline,
    test-stack, conformance, and safety-net phases.
-3. Land refactor slices, each green.
-4. Land the JDK 28 bump, then value-class families.
-5. Merge the integration branch back to `feature_xacml_20` (or replace it)
-   only after the maintainer confirms the donor has no remaining unique
-   work.
+3. After phase 4, land the integration line by moving `feature_xacml_20`
+   to it (D1, task 10.1). Keep the old tip as tag
+   `archive/feature_xacml_20-2026-10-24` and keep
+   `wip/feature_xacml_20-donor` until task 7.3 confirms that no donor hunk
+   is left unreviewed.
+4. Land refactor slices on `feature_xacml_20`, each green.
+5. Land the JDK 28 bump, then value-class families on `feature_xacml_20`.
 
-Rollback: every phase is a separate commit series on the integration
-branch; the donor branch and `a8a90d46` stay untouched.
+Rollback: every phase is a separate commit series, on the integration
+line through phase 4 and on `feature_xacml_20` after the landing; the old
+tip stays in `archive/feature_xacml_20-2026-10-24`, the donor branch stays
+until task 7.3, and `a8a90d46` stays untouched.
 
 ## Open Questions
 
-- Should the integration branch replace `feature_xacml_20`, or merge into
-  it after completion?
+- Resolved 2026-10-24 by D1: the integration line replaces
+  `feature_xacml_20` after phase 4; no merge commit.
 - Should `integer-divide` change from `double` to `xs:integer` results as
   the specification requires, given any external callers of the current
   behavior?

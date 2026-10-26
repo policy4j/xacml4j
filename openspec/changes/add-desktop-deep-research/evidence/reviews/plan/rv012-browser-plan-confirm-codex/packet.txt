@@ -1,0 +1,4 @@
+# The packet was the prompt header followed by: design decisions D1 to D15 with the test strategy, execution plan, risks, migration and open questions; the browser spec; task group 5; the proposal; and the Result sections of the summaries of rv005 to rv011. All as they were in the third version.
+packet bytes: 123656
+packet sha256: 18c2b508035aeed20f7e27f0f8653b06a9d59bbff641670dfb61ab0f2d2af8a2
+private-string check (home path, user name, host, mail address): 0 matches

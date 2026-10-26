@@ -1,0 +1,22 @@
+# Landing review runs rv095-rv098, 2026-10-24 and 2026-10-25, from the integration worktree
+# (<checkouts> is the directory that holds the checkouts)
+
+NTM_PROJECTS_BASE=<checkouts>/xacml4j-worktrees \
+  ntm spawn policy4j --label landing-review --no-user --safety --verify-boot \
+  --persona=policy4j_code_review --persona=policy4j_code_review_codex_astra \
+  --agyx=1:gemini-4-argon-high --grok=1:grok-4.7:xhigh
+# The first spawn stopped (a pane still ran its shell startup); the second created all four
+# agents. NTM's start prompt reached every pane; each was interrupted (Escape, Ctrl+C for Grok)
+# before the packets were sent.
+
+# Round 1 (round1-prompt.md); Agy and Grok got the role prompt in front
+ntm send policy4j--landing-review --pane=2 --file <R1 packet>      # Claude Opus 5.5
+ntm send policy4j--landing-review --pane=3 --file <R4 packet>      # Codex GPT-6-Astra
+ntm send policy4j--landing-review --pane=0 --base-prompt-file .ntm/roles/policy4j_code_review.md --file <R2 packet>   # Agy
+ntm send policy4j--landing-review --pane=1 --base-prompt-file .ntm/roles/policy4j_code_review.md --file <R3 packet>   # Grok
+# Rounds 2 and 3 (roundN-prompt.md) went to the same panes.
+
+# Reports: between "FINAL REVIEW (" and "END FINAL REVIEW <lane>", taken from each CLI's session
+# record (Claude project JSONL, Codex rollout JSONL, Grok chat_history.jsonl, Agy conversation
+# store). Grok tool calls were approved one at a time, read-only only.
+ntm kill policy4j--landing-review --force

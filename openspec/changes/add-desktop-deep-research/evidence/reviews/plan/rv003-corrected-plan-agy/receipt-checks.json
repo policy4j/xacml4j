@@ -1,0 +1,12 @@
+{
+  "terminal_status": "SUCCESS",
+  "marker_exact": true,
+  "step_type_counts": {
+    "user_input": 1,
+    "system_message": 1,
+    "checkpoint": 1,
+    "agent_response": 154
+  },
+  "packet_unchanged": true,
+  "prompt_sha256": "306146adbb615a6cf7eee4aebf241a032fa08c98203c850ec327952e9ef58f89"
+}

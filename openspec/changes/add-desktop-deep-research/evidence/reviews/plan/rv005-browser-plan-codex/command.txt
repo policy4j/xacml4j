@@ -1,0 +1,7 @@
+# Review rv005, 2026-10-09. Run from an empty scratch directory that held
+# only the packet. The packet had no home path, user name, host or address.
+
+rtk proxy codex --version                      # codex-cli 0.162.1
+rtk proxy codex exec -s read-only --skip-git-repo-check - < packet.md > out 2> err
+
+# Wall time about four minutes. Exit status 0.

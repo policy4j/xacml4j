@@ -1,0 +1,18 @@
+{
+  "counts": {
+    "requirements": 15,
+    "scenarios": 42,
+    "named_tests": 42
+  },
+  "missing_or_invalid": [],
+  "coverage": "structural planning only; all implementation/live checks UNRUN",
+  "packet_hashes": {
+    "openspec/changes/add-desktop-deep-research/proposal.md": "545b9d0f96692309183e18e64052fcc53414a58c484e74f594fc821126f033e9",
+    "openspec/changes/add-desktop-deep-research/research/README.md": "4f4b32bbf4c2af7378701361eb8357893b59306f692a334bf760633c603826c6",
+    "openspec/changes/add-desktop-deep-research/design.md": "82d8a4c5169e17ea4cd4e1413a4de4aded9364a0a8de42b25099bd31a9158416",
+    "openspec/changes/add-desktop-deep-research/tasks.md": "4aec3bd1cf04c4cdb5fb5594873637866640c857dcaac3bb7f7bda54cfe6f77f",
+    "openspec/changes/add-desktop-deep-research/evidence/README.md": "8c25ac641ab5974c2f9369789cdb6beb379901457197ba4e39b33709e9b63339",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-collection/spec.md": "02fa4e53de7d0d95de7adcb72aea21823d6cf5c0ab002fdf064bedf30daed609",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md": "a7e6fac5c7587f52bfb6f44201a906c2e98fc284b14814df446ea6169335e1b5"
+  }
+}

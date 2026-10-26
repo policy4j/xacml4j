@@ -1,0 +1,36 @@
+test_authorized_plan_can_start_research (test_execution.ExecutionContract.test_authorized_plan_can_start_research) ... ok
+test_batch_preserves_per_provider_outcomes (test_execution.ExecutionContract.test_batch_preserves_per_provider_outcomes) ... ok
+test_batch_rerun_resumes_without_resubmission (test_execution.ExecutionContract.test_batch_rerun_resumes_without_resubmission) ... ok
+test_bridge_guard_schema_and_modal_handling (test_execution.ExecutionContract.test_bridge_guard_schema_and_modal_handling) ... ok
+test_concurrent_job_updates_keep_state (test_execution.ExecutionContract.test_concurrent_job_updates_keep_state) ... ok
+test_crash_after_send_requires_reconciliation (test_execution.ExecutionContract.test_crash_after_send_requires_reconciliation) ... ok
+test_default_diagnostics_redact_unrelated_data (test_execution.ExecutionContract.test_default_diagnostics_redact_unrelated_data) ... ok
+test_desktop_lock_serializes_processes (test_execution.ExecutionContract.test_desktop_lock_serializes_processes) ... ok
+test_doctor_reports_observed_capabilities (test_execution.ExecutionContract.test_doctor_reports_observed_capabilities) ... ok
+test_focus_change_preserves_draft_and_stops_input (test_execution.ExecutionContract.test_focus_change_preserves_draft_and_stops_input) ... ok
+test_intent_and_multiline_entry_guard_send (test_execution.ExecutionContract.test_intent_and_multiline_entry_guard_send) ... ok
+test_missing_or_ambiguous_rebind_preserves_state (test_execution.ExecutionContract.test_missing_or_ambiguous_rebind_preserves_state) ... ok
+test_mutation_deferred_while_user_active (test_execution.ExecutionContract.test_mutation_deferred_while_user_active) ... ok
+test_pre_send_binding_bootstrap_and_upgrade (test_execution.ExecutionContract.test_pre_send_binding_bootstrap_and_upgrade) ... ok
+test_provider_uncertainty_blocks_across_checkouts (test_execution.ExecutionContract.test_provider_uncertainty_blocks_across_checkouts) ... ok
+test_public_source_selection_is_in_receipt (test_execution.ExecutionContract.test_public_source_selection_is_in_receipt) ... ok
+test_quota_state_does_not_resubmit (test_execution.ExecutionContract.test_quota_state_does_not_resubmit) ... ok
+test_source_selection_side_effects_restored (test_execution.ExecutionContract.test_source_selection_side_effects_restored) ... ok
+test_start_blocks_on_unconstrainable_private_source (test_execution.ExecutionContract.test_start_blocks_on_unconstrainable_private_source) ... ok
+test_start_blocks_when_source_scope_unverifiable (test_execution.ExecutionContract.test_start_blocks_when_source_scope_unverifiable) ... ok
+test_start_blocks_without_research_readiness (test_execution.ExecutionContract.test_start_blocks_without_research_readiness) ... ok
+test_start_requires_observed_receipt (test_execution.ExecutionContract.test_start_requires_observed_receipt) ... ok
+test_start_retry_after_killed_start_does_not_resubmit (test_execution.ExecutionContract.test_start_retry_after_killed_start_does_not_resubmit) ... ok
+test_synthetic_receipts_are_rejected_by_live_audit (test_execution.ExecutionContract.test_synthetic_receipts_are_rejected_by_live_audit) ... ok
+test_target_trust_version_and_caller_isolation (test_execution.ExecutionContract.test_target_trust_version_and_caller_isolation) ... ok
+test_transaction_lock_is_cross_checkout_and_temp_independent (test_execution.ExecutionContract.test_transaction_lock_is_cross_checkout_and_temp_independent) ... ok
+test_transition_table_and_command_ownership (test_execution.ExecutionContract.test_transition_table_and_command_ownership) ... ok
+test_unresolved_question_or_plan_scope_stops (test_execution.ExecutionContract.test_unresolved_question_or_plan_scope_stops) ... ok
+test_wait_polling_never_activates (test_execution.ExecutionContract.test_wait_polling_never_activates) ... ok
+test_wait_timeout_preserves_job_and_resume_does_not_submit (test_execution.ExecutionContract.test_wait_timeout_preserves_job_and_resume_does_not_submit) ... ok
+test_wrong_conversation_blocks_mutation_and_collection (test_execution.ExecutionContract.test_wrong_conversation_blocks_mutation_and_collection) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 1.598s
+
+OK

@@ -6,7 +6,9 @@ Each run holds `summary.md`, `command.txt`, and its raw output. See
 docs/ai/OPENSPEC.md "Evidence".
 
 Work runs on branch `integration/modernize-core-jdk28-valhalla` (worktree
-`<checkouts>/xacml4j-worktrees/policy4j`). The baseline numbers in
+`<checkouts>/xacml4j-worktrees/policy4j`) until the landing of task 10.1;
+after it, on `feature_xacml_20` in the main checkout `<checkouts>/xacml4j`
+(design D1). The baseline numbers in
 `design.md` (Context) come from planning-time probes and are re-recorded by
 task 1.6.
 
@@ -36,6 +38,7 @@ task 1.6.
 | 5.5, 6.7, 7.4 refactor gates | - | pending |
 | 8.4 JDK 28 gate | - | pending |
 | 9.3, 9.4 value-class gates (JMH) | - | pending |
+| 10.1 landing (moved before phase 5 by the maintainer ruling of 2026-10-24, D1) | `reviews/plan/rv094-single-branch-landing`, `builds/087-single-branch-landing-gate`, `reviews/code/rv095` to `rv098` | in progress: port ready, gated (8,009 tests, 0 failures, 18 skipped; conformance 937 with 12 skipped), and approved by four reviewers; the maintainer's commit and branch move (`landing-procedure.md`) pending; push waits for bead policy4j-the.12 |
 
 ## Runs
 
@@ -223,6 +226,12 @@ task 1.6.
 | `builds/085-phase4-gate` | task 4.7 (bead policy4j-the.4.7), 2026-10-08 | clean full reactor on JDK 21; list of the skipped tests and their origin; manifest counts; open beads (see command.txt) | PASS: 7,966 tests, 0 failures, 0 errors, 18 skipped; two registry tests of the closed beads 4.36 and 4.37 were still disabled and run now (16 rows); conformance 937 with 12 skipped; manifest 868 of 880 enabled; JMH unmeasured (decision recorded) |
 | `tests/086-dynamic-type` | bead policy4j-the.4.61 (follow-up of run 083; asked for by the maintainer), 2026-10-09 | research in 15 primary sources; profile text CS03 fetched; tests red then green (two red runs); mutation check of the final code (8 mutations); use sites with ripwire, tgrep and ast-grep; full reactor tests on JDK 21 (see command.txt) | PASS: the bag of a designator function whose data type is an expression has the dynamic type; it is accepted where a bag fits and its value is checked at evaluation before the function is invoked; `all-of-any`, `any-of-all`, `all-of-all` check their operands; a function without parameters takes no argument; 8,009 tests, 0 failures, 18 skipped; conformance 937 with 12 skipped. Limit: the gate is `clean test`, the jars were not built (artifact repository not reachable) |
 | `reviews/code/rv093-dynamic-type-codex` | review run 086 | Codex CLI 0.162.1, adversarial, one round | APPROVE; one LOW finding on a test, closed |
+| `reviews/plan/rv094-single-branch-landing` | task 10.1 plan, 2026-10-24 | five read-only NTM lanes: Claude Opus 5.5, Codex GPT-6.1-Sol, Codex GPT-6-Astra, Agy Gemini 4 Argon, Grok 4.7 (in place of Kimi K3.1 Pro, whose account returned 403) | APPROVE WITH CHANGES from all five: land now by replacing the branch, no merge commit; packet errors corrected (run 070 direction, snapshot parents); 146 ignored logs and the main checkout's uncommitted work kept by the procedure; `.beads/` ported unchanged (a `git reset --keep` probe); push blocked on home paths (bead policy4j-the.12) |
+| `builds/087-single-branch-landing-gate` | task 10.1 port and gate, 2026-10-24 | port lane Codex GPT-6.1-Sol (205 files byte-identical to `a0ec4683`, 6 tracked files); full reactor on JDK 21; both strict validations; agent doctor (see command.txt) | PASS: 8,009 tests, 0 failures, 18 skipped; conformance 937 with 12 skipped; both changes valid; 3 red tests of the desktop change are its run 013 red tests; Serena FAIL from the uncommitted `.serena/project.yml` (`languages` key renamed), not from the port |
+| `reviews/code/rv095-landing-port-claude` | review of run 087, tracked tooling files | Claude Opus 5.5, one round | APPROVE; four LOW findings fixed (checked in rv096 round 2) |
+| `reviews/code/rv096-landing-docs-agy` | review of run 087 and rv094, change docs and evidence | Agy Gemini 4 Argon (High), two rounds | APPROVE in round 2; round 1: three MEDIUM, two LOW, all fixed (receipts, paths, design D13, task order, attributions) |
+| `reviews/code/rv097-landing-procedure-grok` | review of `builds/087-single-branch-landing-gate/landing-procedure.md` | Grok 4.7, adversarial (Kimi K3.1 Pro unavailable, 403), two rounds | APPROVE in round 2; round 1: two HIGH, two MEDIUM, all fixed (fail-closed blocks, tracker backup before the export, `RFC822Name.java` carried before restore, writers stopped) |
+| `reviews/code/rv098-type-capability-generics-codex-astra` | review of task 5.6 code and design D13 | Codex GPT-6-Astra, three rounds | APPROVE in round 3; MEDIUM fixed (`TypeToString.forType` lambda restored); D13 corrected twice; `RFC822Name.java` formatting left to the maintainer; contract test is remaining work |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and
