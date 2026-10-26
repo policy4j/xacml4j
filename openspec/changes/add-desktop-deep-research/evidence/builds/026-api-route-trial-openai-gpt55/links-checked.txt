@@ -1,0 +1,4 @@
+403  https://openai.com/index/introducing-deep-research/?region=united-states  ->  -
+301  https://support.anthropic.com/en/articles/11088861-using-research-on-claude  ->  https://support.claude.com/en/articles/11088861-using-research-on-claude
+403  https://help.openai.com/en/articles/10500283-deep-research-in-chatgpt%EF%BC%89  ->  -
+200  https://support.claude.com/en/articles/16923645-get-started-with-claude-docs  ->  -

@@ -461,8 +461,9 @@ dedicated profile. The other way to meet the maintainer's wording is an
 agent that drives Playwright MCP tools directly, guided by a skill. That is
 far less work. It cannot give the storage rule, the closed output or the
 action guards of this design, and it puts every page the agent sees into the
-agent's context. The choice between the two is the first question of task
-5.2.
+agent's context. The choice between the two was the first question of task
+5.2. The maintainer chose the scripted bridge on 2026-10-10
+(`evidence/final/021-browser-decisions/`).
 
 A provider profile is data: origin, the role and name of each control, the
 conversation address pattern, the completion predicate, the report
@@ -1008,23 +1009,32 @@ specific plugin instead of the built-in modes; otherwise the built-in modes
 remain the stated assumption. Account entitlement, reliable controls, and
 successful collection are live verification obligations, not settled facts.
 
-Browser surface, for the approval of task 5.2:
+Browser surface, decided by the maintainer on 2026-10-10
+(`evidence/final/021-browser-decisions/`). The driver and budget answers
+hold for the case that the surface is built:
 
-- Driver: the scripted bridge on the Playwright library (D10), or an agent
-  that drives Playwright MCP tools directly with weaker guarantees?
-- Scope: are the two cuts of D13 accepted (no report passed to another
-  provider, no second research run in one conversation)?
-- Terms: does the maintainer accept the risk of D14 for each provider? Is
-  biometric authentication the way to give the acknowledgement, and what
-  replaces it on a computer without biometrics?
+- Driver: the scripted bridge on the Playwright library (D10).
+- Scope: both cuts of D13 are accepted.
+- Gemini: through its API only. Gemini leaves the browser surface, so no
+  Google session is put in a driven browser. This overrides the Gemini text
+  of D9, D11 and D14 and of the spec, which is revised with the next plan
+  version.
+- Budget: per provider one characterization run, one acceptance run and one
+  follow-up turn, for Claude and ChatGPT.
+- On a computer without biometric authentication the browser surface is
+  unavailable. Nothing weaker replaces the biometric step of D14.
+
+Browser surface, still open for the approval of task 5.2:
+
+- Terms: does the maintainer accept the risk of D14 for a provider? On
+  2026-10-10 the maintainer first chose to try the programmatic routes of
+  D14 and then took that trial out of this change
+  (`evidence/final/028-api-trial-withdrawn/`). The question is open.
 - Desktop surface: continue as approved, add the same gate as its own
-  task, or stop (D14)?
-- Gemini: is there a Google account used only for this (D11)?
-- Budget: one characterization run, one acceptance run and one follow-up
-  turn per provider is proposed.
+  task, or stop (D14)? It waits with the terms question.
 - Does a browser acceptance run count toward the original two-provider
   desktop objective, in particular for ChatGPT, whose desktop adapter is
-  blocked by the protected draft?
+  blocked by the protected draft? Open.
 - Are separate decision records wanted for the driver boundary and the
   reservation rule (D15)?
 

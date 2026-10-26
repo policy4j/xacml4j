@@ -1,0 +1,8 @@
+1  302  https://help.openai.com/en/articles/10500283-deep-research-in-chatgpt
+2  302  https://openai.com/index/introducing-deep-research/
+3  302  https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool
+4  302  https://claude.com/blog/research
+5  302  https://support.claude.com/en/articles/11088861-use-research-on-claude
+6  302  https://cdn.openai.com/API/docs/deep_research_blog.pdf
+7  302  https://learn.chatgpt.com/docs/web-search
+8  302  https://support.claude.com/en/articles/12138966-release-notes

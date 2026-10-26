@@ -142,3 +142,9 @@ Browser surface: task group 5, issues `policy4j-971.5.1` to
 `policy4j-971.5.14`. The maintainer asked for it on 2026-10-09. That request
 covers research and the plan (task 5.1). The approval of 2026-10-04 does not
 cover browser submissions; task 5.2 records a new one.
+On 2026-10-10 the maintainer decided the driver, the two cuts, Gemini
+through its API only, and the budget
+(`evidence/final/021-browser-decisions/`). A trial of the programmatic
+routes, started the same day, was taken out by the maintainer and is not
+part of this change (`evidence/final/028-api-trial-withdrawn/`). The terms
+question is open. No approval to build the browser surface exists.

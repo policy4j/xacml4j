@@ -1,0 +1,33 @@
+client_model=claude-haiku-5-5
+research_servers=[{"name": "deep-research-mcp", "status": "connected", "source": "user"}, {"name": "deep-research-gemini", "status": "connected", "source": "local"}, {"name": "deep-research-openai-stdio", "status": "connected", "source": "local"}, {"name": "deep-research-openai-55", "status": "connected", "source": "local"}]
+tool_called=True
+tool_input_keys=['query']
+tool_query="Using only public official OpenAI and Anthropic sources, compare ChatGPT Deep Research and Claude Research: available desktop interfaces, initiation, source control, and report export. Include dated citations."
+tool_result_is_error=None
+tool_result_chars=7356
+session_duration_ms=100589
+session_result="DONE"
+session_cost_usd=0.01067042
+envelope=json object with the key result, decoded
+report_chars=7313
+report_written=openai4.report.md
+
+start=2026-10-10 13:15:50 EDT
+exit=0
+end=2026-10-10 13:18:10 EDT
+
+# Report facts
+bytes=7360
+words=909
+headings=6
+table_rows=6
+links_total=12
+links_unique=4
+links_unique_official=4
+links_unique_other=0
+date_mentions=3
+hosts:
+    1  help.openai.com
+    1  openai.com
+    1  support.anthropic.com
+    1  support.claude.com

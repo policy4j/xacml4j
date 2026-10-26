@@ -10,7 +10,12 @@ The browser surface (task group 5, added 2026-10-09) is planned and
 researched only. Its 63 named tests and all of its live checks are UNRUN,
 and nothing of it is implemented. The plan is in its fourth version after
 eight reviews, each of which asked for changes; no reviewer has approved
-it, and the fourth version has not been read by one.
+it, and the fourth version has not been read by one. On 2026-10-10 the
+maintainer decided the driver, the two cuts, Gemini through its API only
+and the budget. A trial of the providers' programmatic routes ran the same
+day (runs 022 to 027) and was then taken out by the maintainer; it is not a
+task or a test of this change (`final/028-api-trial-withdrawn/`). The terms
+question is open. There is no approval to build the surface.
 
 ## Requirements to proof
 
@@ -64,7 +69,7 @@ capability probe is PARTIAL and cannot satisfy any live acceptance requirement.
 | 4.3 | `final/<next>-live-acceptance/`, `reviews/final/rv<next>-<scope>-<lane>/` | UNRUN |
 | 4.4 | `final/<next>-completion-audit/` | UNRUN |
 | 5.1 | `builds/014-browser-surface-research/` to `builds/020-browser-plan-revalidation/`, `reviews/plan/rv005-browser-plan-codex/` to `reviews/plan/rv012-browser-plan-confirm-codex/` | OPEN: eight reviews asked for changes; the plan was revised three times; no approving review exists |
-| 5.2 | `final/<next>-browser-approval/` | UNRUN: waits for the maintainer |
+| 5.2 | `final/021-browser-decisions/`, `final/<next>-browser-approval/` | OPEN: six questions decided; terms, desktop surface, objective and decision records are not; no approval to build |
 | 5.9 | `reviews/code/rv<next>-<scope>-<lane>/`, `tests/<next>-browser-bridge-gate/` | UNRUN |
 | 5.13 | `reviews/code/rv<next>-<scope>-<lane>/`, `tests/<next>-browser-gate/` | UNRUN |
 
@@ -103,6 +108,14 @@ capability probe is PARTIAL and cannot satisfy any live acceptance requirement.
 | `builds/019-browser-plan-revalidation/` | Third plan structural checks | OpenSpec 1.6.0 strict validation; mapping check | PASS: 11 requirements, 60 scenarios and tests, fourteen tasks, no mapping issue; planning structure only |
 | `reviews/plan/rv012-browser-plan-confirm-codex/` | Confirming review of the third plan | Codex CLI one-shot, read-only, packet only | REQUEST_CHANGES: 3 HIGH, 4 MEDIUM, 1 LOW; all accepted; the architecture was found sound in principle |
 | `builds/020-browser-plan-revalidation/` | Fourth plan structural checks | OpenSpec 1.6.0 strict validation; mapping check | PASS: 11 requirements, 63 scenarios and tests, fourteen tasks, no mapping issue; planning structure only |
+| `final/021-browser-decisions/` | Maintainer decisions | Guide in the conversation, then eight questions in the client's question dialog | PARTIAL: driver, cuts, Gemini through its API only, budget, API trial and the rule without biometrics decided; terms and objective not decided; not an approval to build |
+| `builds/022-api-route-trial-openai/` | API route trial, OpenAI, first attempt | One call of the research MCP tool (model `gpt-5.5-pro`), then its status tool; server log and client documentation for the cause | FAILED: no report; the client ended the call at 300 s and the provider task shows failed; says nothing about the route's quality |
+| `builds/023-api-route-trial-openai-headless/` | API route trial, OpenAI, second attempt on the HTTP route | Headless client session with the idle-timeout variable set; gateway log | FAILED: no report; the client ended the call at 300 s again, so the variable does not lift the limit on that route; which timer it is stays UNVERIFIED |
+| `builds/024-api-route-trial-gemini/` | API route trial, Gemini | Headless client session, stdio research server (model `deep-research-preview-04-2026`); redirect links resolved; one page fetched for a content check | PASS for the route: one report after 491 s, 34,885 bytes, 8 sources, all on OpenAI and Anthropic hosts once resolved; citations are redirect links without dates; two statements checked and supported; accuracy otherwise not established |
+| `builds/025-api-route-trial-openai-stdio/` | API route trial, OpenAI, third attempt on a stdio server | Headless client session, stdio research server with a per-server timeout (model `gpt-5.5-pro`) | FAILED: no report; the call ran 432 s without a client cut, and the provider ended the task with `rate_limit_exceeded` (one million tokens per minute for the model); cost not read |
+| `builds/026-api-route-trial-openai-gpt55/` | API route trial, OpenAI, fourth attempt with `gpt-5.5` | Headless client session, stdio research server with a per-server timeout; cited addresses checked; one page fetched for a content check | PASS for the route: one report after 94 s, 7,360 bytes, 4 sources with titles on official hosts; five statements about Claude supported by the cited page, three not on it; accuracy otherwise not established |
+| `builds/027-api-report-claim-check/` | Claims of the two API reports against their cited pages | Eight cited pages fetched with the DuckDuckGo fetch MCP tool | OpenAI report: 14 of 20 claims supported, 3 not on the cited page, 2 uncited; Gemini report: 16 of 22 supported, 1 misapplied (developer API documentation presented as the application's source control), 1 partial |
+| `final/028-api-trial-withdrawn/` | Maintainer instruction | Message in the conversation: "Remove API route from tests" | The trial of the programmatic routes is no task or test of this change; runs 022 to 027 stay as the record of what was run |
 
 Every run retains its summary, command or invocation receipt, and supporting
 output. Actual review runs use fresh numbered children; parent lane paths and

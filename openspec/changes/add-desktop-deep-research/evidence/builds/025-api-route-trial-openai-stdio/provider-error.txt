@@ -1,0 +1,2 @@
+# The tool result of the call, complete. The organization identifier is removed.
+Research failed: Research task failed: ResponseError(code='rate_limit_exceeded', message='Rate limit reached for gpt-5.5-pro in organization org-<removed> on tokens per min (TPM): Limit 1000000, Used 988729, Requested 48026. Please try again in 2.205s. Visit https://platform.openai.com/account/rate-limits to learn more.', misalignment=None, headers={'retry-after': '3', 'retry-after-ms': '2205'})

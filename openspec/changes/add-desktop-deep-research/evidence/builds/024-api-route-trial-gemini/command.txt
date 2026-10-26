@@ -1,0 +1,32 @@
+# Run 024, 2026-10-10, from the repository root. $T is a scratch directory
+# outside the repository; $M is the path of the maintainer's MCP controller.
+
+# Server readiness and wiring (the maintainer asked for the wiring).
+mcp.sh -m deep-research-gemini doctor
+mcp.sh -m deep-research-gemini warm
+rtk proxy claude mcp add deep-research-gemini -- "$M" -m deep-research-gemini exec    # local scope
+
+# The call: one headless client session with one allowed research tool.
+# prompt-gemini.txt tells the session to call
+# mcp__deep-research-gemini__deep_research once with the query below, to
+# call nothing else and not to retry.
+CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT=3600000 MAX_MCP_OUTPUT_TOKENS=200000 \
+MCP_TIMEOUT=120000 MCP_CONNECTION_NONBLOCKING=0 MCP_CONNECT_TIMEOUT_MS=90000 \
+rtk proxy claude -p --model haiku --output-format stream-json --verbose \
+  --allowedTools "mcp__deep-research-gemini__deep_research" "ToolSearch" \
+  < "$T/prompt-gemini.txt" > "$T/gemini.stream.jsonl" 2> "$T/gemini.stderr.txt"
+# The first attempt was the same command without the three connection
+# variables; it ended without a call.
+
+# Query (the acceptance template of final/006-maintainer-approval/ without
+# the job marker; public products only, no private source):
+#   Using only public official OpenAI and Anthropic sources, compare ChatGPT
+#   Deep Research and Claude Research: available desktop interfaces,
+#   initiation, source control, and report export. Include dated citations.
+
+# Afterwards: standard-library Python on the saved stream and report.
+#   extract the tool result and decode the server's JSON wrapper -> report.md
+#   count size, headings, links, hosts, dates                    -> run-facts.txt
+#   HEAD request to each redirect link, redirect not followed    -> citations-resolved.txt
+# One page fetch with the DuckDuckGo fetch MCP tool for the content check:
+#   https://learn.chatgpt.com/docs/web-search

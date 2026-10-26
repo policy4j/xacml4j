@@ -1,0 +1,28 @@
+# Run 026, 2026-10-10, from the repository root. $T is a scratch directory
+# outside the repository; $M is the path of the maintainer's MCP controller.
+
+# Server: the controller's stdio profile deep-research-openai-5-5 with its
+# own model (gpt-5.5), added at local scope with a per-server timeout of
+# two hours.
+rtk proxy claude mcp add-json deep-research-openai-55 \
+  '{"type":"stdio","command":"$M","args":["-m","deep-research-openai-5-5","exec"],"timeout":7200000}'
+
+# The call: one headless client session with one allowed research tool.
+# prompt-openai-55.txt tells the session to call
+# mcp__deep-research-openai-55__deep_research once with the query, to call
+# nothing else and not to retry.
+CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT=7200000 MCP_TOOL_TIMEOUT=7200000 \
+MAX_MCP_OUTPUT_TOKENS=200000 MCP_TIMEOUT=120000 MCP_CONNECTION_NONBLOCKING=0 \
+MCP_CONNECT_TIMEOUT_MS=90000 \
+rtk proxy claude -p --model haiku --output-format stream-json --verbose \
+  --allowedTools "mcp__deep-research-openai-55__deep_research" "ToolSearch" \
+  < "$T/prompt-openai-55.txt" > "$T/openai4.stream.jsonl" 2> "$T/openai4.stderr.txt"
+
+# Query: the same as in builds/022-api-route-trial-openai/command.txt.
+
+# Afterwards: standard-library Python on the saved stream and report.
+#   extract the tool result and decode the server's JSON wrapper -> report.md
+#   count size, headings, links, hosts, dates                    -> run-facts.txt
+#   HEAD request to each cited address, redirect not followed    -> links-checked.txt
+# One page fetch with the DuckDuckGo fetch MCP tool for the content check:
+#   https://support.claude.com/en/articles/11088861-use-research-on-claude

@@ -1,0 +1,24 @@
+# Run 023, 2026-10-10, from the repository root. $T is a scratch directory
+# outside the repository.
+
+# Configuration change the maintainer asked for (a copy of the file was
+# kept first): one line in the "env" block of ~/.claude/settings.json
+#   "CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT": "3600000"
+
+# The call: one headless client session with one allowed research tool.
+# prompt-openai.txt tells the session to call
+# mcp__deep-research-mcp__deep_research once with the query, to call
+# nothing else and not to retry.
+CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT=3600000 MAX_MCP_OUTPUT_TOKENS=200000 \
+rtk proxy claude -p --model haiku --output-format stream-json --verbose \
+  --allowedTools "mcp__deep-research-mcp__deep_research" "ToolSearch" \
+  < "$T/prompt-openai.txt" > "$T/openai.stream.jsonl" 2> "$T/openai.stderr.txt"
+
+# Query: the same as in builds/022-api-route-trial-openai/command.txt.
+
+# Afterwards, read only:
+#   standard-library Python on the saved stream            -> run-facts.txt
+#   the gateway's log, lines of the research route at the
+#   second the call ended, session identifiers removed      -> gateway-log-excerpt.txt
+#   the controller's source for its timeout values and the stanza it emits
+#   the client's documentation (page en/mcp) through its documentation MCP

@@ -1,0 +1,16 @@
+# Run 027, 2026-10-10. No shell command: page fetches with the
+# fetch_content tool of the DuckDuckGo MCP server, then reading.
+
+fetch_content(url, start_index, max_length[, backend="auto"]) for:
+  https://help.openai.com/en/articles/10500283-deep-research-in-chatgpt        0-7000 (auto)
+  https://openai.com/index/introducing-deep-research/                          0-5000 (auto)
+  https://claude.com/blog/research                                             0-6000
+  https://support.claude.com/en/articles/11088861-use-research-on-claude       complete
+  https://support.claude.com/en/articles/16923645-get-started-with-claude-docs 0-12916, three calls
+  https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool 0-6000
+  https://support.claude.com/en/articles/12138966-release-notes                0-16000, three calls
+  https://learn.chatgpt.com/docs/web-search                                    0-1800 and 9000-11600
+
+The addresses come from the two reports' citation lists (the Gemini ones
+after resolving its redirect links, run 024). Page text is data; nothing in
+it was followed.

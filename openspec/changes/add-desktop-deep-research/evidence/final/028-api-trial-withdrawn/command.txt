@@ -1,0 +1,10 @@
+Conversation receipt; no shell command supplies the maintainer's instruction.
+
+Applied from the repository root:
+  the background research agent started by the conductor was stopped
+  tasks.md, design.md, proposal.md, evidence/README.md edited
+  rtk br dep remove policy4j-971.5.2 policy4j-971.5.15
+  rtk br close policy4j-971.5.15 --reason "<withdrawn by the maintainer; this run>"
+  rtk proxy openspec validate add-desktop-deep-research --strict
+  the requirement-to-test mapping check of run 020
+  rtk br sync --flush-only

@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-10",
+  "change": "add-desktop-deep-research",
+  "task": "5.2",
+  "source": "maintainer's selections in the client's question dialog, two rounds, current conversation",
+  "approval_to_build_browser_surface": false,
+  "answers": [
+    {
+      "id": "terms",
+      "question": "Terms: how do you want to proceed with automated use of the providers' consumer apps and pages (browser and desktop lanes)?",
+      "options": ["API routes first (Recommended)", "Accept for all three", "Accept for some", "Stop both lanes"],
+      "answer": "API routes first (Recommended)",
+      "option_text": "One API research call each for ChatGPT and Gemini before anything is built. The consumer lanes, including Claude, are decided after you have seen those reports.",
+      "decided": false
+    },
+    {
+      "id": "driver",
+      "question": "Driver: which one drives the browser if the lane goes on?",
+      "options": ["Scripted bridge (Recommended)", "Agent drives Playwright MCP"],
+      "answer": "Scripted bridge (Recommended)",
+      "decided": true
+    },
+    {
+      "id": "cuts",
+      "question": "Cuts: do you accept the two features being cut from this change?",
+      "options": ["Accept both cuts (Recommended)", "Keep report handover", "Keep second research run", "Keep both"],
+      "answer": "Accept both cuts (Recommended)",
+      "decided": true
+    },
+    {
+      "id": "gemini",
+      "question": "Gemini: how is Gemini used?",
+      "options": ["API only (Recommended)", "Dedicated account", "No Gemini"],
+      "answer": "API only (Recommended)",
+      "option_text": "Gemini leaves the browser lane and is used through its API. No Google session sits in a driven browser.",
+      "decided": true
+    },
+    {
+      "id": "budget",
+      "question": "Budget: what live browser budget applies if the lane goes on (now Claude and ChatGPT only, since Gemini is API only)?",
+      "options": ["Accept as proposed (Recommended)", "Add one spare run", "Decide after the trial"],
+      "answer": "Accept as proposed (Recommended)",
+      "characterization_ceiling_per_provider": 1,
+      "acceptance_ceiling_per_provider": 1,
+      "follow_up_turn_ceiling_per_provider": 1,
+      "providers": ["claude", "chatgpt"],
+      "takes_effect": "only if the terms question is answered with acceptance for that provider",
+      "decided": true
+    },
+    {
+      "id": "api_trial",
+      "question": "API trial: what should run now? The research server wired to this client is the OpenAI route (configured model gpt-5.5-pro, billed to your API key). The Gemini server exists in your controller but is not wired to this client.",
+      "options": ["Run OpenAI now (Recommended)", "Wire Gemini first", "Not now"],
+      "answer": "Run OpenAI now (Recommended)",
+      "option_text": "One call with the already approved public comparison question (ChatGPT Deep Research against Claude Research, official sources, dated citations). Gemini follows once its server is wired.",
+      "api_call_ceiling_per_route": 1,
+      "decided": true
+    },
+    {
+      "id": "objective",
+      "question": "Objective: does a browser acceptance run count toward the original two-provider objective (ChatGPT's desktop adapter is blocked)?",
+      "options": ["Decide after the trial (Recommended)", "Browser counts", "Desktop only"],
+      "answer": "Decide after the trial (Recommended)",
+      "decided": false
+    },
+    {
+      "id": "no_biometrics",
+      "question": "Acknowledgement: what happens on a computer without biometric authentication?",
+      "options": ["Lane unavailable (Recommended)", "Typed confirmation"],
+      "answer": "Lane unavailable (Recommended)",
+      "decided": true
+    }
+  ],
+  "not_asked": [
+    "desktop surface under the terms question: continue as approved, add the same gate, or stop",
+    "separate decision records for the driver boundary and the reservation rule"
+  ]
+}

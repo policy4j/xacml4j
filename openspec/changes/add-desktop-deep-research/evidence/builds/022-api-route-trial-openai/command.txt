@@ -1,0 +1,33 @@
+# Run 022, 2026-10-10. No shell command: one call of a native MCP tool.
+
+Tool:   deep_research of the MCP server deep-research-mcp
+Server: managed by the maintainer's MCP controller; its record names the
+        provider openai and the model gpt-5.5-pro. The override variables
+        for provider and model are unset in the client's shell. The
+        environment of the running server was not read.
+Arguments:
+  query: "Using only public official OpenAI and Anthropic sources, compare
+          ChatGPT Deep Research and Claude Research: available desktop
+          interfaces, initiation, source control, and report export. Include
+          dated citations."
+  system_instructions: (empty)
+  include_analysis: (default, true)
+  callback_url: (empty)
+
+The query is the acceptance template of `final/006-maintainer-approval/`
+without the job marker. It names public products only and sends no private
+source.
+
+Authorization: `final/021-browser-decisions/`, answer "Run OpenAI now".
+Started 10:49 EDT. The client moved the call to the background after 120 s
+and ended it at 300 s: "MCP server "deep-research-mcp" tool "deep_research"
+timed out after 300s".
+
+Afterwards, same server:
+  research_status(task_id=<the provider task named in the server's log>)
+  research_status(task_id=<the second provider task of 2026-10-08>)
+
+Read only, for the cause:
+  the client's settings and server entry (names, transport, timeout fields)
+  the server's log, filtered to task and cancellation lines
+  the client's documentation, page `en/mcp`, through its documentation MCP
