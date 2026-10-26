@@ -46,7 +46,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.reflect.TypeToken;
 
-public interface TypeToGSon extends TypeCapability
+public interface TypeToGSon extends TypeCapability<TypeToGSon>
 {
 	Logger LOG = LoggerFactory.getLogger(TypeToGSon.class);
 

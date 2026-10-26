@@ -10,12 +10,12 @@ package org.xacml4j.v30.types;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -36,7 +36,7 @@ import java.util.function.Function;
  *
  * @author Giedrius Trumpickas
  */
-public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
+public interface ValueType extends ValueExpTypeInfo, Function<Object, Value<?>>
 {
 	/**
 	 * Gets fully qualified data type identifier
@@ -44,11 +44,11 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 * @return data type identifier
 	 */
 	String getTypeId();
-	
+
 	/**
 	 * Gets "short" version of
 	 * the data type identifier
-	 * 
+	 *
 	 * @return short version of the data type
 	 * identifier
 	 */
@@ -77,9 +77,8 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 *
 	 * @param v a value
 	 * @return {@link Value} value
-	 * @exception SyntaxException
-	 */
-	default <T extends Value> T ofAny(Object v){
+   */
+	default <T extends Value<?>> T ofAny(Object v){
 		return ofAny(v, (Object[]) null);
 	}
 
@@ -91,7 +90,7 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	 * @param params additional parameters
 	 * @return {@link Value}
 	 */
-	<T extends Value> T ofAny(Object v, Object ...params);
+	<T extends Value<?>> T ofAny(Object v, Object ...params);
 
 	default boolean isBag() {
 		return false;
@@ -142,19 +141,17 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value>
 	}
 
 	@Override
-	default Value apply(Object o){
+	default Value<?> apply(Object o){
 		if(o == null){
 			throw SyntaxException
 					.invalidAttributeValue(
 							null, this);
 		}
-		if(o instanceof Object[]){
-			Object[] array = (Object[])o;
+		if(o instanceof Object[] array){
 			if(array.length == 0){
 				throw SyntaxException
 						.invalidAttributeValue(
-								Arrays.toString(
-										(Object[])o), this);
+								Arrays.toString(array), this);
 			}
 			if(array.length == 1){
 				return ofAny(o);

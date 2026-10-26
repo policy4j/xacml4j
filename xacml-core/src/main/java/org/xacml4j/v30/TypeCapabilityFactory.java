@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-public interface TypeCapabilityFactory<T extends TypeCapability>
+public interface TypeCapabilityFactory<T extends TypeCapability<T>>
 {
 	Class<T> getCapabilityType();
 	Collection<T> getCapabilities();

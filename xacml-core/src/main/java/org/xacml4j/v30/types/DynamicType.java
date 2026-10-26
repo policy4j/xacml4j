@@ -74,7 +74,7 @@ public enum DynamicType implements ValueType
 	 * dynamic type
 	 */
 	@Override
-	public <T extends Value> T ofAny(Object v, Object... params){
+	public <T extends Value<?>> T ofAny(Object v, Object... params){
 		throw new UnsupportedOperationException("No value has the dynamic type");
 	}
 

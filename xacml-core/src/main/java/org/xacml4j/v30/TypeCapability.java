@@ -56,7 +56,7 @@ public interface TypeCapability<T>
 	 */
 	ValueType getType();
 
-	static <T extends TypeCapability> Optional<T> forType(
+	static <T extends TypeCapability<T>> Optional<T> forType(
 			ValueType type,
 			Function<ValueType, Optional<T>> systemCapabilities,
 			Supplier<ServiceLoader<? extends TypeCapabilityFactory<T>>> extensionCapabilities)
@@ -75,7 +75,7 @@ public interface TypeCapability<T>
 		                 .flatMap(v->v.get().forType(type));
 	}
 
-	static <T extends TypeCapability, F extends TypeCapabilityFactory<T>> Map<ValueType, T> discoverCapabilities(
+	static <T extends TypeCapability<T>, F extends TypeCapabilityFactory<T>> Map<ValueType, T> discoverCapabilities(
 			F systemFactory, Class<T> capabilityType, Class<F> capabilityFactoryType){
 		ServiceLoader<F> serviceLoader = ServiceLoader.load(capabilityFactoryType);
 		Map<ValueType, T> discovered =
@@ -87,7 +87,7 @@ public interface TypeCapability<T>
 		return Collections.unmodifiableMap(discovered);
 	}
 
-	abstract class AbstractCapabilityFactory<T extends TypeCapability>
+	abstract class AbstractCapabilityFactory<T extends TypeCapability<T>>
 			implements org.xacml4j.v30.TypeCapabilityFactory<T>
 	{
 		private static final Logger LOG = LoggerFactory.getLogger(AbstractCapabilityFactory.class);
