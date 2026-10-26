@@ -38,7 +38,7 @@ task 1.6.
 | 5.5, 6.7, 7.4 refactor gates | - | pending |
 | 8.4 JDK 28 gate | - | pending |
 | 9.3, 9.4 value-class gates (JMH) | - | pending |
-| 10.1 landing (moved before phase 5 by the maintainer ruling of 2026-10-24, D1) | `reviews/plan/rv094-single-branch-landing`, `builds/087-single-branch-landing-gate`, `reviews/code/rv095` to `rv098` | in progress: port ready, gated (8,009 tests, 0 failures, 18 skipped; conformance 937 with 12 skipped), and approved by four reviewers; the maintainer's commit and branch move (`landing-procedure.md`) pending; push waits for bead policy4j-the.12 |
+| 10.1 landing (moved before phase 5 by the maintainer ruling of 2026-10-24, D1) | `reviews/plan/rv094-single-branch-landing`, `builds/087-single-branch-landing-gate`, `reviews/code/rv095` to `rv098`, `builds/088-single-branch-landing` | done 2026-10-26: `feature_xacml_20` at `265be3a0` (signed), old tip in tag `archive/feature_xacml_20-2026-10-24`, worktree removed; gate after the landing 8,009 tests, 0 failures, 18 skipped; conformance 937 with 12 skipped. Local only: the push waits for bead policy4j-the.12 |
 
 ## Runs
 
@@ -232,6 +232,7 @@ task 1.6.
 | `reviews/code/rv096-landing-docs-agy` | review of run 087 and rv094, change docs and evidence | Agy Gemini 4 Argon (High), two rounds | APPROVE in round 2; round 1: three MEDIUM, two LOW, all fixed (receipts, paths, design D13, task order, attributions) |
 | `reviews/code/rv097-landing-procedure-grok` | review of `builds/087-single-branch-landing-gate/landing-procedure.md` | Grok 4.7, adversarial (Kimi K3.1 Pro unavailable, 403), two rounds | APPROVE in round 2; round 1: two HIGH, two MEDIUM, all fixed (fail-closed blocks, tracker backup before the export, `RFC822Name.java` carried before restore, writers stopped) |
 | `reviews/code/rv098-type-capability-generics-codex-astra` | review of task 5.6 code and design D13 | Codex GPT-6-Astra, three rounds | APPROVE in round 3; MEDIUM fixed (`TypeToString.forType` lambda restored); D13 corrected twice; `RFC822Name.java` formatting left to the maintainer; contract test is remaining work |
+| `builds/088-single-branch-landing` | task 10.1 landing, 2026-10-26 | the reviewed procedure of run 087 (`landing-run.sh`), on the maintainer's instruction; full reactor on JDK 21 afterwards (see command.txt) | LANDED, local only: signed commits `3255af26` (port) and `265be3a0` (5.6); tag `archive/feature_xacml_20-2026-10-24` on `a0ec4683`; `feature_xacml_20` moved with `reset --keep`, the main checkout's uncommitted work kept; 4 uncommitted IDE edits of the worktree carried to the main checkout; worktree removed; 8,009 tests, 0 failures, 18 skipped; conformance 937 with 12 skipped |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
 stay local; the committed raw output is each run's `surefire-summary.txt` and

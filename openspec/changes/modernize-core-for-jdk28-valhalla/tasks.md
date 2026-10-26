@@ -55,7 +55,7 @@ case.
 - [ ] 5.3 Replace `XacmlTypes`/`ValueTypes`/`ValueTypeBuilder` with the typed `Primitives` facade and `ValueTypeId` registry (design D5) covering every `a8a90d46` type id; fail fast on duplicates
 - [ ] 5.4 Fix numeric semantics from the donor before adopting it: one owner of `xs:integer`; non-wrapping arithmetic; strict integer lexing; product identity 1; no null stubs
 - [ ] 5.5 Gate: full reactor and conformance green on JDK 21 (covers 5.1-5.7)
-- [ ] 5.6 Tighten the generic bounds of `ValueType.ofAny` and `DynamicType.ofAny` (`<T extends Value<?>>`), make `ValueType` a `Function<Object, Value<?>>`, self-type the `TypeCapability` family (`T extends TypeCapability<T>`), and give `TypeToString`, `TypeToGSon`, and `TypeToXacml30` `Value<?>` parameters and results, in `xacml-core`, `xacml-json`, and `xacml-xml` (design D13); compile-time API change only; check: full reactor and conformance unchanged
+- [x] 5.6 Tighten the generic bounds of `ValueType.ofAny` and `DynamicType.ofAny` (`<T extends Value<?>>`), make `ValueType` a `Function<Object, Value<?>>`, self-type the `TypeCapability` family (`T extends TypeCapability<T>`), and give `TypeToString`, `TypeToGSon`, and `TypeToXacml30` `Value<?>` parameters and results, in `xacml-core`, `xacml-json`, and `xacml-xml` (design D13); compile-time API change only; check: full reactor and conformance unchanged (evidence/builds/087 and 088, evidence/reviews/code/rv098; commit `265be3a0`)
 - [ ] 5.7 Fix `ValueType.apply` to convert `array[0]` for a one-element `Object[]`, not the array itself; test first
 
 ## 6. Re-apply the refactor: expressions, functions, algorithms, and attribute resolution
@@ -95,6 +95,6 @@ case.
 
 ## 10. Close out
 
-- [ ] 10.1 Land the integration line by replacing `feature_xacml_20` after phase 4 (maintainer ruling 2026-10-24, design D1): port the feature-only files, gate, review, then the maintainer commits, tags the old tip `archive/feature_xacml_20-2026-10-24`, moves the branch, and removes the worktree
+- [x] 10.1 Land the integration line by replacing `feature_xacml_20` after phase 4 (maintainer ruling 2026-10-24, design D1): port the feature-only files, gate, review, then the maintainer commits, tags the old tip `archive/feature_xacml_20-2026-10-24`, moves the branch, and removes the worktree (evidence/builds/088-single-branch-landing: landed 2026-10-26 at `265be3a0`, local only)
 - [ ] 10.2 Run `openspec validate modernize-core-for-jdk28-valhalla --strict`, sync the specs, and archive the change
 - [ ] 10.3 Close the beads epic and record the final per-module test counts and conformance manifest totals
