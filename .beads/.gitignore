@@ -12,6 +12,8 @@
 *.vacuum-wal-cert*
 # fsqlite 0.3.6+ engine-upgrade bookkeeping written beside the database
 *.fsqlite-migration-state
+# br 0.7.6 WAL-index directories (expected by `br doctor`)
+.br-wal-index-*/
 
 # Lock files
 .write.lock

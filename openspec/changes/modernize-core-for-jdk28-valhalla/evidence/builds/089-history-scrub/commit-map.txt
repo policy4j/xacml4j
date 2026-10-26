@@ -1,0 +1,38 @@
+# 089 old-to-new commit map, origin/feature_xacml_20 (d78d9586)..feature_xacml_20, oldest first.
+# status: rewritten = new hash, re-signed when the old commit was signed; unchanged = same commit.
+# old new status subject
+93811e312d62dd341aea3ab4579a494b48caaf46 93811e312d62dd341aea3ab4579a494b48caaf46 unchanged Refactorings
+ebe3923b1d6dd592d7900df580f46c9a4021a71f ebe3923b1d6dd592d7900df580f46c9a4021a71f unchanged Refactorings
+5516e48f792c4b06ea386c96d56edbcc68e9f78d 5516e48f792c4b06ea386c96d56edbcc68e9f78d unchanged Fixed Json module
+7da74714da1ca75f9861f3044e91c2d4893294b2 7da74714da1ca75f9861f3044e91c2d4893294b2 unchanged Fixed Json module
+a8a90d46a81c77ae5ac86761306a20f32f1fe834 a8a90d46a81c77ae5ac86761306a20f32f1fe834 unchanged Fixed designator functions
+befdd116bd11385ac8d007732fa8e4d347af3143 befdd116bd11385ac8d007732fa8e4d347af3143 unchanged Add policy4j agent tooling, OpenSpec change, and swarm config
+561c65c9ed0d82f309b0231e64b3e807d3e22846 dd1320e29148f979acd3eed2dae794f99e3538ba rewritten Snapshot modernize-core phases 1-4 and the on-demand Serena config
+0815cb065e902b066d4209bcdf6de22accf5854a 97d4fe379fe34b4da4ecf312cabc9e7d51b1bf91 rewritten Add raw Surefire XML and receipts left out of the phase 1-4 snapshot
+02a225bf5291a5570bf41f25c8d76a5c94b74f40 4129a0baba35bc459ba3c6eb006b3150add47952 rewritten Wire the code-intelligence MCP servers into Codex and Grok
+091055ea614bd9c85227f893f3d354cc69a3ff3a 8bfb15ff2c461ab7783bd945251cd7550bfe04cb rewritten Fail closed when attribute resolution fails (policy4j-the.4.34, policy4j-the.11)
+70eef6eb4fb31feafcdadff7c0ef012232c42309 818aade0d81b69d1c7e2b31a5f1b9cc637ee642a rewritten Apply the ruled function semantics (policy4j-the.4.44; decisions C4, C5, C7)
+1e045fe268e56c70aa975ca9af30b1c0a95ac8b1 02c03f9f478acbac3d46769a19eac570c7b84d93 rewritten Record the adjudicated conformance dispositions (policy4j-the.4.18, .4.20, .3.9)
+8fbf534b1a3fab2671dcc4dbd294d4d64f847997 38eaedf0dac631a9ad7eae6fe0b66e4c2eef6487 rewritten Add task 6.8: invoke functions through MethodHandle and MethodType
+fdfb72a9ee6416d23079c8445123fa0223926716 ea852c5870d10775a082631512bbb7dd9b9d7f26 rewritten Run conformance case IIA005 through a request syntax-error mapping (policy4j-the.4.17)
+bc05cb69b48bb515bc5a9b193b871fc7bd6853c3 ecbc340ea19360353b1a02dc0b8845aa958de9e7 rewritten Return an empty bag from type-bag functions without arguments (policy4j-the.4.53)
+f575429ce4fcc6374bfaa1caca66bacdccb60422 913ee7883f1e7d32cd8307b7f75cdcc5245e1d3f rewritten Let a deciding operand win over a failed operand (policy4j-the.4.12)
+9ae77393ce5caa943e79c4e271b1c39618a99df7 b9e19eba0980a7ccb355f8d622c64c51e14636bb rewritten Bound the expansion of multiple-decision XPath requests (policy4j-the.4.50)
+6c09ab9f63046bfddb43c2a0c7b0c1c520020f6b e2b60578e64be9ae2c475a1f69ef48de93cc6814 rewritten Add behavioural tests for nested response staging (policy4j-the.4.54)
+e982366ee4d9f0cfc8a1bca6a41c33a3207bc024 d0ee42729441e667fc9f2d06dca78e8a33bc88de rewritten Bound the regular-expression functions (policy4j-the.4.51)
+82b9f58d94c1d8c08758184c4637cfcfea025684 55a2a84dc9a9b52f3afc92bb2652d0541c403dff rewritten Record the failed second-review lane of run 078 (policy4j-the.4.51)
+842503f8113328816d33a25507024f894d53c2b3 2de18916f2bf45434462fc7a5d09c36fc9f9748d rewritten Make integer arithmetic Indeterminate instead of wrapping (policy4j-the.4.59)
+8c465a3eb96aa38a4ad34f1d273437facc121cf1 9d6d12bcd9c19d90b7c40805bc92b31ca67d28dc rewritten Bound the multiple-decision expansion as a whole (policy4j-the.4.57)
+35510d3d9a5a484400bcc7bea8bdb4c963920f72 8baa9d4285c03293c6dc1d1778efdb7afcad4c8a rewritten Compare XML content by its whole tree (policy4j-the.4.60)
+e83bde76d78769c8a3596b91d111789d2ef210ff dc7140f4f6cd2b403d491a6982bac49a9f972776 rewritten Check function arguments when an Apply is built (policy4j-the.4.56)
+05911011486261f6ca9494a9c8cefb0402039c49 67bfd13db72ecfb898b9e80b3be79c6aac77aea8 rewritten Accept the regular-expression residual as a documented limit (policy4j-the.4.58)
+60b2b40cd29d393f9b90b880993a5b87dca97788 e927c46553bea4b5b8ec45b201cf9a8e1653a298 rewritten Close the phase 4 gate: safety net green on JDK 21 (task 4.7)
+3be51ca56d6b21179918d7188ddb13570643c6f6 339658a54ec978071a33ad074a655ce43919b36e rewritten Type a data type that is known only at evaluation as dynamic (policy4j-the.4.61)
+5714f139dd4007b5d9f4e7400ec0b46e08fb0858 ad1fcec740908b4b715db9cdeadab3398d294f9f rewritten Correct the code-intelligence guidance and warn on a stale tgrep index
+6332f2cb810e084a11aefd1d6f939cdb116bbd0a 3255af261bc2709c1e9fa29c53fe836cc8cb57df rewritten Land the integration line as feature_xacml_20 (D1, task 10.1)
+b9d3a09a5cac65fd6102eb13eee6720d4c75bc6c 265be3a0b7236fd5a07c934d83572ec87fe6f7ca rewritten Tighten the generic bounds of ValueType.ofAny and TypeCapability (policy4j-the.5.6)
+600abac19d098f038bc3b3e3585f4d7f7de0d62a 8c5dd121ef38a711bde1880e02802a11af3c9d87 rewritten Migrate the Serena project config to the Serena 2 format (language_servers)
+0f020655acbc8c544a91a8e4000209a448c34d5a c5e831ca2f4df54f7b867b26aa967ee379674967 rewritten Record the single-branch landing (task 10.1, run 088)
+9137411fac03d9ab5a1d8011a3d61a809bc17ed6 e8d5296cc89d742873bd88dafffd9971c09776a3 rewritten Update the beads tracker after the landing (policy4j-the.10.1, policy4j-the.5.6)
+799990ffe6f0320f8ec60377792831de797b2f44 2cc014d51400a3baf299b03f0b3126e95ad4ec4c rewritten Apply IDE cleanups: pattern matching in equals, a final field, a simpler issuer filter
+c5128dab13d9f9ab9ab7d475c4b87a67beba2328 f9d99aed10cf979c8de0b53d59cd46c7b1e0837c rewritten Update the desktop deep research change: browser decisions and API route trials (runs 021-028)

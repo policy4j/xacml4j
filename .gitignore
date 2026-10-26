@@ -63,3 +63,5 @@
 /outputs/
 # br doctor per-run artifacts
 .doctor/
+# Python bytecode of evidence scripts (it holds the absolute path of the script)
+__pycache__/
