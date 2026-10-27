@@ -28,11 +28,15 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.xacml4j.jmh.harness.CorpusRequest;
 import org.xacml4j.jmh.harness.Marshalling;
 import org.xacml4j.jmh.harness.PolicyCorpus;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.harness.PolicySource;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
@@ -295,5 +299,67 @@ public final class TestCorpora
 					</Attribute>
 				</Attributes>
 				""".formatted(resource);
+	}
+
+	/**
+	 * Corpus {@code probe}: the {@link #documents} corpus, with a record of the
+	 * argument of every load. Registered in {@code META-INF/services} of the test classes.
+	 */
+	public static final class Probe implements PolicyCorpusProvider
+	{
+		public static final String NAME = "probe";
+		private static final List<Optional<String>> ARGUMENTS = Collections.synchronizedList(new ArrayList<>());
+
+		@Override
+		public String name(){
+			return NAME;
+		}
+
+		@Override
+		public PolicyCorpus load(Optional<String> argument) throws IOException, SyntaxException {
+			ARGUMENTS.add(argument);
+			return documents(NAME + argument.map(a -> ":" + a).orElse(""));
+		}
+
+		/** @return the arguments of the loads since the last reset, in order */
+		public static List<Optional<String>> arguments(){
+			synchronized(ARGUMENTS){
+				return List.copyOf(ARGUMENTS);
+			}
+		}
+
+		public static void reset(){
+			ARGUMENTS.clear();
+		}
+	}
+
+	/** One of two corpora named {@code twin}; a lookup of that name must fail. */
+	public static final class FirstTwin implements PolicyCorpusProvider
+	{
+		public static final String NAME = "twin";
+
+		@Override
+		public String name(){
+			return NAME;
+		}
+
+		@Override
+		public PolicyCorpus load(Optional<String> argument){
+			throw new UnsupportedOperationException("A twin corpus is never selected");
+		}
+	}
+
+	/** The other corpus named {@code twin}. */
+	public static final class SecondTwin implements PolicyCorpusProvider
+	{
+		@Override
+		public String name(){
+			return FirstTwin.NAME;
+		}
+
+		@Override
+		public PolicyCorpus load(Optional<String> argument){
+			throw new UnsupportedOperationException("A twin corpus is never selected");
+		}
 	}
 }

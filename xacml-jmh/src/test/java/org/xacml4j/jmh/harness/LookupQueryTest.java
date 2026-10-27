@@ -34,6 +34,8 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xacml4j.jmh.testing.TestCorpora;
@@ -52,13 +54,30 @@ import org.xacml4j.v30.spi.repository.PolicyRepository;
 @ExtendWith(MockitoExtension.class)
 public class LookupQueryTest
 {
+	/** Review rv006 finding 1: XACML 3.0 §5.13 matching, where {@code *} is any one number (policy4j-w842). */
+	@ParameterizedTest(name = "{0} against {1}: {2}")
+	@CsvSource({
+			"1.*, 1.9, true",
+			"1.*, 1.10, true",
+			"*.2, 10.2, true",
+			"1.*, 1.2.3, false",
+			"1.+, 1, true",
+			"1.+, 1.2.3, true",
+			"1.2, 1.2, true",
+			"1.2, 1.2.0, false",
+			"1.2, 1.20, false"})
+	public void versionPatternsFollowXacml30Section513(String pattern, String version, boolean expected)
+	{
+		assertThat(LookupQuery.matches(pattern, version)).isEqualTo(expected);
+	}
+
 	@Mock
 	private PolicyRepository repository;
 
 	@Test
 	public void rsa2008HasAnExactQueryPerPolicySetAndAQueryPerPolicySetReference() throws Exception
 	{
-		List<CompositeDecisionRule> rules = PdpFixture.parse(PolicyCorpora.load("rsa2008").policies());
+		List<CompositeDecisionRule> rules = PdpFixture.parse(PolicyCorpusProvider.corpus("rsa2008").policies());
 
 		List<LookupQuery> queries = LookupQuery.of(rules);
 

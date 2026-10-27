@@ -29,7 +29,7 @@ import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
 
 /** Identity of a policy or policy set: type, id, and version. */
-public final class Rules
+final class Rules
 {
 	private Rules(){
 	}
@@ -39,7 +39,7 @@ public final class Rules
 	 * @return its version
 	 * @throws IllegalArgumentException if the rule has no version
 	 */
-	public static Version version(CompositeDecisionRule rule){
+	static Version version(CompositeDecisionRule rule){
 		if(rule instanceof Versionable versionable){
 			return versionable.getVersion();
 		}
@@ -50,7 +50,7 @@ public final class Rules
 	 * @param rule a policy or policy set
 	 * @return {@code Policy}, {@code PolicySet}, or the class name
 	 */
-	public static String kind(CompositeDecisionRule rule){
+	static String kind(CompositeDecisionRule rule){
 		if(rule instanceof Policy){
 			return "Policy";
 		}
@@ -64,7 +64,7 @@ public final class Rules
 	 * @param rule a rule
 	 * @return {@code <kind> "<id>" version "<version>"}
 	 */
-	public static String describe(CompositeDecisionRule rule){
+	static String describe(CompositeDecisionRule rule){
 		return kind(rule) + " \"" + rule.getId() + "\" version \"" + version(rule).getValue() + "\"";
 	}
 
@@ -73,7 +73,7 @@ public final class Rules
 	 * @param actual the rule that a store returned
 	 * @return whether both have the same kind, id, and version
 	 */
-	public static boolean sameIdentity(CompositeDecisionRule expected, CompositeDecisionRule actual){
+	static boolean sameIdentity(CompositeDecisionRule expected, CompositeDecisionRule actual){
 		return kind(expected).equals(kind(actual))
 				&& expected.getId().equals(actual.getId())
 				&& version(expected).equals(version(actual));

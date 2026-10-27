@@ -30,6 +30,11 @@ Gate (default for code tasks): `PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jen
 - [x] 4.2 Record the baseline run of the Benchmark Plan on JDK 21 with `-prof gc` and `-foe true`, with no agent session alive, and check the results for completeness (D11); evidence: `evidence/benchmarks/jmh/`; done on JDK 21: `evidence/benchmarks/jmh/001-baseline`; the reference baseline moves to JDK 25 (change `adopt-jdk25-baseline` task 3.1)
 - [ ] 4.3 Gate: performance and docs review rv008 (Agy, Gemini 4 Argon) of the method, the numbers, and the docs; evidence: `evidence/reviews/performance/`
 
+## 6. Simplified harness API (D15, maintainer 2026-10-27)
+
+- [x] 6.1 Remove `Selection`, `SelectedStore`, `PolicyStores`, `PolicyCorpora`, `StoreSession`, `PolicyStoreContext`, `StoreCapability`, `VersionPatterns`; move their behavior into `PolicyStore`, `PolicyCorpusProvider`, `PdpFixture`, and `LookupQuery` with Serena symbol edits; adapt the stores, benchmarks, and test fakes; check: module tests, `ast-grep scan`; evidence: `evidence/tests/019-simplify-harness`
+- [ ] 6.2 Gate: review by another family, reactor, smoke run; one JMH run after the batch (maintainer: measure after changes are complete), compared with the last recorded baseline; so far: review `evidence/reviews/code/rvj1-simplify-sol` with fixes `tests/021-rvj1-fixes`, reactor `tests/020-reactor-H-harness` and `022-commit-tree-harness`, in-process smoke (`BenchmarkSmokeTest`); open: the JMH run with batch 2 of optimize-pdp-evaluation
+
 ## 5. Close out
 
 - [ ] 5.1 `openspec validate add-pdp-jmh-benchmarks --strict`

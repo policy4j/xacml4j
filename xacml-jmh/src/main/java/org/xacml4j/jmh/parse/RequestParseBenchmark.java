@@ -46,7 +46,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.xacml4j.jmh.harness.CorpusRequest;
 import org.xacml4j.jmh.harness.Marshalling;
-import org.xacml4j.jmh.harness.PolicyCorpora;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.marshal.MediaType;
@@ -90,7 +90,7 @@ public class RequestParseBenchmark
 	@Setup(Level.Trial)
 	public void setUp() throws IOException, SyntaxException
 	{
-		List<CorpusRequest> requests = PolicyCorpora.load(corpus).requests();
+		List<CorpusRequest> requests = PolicyCorpusProvider.corpus(corpus).requests();
 		Marshaller<RequestContext> marshaller;
 		switch(format){
 			case "xml30" -> {

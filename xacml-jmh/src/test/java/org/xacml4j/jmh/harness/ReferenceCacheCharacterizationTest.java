@@ -31,7 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.jmh.testing.RecordingPolicyRepository.Read;
-import org.xacml4j.jmh.testing.RecordingStore;
+import org.xacml4j.jmh.testing.TestStores;
 import org.xacml4j.jmh.testing.TestPdps;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
@@ -49,22 +49,22 @@ public class ReferenceCacheCharacterizationTest
 	@BeforeEach
 	public void resetRecording()
 	{
-		RecordingStore.reset();
+		TestStores.Recording.reset();
 	}
 
 	@ParameterizedTest(name = "{0}")
 	@ValueSource(strings = {"rsa2008", "synthetic:100"})
 	public void fixturePdpAsksTheStoreNothingAfterTheChecksOfOpen(String corpus) throws Exception
 	{
-		try(PdpFixture fixture = PdpFixture.open(RecordingStore.NAME, corpus)){
-			assertWithMessage("store lookups of the checks of open").that(RecordingStore.count()).isGreaterThan(0);
-			int before = RecordingStore.count();
+		try(PdpFixture fixture = PdpFixture.open(TestStores.Recording.NAME, corpus)){
+			assertWithMessage("store lookups of the checks of open").that(TestStores.Recording.count()).isGreaterThan(0);
+			int before = TestStores.Recording.count();
 
 			for(CorpusRequest request : fixture.corpus().requests()){
 				fixture.pdp().decide(request.request());
 			}
 
-			List<Read> reads = RecordingStore.reads();
+			List<Read> reads = TestStores.Recording.reads();
 			assertThat(reads.subList(before, reads.size())).isEmpty();
 		}
 	}
@@ -73,16 +73,16 @@ public class ReferenceCacheCharacterizationTest
 	@ValueSource(strings = {"rsa2008", "synthetic:100"})
 	public void firstDecideOfARequestAsksTheStoreAndTheSecondAsksNothing(String corpus) throws Exception
 	{
-		try(PdpFixture fixture = PdpFixture.open(RecordingStore.NAME, corpus)){
+		try(PdpFixture fixture = PdpFixture.open(TestStores.Recording.NAME, corpus)){
 			CompositeDecisionRule root = fixture.policies().get(fixture.corpus().rootIndex());
 			for(CorpusRequest request : fixture.corpus().requests()){
 				// a new PDP has a new reference resolver, so its cache starts empty
 				try(PolicyDecisionPoint pdp = TestPdps.build(fixture.repository(), root)){
-					int start = RecordingStore.count();
+					int start = TestStores.Recording.count();
 					pdp.decide(request.request());
-					int afterFirst = RecordingStore.count();
+					int afterFirst = TestStores.Recording.count();
 					pdp.decide(request.request());
-					List<Read> reads = RecordingStore.reads();
+					List<Read> reads = TestStores.Recording.reads();
 
 					assertWithMessage("store lookups of the first decide of %s", request.id())
 							.that(afterFirst - start).isGreaterThan(0);

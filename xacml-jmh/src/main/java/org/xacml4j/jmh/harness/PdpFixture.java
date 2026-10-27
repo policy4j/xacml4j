@@ -45,7 +45,7 @@ import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 /**
- * A corpus loaded into one store session, with a PDP on top. Opening a
+ * A corpus loaded into one repository of a store, with a PDP on top. Opening a
  * fixture checks every corpus decision and every corpus lookup before any
  * measurement; a fixture that opens is safe to measure.
  */
@@ -56,7 +56,7 @@ public final class PdpFixture implements AutoCloseable
 	private static final FunctionProvider FUNCTIONS = FunctionProvider.builder().withDefaultFunctions().build();
 	private static final DecisionCombiningAlgorithmProvider ALGORITHMS =
 			DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build();
-	private static final AtomicLong SESSIONS = new AtomicLong();
+	private static final AtomicLong REPOSITORIES = new AtomicLong();
 	/**
 	 * Unique per JVM: JMH forks start their sequence again, so the process id
 	 * and start time keep repository ids apart across forks (review rv006).
@@ -64,19 +64,21 @@ public final class PdpFixture implements AutoCloseable
 	private static final String PROCESS = Long.toHexString(ProcessHandle.current().pid())
 			+ "-" + Long.toHexString(System.currentTimeMillis());
 
-	private final SelectedStore store;
+	private final PolicyStore store;
+	private final Optional<String> argument;
 	private final PolicyCorpus corpus;
 	private final List<CompositeDecisionRule> policies;
-	private final StoreSession session;
+	private final PolicyRepository repository;
 	private final PolicyDecisionPoint pdp;
 	private final List<LookupQuery> lookups;
 
-	private PdpFixture(SelectedStore store, PolicyCorpus corpus, List<CompositeDecisionRule> policies,
-			StoreSession session, PolicyDecisionPoint pdp, List<LookupQuery> lookups){
+	private PdpFixture(PolicyStore store, Optional<String> argument, PolicyCorpus corpus, List<CompositeDecisionRule> policies,
+			PolicyRepository repository, PolicyDecisionPoint pdp, List<LookupQuery> lookups){
 		this.store = store;
+		this.argument = argument;
 		this.corpus = corpus;
 		this.policies = policies;
-		this.session = session;
+		this.repository = repository;
 		this.pdp = pdp;
 		this.lookups = lookups;
 	}
@@ -88,28 +90,33 @@ public final class PdpFixture implements AutoCloseable
 	 * @throws IllegalStateException if a check fails; the message names every failure
 	 */
 	public static PdpFixture open(String store, String corpus) throws IOException, SyntaxException {
-		return open(PolicyStores.select(store), PolicyCorpora.load(corpus));
+		return open(store, PolicyCorpusProvider.corpus(corpus));
 	}
 
 	/**
-	 * Parses the corpus, loads it into a new store session, takes the root
-	 * from the store, builds the PDP, and checks every lookup and decision.
-	 * On failure it closes what it opened.
+	 * Parses the corpus, loads it into a new repository of the store, takes
+	 * the root from the store, builds the PDP, and checks every lookup and
+	 * decision. On failure it closes what it opened.
 	 *
-	 * @param store the store and its argument
+	 * @param store the store parameter: {@code name} or {@code name:argument}
 	 * @param corpus the corpus
 	 * @return an open, checked fixture
+	 * @throws IllegalArgumentException if no store has that name
 	 * @throws IllegalStateException if a check fails; the message names every failure
 	 */
-	public static PdpFixture open(SelectedStore store, PolicyCorpus corpus) throws IOException, SyntaxException {
+	public static PdpFixture open(String store, PolicyCorpus corpus) throws IOException, SyntaxException {
+		String[] nameAndArgument = Services.split(store);
+		return open(PolicyStore.named(nameAndArgument[0]), Optional.ofNullable(nameAndArgument[1]), corpus);
+	}
+
+	private static PdpFixture open(PolicyStore store, Optional<String> argument, PolicyCorpus corpus) throws IOException, SyntaxException {
 		List<CompositeDecisionRule> policies = parse(corpus.policies());
 		CompositeDecisionRule parsedRoot = policies.get(corpus.rootIndex());
-		StoreSession session = openSession(store.store(), newContext(store, corpus));
+		PolicyRepository repository = openRepository(store, argument, corpus);
 		PolicyDecisionPoint pdp = null;
 		boolean opened = false;
 		try{
-			session.load(policies);
-			PolicyRepository repository = session.repository();
+			load(repository, policies);
 			CompositeDecisionRule root = repository.get(parsedRoot.getId(), Rules.version(parsedRoot));
 			if(root == null){
 				throw new IllegalStateException(header(store, corpus) + " did not return the root " + Rules.describe(parsedRoot));
@@ -120,13 +127,29 @@ public final class PdpFixture implements AutoCloseable
 					.defaultRequestHandlers()
 					.rootPolicy(root)
 					.build();
-			PdpFixture fixture = new PdpFixture(store, corpus, policies, session, pdp, LookupQuery.of(policies));
+			PdpFixture fixture = new PdpFixture(store, argument, corpus, policies, repository, pdp, LookupQuery.of(policies));
 			fixture.check();
 			opened = true;
 			return fixture;
 		}finally{
 			if(!opened){
-				closeQuietly(pdp, session);
+				closeQuietly(pdp, store, repository);
+			}
+		}
+	}
+
+	/**
+	 * Adds every policy to a repository.
+	 *
+	 * @param repository the repository
+	 * @param policies the policies
+	 * @throws IllegalStateException if the repository does not add one
+	 */
+	public static void load(PolicyRepository repository, List<CompositeDecisionRule> policies){
+		for(CompositeDecisionRule policy : policies){
+			if(!repository.add(policy)){
+				throw new IllegalStateException(String.format(
+						"Repository \"%s\" did not add %s", repository.getId(), Rules.describe(policy)));
 			}
 		}
 	}
@@ -147,20 +170,34 @@ public final class PdpFixture implements AutoCloseable
 
 	/** @return the store of this fixture */
 	public PolicyStore store(){
-		return store.store();
+		return store;
+	}
+
+	/** @return the repository that holds the corpus */
+	public PolicyRepository repository(){
+		return repository;
 	}
 
 	/**
-	 * @return a context for one more session of this fixture's store, with a
-	 * repository id that no other session has
+	 * @return another empty repository of this fixture's store, with an id that no other
+	 * repository has; close it with {@link #release}
 	 */
-	public PolicyStoreContext newContext(){
-		return newContext(store, corpus);
+	public PolicyRepository newRepository(){
+		return openRepository(store, argument, corpus);
 	}
 
-	/** @return the repository of this fixture's session */
-	public PolicyRepository repository(){
-		return session.repository();
+	/**
+	 * Closes a repository of this fixture's store through the store.
+	 *
+	 * @param repository a repository from {@link #newRepository}
+	 * @throws IllegalStateException if the store cannot close it
+	 */
+	public void release(PolicyRepository repository){
+		try{
+			store.close(repository);
+		}catch(Exception e){
+			throw new IllegalStateException("Cannot close repository \"" + repository.getId() + "\" of " + header(store, corpus), e);
+		}
 	}
 
 	public PolicyCorpus corpus(){
@@ -216,7 +253,6 @@ public final class PdpFixture implements AutoCloseable
 			throw new IllegalArgumentException("threads=" + threads);
 		}
 		List<CorpusRequest> requests = corpus.requests();
-		PolicyRepository repository = session.repository();
 		Queue<String> failures = new ConcurrentLinkedQueue<>();
 		CountDownLatch start = new CountDownLatch(1);
 		List<Thread> workers = new ArrayList<>(threads);
@@ -286,7 +322,7 @@ public final class PdpFixture implements AutoCloseable
 		check();
 	}
 
-	/** Closes the PDP, then the store session. */
+	/** Closes the PDP, then the repository. */
 	@Override
 	public void close(){
 		IllegalStateException failure = null;
@@ -296,10 +332,10 @@ public final class PdpFixture implements AutoCloseable
 			failure = new IllegalStateException("Cannot close the PDP of " + header(store, corpus), e);
 		}
 		try{
-			session.close();
+			store.close(repository);
 		}catch(Exception e){
 			if(failure == null){
-				failure = new IllegalStateException("Cannot close the session of " + header(store, corpus), e);
+				failure = new IllegalStateException("Cannot close the repository of " + header(store, corpus), e);
 			}else{
 				failure.addSuppressed(e);
 			}
@@ -311,7 +347,6 @@ public final class PdpFixture implements AutoCloseable
 
 	private void check(){
 		List<String> failures = new ArrayList<>();
-		PolicyRepository repository = session.repository();
 		for(LookupQuery query : lookups){
 			check(query, repository).ifPresent(failures::add);
 		}
@@ -354,9 +389,15 @@ public final class PdpFixture implements AutoCloseable
 		}
 	}
 
-	private static PolicyStoreContext newContext(SelectedStore store, PolicyCorpus corpus){
-		return new PolicyStoreContext("jmh-" + safe(store.store().name()) + "-" + safe(corpus.name())
-				+ "-" + PROCESS + "-" + SESSIONS.incrementAndGet(), store.argument(), FUNCTIONS, ALGORITHMS);
+	private static PolicyRepository openRepository(PolicyStore store, Optional<String> argument, PolicyCorpus corpus){
+		String id = "jmh-" + safe(store.name()) + "-" + safe(corpus.name()) + "-" + PROCESS + "-" + REPOSITORIES.incrementAndGet();
+		try{
+			return store.open(id, argument, FUNCTIONS, ALGORITHMS);
+		}catch(RuntimeException e){
+			throw e;
+		}catch(Exception e){
+			throw new IllegalStateException("Store \"" + store.name() + "\" cannot open repository \"" + id + "\"", e);
+		}
 	}
 
 	/** Keeps an id usable as a file or namespace name: a {@code dir:} corpus name holds a path. */
@@ -364,21 +405,11 @@ public final class PdpFixture implements AutoCloseable
 		return name.replaceAll("[^A-Za-z0-9._-]", "_");
 	}
 
-	private static StoreSession openSession(PolicyStore store, PolicyStoreContext context){
-		try{
-			return store.open(context);
-		}catch(RuntimeException e){
-			throw e;
-		}catch(Exception e){
-			throw new IllegalStateException("Store \"" + store.name() + "\" cannot open session \"" + context.repositoryId() + "\"", e);
-		}
+	private static String header(PolicyStore store, PolicyCorpus corpus){
+		return "Store \"" + store.name() + "\" with corpus \"" + corpus.name() + "\"";
 	}
 
-	private static String header(SelectedStore store, PolicyCorpus corpus){
-		return "Store \"" + store.store().name() + "\" with corpus \"" + corpus.name() + "\"";
-	}
-
-	private static void closeQuietly(PolicyDecisionPoint pdp, StoreSession session){
+	private static void closeQuietly(PolicyDecisionPoint pdp, PolicyStore store, PolicyRepository repository){
 		if(pdp != null){
 			try{
 				pdp.close();
@@ -387,9 +418,9 @@ public final class PdpFixture implements AutoCloseable
 			}
 		}
 		try{
-			session.close();
+			store.close(repository);
 		}catch(Exception e){
-			LOG.warn("Cannot close a store session after a failed fixture", e);
+			LOG.warn("Cannot close a store repository after a failed fixture", e);
 		}
 	}
 }

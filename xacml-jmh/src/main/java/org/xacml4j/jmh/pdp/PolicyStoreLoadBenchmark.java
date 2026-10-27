@@ -38,16 +38,12 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.BenchmarkParams;
-import org.openjdk.jmh.infra.ThreadParams;
 import org.xacml4j.jmh.harness.PdpFixture;
 import org.xacml4j.jmh.harness.PolicySource;
-import org.xacml4j.jmh.harness.PolicyStores;
-import org.xacml4j.jmh.harness.StoreCapability;
-import org.xacml4j.jmh.harness.StoreSession;
 import org.xacml4j.v30.spi.repository.PolicyImportTool;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
-/** Measures one complete store session loading or importing a corpus. */
+/** Measures one complete store repository (open, load or import, close) for a corpus. */
 @State(Scope.Benchmark)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
@@ -70,25 +66,23 @@ public class PolicyStoreLoadBenchmark
 		if(fixture != null){
 			return;
 		}
-		// The capability needs no session; ask it before a whole fixture is opened (review rv004).
-		if(!PolicyStores.select(store).store().capabilities().contains(StoreCapability.LOAD)){
-			throw new IllegalStateException("Store " + store + " does not support loading policies");
-		}
 		PdpFixture opened = PdpFixture.open(store, corpus);
 		try{
 			// Both measured paths once, checked, before any measurement: importXml adds through
 			// the production import tool, which ignores a rejected add (review rv007).
-			try(StoreSession session = opened.store().open(opened.newContext())){
-				session.load(opened.policies());
-				opened.verifyLookups(session.repository(), "a loadParsed session");
+			PolicyRepository loaded = opened.newRepository();
+			try(AutoCloseable release = () -> opened.release(loaded)){
+				PdpFixture.load(loaded, opened.policies());
+				opened.verifyLookups(loaded, "a loadParsed repository");
 			}
-			try(StoreSession session = opened.store().open(opened.newContext())){
-				importAll(opened, session.repository());
-				opened.verifyLookups(session.repository(), "an importXml session");
+			PolicyRepository imported = opened.newRepository();
+			try(AutoCloseable release = () -> opened.release(imported)){
+				importAll(opened, imported);
+				opened.verifyLookups(imported, "an importXml repository");
 			}
 			fixture = opened;
 		}catch(Throwable failure){
-			// Throwable: importAll and StoreSession.close throw checked exceptions too (review rv009).
+			// Throwable: importAll and AutoCloseable.close throw checked exceptions too (review rv009).
 			closeOnFailure(opened, failure);
 			throw failure;
 		}
@@ -109,9 +103,6 @@ public class PolicyStoreLoadBenchmark
 		try{
 			int threads = params.getThreads();
 			if(threads > 1){
-				if(!fixture.store().capabilities().contains(StoreCapability.CONCURRENT_READS)){
-					throw new IllegalStateException("Store " + store + " does not support concurrent reads for " + threads + " threads");
-				}
 				fixture.verifyConcurrent(threads);
 			}
 		}catch(RuntimeException | Error failure){
@@ -124,23 +115,25 @@ public class PolicyStoreLoadBenchmark
 
 	@Benchmark
 	public PolicyRepository loadParsed() throws Exception {
-		try(StoreSession session = fixture.store().open(fixture.newContext())){
-			session.load(fixture.policies());
-			return session.repository();
+		PolicyRepository repository = fixture.newRepository();
+		try(AutoCloseable release = () -> fixture.release(repository)){
+			PdpFixture.load(repository, fixture.policies());
+			return repository;
 		}
 	}
 
 	@Benchmark
 	public PolicyRepository importXml() throws Exception {
-		try(StoreSession session = fixture.store().open(fixture.newContext())){
-			importAll(fixture, session.repository());
-			return session.repository();
+		PolicyRepository repository = fixture.newRepository();
+		try(AutoCloseable release = () -> fixture.release(repository)){
+			importAll(fixture, repository);
+			return repository;
 		}
 	}
 
 	/**
 	 * Imports every corpus document through one production import tool, so
-	 * its provider discovery counts once per session, not once per document
+	 * its provider discovery counts once per repository, not once per document
 	 * (review rv004).
 	 */
 	private static void importAll(PdpFixture fixture, PolicyRepository repository) throws Exception {
@@ -168,28 +161,6 @@ public class PolicyStoreLoadBenchmark
 			opened.close();
 		}catch(RuntimeException | Error closeFailure){
 			failure.addSuppressed(closeFailure);
-		}
-	}
-
-	/** A per-thread cursor over sources; measured loads use the whole corpus. */
-	@State(Scope.Thread)
-	public static class Cursor
-	{
-		private PolicySource[] items;
-		private int index;
-
-		@Setup(Level.Trial)
-		public void setUp(PolicyStoreLoadBenchmark benchmark, ThreadParams thread){
-			items = benchmark.fixture.corpus().policies().toArray(PolicySource[]::new);
-			index = (int)((long)thread.getThreadIndex() * items.length / thread.getThreadCount());
-		}
-
-		public PolicySource next(){
-			PolicySource item = items[index];
-			if(++index == items.length){
-				index = 0;
-			}
-			return item;
 		}
 	}
 }

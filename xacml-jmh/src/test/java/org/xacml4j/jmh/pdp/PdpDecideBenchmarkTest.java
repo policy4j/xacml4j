@@ -37,10 +37,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.xacml4j.jmh.harness.CorpusRequest;
-import org.xacml4j.jmh.harness.PolicyCorpora;
-import org.xacml4j.jmh.testing.CountingStore;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
+import org.xacml4j.jmh.testing.TestStores;
 import org.xacml4j.jmh.testing.JmhParams;
-import org.xacml4j.jmh.testing.SingleReaderStore;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
@@ -57,7 +56,7 @@ public class PdpDecideBenchmarkTest
 	@BeforeEach
 	public void resetStores()
 	{
-		CountingStore.reset();
+		TestStores.Counting.reset();
 	}
 
 	@AfterEach
@@ -82,7 +81,7 @@ public class PdpDecideBenchmarkTest
 		PdpDecideBenchmark benchmark = setUp("in-memory", "rsa2008", "all");
 
 		assertThat(ids(benchmark.selected()))
-				.containsExactlyElementsIn(ids(PolicyCorpora.load("rsa2008").requests())).inOrder();
+				.containsExactlyElementsIn(ids(PolicyCorpusProvider.corpus("rsa2008").requests())).inOrder();
 	}
 
 	@Test
@@ -99,11 +98,11 @@ public class PdpDecideBenchmarkTest
 	public void setUpThatFailsReleasesEverySessionItOpened()
 	{
 		// JMH runs no trial teardown after a failed trial setup
-		PdpDecideBenchmark benchmark = configured(CountingStore.NAME, "rsa2008", "99-99");
+		PdpDecideBenchmark benchmark = configured(TestStores.Counting.NAME, "rsa2008", "99-99");
 
 		assertThrows(IllegalArgumentException.class, benchmark::setUp);
 
-		assertThat(CountingStore.closed()).containsExactlyElementsIn(CountingStore.opened());
+		assertThat(TestStores.Counting.closed()).containsExactlyElementsIn(TestStores.Counting.opened());
 	}
 
 	@Test
@@ -156,14 +155,14 @@ public class PdpDecideBenchmarkTest
 	}
 
 	@Test
-	public void twoThreadsFailForAStoreWithoutConcurrentReads() throws Exception
+	public void twoThreadsFailForAStoreThatAnswersOnlyOnItsOwnThread() throws Exception
 	{
-		PdpDecideBenchmark benchmark = setUp(SingleReaderStore.NAME, "rsa2008", "all");
+		PdpDecideBenchmark benchmark = setUp(TestStores.ThreadConfined.NAME, "rsa2008", "all");
 
 		RuntimeException e = assertThrows(RuntimeException.class,
 				() -> benchmark.checkThreads(JmhParams.benchmark(PdpDecideBenchmark.class.getName() + ".decide", 2)));
 
-		assertThat(e).hasMessageThat().contains(SingleReaderStore.NAME);
+		assertThat(e).hasMessageThat().contains(TestStores.ThreadConfined.NAME);
 		assertThat(e).hasMessageThat().containsMatch("(?i)concurrent");
 	}
 
@@ -176,9 +175,9 @@ public class PdpDecideBenchmarkTest
 	}
 
 	@Test
-	public void oneThreadPassesForAStoreWithoutConcurrentReads() throws Exception
+	public void oneThreadPassesForAStoreThatAnswersOnlyOnItsOwnThread() throws Exception
 	{
-		PdpDecideBenchmark benchmark = setUp(SingleReaderStore.NAME, "rsa2008", "all");
+		PdpDecideBenchmark benchmark = setUp(TestStores.ThreadConfined.NAME, "rsa2008", "all");
 
 		benchmark.checkThreads(JmhParams.benchmark(PdpDecideBenchmark.class.getName() + ".decide", 1));
 	}

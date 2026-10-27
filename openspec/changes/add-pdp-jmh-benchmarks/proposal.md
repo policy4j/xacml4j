@@ -14,8 +14,8 @@ any store, including stores that live outside this repository.
 - A new Maven module `xacml-jmh` (JMH 1.37) that builds an executable
   `benchmarks.jar`. It is in the reactor and is not deployed.
 - A small harness API in `org.xacml4j.jmh.harness`:
-  - `PolicyStore` and `StoreSession`: open an isolated `PolicyRepository`,
-    load parsed policies into it, and always release it.
+  - `PolicyStore`: opens an isolated `PolicyRepository` and closes it; the
+    harness loads parsed policies into it and always releases it (design D15).
   - `PolicyCorpusProvider` and `PolicyCorpus`: policies, the root policy,
     and requests with their expected decisions.
   - Name-based selection (`name` or `name:argument`) through

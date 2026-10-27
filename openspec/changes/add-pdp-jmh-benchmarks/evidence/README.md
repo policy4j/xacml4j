@@ -82,6 +82,11 @@ docs/ai/OPENSPEC.md "Evidence".
 | `tests/016-gate-reactor` | reactor (3.7) | `rtk proxy mvn -B -o clean test` | PASS: 8,202 tests, 0 failures, 18 skipped; conformance 937/12; ast-grep clean |
 | `benchmarks/jmh/001-baseline` | JMH baseline (4.2), JDK 21 C2 | Benchmark Plan, both commands | 34 of 34 sets complete; see summary |
 | `tests/017-gate-smoke` | one-fork smoke of the shaded jar (3.7) | `java -jar benchmarks.jar -f 1 -wi 0 -i 1 -r 200ms -foe true` | PASS: 20 of 20 sets; integration only |
+| `tests/019-simplify-harness` | tests (task 6.1, D15) | `rtk mvn -o -pl xacml-jmh -am -Dtest='org.xacml4j.jmh.**' test`; `ast-grep scan` | GREEN: 194 tests; scan clean; 18 -> 8 public harness types |
+| `tests/020-reactor-H-harness` | reactor (task 6.2) | `rtk proxy mvn -B -o clean test` | PASS: 8,280 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rvj1-simplify-sol` | review of D15 (6.2), Codex GPT-6.1 Sol | NTM pane, read-only packet | APPROVE WITH CHANGES: 2 P3, both fixed |
+| `tests/021-rvj1-fixes` | RVJ1 fixes, with a mutation check | `rtk mvn -o -pl xacml-jmh -am -Dtest=... test` | GREEN: 195 tests; the mutation fails the new test |
+| `tests/022-commit-tree-harness` | the exact tree of the D15 commit (6.2) | `rtk proxy mvn -B -o clean test` on a clean export | PASS: 8,282 tests, 18 skipped; conformance 938/12 |
 
 ## Not applicable
 

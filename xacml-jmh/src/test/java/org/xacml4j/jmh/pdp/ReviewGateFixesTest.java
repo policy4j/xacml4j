@@ -25,28 +25,22 @@ package org.xacml4j.jmh.pdp;
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.xacml4j.jmh.harness.LookupQuery;
 import org.xacml4j.jmh.harness.PdpFixture;
 import org.xacml4j.jmh.harness.PolicyCorpus;
-import org.xacml4j.jmh.harness.PolicyStores;
-import org.xacml4j.jmh.harness.Rules;
-import org.xacml4j.jmh.harness.VersionPatterns;
-import org.xacml4j.jmh.testing.ReviewFixStores.AddRefusingStore;
-import org.xacml4j.jmh.testing.ReviewFixStores.CloseFailingStore;
-import org.xacml4j.jmh.testing.ReviewFixStores.DriftingStore;
-import org.xacml4j.jmh.testing.ReviewFixStores.ImportCountingStore;
-import org.xacml4j.jmh.testing.ReviewFixStores.ThreadConfinedStore;
+import org.xacml4j.jmh.testing.TestStores;
 import org.xacml4j.jmh.testing.TestCorpora;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Versionable;
+import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 /**
  * The fixes of the review gate of task 3.7: rv004 and rv005 (Claude Fable
@@ -57,25 +51,10 @@ public class ReviewGateFixesTest
 	@BeforeEach
 	public void resetStores()
 	{
-		ImportCountingStore.reset();
-		DriftingStore.reset();
-		CloseFailingStore.reset();
-	}
-
-	@ParameterizedTest(name = "{0} against {1}: {2}")
-	@CsvSource({
-			"1.*, 1.9, true",
-			"1.*, 1.10, true",
-			"*.2, 10.2, true",
-			"1.*, 1.2.3, false",
-			"1.+, 1, true",
-			"1.+, 1.2.3, true",
-			"1.2, 1.2, true",
-			"1.2, 1.2.0, false",
-			"1.2, 1.20, false"})
-	public void versionPatternsFollowXacml30Section513(String pattern, String version, boolean expected)
-	{
-		assertThat(VersionPatterns.matches(pattern, version)).isEqualTo(expected);
+		TestStores.ImportCounting.reset();
+		TestStores.Drifting.reset();
+		TestStores.CloseFailing.reset();
+		TestStores.ImportFailing.reset();
 	}
 
 	/** rv006 finding 1: the oracle must not read {@code *} as one digit, as the engine does (policy4j-w842). */
@@ -86,7 +65,7 @@ public class ReviewGateFixesTest
 
 		LookupQuery reference = referenceQuery(LookupQuery.of(rules));
 
-		assertThat(Rules.version(reference.expected()).getValue()).isEqualTo("1.10");
+		assertThat(((Versionable) reference.expected()).getVersion().getValue()).isEqualTo("1.10");
 	}
 
 	/** rv006 finding 1: the engine's wildcard defect now fails the lookup check instead of hiding in it. */
@@ -94,7 +73,7 @@ public class ReviewGateFixesTest
 	public void inMemoryStoreFailsTheWildcardLookupBecauseOfTheEngineDefect() throws Exception
 	{
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(PolicyStores.select("in-memory"), wildcardCorpus()));
+				() -> PdpFixture.open("in-memory", wildcardCorpus()));
 
 		assertThat(e).hasMessageThat().contains("reference Policy");
 		assertThat(e).hasMessageThat().contains("version \"1.9\"");
@@ -112,7 +91,9 @@ public class ReviewGateFixesTest
 
 			assertThat(id).contains("-" + Long.toHexString(ProcessHandle.current().pid()) + "-");
 			assertThat(id).matches("[A-Za-z0-9._-]+");
-			assertThat(fixture.newContext().repositoryId()).matches("[A-Za-z0-9._-]+");
+			PolicyRepository other = fixture.newRepository();
+			fixture.release(other);
+			assertThat(other.getId()).matches("[A-Za-z0-9._-]+");
 		}
 	}
 
@@ -120,7 +101,7 @@ public class ReviewGateFixesTest
 	@Test
 	public void concurrentCheckRunsTheLookupsOnTheStore() throws Exception
 	{
-		try(PdpFixture fixture = PdpFixture.open(ThreadConfinedStore.NAME, "rsa2008")){
+		try(PdpFixture fixture = PdpFixture.open(TestStores.ThreadConfined.NAME, "rsa2008")){
 			IllegalStateException e = assertThrows(IllegalStateException.class, () -> fixture.verifyConcurrent(2));
 
 			assertThat(e).hasMessageThat().contains("concurrent");
@@ -133,15 +114,15 @@ public class ReviewGateFixesTest
 	public void importXmlBuildsOneImportToolPerOperation() throws Exception
 	{
 		PolicyStoreLoadBenchmark benchmark = new PolicyStoreLoadBenchmark();
-		benchmark.store = ImportCountingStore.NAME;
+		benchmark.store = TestStores.ImportCounting.NAME;
 		benchmark.corpus = "rsa2008";
 		benchmark.setUp();
 		try{
-			ImportCountingStore.reset();
+			TestStores.ImportCounting.reset();
 
 			benchmark.importXml();
 
-			assertThat(ImportCountingStore.tools()).isEqualTo(1);
+			assertThat(TestStores.ImportCounting.tools()).isEqualTo(1);
 		}finally{
 			benchmark.tearDown();
 		}
@@ -152,26 +133,44 @@ public class ReviewGateFixesTest
 	public void loadSetUpRejectsAStoreThatLosesImportedPolicies()
 	{
 		PolicyStoreLoadBenchmark benchmark = new PolicyStoreLoadBenchmark();
-		benchmark.store = AddRefusingStore.NAME;
+		benchmark.store = TestStores.ImportRefusing.NAME;
 		benchmark.corpus = "rsa2008";
 
 		IllegalStateException e = assertThrows(IllegalStateException.class, benchmark::setUp);
 
-		assertThat(e).hasMessageThat().contains("importXml session");
+		assertThat(e).hasMessageThat().contains("importXml repository");
 	}
 
-	/** rv009: a checked exception in the load preflight still closes the fixture's own session. */
+	/** rv009: a checked exception in the load preflight still closes the fixture's own repository. */
 	@Test
-	public void loadSetUpClosesTheFixtureWhenAPreflightSessionThrowsACheckedException()
+	public void loadSetUpClosesTheFixtureWhenAPreflightRepositoryThrowsACheckedException()
 	{
 		PolicyStoreLoadBenchmark benchmark = new PolicyStoreLoadBenchmark();
-		benchmark.store = CloseFailingStore.NAME;
+		benchmark.store = TestStores.CloseFailing.NAME;
 		benchmark.corpus = "rsa2008";
 
-		Exception e = assertThrows(Exception.class, benchmark::setUp);
+		IllegalStateException e = assertThrows(IllegalStateException.class, benchmark::setUp);
 
-		assertThat(e).hasMessageThat().isEqualTo("checked close failure");
-		assertThat(CloseFailingStore.open()).isEqualTo(0);
+		assertThat(e).hasCauseThat().hasMessageThat().isEqualTo("checked close failure");
+		assertThat(TestStores.CloseFailing.open()).isEqualTo(0);
+	}
+
+	/**
+	 * RVJ1: a checked exception from the import itself, not from a close, still closes the
+	 * import repository and the fixture's own repository, and is the exception that setup throws.
+	 */
+	@Test
+	public void loadSetUpClosesEveryRepositoryWhenTheImportThrowsACheckedException()
+	{
+		PolicyStoreLoadBenchmark benchmark = new PolicyStoreLoadBenchmark();
+		benchmark.store = TestStores.ImportFailing.NAME;
+		benchmark.corpus = "rsa2008";
+
+		IOException e = assertThrows(IOException.class, benchmark::setUp);
+
+		assertThat(e).hasMessageThat().isEqualTo(TestStores.ImportFailing.MESSAGE);
+		assertThat(TestStores.ImportFailing.opened()).hasSize(3);
+		assertThat(TestStores.ImportFailing.closed()).containsExactlyElementsIn(TestStores.ImportFailing.opened());
 	}
 
 	/** rv005 finding 4: a store that changes during the trial fails the run at tear-down. */
@@ -179,12 +178,12 @@ public class ReviewGateFixesTest
 	public void tearDownFailsWhenTheStoreDriftedDuringTheTrial() throws Exception
 	{
 		PdpDecideBenchmark benchmark = new PdpDecideBenchmark();
-		benchmark.store = DriftingStore.NAME;
+		benchmark.store = TestStores.Drifting.NAME;
 		benchmark.corpus = "rsa2008";
 		benchmark.request = "all";
 		benchmark.setUp();
 
-		DriftingStore.drift();
+		TestStores.Drifting.drift();
 		IllegalStateException e = assertThrows(IllegalStateException.class, benchmark::tearDown);
 
 		assertThat(e).hasMessageThat().contains("lookup");
@@ -195,18 +194,18 @@ public class ReviewGateFixesTest
 	public void tearDownKeepsTheCheckFailureWhenCloseAlsoFails() throws Exception
 	{
 		PdpDecideBenchmark benchmark = new PdpDecideBenchmark();
-		benchmark.store = DriftingStore.NAME;
+		benchmark.store = TestStores.Drifting.NAME;
 		benchmark.corpus = "rsa2008";
 		benchmark.request = "all";
 		benchmark.setUp();
 
-		DriftingStore.drift();
-		DriftingStore.failClose();
+		TestStores.Drifting.drift();
+		TestStores.Drifting.failClose();
 		IllegalStateException e = assertThrows(IllegalStateException.class, benchmark::tearDown);
 
 		assertThat(e).hasMessageThat().contains("lookup");
 		assertThat(e.getSuppressed()).hasLength(1);
-		assertThat(e.getSuppressed()[0]).hasMessageThat().contains("Cannot close the session");
+		assertThat(e.getSuppressed()[0]).hasMessageThat().contains("Cannot close the repository");
 		assertThat(e.getSuppressed()[0]).hasCauseThat().hasMessageThat().isEqualTo("checked close failure");
 	}
 

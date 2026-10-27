@@ -31,38 +31,36 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.xacml4j.jmh.testing.FirstTwinCorpus;
-import org.xacml4j.jmh.testing.ProbeCorpus;
-import org.xacml4j.jmh.testing.SecondTwinCorpus;
+import org.xacml4j.jmh.testing.TestCorpora;
 
 /** Spec requirement "Policy corpus selection". */
-public class PolicyCorporaTest
+public class PolicyCorpusProviderTest
 {
 	@BeforeEach
 	public void resetProbe()
 	{
-		ProbeCorpus.reset();
+		TestCorpora.Probe.reset();
 	}
 
 	@ParameterizedTest(name = "{0}")
 	@ValueSource(strings = {"rsa2008", "synthetic:10"})
 	public void builtInCorpusIsNamedAsSelected(String value) throws Exception
 	{
-		assertThat(PolicyCorpora.load(value).name()).isEqualTo(value);
+		assertThat(PolicyCorpusProvider.corpus(value).name()).isEqualTo(value);
 	}
 
 	@Test
 	public void namesAreSortedAndHoldEveryCorpusOnTheClasspath()
 	{
-		assertThat(PolicyCorpora.names()).containsAtLeast("rsa2008", "synthetic", "dir", ProbeCorpus.NAME,
-				FirstTwinCorpus.NAME);
-		assertThat(PolicyCorpora.names()).isInOrder();
+		assertThat(PolicyCorpusProvider.names()).containsAtLeast("rsa2008", "synthetic", "dir", TestCorpora.Probe.NAME,
+				TestCorpora.FirstTwin.NAME);
+		assertThat(PolicyCorpusProvider.names()).isInOrder();
 	}
 
 	@Test
 	public void unknownCorpusNameFailsWithTheKnownNames()
 	{
-		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> PolicyCorpora.load("missing"));
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> PolicyCorpusProvider.corpus("missing"));
 
 		assertThat(e).hasMessageThat().contains("missing");
 		assertThat(e).hasMessageThat().contains("rsa2008");
@@ -73,25 +71,25 @@ public class PolicyCorporaTest
 	@Test
 	public void providerReceivesTheTextAfterTheFirstColonAsItsArgument() throws Exception
 	{
-		assertThat(PolicyCorpora.load("probe:a:b").name()).isEqualTo("probe:a:b");
-		assertThat(PolicyCorpora.load("probe").name()).isEqualTo("probe");
+		assertThat(PolicyCorpusProvider.corpus("probe:a:b").name()).isEqualTo("probe:a:b");
+		assertThat(PolicyCorpusProvider.corpus("probe").name()).isEqualTo("probe");
 
-		assertThat(ProbeCorpus.arguments()).containsExactly(Optional.of("a:b"), Optional.empty()).inOrder();
+		assertThat(TestCorpora.Probe.arguments()).containsExactly(Optional.of("a:b"), Optional.empty()).inOrder();
 	}
 
 	@Test
 	public void twoCorporaWithOneNameFailWithBothClasses()
 	{
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PolicyCorpora.load(FirstTwinCorpus.NAME + ":x"));
+				() -> PolicyCorpusProvider.corpus(TestCorpora.FirstTwin.NAME + ":x"));
 
-		assertThat(e).hasMessageThat().contains(FirstTwinCorpus.class.getName());
-		assertThat(e).hasMessageThat().contains(SecondTwinCorpus.class.getName());
+		assertThat(e).hasMessageThat().contains(TestCorpora.FirstTwin.class.getName());
+		assertThat(e).hasMessageThat().contains(TestCorpora.SecondTwin.class.getName());
 	}
 
 	@Test
 	public void blankCorpusNameIsRejected()
 	{
-		assertThrows(IllegalArgumentException.class, () -> PolicyCorpora.load(":x"));
+		assertThrows(IllegalArgumentException.class, () -> PolicyCorpusProvider.corpus(":x"));
 	}
 }

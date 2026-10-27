@@ -24,6 +24,7 @@ package org.xacml4j.jmh.harness;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.SortedSet;
 
 import org.xacml4j.v30.SyntaxException;
 
@@ -47,4 +48,31 @@ public interface PolicyCorpusProvider
 	 * @throws IllegalArgumentException if the argument is not valid for this corpus
 	 */
 	PolicyCorpus load(Optional<String> argument) throws IOException, SyntaxException;
+
+	/**
+	 * @param parameter the benchmark parameter: {@code name} or {@code name:argument}
+	 * @return the corpus that the named provider loads with the argument
+	 * @throws IllegalArgumentException if no corpus has that name, or the argument is not valid
+	 */
+	static PolicyCorpus corpus(String parameter) throws IOException, SyntaxException {
+		String[] nameAndArgument = Services.split(parameter);
+		return named(nameAndArgument[0]).load(Optional.ofNullable(nameAndArgument[1]));
+	}
+
+	/**
+	 * @param name a corpus name
+	 * @return the provider with that name
+	 * @throws IllegalArgumentException if no provider has that name; the message lists the known names
+	 * @throws IllegalStateException if several providers have that name; the message names their classes
+	 */
+	static PolicyCorpusProvider named(String name){
+		return Services.find(PolicyCorpusProvider.class, PolicyCorpusProvider::name, "corpus", name);
+	}
+
+	/**
+	 * @return the names of the corpora on the class path
+	 */
+	static SortedSet<String> names(){
+		return Services.names(PolicyCorpusProvider.class, PolicyCorpusProvider::name);
+	}
 }

@@ -22,16 +22,19 @@ package org.xacml4j.jmh.store;
  * #L%
  */
 
+import java.util.Optional;
+
 import org.xacml4j.jmh.harness.PolicyStore;
-import org.xacml4j.jmh.harness.PolicyStoreContext;
-import org.xacml4j.jmh.harness.StoreSession;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 
 import com.google.auto.service.AutoService;
 
 /**
  * The production store: {@link InMemoryPolicyRepository}. It takes no
- * argument. Its repository has no close method; a session releases nothing.
+ * argument. Its repository has no close method; closing it releases nothing.
  */
 @AutoService(PolicyStore.class)
 public final class InMemoryPolicyStore implements PolicyStore
@@ -44,12 +47,11 @@ public final class InMemoryPolicyStore implements PolicyStore
 	}
 
 	@Override
-	public StoreSession open(PolicyStoreContext context){
-		if(context.argument().isPresent()){
-			throw new IllegalArgumentException("Store \"" + NAME + "\" takes no argument, got \"" + context.argument().get() + "\"");
+	public PolicyRepository open(String id, Optional<String> argument,
+			FunctionProvider functions, DecisionCombiningAlgorithmProvider algorithms){
+		if(argument.isPresent()){
+			throw new IllegalArgumentException("Store \"" + NAME + "\" takes no argument, got \"" + argument.get() + "\"");
 		}
-		InMemoryPolicyRepository repository = new InMemoryPolicyRepository(
-				context.repositoryId(), context.functions(), context.algorithms());
-		return () -> repository;
+		return new InMemoryPolicyRepository(id, functions, algorithms);
 	}
 }

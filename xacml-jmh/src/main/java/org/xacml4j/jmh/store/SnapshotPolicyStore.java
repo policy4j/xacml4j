@@ -22,18 +22,19 @@ package org.xacml4j.jmh.store;
  * #L%
  */
 
-import java.util.Set;
+
+import java.util.Optional;
 
 import org.xacml4j.jmh.harness.PolicyStore;
-import org.xacml4j.jmh.harness.PolicyStoreContext;
-import org.xacml4j.jmh.harness.StoreCapability;
-import org.xacml4j.jmh.harness.StoreSession;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 import com.google.auto.service.AutoService;
 
 /**
- * The snapshot store. It takes no argument and owns no resources that need
- * closing; each session has its own repository.
+ * The snapshot store ({@link SnapshotPolicyRepository}). It takes no argument and
+ * owns no resources that need closing.
  */
 @AutoService(PolicyStore.class)
 public final class SnapshotPolicyStore implements PolicyStore
@@ -45,18 +46,13 @@ public final class SnapshotPolicyStore implements PolicyStore
 		return NAME;
 	}
 
-	@Override
-	public Set<StoreCapability> capabilities(){
-		return Set.of(StoreCapability.LOAD, StoreCapability.CONCURRENT_READS);
-	}
 
 	@Override
-	public StoreSession open(PolicyStoreContext context){
-		if(context.argument().isPresent()){
-			throw new IllegalArgumentException("Store \"" + NAME + "\" takes no argument, got \"" + context.argument().get() + "\"");
+	public PolicyRepository open(String id, Optional<String> argument,
+			FunctionProvider functions, DecisionCombiningAlgorithmProvider algorithms){
+		if(argument.isPresent()){
+			throw new IllegalArgumentException("Store \"" + NAME + "\" takes no argument, got \"" + argument.get() + "\"");
 		}
-		SnapshotPolicyRepository repository = new SnapshotPolicyRepository(
-				context.repositoryId(), context.functions(), context.algorithms());
-		return () -> repository;
+		return new SnapshotPolicyRepository(id, functions, algorithms);
 	}
 }

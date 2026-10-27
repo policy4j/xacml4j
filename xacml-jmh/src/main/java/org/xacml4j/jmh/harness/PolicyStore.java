@@ -22,18 +22,18 @@ package org.xacml4j.jmh.harness;
  * #L%
  */
 
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.Optional;
+import java.util.SortedSet;
+
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 /**
- * A policy store that the benchmarks can measure: a factory of sessions on a
- * {@link org.xacml4j.v30.spi.repository.PolicyRepository}.
- * <p>
- * Implementations are found with {@link java.util.ServiceLoader}: register
- * one with {@code @AutoService(PolicyStore.class)} or a
- * {@code META-INF/services/org.xacml4j.jmh.harness.PolicyStore} file, and
- * select it with the benchmark parameter {@code store=<name>} or
- * {@code store=<name>:<argument>}.
+ * A named factory of policy repositories, the store that a benchmark measures. Implementations
+ * are found with {@link java.util.ServiceLoader} (register with
+ * {@code @AutoService(PolicyStore.class)} or a {@code META-INF/services} file) and selected with
+ * the benchmark parameter {@code store=<name>} or {@code store=<name>:<argument>}.
  */
 public interface PolicyStore
 {
@@ -43,21 +43,41 @@ public interface PolicyStore
 	String name();
 
 	/**
-	 * @return what this store supports; all capabilities unless overridden
+	 * Opens a new, empty repository. The harness closes it with {@link #close}.
+	 *
+	 * @param id unique among the repositories of all JVMs; letters, digits, {@code .}, {@code _}, {@code -}
+	 * @param argument the text after the first colon of the parameter, if any
+	 * @param functions the functions that policies may use
+	 * @param algorithms the combining algorithms that policies may use
+	 * @return the repository
+	 * @throws Exception if the store cannot open a repository
 	 */
-	default Set<StoreCapability> capabilities(){
-		return EnumSet.allOf(StoreCapability.class);
+	PolicyRepository open(String id, Optional<String> argument,
+			FunctionProvider functions, DecisionCombiningAlgorithmProvider algorithms) throws Exception;
+
+	/**
+	 * Releases a repository that {@link #open} returned. Nothing by default.
+	 *
+	 * @param repository the repository
+	 * @throws Exception if the store cannot release it
+	 */
+	default void close(PolicyRepository repository) throws Exception {
 	}
 
 	/**
-	 * Opens a new, isolated session. The harness closes every session it
-	 * opens. A store without {@link StoreCapability#LOAD} attaches to its
-	 * existing data here.
-	 *
-	 * @param context the repository id of the session, the argument of the
-	 * parameter, and the providers that the repository needs
-	 * @return a new session
-	 * @throws Exception if the store cannot open a session
+	 * @param name a store name
+	 * @return the store with that name
+	 * @throws IllegalArgumentException if no store has that name; the message lists the known names
+	 * @throws IllegalStateException if several stores have that name; the message names their classes
 	 */
-	StoreSession open(PolicyStoreContext context) throws Exception;
+	static PolicyStore named(String name){
+		return Services.find(PolicyStore.class, PolicyStore::name, "store", name);
+	}
+
+	/**
+	 * @return the names of the stores on the class path
+	 */
+	static SortedSet<String> names(){
+		return Services.names(PolicyStore.class, PolicyStore::name);
+	}
 }

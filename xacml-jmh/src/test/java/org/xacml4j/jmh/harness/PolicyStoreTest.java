@@ -26,40 +26,40 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.jmh.store.InMemoryPolicyStore;
-import org.xacml4j.jmh.testing.CountingStore;
-import org.xacml4j.jmh.testing.FirstTwinStore;
-import org.xacml4j.jmh.testing.ProbeStore;
-import org.xacml4j.jmh.testing.SecondTwinStore;
+import org.xacml4j.jmh.testing.TestStores;
 import org.xacml4j.jmh.testing.TestCorpora;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 
 /** Spec requirement "Policy store selection". */
-public class PolicyStoresTest
+public class PolicyStoreTest
 {
 	@BeforeEach
 	public void resetProbe()
 	{
-		ProbeStore.reset();
+		TestStores.Probe.reset();
 	}
 
 	@ParameterizedTest(name = "{0}")
 	@ValueSource(strings = {"in-memory", "snapshot"})
 	public void builtInStoreIsFoundByItsName(String name)
 	{
-		assertThat(PolicyStores.find(name).name()).isEqualTo(name);
+		assertThat(PolicyStore.named(name).name()).isEqualTo(name);
 	}
 
 	@Test
 	public void inMemoryStoreOpensTheProductionRepository() throws Exception
 	{
-		assertThat(PolicyStores.find("in-memory")).isInstanceOf(InMemoryPolicyStore.class);
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select("in-memory"), TestCorpora.documents("documents"))){
+		assertThat(PolicyStore.named("in-memory")).isInstanceOf(InMemoryPolicyStore.class);
+		try(PdpFixture fixture = PdpFixture.open("in-memory", TestCorpora.documents("documents"))){
 			assertThat(fixture.repository()).isInstanceOf(InMemoryPolicyRepository.class);
 		}
 	}
@@ -67,15 +67,15 @@ public class PolicyStoresTest
 	@Test
 	public void namesAreSortedAndHoldEveryStoreOnTheClasspath()
 	{
-		assertThat(PolicyStores.names()).containsAtLeast("in-memory", "snapshot", ProbeStore.NAME, CountingStore.NAME,
-				FirstTwinStore.NAME);
-		assertThat(PolicyStores.names()).isInOrder();
+		assertThat(PolicyStore.names()).containsAtLeast("in-memory", "snapshot", TestStores.Probe.NAME, TestStores.Counting.NAME,
+				TestStores.FirstTwin.NAME);
+		assertThat(PolicyStore.names()).isInOrder();
 	}
 
 	@Test
 	public void unknownStoreNameFailsWithTheKnownNames()
 	{
-		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> PolicyStores.find("missing"));
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> PolicyStore.named("missing"));
 
 		assertThat(e).hasMessageThat().contains("missing");
 		assertThat(e).hasMessageThat().contains("in-memory");
@@ -92,37 +92,51 @@ public class PolicyStoresTest
 		assertThat(e).hasMessageThat().contains("snapshot");
 	}
 
-	@Test
-	public void selectionKeepsTheTextAfterTheFirstColonAsTheArgument()
+	static Stream<Arguments> parameters()
 	{
-		SelectedStore selected = PolicyStores.select("probe:a:b");
+		return Stream.of(
+				Arguments.of("in-memory", "in-memory", null),
+				Arguments.of("probe:a", "probe", "a"),
+				Arguments.of("probe:a:b", "probe", "a:b"),
+				Arguments.of("dir:/tmp/corpus:1", "dir", "/tmp/corpus:1"),
+				Arguments.of("probe:", "probe", ""));
+	}
 
-		assertThat(selected.store()).isInstanceOf(ProbeStore.class);
-		assertThat(selected.argument()).isEqualTo(Optional.of("a:b"));
-		assertThat(PolicyStores.select("probe").argument().isPresent()).isFalse();
+	@ParameterizedTest(name = "{0}")
+	@MethodSource("parameters")
+	public void textAfterTheFirstColonIsTheArgument(String parameter, String name, String argument)
+	{
+		assertThat(Services.split(parameter)).asList().containsExactly(name, argument).inOrder();
+	}
+
+	@ParameterizedTest(name = "\"{0}\"")
+	@ValueSource(strings = {"", " ", ":", ":a", "  :a"})
+	public void blankNameIsRejected(String parameter)
+	{
+		assertThrows(IllegalArgumentException.class, () -> Services.split(parameter));
 	}
 
 	@Test
-	public void storeReceivesTheArgumentWhenTheHarnessOpensASession() throws Exception
+	public void storeReceivesTheArgumentWhenTheHarnessOpensARepository() throws Exception
 	{
 		PolicyCorpus corpus = TestCorpora.documents("documents");
 
-		try(PdpFixture first = PdpFixture.open(PolicyStores.select("probe:a:b"), corpus)){
-			assertThat(first.store()).isInstanceOf(ProbeStore.class);
+		try(PdpFixture first = PdpFixture.open("probe:a:b", corpus)){
+			assertThat(first.store()).isInstanceOf(TestStores.Probe.class);
 		}
-		try(PdpFixture second = PdpFixture.open(PolicyStores.select("probe"), corpus)){
-			assertThat(second.store()).isInstanceOf(ProbeStore.class);
+		try(PdpFixture second = PdpFixture.open("probe", corpus)){
+			assertThat(second.store()).isInstanceOf(TestStores.Probe.class);
 		}
 
-		assertThat(ProbeStore.arguments()).containsExactly(Optional.of("a:b"), Optional.empty()).inOrder();
+		assertThat(TestStores.Probe.arguments()).containsExactly(Optional.of("a:b"), Optional.empty()).inOrder();
 	}
 
 	@Test
 	public void twoStoresWithOneNameFailWithBothClasses()
 	{
-		IllegalStateException e = assertThrows(IllegalStateException.class, () -> PolicyStores.find(FirstTwinStore.NAME));
+		IllegalStateException e = assertThrows(IllegalStateException.class, () -> PolicyStore.named(TestStores.FirstTwin.NAME));
 
-		assertThat(e).hasMessageThat().contains(FirstTwinStore.class.getName());
-		assertThat(e).hasMessageThat().contains(SecondTwinStore.class.getName());
+		assertThat(e).hasMessageThat().contains(TestStores.FirstTwin.class.getName());
+		assertThat(e).hasMessageThat().contains(TestStores.SecondTwin.class.getName());
 	}
 }

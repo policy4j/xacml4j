@@ -1,4 +1,4 @@
 # Test corpora of xacml-jmh, registered as a corpus in another jar would be.
-org.xacml4j.jmh.testing.ProbeCorpus
-org.xacml4j.jmh.testing.FirstTwinCorpus
-org.xacml4j.jmh.testing.SecondTwinCorpus
+org.xacml4j.jmh.testing.TestCorpora$Probe
+org.xacml4j.jmh.testing.TestCorpora$FirstTwin
+org.xacml4j.jmh.testing.TestCorpora$SecondTwin

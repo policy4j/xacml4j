@@ -39,8 +39,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.xacml4j.jmh.harness.LookupQuery;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.PolicyCorpora;
-import org.xacml4j.jmh.harness.Rules;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.testing.TestCorpora;
 import org.xacml4j.jmh.testing.TestStores;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -51,6 +50,7 @@ import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
+import org.xacml4j.v30.Versionable;
 
 /**
  * Spec requirement "Snapshot store answers like the in-memory store"
@@ -70,7 +70,7 @@ public class SnapshotPolicyRepositoryTest
 	@ValueSource(strings = {"rsa2008", "synthetic:100"})
 	public void answersEveryCorpusLookupOfItsTypeLikeTheInMemoryStore(String corpus) throws Exception
 	{
-		List<CompositeDecisionRule> rules = PdpFixture.parse(PolicyCorpora.load(corpus).policies());
+		List<CompositeDecisionRule> rules = PdpFixture.parse(PolicyCorpusProvider.corpus(corpus).policies());
 		PolicyRepository memory = new InMemoryPolicyRepository("memory", TestStores.FUNCTIONS, TestStores.ALGORITHMS);
 		PolicyRepository snapshot = snapshot();
 		for(CompositeDecisionRule rule : rules){
@@ -80,7 +80,7 @@ public class SnapshotPolicyRepositoryTest
 
 		for(CompositeDecisionRule rule : rules){
 			String id = rule.getId();
-			Version version = Rules.version(rule);
+			Version version = ((Versionable) rule).getVersion();
 			CompositeDecisionRule exact = memory.get(id, version);
 			assertWithMessage("in-memory get %s", id).that(exact).isNotNull();
 			assertWithMessage("get %s", id).that(snapshot.get(id, version)).isEqualTo(exact);

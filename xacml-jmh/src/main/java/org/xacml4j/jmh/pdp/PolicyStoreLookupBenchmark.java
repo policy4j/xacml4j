@@ -41,7 +41,6 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.ThreadParams;
 import org.xacml4j.jmh.harness.LookupQuery;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.StoreCapability;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
@@ -84,9 +83,6 @@ public class PolicyStoreLookupBenchmark
 		try{
 			int threads = params.getThreads();
 			if(threads > 1){
-				if(!fixture.store().capabilities().contains(StoreCapability.CONCURRENT_READS)){
-					throw new IllegalStateException("Store " + store + " does not support concurrent reads for " + threads + " threads");
-				}
 				fixture.verifyConcurrent(threads);
 			}
 		}catch(RuntimeException | Error failure){

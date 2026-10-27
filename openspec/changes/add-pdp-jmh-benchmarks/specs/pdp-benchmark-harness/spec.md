@@ -14,50 +14,50 @@ implementation classes.
 #### Scenario: Built-in stores are found
 - **GIVEN** the `xacml-jmh` classpath
 - **WHEN** the harness looks up `in-memory` and `snapshot`
-- **THEN** each lookup returns a store with that name (`PolicyStoresTest`)
+- **THEN** each lookup returns a store with that name (`PolicyStoreTest`)
 
 #### Scenario: Unknown store name
 - **GIVEN** no store named `missing` on the classpath
 - **WHEN** the harness looks up `missing`
-- **THEN** it throws `IllegalArgumentException` whose message contains `in-memory` and `snapshot` (`PolicyStoresTest`)
+- **THEN** it throws `IllegalArgumentException` whose message contains `in-memory` and `snapshot` (`PolicyStoreTest`)
 
 #### Scenario: Store argument
 - **GIVEN** a store named `probe` that records its argument
-- **WHEN** the harness selects `probe:a:b` and opens a session, then selects `probe` and opens a session
-- **THEN** the store receives the argument `a:b` the first time and no argument the second time (`PolicyStoresTest`)
+- **WHEN** a fixture is opened with `probe:a:b`, then with `probe`
+- **THEN** the store receives the argument `a:b` the first time and no argument the second time (`PolicyStoreTest`)
 
 #### Scenario: Duplicate store name
 - **GIVEN** two test stores that both call themselves `twin`
 - **WHEN** the harness looks up `twin`
-- **THEN** it throws `IllegalStateException` that names both classes (`PolicyStoresTest`)
+- **THEN** it throws `IllegalStateException` that names both classes (`PolicyStoreTest`)
 
 #### Scenario: Store from another jar
 - **GIVEN** a `PolicyStore` that is registered in `META-INF/services` of a classpath entry outside the main code of `xacml-jmh`
 - **WHEN** a fixture is opened with that store name
 - **THEN** the fixture uses that store and passes its checks (`PdpFixtureTest`; the forked-JVM case is the run of task 3.6)
 
-### Requirement: Store sessions are released
-Every use of a store SHALL be a session with its own repository id, and the
-harness SHALL close every session that it opened: when a fixture closes, when
-opening a fixture fails after the session was opened, and after each
+### Requirement: Store repositories are released
+Every repository that the harness opens through a store SHALL have its own id,
+and the harness SHALL close it through the store: when a fixture closes, when
+opening a fixture fails after the repository was opened, and after each
 operation of the load benchmark. A repository id SHALL differ from the ids of
 other JVMs, including other JMH forks, and SHALL hold only letters, digits,
 `.`, `_`, and `-`.
 
 #### Scenario: Ids across processes
 - **GIVEN** a fixture of a `dir` corpus, whose name holds a path
-- **WHEN** its repository id and a further context id are read
+- **WHEN** the ids of its repository and of a further repository are read
 - **THEN** both hold the process id of the JVM and only letters, digits, `.`, `_`, and `-` (`ReviewGateFixesTest`)
 
 #### Scenario: Fixture lifecycle
-- **GIVEN** a test store that counts opened and closed sessions
+- **GIVEN** a test store that counts opened and closed repositories
 - **WHEN** a fixture is opened and closed, and another fixture fails its decision check
-- **THEN** the store counts two sessions opened and two closed, with two different repository ids (`PdpFixtureTest`)
+- **THEN** the store counts two repositories opened and two closed, with two different ids (`PdpFixtureTest`)
 
 #### Scenario: Load operations
 - **GIVEN** the counting store
 - **WHEN** the load benchmark runs 50 operations in process
-- **THEN** the store counts as many closed sessions as opened ones, and no repository id twice (`PolicyStoreLoadBenchmarkTest`)
+- **THEN** the store counts as many closed repositories as opened ones, and no id twice (`PolicyStoreLoadBenchmarkTest`)
 
 ### Requirement: Policy corpus selection
 The harness SHALL select the policy corpus from the value of the `corpus`
@@ -71,12 +71,12 @@ a duplicate name SHALL fail with a message that names both classes.
 #### Scenario: Built-in corpora are found
 - **GIVEN** the `xacml-jmh` classpath
 - **WHEN** the harness loads `rsa2008` and `synthetic:10`
-- **THEN** it returns corpora named `rsa2008` and `synthetic:10` (`PolicyCorporaTest`)
+- **THEN** it returns corpora named `rsa2008` and `synthetic:10` (`PolicyCorpusProviderTest`)
 
 #### Scenario: Unknown corpus name
 - **GIVEN** no corpus named `missing`
 - **WHEN** the harness loads `missing`
-- **THEN** it throws `IllegalArgumentException` whose message contains `rsa2008`, `synthetic`, and `dir` (`PolicyCorporaTest`)
+- **THEN** it throws `IllegalArgumentException` whose message contains `rsa2008`, `synthetic`, and `dir` (`PolicyCorpusProviderTest`)
 
 ### Requirement: Decisions and lookups are checked before measurement
 A fixture SHALL load every corpus policy into the selected store, take the
@@ -224,24 +224,23 @@ parameters, prepare its inputs only in setup methods, and return or consume
 every result. `PdpDecideBenchmark` SHALL take a `request` parameter: `all`
 decides the corpus requests in turn, one per operation; a request id decides
 only that request; an unknown id SHALL fail in setup. With more than one
-benchmark thread, setup SHALL fail unless the store declares concurrent reads,
-and SHALL first run every corpus lookup on the store and decide every request
-from that many threads at once and check every answer. The load benchmark's
-setup SHALL load and import the corpus once each into fresh sessions and check
-every lookup of both before measuring, and its import operation SHALL use one
-import tool per session. A run with the JMH GC profiler SHALL report
+benchmark thread, setup SHALL first run every corpus lookup on the store and
+decide every request from that many threads at once and check every answer.
+The load benchmark's setup SHALL load and import the corpus once each into
+fresh repositories and check every lookup of both before measuring, and its
+import operation SHALL use one import tool per repository. A run with the JMH GC profiler SHALL report
 `gc.alloc.rate.norm` for a benchmark, or the run record SHALL say that it was
 not reported.
 
 #### Scenario: Concurrent lookups are checked
-- **GIVEN** a store that declares concurrent reads but finds nothing off the thread that opened it
+- **GIVEN** a store whose repository finds nothing off the thread that opened it
 - **WHEN** the concurrent check runs with two threads
 - **THEN** it throws `IllegalStateException` that names a lookup (`ReviewGateFixesTest`)
 
 #### Scenario: Import through a store that refuses adds
-- **GIVEN** a store whose `load` fills it but whose repository refuses `add`
+- **GIVEN** a store whose repository adds policies, but whose import tool's adds are refused
 - **WHEN** the load benchmark is set up
-- **THEN** setup throws `IllegalStateException` that names the import session (`ReviewGateFixesTest`)
+- **THEN** setup throws `IllegalStateException` that names the importXml repository (`ReviewGateFixesTest`)
 
 #### Scenario: One import tool per operation
 - **GIVEN** a store that counts the import tools of its repositories
@@ -264,6 +263,6 @@ not reported.
 - **THEN** the first selects only request `01-01`, and the second fails in setup with a message that names `99-99` (`PdpDecideBenchmarkTest`)
 
 #### Scenario: Several threads
-- **GIVEN** a test store without concurrent reads, and the `in-memory` store
+- **GIVEN** a test store whose repository answers only on the thread that opened it, and the `in-memory` store
 - **WHEN** the thread check runs for two threads
-- **THEN** it fails for the test store and passes for `in-memory` after the concurrent decision check (`PdpDecideBenchmarkTest`)
+- **THEN** it fails for the test store and passes for `in-memory` (`PdpDecideBenchmarkTest`)

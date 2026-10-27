@@ -42,7 +42,6 @@ import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.ThreadParams;
 import org.xacml4j.jmh.harness.CorpusRequest;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.StoreCapability;
 import org.xacml4j.v30.ResponseContext;
 
 /** Measures one decision of a request from a checked corpus. */
@@ -96,9 +95,6 @@ public class PdpDecideBenchmark
 		try{
 			int threads = params.getThreads();
 			if(threads > 1){
-				if(!fixture.store().capabilities().contains(StoreCapability.CONCURRENT_READS)){
-					throw new IllegalStateException("Store " + store + " does not support concurrent reads for " + threads + " threads");
-				}
 				fixture.verifyConcurrent(threads);
 			}
 		}catch(RuntimeException | Error failure){

@@ -41,7 +41,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.xacml4j.jmh.harness.Marshalling;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.PolicyCorpora;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.harness.PolicySource;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.SyntaxException;
@@ -77,7 +77,7 @@ public class PolicyParseBenchmark
 	@Setup(Level.Trial)
 	public void setUp() throws IOException, SyntaxException
 	{
-		List<PolicySource> sources = PolicyCorpora.load(corpus).policies();
+		List<PolicySource> sources = PolicyCorpusProvider.corpus(corpus).policies();
 		documents = new byte[sources.size()][];
 		unmarshallers = new PolicyUnmarshaller[sources.size()];
 		List<String> names = new ArrayList<>(sources.size());

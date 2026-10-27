@@ -35,12 +35,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.jmh.harness.LookupQuery;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.PolicyCorpora;
-import org.xacml4j.jmh.harness.Rules;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.testing.JmhParams;
 import org.xacml4j.jmh.testing.RecordingPolicyRepository.Read;
-import org.xacml4j.jmh.testing.RecordingStore;
+import org.xacml4j.jmh.testing.TestStores;
 import org.xacml4j.v30.CompositeDecisionRule;
+import org.xacml4j.v30.Versionable;
 
 /**
  * {@code PolicyStoreLookupBenchmark} outside a JMH run (design D7): each
@@ -53,22 +53,22 @@ public class PolicyStoreLookupBenchmarkTest
 	@BeforeEach
 	public void resetRecording()
 	{
-		RecordingStore.reset();
+		TestStores.Recording.reset();
 	}
 
 	@ParameterizedTest(name = "{0}")
 	@ValueSource(strings = {"rsa2008", "synthetic:100"})
 	public void lookupRunsTheCorpusQueriesInOrderWithTheMethodOfTheirKind(String corpus) throws Exception
 	{
-		List<LookupQuery> queries = LookupQuery.of(PdpFixture.parse(PolicyCorpora.load(corpus).policies()));
+		List<LookupQuery> queries = LookupQuery.of(PdpFixture.parse(PolicyCorpusProvider.corpus(corpus).policies()));
 		PolicyStoreLookupBenchmark benchmark = new PolicyStoreLookupBenchmark();
-		benchmark.store = RecordingStore.NAME;
+		benchmark.store = TestStores.Recording.NAME;
 		benchmark.corpus = corpus;
 		benchmark.setUp();
 		try{
 			PolicyStoreLookupBenchmark.Cursor cursor = new PolicyStoreLookupBenchmark.Cursor();
 			cursor.setUp(benchmark, JmhParams.thread(0, 1));
-			int start = RecordingStore.count();
+			int start = TestStores.Recording.count();
 			int operations = queries.size() + 1;
 			List<Object> found = new ArrayList<>();
 			for(int k = 0; k < operations; k++){
@@ -80,13 +80,13 @@ public class PolicyStoreLookupBenchmarkTest
 				LookupQuery query = queries.get(k % queries.size());
 				expected.add(new Read(method(query.kind()), query.id()));
 			}
-			List<Read> reads = RecordingStore.reads();
+			List<Read> reads = TestStores.Recording.reads();
 			assertThat(reads.subList(start, reads.size())).containsExactlyElementsIn(expected).inOrder();
 			for(int k = 0; k < operations; k++){
 				LookupQuery query = queries.get(k % queries.size());
 				CompositeDecisionRule rule = rule(found.get(k));
 				assertWithMessage("lookup %s: %s", k, query.label())
-						.that(Rules.sameIdentity(query.expected(), rule)).isTrue();
+						.that(identity(rule)).isEqualTo(identity(query.expected()));
 			}
 		}finally{
 			benchmark.tearDown();
@@ -97,19 +97,19 @@ public class PolicyStoreLookupBenchmarkTest
 	public void cursorControlMakesNoLookup() throws Exception
 	{
 		PolicyStoreLookupBenchmark benchmark = new PolicyStoreLookupBenchmark();
-		benchmark.store = RecordingStore.NAME;
+		benchmark.store = TestStores.Recording.NAME;
 		benchmark.corpus = "rsa2008";
 		benchmark.setUp();
 		try{
 			PolicyStoreLookupBenchmark.Cursor cursor = new PolicyStoreLookupBenchmark.Cursor();
 			cursor.setUp(benchmark, JmhParams.thread(0, 1));
-			int start = RecordingStore.count();
+			int start = TestStores.Recording.count();
 
 			for(int k = 0; k < 50; k++){
 				benchmark.cursor(cursor);
 			}
 
-			List<Read> reads = RecordingStore.reads();
+			List<Read> reads = TestStores.Recording.reads();
 			assertThat(reads.subList(start, reads.size())).isEmpty();
 		}finally{
 			benchmark.tearDown();
@@ -134,5 +134,11 @@ public class PolicyStoreLookupBenchmarkTest
 		Object value = found instanceof Optional<?> optional ? optional.orElse(null) : found;
 		assertWithMessage("result of lookup").that(value).isInstanceOf(CompositeDecisionRule.class);
 		return (CompositeDecisionRule)value;
+	}
+
+	/** @return what identifies a rule: its kind, id, and version */
+	private static List<Object> identity(CompositeDecisionRule rule)
+	{
+		return List.of(rule.getClass(), rule.getId(), ((Versionable) rule).getVersion());
 	}
 }

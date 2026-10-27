@@ -40,26 +40,21 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.xacml4j.jmh.testing.CountingStore;
+import org.xacml4j.jmh.testing.TestStores;
 import org.xacml4j.jmh.testing.FailureLines;
-import org.xacml4j.jmh.testing.LosingStore;
-import org.xacml4j.jmh.testing.LostPolicyException;
-import org.xacml4j.jmh.testing.ProbeStore;
-import org.xacml4j.jmh.testing.StaleLatestStore;
 import org.xacml4j.jmh.testing.TestCorpora;
 import org.xacml4j.jmh.testing.TestPdps;
-import org.xacml4j.jmh.testing.TestStores;
-import org.xacml4j.jmh.testing.ThrowingStore;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.policy.PolicySetIDReference;
 import org.xacml4j.v30.policy.PolicyVisitorSupport;
+import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 /**
  * Spec requirements "Decisions and lookups are checked before measurement"
- * and "Store sessions are released", and the scenario "Store from another
+ * and "Store repositories are released", and the scenario "Store from another
  * jar": every built-in store with every built-in corpus, and test stores
  * that lose or misreport policies.
  */
@@ -75,8 +70,8 @@ public class PdpFixtureTest
 	@BeforeEach
 	public void resetStores()
 	{
-		CountingStore.reset();
-		ProbeStore.reset();
+		TestStores.Counting.reset();
+		TestStores.Probe.reset();
 	}
 
 	@Test
@@ -146,32 +141,32 @@ public class PdpFixtureTest
 	@Test
 	public void storeRegisteredOutsideTheMainCodeIsUsedByName() throws Exception
 	{
-		// ProbeStore is registered in src/test/resources/META-INF/services, a
+		// TestStores.Probe is registered in src/test/resources/META-INF/services, a
 		// classpath entry outside the main code of the module
-		try(PdpFixture fixture = PdpFixture.open(ProbeStore.NAME, "rsa2008")){
-			assertThat(fixture.store()).isInstanceOf(ProbeStore.class);
-			assertThat(ProbeStore.repositoryIds()).containsExactly(fixture.repository().getId());
+		try(PdpFixture fixture = PdpFixture.open(TestStores.Probe.NAME, "rsa2008")){
+			assertThat(fixture.store()).isInstanceOf(TestStores.Probe.class);
+			assertThat(TestStores.Probe.repositoryIds()).containsExactly(fixture.repository().getId());
 		}
 	}
 
 	@Test
 	public void fixtureClosesItsSessionWhenItClosesAndWhenItsDecisionCheckFails() throws Exception
 	{
-		PolicyCorpus rsa2008 = PolicyCorpora.load("rsa2008");
+		PolicyCorpus rsa2008 = PolicyCorpusProvider.corpus("rsa2008");
 		// XacmlResponse-01-01.xml: Permit
 		PolicyCorpus wrong = withExpectation(rsa2008, "01-01", Decision.DENY);
 
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select(CountingStore.NAME), rsa2008)){
-			assertThat(CountingStore.closed()).isEmpty();
+		try(PdpFixture fixture = PdpFixture.open(TestStores.Counting.NAME, rsa2008)){
+			assertThat(TestStores.Counting.closed()).isEmpty();
 		}
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(PolicyStores.select(CountingStore.NAME), wrong));
+				() -> PdpFixture.open(TestStores.Counting.NAME, wrong));
 
 		assertThat(FailureLines.of(e).requests()).hasSize(1);
 		assertThat(FailureLines.of(e).request("01-01").isPresent()).isTrue();
-		assertThat(CountingStore.opened()).hasSize(2);
-		assertThat(CountingStore.opened()).containsNoDuplicates();
-		assertThat(CountingStore.closed()).containsExactlyElementsIn(CountingStore.opened());
+		assertThat(TestStores.Counting.opened()).hasSize(2);
+		assertThat(TestStores.Counting.opened()).containsNoDuplicates();
+		assertThat(TestStores.Counting.closed()).containsExactlyElementsIn(TestStores.Counting.opened());
 	}
 
 	@Test
@@ -183,38 +178,40 @@ public class PdpFixtureTest
 		PolicyCorpus twice = new PolicyCorpus("twice", policies, documents.root(), documents.requests());
 
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(PolicyStores.select(CountingStore.NAME), twice));
+				() -> PdpFixture.open(TestStores.Counting.NAME, twice));
 
 		assertThat(e).hasMessageThat().contains(TestCorpora.DOCUMENTS_ID);
-		assertThat(CountingStore.opened()).hasSize(1);
-		assertThat(CountingStore.closed()).containsExactlyElementsIn(CountingStore.opened());
+		assertThat(TestStores.Counting.opened()).hasSize(1);
+		assertThat(TestStores.Counting.closed()).containsExactlyElementsIn(TestStores.Counting.opened());
 	}
 
 	@Test
-	public void everyNewContextHasItsOwnRepositoryIdAndTheStoreArgument() throws Exception
+	public void everyNewRepositoryHasItsOwnIdAndTheStoreArgument() throws Exception
 	{
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select("probe:x"), TestCorpora.documents("documents"))){
-			PolicyStoreContext first = fixture.newContext();
-			PolicyStoreContext second = fixture.newContext();
+		try(PdpFixture fixture = PdpFixture.open("probe:x", TestCorpora.documents("documents"))){
+			PolicyRepository first = fixture.newRepository();
+			PolicyRepository second = fixture.newRepository();
+			fixture.release(first);
+			fixture.release(second);
 
-			assertThat(first.repositoryId()).isNotEqualTo(second.repositoryId());
-			assertThat(first.repositoryId()).isNotEqualTo(fixture.repository().getId());
-			assertThat(second.repositoryId()).isNotEqualTo(fixture.repository().getId());
-			assertThat(first.argument()).isEqualTo(Optional.of("x"));
+			assertThat(first.getId()).isNotEqualTo(second.getId());
+			assertThat(first.getId()).isNotEqualTo(fixture.repository().getId());
+			assertThat(second.getId()).isNotEqualTo(fixture.repository().getId());
+			assertThat(TestStores.Probe.arguments()).containsExactly(Optional.of("x"), Optional.of("x"), Optional.of("x"));
 		}
 	}
 
 	@Test
 	public void storeThatLosesAReferencedPolicySetFailsEveryRequestWhoseDecisionChanged() throws Exception
 	{
-		PolicyCorpus rsa2008 = PolicyCorpora.load("rsa2008");
+		PolicyCorpus rsa2008 = PolicyCorpusProvider.corpus("rsa2008");
 		assertRootRefersTo(rsa2008, EMERGENCY);
-		List<TestPdps.Outcome> outcomes = outcomes(new LosingStore(), EMERGENCY, rsa2008);
+		List<TestPdps.Outcome> outcomes = outcomes(new TestStores.Losing(), EMERGENCY, rsa2008);
 		assertWithMessage("requests whose decision changes without %s", EMERGENCY)
 				.that(failed(outcomes)).isNotEmpty();
 
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(LosingStore.NAME + ":" + EMERGENCY, "rsa2008"));
+				() -> PdpFixture.open(TestStores.Losing.NAME + ":" + EMERGENCY, "rsa2008"));
 
 		assertNamesExactlyTheFailedRequests(FailureLines.of(e), outcomes);
 	}
@@ -222,33 +219,33 @@ public class PdpFixtureTest
 	@Test
 	public void storeThatThrowsOnAReferencedPolicySetNamesTheExceptionOfEveryRequestThatThrew() throws Exception
 	{
-		PolicyCorpus rsa2008 = PolicyCorpora.load("rsa2008");
+		PolicyCorpus rsa2008 = PolicyCorpusProvider.corpus("rsa2008");
 		assertRootRefersTo(rsa2008, EMERGENCY);
-		List<TestPdps.Outcome> outcomes = outcomes(new ThrowingStore(), EMERGENCY, rsa2008);
+		List<TestPdps.Outcome> outcomes = outcomes(new TestStores.Throwing(), EMERGENCY, rsa2008);
 		List<String> threw = new ArrayList<>();
 		for(TestPdps.Outcome outcome : outcomes){
 			outcome.thrown().ifPresent(type -> threw.add(outcome.id()));
 		}
-		assertWithMessage("requests whose evaluation throws %s", LostPolicyException.class.getSimpleName())
+		assertWithMessage("requests whose evaluation throws %s", TestStores.LostPolicyException.class.getSimpleName())
 				.that(threw).isNotEmpty();
 
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(ThrowingStore.NAME + ":" + EMERGENCY, "rsa2008"));
+				() -> PdpFixture.open(TestStores.Throwing.NAME + ":" + EMERGENCY, "rsa2008"));
 
 		assertNamesExactlyTheFailedRequests(FailureLines.of(e), outcomes);
 		for(String id : threw){
-			assertThat(FailureLines.of(e).request(id).get()).contains(LostPolicyException.class.getName());
+			assertThat(FailureLines.of(e).request(id).get()).contains(TestStores.LostPolicyException.class.getName());
 		}
 	}
 
 	@Test
 	public void storeThatLosesTheRootFailsWithTheRootId() throws Exception
 	{
-		PolicyCorpus rsa2008 = PolicyCorpora.load("rsa2008");
+		PolicyCorpus rsa2008 = PolicyCorpusProvider.corpus("rsa2008");
 		String root = PdpFixture.parse(rsa2008.policies()).get(rsa2008.rootIndex()).getId();
 
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(PolicyStores.select(LosingStore.NAME + ":" + root), rsa2008));
+				() -> PdpFixture.open(TestStores.Losing.NAME + ":" + root, rsa2008));
 
 		assertThat(e).hasMessageThat().contains(root);
 	}
@@ -256,7 +253,7 @@ public class PdpFixtureTest
 	@Test
 	public void versionedCorpusPassesWithACorrectStore() throws Exception
 	{
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select("in-memory"), TestCorpora.versioned("versioned"))){
+		try(PdpFixture fixture = PdpFixture.open("in-memory", TestCorpora.versioned("versioned"))){
 			assertDecidesAndFindsEverything(fixture);
 		}
 	}
@@ -265,7 +262,7 @@ public class PdpFixtureTest
 	public void storeThatLosesAPolicyNoRequestReachesFailsOnlyItsLookup() throws Exception
 	{
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(PolicyStores.select(LosingStore.NAME + ":" + TestCorpora.SPARE_ID),
+				() -> PdpFixture.open(TestStores.Losing.NAME + ":" + TestCorpora.SPARE_ID,
 						TestCorpora.versioned("versioned")));
 
 		FailureLines lines = FailureLines.of(e);
@@ -278,7 +275,7 @@ public class PdpFixtureTest
 	public void storeThatReturnsAnOlderVersionAsTheLatestFailsTheReferenceLookup() throws Exception
 	{
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(PolicyStores.select(StaleLatestStore.NAME), TestCorpora.versioned("versioned")));
+				() -> PdpFixture.open(TestStores.StaleLatest.NAME, TestCorpora.versioned("versioned")));
 
 		// both versions permit read, so only the lookup check sees the wrong version
 		FailureLines lines = FailureLines.of(e);
@@ -297,7 +294,7 @@ public class PdpFixtureTest
 				List.of(TestCorpora.request("two-resources", TestCorpora.twoResourceRequest(), Decision.PERMIT)));
 
 		IllegalStateException e = assertThrows(IllegalStateException.class,
-				() -> PdpFixture.open(PolicyStores.select("in-memory"), corpus));
+				() -> PdpFixture.open("in-memory", corpus));
 
 		Optional<String> line = FailureLines.of(e).request("two-resources");
 		assertThat(line.isPresent()).isTrue();
@@ -327,7 +324,7 @@ public class PdpFixtureTest
 		// Permit rule has an Indeterminate condition, so the rule is
 		// Indeterminate{P} (XACML 3.0 core §7.11 Table 4), and deny-overrides
 		// keeps Indeterminate{P} up to the root (Appendix C.2)
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select("in-memory"), TestCorpora.documents("documents"))){
+		try(PdpFixture fixture = PdpFixture.open("in-memory", TestCorpora.documents("documents"))){
 			CorpusRequest audit = fixture.requests("audit").get(0);
 			Decision decision = fixture.pdp().decide(audit.request()).getResults().iterator().next().getDecision();
 
@@ -348,7 +345,7 @@ public class PdpFixtureTest
 	@Test
 	public void concurrentCheckNeedsAThread() throws Exception
 	{
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select("in-memory"), TestCorpora.documents("documents"))){
+		try(PdpFixture fixture = PdpFixture.open("in-memory", TestCorpora.documents("documents"))){
 			assertThrows(IllegalArgumentException.class, () -> fixture.verifyConcurrent(0));
 		}
 	}
@@ -376,18 +373,20 @@ public class PdpFixtureTest
 	}
 
 	/**
-	 * Decides every corpus request with a PDP of its own over a session of
+	 * Decides every corpus request with a PDP of its own over a repository of
 	 * the store: what the fixture must report.
 	 */
 	private static List<TestPdps.Outcome> outcomes(PolicyStore store, String lost, PolicyCorpus corpus) throws Exception
 	{
 		List<CompositeDecisionRule> rules = PdpFixture.parse(corpus.policies());
 		List<TestPdps.Outcome> outcomes = new ArrayList<>();
-		try(StoreSession session = TestStores.openLoaded(store, Optional.of(lost), "oracle-" + store.name(), rules);
-				PolicyDecisionPoint pdp = TestPdps.build(session.repository(), rules.get(corpus.rootIndex()))){
+		PolicyRepository repository = TestStores.openLoaded(store, Optional.of(lost), "oracle-" + store.name(), rules);
+		try(PolicyDecisionPoint pdp = TestPdps.build(repository, rules.get(corpus.rootIndex()))){
 			for(CorpusRequest request : corpus.requests()){
 				outcomes.add(TestPdps.decide(pdp, request));
 			}
+		}finally{
+			store.close(repository);
 		}
 		return outcomes;
 	}

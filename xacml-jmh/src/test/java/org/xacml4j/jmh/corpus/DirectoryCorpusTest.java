@@ -42,10 +42,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.xacml4j.jmh.harness.CorpusRequest;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.PolicyCorpora;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.harness.PolicyCorpus;
 import org.xacml4j.jmh.harness.PolicySource;
-import org.xacml4j.jmh.harness.PolicyStores;
 import org.xacml4j.jmh.testing.TestCorpora;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.marshal.MediaType;
@@ -65,7 +64,7 @@ public class DirectoryCorpusTest
 	{
 		TestCorpora.writeDirectory(dir);
 
-		PolicyCorpus corpus = PolicyCorpora.load("dir:" + dir);
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("dir:" + dir);
 
 		assertThat(names(corpus.policies())).containsExactly("documents.xml", "root.xml").inOrder();
 		assertThat(corpus.root()).isEqualTo("root.xml");
@@ -78,7 +77,7 @@ public class DirectoryCorpusTest
 		assertThat(stems(corpus.requests())).containsExactly("a-read", "b-delete", "c-audit").inOrder();
 		assertThat(decisions(corpus.requests()))
 				.containsExactly(Decision.PERMIT, Decision.DENY, Decision.INDETERMINATE).inOrder();
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select("in-memory"), corpus)){
+		try(PdpFixture fixture = PdpFixture.open("in-memory", corpus)){
 			assertThat(fixture.corpus().requests()).hasSize(3);
 		}
 	}
@@ -107,7 +106,7 @@ public class DirectoryCorpusTest
 				expect.XacmlRequest-02-03.xml=Permit
 				""");
 
-		PolicyCorpus corpus = PolicyCorpora.load("dir:" + dir);
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("dir:" + dir);
 
 		assertThat(corpus.policies()).hasSize(9);
 		for(PolicySource source : corpus.policies()){
@@ -115,7 +114,7 @@ public class DirectoryCorpusTest
 					.that(source.mediaType()).isEqualTo(MediaType.Type.XACML20_XML);
 		}
 		assertThat(decisions(corpus.requests())).containsExactly(Decision.PERMIT, Decision.DENY, Decision.PERMIT).inOrder();
-		try(PdpFixture fixture = PdpFixture.open(PolicyStores.select("in-memory"), corpus)){
+		try(PdpFixture fixture = PdpFixture.open("in-memory", corpus)){
 			assertThat(fixture.corpus().requests()).hasSize(3);
 		}
 	}
@@ -124,13 +123,13 @@ public class DirectoryCorpusTest
 	public void hiddenFilesAreNotCorpusFiles(@TempDir Path dir) throws Exception
 	{
 		TestCorpora.writeDirectory(dir);
-		int policies = PolicyCorpora.load("dir:" + dir).policies().size();
-		int requests = PolicyCorpora.load("dir:" + dir).requests().size();
+		int policies = PolicyCorpusProvider.corpus("dir:" + dir).policies().size();
+		int requests = PolicyCorpusProvider.corpus("dir:" + dir).requests().size();
 		// what Finder writes into a browsed directory
 		Files.writeString(dir.resolve("policies").resolve(".DS_Store"), "not xml", UTF_8);
 		Files.writeString(dir.resolve("requests").resolve(".DS_Store"), "not xml", UTF_8);
 
-		PolicyCorpus corpus = PolicyCorpora.load("dir:" + dir);
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("dir:" + dir);
 
 		assertThat(corpus.policies()).hasSize(policies);
 		assertThat(corpus.requests()).hasSize(requests);
@@ -182,7 +181,7 @@ public class DirectoryCorpusTest
 		TestCorpora.writeDirectory(dir);
 		change.introduce(dir);
 
-		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> PolicyCorpora.load("dir:" + dir));
+		IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> PolicyCorpusProvider.corpus("dir:" + dir));
 
 		assertWithMessage("message for: %s", problem).that(e).hasMessageThat().contains(named);
 	}

@@ -138,10 +138,10 @@ public record LookupQuery(String label, Kind kind, String id, Optional<VersionMa
 				continue;
 			}
 			Version v = Rules.version(candidate);
-			// XACML 3.0 §5.13 matching, not the engine's (see VersionPatterns)
-			if(version.map(m -> VersionPatterns.matches(m, v)).orElse(true)
-					&& earliest.map(m -> VersionPatterns.matches(m, v)).orElse(true)
-					&& latest.map(m -> VersionPatterns.matches(m, v)).orElse(true)
+			// XACML 3.0 §5.13 matching, not the engine's (see matches)
+			if(version.map(m -> matches(m.getPattern(), v.getValue())).orElse(true)
+					&& earliest.map(m -> matches(m.getPattern(), v.getValue())).orElse(true)
+					&& latest.map(m -> matches(m.getPattern(), v.getValue())).orElse(true)
 					&& (target == null || Rules.version(target).compareTo(v) < 0)){
 				target = candidate;
 			}
@@ -153,5 +153,35 @@ public record LookupQuery(String label, Kind kind, String id, Optional<VersionMa
 				+ ref.getId() + "\"" + version.map(m -> " version " + m).orElse("")
 				+ earliest.map(m -> " earliest " + m).orElse("") + latest.map(m -> " latest " + m).orElse("");
 		return Optional.of(new LookupQuery(label, kind, ref.getId(), version, earliest, latest, Optional.empty(), target));
+	}
+
+	/**
+	 * Version matching of XACML 3.0 §5.13 for the lookup check. The engine's
+	 * {@link VersionMatch#match} reads {@code *} as one digit, so {@code 1.*}
+	 * misses {@code 1.10} (bead policy4j-w842); the check must not copy that, or
+	 * it would reject a correct store and pass a store with the same defect
+	 * (review rv006). Known limit: {@code EarliestVersion} and {@code LatestVersion}
+	 * of a reference apply as patterns, as the engine does; no built-in corpus uses them.
+	 *
+	 * @param pattern dot-separated numbers, {@code *} for any one number, and a final
+	 * {@code +} for any further numbers, also none
+	 * @param version a version string
+	 * @return whether the version matches the pattern
+	 */
+	static boolean matches(String pattern, String version){
+		String[] want = pattern.split("\\.", -1);
+		String[] have = version.split("\\.", -1);
+		for(int i = 0; i < want.length; i++){
+			if(want[i].equals("+") && i == want.length - 1){
+				return true;
+			}
+			if(i >= have.length){
+				return false;
+			}
+			if(!want[i].equals("*") && !want[i].equals(have[i])){
+				return false;
+			}
+		}
+		return want.length == have.length;
 	}
 }

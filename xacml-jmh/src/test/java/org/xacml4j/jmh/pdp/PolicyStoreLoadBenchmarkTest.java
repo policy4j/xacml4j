@@ -23,14 +23,12 @@ package org.xacml4j.jmh.pdp;
  */
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.openjdk.jmh.annotations.Mode;
@@ -39,13 +37,12 @@ import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.VerboseMode;
-import org.xacml4j.jmh.testing.CountingStore;
-import org.xacml4j.jmh.testing.ReadOnlyStore;
+import org.xacml4j.jmh.testing.TestStores;
 
 /**
  * Spec scenario "Load operations": every operation of the load benchmark
- * opens and closes one session. The run is in process ({@code forks(0)}),
- * so the static record of {@link CountingStore} sees it; like
+ * opens and closes one repository. The run is in process ({@code forks(0)}),
+ * so the static record of {@link TestStores.Counting} sees it; like
  * {@code BenchmarkSmokeTest}, it takes the JMH lock in {@code java.io.tmpdir}.
  */
 public class PolicyStoreLoadBenchmarkTest
@@ -55,17 +52,17 @@ public class PolicyStoreLoadBenchmarkTest
 	@BeforeEach
 	public void resetStores()
 	{
-		CountingStore.reset();
+		TestStores.Counting.reset();
 	}
 
 	@ParameterizedTest(name = "{0}")
 	@ValueSource(strings = {"loadParsed", "importXml"})
-	public void fiftyLoadsCloseEverySessionTheyOpenAndNoRepositoryIdComesTwice(String method) throws Exception
+	public void fiftyLoadsCloseEveryRepositoryTheyOpenAndNoIdComesTwice(String method) throws Exception
 	{
 		// single-shot mode with a batch of 50 makes one measured operation of exactly 50 calls
 		Options options = new OptionsBuilder()
 				.include("^" + Pattern.quote(PolicyStoreLoadBenchmark.class.getName() + "." + method) + "$")
-				.param("store", CountingStore.NAME)
+				.param("store", TestStores.Counting.NAME)
 				.param("corpus", "rsa2008")
 				.mode(Mode.SingleShotTime)
 				.forks(0)
@@ -80,22 +77,9 @@ public class PolicyStoreLoadBenchmarkTest
 		Collection<RunResult> results = new Runner(options).run();
 
 		assertThat(results).hasSize(1);
-		List<String> opened = CountingStore.opened();
+		List<String> opened = TestStores.Counting.opened();
 		assertThat(opened.size()).isAtLeast(OPERATIONS);
 		assertThat(opened).containsNoDuplicates();
-		assertThat(CountingStore.closed()).containsExactlyElementsIn(opened);
-	}
-
-	@Test
-	public void storeWithoutLoadFailsInSetUp()
-	{
-		PolicyStoreLoadBenchmark benchmark = new PolicyStoreLoadBenchmark();
-		benchmark.store = ReadOnlyStore.NAME;
-		benchmark.corpus = "rsa2008";
-
-		RuntimeException e = assertThrows(RuntimeException.class, benchmark::setUp);
-
-		assertThat(e).hasMessageThat().contains(ReadOnlyStore.NAME);
-		assertThat(e).hasMessageThat().containsMatch("(?i)load");
+		assertThat(TestStores.Counting.closed()).containsExactlyElementsIn(opened);
 	}
 }

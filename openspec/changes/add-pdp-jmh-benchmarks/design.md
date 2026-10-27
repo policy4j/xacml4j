@@ -137,6 +137,8 @@ benchmarks and runs the harness tests. `.gitignore` gets `/xacml-jmh/target`.
 
 ### D3. Stores are found by name and opened as sessions
 
+Superseded by D15 (2026-10-27): no sessions; a store opens and closes a repository.
+
 A store is a factory for the existing extension point, `PolicyRepository`.
 `ServiceLoader` finds the implementations; built-in stores register with
 `@AutoService(PolicyStore.class)` (project convention, AGENTS.md); external
@@ -151,6 +153,8 @@ class name in the parameter with reflection (no common constructor contract,
 no release hook).
 
 ### D4. Harness API
+
+Superseded by D15 (2026-10-27); kept as the record of the reviewed design.
 
 All types are in `org.xacml4j.jmh.harness`. New code returns `Optional` or
 throws; it does not return `null` (the `PolicyRepository` contract of the
@@ -311,9 +315,8 @@ option (Non-Goals).
   `threadIndex * length / threads` (from JMH `ThreadParams`), so threads do
   not walk the same items at the same time (rv003 F9).
 - Threads: the default and the baseline use `-t 1`. With more threads, a
-  `@Setup(Level.Trial)` method that takes `BenchmarkParams` fails unless the
-  store has `CONCURRENT_READS`, and runs `PdpFixture.verifyConcurrent(threads)`
-  first, which decides every request from that many threads at once and
+  `@Setup(Level.Trial)` method that takes `BenchmarkParams` runs
+  `PdpFixture.verifyConcurrent(threads)` first (D15: no capability flag), which decides every request from that many threads at once and
   checks every decision (rv003 F6). A multi-thread score is the shared-PDP
   workload, including the metric counters and, before
   `optimize-pdp-evaluation` group 1, the shared random seeds.
@@ -434,15 +437,63 @@ Not changed: the unused `Cursor` of the load benchmark stays for the D13
 surface (rv007 nit 5, rv004 nit 7); the duplicated `checkThreads` blocks stay
 per class (rv004 nit 7).
 
+### D15. Simplified harness API (maintainer, 2026-10-27)
+
+The maintainer asked for fewer classes and abstractions: "too many classes ...
+API is not clean ... too many stupid abstractions". This replaces the API of
+D3 and D4; the behavior that the requirements name stays (selection by
+`name` or `name:argument`, unknown and duplicate names, every opened
+repository closed, checks before measurement).
+
+```java
+public interface PolicyStore {                         // found by ServiceLoader, as in D3
+    String name();
+    PolicyRepository open(String id, Optional<String> argument,
+            FunctionProvider functions, DecisionCombiningAlgorithmProvider algorithms) throws Exception;
+    default void close(PolicyRepository repository) throws Exception {}
+    static PolicyStore named(String name);              // unknown: IllegalArgumentException with the known names
+    static SortedSet<String> names();                   // duplicate: IllegalStateException with both classes
+}
+
+public interface PolicyCorpusProvider {
+    String name();
+    PolicyCorpus load(Optional<String> argument) throws IOException, SyntaxException;
+    static PolicyCorpus corpus(String parameter) throws IOException, SyntaxException;   // "name" or "name:argument"
+    static PolicyCorpusProvider named(String name);
+    static SortedSet<String> names();
+}
+
+// records and data as in D4: PolicyCorpus, CorpusRequest, PolicySource; LookupQuery; Marshalling
+
+public final class PdpFixture implements AutoCloseable {
+    public static PdpFixture open(String store, String corpus) throws IOException, SyntaxException;
+    public static PdpFixture open(String store, PolicyCorpus corpus) throws IOException, SyntaxException;   // store: "name" or "name:argument"
+    public static List<CompositeDecisionRule> parse(List<PolicySource> sources) throws IOException, SyntaxException;
+    public static void load(PolicyRepository repository, List<CompositeDecisionRule> policies);   // add each; IllegalStateException when add is false
+    public PolicyRepository newRepository();            // another empty repository of the fixture's store, new id
+    public void release(PolicyRepository repository);   // closes it through the store
+    // store(), repository(), corpus(), policies(), lookups(), pdp(), requests(selector),
+    // verifyConcurrent(threads), verifyLookups(repository, what), recheck(), close(): as in D4
+}
+```
+
+Removed types: `Selection`, `SelectedStore`, `PolicyStores`, `PolicyCorpora`
+(static methods of the two interfaces), `StoreSession` and `PolicyStoreContext`
+(a store opens and closes a `PolicyRepository`; the fixture loads it),
+`StoreCapability` (no store limited loading or concurrent reads; with more than
+one thread the concurrent check of D8 decides), and `VersionPatterns` (private
+to `LookupQuery`). `Rules` and the service lookup helper are package-private.
+The public types of `org.xacml4j.jmh.harness` go from 18 to 8.
+
 ## Test Strategy
 
 JUnit 5 in `xacml-jmh/src/test/java`, Truth for assertions (TESTING.md).
 
 | Requirement | Tests |
 | --- | --- |
-| Policy store selection | `PolicyStoresTest`; test-only stores registered in `src/test/resources/META-INF/services`: one that records its argument, one that counts `open` and `close`, one duplicate name |
-| Policy corpus selection | `PolicyCorporaTest`, with a test-only duplicate provider |
-| Store sessions are released | `PdpFixtureTest` and `PolicyStoreLoadBenchmarkTest` with the counting store, including a failing `open` check |
+| Policy store selection | `PolicyStoreTest`; test-only stores (`TestStores`) registered in `src/test/resources/META-INF/services`: one that records its argument, one that counts `open` and `close`, one duplicate name |
+| Policy corpus selection | `PolicyCorpusProviderTest`, with a test-only duplicate provider |
+| Store repositories are released | `PdpFixtureTest` and `PolicyStoreLoadBenchmarkTest` with the counting store, including a failing `open` check |
 | Decisions and lookups are checked before measurement | `PdpFixtureTest`, parameterized over both stores and the corpora `rsa2008`, `synthetic:1`, `synthetic:2`, `synthetic:100`, and a test `dir` corpus; test stores that drop a referenced policy set (returning empty, and throwing), drop the root, drop an unreferenced policy, or return the wrong latest version; a `dir` corpus with a wrong expectation |
 | Snapshot store answers like the in-memory store | `SnapshotPolicyRepositoryTest` (type-dispatched queries only, because of the in-memory defect) |
 | RSA 2008 corpus | `Rsa2008CorpusTest` |

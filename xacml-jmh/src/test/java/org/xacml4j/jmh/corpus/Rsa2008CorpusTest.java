@@ -37,7 +37,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.xacml4j.jmh.harness.CorpusRequest;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.PolicyCorpora;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.harness.PolicyCorpus;
 import org.xacml4j.jmh.harness.PolicySource;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -86,7 +86,7 @@ public class Rsa2008CorpusTest
 	@Test
 	public void corpusHoldsNinePolicySetsSeventeenRequestsAndTheTopLevelRoot() throws Exception
 	{
-		PolicyCorpus corpus = PolicyCorpora.load("rsa2008");
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("rsa2008");
 
 		assertThat(corpus.name()).isEqualTo("rsa2008");
 		assertThat(names(corpus.policies())).containsExactlyElementsIn(POLICIES);
@@ -97,7 +97,7 @@ public class Rsa2008CorpusTest
 	@Test
 	public void expectedDecisionsAreTheDecisionsOfTheVendoredResponses() throws Exception
 	{
-		for(CorpusRequest request : PolicyCorpora.load("rsa2008").requests()){
+		for(CorpusRequest request : PolicyCorpusProvider.corpus("rsa2008").requests()){
 			assertWithMessage("expected decision of %s", request.id())
 					.that(request.expected()).isEqualTo(RESPONSES.get(request.id()));
 		}
@@ -106,7 +106,7 @@ public class Rsa2008CorpusTest
 	@Test
 	public void policiesAreXacml20PolicySets() throws Exception
 	{
-		PolicyCorpus corpus = PolicyCorpora.load("rsa2008");
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("rsa2008");
 
 		for(PolicySource source : corpus.policies()){
 			assertWithMessage("media type of %s", source.name())
@@ -122,7 +122,7 @@ public class Rsa2008CorpusTest
 	{
 		Path vendored = vendoredDirectory();
 
-		for(PolicySource source : PolicyCorpora.load("rsa2008").policies()){
+		for(PolicySource source : PolicyCorpusProvider.corpus("rsa2008").policies()){
 			assertWithMessage("bytes of %s", source.name())
 					.that(source.content()).isEqualTo(Files.readAllBytes(vendored.resolve(source.name())));
 		}
@@ -131,7 +131,7 @@ public class Rsa2008CorpusTest
 	@Test
 	public void argumentIsRejected()
 	{
-		assertThrows(IllegalArgumentException.class, () -> PolicyCorpora.load("rsa2008:x"));
+		assertThrows(IllegalArgumentException.class, () -> PolicyCorpusProvider.corpus("rsa2008:x"));
 	}
 
 	/**

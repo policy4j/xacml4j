@@ -30,10 +30,25 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-/** Finds service implementations by name. */
-final class Providers
+/** Finds the stores and corpora of the class path by name; parses {@code name:argument}. */
+final class Services
 {
-	private Providers(){
+	private Services(){
+	}
+
+	/**
+	 * @param parameter {@code name} or {@code name:argument}; the argument is everything after the
+	 * first colon, so it can hold colons ({@code dir:C:\\corpus})
+	 * @return the name, and the argument or {@code null}
+	 * @throws IllegalArgumentException if the name is blank
+	 */
+	static String[] split(String parameter){
+		int colon = parameter.indexOf(':');
+		String name = (colon < 0 ? parameter : parameter.substring(0, colon)).trim();
+		if(name.isEmpty()){
+			throw new IllegalArgumentException("No name in \"" + parameter + "\"; expected name or name:argument");
+		}
+		return new String[]{name, colon < 0 ? null : parameter.substring(colon + 1)};
 	}
 
 	/**

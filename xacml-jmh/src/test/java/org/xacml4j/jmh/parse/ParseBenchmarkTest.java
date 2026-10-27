@@ -38,7 +38,7 @@ import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
-import org.xacml4j.jmh.harness.PolicyCorpora;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.harness.PolicyCorpus;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.RequestContext;
@@ -57,7 +57,7 @@ public class ParseBenchmarkTest
 		PolicyParseBenchmark benchmark = new PolicyParseBenchmark();
 		benchmark.corpus = corpus;
 		benchmark.setUp();
-		PolicyCorpus loaded = PolicyCorpora.load(corpus);
+		PolicyCorpus loaded = PolicyCorpusProvider.corpus(corpus);
 		PolicyParseBenchmark.Cursor cursor = new PolicyParseBenchmark.Cursor();
 
 		List<CompositeDecisionRule> parsed = new ArrayList<>();
@@ -78,7 +78,7 @@ public class ParseBenchmarkTest
 		benchmark.corpus = corpus;
 		benchmark.format = format;
 		benchmark.setUp();
-		PolicyCorpus loaded = PolicyCorpora.load(corpus);
+		PolicyCorpus loaded = PolicyCorpusProvider.corpus(corpus);
 		RequestParseBenchmark.Cursor cursor = new RequestParseBenchmark.Cursor();
 
 		for(int i = 0; i < loaded.requests().size(); i++){

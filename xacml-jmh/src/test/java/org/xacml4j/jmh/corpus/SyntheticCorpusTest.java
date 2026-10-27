@@ -38,7 +38,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.jmh.harness.CorpusRequest;
 import org.xacml4j.jmh.harness.LookupQuery;
 import org.xacml4j.jmh.harness.PdpFixture;
-import org.xacml4j.jmh.harness.PolicyCorpora;
+import org.xacml4j.jmh.harness.PolicyCorpusProvider;
 import org.xacml4j.jmh.harness.PolicyCorpus;
 import org.xacml4j.jmh.harness.PolicySource;
 import org.xacml4j.v30.Attribute;
@@ -62,8 +62,8 @@ public class SyntheticCorpusTest
 	@Test
 	public void sameCountGivesEqualPolicySourcesAndRequests() throws Exception
 	{
-		PolicyCorpus first = PolicyCorpora.load("synthetic:50");
-		PolicyCorpus second = PolicyCorpora.load("synthetic:50");
+		PolicyCorpus first = PolicyCorpusProvider.corpus("synthetic:50");
+		PolicyCorpus second = PolicyCorpusProvider.corpus("synthetic:50");
 
 		assertThat(second.policies()).isEqualTo(first.policies());
 		assertThat(second.root()).isEqualTo(first.root());
@@ -75,7 +75,7 @@ public class SyntheticCorpusTest
 	public void eachDistinctSlotHasAPermitAndADenyRequestPlusOneNotApplicableRequest(int count, int requests)
 			throws Exception
 	{
-		PolicyCorpus corpus = PolicyCorpora.load("synthetic:" + count);
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("synthetic:" + count);
 
 		List<String> ids = ids(corpus);
 		assertThat(ids).hasSize(requests);
@@ -92,7 +92,7 @@ public class SyntheticCorpusTest
 	@Test
 	public void requestsOfSynthetic100TargetPolicies0And50And99() throws Exception
 	{
-		PolicyCorpus corpus = PolicyCorpora.load("synthetic:100");
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("synthetic:100");
 
 		assertThat(ids(corpus)).containsExactly("first-permit", "first-deny", "middle-permit", "middle-deny",
 				"last-permit", "last-deny", "unknown-notapplicable");
@@ -109,7 +109,7 @@ public class SyntheticCorpusTest
 	@Test
 	public void corpusHoldsCountPoliciesAndARootThatRefersToEachOfThem() throws Exception
 	{
-		PolicyCorpus corpus = PolicyCorpora.load("synthetic:10");
+		PolicyCorpus corpus = PolicyCorpusProvider.corpus("synthetic:10");
 
 		assertThat(corpus.policies()).hasSize(11);
 		for(PolicySource source : corpus.policies()){
@@ -138,14 +138,14 @@ public class SyntheticCorpusTest
 	@Test
 	public void countDefaultsTo100() throws Exception
 	{
-		assertThat(PolicyCorpora.load("synthetic").policies()).hasSize(101);
+		assertThat(PolicyCorpusProvider.corpus("synthetic").policies()).hasSize(101);
 	}
 
 	@ParameterizedTest(name = "synthetic:{0}")
 	@ValueSource(strings = {"0", "100001", "-3", "ten"})
 	public void countThatIsNotAnIntegerFrom1To100000IsRejected(String count)
 	{
-		assertThrows(IllegalArgumentException.class, () -> PolicyCorpora.load("synthetic:" + count));
+		assertThrows(IllegalArgumentException.class, () -> PolicyCorpusProvider.corpus("synthetic:" + count));
 	}
 
 	/** @return the decision that a request id names: {@code <slot>-permit}, {@code <slot>-deny}, or {@code unknown-notapplicable} */

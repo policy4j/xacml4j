@@ -120,21 +120,18 @@ java -jar xacml-jmh/target/benchmarks.jar PdpDecideBenchmark -p corpus=dir:/path
    `org.xacml4j:xacml-jmh:<version>`.
 2. Implement `org.xacml4j.jmh.harness.PolicyStore`:
    - `name()`: the value of `-p store=<name>`;
-   - `open(PolicyStoreContext)`: a new, isolated `StoreSession` around your
-     `PolicyRepository`. The context gives a repository id that is unique for
-     each session and each JVM (letters, digits, `.`, `_`, `-` only, so it
-     can name a schema or a directory), the text after the first colon of the
+   - `open(id, argument, functions, algorithms)`: a new, empty
+     `PolicyRepository`. The id is unique for each repository and each JVM
+     (letters, digits, `.`, `_`, `-` only, so it can name a schema or a
+     directory); the argument is the text after the first colon of the
      parameter (`-p store=<name>:<argument>`, for a URL or a configuration
-     file), and the function and combining-algorithm providers;
-   - `capabilities()`: drop `LOAD` if a new session cannot start empty (the
-     load benchmark then refuses the store, and your `StoreSession.load` may
-     check the policies or do nothing: the fixture checks every lookup right
-     after it); drop `CONCURRENT_READS` if one repository must not be read by
-     several threads. A store with `LOAD` must accept policies through
-     `PolicyRepository.add`, because `importXml` adds through the production
-     import tool.
-   - `StoreSession.close()`: release connections, files, or threads. The
-     harness closes every session it opens, also when a check fails.
+     file). The harness adds the corpus with `PolicyRepository.add` and
+     checks every lookup before it measures; `importXml` adds through the
+     production import tool. Run more than one thread (`-t`) only if a
+     repository can be read by several threads; the harness checks every
+     lookup and decision from that many threads first.
+   - `close(repository)` (optional): release connections, files, or threads.
+     The harness closes every repository it opens, also when a check fails.
 3. Register it in `META-INF/services/org.xacml4j.jmh.harness.PolicyStore` (or
    with `@AutoService(PolicyStore.class)`).
 4. Run with your jar on the class path. `java -jar` ignores `-cp`, so name the
