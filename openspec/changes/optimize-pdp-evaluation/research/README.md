@@ -19,6 +19,24 @@ pair; the consensus and the cycle order are in `synthesis.md`.
 | PF5 | Codex GPT-6.1 Terra (`--cod=1:gpt-6.1-terra:max`) | `pf5-terra-algorithms.md` | done |
 | PF6 | Agy, Gemini 4 Argon (`--agyx=1:gemini-4-argon-high`) | `pf6-agy-engines.md` | done (two figures corrected in `synthesis.md`) |
 
+## Second profiling swarm (after cycle H, profile run 021)
+
+| Lane | Profile / model | Focus | Report | Status |
+| --- | --- | --- | --- | --- |
+| PR1 | `policy4j_jmh`, Claude Opus 5.5 | allocation | `pr1-opus-allocation.md` | done |
+| PR2 | `policy4j_jmh_claude_fable`, Claude Fable 5.1 | CPU | `pr2-fable-cpu.md` | done |
+| PR3 | Codex GPT-6.1 Sol | bags | | not sent; the lane reviewed cycle H and the harness instead |
+| PR4 | `policy4j_jmh_codex_astra`, Codex GPT-6 Astra | function call path | `pr4-astra-function-calls.md` | done after one follow-up |
+| PR5 | Codex GPT-6.1 Terra | per-policy structure | `pr5-terra-policy-structure.md` | done after one follow-up |
+| PR6 | Agy, Gemini 4 Argon | target indexing, literature | | pending |
+
+Consensus without a BREAKING change (each in two or more reports): direct two-argument invokers with no
+argument list and no reflective `Object[]` (PR1 H2, PR2 H2, PR4 H1); index loops instead of iterators on the
+policy tree (PR1 H4, PR2 H7, PR4 H3, PR5 H4, H7); context forwarding as one loop and no `Optional` per lookup
+(PR1 H6, PR2 H3, PR5 H5); array-backed bags that keep the serialized form (PR1 H1, PR2 H1; settles D7 Open
+Question 1 only with the maintainer). Needs the maintainer: exceptions without stack traces (PR1 H3, PR2 H8,
+PR4 H2) and one context object per referenced policy (PR1 H10, D10).
+
 ## Synthesis
 
 `synthesis.md`; plan review: `evidence/reviews/plan/`.

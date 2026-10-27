@@ -26,6 +26,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * Represents a XACML bag of attributes type.
@@ -72,8 +73,9 @@ public final class BagOfValuesType implements ValueExpTypeInfo
 	}
 
 	public BagOfValues emptyBag(){
-		// TODO: optimized version, we need to cache empty bag defaultProvider
-		return builder().build();
+		// The built-in types share one empty bag each (change optimize-pdp-evaluation, D14);
+		// another value type builds one, as before
+		return (type instanceof XacmlTypes builtIn) ? builtIn.emptyBag() : builder().build();
 	}
 
 	@Override

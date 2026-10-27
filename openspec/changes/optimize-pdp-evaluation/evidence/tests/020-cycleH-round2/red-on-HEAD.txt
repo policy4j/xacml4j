@@ -1,0 +1,92 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- dependency:3.11.0:properties (default) @ xacml-core ---
+[INFO] 
+[INFO] --- license:2.7.1:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ xacml-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.16.0:compile (default-compile) @ xacml-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 252 source files with javac [debug release 25] to target/classes
+[INFO] <scratch>/XPathProvider.java: Some input files use or override a deprecated API.
+[INFO] <scratch>/XPathProvider.java: Recompile with -Xlint:deprecation for details.
+[INFO] <scratch>/ValueType.java: Some input files use unchecked or unsafe operations.
+[INFO] <scratch>/ValueType.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 32 resources from src/test/resources to target/test-classes
+[INFO] Copying 5 resources from ../build-support/logback to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.16.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 145 source files with javac [debug release 25] to target/test-classes
+[INFO] <scratch>/AttributeDesignatorTest.java: Some input files use unchecked or unsafe operations.
+[INFO] <scratch>/AttributeDesignatorTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- surefire:3.6.1:test (default-test) @ xacml-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.xacml4j.v30.policy.EmptyBagCharacterizationTest
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[ERROR] Tests run: 6, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.529 s <<< FAILURE! -- in org.xacml4j.v30.policy.EmptyBagCharacterizationTest
+[ERROR] org.xacml4j.v30.policy.EmptyBagCharacterizationTest.presentAttributeDoesNotBuildAnEmptyBag -- Time elapsed: 0.437 s <<< FAILURE!
+java.lang.AssertionError: empty bag built for a present attribute
+	at org.xacml4j.v30.types.ValueType.emptyBag(ValueType.java:126)
+	at org.xacml4j.v30.policy.AttributeReference.evaluate(AttributeReference.java:118)
+	at org.xacml4j.v30.policy.EmptyBagCharacterizationTest.presentAttributeDoesNotBuildAnEmptyBag(EmptyBagCharacterizationTest.java:152)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+[ERROR] org.xacml4j.v30.policy.EmptyBagCharacterizationTest.oneEmptyBagIsSharedPerType -- Time elapsed: 0.003 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: org.xacml4j.v30.BagOfValues@74294c1a<BagOfValues{DataType=string, Values=[]}> but was: org.xacml4j.v30.BagOfValues@9e2ad91<BagOfValues{DataType=string, Values=[]}>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertSame.failNotSame(AssertSame.java:50)
+	at org.junit.jupiter.api.AssertSame.assertSame(AssertSame.java:35)
+	at org.junit.jupiter.api.AssertSame.assertSame(AssertSame.java:30)
+	at org.junit.jupiter.api.Assertions.assertSame(Assertions.java:2860)
+	at org.xacml4j.v30.policy.EmptyBagCharacterizationTest.oneEmptyBagIsSharedPerType(EmptyBagCharacterizationTest.java:108)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   EmptyBagCharacterizationTest.oneEmptyBagIsSharedPerType:108 expected: org.xacml4j.v30.BagOfValues@74294c1a<BagOfValues{DataType=string, Values=[]}> but was: org.xacml4j.v30.BagOfValues@9e2ad91<BagOfValues{DataType=string, Values=[]}>
+[ERROR]   EmptyBagCharacterizationTest.presentAttributeDoesNotBuildAnEmptyBag:152 empty bag built for a present attribute
+[INFO] 
+[ERROR] Tests run: 6, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[ERROR] There are test failures.
+
+See <scratch>/surefire-reports for the individual test results.
+See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.004 s
+[INFO] Finished at: 2026-10-27T06:51:31-04:00
+[INFO] ------------------------------------------------------------------------

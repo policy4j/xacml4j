@@ -62,6 +62,48 @@ Close out (group 3) keeps its number for the beads ids and runs last.
 
 - [ ] 11.1 Profile again after cycles A to F (same set as run 004); swarm analysis; new groups or a research swarm (proposal stop rule)
 
+## 12. Cycle H: empty bags (D14)
+
+- [x] 12.1 Tests: empty bag type, equality, hash, serialization, the `DynamicType` failure, the result of `AttributeReference.evaluate` with and without the attribute and `MustBePresent` (characterization); one shared empty bag per type (failing first); done: `evidence/tests/018-cycleH-red-green`
+- [x] 12.2 Implement D14; check: the tests of 12.1, reactor; done: `evidence/tests/018-cycleH-red-green`, `019-reactor-cycleH`
+- [x] 12.3 Gate: JMH pair, reactor and conformance, review by another family; done: JMH pair `benchmarks/jmh/019-cycleH-before`, `020-cycleH-after` (round 1; round 2 is measured with batch 2, D12 as changed), reviews `reviews/code/rvh1-cycleH-sol`, `rvh2-cycleH-recheck-sol`, `tests/020-cycleH-round2`, `022-rvh2-hash-fix`, `023-commit-tree-cycleH`
+
+## 13. Cycle I: direct two-argument calls (D15)
+
+- [ ] 13.1 Tests: for every bound built-in predicate the direct and the reflective path give the same result; operand order; an `EvaluationException`, a `RuntimeException`, and an `Error` from the target keep status and root cause; a wrong argument type; a custom factory and a custom spec with a standard id are not bound; validation on and off; concurrent calls (characterization first, then a failing allocation-free test)
+- [ ] 13.2 Implement D15; check: 13.1, function and conformance tests
+- [ ] 13.3 Gate: review by another family; reactor and conformance
+
+## 14. Cycle J: index loops on the policy tree (D16)
+
+- [ ] 14.1 Tests: target, AnyOf, AllOf truth tables and short-circuit; combining algorithms with an `ArrayList` and a `LinkedList`; normalization with `RandomAccess` and other lists
+- [ ] 14.2 Implement D16; check: 14.1, reactor
+- [ ] 14.3 Gate: review by another family; reactor and conformance
+
+## 15. Cycle K: context queries in one loop (D17)
+
+- [ ] 15.1 Tests: which level answers each query in nested policy sets and references; a foreign context in the chain; staging; one `Optional` instance per attribute per decision
+- [ ] 15.2 Implement D17; check: 15.1, cycle E and F tests, conformance
+- [ ] 15.3 Gate: review by another family; reactor and conformance
+
+## 16. Cycle L: guarded debug logging (D18)
+
+- [ ] 16.1 Tests: the debug lines at DEBUG are the same as before (a list appender over a decision); at INFO no argument of a guarded line is computed
+- [ ] 16.2 Implement D18; check: 16.1, reactor
+- [ ] 16.3 Gate: review by another family
+
+## 17. Cycle M: lazy obligation and advice staging (D19)
+
+- [ ] 17.1 Tests: published obligations and advice and their order for nested rules, policies, and policy sets (cycle E characterization), with and without applicable expressions
+- [ ] 17.2 Implement D19; check: 17.1, conformance
+- [ ] 17.3 Gate: review by another family; reactor and conformance
+
+## 18. Batch 2 measurement and third profiling round
+
+- [ ] 18.1 One JMH pair: the commit before batch 2 against batch 2 (D12 as changed on 2026-10-27), no agent session alive; ledger
+- [ ] 18.2 Profile the batch and run the third profiling swarm; record its reports in `research/`
+- [ ] 18.3 Commit batch 2 locally on the verified tree
+
 ## 3. Close out
 
 - [ ] 3.1 `openspec validate optimize-pdp-evaluation --strict`

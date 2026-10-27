@@ -113,9 +113,8 @@ public abstract class AttributeReference implements Expression
 			throw AttributeReferenceEvaluationException
 					.forMissingRef(getReferenceKey());
 		}
-		return v.orElse(
-				getDataType()
-						.emptyBag());
+		// Not orElse: its argument is evaluated even when the bag is present (D14)
+		return v.isPresent() ? v.get() : getDataType().emptyBag();
 	}
 
 	private Optional<BagOfValues> resolveImpl(EvaluationContext context)

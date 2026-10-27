@@ -1,0 +1,11 @@
+## before D14
+[ERROR] Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, <<< FAILURE! -- in org.xacml4j.v30.policy.EmptyBagCharacterizationTest
+[ERROR] org.xacml4j.v30.policy.EmptyBagCharacterizationTest.oneEmptyBagIsSharedPerType -- <<< FAILURE!
+
+## after D14
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.BagOfValuesCharacterizationTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.BagOfValuesTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.MatchTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.EmptyBagCharacterizationTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.AttributeSelectorTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.AttributeDesignatorTest

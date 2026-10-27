@@ -29,6 +29,7 @@ is also a row of `benchmarks/jmh/LEDGER.md`. See docs/ai/OPENSPEC.md
 | 7.3 Cycle D gate | see tasks.md 7.3 | done: JMH pair, reactor and conformance (`tests/017`), reviews rv006 to rv012 (final APPROVE or APPROVE WITH CHANGES, applied); final-tree pair `017`/`018`: no claim |
 | 8.3 Cycle E gate | see tasks.md 8.3 | done: JMH pair, reactor and conformance (`tests/017`), reviews rv006 to rv012 (final APPROVE or APPROVE WITH CHANGES, applied); final-tree pair `017`/`018`: no claim |
 | 9.3 Cycle F gate | see tasks.md 9.3 | done: JMH pair, reactor and conformance (`tests/017`), reviews rv006 to rv012 (final APPROVE or APPROVE WITH CHANGES, applied); final-tree pair `017`/`018`: no claim |
+| 12.3 Cycle H gate | `tests/018-cycleH-red-green`, `019-reactor-cycleH`; `benchmarks/jmh/019-cycleH-before`, `020-cycleH-after` | JMH done (full scan -46% bytes, -10% time); reactor done; review pending |
 
 ## Runs
 
@@ -81,6 +82,17 @@ is also a row of `benchmarks/jmh/LEDGER.md`. See docs/ai/OPENSPEC.md
 | `benchmarks/jmh/016-profile-decide-cycles-AF` | profile, async-profiler 4.5, final tree (task 11.1) | cpu and alloc, as run 004 | empty bags built on every attribute evaluation: 44.5% of full-scan bytes (new cycle H) |
 | `benchmarks/jmh/017-review-fixes-before` | JMH, session 4 (cycle F jar) | mix and three scan sets | before values of the review fixes |
 | `benchmarks/jmh/018-review-fixes-after` | JMH, after 017 | same | no claim on any set; first-deny +150 B |
+| `tests/018-cycleH-red-green` | test (tasks 12.1, 12.2) | `EmptyBagCharacterizationTest` | 3 of 4 before D14 (sharing test red), 4 of 4 after |
+| `tests/019-reactor-cycleH` | reactor (gate 12.3) | Maven clean test, offline | PASS: 8,280 tests, 18 skipped; conformance 938/12 |
+| `tests/020-cycleH-round2` | red and green after RVH1 (12.2) | Maven `-Dtest=...`, offline; `ast-grep test` | red on HEAD 2 of 6, as intended; green 126; rule tests pass |
+| `tests/021-reactor-H-harness` | reactor (gate 12.3) | Maven clean test, offline | PASS: 8,280 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rvh1-cycleH-sol` | cycle H review, Codex GPT-6.1 Sol | NTM pane, read-only packet | APPROVE WITH CHANGES: 2 P2, 1 P3; all addressed in round 2 (`tests/020-cycleH-round2`) |
+| `reviews/code/rvh2-cycleH-recheck-sol` | cycle H re-check, Codex GPT-6.1 Sol | NTM pane, read-only packet | APPROVE WITH CHANGES: RVH1 resolved; 1 new P2 (hash-cache double read), fixed |
+| `tests/022-rvh2-hash-fix` | the RVH2 fix (12.3) | Maven `-Dtest=...`, offline | 24 tests pass; stress test only, not red first (a data race cannot be forced) |
+| `tests/023-commit-tree-cycleH` | the exact tree of the cycle H commit (12.3) | Maven clean test on a clean export, offline | PASS: 8,283 tests, 18 skipped; conformance 938/12 |
+| `benchmarks/jmh/019-cycleH-before` | JMH, session 5 (committed tree) | mix and scan | before values of cycle H |
+| `benchmarks/jmh/020-cycleH-after` | JMH, after 019 | mix and scan | full scan 316 KB to 172 KB (-46%), -10.4% time; synthetic:100 -37% bytes |
+| `benchmarks/jmh/021-profile-decide-cycle-H` | profile, cycle H tree | cpu and alloc, as run 004 | contexts 33%, call arrays 42%, bag iteration 14% of full-scan bytes; input of the second analysis swarm |
 
 ## Not applicable
 

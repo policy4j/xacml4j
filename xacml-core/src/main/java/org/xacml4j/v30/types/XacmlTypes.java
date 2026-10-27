@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
+import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.SyntaxException;
@@ -165,6 +166,10 @@ public enum XacmlTypes implements ValueType
 	private java.lang.String shortTypeId;
 	private Set<java.lang.String> aliases;
 	private BagOfValuesType bagType;
+	// One immutable empty bag per built-in type, created on first use (change
+	// optimize-pdp-evaluation, D14). A racy first write is harmless: every write is an equal
+	// bag whose fields are final.
+	private BagOfValues emptyBag;
 
 
 	XacmlTypes(java.lang.String typeId, java.lang.String shortTypeId, java.lang.String... aliases) {
@@ -211,6 +216,16 @@ public enum XacmlTypes implements ValueType
 	@Override
 	public BagOfValuesType bagType() {
 		return bagType;
+	}
+
+	@Override
+	public BagOfValues emptyBag() {
+		BagOfValues bag = emptyBag;
+		if (bag == null) {
+			bag = bagBuilder().build();
+			emptyBag = bag;
+		}
+		return bag;
 	}
 
 	@Override

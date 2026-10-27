@@ -80,7 +80,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 						.build(), missingAttributeId);
 			}
 		}
-		return v.orElse(valueType.emptyBag());
+		return v.isPresent() ? v.get() : valueType.emptyBag();
 	}
 
 
@@ -120,7 +120,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 						.forSelector(selectorKey, ()->"Selector.MustBePresent=\"true\", but value is absent");
 			}
 		}
-		return v.orElse(selectorKey.getDataType().emptyBag());
+		return v.isPresent() ? v.get() : selectorKey.getDataType().emptyBag();
 	}
 
 	private static ValueType getType(AnyURI typeUri){

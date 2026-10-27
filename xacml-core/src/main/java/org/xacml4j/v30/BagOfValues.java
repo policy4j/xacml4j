@@ -229,10 +229,13 @@ public final class BagOfValues
 
 	@Override
 	public int hashCode(){
-		if(hashCode == 0){
-			this.hashCode = Objects.hash(values, type);
+		// One read of the cache field: a second read may see 0 again under a data race (review RVH2, JDK-8166842)
+		int h = hashCode;
+		if(h == 0){
+			h = Objects.hash(values, type);
+			hashCode = h;
 		}
-		return hashCode;
+		return h;
 	}
 
 	/**

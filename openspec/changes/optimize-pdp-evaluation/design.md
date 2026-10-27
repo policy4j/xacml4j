@@ -181,6 +181,105 @@ A JMH pair with `-XX:+UseCompactObjectHeaders` off and on, same build: a
 deployment recommendation in the docs if allocation or time improves beyond
 the error intervals; no code change.
 
+### D14. Cycle H: no empty bag built when an attribute is present
+
+Found by the second profiling round (run 016): `AttributeReference.evaluate`
+ends with `v.orElse(getDataType().emptyBag())`; `orElse` evaluates its
+argument, so every attribute evaluation builds an empty bag (a
+`LinkedHashMap`, a `LinkedHashMultiset`, a `BagOfValues`), 44.5% of the bytes
+of a full scan. The fallback becomes lazy at every such site
+(`AttributeReference.evaluate`, `AttributeDesignatorFunctions`), and
+`ValueType.emptyBag()` and `BagOfValuesType.emptyBag()` return one immutable
+empty bag per value type from a small concurrent cache (the TODO in
+`BagOfValuesType`). Kept: the bag's type, equality, hash, and serialized
+form; a type that cannot have bags (`DynamicType`) still throws and nothing is
+cached for it. A shared instance is safe because a bag has no mutable state
+other than its hash cache, which `hashCode` reads once per call (review RVH2:
+the earlier two reads could return 0 under a race, JDK-8166842).
+
+Implementation, round 2 (2026-10-27, after review RVH1: a static map kept
+custom value types reachable and bypassed a custom `bagBuilder()`): no static
+cache. `ValueType.emptyBag()` keeps its default, `bagBuilder().build()`; each
+constant of the enum `XacmlTypes` caches the bag that its own `bagBuilder()`
+built, in an instance field (a racy publication is safe: the bag's fields are
+final; its lazily cached hash is read once per call, review RVH2); `BagOfValuesType.emptyBag()` returns that bag for a built-in type and
+`builder().build()` for any other. An ast-grep rule (`java-no-eager-empty-bag`)
+rejects an eager `orElse(...emptyBag())` in main code.
+
+### D15. Cycle I: direct two-argument calls of built-in functions
+
+Second profiling round (run 021; `research/pr1-opus-allocation.md` H2,
+`pr2-fable-cpu.md` H2, `pr4-astra-function-calls.md` H1): after D8 a
+two-argument predicate still allocates the argument `ArrayList`, its array,
+and the reflective `Object[]` of `DefaultFunctionInvocation`, 41.8% of the
+bytes of synthetic:1000 `all`, and `Method.invoke` with its wrappers. A
+function whose `DefaultFunctionInvocation` comes from the default
+`FunctionInvocationFactory` (trusted provenance, not the function id) for a
+method with exactly two parameters, no `EvaluationContext` parameter, and no
+varargs gets a typed binding at registration (`MethodHandle`, adapted by
+`LambdaMetafactory` where the method is accessible; no binding otherwise).
+`FunctionSpecImpl.invoke(context, arg0, arg1)` with an eager pair and no
+runtime validation evaluates the operands in order into locals and calls the
+binding: no list, no array, no reflection. Kept: the operand order, the
+exception mapping (an `EvaluationException` keeps its status; any other
+failure, also an `Error`, becomes the same `FunctionInvocationException` with
+the same root cause), the argument type check (a wrong runtime type fails as
+`IllegalArgumentException("argument type mismatch")`, as `Method.invoke`
+does), custom factories and custom `FunctionInvocation`s (no binding), the
+validation path, and lazy, optional, and variadic functions (generic path).
+
+### D16. Cycle J: index loops on the policy tree
+
+PR1 H4, PR2 H7, PR4 H3, PR5 H4 and H7: `Target`, `MatchAnyOf`, `MatchAllOf`,
+the combining algorithms, and function-parameter normalization iterate with
+iterator objects (`Iterators$9` alone is 13.8% of the full-scan bytes). The
+private collection fields of the immutable policy elements become lists that
+the element owns, iterated with an index loop; a combining algorithm uses an
+index loop when its list is `RandomAccess` and the iterator otherwise;
+normalization indexes `RandomAccess` lists. Kept: order and short-circuit
+(XACML 3.0 §7.7, §7.11 to §7.13), the public getters and their types, and the
+`policy4j-yeu3` and `policy4j-0972` behaviors.
+
+### D17. Cycle K: context queries in one loop, one `Optional` per attribute
+
+PR1 H6, PR2 H3, PR5 H5: every attribute lookup and every
+`isValidateFuncParamsAtRuntime` or `getCurrent*` query hops through each
+`DescendantEvaluationContext` with an interface call (about 15% of the time
+of rsa2008 and synthetic:1000), and each memo hit wraps the bag in a new
+`Optional` (9.3% of full-scan bytes). Pure forwarders walk the `parent`
+fields in one loop to the first context that is not a
+`DescendantEvaluationContext` and call it once; queries that a level answers
+ask that level through a package-private hook during the same walk; staging
+calls (`addAdvices`, `addObligations`) keep hop-by-hop dispatch. The
+designator memo stores the `Optional` that `Entity.resolve` returned, and a
+hit returns it. Kept: which level answers which query, §7.18 staging, §7.8
+variable scope, the public `EvaluationContext` API, and a foreign context in
+the chain (the loop stops there and calls it).
+
+### D18. Cycle L: guarded debug logging on the per-policy path
+
+PR2 H4: `isDebugEnabled()` runs Logback's turbo-filter check on each call;
+unguarded multi-argument `debug` calls also build their arguments
+(`AttributeReference.java:109` computes `getReferenceKey()`, `Entity.resolve`
+a varargs array). Every debug call on the per-policy and per-predicate path
+whose arguments cost more than a field read gets an `isDebugEnabled()` guard,
+and a method checks the level once when it logs several lines. No line is
+removed and no level is cached across calls; removing per-element lines or
+snapshotting the level per decision changes what a debug log shows and is
+Open Question 2.
+
+### D19. Cycle M: obligation and advice staging only when there is something to stage
+
+PR1 H5, PR5 H6: each composite rule creates `StagedResponses` with four
+`ArrayList`s, and `evaluateObligations` and `evaluateAdvices` build a
+`LinkedList` on every call, about 13% of rsa2008 bytes. Staging lists are
+created on the first add, empty collections are not forwarded, and an
+expression list with no applicable expression returns an empty immutable list.
+Kept: what is published, in which order, at which level (§7.18), and the
+staging behavior pinned by `evidence/tests/009-cycleE-characterization-green`.
+A custom `EvaluationContext` no longer receives calls with empty collections
+(recorded in the review packet).
+
 ### D12. Every cycle
 
 Characterization or failing test first; then the change; then a JMH pair on
@@ -194,6 +293,12 @@ credited to the group only; no PIP-heavy corpus exists yet (recorded as not
 covered);
 reactor and conformance; review by a lane from another family. A cycle that
 gains less than 5% does not end the change: research swarm per the proposal.
+
+Changed by the maintainer on 2026-10-27: "Dont do meassurments with each
+change only after changes are complete". From cycle H on, cycles are measured
+in batches: the batch's cycles are implemented, tested, and reviewed one by
+one, then one JMH pair compares the commit before the batch with the batch;
+the gain is credited to the batch, and a profiling round follows it.
 
 ## Test Strategy
 
@@ -257,4 +362,18 @@ Rollback: revert the three files and the rule. No data migration.
 
 1. Cycle C (D7): accept a **BREAKING** change of the Java serialized form of
    `BagOfValues`, or keep the `Multiset` field for compatibility (then less
-   allocation is saved)? Task 6.2 waits for the maintainer.
+   allocation is saved)? Task 6.2 waits for the maintainer. The second
+   profiling round found a third route (`research/pr1-opus-allocation.md` H1,
+   `pr2-fable-cpu.md` H1): keep the `values` field, its type, and the
+   `serialVersionUID`, build the `Multiset` on demand, and iterate a transient
+   array in today's order; a golden-bytes test written by the current class
+   would prove the stream unchanged, so it needs no BREAKING change.
+2. Cycle L (D18): may per-element debug lines on the per-policy path be
+   removed and replaced by one line per decision, and may the debug level be
+   read once per decision? Either changes what a debug log shows. Until
+   decided, cycle L only adds guards.
+3. Exceptions on built-in function errors (PR1 H3, PR2 H8, PR4 H2): built
+   without stack traces, `Status.getError()` would lose the trace for a
+   built-in function failure (about 15% of rsa2008 CPU). Removing only the
+   reflective wrappers (`InvocationTargetException`, the factory's
+   `RuntimeException`) keeps the trace; cycle I does that for bound calls.
