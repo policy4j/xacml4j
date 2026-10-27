@@ -1,0 +1,33 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[41,21] cannot find symbol
+  symbol:   class PdpFixture
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[41,42] cannot find symbol
+  symbol:   variable PdpFixture
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[45,29] cannot find symbol
+  symbol:   class CorpusRequest
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[50,29] cannot find symbol
+  symbol:   class LookupQuery
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[59,21] cannot find symbol
+  symbol:   class PdpFixture
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[59,42] cannot find symbol
+  symbol:   variable PdpFixture
+[INFO] Xacml4J JMH Benchmarks ............................. FAILURE [  0.642 s]
+[INFO] BUILD FAILURE
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[41,21] cannot find symbol
+[ERROR]   symbol:   class PdpFixture
+[ERROR]   location: class org.xacml4j.jmh.harness.PdpFixtureTest
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[41,42] cannot find symbol
+[ERROR]   symbol:   variable PdpFixture
+[ERROR]   location: class org.xacml4j.jmh.harness.PdpFixtureTest
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[45,29] cannot find symbol
+[ERROR]   symbol:   class CorpusRequest
+[ERROR]   location: class org.xacml4j.jmh.harness.PdpFixtureTest
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[50,29] cannot find symbol
+[ERROR]   symbol:   class LookupQuery
+[ERROR]   location: class org.xacml4j.jmh.harness.PdpFixtureTest
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[59,21] cannot find symbol
+[ERROR]   symbol:   class PdpFixture
+[ERROR]   location: class org.xacml4j.jmh.harness.PdpFixtureTest
+[ERROR] xacml-jmh/src/test/java/org/xacml4j/jmh/harness/PdpFixtureTest.java:[59,42] cannot find symbol
+[ERROR]   symbol:   variable PdpFixture
+[ERROR]   location: class org.xacml4j.jmh.harness.PdpFixtureTest

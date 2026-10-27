@@ -1,0 +1,8 @@
+# Scratch copies outside the repository; see characterize.sh in this directory.
+bash characterize.sh <repo> <scratch>/work
+#   effective plugin versions: help:effective-pom with Maven 3.9.16 and Maven 3.10.0
+#   license: org.codehaus.mojo:license-maven-plugin:<1.7|2.7.1>:update-file-header in two copies, diff -rq against the tree and each other
+#   jaxb: generate-sources of xacml-xml-jaxb with 0.15.1 and 0.15.3, diff -r of target/generated-sources
+python3 -I effective_plugins.py <effective-pom.xml>      # plugin -> version list
+# after the POM change:
+PATH="<maven>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk mvn -B -q help:effective-pom -Doutput=<file>   # both Maven binaries

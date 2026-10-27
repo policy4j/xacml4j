@@ -26,4 +26,20 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<!-- src/test/resources holds the vendored fixtures (read only); this module's
+		     logback-test.xml lives in src/test/logback instead (upgrade-dependencies D2). -->
+		<testResources>
+			<testResource>
+				<directory>${project.basedir}/src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>${project.basedir}/../build-support/logback</directory>
+			</testResource>
+			<testResource>
+				<directory>${project.basedir}/src/test/logback</directory>
+			</testResource>
+		</testResources>
+	</build>
+
 </project>

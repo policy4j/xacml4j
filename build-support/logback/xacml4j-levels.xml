@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Xacml4J Project
+  %%
+  Copyright (C) 2009 - 2026 Xacml4J.org
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Lesser Public License for more details.
+
+  You should have received a copy of the GNU General Lesser Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/lgpl-3.0.html>.
+  #L%
+  -->
+<!--
+  Shared default levels for tests: root at ${xacml4j.log.level:-INFO}, the project's own
+  loggers at ${xacml4j.log.xacml4j.level:-DEBUG}, both to the async console (WARN and up by
+  default) and the async file. Include after xacml4j-appenders.xml; a module adds its own
+  <logger> elements after the include.
+  -->
+<included>
+	<logger name="org.xacml4j" level="${xacml4j.log.xacml4j.level:-DEBUG}"/>
+
+	<root level="${xacml4j.log.level:-INFO}">
+		<appender-ref ref="ASYNC_CONSOLE"/>
+		<appender-ref ref="ASYNC_FILE"/>
+	</root>
+</included>

@@ -1,0 +1,1 @@
+bash openspec/changes/upgrade-build-plugins/evidence/tests/001-characterization/characterize-v2.sh <repo> <scratch>/work-v2

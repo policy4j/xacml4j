@@ -1,0 +1,4 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -pl xacml-jmh -am -DskipTests package      # online once (resolves jar and shade plugins)
+JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -pl xacml-jmh -am -DskipTests package                                # Maven 3.10.0, online once
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -o -pl xacml-jmh -am -DskipTests package   # the checked build
+unzip -p xacml-jmh/target/benchmarks.jar META-INF/MANIFEST.MF; unzip -p ... META-INF/services/<type>; unzip -l ... (counts)

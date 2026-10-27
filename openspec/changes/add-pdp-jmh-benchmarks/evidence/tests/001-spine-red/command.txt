@@ -1,0 +1,2 @@
+# Maven 3.9.16 (IntelliJ bundled) first on PATH; offline
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -o -pl xacml-jmh -am -Dtest=PdpFixtureTest -Dsurefire.failIfNoSpecifiedTests=false test

@@ -10,7 +10,6 @@ af9d2f817a132d67d03c37d82f620278a32be2f2	xacml-conformance-tests/src/test/resour
 131ac04b8a99545e1e4a6d80fb777bac08bdf165	xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
 742a78b9bd5eb474525be61f11de7c0e1123f766	xacml-conformance-tests/src/test/resources/Example_2/Rule_4.xml
 e960681d8cdbded7093fbcf074a450286e0c82ac	xacml-conformance-tests/src/test/resources/Example_2/record.xsd
-e7fca910ac8e02f7a443ec05c21ed46b1811ac90	xacml-conformance-tests/src/test/resources/log4j2-test.xml
 bfdefa095574cd2c0760b7a6a07024f2ed5e24e1	xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/ConformanceTests.html
 76fa80c985d464b63b03b86f0f7910586df1b4f2	xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIA001Policy.xml
 5414b78b65b72932f6c59317011c8f36ef700d73	xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIA001Request.xml

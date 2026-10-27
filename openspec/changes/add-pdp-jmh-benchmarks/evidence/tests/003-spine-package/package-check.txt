@@ -1,0 +1,20 @@
+[INFO] BUILD SUCCESS
+[INFO] Total time:  2.760 s
+--- jars
+xacml-jmh/target/benchmarks.jar
+xacml-jmh/target/xacml-jmh-2.0.0-SNAPSHOT.jar
+--- manifest
+Main-Class: org.openjdk.jmh.Main
+Multi-Release: true
+--- META-INF/services/org.xacml4j.jmh.harness.PolicyStore
+org.xacml4j.jmh.store.InMemoryPolicyStore
+--- META-INF/services/org.xacml4j.jmh.harness.PolicyCorpusProvider
+org.xacml4j.jmh.corpus.Rsa2008Corpus
+--- META-INF/services/org.xacml4j.v30.marshal.MarshallingProvider
+org.xacml4j.v30.xml.Xacm20MarshallingProvider
+org.xacml4j.v30.xml.Xacm30MarshallingProvider
+--- rsa2008-interop xml files in benchmarks.jar
+43
+--- entries: thin jar, benchmarks.jar
+   213595                     82 files
+ 24662573                     8523 files

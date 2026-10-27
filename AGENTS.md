@@ -33,6 +33,7 @@ All Java packages are under `org.xacml4j`.
 | `xacml-xml-jaxb` | XJC-generated JAXB classes only | `src/main/resources/xsd`, `xacml.xjb` |
 | `xacml-test` | Test-support library for policy tests | `v30.XacmlPolicyTestSupport`, `v20.Xacml20TestUtility` |
 | `xacml-conformance-tests` | OASIS 2.0/3.0 and RSA 2008 conformance suites (tests only) | `v20.Xacml30ConformanceTest`, `v20.RSA2008InteropTest` |
+| `xacml-jmh` | JMH benchmarks of PDP decisions and policy store lookups and loads; pluggable stores and corpora (package `org.xacml4j.jmh`, not `v30`) | `xacml-jmh/README.md`, `jmh.harness.PdpFixture`, `jmh.harness.PolicyStore`, `jmh.pdp.PdpDecideBenchmark` |
 
 Module dependencies:
 
@@ -40,7 +41,12 @@ Module dependencies:
 xacml-core     <- xacml-pdp, xacml-json, xacml-xml
 xacml-xml-jaxb <- xacml-xml
 xacml-pdp, xacml-xml <- xacml-test <- xacml-conformance-tests
+xacml-pdp, xacml-xml <- xacml-jmh
 ```
+
+`xacml-jmh` also packs the vendored `rsa2008-interop/` files of
+`xacml-conformance-tests/src/test/resources` as its own resources (read-only
+copy at build time; no Maven dependency on that module).
 
 `xacml-proto/` is not a Maven module. It has no `pom.xml`, is not in the
 reactor, and its Java code refers to types that no longer exist. Do not add
@@ -48,19 +54,28 @@ it to the build unless asked.
 
 ## Build and Test
 
-- Use JDK 21. Every module compiles with `<release>21</release>` and no
-  preview features (task 1.6). JDK 11 can no longer build the reactor. The
-  local `.java-version` file (gitignored) says `11.0`, so select JDK 21 for
-  each Maven run, for example `JAVA_HOME="$(jenv prefix 21)" rtk mvn ...`.
+- Use JDK 25. Every module compiles with `<release>25</release>` and no
+  preview features (change `adopt-jdk25-baseline`); the enforcer rejects an
+  older JDK. The local `.java-version` file (gitignored) says `11.0`, so
+  select JDK 25 for each Maven run, for example
+  `JAVA_HOME="$(jenv prefix 25)" rtk mvn ...`. `jenv prefix 25` is Oracle
+  GraalVM 25: its JIT is Graal unless a JVM gets `-XX:-UseJVMCICompiler`
+  (the JMH runs use C2 that way).
 - After changing compiler settings, build with `clean`: the compiler plugin
   does not treat a `source`/`target`/`release` change as stale and reuses old
   class files.
-- CI (`.github/workflows/main.yml`) still builds with JDK 8. It fails at
-  release 21 until someone updates it.
-- Maven rewrites license headers during `process-sources`
-  (license-maven-plugin `update-file-header`). Pass
-  `-Dlicense.skipUpdateLicense=true` unless you intend to update headers.
-  Check `rtk git status` after each build.
+- CI (`.github/workflows/main.yml`) builds with Temurin JDK 25
+  (`actions/setup-java@v6`) and runs `verify`.
+- License headers (license-maven-plugin `update-file-header`, at
+  `process-sources`) are updated only with `-Dlicense.skipUpdateLicense=false`:
+  the root POM skips the update by default because it would also rewrite
+  1,693 vendored conformance fixtures. The commands below still pass
+  `-Dlicense.skipUpdateLicense=true`; it is harmless. Check `rtk git status`
+  after each build.
+- The root POM pins every plugin version (`<pluginManagement>`), so Maven 3.9
+  and 3.10 build alike. Maven 3.10 records downloads under a repository id
+  that Maven 3.9 does not accept offline: after 3.10 downloads a new plugin,
+  run one online build with 3.9 before an offline 3.9 build.
 - Surefire excludes `**/*TestCase.java` (the RSA 2008 performance suite).
 
 | Goal | Command |

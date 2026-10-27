@@ -1,0 +1,28 @@
+[ERROR] COMPILATION ERROR :
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[41,47] cannot find symbol
+  symbol:   class SyntheticCorpus
+  location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[50,80] cannot find symbol
+  symbol:   class SyntheticCorpus
+  location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[56,41] cannot find symbol
+  symbol:   class DirectoryCorpus
+  location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[57,72] cannot find symbol
+  symbol:   class DirectoryCorpus
+  location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.16.0:testCompile (default-testCompile) on project xacml-jmh: Compilation failure: Compilation failure:
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[41,47] cannot find symbol
+[ERROR]   symbol:   class SyntheticCorpus
+[ERROR]   location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[50,80] cannot find symbol
+[ERROR]   symbol:   class SyntheticCorpus
+[ERROR]   location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[56,41] cannot find symbol
+[ERROR]   symbol:   class DirectoryCorpus
+[ERROR]   location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] <private-copy>/xacml-jmh/src/test/java/org/xacml4j/jmh/corpus/CorporaCompilationProbeTest.java:[57,72] cannot find symbol
+[ERROR]   symbol:   class DirectoryCorpus
+[ERROR]   location: class org.xacml4j.jmh.corpus.CorporaCompilationProbeTest
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :xacml-jmh

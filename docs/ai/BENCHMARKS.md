@@ -22,17 +22,23 @@ that does not change the produced code.
 
 ## Where benchmarks live
 
-There is no JMH module yet. The first change that needs one adds
-`xacml-jmh` (change task 9.2 plans it); adding a module to the reactor
-needs the maintainer's approval. Shape:
+Module `xacml-jmh` (change `add-pdp-jmh-benchmarks`; usage in
+`xacml-jmh/README.md`):
 
-- `xacml-jmh/pom.xml` with `org.openjdk.jmh:jmh-core` and
-  `jmh-generator-annprocess`, depending on the modules under test, and
-  building an executable `benchmarks.jar` (maven-shade-plugin, main class
-  `org.openjdk.jmh.Main`).
-- Benchmarks in `org.xacml4j.jmh.<area>`, one class per subject, for
-  example `PdpDecideBenchmark`, `FunctionInvocationBenchmark`,
-  `ValueParsingBenchmark`.
+- `xacml-jmh/pom.xml` with `jmh-core` and `jmh-generator-annprocess` 1.37
+  (appended to the parent's annotation processor path); `package` writes
+  the executable `xacml-jmh/target/benchmarks.jar` (shade `outputFile`, main
+  class `org.openjdk.jmh.Main`) next to the thin module jar.
+- Benchmarks in `org.xacml4j.jmh.<area>`, one class per subject:
+  `pdp.PdpDecideBenchmark`, `pdp.PolicyStoreLookupBenchmark`,
+  `pdp.PolicyStoreLoadBenchmark`. Planned next: `FunctionInvocationBenchmark`,
+  `ValueParsingBenchmark` (modernize tasks 6.8, 9.2).
+- The harness (`org.xacml4j.jmh.harness`) selects the policy store
+  (`-p store=<name>[:<argument>]`) and the corpus
+  (`-p corpus=rsa2008|synthetic:<n>|dir:<path>`) by name through
+  `ServiceLoader`, and checks every decision and store lookup before and
+  after measurement. Stores and corpora from other jars run with
+  `java -cp benchmarks.jar:<jar> org.openjdk.jmh.Main`.
 - The existing `xacml-pdp/src/test/java/org/xacml4j/util/FunctionInvocationBenchmark.java`
   is an ignored JUnit loop around `System.nanoTime()`. It is not valid
   evidence; port its cases to JMH.
@@ -54,19 +60,31 @@ needs the maintainer's approval. Shape:
 
 ## Running
 
+JDK 25 (the project baseline; JDK 28 EA with `--enable-preview` once the build moves):
+
 ```sh
-JAVA_HOME="$(jenv prefix 28-ea)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-jmh -am package -DskipTests
-"$(jenv prefix 28-ea)/bin/java" --enable-preview -jar xacml-jmh/target/benchmarks.jar \
-  '<regex>' -prof gc -rf json -rff <run-dir>/results.json
+JAVA_HOME="$(jenv prefix 25)" rtk mvn -o -q -pl xacml-jmh -am -DskipTests package
+"$(jenv prefix 25)/bin/java" -jar xacml-jmh/target/benchmarks.jar '<regex>' \
+  -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true \
+  -rf json -rff <run-dir>/results.json -o <run-dir>/jmh.log
 ```
 
 - One benchmark run on the machine at a time: no build, no other
   benchmark, no swarm lane compiling. Plug in the laptop and close heavy
   applications.
 - Measure baseline and candidate on the same machine, the same JDK build,
-  and the same flags, back to back. Record the baseline commit.
-- `-prof gc` gives allocation per operation (`gc.alloc.rate.norm`); report
-  it for value-class work.
+  and the same flags, back to back. Record the baseline commit; when the
+  tree has uncommitted work, build the baseline from the base sources in a
+  scratch copy and record the hashes of the changed files.
+- `jenv prefix 25` is Oracle GraalVM here: without
+  `-XX:-UseJVMCICompiler` the Graal JIT compiles, and its numbers do not
+  compare with C2 (OpenJDK). Record the JIT.
+- `-foe true` fails the run on a benchmark error instead of dropping that
+  result; check the JSON for every expected method and parameter set, a
+  finite error, and forks x iterations samples.
+- `-prof gc` gives allocation per operation (`gc.alloc.rate.norm`, bytes in
+  the benchmark JVM); a result without it says "not reported", never 0.
+  Report it for value-class work.
 
 ## Reporting
 

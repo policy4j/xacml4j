@@ -1,0 +1,3 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -o -pl xacml-jmh -am -Dmaven.test.skip=true package
+java -jar xacml-jmh/target/benchmarks.jar -f 1 -wi 0 -i 1 -r 200ms -foe true -rf json -rff results-default.json
+java -jar xacml-jmh/target/benchmarks.jar PdpDecideBenchmark -p store=in-memory,snapshot -p corpus=synthetic:1,synthetic:2,synthetic:1000 -f 1 -wi 0 -i 1 -r 200ms -foe true -rf json -rff results-synthetic.json

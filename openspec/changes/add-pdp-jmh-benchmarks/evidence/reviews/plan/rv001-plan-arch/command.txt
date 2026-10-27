@@ -1,0 +1,4 @@
+# NTM session xacml4j--pdp-jmh-plan (NTM_PROJECTS_BASE = parent of the checkout)
+ntm spawn xacml4j --label pdp-jmh-plan --persona=policy4j_arch_review_claude_fable --agyx=1:gemini-4-argon-high --cod=1:gpt-6.1-terra:max --no-user --safety --verify-boot
+ntm send xacml4j--pdp-jmh-plan --pane=<n> [--base-prompt-file .ntm/roles/<role>.md] --file <packet>.md   # packet: common part + lane focus, read-only
+# report taken between the BEGIN/END rv001 markers from the CLI's session record; home paths rewritten

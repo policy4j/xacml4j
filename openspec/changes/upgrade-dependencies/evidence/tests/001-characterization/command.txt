@@ -1,0 +1,2 @@
+git show HEAD:pom.xml   # root <dependencies>, <dependencyManagement>, <properties>
+git ls-files "*log4j2*.xml"

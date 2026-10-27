@@ -1,0 +1,7 @@
+# each run: PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" mvn -B -o -pl xacml-jmh -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest=<selection> test
+# a: -Dtest=org.xacml4j.jmh.**                      (fix batch, before the new tests)
+# b: -Dtest=org.xacml4j.jmh.**                      (with ReviewGateFixesTest)
+# c: -Dtest=ReviewGateFixesTest                      (old catch in PolicyStoreLoadBenchmark.setUp restored for the run)
+# d: -Dtest=org.xacml4j.jmh.**                      (catch(Throwable) back)
+# e: -Dtest=ReviewGateFixesTest,CorrelationIdTest    (old finally in PdpDecideBenchmark.tearDown restored for the run)
+# f: -Dtest=org.xacml4j.jmh.**,CorrelationIdTest    (try-with-resources back)

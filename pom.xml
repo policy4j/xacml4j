@@ -25,30 +25,33 @@
 		<module>xacml-xml-jaxb</module>
 		<module>xacml-test</module>
 		<module>xacml-conformance-tests</module>
+		<module>xacml-jmh</module>
 	</modules>
 
 	<properties>
 		<junit.version>5.14.4</junit.version>
 		<mockito.version>5.24.0</mockito.version>
 		<argLine></argLine>
-		<slf4j.version>1.7.30</slf4j.version>
-		<log4j.version>2.14.0</log4j.version>
+		<!-- Approved targets: slf4j-api 2.0.20 and Logback 1.6.6 (upgrade-dependencies, 2026-10-27).
+		     Stopgap until the repository mirror is reachable again: the newest versions in the
+		     local repository (2.0.17; Logback 1.3.16, an SLF4J 2 provider). Raise both with one
+		     online build with -U (task 2.3 note). -->
+		<slf4j.version>2.0.17</slf4j.version>
+		<logback.version>1.3.16</logback.version>
 		<google.guava.version>31.1-jre</google.guava.version>
-		<google.auto.version>1.0.1</google.auto.version>
+		<google.auto.version>1.1.1</google.auto.version>
 		<google.gson.version>2.8.9</google.gson.version>
 		<google.truth.version>1.1.5</google.truth.version>
 		<yammer.metrics.version>3.0.2</yammer.metrics.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<license.licenseName>lgpl_v3</license.licenseName>
+		<!-- update-file-header rewrites 1,693 vendored conformance fixtures when it runs
+		     (upgrade-build-plugins, evidence tests/001); it runs only with
+		     -Dlicense.skipUpdateLicense=false. -->
+		<license.skipUpdateLicense>true</license.skipUpdateLicense>
 		<metrics.version>4.1.17</metrics.version>
 		<json.path.version>2.8.0</json.path.version>
-		<hamcrest.version>1.3</hamcrest.version>
-		<euij4j.version>0.0.3</euij4j.version>
-		<jaxb.api.version>>2.3.3</jaxb.api.version>
-		<jaxb.api.impl.version>3.0.2</jaxb.api.impl.version>
-		<json.smart.version>2.4.10</json.smart.version>
-		<ipaddress.version>5.4.0</ipaddress.version>
-		<protobuf.version>3.22.3</protobuf.version>
+		<hamcrest.version>3.0</hamcrest.version>
 	</properties>
 
 	<inceptionYear>2009</inceptionYear>
@@ -101,17 +104,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
+		<!-- Test logging backend only; the artifacts depend on slf4j-api alone (upgrade-dependencies D1). -->
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.codahale.metrics</groupId>
@@ -127,7 +124,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-all</artifactId>
+			<artifactId>hamcrest</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -139,21 +136,6 @@
 				<version>${junit.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protobuf-java</artifactId>
-				<version>${protobuf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.protobuf</groupId>
-				<artifactId>protobuf-java-util</artifactId>
-				<version>${protobuf.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.github.seancfoley</groupId>
-				<artifactId>ipaddress</artifactId>
-				<version>${ipaddress.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
@@ -173,20 +155,14 @@
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-api</artifactId>
-				<version>${log4j.version}</version>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-core</artifactId>
-				<version>${log4j.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-slf4j-impl</artifactId>
-				<version>${log4j.version}</version>
-				<scope>runtime</scope>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
@@ -223,13 +199,8 @@
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
-				<groupId>de.benediktmeurer.eui4j</groupId>
-				<artifactId>eui4j-core</artifactId>
-				<version>${euij4j.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>org.hamcrest</groupId>
-				<artifactId>hamcrest-all</artifactId>
+				<artifactId>hamcrest</artifactId>
 				<version>${hamcrest.version}</version>
 				<scope>test</scope>
 			</dependency>
@@ -254,11 +225,129 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
+		<!-- The shared Logback configuration of build-support/logback is on every module's test
+		     class path; each module's logback-test.xml includes it (upgrade-dependencies D2). -->
+		<testResources>
+			<testResource>
+				<directory>${project.basedir}/src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>${project.basedir}/../build-support/logback</directory>
+			</testResource>
+		</testResources>
+		<!-- One version for every plugin of the build, so Maven 3.9 and 3.10 resolve
+		     the same plugins (change upgrade-build-plugins; latest stable releases on
+		     Maven Central, 2026-10-26; the Maven 4 betas are not used). -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.5.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.5.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.5.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>3.2.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.16.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.6.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>3.11.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>3.6.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.22.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.23.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>2.7.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
+			<!-- oss-parent 7 declares enforcer 1.0 with an explicit version, which
+			     pluginManagement does not override; this entry does. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.6.3</version>
+				<executions>
+					<!-- The project baseline is JDK 25 (change adopt-jdk25-baseline). -->
+					<execution>
+						<id>enforce-java-25</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>[25,)</version>
+								</requireJavaVersion>
+							</rules>
+						</configuration>
+					</execution>
+					<!-- Log4j stays out: 2.14.0 shipped CVE-2021-44228 to every user (upgrade-dependencies D4). -->
+					<execution>
+						<id>ban-log4j</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedDependencies>
+									<excludes>
+										<exclude>org.apache.logging.log4j:log4j-core</exclude>
+										<exclude>org.apache.logging.log4j:log4j-slf4j-impl</exclude>
+										<exclude>org.apache.logging.log4j:log4j-slf4j2-impl</exclude>
+									</excludes>
+									<searchTransitive>true</searchTransitive>
+								</bannedDependencies>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.15.0</version>
 				<configuration>
 					<excludes>
 						<exclude>org.apache.commons:commons-collections4</exclude>
@@ -269,9 +358,8 @@
 				<inherited>true</inherited>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
 				<configuration>
-					<release>21</release>
+					<release>25</release>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>com.google.auto.service</groupId>
@@ -284,7 +372,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.11.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -296,7 +383,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.0.0</version>
 				<configuration>
 					<argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>
 					<excludes>
@@ -307,7 +393,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>1.7</version>
 				<configuration>
 				</configuration>
 				<executions>

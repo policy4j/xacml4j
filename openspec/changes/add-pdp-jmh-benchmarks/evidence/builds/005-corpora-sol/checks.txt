@@ -1,0 +1,30 @@
+OpenSpec strict validation (exit 0):
+Change 'add-pdp-jmh-benchmarks' is valid
+
+Toolchain (exit 0; machine-local paths replaced with placeholders):
+Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+Maven home: <maven-3.9.16>
+Java version: 21.0.6, vendor: Oracle Corporation, runtime: <jdk21>
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "26.6.1", arch: "aarch64", family: "mac"
+
+Generated PolicyCorpusProvider descriptor (exit 0):
+org.xacml4j.jmh.corpus.DirectoryCorpus
+org.xacml4j.jmh.corpus.Rsa2008Corpus
+org.xacml4j.jmh.corpus.SyntheticCorpus
+
+Source assertions (exit 0):
+xacml-jmh/src/main/java/org/xacml4j/jmh/corpus/SyntheticCorpus.java sha256=353bda6ce8d854e12900885a37e130bf7a0662d0e586196091266792307f9955; header, registration annotation, null/console checks, copy bytes: PASS
+xacml-jmh/src/main/java/org/xacml4j/jmh/corpus/DirectoryCorpus.java sha256=2438a909ed310a0a2b6be2e30a962a554e6ccf25b54afc9fce870c689a55250d; header, registration annotation, null/console checks, copy bytes: PASS
+
+For each new provider, git diff --no-index --check exited 1 with empty output (new file; no whitespace diagnostics).
+Scoped git status --porcelain for both vendored resource trees exited 0 with empty output.
+
+Final tracking update (exit 0):
+Updated policy4j-ba4s.3.3: 3.3 synthetic corpus (lane Sol)
+  notes: appended 211 chars (now 2 lines, 333 chars)
+Updated policy4j-ba4s.3.4: 3.4 dir corpus (lane Sol)
+  notes: appended 211 chars (now 2 lines, 333 chars)
+
+Beads flush (exit 0):
+Nothing to export (no dirty issues)

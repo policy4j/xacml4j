@@ -1,0 +1,17 @@
+== compare-generated-test.sh
+PASS identical (exit 0)
+PASS comment-only (exit 0)
+PASS added-file (exit 1)
+PASS missing-file (exit 1)
+PASS changed-declaration (exit 1)
+PASS other-comment (exit 1)
+PASS episode-change (exit 1)
+PASS binary-difference (exit 1)
+PASS missing-final-newline (exit 1)
+PASS unreadable-file (exit 2)
+PASS absent-tree (exit 2)
+failures: 0
+exit 0
+== compare-generated.sh on the run 003 trees (0.15.1 vs 0.15.3)
+files: 110, files with differences: 110, other changed lines: 0
+exit 0

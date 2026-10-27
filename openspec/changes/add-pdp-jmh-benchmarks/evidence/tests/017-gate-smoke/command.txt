@@ -1,0 +1,2 @@
+"$(jenv prefix 21)/bin/java" -jar xacml-jmh/target/benchmarks.jar -f 1 -wi 0 -i 1 -r 200ms -foe true -rf json -rff <run>/results.json -o <run>/jmh.log
+# jar from: mvn -B -o -q -Dlicense.skipUpdateLicense=true -pl xacml-jmh -am -DskipTests package

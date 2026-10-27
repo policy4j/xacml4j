@@ -16,7 +16,7 @@ context: |
   xacml-xml-jaxb (XJC-generated, never hand-edited), xacml-test, and
   xacml-conformance-tests. Always pass -Dlicense.skipUpdateLicense=true.
   Select the JDK per run with JAVA_HOME="$(jenv prefix <version>)"; the
-  build is moving from JDK 21 to JDK 28 early access with Valhalla (JEP 401
+  build targets JDK 25 (release 25) and is moving to JDK 28 early access with Valhalla (JEP 401
   value classes, --enable-preview).
   Tests: JUnit 4 + EasyMock today, migrating to JUnit 5 (Jupiter) +
   Mockito; Truth and Hamcrest stay. The OASIS XACML 2.0/3.0 and RSA 2008

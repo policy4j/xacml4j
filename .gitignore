@@ -55,6 +55,9 @@
 /xacml-conformance-tests/.settings
 /xacml-conformance-tests/xacml-conformance-tests.iml
 
+# /xacml-jmh/
+/xacml-jmh/target
+
 .java-version
 /target/
 

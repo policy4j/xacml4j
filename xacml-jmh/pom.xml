@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.xacml4j</groupId>
+		<artifactId>xacml</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>xacml-jmh</artifactId>
+	<name>Xacml4J JMH Benchmarks</name>
+	<description>
+		JMH benchmarks of PDP decisions, policy store lookups, and policy store loads,
+		with pluggable policy stores and policy corpora (change add-pdp-jmh-benchmarks).
+	</description>
+
+	<properties>
+		<jmh.version>1.37</jmh.version>
+		<!-- A benchmark module; not part of a release. -->
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-pdp</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-xml</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- XACML JSON requests for RequestParseBenchmark: the module has no MarshallingProvider,
+		     so the benchmark uses its marshaller classes directly (improve-xacml-parsing D8). -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-json</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjdk.jmh</groupId>
+			<artifactId>jmh-core</artifactId>
+			<version>${jmh.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+		</dependency>
+		<!-- The benchmark jar's logging backend (logback.xml in src/main/resources). -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<!-- The shared Logback console appender that logback.xml includes (upgrade-dependencies D2). -->
+			<resource>
+				<directory>${project.basedir}/../build-support/logback</directory>
+				<includes>
+					<include>xacml4j-console.xml</include>
+				</includes>
+			</resource>
+			<!-- The RSA 2008 corpus: vendored conformance fixtures, read only, copied into the jars. -->
+			<resource>
+				<directory>${project.basedir}/../xacml-conformance-tests/src/test/resources</directory>
+				<includes>
+					<include>rsa2008-interop/**</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<!-- The parent lists AutoService; javac finds no other processor on the classpath. -->
+					<annotationProcessorPaths combine.children="append">
+						<path>
+							<groupId>org.openjdk.jmh</groupId>
+							<artifactId>jmh-generator-annprocess</artifactId>
+							<version>${jmh.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<!-- A separate file: the thin module jar stays the artifact that
+							     external stores compile against, and no dependency-reduced POM
+							     is written into the module directory. -->
+							<outputFile>${project.build.directory}/benchmarks.jar</outputFile>
+							<!-- Shade 3.6.2 still wrote the reduced POM with outputFile alone. -->
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<transformers>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>org.openjdk.jmh.Main</mainClass>
+									<manifestEntries>
+										<Multi-Release>true</Multi-Release>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

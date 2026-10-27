@@ -29,16 +29,25 @@ Always skip the license header rewrite. Run from the repository root.
 
 | Goal | Command |
 | --- | --- |
-| Compile | `JAVA_HOME="$(jenv prefix 21)" rtk mvn -q -Dlicense.skipUpdateLicense=true compile` |
-| One module (with what it needs) | `JAVA_HOME="$(jenv prefix 21)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-core -am test` |
+| Compile | `JAVA_HOME="$(jenv prefix 25)" rtk mvn -q -Dlicense.skipUpdateLicense=true compile` |
+| One module (with what it needs) | `JAVA_HOME="$(jenv prefix 25)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-core -am test` |
 | One class | `... -pl xacml-pdp -am -Dtest=DefaultPolicyDecisionPointTest -Dsurefire.failIfNoSpecifiedTests=false test` |
 | One method (globs allowed) | `... -pl xacml-core -am -Dtest='RuleTest#<method>' -Dsurefire.failIfNoSpecifiedTests=false test` |
 | Conformance suites | `... -pl xacml-conformance-tests -am -Dtest='Xacml20ConformanceTest,Xacml30ConformanceTest,RSA2008InteropTest,XacmlExampleTest' -Dsurefire.failIfNoSpecifiedTests=false test` |
-| Full gate | `JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true verify` |
+| Full gate | `JAVA_HOME="$(jenv prefix 25)" rtk mvn -Dlicense.skipUpdateLicense=true verify` |
 
-Replace `21` with `28-ea` from change group 8 on. After any Maven run,
+The baseline is JDK 25 (change `adopt-jdk25-baseline`); replace `25` with `28-ea` from group 8 of `modernize-core-for-jdk28-valhalla` on. After any Maven run,
 `rtk git status` must show no license-header churn. Surefire skips
 `**/*TestCase.java` (the RSA 2008 performance suite).
+
+Maven: the root POM pins every plugin (`<pluginManagement>`, change
+`upgrade-build-plugins`), so Maven 3.9.16 and 3.10.0 build the reactor alike
+and the header update runs only with `-Dlicense.skipUpdateLicense=false`.
+Offline (`-o`), each Maven needs the pinned plugins in the local repository
+under an id it accepts: after Maven 3.10 downloads a plugin, run one online
+build with Maven 3.9 before an offline 3.9 build. When the configured
+repository mirror is unreachable, build offline with IntelliJ's bundled
+Maven 3.9.16 first on `PATH`.
 
 ## Test layers
 

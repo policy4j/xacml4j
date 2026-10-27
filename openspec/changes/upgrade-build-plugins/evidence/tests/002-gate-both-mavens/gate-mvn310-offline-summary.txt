@@ -1,0 +1,17 @@
+[INFO] Tests run: 6501, Failures: 0, Errors: 0, Skipped: 2
+[INFO] Tests run: 253, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+[INFO] Tests run: 199, Failures: 0, Errors: 0, Skipped: 3
+[INFO] Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] Xacml4J Project .................................... SUCCESS [  0.842 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [ 15.982 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.935 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  3.345 s]
+[INFO] Xacml4J Json based request/response and policy format support SUCCESS [  1.131 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  8.093 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.771 s]
+[INFO] Xacml4J Conformance Tests .......................... SUCCESS [ 10.593 s]
+[INFO] BUILD SUCCESS
+[INFO] Total time:  42.851 s

@@ -1,0 +1,27 @@
+rtk proxy rsync -a xacml-jmh/src/main/java/org/xacml4j/jmh/store/SnapshotPolicyRepository.java xacml-jmh/src/main/java/org/xacml4j/jmh/store/SnapshotPolicyStore.java "$TMPDIR/xacml4j-snapshot-astra/xacml-jmh/src/main/java/org/xacml4j/jmh/store/"
+
+rtk proxy python3 -c 'import os,pathlib,subprocess,sys
+root=pathlib.Path.cwd()
+copy=pathlib.Path(os.environ["TMPDIR"])/"xacml4j-snapshot-astra"
+run=root/"openspec/changes/add-pdp-jmh-benchmarks/evidence/builds/007-snapshot-astra-compile"
+run.mkdir(parents=True,exist_ok=False)
+env=os.environ.copy()
+env["PATH"]=str(pathlib.Path.home()/"Applications/IntelliJ IDEA.app/Contents/plugins/maven-plugin/lib/maven3/bin")+os.pathsep+env["PATH"]
+env["JAVA_HOME"]=subprocess.check_output(["rtk","proxy","jenv","prefix","21"],text=True).strip()
+def redact(value):
+    return value.replace(str(root),"<repo>").replace(str(copy),"<isolated-copy>").replace(str(pathlib.Path.home()),"<home>")
+identity=subprocess.run(["rtk","mvn","-Dlicense.skipUpdateLicense=true","-version"],env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+(run/"env.txt").write_text(redact(identity.stdout))
+print(redact(identity.stdout))
+if identity.returncode:
+    sys.exit(identity.returncode)
+result=subprocess.run(["rtk","mvn","-B","-o","-q","-Dlicense.skipUpdateLicense=true","-f",str(copy/"pom.xml"),"-pl","xacml-jmh","-am","test-compile"],env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+output=redact(result.stdout)
+(run/"output.txt").write_text(output+"\nexit_code="+str(result.returncode)+"\n")
+print(output)
+print("exit_code="+str(result.returncode))
+sys.exit(result.returncode)'
+
+rtk git diff --no-index --check /dev/null xacml-jmh/src/main/java/org/xacml4j/jmh/store/SnapshotPolicyRepository.java
+rtk git diff --no-index --check /dev/null xacml-jmh/src/main/java/org/xacml4j/jmh/store/SnapshotPolicyStore.java
+rtk git status --short

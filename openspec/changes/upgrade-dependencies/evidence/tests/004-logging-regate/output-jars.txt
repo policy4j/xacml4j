@@ -1,0 +1,7 @@
+xacml-core-2.0.0-SNAPSHOT.jar: no logging configuration
+xacml-pdp-2.0.0-SNAPSHOT.jar: no logging configuration
+xacml-xml-2.0.0-SNAPSHOT.jar: no logging configuration
+xacml-json-2.0.0-SNAPSHOT.jar: no logging configuration
+xacml-test-2.0.0-SNAPSHOT.jar: no logging configuration
+xacml-jmh-2.0.0-SNAPSHOT.jar: logback.xml, xacml4j-console.xml
+benchmarks.jar: logback.xml, xacml4j-console.xml; Logback classes True; Log4j classes False

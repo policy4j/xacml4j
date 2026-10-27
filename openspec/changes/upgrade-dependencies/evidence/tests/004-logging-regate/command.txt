@@ -1,0 +1,5 @@
+python3 -I <scratch>/jmhtools/regate.py <repo> <scratch> <maven-3.9.16-bin>   # see the script header; it runs:
+  mvn -B -o -Dlicense.skipUpdateLicense=true clean test            (JDK 25)
+  mvn -B -o dependency:tree -Dincludes=org.apache.logging.log4j,ch.qos.logback,org.slf4j
+  mvn -B -o -q -DskipTests package; jar listings (python zipfile)
+  mvn -B -o -q -f <scratch copy>/pom.xml -pl xacml-core validate   (copy adds log4j-core 2.14.0; expected to fail)

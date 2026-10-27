@@ -1,0 +1,28 @@
+smoke-synthetic.log:Benchmark                        (corpus)  (request)    (store)  Mode  Cnt     Score   Error  Units
+smoke-synthetic.log:PdpDecideBenchmark.decide     synthetic:1        all  in-memory  avgt         35.540          us/op
+smoke-synthetic.log:PdpDecideBenchmark.decide     synthetic:1        all   snapshot  avgt         34.097          us/op
+smoke-synthetic.log:PdpDecideBenchmark.decide     synthetic:2        all  in-memory  avgt         39.113          us/op
+smoke-synthetic.log:PdpDecideBenchmark.decide     synthetic:2        all   snapshot  avgt         40.233          us/op
+smoke-synthetic.log:PdpDecideBenchmark.decide  synthetic:1000        all  in-memory  avgt       2842.693          us/op
+smoke-synthetic.log:PdpDecideBenchmark.decide  synthetic:1000        all   snapshot  avgt       3623.388          us/op
+smoke-default.log:Benchmark                                 (corpus)  (request)    (store)  Mode  Cnt      Score   Error  Units
+smoke-default.log:PdpDecideBenchmark.decide                  rsa2008        all  in-memory  avgt         111.577          us/op
+smoke-default.log:PdpDecideBenchmark.decide                  rsa2008        all   snapshot  avgt         118.062          us/op
+smoke-default.log:PdpDecideBenchmark.decide            synthetic:100        all  in-memory  avgt         363.487          us/op
+smoke-default.log:PdpDecideBenchmark.decide            synthetic:100        all   snapshot  avgt         406.517          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.importXml         rsa2008        N/A  in-memory  avgt        4819.525          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.importXml         rsa2008        N/A   snapshot  avgt        4875.335          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.importXml   synthetic:100        N/A  in-memory  avgt       35138.222          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.importXml   synthetic:100        N/A   snapshot  avgt       43595.625          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.loadParsed        rsa2008        N/A  in-memory  avgt           6.155          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.loadParsed        rsa2008        N/A   snapshot  avgt           7.553          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.loadParsed  synthetic:100        N/A  in-memory  avgt          19.064          us/op
+smoke-default.log:PolicyStoreLoadBenchmark.loadParsed  synthetic:100        N/A   snapshot  avgt         630.576          us/op
+smoke-default.log:PolicyStoreLookupBenchmark.cursor          rsa2008        N/A  in-memory  avgt           0.834          ns/op
+smoke-default.log:PolicyStoreLookupBenchmark.cursor          rsa2008        N/A   snapshot  avgt           0.811          ns/op
+smoke-default.log:PolicyStoreLookupBenchmark.cursor    synthetic:100        N/A  in-memory  avgt           0.925          ns/op
+smoke-default.log:PolicyStoreLookupBenchmark.cursor    synthetic:100        N/A   snapshot  avgt           0.970          ns/op
+smoke-default.log:PolicyStoreLookupBenchmark.lookup          rsa2008        N/A  in-memory  avgt         106.295          ns/op
+smoke-default.log:PolicyStoreLookupBenchmark.lookup          rsa2008        N/A   snapshot  avgt          19.099          ns/op
+smoke-default.log:PolicyStoreLookupBenchmark.lookup    synthetic:100        N/A  in-memory  avgt         131.701          ns/op
+smoke-default.log:PolicyStoreLookupBenchmark.lookup    synthetic:100        N/A   snapshot  avgt          26.307          ns/op

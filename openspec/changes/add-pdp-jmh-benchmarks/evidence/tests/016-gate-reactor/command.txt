@@ -1,0 +1,1 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" mvn -B -o -Dlicense.skipUpdateLicense=true clean test

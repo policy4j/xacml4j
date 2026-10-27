@@ -9,6 +9,8 @@ passes (JDK 28 command from group 8 on), `rtk git status` shows no license
 header churn, and the conformance manifest (group 3 on) loses no executed
 case.
 
+Note (2026-10-27): the project baseline moved to JDK 25 (change `adopt-jdk25-baseline`); open gates below that say JDK 21 run on JDK 25 from now on.
+
 ## 1. Preserve the donor and establish the baseline
 
 - [x] 1.1 With the maintainer's approval, save the current working tree without loss: branch `wip/feature_xacml_20-donor` with the staged and unstaged work as two separate commits, plus `git diff HEAD` and `git diff --cached` patch files stored outside the repo; verify the branch diff reproduces the working tree byte for byte

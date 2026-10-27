@@ -1,0 +1,5 @@
+xacml-core: org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider, org.xacml4j.v30.policy.function.FunctionProvider
+xacml-xml: org.xacml4j.v30.marshal.MarshallingProvider
+xacml-json: (none)
+xacml-pdp: (none)
+xacml-jmh: org.xacml4j.jmh.harness.PolicyCorpusProvider, org.xacml4j.jmh.harness.PolicyStore

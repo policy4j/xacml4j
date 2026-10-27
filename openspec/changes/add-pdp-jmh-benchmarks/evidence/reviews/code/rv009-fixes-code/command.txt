@@ -1,0 +1,2 @@
+ntm send xacml4j--pdp-jmh-review --pane=2 --file rv009-sol.md   # then rv009-sol-followup.md for the full report
+# report taken between the RV009 markers of the Codex session record; local paths rewritten (scrub.py)

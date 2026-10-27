@@ -1,0 +1,2 @@
+ntm send xacml4j--pdp-profile-1 --pane=5 --base-prompt-file .ntm/roles/policy4j_code_review.md --file RV-GATES.md   # then a follow-up asking for the full report
+# report taken between the RVG markers of the Codex session record; local paths rewritten

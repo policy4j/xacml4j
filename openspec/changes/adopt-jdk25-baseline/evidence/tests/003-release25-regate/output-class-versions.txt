@@ -1,0 +1,8 @@
+package exit 0
+xacml-core: xacml-core/target/classes/org/xacml4j/util/Base64.class major 69 minor 0
+xacml-xml-jaxb: xacml-xml-jaxb/target/classes/org/oasis/xacml/v20/jaxb/context/ActionType.class major 69 minor 0
+xacml-xml: xacml-xml/target/classes/org/xacml4j/v30/xml/BaseJAXBMarshaller.class major 69 minor 0
+xacml-json: xacml-json/target/classes/org/xacml4j/v30/marshal/json/AttributeAssignmentDeserializer.class major 69 minor 0
+xacml-pdp: xacml-pdp/target/classes/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.class major 69 minor 0
+xacml-test: xacml-test/target/classes/org/xacml4j/v20/Xacml20TestUtility$1.class major 69 minor 0
+xacml-jmh: xacml-jmh/target/classes/org/xacml4j/jmh/corpus/DirectoryCorpus.class major 69 minor 0

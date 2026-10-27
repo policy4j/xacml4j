@@ -1,0 +1,5 @@
+# NTM session xacml4j--pdp-jmh-review (NTM_PROJECTS_BASE = parent of the checkout)
+ntm spawn xacml4j --label pdp-jmh-review --persona=policy4j_code_review_claude_fable --persona=policy4j_code_review_codex_sol --persona=policy4j_code_review_codex_astra --agyx=1:gemini-4-argon-high --no-user --safety --verify-boot
+# the Astra pane was relaunched as: codex -m gpt-6-astra -c model_reasoning_effort=max (role sent with --base-prompt-file)
+ntm send xacml4j--pdp-jmh-review --pane=<n> [--base-prompt-file .ntm/roles/policy4j_code_review.md] --file <packet>.md   # read-only packet
+# report taken between the lane markers from the CLI session record; home paths rewritten
