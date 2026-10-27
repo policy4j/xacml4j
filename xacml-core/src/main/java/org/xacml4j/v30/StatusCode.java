@@ -106,7 +106,11 @@ public class StatusCode
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(value, minorStatus);
+		// Arrays.hashCode of the fields in this order, without the array (design D22)
+		int h = 1;
+		h = 31 * h + java.util.Objects.hashCode(value);
+		h = 31 * h + java.util.Objects.hashCode(minorStatus);
+		return h;
 	}
 
 	@Override

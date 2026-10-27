@@ -32,8 +32,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.PathEvaluationException;
+import org.xacml4j.v30.StatusCodeId;
+import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.truth.Truth8;
 
@@ -150,5 +154,45 @@ public class JsonContentTest
         LoggerFactory.getLogger(JsonContentTest.class)
                      .debug(
                 content.map(v->v.toNode()).orElse(null).getClass().toString());
+    }
+
+    @Test
+    public void selectorResolvesScalarValuesToABag() {
+        Truth8.assertThat(content.resolve(selector("$.store.book[*].author", XacmlTypes.STRING)))
+              .hasValue(XacmlTypes.STRING.bagBuilder()
+                                         .value("Nigel Rees", "Evelyn Waugh", "Herman Melville", "J. R. R. Tolkien")
+                                         .build());
+        Truth8.assertThat(content.resolve(selector("$.expensive", XacmlTypes.INTEGER)))
+              .hasValue(XacmlTypes.INTEGER.bagBuilder().value(10).build());
+    }
+
+    @Test
+    public void selectorPathWithoutAValueResolvesToNothing() {
+        Truth8.assertThat(content.resolve(selector("$.store.car.color", XacmlTypes.STRING))).isEmpty();
+        Truth8.assertThat(content.resolve(selector("$.store.book[*].publisher", XacmlTypes.STRING))).isEmpty();
+    }
+
+    @Test
+    public void selectorValueThatDoesNotConvertIsAProcessingError() {
+        assertProcessingError(selector("$.store.book[*].author", XacmlTypes.INTEGER));
+        assertProcessingError(selector("$.store.bicycle", XacmlTypes.STRING));
+    }
+
+    @Test
+    public void selectorWithAContextSelectorIsAProcessingError() {
+        assertProcessingError(AttributeSelectorKey.builder()
+                                                  .jpath("$.title")
+                                                  .contextSelectorId(XmlContent.CONTENT_SELECTOR)
+                                                  .dataType(XacmlTypes.STRING)
+                                                  .build());
+    }
+
+    private void assertProcessingError(AttributeSelectorKey selector) {
+        PathEvaluationException e = assertThrows(PathEvaluationException.class, () -> content.resolve(selector));
+        assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.STATUS_PROCESSING_ERROR);
+    }
+
+    private static AttributeSelectorKey selector(String path, ValueType type) {
+        return AttributeSelectorKey.builder().jpath(path).dataType(type).build();
     }
 }

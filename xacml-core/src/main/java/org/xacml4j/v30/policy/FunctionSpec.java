@@ -29,11 +29,14 @@ import java.util.Optional;
 
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.function.FunctionCategory;
+import org.xacml4j.v30.types.Value;
 
 
 /**
@@ -156,6 +159,11 @@ public interface FunctionSpec
 	default<T extends ValueExp> T invoke(EvaluationContext context, Expression arg0, Expression arg1)
 		throws EvaluationException{
 		return invoke(context, new Expression[]{arg0, arg1});
+	}
+
+	/** Scans a bag with this two-argument predicate, with the literal first. */
+	default BagStorage.Scan scan(EvaluationContext context, Value<?> literal, BagOfValues bag) {
+		return BagStorage.Scan.NONE;
 	}
 
 	<T extends ValueExp> T invokeWithList(EvaluationContext context, List<Expression> arguments)

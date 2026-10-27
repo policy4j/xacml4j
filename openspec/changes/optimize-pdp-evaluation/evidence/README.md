@@ -90,6 +90,41 @@ is also a row of `benchmarks/jmh/LEDGER.md`. See docs/ai/OPENSPEC.md
 | `reviews/code/rvh2-cycleH-recheck-sol` | cycle H re-check, Codex GPT-6.1 Sol | NTM pane, read-only packet | APPROVE WITH CHANGES: RVH1 resolved; 1 new P2 (hash-cache double read), fixed |
 | `tests/022-rvh2-hash-fix` | the RVH2 fix (12.3) | Maven `-Dtest=...`, offline | 24 tests pass; stress test only, not red first (a data race cannot be forced) |
 | `tests/023-commit-tree-cycleH` | the exact tree of the cycle H commit (12.3) | Maven clean test on a clean export, offline | PASS: 8,283 tests, 18 skipped; conformance 938/12 |
+| `tests/024-cycleI-red` | cycle I tests before D15 (13.1) | Maven `-Dtest=DirectPairCallTest`, offline | 9 run, 1 failure as intended: 72.0 bytes per call |
+| `tests/025-cycleI-green` | cycle I after D15 (13.2) | Maven focused and clean test, offline | focused green; reactor 8,291 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rvi1-cycleI-sol` | cycle I review, Codex GPT-6.1 Sol | NTM pane, read-only packet | REJECT: 2 P2 fixed, 1 P3 superseded by the D18 decision |
+| `reviews/plan/rvc7-cycleC-agy` | plan review of D7 as decided 2026-10-27 (6.2), Agy Gemini 4 Argon | NTM pane, read-only packet | APPROVE WITH CHANGES: 3 P1, 2 P2, all applied to D7 and tasks 6.3 to 6.6 |
+| `tests/026-rvi1-fixes` | RVI1 fixes (13.3) | Maven `-Dtest=...` and clean test, offline | red 3 of 12 before, green after; reactor 8,294 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rvi2-cycleI-recheck-sol` | cycle I re-check, Codex GPT-6.1 Sol | NTM pane, read-only packet | REJECT: RVI1 resolved; 1 new P2 (inaccessible parameter types), fixed |
+| `tests/027-rvi2-fix` | the RVI2 fix (13.3) | Maven `-Dtest=...` and clean test, offline | red 1 of 13, then green; 241 focused tests; reactor 8,295 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rvi3-cycleI-recheck-sol` | cycle I third check, Codex GPT-6.1 Sol | NTM pane, read-only packet | APPROVE WITH CHANGES: 1 P2 (hidden provider classes), fixed |
+| `tests/028-rvi3-fix` | the RVI3 fix and gate (13.3) | Maven focused and clean test, offline | red 1 of 2, then green; 243 function tests; reactor 8,297 tests, 18 skipped; conformance 938/12 |
+| `tests/029-cycleJ-characterization` | cycle J characterization (14.1) | Maven `-Dtest=...`, offline | 33 tests pass before D16 |
+| `tests/030-cycleJ-green` | cycle J after D16 (14.2) | Maven focused and clean test, offline | 587 focused; reactor 8,301 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rcj1-cycleJ-sol` | cycle J review, Codex GPT-6.1 Sol | NTM pane, read-only packet | REJECT: 2 P2 (combiner list semantics), fixed by restoring the combiners |
+| `tests/031-rcj1-fix` | the RCJ1 fix (14.3) | Maven focused and clean test, offline | red 2 of 5, then green; 589 focused; reactor 8,303 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rcj2-cycleJ-recheck-sol` | cycle J re-check, Codex GPT-6.1 Sol | NTM pane, read-only packet | REJECT: RCJ1 resolved; 1 new P2 (normalization snapshot), fixed |
+| `tests/032-rcj2-fix` | the RCJ2 fix (14.3) | Maven focused and clean test, offline | red 1 of 13, then green; 592 focused; reactor 8,304 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rcj3-cycleJ-recheck-sol` | cycle J third check (14.3), Codex GPT-6.1 Sol | NTM pane, read-only packet | APPROVE |
+| `tests/033-cycleK-red` | cycle K tests (15.1) | Maven focused, offline | characterization 4 green before; handler test red 1 of 40 |
+| `tests/034-cycleK-green` | cycle K (15.2) | Maven focused and clean test, offline | core 6,582, PDP 218; reactor 8,309 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rck1-cycleK-sol` | cycle K review (15.3), Codex GPT-6.1 Sol | NTM pane, read-only packet | REJECT: 2 P2 (binary compatibility, staging walk), fixed |
+| `tests/035-rck1-fix` | the RCK1 fix (15.3) | Maven focused and clean test, offline | focused green; reactor 8,313 tests, 18 skipped; conformance 938/12 |
+| `reviews/code/rck2-cycleK-recheck-sol` | cycle K re-check (15.3), Codex GPT-6.1 Sol | NTM worktree lane, read-only | APPROVE WITH CHANGES: RCK1 resolved; 1 P3 (duplicate memo test), folded into the existing test |
+| `reviews/code/rvl1-cycleL-sol` | cycle L (16.3), Codex GPT-6.1 Sol | NTM worktree lane, read-only | REJECT on the lane split only (the two files came with M and N); other checks pass; the logging test was later deleted (maintainer) |
+| `reviews/code/rvm1-cycleM-astra` | cycle M (17.3), Codex Astra | NTM worktree lane, read-only | APPROVE WITH CHANGES: 1 P3 (list capacity), applied |
+| `reviews/code/rvn1-cycleN-opus` | cycle N (19.3), Claude Opus 5.5 | NTM worktree lane, read-only | APPROVE WITH CHANGES: tests cut to status and error chain, `withoutStackTrace` and the no-op `BagFunctions` hunk dropped, applied |
+| `tests/036-batch2-core-local` | `xacml-core` of the merged batch 2 and D23 | `javac` and JUnit launcher on local Gradle-cache jars (Maven blocked) | 6,595 found, 0 failed, 1 skipped; 9 Truth8 classes, PDP, conformance not run |
+| `tests/037-reactor-batch2-D21-D23` | full reactor on the main tree: batch 2, D21, D23 | Maven 3.9.16 `clean test`, online (mirror) | BUILD SUCCESS: 8,362 tests, 0 failures, 18 skipped; conformance 938/12 |
+| `tests/038-reactor-batch3-ABCD` | full reactor: batch 2 and batch 3 (D20 (d), D21 and SPI, D22, D23) with review fixes | Maven 3.9.16 `clean test`, offline | BUILD SUCCESS: 8,372 tests, 0 failures, 18 skipped; conformance 938/12 |
+| `reviews/code/rd21f-D21-fable` | D21 (20.3), Claude Fable 5.1 | NTM worktree lane, read-only | APPROVE WITH CHANGES: the monitor on the decide path (moot after the Guava interner), one comment |
+| `reviews/code/rd22t-D22-terra` | D22 and D20 (d) (21.3, 19.5), Codex Terra | NTM worktree lane, read-only | APPROVE WITH CHANGES: 2 P3 (superclass hash first; status equality in a test), applied |
+| `reviews/code/rd23s-D23-sol` | D23 (22.4), Codex GPT-6.1 Sol | NTM worktree lane, read-only | REJECT: 1 P2 (`Apply` pair call bypasses a custom spec's varargs override); fixed by keeping `Apply`'s varargs call |
+| `reviews/code/rso-D21-spi-opus` | D21 interner SPI, Claude Opus 5.5 | NTM worktree lane, read-only | APPROVE WITH CHANGES: P1 (category-less keys with a non-default interner) and P2s fixed by Opus's verified simpler shape; core 6,646 and PDP 217 green |
+| `reviews/plan/rpa-D24-astra` | plan review of D24, Codex Astra | NTM worktree lane, read-only | REJECT: 3 P1 (PIP prefetch, failed-reference retry, separate listeners); D24 revised |
+| `reviews/plan/rpa2-D24-D25-astra` | re-review of D24 and D25, Codex Astra | NTM worktree lane, read-only | REJECT: 2 P1 (failed binding retried, rebinding under an immutable index); third design round (maintainer) |
+| `reviews/plan/rpf-D25-fable` | plan review of D25, Claude Fable 5.1 | NTM worktree lane, read-only | APPROVE WITH CHANGES: one mechanism with D24 (prepared lists, `BoundReference`), race-fix recipe, gain scoped; applied to D25 and group 24 |
+| `reviews/code/rcc1-batch2-clean-code-astra` | clean code of cycles I, J, K, Codex Astra | NTM worktree lane, read-only | APPROVE WITH CHANGES: mechanism tests removed (allocation, class scans, binding chosen), binding cache a plain map, style; the `policy4j-0972` characterization in `MatchTest` kept (D7 keeps that order) |
 | `benchmarks/jmh/019-cycleH-before` | JMH, session 5 (committed tree) | mix and scan | before values of cycle H |
 | `benchmarks/jmh/020-cycleH-after` | JMH, after 019 | mix and scan | full scan 316 KB to 172 KB (-46%), -10.4% time; synthetic:100 -37% bytes |
 | `benchmarks/jmh/021-profile-decide-cycle-H` | profile, cycle H tree | cpu and alloc, as run 004 | contexts 33%, call arrays 42%, bag iteration 14% of full-scan bytes; input of the second analysis swarm |

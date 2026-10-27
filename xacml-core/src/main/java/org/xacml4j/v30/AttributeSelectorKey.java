@@ -38,10 +38,10 @@ import com.google.common.base.Strings;
 public final class AttributeSelectorKey
 	extends AttributeReferenceKey
 {
-	private String path;
-	private String contextSelectorId;
+	private final String path;
+	private final String contextSelectorId;
 	private int hashCode;
-	private Content.PathType type;
+	private final Content.PathType type;
 
 	private AttributeSelectorKey(Builder b){
 		super(b);
@@ -75,7 +75,7 @@ public final class AttributeSelectorKey
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-		.add("Category", getCategory().getAbbreviatedId())
+		.add("Category", getCategoryOpt().map(CategoryId::getAbbreviatedId).orElse(null))
 		.add("Path", path)
 		.add("PathType", type)
 		.add("DataType", getDataType().getShortTypeId())
@@ -100,7 +100,7 @@ public final class AttributeSelectorKey
 			return false;
 		}
 		AttributeSelectorKey s = (AttributeSelectorKey)o;
-		return category.equals(s.category) &&
+		return Objects.equal(category, s.category) &&
 				dataType.equals(s.dataType) &&
 				type.equals(s.type) &&
 				path.equals(s.path) &&
@@ -180,7 +180,7 @@ public final class AttributeSelectorKey
 		}
 
 		public AttributeSelectorKey build(){
-			return new AttributeSelectorKey(this);
+			return (AttributeSelectorKey) INTERNER.intern(new AttributeSelectorKey(this));
 		}
 
 	}

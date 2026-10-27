@@ -211,9 +211,15 @@ public class Policy extends BaseCompositeDecisionRule
 
 	@Override
 	public int hashCode() {
-		return super.hashCode() * 31 +
-				Objects.hashCode(policyDefaults, variableDefinitions,
-						rules, combiningAlgorithm, ruleCombiningParameters);
+		// Arrays.hashCode of the fields in this order, without the array (design D22)
+		int base = super.hashCode();
+		int h = 1;
+		h = 31 * h + java.util.Objects.hashCode(policyDefaults);
+		h = 31 * h + java.util.Objects.hashCode(variableDefinitions);
+		h = 31 * h + java.util.Objects.hashCode(rules);
+		h = 31 * h + java.util.Objects.hashCode(combiningAlgorithm);
+		h = 31 * h + java.util.Objects.hashCode(ruleCombiningParameters);
+		return base * 31 + h;
 	}
 
 	public void accept(PolicyTreeVisitor v) {
@@ -294,8 +300,10 @@ public class Policy extends BaseCompositeDecisionRule
 			varDefEvalResults.put(variableId, value);
 		}
 
-		@Override
-		public Policy getCurrentPolicy() {
+		/**
+		 * The policy of this context, which answers {@link #getCurrentPolicy()} (design D17)
+		 */
+		final Policy policy() {
 			return Policy.this;
 		}
 

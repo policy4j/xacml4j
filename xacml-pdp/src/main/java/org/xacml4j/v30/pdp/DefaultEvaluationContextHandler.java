@@ -79,8 +79,10 @@ final class DefaultEvaluationContextHandler
 	 * 7.3.5 asks every later test of an attribute to use the bag first tested. Request
 	 * results only; information point results stay in {@link #designatorCache}, which the
 	 * response's resolved attributes come from. Neither absence nor a failure is kept.
+	 * The {@code Optional} that the request entity gave is kept, so every later test of
+	 * the attribute gets the same instance (change optimize-pdp-evaluation, design D17).
 	 */
-	private final Map<AttributeDesignatorKey, BagOfValues> requestDesignators = new ConcurrentHashMap<>();
+	private final Map<AttributeDesignatorKey, Optional<BagOfValues>> requestDesignators = new ConcurrentHashMap<>();
 
 	private volatile Deque<AttributeDesignatorKey> designatorResolutionStack;
 	private volatile Deque<AttributeSelectorKey> selectorResolutionStack;
@@ -174,10 +176,11 @@ final class DefaultEvaluationContextHandler
 			AttributeDesignatorKey key = (AttributeDesignatorKey)ref;
 			Map<AttributeDesignatorKey, BagOfValues> pipBags = designatorCache;
 			BagOfValues bag = pipBags != null ? pipBags.get(key) : null;
-			if(bag == null){
-				bag = requestDesignators.get(key);
+			if(bag != null){
+				return Optional.of(bag);
 			}
-			return bag != null ? Optional.of(bag) : doDesignatorResolve(context, key);
+			Optional<BagOfValues> fromRequest = requestDesignators.get(key);
+			return fromRequest != null ? fromRequest : doDesignatorResolve(context, key);
 		}
 		if(ref instanceof AttributeSelectorKey){
 			Map<AttributeSelectorKey, BagOfValues> pipBags = selectorCache;
@@ -202,7 +205,7 @@ final class DefaultEvaluationContextHandler
 			// passed on: a syntax error keeps its status code, and every other
 			// path error is a processing error, whatever MustBePresent is.
 			if(e.getStatus().getStatusCode().isSyntaxError()){
-				throw logged(AttributeReferenceEvaluationException.forSyntaxError(selectorKey, e));
+				throw AttributeReferenceEvaluationException.forSyntaxError(selectorKey, e);
 			}
 			throw failed(selectorKey, e);
 		}
@@ -223,8 +226,8 @@ final class DefaultEvaluationContextHandler
 			Optional<BagOfValues> found = entity.get().resolve(key.getAttributeId(), key.getDataType(), key.getIssuer());
 			if(found.isPresent()){
 				// The first bag wins, so that every test of the attribute sees one bag.
-				BagOfValues first = requestDesignators.putIfAbsent(key, found.get());
-				return first != null ? Optional.of(first) : found;
+				Optional<BagOfValues> first = requestDesignators.putIfAbsent(key, found);
+				return first != null ? first : found;
 			}
 		}
 		return doPipResolve(context, key);
@@ -318,20 +321,11 @@ final class DefaultEvaluationContextHandler
 	}
 
 	/**
-	 * Maps a failure to a processing error and logs it. Nothing is called
-	 * on the cause before the mapped failure exists, and the cause is not
-	 * given to the logger: it is foreign code, and an exception from its
-	 * {@code getMessage()} must not replace the mapped failure.
+	 * Maps a failure to a processing error.
 	 */
 	private static AttributeReferenceEvaluationException failed(AttributeReferenceKey ref, Throwable cause)
 	{
-		return logged(AttributeReferenceEvaluationException.forResolverFailure(ref, cause));
-	}
-
-	private static AttributeReferenceEvaluationException logged(AttributeReferenceEvaluationException failure)
-	{
-		LOG.debug("{}", failure.getMessage());
-		return failure;
+		return AttributeReferenceEvaluationException.forResolverFailure(ref, cause);
 	}
 
 	@Override

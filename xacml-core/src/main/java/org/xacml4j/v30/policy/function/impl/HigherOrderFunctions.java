@@ -70,7 +70,7 @@ public final class HigherOrderFunctions
 		BagOfValues bag = (BagOfValues)arguments[bagIndex];
 		Expression[] parameters = arguments.clone();
 		// Combined with "or": a True for a later element wins over an error.
-		return BooleanVal.of(DecidingOperands.<Value<?>>anyTrue(bag.values(), valueFromBag -> {
+		return BooleanVal.of(DecidingOperands.<Value<?>>anyTrue(bag, valueFromBag -> {
 			parameters[bagIndex] = valueFromBag;
 			return isTrue(context, ref, parameters);
 		}));
@@ -98,7 +98,7 @@ public final class HigherOrderFunctions
 		BagOfValues bag = (BagOfValues)arguments[bagIndex];
 		Expression[] parameters = arguments.clone();
 		// Combined with "and": a False for a later element wins over an error.
-		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(bag.values(), valueFromBag -> {
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(bag, valueFromBag -> {
 			parameters[bagIndex] = valueFromBag;
 			return isTrue(context, ref, parameters);
 		}));
@@ -131,7 +131,7 @@ public final class HigherOrderFunctions
 		// The bags are checked against the predicate also when one is empty.
 		requireValidArguments(ref, new Expression[]{a, b}, false, true);
 		// any-of for each value of the first bag, combined with "and".
-		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a.values(),
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a,
 				v -> anyOf(context, ref, v, b).get()));
 	}
 
@@ -148,7 +148,7 @@ public final class HigherOrderFunctions
 		// The bags are checked against the predicate also when one is empty.
 		requireValidArguments(ref, new Expression[]{a, b}, false, true);
 		// any-of for each value of the second bag, combined with "and".
-		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(b.values(),
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(b,
 				vb -> anyOf(context, ref, a, vb).get()));
 	}
 
@@ -165,8 +165,8 @@ public final class HigherOrderFunctions
 		// The bags are checked against the predicate also when one is empty.
 		requireValidArguments(ref, new Expression[]{a, b}, false, true);
 		// Every pair, combined with "and".
-		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a.values(),
-				aValue -> DecidingOperands.<Value<?>>allTrue(b.values(),
+		return BooleanVal.of(DecidingOperands.<Value<?>>allTrue(a,
+				aValue -> DecidingOperands.<Value<?>>allTrue(b,
 						bValue -> isTrue(context, ref, aValue, bValue))));
 	}
 
@@ -185,7 +185,7 @@ public final class HigherOrderFunctions
 		BagOfValues bag = (BagOfValues)arguments[bagIndex];
 		Expression[] parameters = arguments.clone();
 		Collection<Value<?>> values = new ArrayList<>(bag.size());
-		for(Value<?> v : bag.values()){
+		for(Value<?> v : bag){
 			parameters[bagIndex] = v;
 			values.add(ref.invoke(context, parameters));
 		}
@@ -215,7 +215,7 @@ public final class HigherOrderFunctions
 		}
 		if(arguments[index] instanceof BagOfValues){
 			// Every tuple, combined with "or".
-			return DecidingOperands.<Value<?>>anyTrue(((BagOfValues)arguments[index]).values(), value -> {
+			return DecidingOperands.<Value<?>>anyTrue((BagOfValues)arguments[index], value -> {
 				parameters[index] = value;
 				return anyOfAny(context, ref, arguments, parameters, index + 1);
 			});

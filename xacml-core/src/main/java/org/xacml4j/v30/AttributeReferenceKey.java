@@ -25,10 +25,13 @@ package org.xacml4j.v30;
 import java.net.URI;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.ServiceLoader;
 
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.collect.MoreCollectors;
 
 /**
  * A base class for attribute references
@@ -37,6 +40,13 @@ import org.xacml4j.v30.types.XacmlTypes;
  */
 public abstract class AttributeReferenceKey
 {
+	/** The registered interner of the key builders, else {@link AttributeReferenceKeyInterner#weak()} (design D21) */
+	static final AttributeReferenceKeyInterner INTERNER = ServiceLoader.load(AttributeReferenceKeyInterner.class)
+			.stream()
+			.map(ServiceLoader.Provider::get)
+			.collect(MoreCollectors.toOptional())
+			.orElseGet(AttributeReferenceKeyInterner::weak);
+
 	protected final CategoryId category;
 	protected final ValueType dataType;
 

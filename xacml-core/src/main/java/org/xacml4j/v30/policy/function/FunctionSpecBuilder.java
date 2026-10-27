@@ -23,6 +23,7 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -30,6 +31,8 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
@@ -40,6 +43,8 @@ import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionParamSpec;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.PolicySyntaxException;
+import org.xacml4j.v30.policy.function.impl.DefaultFunctionInvocation;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
@@ -47,7 +52,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterators;
+import com.google.common.collect.ImmutableList;
 
 /**
  * A builder for building {@link FunctionSpec} instances
@@ -58,8 +63,6 @@ import com.google.common.collect.Iterators;
  * @author Giedrius Trumpickas
  */
 public final class FunctionSpecBuilder {
-	private static final Logger LOG = LoggerFactory.getLogger(FunctionSpecBuilder.class);
-
 	private String functionId;
 	private String shortId;
 	private String legacyId;
@@ -262,6 +265,14 @@ public final class FunctionSpecBuilder {
 		private boolean evaluateParameters;
 		// two mandatory parameters, evaluated before the call (design D8)
 		private final boolean eagerPair;
+		// one mandatory parameter, evaluated before the call (design D23)
+		private final boolean eagerSingle;
+		// the invocation of an eager pair or single when it calls its method directly, or null (designs D15, D23)
+		private final DefaultFunctionInvocation direct;
+
+		private static final Class<?> ARRAYS_AS_LIST = Arrays.asList(new Object[0]).getClass();
+		private static final Class<?> LIST_12 = List.of(1).getClass();
+		private static final Class<?> LIST_N = List.of(1, 2, 3).getClass();
 
 		private FunctionInvocation invocation;
 		private FunctionReturnTypeResolver resolver;
@@ -301,10 +312,19 @@ public final class FunctionSpecBuilder {
 			this.legacyId = Optional.ofNullable(legacyId);
 			this.eagerPair = !evaluateParameters && parameters.size() == 2 &&
 					isMandatory(parameters.get(0)) && isMandatory(parameters.get(1));
+			this.eagerSingle = !evaluateParameters && parameters.size() == 1 && isMandatory(parameters.get(0));
+			this.direct = ((eagerPair || eagerSingle) && invocation instanceof DefaultFunctionInvocation d && d.isDirect())
+					? d : null;
 		}
 
 		private static boolean isMandatory(FunctionParamSpec p) {
 			return !(p.isOptional() || p.isVariadic());
+		}
+
+		@Override
+		public BagStorage.Scan scan(EvaluationContext context, Value<?> literal, BagOfValues bag) {
+			if (direct == null || context.isValidateFuncParamsAtRuntime()) return BagStorage.Scan.NONE;
+			return direct.scan(this, literal, bag);
 		}
 
 		public FunctionSpecImpl(
@@ -370,6 +390,25 @@ public final class FunctionSpecBuilder {
 		}
 
 		/**
+		 * One operand of an eager single bound to its method takes the direct call (design D23), and two
+		 * operands of an eager pair take {@link #invoke(EvaluationContext, Expression, Expression)}; any
+		 * other call takes the list path, as the interface's default does. The array is read during the
+		 * call and not kept.
+		 */
+		@Override
+		public <T extends ValueExp> T invoke(
+				EvaluationContext context,
+				Expression... arguments) throws EvaluationException {
+			if (arguments != null && arguments.length == 1 && eagerSingle && direct != null) {
+				return invokeDirect(context, arguments[0]);
+			}
+			if (arguments != null && arguments.length == 2 && eagerPair) {
+				return invoke(context, arguments[0], arguments[1]);
+			}
+			return invokeWithList(context, (arguments == null) ? List.of() : Arrays.asList(arguments));
+		}
+
+		/**
 		 * Two mandatory parameters normalize two arguments to themselves, so
 		 * the call skips {@link #normalize(List)} and evaluates the operands
 		 * into the list it creates here (design D8).
@@ -378,64 +417,100 @@ public final class FunctionSpecBuilder {
 		public <T extends ValueExp> T invoke(
 				EvaluationContext context,
 				Expression arg0, Expression arg1) throws EvaluationException {
-			// A modifiable list, as the evaluated list of the generic path is (review RVC1, RVC2)
+			if (eagerPair && direct != null) {
+				return invokeDirect(context, arg0, arg1);
+			}
+			return eagerPair ? doInvoke(context, pairList(arg0, arg1), true) : invokeWithList(context, pairList(arg0, arg1));
+		}
+
+		/** A modifiable list, as the evaluated list of the generic path is (review RVC1, RVC2) */
+		private static List<Expression> pairList(Expression arg0, Expression arg1) {
 			List<Expression> arguments = new ArrayList<>(2);
 			arguments.add(arg0);
 			arguments.add(arg1);
-			return eagerPair ? doInvoke(context, arguments, true) : invokeWithList(context, arguments);
+			return arguments;
+		}
+
+		/**
+		 * A built-in function bound directly (design D15): the operands are evaluated in order
+		 * and passed to the method, with no argument list, no argument array, and no reflection.
+		 * With validation at runtime the call takes the validated path. Failures map as in
+		 * {@link #doInvoke}. The operands stay {@link Expression}s: a function reference
+		 * evaluates to itself (review RVI1).
+		 */
+		@SuppressWarnings("unchecked")
+		private <T extends ValueExp> T invokeDirect(
+				EvaluationContext context,
+				Expression arg0, Expression arg1) throws EvaluationException {
+			try {
+				if (context.isValidateFuncParamsAtRuntime()) {
+					return invokeNormalized(context, pairList(arg0, arg1), true, true);
+				}
+				Expression value0 = (arg0 == null) ? null : arg0.evaluate(context);
+				Expression value1 = (arg1 == null) ? null : arg1.evaluate(context);
+				return (T) direct.invokeDirect(this, context, value0, value1);
+			} catch (EvaluationException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new FunctionInvocationException(this, e,
+				                                      "Failed to invoke function=\"%s\"", shortId);
+			}
+		}
+
+		/** One operand of a built-in function bound directly (design D23), as the pair above. */
+		@SuppressWarnings("unchecked")
+		private <T extends ValueExp> T invokeDirect(
+				EvaluationContext context, Expression arg0) throws EvaluationException {
+			try {
+				if (context.isValidateFuncParamsAtRuntime()) {
+					return invokeNormalized(context, normalize(Arrays.asList(arg0)), false, true);
+				}
+				Expression value0 = (arg0 == null) ? null : arg0.evaluate(context);
+				return (T) direct.invokeDirect(this, context, value0);
+			} catch (EvaluationException e) {
+				throw e;
+			} catch (Exception e) {
+				throw new FunctionInvocationException(this, e,
+				                                      "Failed to invoke function=\"%s\"", shortId);
+			}
 		}
 
 		/**
 		 * @param pair {@code true} when the arguments are a list owned by this
 		 *             call that matches the two mandatory eager parameters
 		 */
-		@SuppressWarnings("unchecked")
 		private <T extends ValueExp> T doInvoke(
 				EvaluationContext context,
 				List<Expression> arguments, boolean pair) throws EvaluationException {
 
 			try {
 				List<Expression> normalizedArgs = pair ? arguments : normalize(arguments);
-				LOG.debug("functionId={} normalizedArgs={}", shortId, normalizedArgs);
-				boolean validate = context.isValidateFuncParamsAtRuntime();
-				if (validate) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("Validating " +
-								          "functionId=\"{}\" parameters=\"{}\"", shortId, parameters);
-					}
-					if (!doValidateNormalizedParameters(normalizedArgs)) {
-						LOG.debug("Failed to validate function=\"{}\" params=\"{}\"", shortId, normalizedArgs);
-						throw new FunctionInvocationException(this,
-						                                      "Failed to validate function=\"%s\" parameters=\"%s\"",
-						                                      shortId, normalizedArgs);
-					}
-				}
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Invoking function=\"{}\" with length={} params=\"{}\"",
-					          shortId, normalizedArgs.size(), normalizedArgs);
-				}
-				// In place only when no validator has seen the list (review rv009): a validator may keep it
-				List<Expression> params = evaluateParameters ? normalizedArgs :
-						(pair && !validate) ? evaluateInPlace(context, normalizedArgs) : evaluate(context, normalizedArgs);
-				LOG.debug("Function=\"{}\" params=\"{}\"", shortId, params);
-				T result = (T) invocation.invoke(this, context, params);
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Function=\"{}\" " +
-							          "invocation result=\"{}\"", shortId, result);
-				}
-				return result;
+				return invokeNormalized(context, normalizedArgs, pair, context.isValidateFuncParamsAtRuntime());
 			} catch (EvaluationException e) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Failed to invoke function", e);
-				}
 				throw e;
 			} catch (Exception e) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug("Failed to invoke function", e);
-				}
 				throw new FunctionInvocationException(this, e,
 				                                      "Failed to invoke function=\"%s\"", shortId);
 			}
+		}
+
+		/**
+		 * Validates and evaluates normalized arguments and invokes the function; the caller maps
+		 * failures as {@link #doInvoke} does and reads the validation setting once per call.
+		 */
+		@SuppressWarnings("unchecked")
+		private <T extends ValueExp> T invokeNormalized(
+				EvaluationContext context,
+				List<Expression> normalizedArgs, boolean pair, boolean validate) throws EvaluationException {
+			if (validate && !doValidateNormalizedParameters(normalizedArgs)) {
+				throw new FunctionInvocationException(this,
+				                                      "Failed to validate function=\"%s\" parameters=\"%s\"",
+				                                      shortId, normalizedArgs);
+			}
+			// In place only when no validator has seen the list (review rv009): a validator may keep it
+			List<Expression> params = evaluateParameters ? normalizedArgs :
+					(pair && !validate) ? evaluateInPlace(context, normalizedArgs) : evaluate(context, normalizedArgs);
+			return (T) invocation.invoke(this, context, params);
 		}
 
 		@Override
@@ -488,17 +563,11 @@ public final class FunctionSpecBuilder {
 		private boolean doValidateNormalizedParameters(List<Expression> normalizedParameters) {
 			ListIterator<FunctionParamSpec> it = parameters.listIterator();
 			ListIterator<Expression> expIt = normalizedParameters.listIterator();
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Function=\"{}\" normalized parameters=\"{}\"",
-				          shortId, normalizedParameters);
-			}
 			if (parameters.isEmpty() && !normalizedParameters.isEmpty()) {
-				LOG.debug("Function=\"{}\" takes no arguments", shortId);
 				return false;
 			}
 			while (it.hasNext()) {
 				FunctionParamSpec p = it.next();
-				LOG.debug("Validating param=\"{}\"", p);
 				if (!p.validate(expIt)) {
 					return false;
 				}
@@ -507,24 +576,25 @@ public final class FunctionSpecBuilder {
 						!expIt.hasNext())) {
 					FunctionParamSpec spec = it.next();
 					if (!(spec.isOptional() || spec.isVariadic())) {
-						if (LOG.isDebugEnabled()) {
-							LOG.debug("Additional arguments are " +
-									          "expected for function=\"{}\"", shortId);
-						}
 						return false;
 					}
 				}
 				if (!it.hasNext() &&
 						expIt.hasNext()) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug("To many arguments=\"{}\", " +
-								          "found for function=\"{}\"",
-						          normalizedParameters, shortId);
-					}
 					return false;
 				}
 			}
 			return validateAdditional(normalizedParameters);
+		}
+
+		/**
+		 * Lists that an index loop reads exactly as their iterator does: immutable lists, and the
+		 * fixed-size array views of {@code Arrays.asList} (the varargs path), whose iterator also
+		 * reads the array live.
+		 */
+		private static boolean isIndexable(List<?> list) {
+			Class<?> type = list.getClass();
+			return list instanceof ImmutableList || type == ARRAYS_AS_LIST || type == LIST_12 || type == LIST_N;
 		}
 
 		/**
@@ -534,94 +604,50 @@ public final class FunctionSpecBuilder {
 		 * @return a normalized list of function parameters
 		 */
 		private List<Expression> normalize(List<Expression> actualParameters) {
-			ListIterator<Expression> actualParameterIterator = actualParameters.listIterator();
-			ListIterator<FunctionParamSpec> formalParameterIterator = parameters.listIterator();
-
-			// the assumption is made that parameter types
-			// follow in mandatory, optional, variadic order
-			// and parameter type groups do not interleave
-			List<Expression> normalizedParams = new ArrayList<Expression>(Math.max(actualParameters.size(), parameters.size()));
-			normalizedParams = normalizeMandatoryParameters(actualParameterIterator,
-			                                                formalParameterIterator, normalizedParams);
-			normalizedParams = normalizeOptionalParameters(actualParameterIterator,
-			                                               formalParameterIterator, normalizedParams);
-			normalizedParams = normalizeVariadicParameters(actualParameterIterator,
-			                                               formalParameterIterator, normalizedParams);
-
-			// Add rest of the format parameters to normalized list
-			Iterators.addAll(normalizedParams, actualParameterIterator);
-
-			return normalizedParams;
-		}
-
-		private List<Expression> normalizeMandatoryParameters(
-				ListIterator<Expression> actualParameterIterator,
-				ListIterator<FunctionParamSpec> formalParameterIterator,
-				List<Expression> normalizedParamBuilder) {
-			while (formalParameterIterator.hasNext()) {
-				FunctionParamSpec functionParamSpec = formalParameterIterator.next();
-				if (functionParamSpec.isOptional() || functionParamSpec.isVariadic()) {
-					formalParameterIterator.previous();
-					return normalizedParamBuilder;
+			// Index loops instead of iterators (design D16). Any other caller list is copied once
+			// through its own iterator, so it is read as before, for example as the snapshot of a
+			// copy-on-write list (review RCJ2). The assumption is made that parameter types follow
+			// in mandatory, optional, variadic order and parameter type groups do not interleave.
+			List<Expression> actual = isIndexable(actualParameters) ?
+					actualParameters : new ArrayList<>(actualParameters);
+			int actualSize = actual.size();
+			int formalSize = parameters.size();
+			List<Expression> normalizedParams = new ArrayList<Expression>(Math.max(actualSize, formalSize));
+			int a = 0;
+			int f = 0;
+			for (; f < formalSize; f++) {
+				FunctionParamSpec spec = parameters.get(f);
+				if (spec.isOptional() || spec.isVariadic()) {
+					break;
 				}
-				if (actualParameterIterator.hasNext()) {
-					normalizedParamBuilder.add(actualParameterIterator.next());
+				if (a < actualSize) {
+					normalizedParams.add(actual.get(a++));
 				}
 			}
-
-			return normalizedParamBuilder;
-		}
-
-		private List<Expression> normalizeOptionalParameters(
-				// Iterator over actual params
-				ListIterator<Expression> actualParameterIterator,
-				// Iterator over formal params
-				ListIterator<FunctionParamSpec> formalParameterIterator,
-				List<Expression> normalizedParamBuilder) {
-			while (formalParameterIterator.hasNext()) {
-				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
-				if (!formalParameterSpec.isOptional()) {
-					formalParameterIterator.previous();
-					return normalizedParamBuilder;
+			for (; f < formalSize; f++) {
+				FunctionParamSpec spec = parameters.get(f);
+				if (!spec.isOptional()) {
+					break;
 				}
-				Expression optionalParamValue = null;
-				if (actualParameterIterator.hasNext()) {
-					optionalParamValue = actualParameterIterator.next();
-				}
-
+				Expression optionalParamValue = (a < actualSize) ? actual.get(a++) : null;
 				if (optionalParamValue == null) {
-					optionalParamValue = formalParameterSpec
-							.getDefaultValue().orElse(null);
+					optionalParamValue = spec.getDefaultValue().orElse(null);
 				}
-				FunctionSpecBuilder.LOG.debug("Formal optional param=\"{}\" actual param value={}", formalParameterSpec, optionalParamValue);
-				normalizedParamBuilder.add(optionalParamValue);
+				normalizedParams.add(optionalParamValue);
 			}
-
-			return normalizedParamBuilder;
-		}
-
-		private List<Expression> normalizeVariadicParameters(
-				ListIterator<Expression> actualParameterIterator,
-				ListIterator<FunctionParamSpec> formalParameterIterator,
-				List<Expression> normalizedParamBuilder) {
-			while (formalParameterIterator.hasNext()) {
-				FunctionParamSpec formalParameterSpec = formalParameterIterator.next();
-
-				if (!formalParameterSpec.isVariadic()) {
-					formalParameterIterator.previous();
-					return normalizedParamBuilder;
+			for (; f < formalSize; f++) {
+				FunctionParamSpec spec = parameters.get(f);
+				if (!spec.isVariadic()) {
+					break;
 				}
-				Expression variadicParamValue = null;
-				if (actualParameterIterator.hasNext()) {
-					variadicParamValue = actualParameterIterator.next();
-				}
-				FunctionSpecBuilder.LOG.debug("Formal variadic param=\"{}\" actual param value={}", formalParameterSpec, variadicParamValue);
-				if (variadicParamValue == null) {
-					variadicParamValue = null;
-				}
-				normalizedParamBuilder.add(variadicParamValue);
+				Expression variadicParamValue = (a < actualSize) ? actual.get(a++) : null;
+				normalizedParams.add(variadicParamValue);
 			}
-			return normalizedParamBuilder;
+			// Add the rest of the actual parameters
+			for (; a < actualSize; a++) {
+				normalizedParams.add(actual.get(a));
+			}
+			return normalizedParams;
 		}
 
 		/**

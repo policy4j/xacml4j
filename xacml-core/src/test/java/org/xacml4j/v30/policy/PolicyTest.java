@@ -47,6 +47,9 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableListMultimap;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterables;
 
 @ExtendWith(MockitoExtension.class)
@@ -418,5 +421,16 @@ public class PolicyTest
 		assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());
 	}
 
+	@Test
+	public void hashCodeIsTheHashOfTheFieldArraysOverTheSuperclassHashes()
+	{
+		int base = Objects.hashCode(policy.getId(), policy.getTarget(), policy.getCondition(),
+				policy.getAdviceExpressions(), policy.getObligationExpressions(), policy.getDescription());
+		// the policy has no combiner parameters and no variables: empty maps stand in for them
+		int composite = base * 31 + Objects.hashCode(policy.getVersion(), policy.getIssuer(),
+				policy.getMaxDelegationDepth(), ImmutableListMultimap.of());
 
+		assertEquals(composite * 31 + Objects.hashCode(policy.getDefaults(), ImmutableMap.of(),
+				policy.getRules(), policy.getRuleCombiningAlgorithm(), ImmutableMap.of()), policy.hashCode());
+	}
 }

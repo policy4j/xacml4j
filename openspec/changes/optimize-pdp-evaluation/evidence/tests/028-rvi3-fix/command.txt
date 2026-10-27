@@ -1,0 +1,3 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dsurefire.failIfNoSpecifiedTests=false -Dtest=DirectBindingEligibilityTest test   (red: before the fix)
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dsurefire.failIfNoSpecifiedTests=false -Dtest='DirectBindingEligibilityTest,DirectPairCallTest,FunctionInvocation*Test,MatchTest,*FunctionsTest,*PredicatesTest,JavaMethodToFunctionSpecTest,AnnotationBasedFunctionFactoryTest,LaterDecidingOperandTest' test   (green)
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true clean test   (reactor)

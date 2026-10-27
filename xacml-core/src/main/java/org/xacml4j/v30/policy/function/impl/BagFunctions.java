@@ -24,6 +24,7 @@ package org.xacml4j.v30.policy.function.impl;
 
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.*;
 
@@ -77,9 +78,30 @@ public final class BagFunctions
 	 */
 	static <T extends Value<?>> T oneAndOnlyImpl(
 			BagOfValues bag){
-		Preconditions.checkArgument(!bag.isEmpty(), "Bag is empty");
-		Preconditions.checkArgument(!(bag.size() > 1), "Bag has more than one value");
+		if(bag.isEmpty()){
+			throw new BagSizeException("Bag is empty");
+		}
+		if(bag.size() > 1){
+			throw new BagSizeException("Bag has more than one value");
+		}
 		return bag.value();
+	}
+
+	/**
+	 * A bag that does not have one and only one value. It fills no
+	 * stack trace: the function call turns it into a processing error (design D20)
+	 */
+	@SuppressWarnings("serial")
+	static final class BagSizeException extends IllegalArgumentException
+	{
+		BagSizeException(String message){
+			super(message);
+		}
+
+		@Override
+		public Throwable fillInStackTrace(){
+			return this;
+		}
 	}
 
 	static IntegerVal typeBagSizeImpl(BagOfValues bag) {
@@ -93,9 +115,11 @@ public final class BagFunctions
 		return XacmlTypes.BOOLEAN.ofAny(bag.contains(v));
 	}
 
-	static boolean doubleContains(DoubleVal value, Iterable<DoubleVal> values){
-		for(DoubleVal candidate : values){
-			if(EqualityPredicates.doubleEquals(value, candidate)){
+	static boolean doubleContains(DoubleVal value, BagOfValues bag){
+		BagStorage.Scan scan = bag.scanDoubles(BagStorage.Comparison.EQUAL, value.get());
+		if (scan != BagStorage.Scan.NONE) return scan == BagStorage.Scan.MATCH;
+		for(Value<?> candidate : bag){
+			if(EqualityPredicates.doubleEquals(value, (DoubleVal) candidate)){
 				return true;
 			}
 		}
@@ -292,7 +316,7 @@ public final class BagFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues bag)
 	{
 		Preconditions.checkArgument(XacmlTypes.DOUBLE.equals(bag.getBagValueType()));
-		return BooleanVal.of(doubleContains(v, bag.<DoubleVal>values()));
+		return BooleanVal.of(doubleContains(v, bag));
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-bag")

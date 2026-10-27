@@ -10,12 +10,12 @@ package org.xacml4j.v30.policy.function.impl;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -241,15 +241,14 @@ class JavaMethodToFunctionSpecConverter
 			return b.build(returnType.isBag() ? type.get().bagType() : type.get(),
 					(validator != null) ? createValidator(m, validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(invocationFactory.create(instance, m),
-					                              evalContextParamFound, varArgComponentType));
+					DefaultFunctionInvocation.create(invocationFactory, instance, m,
+					                                 evalContextParamFound, varArgComponentType));
 		}
 		if (returnTypeResolver != null) {
 			return b.build(createResolver(m, returnTypeResolver.resolverClass()),
 					(validator != null) ? createValidator(m, validator
 							.validatorClass()) : null,
-					new DefaultFunctionInvocation(invocationFactory
-							.<ValueExp>create(instance, m),
+					DefaultFunctionInvocation.create(invocationFactory, instance, m,
 							evalContextParamFound, varArgComponentType));
 		}
 		throw SyntaxException.invalidResolverMethod(m,

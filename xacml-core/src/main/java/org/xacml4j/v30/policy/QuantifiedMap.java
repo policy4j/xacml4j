@@ -67,7 +67,7 @@ public final class QuantifiedMap
             LOG.debug("Domain=\"{}\" iterant evaluates to=\"{}\"", bag, bagType);
         }
         BagOfValues.Builder bagBuilder = bagType.builder();
-        for(Value v : bag.values()){
+        for(Value v : bag){
             bagBuilder.attribute(evaluateIterant(v, context));
         }
         return bagBuilder.build();

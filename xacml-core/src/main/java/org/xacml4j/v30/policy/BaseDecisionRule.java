@@ -22,8 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -158,10 +159,14 @@ abstract class  BaseDecisionRule implements DecisionRule
 		}
 		try
 		{
-			Collection<Advice> advices = evaluateAdvices(context, result);
-			Collection<Obligation> obligations = evaluateObligations(context, result);
-			context.addAdvices(result, advices);
-			context.addObligations(result, obligations);
+			List<Advice> advices = evaluateAdvices(context, result);
+			List<Obligation> obligations = evaluateObligations(context, result);
+			if(!advices.isEmpty()){
+				context.addAdvices(result, advices);
+			}
+			if(!obligations.isEmpty()){
+				context.addObligations(result, obligations);
+			}
 		}catch(EvaluationException e){
 			context.setEvaluationStatus(e.getStatus());
 			throw e;
@@ -182,34 +187,26 @@ abstract class  BaseDecisionRule implements DecisionRule
 	 *
 	 * @param context an evaluation context
 	 * @param result a decision evaluation result
-	 * @return collection of {@link Advice} instances
+	 * @return the applicable {@link Advice} instances, an empty immutable list if there is none
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	private Collection<Advice> evaluateAdvices(EvaluationContext context,
+	private List<Advice> evaluateAdvices(EvaluationContext context,
 			Decision result)
 		throws EvaluationException
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating advices for decision rule id=\"{}\"", getId());
-		}
-		Collection<Advice> advices = new LinkedList<Advice>();
+		List<Advice> advices = null;
 		try{
 			for(AdviceExpression adviceExp : adviceExpressions){
 				if(adviceExp.isApplicable(result)){
-					if(log.isDebugEnabled()){
-						log.debug("Evaluating advice id=\"{}\"",
-								adviceExp.getId());
-					}
 					Advice a = adviceExp.evaluate(context);
 					Preconditions.checkState(a != null);
+					if(advices == null){
+						advices = new ArrayList<>();
+					}
 					advices.add(a);
 				}
 			}
-			if(log.isDebugEnabled()){
-				log.debug("Evaluated=\"{}\" applicable advices",
-						advices.size());
-			}
-			return advices;
+			return (advices == null)?ImmutableList.<Advice>of():advices;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule advices", e);
@@ -232,33 +229,25 @@ abstract class  BaseDecisionRule implements DecisionRule
 	 *
 	 * @param context an evaluation context
 	 * @param result an decision result
-	 * @return collection of {@link Obligation} instances
+	 * @return the applicable {@link Obligation} instances, an empty immutable list if there is none
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	private Collection<Obligation> evaluateObligations(EvaluationContext context, Decision result)
+	private List<Obligation> evaluateObligations(EvaluationContext context, Decision result)
 		throws EvaluationException
 	{
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating obligations for decision rule id=\"{}\"", getId());
-		}
-		Collection<Obligation> obligations = new LinkedList<Obligation>();
+		List<Obligation> obligations = null;
 		try{
 			for(ObligationExpression obligationExp : obligationExpressions){
 				if(obligationExp.isApplicable(result)){
-					if(log.isDebugEnabled()){
-						log.debug("Evaluating obligation id=\"{}\"",
-								obligationExp.getId());
-					}
-					Obligation o  = obligationExp.evaluate(context);
+					Obligation o = obligationExp.evaluate(context);
 					Preconditions.checkState(o != null);
+					if(obligations == null){
+						obligations = new ArrayList<>();
+					}
 					obligations.add(o);
 				}
 			}
-			if(log.isDebugEnabled()){
-				log.debug("Evaluated=\"{}\" applicable obligations",
-						obligations.size());
-			}
-			return obligations;
+			return (obligations == null)?ImmutableList.<Obligation>of():obligations;
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule obligations", e);
@@ -298,8 +287,15 @@ abstract class  BaseDecisionRule implements DecisionRule
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(id, target, condition,
-				adviceExpressions, obligationExpressions, description);
+		// Arrays.hashCode of the fields in this order, without the array (design D22)
+		int h = 1;
+		h = 31 * h + java.util.Objects.hashCode(id);
+		h = 31 * h + java.util.Objects.hashCode(target);
+		h = 31 * h + java.util.Objects.hashCode(condition);
+		h = 31 * h + java.util.Objects.hashCode(adviceExpressions);
+		h = 31 * h + java.util.Objects.hashCode(obligationExpressions);
+		h = 31 * h + java.util.Objects.hashCode(description);
+		return h;
 	}
 	protected abstract boolean isEvaluationContextValid(EvaluationContext context);
 

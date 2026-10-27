@@ -86,7 +86,7 @@ public final class PathEvaluationException extends EvaluationException
 	}
 
 	public static PathEvaluationException invalidXpathPath(String path){
-		return new PathEvaluationException(path, Content.PathType.JPATH);
+		return new PathEvaluationException(path, Content.PathType.XPATH);
 	}
 
 	public static PathEvaluationException invalidJsonPath(String path, Status status, Throwable t){
@@ -100,7 +100,7 @@ public final class PathEvaluationException extends EvaluationException
 	}
 
 	public static PathEvaluationException invalidJsonPath(String path){
-		return new PathEvaluationException(path, Content.PathType.XPATH);
+		return new PathEvaluationException(path, Content.PathType.JPATH);
 	}
 	public static PathEvaluationException invalidXpathContextSelectorId(String path, String contextSelectorId){
 		return new PathEvaluationException(path, Content.PathType.XPATH,

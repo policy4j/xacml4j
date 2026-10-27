@@ -22,10 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.List;
 import java.util.Collection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
@@ -39,9 +38,8 @@ import com.google.common.collect.ImmutableList;
 
 public class MatchAllOf implements PolicyElement, Matchable
 {
-	private final static Logger log = LoggerFactory.getLogger(MatchAllOf.class);
-
-	private final Collection<Match> matches;
+	// a list, iterated by index on the decide path (design D16)
+	private final List<Match> matches;
 
 	/**
 	 * Constructs a {@link MatchAllOf} with
@@ -66,23 +64,15 @@ public class MatchAllOf implements PolicyElement, Matchable
 	public MatchResult match(EvaluationContext context)
 	{
 		MatchResult state = MatchResult.MATCH;
-		for(Matchable m : matches){
-			MatchResult r = evaluate(context, m);
+		for(int i = 0, n = matches.size(); i < n; i++){
+			MatchResult r = evaluate(context, matches.get(i));
 			if(r == MatchResult.INDETERMINATE &&
 					state == MatchResult.MATCH){
-				if(log.isDebugEnabled()){
-					log.debug("Match result=\"{}\" " +
-							"continue to match", r);
-				}
 				state = r;
 				continue;
 			}
 			if(r == MatchResult.NOMATCH){
 				state = r;
-				if(log.isDebugEnabled()){
-					log.debug("Match result=\"{}\" " +
-							"stop match", r);
-				}
 				break;
 			}
 		}

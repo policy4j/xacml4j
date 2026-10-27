@@ -22,9 +22,8 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
@@ -39,8 +38,6 @@ import com.google.common.base.Preconditions;
 
 public class Match implements PolicyElement, Matchable
 {
-	private final static Logger log = LoggerFactory.getLogger(Match.class);
-
 	private final Value value;
 	private final AttributeReference attributeRef;
 	private final FunctionSpec predicate;
@@ -113,25 +110,23 @@ public class Match implements PolicyElement, Matchable
 		try
 		{
 			BagOfValues attributes = attributeRef.evaluate(context);
-			if(log.isDebugEnabled()){
-				log.debug("Evaluated attribute reference=\"{}\" to " +
-						"bag=\"{}\"", attributeRef, attributes);
+			if(!attributes.isEmpty()){
+				BagStorage.Scan fast = predicate.scan(context, value, attributes);
+				if(fast == BagStorage.Scan.MATCH){
+					return MatchResult.MATCH;
+				}
+				if(fast == BagStorage.Scan.NO_MATCH){
+					return MatchResult.NOMATCH;
+				}
 			}
-			for(Value v : attributes.values()){
+			for(Value v : attributes){
 				Value match = predicate.invoke(context, value, v);
 				if((Boolean)match.get()){
-					if(log.isDebugEnabled()){
-						log.debug("Attribute value=\"{}\" " +
-								"matches attribute value=\"{}\"", value, v);
-					}
 					return MatchResult.MATCH;
 				}
 			}
 			return MatchResult.NOMATCH;
 		}catch(EvaluationException e){
-			if(log.isDebugEnabled()){
-				log.debug("Match evaluation failed with an exception", e);
-			}
 			context.setEvaluationStatus(context.getCurrentRule(),
 			                            e.getStatus());
 			return MatchResult.INDETERMINATE;

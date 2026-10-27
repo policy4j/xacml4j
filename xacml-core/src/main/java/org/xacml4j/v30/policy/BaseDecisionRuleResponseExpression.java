@@ -117,7 +117,9 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 			EvaluationContext context)
 		throws EvaluationException
 	{
-
+		if(attributeExpressions.isEmpty()){
+			return ImmutableList.of();
+		}
 		try {
 			ImmutableList.Builder<AttributeAssignment> attr = ImmutableList.builder();
 			for (AttributeAssignmentExpression attrExp : attributeExpressions.values()) {
@@ -130,7 +132,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 					continue;
 				}
 				BagOfValues bag = (BagOfValues) val;
-				for (Value v : bag.values()) {
+				for (Value v : bag) {
 					attr.add(b.value(v).build());
 				}
 			}

@@ -160,8 +160,10 @@ public class PolicySetIDReference extends BaseCompositeDecisionRuleIDReference
 			Preconditions.checkArgument(!isReferenceCyclic(PolicySetIDReference.this, context));
 		}
 
-		@Override
-		public PolicySetIDReference getCurrentPolicySetIDReference() {
+		/**
+		 * The reference of this context, which answers {@link #getCurrentPolicySetIDReference()} (design D17)
+		 */
+		final PolicySetIDReference reference() {
 			return PolicySetIDReference.this;
 		}
 

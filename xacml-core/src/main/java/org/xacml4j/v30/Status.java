@@ -196,8 +196,12 @@ public final class Status
 	@Override
 	public int hashCode() {
 		if (hashCode == 0) {
-			this.hashCode = Objects
-					.hash(code, message, detail);
+			// Arrays.hashCode of the fields in this order, without the array (design D22)
+			int h = 1;
+			h = 31 * h + Objects.hashCode(code);
+			h = 31 * h + Objects.hashCode(message);
+			h = 31 * h + Objects.hashCode(detail);
+			this.hashCode = h;
 		}
 		return hashCode;
 	}

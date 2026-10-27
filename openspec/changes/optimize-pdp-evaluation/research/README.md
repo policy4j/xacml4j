@@ -28,7 +28,7 @@ pair; the consensus and the cycle order are in `synthesis.md`.
 | PR3 | Codex GPT-6.1 Sol | bags | | not sent; the lane reviewed cycle H and the harness instead |
 | PR4 | `policy4j_jmh_codex_astra`, Codex GPT-6 Astra | function call path | `pr4-astra-function-calls.md` | done after one follow-up |
 | PR5 | Codex GPT-6.1 Terra | per-policy structure | `pr5-terra-policy-structure.md` | done after one follow-up |
-| PR6 | Agy, Gemini 4 Argon | target indexing, literature | | pending |
+| PR6 | Agy, Gemini 4 Argon | target indexing, literature | `pr6-agy-target-indexing.md` | done; report taken from the Agy conversation database |
 
 Consensus without a BREAKING change (each in two or more reports): direct two-argument invokers with no
 argument list and no reflective `Object[]` (PR1 H2, PR2 H2, PR4 H1); index loops instead of iterators on the

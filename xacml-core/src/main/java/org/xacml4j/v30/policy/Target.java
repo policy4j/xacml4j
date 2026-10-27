@@ -22,10 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.List;
 import java.util.Collection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
@@ -36,9 +35,8 @@ import com.google.common.collect.ImmutableList;
 
 public class Target implements PolicyElement
 {
-	private final static Logger log = LoggerFactory.getLogger(Target.class);
-
-	private final Collection<MatchAnyOf> matches;
+	// a list, iterated by index on the decide path (design D16)
+	private final List<MatchAnyOf> matches;
 
 	/**
 	 * Creates target from a given {@link Builder} defaultProvider
@@ -68,26 +66,13 @@ public class Target implements PolicyElement
 	 */
 	public MatchResult match(EvaluationContext context)
 	{
-		MatchResult state = MatchResult.MATCH;
-		for(Matchable m : matches){
-			MatchResult r = m.match(context);
-			if(r == MatchResult.NOMATCH){
-				state = r;
-				log.debug("Found AnyOf with match result=\"{}\", " +
-						"no need to evaluate target further", r);
-				break;
-			}
-			if(r == MatchResult.INDETERMINATE){
-				state = r;
-				log.debug("Found AnyOf with match result=\"{}\", " +
-						"no need to evaluate target further", r);
-				break;
+		for(int i = 0, n = matches.size(); i < n; i++){
+			MatchResult r = matches.get(i).match(context);
+			if(r == MatchResult.NOMATCH || r == MatchResult.INDETERMINATE){
+				return r;
 			}
 		}
-		if(log.isDebugEnabled()){
-			log.debug("Target match state=\"{}\"", state);
-		}
-		return state;
+		return MatchResult.MATCH;
 	}
 
 	public void accept(PolicyTreeVisitor v) {

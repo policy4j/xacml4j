@@ -24,6 +24,7 @@ package org.xacml4j.v30.policy.function.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.xacml4j.v30.types.XacmlTypes.ANYURI;
 import static org.xacml4j.v30.types.XacmlTypes.BOOLEAN;
 import static org.xacml4j.v30.types.XacmlTypes.DOUBLE;
@@ -130,6 +131,18 @@ public class BagFunctionsTest
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(true), BagFunctions.booleanIsIn(v0, bag));
 		assertEquals(XacmlTypes.BOOLEAN.ofAny(false), BagFunctions.booleanIsIn(v1, bag));
 		assertEquals(XacmlTypes.BOOLEAN.bagOf(v0, v1), BagFunctions.booleanBag(v0, v1));
+	}
+
+	@Test
+	public void oneAndOnlyRejectsAnEmptyBagAndABagOfTwoValues()
+	{
+		IllegalArgumentException empty = assertThrows(IllegalArgumentException.class,
+				() -> BagFunctions.integerOneAndOnly(INTEGER.emptyBag()));
+		IllegalArgumentException two = assertThrows(IllegalArgumentException.class,
+				() -> BagFunctions.integerOneAndOnly(INTEGER.bagOf(INTEGER.ofAny(1), INTEGER.ofAny(2))));
+
+		assertEquals("Bag is empty", empty.getMessage());
+		assertEquals("Bag has more than one value", two.getMessage());
 	}
 
 	@Test

@@ -290,6 +290,22 @@ public class XmlContentTest
 	}
 
     @Test
+    public void testXPathToATypeWithoutStringFormIsAProcessingError()
+    {
+        String xpath = "/md:record/md:patient/md:patient-number/text()";
+        PathEvaluationException error = assertThrows(PathEvaluationException.class, () -> xml1.resolve(
+                AttributeSelectorKey
+                        .builder()
+                        .xpath(xpath)
+                        .dataType(XacmlTypes.ENTITY)
+                        .build()));
+        assertEquals(org.xacml4j.v30.StatusCodeId.STATUS_PROCESSING_ERROR,
+                error.getStatus().getStatusCode().getValue());
+        assertEquals(Optional.of("Unsupported XACML type=\"" + XacmlTypes.ENTITY.getTypeId() + "\" xpath=\"" + xpath + "\""),
+                error.getStatus().getMessage());
+    }
+
+    @Test
     public void testWithContentEscaping(){
         String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><security>\n<through obscurity=\"true\"/></security>";
         XmlContent xmlContent1 = XmlContent.of(xml);

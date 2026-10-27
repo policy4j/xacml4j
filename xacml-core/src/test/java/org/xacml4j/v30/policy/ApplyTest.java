@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,9 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.StatusCodeId;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.policy.function.FunctionCategory;
 import org.xacml4j.v30.types.XacmlTypes;
 
 @ExtendWith(MockitoExtension.class)
@@ -110,5 +114,86 @@ public class ApplyTest
 				e.getStatus().getMessage());
 		verify(function, never()).invoke(any(), any(Expression[].class));
 		verifyNoInteractions(context);
+	}
+
+	/** Design D23: a custom function still receives one and two operands on its varargs method. */
+	@Test
+	public void customFunctionReceivesOneAndTwoOperandsOnItsVarargsMethod()
+	{
+		RecordingFunction custom = new RecordingFunction();
+		Expression a = XacmlTypes.INTEGER.ofAny(1L);
+		Expression b = XacmlTypes.INTEGER.ofAny(2L);
+
+		Apply.builder(custom).param(a).build().evaluate(context);
+		Apply.builder(custom).param(a, b).build().evaluate(context);
+
+		assertEquals(List.of(List.of(a), List.of(a, b)), custom.calls);
+	}
+
+	/** A custom function that records the calls of its varargs method; the list method is not called. */
+	private static final class RecordingFunction implements FunctionSpec
+	{
+		private final List<List<Expression>> calls = new ArrayList<>();
+
+		@Override
+		public String getId(){
+			return "urn:xacml4j:test:recording";
+		}
+
+		@Override
+		public FunctionCategory getCategory(){
+			return FunctionCategory.UNKNOWN;
+		}
+
+		@Override
+		public Optional<String> getLegacyId(){
+			return Optional.empty();
+		}
+
+		@Override
+		public FunctionParamSpec getParamSpecAt(int index){
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public int getNumberOfParams(){
+			return 2;
+		}
+
+		@Override
+		public boolean isVariadic(){
+			return false;
+		}
+
+		@Override
+		public boolean isRequiresLazyParamEval(){
+			return false;
+		}
+
+		@Override
+		public boolean validateParameters(List<Expression> arguments){
+			return true;
+		}
+
+		@Override
+		public void validateParametersAndThrow(List<Expression> arguments){
+		}
+
+		@Override
+		public ValueExpTypeInfo resolveReturnType(List<Expression> arguments){
+			return XacmlTypes.BOOLEAN;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		public <T extends ValueExp> T invoke(EvaluationContext context, Expression... arguments){
+			calls.add(List.of(arguments));
+			return (T) XacmlTypes.BOOLEAN.ofAny(true);
+		}
+
+		@Override
+		public <T extends ValueExp> T invokeWithList(EvaluationContext context, List<Expression> arguments){
+			throw new UnsupportedOperationException();
+		}
 	}
 }

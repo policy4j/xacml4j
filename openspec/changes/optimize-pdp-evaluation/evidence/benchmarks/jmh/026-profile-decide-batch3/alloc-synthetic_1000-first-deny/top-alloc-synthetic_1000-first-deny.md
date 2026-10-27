@@ -1,0 +1,72 @@
+total samples: 56244
+
+## top 30 frames by self samples
+
+| Share | Samples | Frame |
+| --- | --- | --- |
+| 12.4% | 6991 | `java.util.concurrent.ConcurrentHashMap_[i]` |
+| 9.4% | 5279 | `com.google.common.collect.Iterators$9_[i]` |
+| 6.2% | 3500 | `java.util.concurrent.ConcurrentHashMap$Node[]_[i]` |
+| 6.1% | 3410 | `java.util.HashMap$Node[]_[i]` |
+| 5.1% | 2856 | `java.util.concurrent.ConcurrentHashMap$Node_[i]` |
+| 5.0% | 2799 | `java.lang.Object[]_[i]` |
+| 4.8% | 2727 | `java.util.LinkedHashMap_[i]` |
+| 3.9% | 2214 | `byte[]_[i]` |
+| 3.2% | 1785 | `java.util.LinkedHashMap$Entry_[i]` |
+| 2.8% | 1587 | `com.google.common.collect.ImmutableList$1_[i]` |
+| 2.6% | 1462 | `org.xacml4j.v30.BagOfValues_[i]` |
+| 2.5% | 1415 | `com.google.common.collect.Iterators$ArrayItr_[i]` |
+| 2.5% | 1399 | `java.util.Optional_[i]` |
+| 2.4% | 1370 | `java.util.HashMap$Node_[i]` |
+| 2.4% | 1368 | `org.xacml4j.v30.policy.RootEvaluationContext_[i]` |
+| 2.4% | 1364 | `org.xacml4j.v30.BagStorages$Values_[i]` |
+| 2.0% | 1148 | `org.xacml4j.v30.Result_[i]` |
+| 1.9% | 1089 | `java.lang.String_[i]` |
+| 1.9% | 1085 | `int[]_[i]` |
+| 1.9% | 1065 | `org.xacml4j.v30.policy.Rule$RuleEvaluationContext_[i]` |
+| 1.9% | 1051 | `org.xacml4j.v30.types.Value[]_[i]` |
+| 1.9% | 1048 | `org.xacml4j.v30.pdp.DefaultEvaluationContextHandler_[i]` |
+| 1.8% | 988 | `java.util.LinkedHashMap$LinkedEntrySet_[i]` |
+| 1.6% | 891 | `org.xacml4j.v30.policy.BaseCompositeDecisionRule$StagedResponses_[i]` |
+| 1.3% | 716 | `java.util.concurrent.ConcurrentHashMap$ValuesView_[i]` |
+| 1.3% | 705 | `org.xacml4j.v30.policy.Policy$PolicyDescendantEvaluationContext_[i]` |
+| 1.0% | 560 | `org.xacml4j.v30.policy.PolicySet$PolicySetDescendantEvaluationContext_[i]` |
+| 1.0% | 556 | `org.xacml4j.v30.pdp.request.MultipleResourcesBudgetHandler$Budget_[i]` |
+| 1.0% | 540 | `java.util.Collections$1_[i]` |
+| 0.9% | 529 | `org.xacml4j.v30.pdp.DefaultPolicyDecisionPoint$NumberedDecisions_[i]` |
+
+## top 30 frames by inclusive samples
+
+| Share | Samples | Frame |
+| --- | --- | --- |
+| 100.0% | 56244 | `java/util/concurrent/FutureTask.run` |
+| 100.0% | 56244 | `java/lang/Thread.run` |
+| 100.0% | 56244 | `java/lang/reflect/Method.invoke` |
+| 100.0% | 56244 | `org/xacml4j/jmh/pdp/PdpDecideBenchmark.decide` |
+| 100.0% | 56244 | `java/lang/invoke/LambdaForm$MH.0x000007ff01066000.invokeExact_MT` |
+| 100.0% | 56244 | `org/xacml4j/v30/pdp/DefaultPolicyDecisionPoint.decide` |
+| 100.0% | 56244 | `java/util/concurrent/Executors$RunnableAdapter.call` |
+| 100.0% | 56244 | `java/lang/invoke/LambdaForm$MH.0x000007ff01065c00.invoke` |
+| 100.0% | 56244 | `org/openjdk/jmh/runner/BenchmarkHandler$BenchmarkTask.call` |
+| 100.0% | 56244 | `java/util/concurrent/ThreadPoolExecutor.runWorker` |
+| 100.0% | 56244 | `org/xacml4j/jmh/pdp/jmh_generated/PdpDecideBenchmark_decide_jmhTest.decide_AverageTime` |
+| 100.0% | 56244 | `java/lang/invoke/DirectMethodHandle$Holder.invokeSpecial` |
+| 100.0% | 56244 | `jdk/internal/reflect/DirectMethodHandleAccessor.invokeImpl` |
+| 100.0% | 56244 | `java/util/concurrent/ThreadPoolExecutor$Worker.run` |
+| 100.0% | 56244 | `java/lang/Thread.runWith` |
+| 100.0% | 56244 | `jdk/internal/reflect/DirectMethodHandleAccessor.invoke` |
+| 100.0% | 56244 | `org/xacml4j/jmh/pdp/jmh_generated/PdpDecideBenchmark_decide_jmhTest.decide_avgt_jmhStub` |
+| 90.1% | 50691 | `org/xacml4j/v30/pdp/request/MultipleResourcesBudgetHandler.handle` |
+| 90.1% | 50691 | `org/xacml4j/v30/spi/pdp/RequestContextHandlerChain.handle` |
+| 89.1% | 50135 | `org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.handle` |
+| 89.1% | 50135 | `org/xacml4j/v30/pdp/request/AbstractRequestContextHandler.handleNext` |
+| 89.1% | 50135 | `org/xacml4j/v30/pdp/request/MultipleResourcesViaRepeatingAttributesHandler.handle` |
+| 89.1% | 50135 | `org/xacml4j/v30/pdp/request/MultipleResourcesViaRequestReferencesHandler.handle` |
+| 89.1% | 50135 | `org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.handle` |
+| 89.1% | 50135 | `org/xacml4j/v30/pdp/request/MultipleResourcesBudgetHandler$Checkpoint.handle` |
+| 82.9% | 46649 | `org/xacml4j/v30/pdp/DefaultPolicyDecisionPoint.requestDecision` |
+| 82.9% | 46649 | `org/xacml4j/v30/pdp/PolicyDecisionPointContextFactory$DefaultPolicyDecisionPointContextFactory$1.requestDecision` |
+| 82.9% | 46649 | `org/xacml4j/v30/pdp/DefaultPolicyDecisionPoint$NumberedDecisions.requestDecision` |
+| 82.9% | 46649 | `org/xacml4j/v30/pdp/request/MultipleResourcesBudgetHandler$Budget.requestDecision` |
+| 52.8% | 29674 | `org/xacml4j/v30/policy/BaseCompositeDecisionRule.evaluate` |
+

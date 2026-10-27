@@ -274,6 +274,70 @@ public class FunctionInvocationCharacterizationTest
 		assertThat(match.match(context)).isEqualTo(org.xacml4j.v30.MatchResult.MATCH);
 	}
 
+	/** Cycle J (design D16): normalization gives the same arguments for a list without random access. */
+	@Test
+	public void linkedListArgumentsNormalizeAsArrayListArguments() throws EvaluationException
+	{
+		FunctionSpec optional = FunctionSpecBuilder.builder("urn:xacml4j:test:optional-linked")
+				.param(XacmlTypes.INTEGER).optional(XacmlTypes.STRING, XacmlTypes.STRING.ofAny("aaa"))
+				.build(XacmlTypes.BOOLEAN, impl);
+		FunctionSpec variadic = FunctionSpecBuilder.builder("urn:xacml4j:test:variadic-linked")
+				.param(XacmlTypes.INTEGER).varArg(XacmlTypes.INTEGER, 0, 3).build(XacmlTypes.BOOLEAN, impl);
+		when(impl.invoke(any(), eq(context), anyList())).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		List<Expression> one = List.of(XacmlTypes.INTEGER.ofAny(1));
+		List<Expression> three = List.of(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(3));
+
+		optional.invokeWithList(context, new java.util.LinkedList<>(one));
+		optional.invokeWithList(context, new java.util.ArrayList<>(one));
+		variadic.invokeWithList(context, new java.util.LinkedList<>(three));
+		variadic.invokeWithList(context, new java.util.ArrayList<>(three));
+
+		@SuppressWarnings("unchecked")
+		ArgumentCaptor<List<Expression>> captor = ArgumentCaptor.forClass(List.class);
+		verify(impl, org.mockito.Mockito.times(2)).invoke(eq(optional), eq(context), captor.capture());
+		assertThat(captor.getAllValues().get(0)).isEqualTo(captor.getAllValues().get(1));
+		assertThat(captor.getAllValues().get(0)).containsExactly(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.STRING.ofAny("aaa")).inOrder();
+		ArgumentCaptor<List<Expression>> variadicCaptor = ArgumentCaptor.forClass((Class) List.class);
+		verify(impl, org.mockito.Mockito.times(2)).invoke(eq(variadic), eq(context), variadicCaptor.capture());
+		assertThat(variadicCaptor.getAllValues().get(0)).isEqualTo(variadicCaptor.getAllValues().get(1));
+		assertThat(variadicCaptor.getAllValues().get(0)).containsExactlyElementsIn(three).inOrder();
+	}
+
+	/**
+	 * Review RCJ2: normalization reads a caller's list as its iterator would; a random-access view over a
+	 * {@code CopyOnWriteArrayList} that changes while it is read gives the snapshot of the backing list.
+	 */
+	@Test
+	public void callerListIsNormalizedAsItsSnapshot() throws EvaluationException
+	{
+		FunctionSpec spec = FunctionSpecBuilder.builder("urn:xacml4j:test:three")
+				.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER)
+				.build(XacmlTypes.BOOLEAN, impl);
+		when(impl.invoke(eq(spec), eq(context), anyList())).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		for(boolean remove : new boolean[]{false, true}){
+			java.util.concurrent.CopyOnWriteArrayList<Integer> backing = new java.util.concurrent.CopyOnWriteArrayList<>(List.of(1, 2, 3));
+			List<Expression> arguments = com.google.common.collect.Lists.transform(backing, i -> {
+				if(i == 1){
+					if(remove){
+						backing.remove(2);
+					}else{
+						backing.set(2, 4);
+					}
+				}
+				return XacmlTypes.INTEGER.ofAny(i);
+			});
+
+			spec.invokeWithList(context, arguments);
+		}
+
+		@SuppressWarnings("unchecked")
+		ArgumentCaptor<List<Expression>> captor = ArgumentCaptor.forClass(List.class);
+		verify(impl, org.mockito.Mockito.times(2)).invoke(eq(spec), eq(context), captor.capture());
+		for(List<Expression> seen : captor.getAllValues()){
+			assertThat(seen).containsExactly(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(3)).inOrder();
+		}
+	}
+
 	@Test
 	public void wrappedFailureKeepsTheStatusOfANestedEvaluationException() throws EvaluationException
 	{

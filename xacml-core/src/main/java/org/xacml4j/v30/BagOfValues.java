@@ -22,22 +22,24 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamField;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Spliterator;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMultiset;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.DynamicType;
 import org.xacml4j.v30.types.ValueType;
@@ -56,12 +58,19 @@ import org.xacml4j.v30.types.ValueType;
  * @author Giedrius Trumpickas
  */
 public final class BagOfValues
-		implements ValueExp, Serializable
+		implements ValueExp, Serializable, Iterable<Value<?>>
 {
 	private static final long serialVersionUID = -8197446176793438616L;
+	private static final ObjectStreamField[] serialPersistentFields = {
+			new ObjectStreamField("hashCode", int.class),
+			new ObjectStreamField("type", BagOfValuesType.class),
+			new ObjectStreamField("values", Multiset.class)
+	};
 
-	private final BagOfValuesType type;
-	private final Multiset<Value<?>> values;
+	private transient volatile BagOfValuesType type;
+	private transient volatile BagStorage storage;
+	private transient volatile Optional<Value<?>> firstValue;
+	private transient volatile Multiset<Value<?>> values;
 	private int hashCode;
 	
 	/**
@@ -71,16 +80,55 @@ public final class BagOfValues
 	 */
 	private BagOfValues(Builder b){
 		this.type = b.bagType;
-		this.values = b.valuesBuilder.build();
+		this.storage = b.valuesBuilder.build();
+		this.firstValue = firstValue(storage);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends Value<?>> Collection<T> values() {
-		return (Collection<T>) values;
+		Multiset<Value<?>> result = values;
+		if (result == null) {
+			ImmutableMultiset.Builder<Value<?>> builder = ImmutableMultiset.builder();
+			for (int i = 0; i < storage.distinctSize(); i++) {
+				builder.addCopies(storage.distinctValueAt(i), storage.distinctCountAt(i));
+			}
+			result = builder.build();
+			values = result;
+		}
+		return (Collection<T>) result;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Value<?>> Stream<T> stream(){
-		return (Stream<T>) values.stream();
+		return (Stream<T>) StreamSupport.stream(spliterator(), false);
+	}
+
+	@Override
+	public Iterator<Value<?>> iterator() {
+		return storage.iterator();
+	}
+
+	@Override
+	public Spliterator<Value<?>> spliterator() {
+		return java.util.Spliterators.spliterator(iterator(), size(),
+				Spliterator.ORDERED | Spliterator.IMMUTABLE | Spliterator.NONNULL);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Value<?>> T valueAt(int index) {
+		return (T) storage.valueAt(index);
+	}
+
+	public BagStorage.Scan scanEqual(Value<?> literal) {
+		return storage.equal(literal);
+	}
+
+	public BagStorage.Scan scanDoubles(BagStorage.Comparison comparison, double literal) {
+		return storage.compareDoubles(comparison, literal);
+	}
+
+	public BagStorage.Scan scanIntegers(BagStorage.Comparison comparison, long literal) {
+		return storage.compareIntegers(comparison, literal);
 	}
 
 	/**
@@ -106,11 +154,19 @@ public final class BagOfValues
 	 * @exception NoSuchElementException if bag is empty
 	 */
 	public <T extends Value<?>> T value(){
-		return (T)values.iterator().next();
+		if (isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		return valueAt(0);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends Value<?>> Optional<T> single() {
-		return Optional.ofNullable(Iterables.getFirst(this.values(), null));
+		return (Optional<T>) (Optional<?>) firstValue;
+	}
+
+	private static Optional<Value<?>> firstValue(BagStorage storage) {
+		return storage.size() == 0 ? Optional.empty() : Optional.of(storage.valueAt(0));
 	}
 
 	/**
@@ -121,7 +177,7 @@ public final class BagOfValues
 	 * in this bag
 	 */
 	public int size() {
-		return values.size();
+		return storage.size();
 	}
 
 	/**
@@ -130,7 +186,7 @@ public final class BagOfValues
 	 * @return {@code true} if bag is empty
 	 */
 	public boolean isEmpty(){
-		return values.isEmpty();
+		return storage.size() == 0;
 	}
 
 	/**
@@ -140,7 +196,11 @@ public final class BagOfValues
 	 * @return {@code true} if bag contains given attribute
 	 */
 	public boolean contains(Value<?> attr){
-		return values.contains(attr);
+		return count(attr) != 0;
+	}
+
+	private int count(Value<?> value) {
+		return size() <= BagStorages.LINEAR_LOOKUP_LIMIT ? storage.count(value) : ((Multiset<?>) values()).count(value);
 	}
 
 	/**
@@ -154,10 +214,15 @@ public final class BagOfValues
 	public BagOfValues union(BagOfValues bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
-		return type.builder()
-		           .attributes(Sets.union(values.elementSet(),
-		                                  bag.values.elementSet()))
-		           .build();
+		Builder result = type.builder();
+		for (int i = 0; i < storage.distinctSize(); i++) {
+			result.attribute(storage.distinctValueAt(i));
+		}
+		for (int i = 0; i < bag.storage.distinctSize(); i++) {
+			Value<?> value = bag.storage.distinctValueAt(i);
+			if (!contains(value)) result.attribute(value);
+		}
+		return result.build();
 	}
 
 	/**
@@ -171,10 +236,12 @@ public final class BagOfValues
 	public BagOfValues intersection(BagOfValues bag)
 	{
 		Preconditions.checkArgument(type.equals(bag.type));
-		return type.builder()
-		           .attributes(Sets.intersection(values.elementSet(),
-		                                         bag.values.elementSet()))
-		           .build();
+		Builder result = type.builder();
+		for (int i = 0; i < storage.distinctSize(); i++) {
+			Value<?> value = storage.distinctValueAt(i);
+			if (bag.contains(value)) result.attribute(value);
+		}
+		return result.build();
 	}
 
 	/**
@@ -187,8 +254,8 @@ public final class BagOfValues
 	 */
 	public boolean containsAtLeastOneOf(BagOfValues bag)
 	{
-		for(Value v : bag.values){
-			if(values.contains(v)){
+		for(Value<?> v : bag){
+			if(contains(v)){
 				return true;
 			}
 		}
@@ -204,7 +271,10 @@ public final class BagOfValues
 	 */
 	public boolean containsAll(BagOfValues bag){
 		Preconditions.checkArgument(type.equals(bag.type));
-		return values.containsAll(bag.values);
+		for (Value<?> value : bag) {
+			if (!contains(value)) return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -216,15 +286,19 @@ public final class BagOfValues
 			return false;
 		}
 		BagOfValues bag = (BagOfValues)o;
-		return type.equals(bag.type) &&
-		values.equals(bag.values);
+		if (!type.equals(bag.type) || size() != bag.size()
+				|| storage.distinctSize() != bag.storage.distinctSize()) return false;
+		for (int i = 0; i < storage.distinctSize(); i++) {
+			if (storage.distinctCountAt(i) != bag.count(storage.distinctValueAt(i))) return false;
+		}
+		return true;
 	}
 
 	@Override
 	public String toString() {
 		return MoreObjects.toStringHelper(this).
 		add("DataType", type.getValueType()).
-		add("Values", values).toString();
+		add("Values", values()).toString();
 	}
 
 	@Override
@@ -232,10 +306,34 @@ public final class BagOfValues
 		// One read of the cache field: a second read may see 0 again under a data race (review RVH2, JDK-8166842)
 		int h = hashCode;
 		if(h == 0){
-			h = Objects.hash(values, type);
+			h = 31 * (31 + storage.multisetHashCode()) + type.hashCode();
 			hashCode = h;
 		}
 		return h;
+	}
+
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		ObjectOutputStream.PutField fields = out.putFields();
+		fields.put("hashCode", hashCode);
+		fields.put("type", type);
+		fields.put("values", values());
+		out.writeFields();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		ObjectInputStream.GetField fields = in.readFields();
+		BagOfValuesType readType = (BagOfValuesType) fields.get("type", null);
+		Multiset<Value<?>> readValues = (Multiset<Value<?>>) fields.get("values", null);
+		if (readType == null || readValues == null) {
+			throw new InvalidObjectException("Bag is missing its type or values");
+		}
+		BagStorage.Builder builder = readType.getValueType().bagStorageBuilder();
+		for (Value<?> value : readValues) builder.add(value);
+		this.type = readType;
+		this.storage = builder.build();
+		this.firstValue = firstValue(storage);
+		this.hashCode = fields.get("hashCode", 0);
 	}
 
 	/**
@@ -280,7 +378,7 @@ public final class BagOfValues
 	{
 
 		private BagOfValuesType bagType;
-		private final ImmutableMultiset.Builder<Value<?>> valuesBuilder = ImmutableMultiset.builder();
+		private final BagStorage.Builder valuesBuilder;
 
 		public Builder(BagOfValuesType type){
 			this.bagType = Preconditions.checkNotNull(type);
@@ -288,6 +386,7 @@ public final class BagOfValues
 			// type of an expression, never of a value.
 			Preconditions.checkArgument(!DynamicType.isDynamic(type),
 					"A bag can not have the dynamic data type");
+			this.valuesBuilder = type.getValueType().bagStorageBuilder();
 		}
 
 		public Builder(ValueType type){
@@ -313,7 +412,7 @@ public final class BagOfValues
 			for (Value<?> v : values) {
 				assertExpressionType(v, bagType);
 			}
-			this.valuesBuilder.addAll(values);
+			for (Value<?> v : values) this.valuesBuilder.add(v);
 			return this;
 		}
 

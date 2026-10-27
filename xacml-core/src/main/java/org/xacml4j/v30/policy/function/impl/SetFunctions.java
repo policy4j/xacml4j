@@ -22,8 +22,8 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.google.common.base.Preconditions;
 import org.xacml4j.v30.BagOfValues;
@@ -34,6 +34,7 @@ import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 import org.xacml4j.v30.policy.function.XacmlLegacyFunc;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.DoubleVal;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**
@@ -190,14 +191,15 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues b)
 	{
 		requireDoubleBags(a, b);
-		List<DoubleVal> values = new ArrayList<>();
-		for(DoubleVal value : a.<DoubleVal>values()){
-			if(BagFunctions.doubleContains(value, b.<DoubleVal>values())
-					&& !BagFunctions.doubleContains(value, values)){
-				values.add(value);
+		BagOfValues.Builder values = XacmlTypes.DOUBLE.bagBuilder();
+		Set<Double> seen = new HashSet<>();
+		for(Value<?> item : a){
+			DoubleVal value = (DoubleVal) item;
+			if(BagFunctions.doubleContains(value, b) && seen.add(doubleKey(value))){
+				values.attribute(value);
 			}
 		}
-		return XacmlTypes.DOUBLE.bagBuilder().attributes(values).build();
+		return values.build();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-union")
@@ -207,16 +209,18 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues b)
 	{
 		requireDoubleBags(a, b);
-		List<DoubleVal> values = new ArrayList<>();
+		BagOfValues.Builder values = XacmlTypes.DOUBLE.bagBuilder();
+		Set<Double> seen = new HashSet<>();
 		// Iterate every occurrence: even identical NaN objects do not match by double-equal.
 		for(BagOfValues bag : new BagOfValues[]{a, b}){
-			for(DoubleVal value : bag.<DoubleVal>values()){
-				if(!BagFunctions.doubleContains(value, values)){
-					values.add(value);
+			for(Value<?> item : bag){
+				DoubleVal value = (DoubleVal) item;
+				if(Double.isNaN(value.get()) || seen.add(doubleKey(value))){
+					values.attribute(value);
 				}
 			}
 		}
-		return XacmlTypes.DOUBLE.bagBuilder().attributes(values).build();
+		return values.build();
 	}
 
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-subset")
@@ -236,8 +240,9 @@ public final class SetFunctions
 			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#double", isBag=true) BagOfValues b)
 	{
 		requireDoubleBags(a, b);
-		for(DoubleVal value : a.<DoubleVal>values()){
-			if(BagFunctions.doubleContains(value, b.<DoubleVal>values())){
+		for(Value<?> item : a){
+			DoubleVal value = (DoubleVal) item;
+			if(BagFunctions.doubleContains(value, b)){
 				return BooleanVal.of(true);
 			}
 		}
@@ -255,12 +260,18 @@ public final class SetFunctions
 	}
 
 	private static boolean doubleSubsetImpl(BagOfValues a, BagOfValues b){
-		for(DoubleVal value : a.<DoubleVal>values()){
-			if(!BagFunctions.doubleContains(value, b.<DoubleVal>values())){
+		for(Value<?> item : a){
+			DoubleVal value = (DoubleVal) item;
+			if(!BagFunctions.doubleContains(value, b)){
 				return false;
 			}
 		}
 		return true;
+	}
+
+	private static double doubleKey(DoubleVal value) {
+		double number = value.get();
+		return number == 0.0 ? 0.0 : number;
 	}
 
 	private static void requireDoubleBags(BagOfValues a, BagOfValues b){

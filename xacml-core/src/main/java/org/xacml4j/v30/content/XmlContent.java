@@ -459,7 +459,7 @@ public final class XmlContent implements Content
         Optional<TypeToString> toString = TypeToString.forType(type);
         if (!toString.isPresent()) {
             throw PathEvaluationException.invalidXpath(xpath,
-                    String.format("Unsupported XACML type={} xpath=\"%s%\"",
+                    String.format("Unsupported XACML type=\"%s\" xpath=\"%s\"",
                                   type.getTypeId(), xpath));
         }
         Value value = toString.get().fromString(v);

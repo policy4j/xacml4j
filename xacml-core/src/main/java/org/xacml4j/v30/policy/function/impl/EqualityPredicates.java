@@ -40,6 +40,7 @@ public final class EqualityPredicates
 	/** Private constructor for utility class */
 	private EqualityPredicates() {}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal eq(
@@ -49,6 +50,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:entity-equal")
 	@XacmlFuncReturnType(typeId="boolean")
 	public static BooleanVal eq(
@@ -58,6 +60,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:anyURI-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal eq(
@@ -67,6 +70,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan(ieee=true)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal eq(
@@ -76,6 +80,7 @@ public final class EqualityPredicates
 		return BooleanVal.of(doubleEquals(a, b));
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:boolean-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal eq(
@@ -85,6 +90,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:x500Name-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal eq(
@@ -94,6 +100,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:string-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal equals(
@@ -113,6 +120,7 @@ public final class EqualityPredicates
 				StringVal.of(b.get().toLowerCase(Locale.ROOT)));
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:date-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:date-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -123,6 +131,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dateTime-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -133,6 +142,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:time-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:time-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -143,6 +153,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -153,6 +164,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-equal")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
@@ -163,6 +175,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:rfc822Name-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal equals(
@@ -172,6 +185,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:hexBinary-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal equals(
@@ -181,6 +195,7 @@ public final class EqualityPredicates
 		return _eq(a, b);
 	}
 
+	@XacmlFuncBagScan
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:base64Binary-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal equals(

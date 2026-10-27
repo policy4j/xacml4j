@@ -25,13 +25,13 @@ package org.xacml4j.v30;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
@@ -41,6 +41,9 @@ import org.xacml4j.v30.types.Entity;
 public final class Result
 {
 	private final static Logger LOG  = LoggerFactory.getLogger(Result.class);
+
+	/** The status of the results of {@link #ok(Decision)}, immutable and shared (design D22) */
+	private final static Status OK = Status.ok().build();
 
 	private final Status status;
 	private final Decision decision;
@@ -61,12 +64,16 @@ public final class Result
 		this.includeInResultAttributes = b.includeInResultAttributes.build();
 		this.policyReferences = b.policyReferences.build();
 		this.resolvedAttributes = b.resolvedAttributes.build();
-		this.hashCode = Objects.hashCode(decision, status,
-				associatedAdvice,
-				obligations,
-				includeInResultAttributes,
-				policyReferences,
-				resolvedAttributes);
+		// Arrays.hashCode of the fields in this order, without the array (design D22)
+		int h = 1;
+		h = 31 * h + Objects.hashCode(decision);
+		h = 31 * h + Objects.hashCode(status);
+		h = 31 * h + Objects.hashCode(associatedAdvice);
+		h = 31 * h + Objects.hashCode(obligations);
+		h = 31 * h + Objects.hashCode(includeInResultAttributes);
+		h = 31 * h + Objects.hashCode(policyReferences);
+		h = 31 * h + Objects.hashCode(resolvedAttributes);
+		this.hashCode = h;
 	}
 
 	public static Result.Builder builder(){
@@ -84,7 +91,7 @@ public final class Result
 	 */
 	public static Result.Builder ok(Decision d){
 		Preconditions.checkArgument(!d.isIndeterminate());
-		return new Result.Builder().decision(d).status(Status.ok().build());
+		return new Result.Builder().decision(d).status(OK);
 	}
 
 	public static Result.Builder indeterminate(Status status){
@@ -252,8 +259,9 @@ public final class Result
 	{
 		private Status status;
 		private Decision decision;
-		private Map<String, Obligation> obligations = new LinkedHashMap<String, Obligation>();
-		private Map<String, Advice> associatedAdvice = new LinkedHashMap<String, Advice>();
+		// shared and empty until the first element, then in the order added (design D22)
+		private Map<String, Obligation> obligations = ImmutableMap.of();
+		private Map<String, Advice> associatedAdvice = ImmutableMap.of();
 		private ImmutableMap.Builder<CategoryId, Category> includeInResultAttributes = ImmutableMap.builder();
 		private ImmutableCollection.Builder<CompositeDecisionRuleIDReference> policyReferences = ImmutableList.builder();
 		private ImmutableMap.Builder<CategoryId, Category> resolvedAttributes = ImmutableMap.builder();
@@ -346,6 +354,9 @@ public final class Result
 				associatedAdvice.replace(a.getId(), a);
 				return this;
 			}
+			if(associatedAdvice.isEmpty()){
+				associatedAdvice = new LinkedHashMap<>();
+			}
 			associatedAdvice.put(advice.getId(), advice);
 			return this;
 		}
@@ -360,6 +371,9 @@ public final class Result
 				o = o.merge(obligation);
 				obligations.replace(o.getId(), o);
 				return this;
+			}
+			if(obligations.isEmpty()){
+				obligations = new LinkedHashMap<>();
 			}
 			obligations.put(obligation.getId(), obligation);
 			return this;

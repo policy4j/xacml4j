@@ -37,8 +37,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeReferenceKey;
@@ -66,8 +64,6 @@ import org.xacml4j.v30.types.Entity;
 
 public final class RootEvaluationContext implements EvaluationContext
 {
-	private static final Logger LOG = LoggerFactory.getLogger(RootEvaluationContext.class);
-
 	// The maps below are created on their first use and published with a
 	// compare-and-set (change optimize-pdp-evaluation, D9). A decision creates the
 	// advice and obligation maps of its effect when the result reads them, and the
@@ -186,7 +182,6 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public void setEvaluationStatus(Status status) {
-		LOG.debug("Setting decisionRuleId=\"{}\"", status);
 		this.evaluationStatus = status;
 	}
 
@@ -280,7 +275,6 @@ public final class RootEvaluationContext implements EvaluationContext
 			return;
 		}
 		for(Advice a : advices){
-			LOG.debug("Adding advice=\"{}\"", a);
 			addAndMergeConcurrent(a, Decision.PERMIT.equals(d) ? permitAdvicesMap() :
 			                         ((Decision.DENY.equals(d))?denyAdvicesMap():null));
 		}
@@ -308,7 +302,6 @@ public final class RootEvaluationContext implements EvaluationContext
 	private <T extends DecisionRuleResponse> void addAndMergeConcurrent(T response,
 	                                                                    ConcurrentMap<String, T> rules)
 	{
-		LOG.debug("Processing {}=\"{}\"", response.getClass().getSimpleName(), response);
 		if(rules == null){
 			return;
 		}
@@ -393,10 +386,6 @@ public final class RootEvaluationContext implements EvaluationContext
 	private Policy resolveEntity(PolicyIDReference ref)
 		throws PolicyResolutionException {
 		Policy p =	resolver.resolve(ref);
-		if(LOG.isDebugEnabled()){
-			LOG.debug("Trying to resolve " +
-					"Policy reference=\"{}\"", ref);
-		}
 		if(p == null){
 			throw new PolicyResolutionException(this);
 		}
@@ -406,10 +395,6 @@ public final class RootEvaluationContext implements EvaluationContext
 	private PolicySet resolveEntity(PolicySetIDReference ref)
 			throws PolicyResolutionException {
 		PolicySet p = resolver.resolve(ref);
-		if(LOG.isDebugEnabled()){
-			LOG.debug("Trying to resolve " +
-					"PolicySet reference=\"{}\"", ref);
-		}
 		if(p == null){
 			throw new PolicyResolutionException(this);
 		}

@@ -24,8 +24,6 @@ package org.xacml4j.v30.policy;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.BagOfValues;
@@ -44,8 +42,6 @@ import org.xacml4j.v30.types.ValueType;
  */
 public abstract class AttributeReference implements Expression
 {
-	private final static Logger LOG = LoggerFactory.getLogger(AttributeReference.class);
-
 	private final boolean mustBePresent;
 
 	/**
@@ -106,10 +102,8 @@ public abstract class AttributeReference implements Expression
 		throws EvaluationException
 	{
 		Optional<BagOfValues> v = resolveImpl(context);
-		LOG.debug("Evaluating ref={} result={}", getReferenceKey(), v);
 		if(!v.isPresent() &&
 				isMustBePresent()){
-			LOG.debug("Failed to evaluate ref={}", this);
 			throw AttributeReferenceEvaluationException
 					.forMissingRef(getReferenceKey());
 		}
@@ -131,28 +125,17 @@ public abstract class AttributeReference implements Expression
 			}
 			if(e.getStatus().getStatusCode().isSyntaxError()){
 				// The status code stays; the response message is a fixed text.
-				throw logged(AttributeReferenceEvaluationException
-						.forSyntaxError(getReferenceKey(), e));
+				throw AttributeReferenceEvaluationException
+						.forSyntaxError(getReferenceKey(), e);
 			}
 			// An XPath evaluation error or a resolver failure is a processing
 			// error with a fixed response message, whatever MustBePresent is.
-			throw logged(AttributeReferenceEvaluationException
-					.forResolverFailure(getReferenceKey(), e));
+			throw AttributeReferenceEvaluationException
+					.forResolverFailure(getReferenceKey(), e);
 		}catch(RuntimeException e){
-			throw logged(AttributeReferenceEvaluationException
-					.forResolverFailure(getReferenceKey(), e));
+			throw AttributeReferenceEvaluationException
+					.forResolverFailure(getReferenceKey(), e);
 		}
-	}
-
-	/**
-	 * Logs a mapped failure by its own message. The cause is not given to
-	 * the logger: it is foreign code, and an exception from its
-	 * {@code getMessage()} must not replace the mapped failure.
-	 */
-	private static AttributeReferenceEvaluationException logged(AttributeReferenceEvaluationException failure)
-	{
-		LOG.debug("{}", failure.getMessage());
-		return failure;
 	}
 
 	protected abstract Optional<BagOfValues> doContextResolve(EvaluationContext context);

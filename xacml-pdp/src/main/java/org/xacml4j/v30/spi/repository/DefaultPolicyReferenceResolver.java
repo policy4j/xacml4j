@@ -77,11 +77,6 @@ public class DefaultPolicyReferenceResolver
 	{
 		Policy p =  policyIDRefCache.get(ref);
 		if(p != null){
-			if(log.isDebugEnabled()){
-				log.debug("Found Policy id=\"{}\" " +
-						"version=\"{}\" for reference=\"{}\" in the cache",
-						new Object[]{p.getId(), p.getVersion(), ref});
-			}
 			return p;
 		}
 		p =  repository.getPolicy(
@@ -93,11 +88,10 @@ public class DefaultPolicyReferenceResolver
 				enableRefCache){
 			policyIDRefCache.put(ref, p);
 		}
-		if(p != null &&
+		// Only a reference that matches nothing is logged (design D18)
+		if(p == null &&
 				log.isDebugEnabled()){
-			log.debug("Resolved policy id=\"{}\" " +
-					"version=\"{}\" for reference=\"{}\" from repository",
-					new Object[]{p.getId(), p.getVersion(), ref});
+			log.debug("No policy matches reference=\"{}\"", ref);
 		}
 		return p;
 	}
@@ -108,11 +102,6 @@ public class DefaultPolicyReferenceResolver
 	{
 		PolicySet p = policySetIDRefCache.get(ref);
 		if(p != null){
-			if(log.isDebugEnabled()){
-				log.debug("Found PolicySet id=\"{}\" " +
-						"version=\"{}\" for reference=\"{}\" in the cache",
-						new Object[]{p.getId(), p.getVersion(), ref});
-			}
 			return p;
 		}
 		p =  repository.getPolicySet(
@@ -124,10 +113,9 @@ public class DefaultPolicyReferenceResolver
 				enableRefCache){
 			policySetIDRefCache.put(ref, p);
 		}
-		if(p != null && log.isDebugEnabled()){
-			log.debug("Resolved policy set id=\"{}\" " +
-					"version=\"{}\" for reference=\"{}\" from repository",
-					new Object[]{p.getId(), p.getVersion(), ref});
+		// Only a reference that matches nothing is logged (design D18)
+		if(p == null && log.isDebugEnabled()){
+			log.debug("No policy set matches reference=\"{}\"", ref);
 		}
 		return p;
 	}

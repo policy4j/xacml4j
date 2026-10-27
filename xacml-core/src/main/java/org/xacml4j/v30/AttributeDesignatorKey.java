@@ -80,7 +80,7 @@ public final class AttributeDesignatorKey
 	@Override
 	public java.lang.String toString(){
 		return MoreObjects.toStringHelper(this)
-		.add("Category", getCategory().getAbbreviatedId())
+		.add("Category", getCategoryOpt().map(CategoryId::getAbbreviatedId).orElse(null))
 		.add("AttributeId", attributeId)
 		.add("DataType", getDataType().getShortTypeId())
 		.add("Issuer", issuer).toString();
@@ -104,7 +104,7 @@ public final class AttributeDesignatorKey
 			return false;
 		}
 		AttributeDesignatorKey s = (AttributeDesignatorKey)o;
-		return category.equals(s.category) &&
+		return Objects.equal(category, s.category) &&
 		dataType.equals(s.dataType) && attributeId.equals(s.attributeId) &&
 		Objects.equal(issuer, s.issuer);
 	}
@@ -158,7 +158,7 @@ public final class AttributeDesignatorKey
 		}
 
 		public AttributeDesignatorKey build(){
-			return new AttributeDesignatorKey(this);
+			return (AttributeDesignatorKey) INTERNER.intern(new AttributeDesignatorKey(this));
 		}
 	}
 }

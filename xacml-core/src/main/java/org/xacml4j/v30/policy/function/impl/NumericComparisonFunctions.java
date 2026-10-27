@@ -22,6 +22,8 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
+import org.xacml4j.v30.BagStorage.Comparison;
+import org.xacml4j.v30.policy.function.XacmlFuncBagScan;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
@@ -38,6 +40,7 @@ public final class NumericComparisonFunctions
 	/** Private constructor for utility class */
 	private NumericComparisonFunctions() {}
 
+	@XacmlFuncBagScan(Comparison.GREATER_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThanInteger(
@@ -47,6 +50,7 @@ public final class NumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.get() > b.get());
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThanInteger(
@@ -56,6 +60,7 @@ public final class NumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.get() < b.get());
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThanOrEqualInteger(
@@ -65,6 +70,7 @@ public final class NumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.get().equals(b.get()) || a.get() > b.get());
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:integer-less-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThanOrEqualBoolean(
@@ -74,6 +80,7 @@ public final class NumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.get().equals(b.get()) || a.get() < b.get());
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThanDouble(
@@ -83,6 +90,7 @@ public final class NumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.get() > b.get());
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThanDouble(
@@ -92,6 +100,7 @@ public final class NumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.get() < b.get());
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThanOrEqualDouble(
@@ -101,6 +110,7 @@ public final class NumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.get() >= b.get());
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:double-less-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThanOrEqualDouble(

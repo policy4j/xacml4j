@@ -33,6 +33,9 @@ public class CoreException extends RuntimeException
 {
 	private static final long serialVersionUID = -546790992581476011L;
 
+	// Read once, when the class loads: set it when the JVM starts (design D20)
+	private static final boolean STACK_TRACE = Boolean.getBoolean("xacml4j.exceptions.stackTrace");
+
 	private Status status;
 
 	/**
@@ -64,6 +67,15 @@ public class CoreException extends RuntimeException
 		this.status = Status.from(status)
 		                    .error(t)
 		                    .build();
+	}
+
+	/**
+	 * Engine exceptions fill no stack trace unless the JVM starts with
+	 * {@code -Dxacml4j.exceptions.stackTrace=true} (design D20)
+	 */
+	@Override
+	public Throwable fillInStackTrace(){
+		return STACK_TRACE ? super.fillInStackTrace() : this;
 	}
 
 	/**

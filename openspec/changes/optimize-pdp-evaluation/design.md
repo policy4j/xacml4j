@@ -130,6 +130,81 @@ any change of its fields changes the serialized form, so cycle C is
 **BREAKING** for Java serialization of bags unless it keeps the field;
 maintainer decision required before task 6.2 (Open Questions).
 
+Decision (maintainer, 2026-10-27, Open Question 1): "yes and specializations
+for primitive types to avoid allocation, each type should be able to create
+its own version of bag with underlying storage, for primitive arrays we can
+apply Java vector SIMD operations down the road". So cycle C keeps the
+serialized form and the public API of `BagOfValues`, and the storage becomes
+the value type's choice:
+
+- Storage. The value type creates the storage of its bags (an additive
+  `ValueType` default method; the default storage is an array of values). The
+  built-in types specialize: `integer` in a `long[]`, `double` in a `double[]`
+  (equality as `DoubleVal.equals`: NaN equal to NaN, `0.0` not equal to
+  `-0.0`, as today's multiset grouping), `boolean` as two counts, and the
+  other types as value arrays. Every storage keeps today's iteration order
+  (equal values grouped in the order of their first occurrence), size, counts,
+  and set view.
+- No allocation on the hot path. `Match` and the bag functions ask the storage
+  to apply a known built-in predicate to a literal (for example
+  `integer-equal`, `integer-greater-than`, `double-less-than-or-equal`,
+  `string-equal`) with primitive comparisons; any other predicate gets values
+  one at a time, and a primitive storage creates them only on that generic
+  path. The result per value, the order of evaluation, and the error handling
+  (the recorded `policy4j-0972` behavior) are the same as the generic loop.
+- Serialization. `values` keeps its name and type in the stream through
+  `serialPersistentFields` and `writeObject` / `readObject` (the `Multiset`
+  is built when a bag is written); a golden stream written by the current
+  class must read back equal, and a bag written by the new class must read
+  equal in the current class.
+- Later, not in this cycle: the Vector API (`jdk.incubator.vector`, still
+  incubating in JDK 25) for scans of `long[]` and `double[]` storage; the
+  storage interface keeps the arrays private so that change stays internal.
+
+- Alternative considered, Eclipse Collections (maintainer question,
+  2026-10-27): release 13.0.0 (2025-06-23) has primitive lists, sets, bags,
+  and maps (implementation jar 10.6 MB, API jar 1.9 MB, Maven Central). Its
+  primitive bags are hash-based with an unspecified iteration order, so they
+  cannot hold a bag whose order decides error cases (§7.6, review RVP); its
+  collection factories are `ServiceLoader` services of the API jar, one
+  implementation per JVM, so a library that registers its own would change
+  them for the whole application. Bag storage therefore stays the value
+  type's own ordered arrays (no dependency); an adapter to the Eclipse
+  Collections primitive iterables (`LongIterable`, `DoubleIterable`) can be
+  added on top, and Eclipse Collections stays a candidate wherever a hash
+  structure keyed by primitives is a measured hot spot (the maintainer's rule
+  of 2026-10-26: Guava collections give way to JDK, Eclipse Collections, or
+  custom ones where measured).
+
+Plan review RVC7 (Agy, Gemini 4 Argon, 2026-10-27; APPROVE WITH CHANGES,
+`evidence/reviews/plan/rvc7-cycleC-agy`), applied:
+- `boolean` storage keeps two counts and which value came first (`[false,
+  true, false]` iterates `[false, false, true]`, `[true, false, false]`
+  iterates `[true, false, false]`).
+- No hot caller of a bag uses `values()`: `HigherOrderFunctions` and
+  `DecidingOperands` (`any-of` and the other quantified functions, used by
+  rsa2008), `BagFunctions.doubleIsIn`, `SetFunctions.double*`,
+  `BagOfValues.single()`, `BaseDecisionRuleResponseExpression`, and the
+  `Quantified*` classes move to indexed or storage methods; `values()` stays
+  for callers that want the `Multiset`.
+- Two equalities on `double` bags, both kept: storage grouping and the Java
+  methods of `BagOfValues` (`equals`, `hashCode`, `contains`, `union`,
+  `intersection`) use `Double.doubleToLongBits` equality (all NaNs equal,
+  `0.0` and `-0.0` differ; the first occurrence's bits are stored); the XACML
+  `double-*` bag and set functions use IEEE `==` (NaN never equal, the zeros
+  equal), through separate storage methods.
+- A primitive storage keeps the first value object it was built from, so
+  `value()`, `single()`, and `one-and-only` allocate nothing; `IntegerVal.of`
+  gets a small-value cache.
+- `hashCode` is computed from the storage with Guava's `Multiset.hashCode`
+  formula (sum over distinct values of `hash ^ count`), so it equals today's
+  value without building the `Multiset`; the cached `hashCode` field stays in
+  the serialized form (`serialPersistentFields`: `hashCode`, `type`,
+  `values`).
+- Eclipse Collections: the reviewer agrees (no dependency, no implementation
+  of its interfaces); the arrays stay private to the storage for a later
+  Vector API scan.
+
 ### D8. Cycle D: fixed-arity predicate calls
 
 `Match` and `FunctionSpec` call a two-argument predicate without building a
@@ -234,9 +309,15 @@ PR1 H4, PR2 H7, PR4 H3, PR5 H4 and H7: `Target`, `MatchAnyOf`, `MatchAllOf`,
 the combining algorithms, and function-parameter normalization iterate with
 iterator objects (`Iterators$9` alone is 13.8% of the full-scan bytes). The
 private collection fields of the immutable policy elements become lists that
-the element owns, iterated with an index loop; a combining algorithm uses an
-index loop when its list is `RandomAccess` and the iterator otherwise;
-normalization indexes `RandomAccess` lists. Kept: order and short-circuit
+the element owns, iterated with an index loop; normalization indexes the
+lists it can read exactly as their iterator would (immutable lists and the
+`Arrays.asList` views of the varargs path) and copies any other caller list
+once through its iterator (it reads every argument anyway; a copy-on-write
+list keeps its snapshot, review RCJ2). The combining algorithms keep their iterators (review RCJ1): their
+list comes from the caller of a public API, a `CopyOnWriteArrayList` is
+combined as its iterator's snapshot, and a lazy list is read only as far as the
+combination goes; profile 021 shows no combiner iterator among the per-policy
+allocations of the full scan. Kept: order and short-circuit
 (XACML 3.0 §7.7, §7.11 to §7.13), the public getters and their types, and the
 `policy4j-yeu3` and `policy4j-0972` behaviors.
 
@@ -256,6 +337,54 @@ hit returns it. Kept: which level answers which query, §7.18 staging, §7.8
 variable scope, the public `EvaluationContext` API, and a foreign context in
 the chain (the loop stops there and calls it).
 
+As built (task 15.2):
+
+- Walked to the first context that is not one of this package's contexts, in
+  one call: `resolve` (both overloads), `resolveEntity`,
+  `isValidateFuncParamsAtRuntime` and its setter, `getClock`, `getTimeZone`,
+  `getCurrentDateTime`, `addEvaluationResult`, `getEvaluatedPolicies`, the
+  decision cache TTL methods, `getResolvedDesignators`, `getResolvedSelectors`,
+  `getMatchingObligations`, `getMatchingAdvices`, and the per-rule status
+  methods. No subclass overrode any of them.
+- Answered by the nearest level of the answering class, found by a type test
+  per level, not a call per level: `getCurrentRule` (rule context),
+  `getCurrentPolicy` (policy context), `getCurrentPolicySet` (policy set
+  context), `getCurrentPolicyIDReference` and
+  `getCurrentPolicySetIDReference` (reference contexts). The five classes
+  give their rule, policy, or reference through a package-private final
+  accessor instead of an override.
+- Compatibility (review RCK1): the methods keep HEAD's modifiers (only
+  `resolve(AttributeReferenceKey)` is final), because a final method breaks a
+  compiled subclass that overrides it (JLS 13.4.17), and
+  `Rule.RuleEvaluationContext` is public and non-final. The walks pass only
+  through this package's own contexts: any other `EvaluationContext`, or a
+  subclass of `Rule.RuleEvaluationContext` declared elsewhere, stops the walk
+  and is called, so its overrides answer as at HEAD. `Rule.isOwnContext` tests
+  the exact classes `RuleEvaluationContext` and
+  `Rule.ExtendedIndeterminateRuleContext` (the former anonymous extended
+  Indeterminate rule context, now named). No context class of the package
+  overrides a walked method.
+- Kept hop by hop: the per-level evaluation status, `addAdvices` and
+  `addObligations` (staging), variables and `getXPathVersion` (answered
+  conditionally by policy and policy set contexts, not on the profiles),
+  `getParentContext`, and the extended Indeterminate contexts.
+- `isEnclosed` keeps HEAD's `getParentContext()` walk (review RCK1: a
+  subclass of the public rule context can override `getParentContext()`).
+- The handler's request memo keeps the `Optional` of `Entity.resolve`;
+  information point results still come from the resolved-attributes map,
+  wrapped per hit.
+- Tests: `ContextChainQueryCharacterizationTest` (green before and after:
+  answers per level, the staging levels in the chain, a foreign context above
+  the tree and inside the chain called once per forwarded query, settings
+  written at the root),
+  `DefaultEvaluationContextHandlerTest.repeatedRequestDesignatorGivesTheSameOptional`
+  (red before, `evidence/tests/033-cycleK-red`), and, after review RCK1,
+  `ExternalRuleContextCompatibilityTest` (outside the package: HEAD's final
+  set, an external rule context's overrides, staging through its
+  `getParentContext()`) (`evidence/tests/035-rck1-fix`). The class-scan
+  inventory test and the class-name chain assertion were removed in the
+  batch-2 clean-code review (they froze private structure).
+
 ### D18. Cycle L: guarded debug logging on the per-policy path
 
 PR2 H4: `isDebugEnabled()` runs Logback's turbo-filter check on each call;
@@ -268,6 +397,25 @@ removed and no level is cached across calls; removing per-element lines or
 snapshotting the level per decision changes what a debug log shows and is
 Open Question 2.
 
+Decision (maintainer, 2026-10-27, Open Question 2: "yes"): the per-element debug
+lines of the per-policy and per-predicate path (`Target`, `MatchAnyOf`,
+`MatchAllOf`, `Match`, `AttributeReference`, `FunctionSpecImpl`,
+`DefaultFunctionInvocation`, `FunctionInvocationFactory`, `Entity.resolve`,
+`PolicyIDReference`, `BaseCompositeDecisionRule`) are removed; the PDP logs
+one debug line per decision (request id, decision, number of policies
+evaluated); where a per-decision line needs the level, it is read once per
+decision. MDC handling is unchanged.
+
+As built (batch 2, Claude Opus and Fable; review Codex Sol): the listed classes
+plus `RootEvaluationContext`, `DefaultPolicyReferenceResolver` (which keeps one
+guarded line for a reference that matches nothing, its only trace), the request
+callback of `PolicyDecisionPointContextFactory`, and the failure helper of
+`DefaultEvaluationContextHandler` (its WARN lines for cyclic references stay).
+`DefaultPolicyDecisionPoint` logs one guarded line per decision, and one for a
+decision-cache hit. Failure-path debug lines went too; the result's status
+still carries the error. No test pins log output (maintainer, 2026-10-27: a
+logging test "does not make any sense").
+
 ### D19. Cycle M: obligation and advice staging only when there is something to stage
 
 PR1 H5, PR5 H6: each composite rule creates `StagedResponses` with four
@@ -279,6 +427,241 @@ Kept: what is published, in which order, at which level (§7.18), and the
 staging behavior pinned by `evidence/tests/009-cycleE-characterization-green`.
 A custom `EvaluationContext` no longer receives calls with empty collections
 (recorded in the review packet).
+
+### D20. Cycle N: cheap exceptions on the function error path
+
+PR1 H3, PR2 H8, PR4 H2: a failing built-in call on rsa2008 creates up to four
+throwables with full stack traces (`Throwable.<init>` 14.6% of rsa2008 CPU,
+throwables 7% of its bytes). Maintainer decision (2026-10-27, Open Question 3:
+"optimize"): (a) the reflective factory rethrows a `RuntimeException` cause of
+`InvocationTargetException` without wrapping it (errors and checked exceptions
+are wrapped as today; bound calls of D15 already have no wrapper); (b) the
+`FunctionInvocationException` that `DefaultFunctionInvocation` creates has no
+stack trace; (c) engine exceptions (`CoreException` and its subclasses) fill
+no stack trace unless the system property `xacml4j.exceptions.stackTrace` is
+`true`; `CoreException` pins its current default `serialVersionUID` so the
+override keeps its serialized form; (d) `one-and-only` and the other bag
+functions report a wrong bag size with the same status and message without a
+`Preconditions` exception. Kept: decisions, status codes, status messages,
+the class, message, and cause chain of `Status.getError()` (only its stack
+trace is empty by default), and XACML A.3.10 and §7.19.3.
+
+As built (batch 2, Codex Astra; review Claude Opus, APPROVE WITH CHANGES applied):
+only (c). `CoreException.fillInStackTrace` returns without a trace unless the JVM
+starts with `-Dxacml4j.exceptions.stackTrace=true` (read once); this also covers
+(b), since the wrapper is a `CoreException`. Not done: (a), because the
+unwrapped cause changes the status message and error chain that
+`FunctionSpecImpl` builds; (d), because the error of `Status.getError()` must
+stay an `IllegalArgumentException` with its message, and that exception fills
+its own stack trace. Both conflict with "Kept" above; they need a maintainer
+decision to go further. `CoreException` already declared its
+`serialVersionUID`, so the added method keeps the serialized form.
+
+Decision (maintainer, 2026-10-27, batch 3): do (d), skip (a). `Status.Builder.error`
+is a no-op at commit `21858796`, so `Status.getError()` is always empty and the
+exception of a wrong bag size never reaches a caller; `one-and-only` and the other
+bag functions throw a package-private `IllegalArgumentException` subclass with the
+same message and no stack trace. (a) stays undone.
+
+## Batch 3 (designs of 2026-10-27; swarm drafts, maintainer decisions recorded)
+
+Sources: `research/pr7-fable-literature.md`, `research/pr8-sol-next-cycles.md`, and
+profile 021 (before batch 2). Every share below is expected, not measured; batch 2
+lowered the costs these shares were taken from.
+
+### D21. Cycle O: canonical designator keys (draft Codex Sol)
+
+PR2 H6, PR8 rank 1: `AttributeDesignatorKey.equals` is 5.72% of synthetic:1000 CPU
+(3.8% in `String.equals`). `AttributeDesignatorKey.Builder.build()` validates the
+candidate as today and returns the live representative of equal keys from Guava's
+weak interner (`Interners.newWeakInterner()`: concurrent, no global lock, keys held
+weakly; the maintainer rejected a hand-rolled `WeakHashMap` pool). The builder factories,
+`toBuilder()`, and `withIssuer()` use it; the XML mappers already build keys through
+the builder. The public constructor stays and may give non-canonical keys; a key
+without a category bypasses the pool. `equals` keeps its identity check and full
+fallback.
+
+Amended (maintainer, 2026-10-27: "Create Interner SPI for plugable reference
+intering"): interning is a pluggable SPI, public API in `org.xacml4j.v30`:
+`AttributeReferenceKeyInterner`, a `@FunctionalInterface` with
+`AttributeReferenceKey intern(AttributeReferenceKey key)` (thread-safe, returns the key
+or an equal key of the same class), and the static factories `weak()` (Guava's weak
+interner, a method reference, the default), `none()` (`key -> key`), and `get()` (the
+interner in use). The interner in use is the one implementation `ServiceLoader` finds,
+else `weak()`, resolved once into a package-private field of `AttributeReferenceKey`;
+two registered implementations fail loudly at the first key build. The builders of
+`AttributeDesignatorKey` and `AttributeSelectorKey` intern every key they build; both
+classes compare categories null-safely, so a key without a category needs no bypass.
+An implementation registers with `@AutoService`. As built after code review RSO
+(Claude Opus): the first version's generic method, null-category bypasses, and holder
+class failed with any non-default interner on category-less selector keys; selector
+fields are final.
+
+Kept: category, type, id, and issuer
+matching (§7.3.4, §7.3.5, §7.20), MustBePresent and missing-attribute statuses, hash
+values, serialized form, public signatures; canonical identity is not a public
+guarantee. No public API change.
+
+### D22. Cycle P: results and structural hashes without temporary arrays (draft Codex Sol)
+
+PR1 H8, H9, PR8 rank 2. `Result.Builder` starts its obligation and advice maps as
+shared immutable empty maps and creates a `LinkedHashMap` on the first element;
+built results stay immutable snapshots. The varargs hashes of `Result`, `Status`,
+`StatusCode`, `BaseDecisionRule`, `BaseCompositeDecisionRule`, `Rule`, `Policy`,
+and `PolicySet` become explicit folds (`31 * h + Objects.hashCode(field)`, the same
+seed and field order), so every hash value stays. Decision (maintainer, 2026-10-27):
+`Result.ok` shares one private immutable OK `Status`; `Status.ok()` still returns a
+builder. Kept: decisions, statuses (§7.17, §7.19), obligation and advice order and
+merge (§7.18), hash values, serialized forms, public signatures. Expected: about
+7.3% of first-deny bytes, 1.5% of rsa2008 bytes.
+
+### D23. Cycle Q: one-operand bindings, and built-in calls without reflection (draft Claude Opus)
+
+The maintainer asked whether MethodType and MethodHandles make sense for optimized
+invocations: D15 already uses them; D23 extends them. Profile 021 (rsa2008): the
+list path under `Apply` and `FunctionReference` holds 17.0% of the bytes and 13.0%
+of the CPU; the reflective `InvocationTargetException` and the factory's wrapper
+take 7.3% of the CPU. synthetic:1000 calls only `Match` pairs (D15).
+
+- (a) A built-in with one parameter that meets D15's conditions gets a
+  `LambdaMetafactory` adapter `Unary` beside `Binary`, in D15's cache (46 built-ins;
+  rsa2008 uses `string-one-and-only` and `not`).
+- (b) `FunctionSpecImpl` overrides `invoke(context, Expression...)`: one operand of an
+  eager bound one-parameter function without runtime validation goes to the binding
+  through a new public `DefaultFunctionInvocation.invokeDirect(FunctionSpec,
+  EvaluationContext, Expression)` (decision below); two operands take D8's pair path
+  with D15's binding; any other call takes the list path. `Apply` keeps its varargs call
+  (code review RD23S, Codex Sol: a custom `FunctionSpec` that overrides both overloads
+  must keep receiving the varargs call); `FunctionSpecImpl`'s varargs override routes
+  the built-in pairs.
+- (c) A default-factory static method without a binding (variadic, lazy, with the
+  context, or three or more operands) is called through a spreading `MethodHandle`
+  (`unreflect`, `asType`, `asSpreader`) instead of `Method.invoke` when every argument
+  is null or of its parameter type; otherwise the factory's invocation runs and fails
+  as before. Its success path costs what `Method.invoke` costs; a failure no longer
+  builds the two reflective throwables.
+
+Kept: results; operand evaluation once each, in order, and the lazy functions' order
+and short-circuit (§7.4, A.3.5, A.3.12); exception mapping (an `EvaluationException`
+keeps its status, any other failure becomes the same `FunctionInvocationException`
+with the same status code and message; a wrong argument type fails as
+`IllegalArgumentException("argument type mismatch")`); runtime validation; custom
+factories, invocations, specs, instance providers, and other class loaders (no
+binding, no handle); the interfaces `FunctionSpec`, `FunctionInvocation`,
+`FunctionInvocationFactory`. Decisions (maintainer, 2026-10-27): no
+`FunctionSpec.invokeUnary`; the one public method on `DefaultFunctionInvocation`, as
+D15 added the two-operand one.
+
+### D24. Cycle R: a restricted target index for policy-set children and policy rules (draft Claude Fable)
+
+PR6 H1, PR7 1 to 3, PR8 rank 5: a policy set evaluates every child per request; on
+synthetic:1000 `Target.match` is 72.7% of the CPU and the per-child contexts 32.8% of
+the bytes. An opted-in PDP keeps, per policy set it evaluates, an immutable snapshot of
+its prepared children (D25) with an index of the children whose target is decided by
+one string equality, and gives the combining algorithm only the children that can
+apply, in declaration order.
+
+Revised after plan review RPA (Codex Astra, REJECT: key prefetch through the PIP,
+re-resolution of failed references, separate listeners; all three confirmed in the
+code) by Claude Fable:
+
+- Key values from the request only: `EvaluationContext.resolveEntity(category)` and
+  `Entity.resolve(...)`, never `resolve(key)` and never the information point. A key the
+  request does not carry evaluates the original list. A key the request carries is the
+  bag every `Match` of that key sees, so the index adds no PIP call, resolved
+  attribute, failure, or status.
+- Reference children only from D25's bindings: the index classifies the target the
+  resolver returned and `isReferenceTo` accepted, and the combining algorithm evaluates
+  that same bound entry. A reference whose binding fails, throws, or does not match
+  stays an `Any` entry on today's `createContext` path, so §7.15 errors are per decision
+  as today. A reference listed twice is two entries.
+- One generation contract (with D25): one registry per PDP (`PreparedPolicySets`) owns
+  the generation and immutable per-set snapshots; one listener per PDP runs, in order,
+  the resolver's cache cleanup (D25's generation-checked refill), then the registry's
+  increment and clear. A build reads the generation, resolves through the resolver, and
+  publishes with `putIfAbsent` only while the generation is unchanged; an evaluation
+  that started with a snapshot finishes with it; a bound entry of an old generation
+  falls back to today's path for that call.
+- Eligible child, exact classes: `Target`, its first `MatchAnyOf`, every `MatchAllOf`,
+  their first `Match` over an `AttributeDesignator` are exactly those engine classes
+  (a subclass goes to `Any`), `MustBePresent="false"`, one key shared by the set, and
+  the predicate is the default `string-equal`: its id plus two `FunctionSpec.scan`
+  probes at build time (MATCH for `"a"` in `["a"]`, NO_MATCH for `"a"` in `["A"]`),
+  which only the direct default binding of `EqualityPredicates.equals(StringVal,
+  StringVal)` answers; with runtime validation on, the set is not indexed. With
+  today's error order (`policy4j-yeu3`, `policy4j-0972`), a child whose indexed
+  equalities are all No-match is Not-applicable with no observable effect.
+- Candidates: the union of the buckets of the request bag's values and `Any`, in
+  ascending position, handed to the unchanged combining algorithm.
+- Algorithms by implementation class: a built-in class of
+  `org.xacml4j.v30.policy.combine.impl` (not a subclass) other than
+  `OnPermitApplySecondPolicyCombiningAlgorithm`; anything else evaluates the original
+  list.
+- Plumbing: `PolicySet.combineDecisions` reaches the registry through the root context
+  (the D17 walk); a foreign root, or a PDP without the opt-in, evaluates the original
+  list.
+- Step 2: the same selection over the rules in `Policy.combineDecisions` (no bindings).
+
+Decisions (maintainer, 2026-10-27): opt-in `PolicyDecisionPointBuilder.targetIndex()`,
+off by default; reference children through D25's bindings; the rule step in this cycle;
+measured with the index on and off as a `PdpDecideBenchmark` parameter plus the batch
+pair; after the revision: additive public API in xacml-core, `public final class
+PreparedPolicySets` (`create()`, `invalidate()`) and one public `RootEvaluationContext`
+constructor taking it (a package-private factory cannot be reached from
+`org.xacml4j.v30.pdp`), the registry's internals package-private; algorithm
+eligibility by implementation class; provenance by the `scan` probes, no new
+`FunctionSpec` method. Kept: §7.3.5; §7.6, §7.7 as the engine evaluates them today;
+§7.11 to §7.14 and Annex C order and short-circuits; §7.15 reference errors per
+decision; §7.18 staging; §5.29; §5.42; no PIP call, resolved attribute, failure, or
+status that linear evaluation would not produce; custom targets, functions,
+algorithms, and contexts evaluate the original list. Changed and documented: the
+resolver resolves a reference child once per snapshot instead of once per decision.
+Proof: `TargetIndexDifferentialTest`, every conformance and rsa2008 request through two
+PDPs over independent equivalent repositories and PIPs, index on and off; per result
+`Result.equals` plus what it omits (the status error's class and message chain, the
+iteration order of obligations, advice, policy ids, and attribute assignments).
+Expected: synthetic:1000 keeps the gain (every request carries the key); rsa2008 small
+to none (its targets key on attributes its requests rarely carry).
+
+### D25. Cycle S: bound policy-reference resolution (draft Codex Astra)
+
+PR8 rank 4: on profile 021 the resolver probe and the reference match of each
+reference child were 6.6% and 1.7% of a non-indexed synthetic:1000 scan (nothing
+comparable on rsa2008). D24 removes them for every skipped child, so D25 pays only for
+the reference children D24 evaluates (index off, the `Any` bucket, other algorithm
+ids). Decisions (maintainer, 2026-10-27): internal only, no public SPI; fix the
+late-refill race.
+
+As revised after plan review RPF (Claude Fable, APPROVE WITH CHANGES), one mechanism
+with D24:
+
+- D24's per-PDP registry (`PreparedPolicySets`, package-private in
+  `org.xacml4j.v30.policy`, identity-keyed, with an `AtomicLong` generation) holds per
+  policy set one prepared child list in declaration order (`PreparedPolicySet`: the
+  children and, with the opt-in, D24's index). A reference child is a package-private
+  `BoundReference` that keeps a volatile link (target and generation): its
+  `createContext` binds once per generation (the context's resolver, then the reference
+  match, once per bind instead of once per decision) and builds the same reference and
+  policy contexts as today through a package-private factory of the reference class;
+  its `evaluate` reads the target from the context, so a rebind cannot pair a context
+  with another target. A bind that a generation change overlapped is used once and
+  not kept. `PolicySet.combineDecisions` fetches the prepared list once per evaluation
+  of the set; `getDecisions()` keeps returning the original children. The prepared list
+  exists for every default PDP; only the index depends on `targetIndex()`.
+- The resolver keeps its reference cache and stays the only caller of the repository.
+  Race fix: each listener callback and `clearRefCache()` increment a generation first
+  and then remove or clear; `resolve` reads the generation before the repository call
+  and stores with `compute(ref, (k, cached) -> generation.get() == before ? found :
+  cached)`. The PDP registers the registry's listener after the resolver's, and the
+  repository dispatches callbacks in registration order. The test that preserves the
+  race is replaced by one that pins the fix.
+
+Kept: version selection; missing references per §7.15, and cyclic references as the
+engine reports them today; §7.14 and Annex C; §7.18 staging; context ancestry and
+`getReferencedCompositeDecisionRules`; policy-id reporting; custom contexts and
+combining algorithms (they get the original children). Not in D25: lazy reference
+contexts (PR5), which change the public parent chain (**BREAKING**, its own decision).
+D25 is implemented with or after D24's registry (task 23.2).
 
 ### D12. Every cycle
 
@@ -360,7 +743,7 @@ Rollback: revert the three files and the rule. No data migration.
 
 ## Open Questions
 
-1. Cycle C (D7): accept a **BREAKING** change of the Java serialized form of
+1. ANSWERED 2026-10-27 (see D7). Cycle C (D7): accept a **BREAKING** change of the Java serialized form of
    `BagOfValues`, or keep the `Multiset` field for compatibility (then less
    allocation is saved)? Task 6.2 waits for the maintainer. The second
    profiling round found a third route (`research/pr1-opus-allocation.md` H1,
@@ -368,11 +751,11 @@ Rollback: revert the three files and the rule. No data migration.
    `serialVersionUID`, build the `Multiset` on demand, and iterate a transient
    array in today's order; a golden-bytes test written by the current class
    would prove the stream unchanged, so it needs no BREAKING change.
-2. Cycle L (D18): may per-element debug lines on the per-policy path be
+2. ANSWERED 2026-10-27, yes (see D18). Cycle L (D18): may per-element debug lines on the per-policy path be
    removed and replaced by one line per decision, and may the debug level be
    read once per decision? Either changes what a debug log shows. Until
    decided, cycle L only adds guards.
-3. Exceptions on built-in function errors (PR1 H3, PR2 H8, PR4 H2): built
+3. ANSWERED 2026-10-27, optimize (see D20). Exceptions on built-in function errors (PR1 H3, PR2 H8, PR4 H2): built
    without stack traces, `Status.getError()` would lose the trace for a
    built-in function failure (about 15% of rsa2008 CPU). Removing only the
    reflective wrappers (`InvocationTargetException`, the factory's

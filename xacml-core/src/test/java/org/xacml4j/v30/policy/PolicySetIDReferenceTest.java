@@ -199,8 +199,9 @@ public class PolicySetIDReferenceTest
 		order.verify(algorithm).combine(refContext.capture(), eq(Collections.emptyList()));
 		assertSame(policyRefContext, refContext.getValue());
 		verify(context, never()).isExtendedIndeterminateEval();
-		order.verify(context).addAdvices(Decision.DENY, Collections.emptyList());
-		order.verify(context).addObligations(Decision.DENY, Collections.emptyList());
+		// A policy set without applicable advice or obligations adds none (design D19)
+		verify(context, never()).addAdvices(any(), any());
+		verify(context, never()).addObligations(any(), any());
 		order.verify(context).addEvaluationResult(refPolicySet, Decision.DENY);
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicySetIDReference();
@@ -208,8 +209,6 @@ public class PolicySetIDReferenceTest
 		verify(context, times(2)).getCurrentPolicySet();
 		verify(context, times(1)).getCurrentPolicy();
 		verify(algorithm, times(1)).combine(refContext.capture(), eq(Collections.emptyList()));
-		verify(context, times(1)).addAdvices(Decision.DENY, Collections.emptyList());
-		verify(context, times(1)).addObligations(Decision.DENY, Collections.emptyList());
 		verify(context, times(1)).addEvaluationResult(refPolicySet, Decision.DENY);
 		verifyNoMoreInteractions(context, algorithm);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());

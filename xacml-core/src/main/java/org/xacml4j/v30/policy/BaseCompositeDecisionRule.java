@@ -10,12 +10,12 @@ package org.xacml4j.v30.policy;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
@@ -42,6 +40,7 @@ import org.xacml4j.v30.Versionable;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
@@ -55,8 +54,6 @@ import com.google.common.collect.Multimap;
 abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	implements CompositeDecisionRule, Versionable
 {
-	private final static Logger log = LoggerFactory.getLogger(BaseCompositeDecisionRule.class);
-
 	private final Version version;
 	private final Entity policyIssuer;
 	private final Integer maxDelegationDepth;
@@ -118,35 +115,18 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 
 	@Override
 	public Decision evaluate(EvaluationContext context) {
-		if(log.isDebugEnabled()){
-			log.debug("Evaluating composite " +
-					"decision rule with id=\"{}\"", id);
-		}
 		MatchResult r = isMatch(context);
 		if(r == MatchResult.NOMATCH){
-			if(log.isDebugEnabled()){
-				log.debug("Composite decision rule " +
-						"id=\"{}\" target is NO_MATCH, " +
-						"decision result is NOT_APPLICABLE", id);
-			}
 			return Decision.NOT_APPLICABLE;
 		}
 		if(r == MatchResult.MATCH){
 			ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
-			if(log.isDebugEnabled()){
-				log.debug("Composite decision rule " +
-						          "id=\"{}\" condition=\"{}\", evaluating rules", id, result);
-			}
 			if(result == ConditionResult.TRUE){
 				// XACML 3.0, section 7.18: the obligations and advice from the evaluation of
 				// this rule go to an enclosing policy set only if they match its decision
 				StagedResponses staged = isEnclosed(context)?new StagedResponses(context):null;
 				EvaluationContext evaluationContext = (staged == null)?context:staged;
 				Decision decision = combineDecisions(evaluationContext);
-				if(log.isDebugEnabled()){
-					log.debug("Composite decision rule " +
-							"id=\"{}\" combined  decision result is=\"{}\"", id, decision);
-				}
 				if(!decision.isIndeterminate() &&
 						decision != Decision.NOT_APPLICABLE){
 					if(!context.isExtendedIndeterminateEval()){
@@ -166,11 +146,6 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 				return decision;
 			}
 			if(result == ConditionResult.FALSE){
-				if(log.isDebugEnabled()){
-					log.debug("Composite decision rule " +
-							"id=\"{}\" condition eval is FALSE, " +
-							"decision result is=\"{}\"", id, Decision.NOT_APPLICABLE);
-				}
 				return Decision.NOT_APPLICABLE;
 			}
 		}
@@ -219,16 +194,12 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		}catch(Exception e){
 			evaluationResult = Decision.INDETERMINATE;
 		}
-		switch(evaluationResult){
-			case DENY : return Decision.INDETERMINATE_D;
-			case PERMIT : return Decision.INDETERMINATE_P;
-			case NOT_APPLICABLE: return Decision.NOT_APPLICABLE;
-
-			case INDETERMINATE_D : return Decision.INDETERMINATE_D;
-			case INDETERMINATE_P : return Decision.INDETERMINATE_P;
-			case INDETERMINATE_DP: return Decision.INDETERMINATE_DP;
-			default: return Decision.INDETERMINATE_DP;
-		}
+		return switch (evaluationResult) {
+			case DENY, INDETERMINATE_D -> Decision.INDETERMINATE_D;
+			case PERMIT, INDETERMINATE_P -> Decision.INDETERMINATE_P;
+			case NOT_APPLICABLE -> Decision.NOT_APPLICABLE;
+			default -> Decision.INDETERMINATE_DP;
+		};
 	}
 
 	protected abstract Decision combineDecisions(EvaluationContext context);
@@ -252,22 +223,30 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 
 	@Override
 	public int hashCode() {
-		return super.hashCode() * 31 +
-				Objects.hashCode(version, policyIssuer, maxDelegationDepth, combinerParameters);
+		// Arrays.hashCode of the fields in this order, without the array (design D22)
+		int base = super.hashCode();
+		int h = 1;
+		h = 31 * h + java.util.Objects.hashCode(version);
+		h = 31 * h + java.util.Objects.hashCode(policyIssuer);
+		h = 31 * h + java.util.Objects.hashCode(maxDelegationDepth);
+		h = 31 * h + java.util.Objects.hashCode(combinerParameters);
+		return base * 31 + h;
 	}
 
 	/**
 	 * Holds the obligations and advice from the evaluation of one composite decision
 	 * rule until the decision of that rule is known. The root context is not changed
 	 * before that, so nothing must be removed from it when the rule is not applicable,
-	 * is indeterminate, or has a different decision
+	 * is indeterminate, or has a different decision. A staging list is created when the
+	 * first response is staged, and only a list with something in it reaches the parent
+	 * context (design D19)
 	 */
 	private static final class StagedResponses extends DescendantEvaluationContext
 	{
-		private final List<Advice> permitAdvices = new ArrayList<>();
-		private final List<Advice> denyAdvices = new ArrayList<>();
-		private final List<Obligation> permitObligations = new ArrayList<>();
-		private final List<Obligation> denyObligations = new ArrayList<>();
+		private List<Advice> permitAdvices = ImmutableList.of();
+		private List<Advice> denyAdvices = ImmutableList.of();
+		private List<Obligation> permitObligations = ImmutableList.of();
+		private List<Obligation> denyObligations = ImmutableList.of();
 
 		StagedResponses(EvaluationContext context){
 			super(context);
@@ -287,22 +266,20 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		@Override
 		public void addAdvices(Decision d, Iterable<Advice> advices){
 			Preconditions.checkNotNull(d, "decision");
-			if(d == Decision.PERMIT || d == Decision.DENY){
-				List<Advice> staged = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
-				for(Advice a : advices){
-					staged.add(a);
-				}
+			if(d == Decision.PERMIT){
+				permitAdvices = staged(permitAdvices, advices);
+			}else if(d == Decision.DENY){
+				denyAdvices = staged(denyAdvices, advices);
 			}
 		}
 
 		@Override
 		public void addObligations(Decision d, Iterable<Obligation> obligations){
 			Preconditions.checkNotNull(d, "decision");
-			if(d == Decision.PERMIT || d == Decision.DENY){
-				List<Obligation> staged = (d == Decision.PERMIT)?permitObligations:denyObligations;
-				for(Obligation o : obligations){
-					staged.add(o);
-				}
+			if(d == Decision.PERMIT){
+				permitObligations = staged(permitObligations, obligations);
+			}else if(d == Decision.DENY){
+				denyObligations = staged(denyObligations, obligations);
 			}
 		}
 
@@ -313,8 +290,33 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		 */
 		void publish(Decision d){
 			EvaluationContext parent = getParent();
-			parent.addAdvices(d, (d == Decision.PERMIT)?permitAdvices:denyAdvices);
-			parent.addObligations(d, (d == Decision.PERMIT)?permitObligations:denyObligations);
+			List<Advice> advices = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
+			if(!advices.isEmpty()){
+				parent.addAdvices(d, advices);
+			}
+			List<Obligation> obligations = (d == Decision.PERMIT)?permitObligations:denyObligations;
+			if(!obligations.isEmpty()){
+				parent.addObligations(d, obligations);
+			}
+		}
+
+		/**
+		 * Adds responses to a staging list, which is the shared empty list until the first
+		 * response replaces it with a list of its own
+		 *
+		 * @param staged the staging list so far
+		 * @param responses the responses to stage
+		 * @return the staging list with the responses in it
+		 */
+		private static <T> List<T> staged(List<T> staged, Iterable<T> responses){
+			List<T> list = staged;
+			for(T response : responses){
+				if(list.isEmpty()){
+					list = new ArrayList<>();
+				}
+				list.add(response);
+			}
+			return list;
 		}
 	}
 

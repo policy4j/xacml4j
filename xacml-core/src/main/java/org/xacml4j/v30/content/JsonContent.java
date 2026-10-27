@@ -34,6 +34,8 @@ import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.TypeToString;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.PathEvaluationException;
 
 import com.jayway.jsonpath.Configuration;
@@ -41,7 +43,9 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.InvalidPathException;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.PathNotFoundException;
 import com.jayway.jsonpath.TypeRef;
+import com.jayway.jsonpath.spi.json.JsonProvider;
 
 /**
  * JSON content abstraction
@@ -58,6 +62,7 @@ public final class JsonContent
 
     private DocumentContext context;
     private DocumentContext pathListContext;
+    private DocumentContext valueListContext;
     private Object jsonDocument;
 
     private JsonContent(Supplier<Object> jsonSupplier, Configuration config){
@@ -74,6 +79,10 @@ public final class JsonContent
                         Option.AS_PATH_LIST,
                         Option.SUPPRESS_EXCEPTIONS,
                         Option.DEFAULT_PATH_LEAF_TO_NULL))
+                .parse(jsonDocument);
+        this.valueListContext = JsonPath
+                .using(config.addOptions(
+                        Option.ALWAYS_RETURN_LIST))
                 .parse(jsonDocument);
     }
 
@@ -112,11 +121,46 @@ public final class JsonContent
         return Type.JSON_UTF8;
     }
 
+    /**
+     * Resolves the JSONPath of a given selector as {@link XmlContent} resolves an XPath:
+     * a path without a value resolves to nothing, and each scalar value converts from its
+     * string form to the selector data type. An object, an array, a value that does not
+     * convert, and an invalid path are processing errors. A JSON {@code null} is no value.
+     */
     @Override
     public Optional<BagOfValues> resolve(
 		    AttributeSelectorKey selectorKey,
 		    Supplier<Entity> entitySupplier) {
-        return Optional.empty();
+        String path = selectorKey.getPath();
+        if(selectorKey.getContextSelectorId() != null){
+            // A context selector is not defined for JSON content yet (policy4j-izog): fail, never select from the root
+            throw PathEvaluationException.invalidJsonPathContextSelectorId(path, selectorKey.getContextSelectorId());
+        }
+        try{
+            ValueType type = selectorKey.getDataType();
+            TypeToString toString = TypeToString.forType(type)
+                    .orElseThrow(()->new IllegalArgumentException(
+                            String.format("Unsupported XACML type=\"%s\"", type.getTypeId())));
+            JsonProvider json = valueListContext.configuration().jsonProvider();
+            BagOfValues.Builder bag = type.bagBuilder();
+            for(Object node : json.toIterable(valueListContext.read(path))){
+                Object value = json.unwrap(node);
+                if(value == null){
+                    continue;
+                }
+                if(json.isArray(value) || json.isMap(value)){
+                    throw new IllegalArgumentException(
+                            String.format("Unsupported JSON value=\"%s\" path=\"%s\"", value, path));
+                }
+                bag.attribute(toString.fromString(String.valueOf(value)));
+            }
+            BagOfValues values = bag.build();
+            return values.isEmpty()?Optional.empty():Optional.of(values);
+        }catch (PathNotFoundException e){
+            return Optional.empty();
+        }catch (Exception e){
+            throw PathEvaluationException.invalidJsonPath(path, e);
+        }
     }
 
     @Override

@@ -24,7 +24,6 @@ package org.xacml4j.v30.policy;
 
 
 import org.xacml4j.v30.Decision;
-import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -33,7 +32,6 @@ import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Status;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 public class Rule extends BaseDecisionRule implements PolicyElement
@@ -101,7 +99,8 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 
 	@Override
 	public int hashCode() {
-		return super.hashCode() * 31 + Objects.hashCode(effect);
+		// (31 + ...) is Arrays.hashCode of the one-element array, without the array (design D22)
+		return super.hashCode() * 31 + (31 + java.util.Objects.hashCode(effect));
 	}
 
 	@Override
@@ -112,10 +111,6 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			return getExtendedIndeterminate();
 		}
 		MatchResult m  = isMatch(context);
-		if(log.isDebugEnabled()){
-			log.debug("Decision rule id=\"{}\" " +
-					"target evaluation is=\"{}\"", id, m);
-		}
 		if(m == MatchResult.INDETERMINATE){
 			context.setEvaluationStatusIfAbsent(()->Status.processingError().build());
 			return getExtendedIndeterminate();
@@ -124,10 +119,6 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			return Decision.NOT_APPLICABLE;
 		}
 		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
-		if(log.isDebugEnabled()){
-			log.debug("Decision rule id=\"{}\" " +
-					"condition evaluation is=\"{}\"", id, result);
-		}
 		if(result == ConditionResult.TRUE){
 			Decision d = effect.toDecision();
 			if(!context.isExtendedIndeterminateEval()){
@@ -172,20 +163,47 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			super(context);
 		}
 
-		@Override
-		public DecisionRule getCurrentRule() {
+		/**
+		 * The rule of this context, which answers {@link #getCurrentRule()} (design D17)
+		 */
+		final Rule rule() {
 			return Rule.this;
 		}
 
 		@Override
 		public EvaluationContext createExtIndeterminateEvalContext() {
-			return new RuleEvaluationContext(this){
-				@Override
-				public boolean isExtendedIndeterminateEval() {
-					return true;
-				}
-			};
+			return new ExtendedIndeterminateRuleContext(this);
 		}
+	}
+
+	/**
+	 * The extended Indeterminate context of a rule context, named so that
+	 * {@link #isOwnContext(DescendantEvaluationContext)} can tell it from a subclass of
+	 * {@link RuleEvaluationContext} declared elsewhere (design D17)
+	 */
+	final class ExtendedIndeterminateRuleContext extends RuleEvaluationContext
+	{
+		ExtendedIndeterminateRuleContext(EvaluationContext context){
+			super(context);
+		}
+
+		@Override
+		public boolean isExtendedIndeterminateEval() {
+			return true;
+		}
+	}
+
+	/**
+	 * Tests if a context is a rule context that this class creates; a subclass of the public
+	 * {@link RuleEvaluationContext} declared elsewhere can override its queries
+	 *
+	 * @param context a rule context or another descendant context
+	 * @return {@code true} if the context is exactly a {@link RuleEvaluationContext} or an
+	 * {@link ExtendedIndeterminateRuleContext}
+	 */
+	static boolean isOwnContext(DescendantEvaluationContext context){
+		Class<?> type = context.getClass();
+		return type == RuleEvaluationContext.class || type == ExtendedIndeterminateRuleContext.class;
 	}
 
 	public static class Builder extends BaseDecisionRule.Builder<Builder>

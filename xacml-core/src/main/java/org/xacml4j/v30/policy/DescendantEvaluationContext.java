@@ -56,7 +56,15 @@ import org.xacml4j.v30.types.Entity;
 
 /**
  * An implementation of {@link EvaluationContext} which
- * delegates all invocation to the given context
+ * delegates all invocation to the given context.
+ * <p>
+ * A query about the rule, policy, policy set, or reference being evaluated is answered by
+ * the nearest level that evaluates one; every other query that a level does not answer itself
+ * goes to the root in one call. The parent fields are walked in a loop instead of calling each
+ * level in turn (change optimize-pdp-evaluation, design D17). Only the contexts of this package
+ * are walked through: a context of another implementation, or a subclass of the public
+ * {@link Rule.RuleEvaluationContext} declared elsewhere, stops the walk and is called as before,
+ * so its overrides keep working.
  *
  * @author Giedrius Trumpickas
  */
@@ -74,7 +82,7 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 
 	@Override
 	public Optional<Entity> resolveEntity(CategoryId categoryId) {
-		return parent.resolveEntity(categoryId);
+		return top().resolveEntity(categoryId);
 	}
 
 	@Override
@@ -99,31 +107,58 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 	}
 	@Override
 	public void setEvaluationStatus(DecisionRule rule, Status status) {
-		this.parent.setEvaluationStatus(rule, status);
+		top().setEvaluationStatus(rule, status);
 	}
 
 	@Override
 	public Optional<Status> getEvaluationStatus(DecisionRule rule) {
-		return parent.getEvaluationStatus(rule);
+		return top().getEvaluationStatus(rule);
 	}
 
 	protected EvaluationContext getParent(){
 		return parent;
 	}
 
+	/**
+	 * Tests if a context is one of this package's contexts, which answer a query the way
+	 * this class does unless they override it for their own level
+	 *
+	 * @param c an evaluation context
+	 * @return {@code true} for a context of this package; {@code false} for a context of
+	 * another implementation or a subclass of {@link Rule.RuleEvaluationContext} declared
+	 * elsewhere
+	 */
+	private static boolean isOwn(EvaluationContext c){
+		return c instanceof DescendantEvaluationContext d
+				&& (!(d instanceof Rule.RuleEvaluationContext) || Rule.isOwnContext(d));
+	}
+
+	/**
+	 * The first context above this one that is not one of this package's contexts
+	 *
+	 * @return the root context, or a context of another implementation
+	 */
+	private EvaluationContext top(){
+		EvaluationContext c = parent;
+		while(isOwn(c)){
+			c = ((DescendantEvaluationContext)c).parent;
+		}
+		return c;
+	}
+
 	@Override
 	public Clock getClock(){
-		return parent.getClock();
+		return top().getClock();
 	}
 
 	@Override
 	public boolean isValidateFuncParamsAtRuntime() {
-		return parent.isValidateFuncParamsAtRuntime();
+		return top().isValidateFuncParamsAtRuntime();
 	}
 
 	@Override
 	public void setValidateFuncParamsAtRuntime(boolean validate){
-		parent.setValidateFuncParamsAtRuntime(validate);
+		top().setValidateFuncParamsAtRuntime(validate);
 	}
 
 	@Override
@@ -137,30 +172,53 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} defaultProvider
+	 * Answered by the nearest policy context
 	 */
 	@Override
 	public CompositeDecisionRule getCurrentPolicy() {
-		return parent.getCurrentPolicy();
+		EvaluationContext c = this;
+		while(!(c instanceof Policy.PolicyDescendantEvaluationContext p)){
+			c = ((DescendantEvaluationContext)c).parent;
+			if(!isOwn(c)){
+				return c.getCurrentPolicy();
+			}
+		}
+		return p.policy();
 	}
 
-
+	/**
+	 * Answered by the nearest rule context
+	 */
 	@Override
 	public DecisionRule getCurrentRule() {
-		return parent.getCurrentRule();
+		EvaluationContext c = this;
+		while(!(c instanceof Rule.RuleEvaluationContext r)){
+			c = ((DescendantEvaluationContext)c).parent;
+			if(!isOwn(c)){
+				return c.getCurrentRule();
+			}
+		}
+		return r.rule();
 	}
 
 	@Override
 	public void addEvaluationResult(CompositeDecisionRule policySet, Decision result) {
-		parent.addEvaluationResult(policySet, result);
+		top().addEvaluationResult(policySet, result);
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} defaultProvider
+	 * Answered by the nearest policy set context
 	 */
 	@Override
 	public CompositeDecisionRule getCurrentPolicySet() {
-		return parent.getCurrentPolicySet();
+		EvaluationContext c = this;
+		while(!(c instanceof PolicySet.PolicySetDescendantEvaluationContext s)){
+			c = ((DescendantEvaluationContext)c).parent;
+			if(!isOwn(c)){
+				return c.getCurrentPolicySet();
+			}
+		}
+		return s.policySet();
 	}
 
 	/**
@@ -186,24 +244,38 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 	public CompositeDecisionRule resolve(CompositeDecisionRuleIDReference ref)
 			throws PolicyResolutionException
 	{
-		return parent.resolve(ref);
+		return top().resolve(ref);
 	}
 
 
 	/**
-	 * Delegates call to {@link EvaluationContext} defaultProvider
+	 * Answered by the nearest policy reference context
 	 */
 	@Override
 	public CompositeDecisionRuleIDReference getCurrentPolicyIDReference() {
-		return parent.getCurrentPolicyIDReference();
+		EvaluationContext c = this;
+		while(!(c instanceof PolicyIDReference.PolicyIDReferenceEvaluationContext r)){
+			c = ((DescendantEvaluationContext)c).parent;
+			if(!isOwn(c)){
+				return c.getCurrentPolicyIDReference();
+			}
+		}
+		return r.reference();
 	}
 
 	/**
-	 * Delegates call to {@link EvaluationContext} defaultProvider
+	 * Answered by the nearest policy set reference context
 	 */
 	@Override
 	public CompositeDecisionRuleIDReference getCurrentPolicySetIDReference() {
-		return parent.getCurrentPolicySetIDReference();
+		EvaluationContext c = this;
+		while(!(c instanceof PolicySetIDReference.PolicySetIDReferenceEvaluationContext r)){
+			c = ((DescendantEvaluationContext)c).parent;
+			if(!isOwn(c)){
+				return c.getCurrentPolicySetIDReference();
+			}
+		}
+		return r.reference();
 	}
 
 	/**
@@ -211,59 +283,59 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 	 */
 	@Override
 	public TimeZone getTimeZone() {
-		return parent.getTimeZone();
+		return top().getTimeZone();
 	}
 
 	@Override
 	public ZonedDateTime getCurrentDateTime() {
-		return parent.getCurrentDateTime();
+		return top().getCurrentDateTime();
 	}
 
 	@Override
 	public final Optional<BagOfValues> resolve(
 			AttributeReferenceKey ref)
 			throws EvaluationException {
-		return parent.resolve(ref);
+		return top().resolve(ref);
 	}
 
 	@Override
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
-		return parent.getEvaluatedPolicies();
+		return top().getEvaluatedPolicies();
 	}
 
 	@Override
 	public Duration getDecisionCacheTTL() {
-		return parent.getDecisionCacheTTL();
+		return top().getDecisionCacheTTL();
 	}
 
 	@Override
 	public void setDecisionCacheTTL(int ttl) {
-		parent.setDecisionCacheTTL(ttl);
+		top().setDecisionCacheTTL(ttl);
 	}
 
 	@Override
 	public Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators() {
-		return parent.getResolvedDesignators();
+		return top().getResolvedDesignators();
 	}
 
 	@Override
 	public Map<AttributeSelectorKey, BagOfValues> getResolvedSelectors() {
-		return parent.getResolvedSelectors();
+		return top().getResolvedSelectors();
 	}
 
 	@Override
 	public Collection<Obligation> getMatchingObligations(Decision decision) {
-		return parent.getMatchingObligations(decision);
+		return top().getMatchingObligations(decision);
 	}
 
 	@Override
 	public void setDecisionCacheTTL(Duration ttl) {
-		parent.setDecisionCacheTTL(ttl);
+		top().setDecisionCacheTTL(ttl);
 	}
 
 	@Override
 	public Collection<Advice> getMatchingAdvices(Decision decision) {
-		return parent.getMatchingAdvices(decision);
+		return top().getMatchingAdvices(decision);
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public final class QuantifiedForAll extends QuantifiedExpression
             throws EvaluationException
     {
         BagOfValues bag = getDomain(context);
-        for(Value v : bag.values()){
+        for(Value v : bag){
             if(!evaluateIterant(v, context).equals(TRUE)){
                 return FALSE;
             }

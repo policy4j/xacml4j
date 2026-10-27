@@ -29,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
@@ -50,6 +51,8 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import com.google.common.base.Objects;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -592,5 +595,26 @@ public class RuleTest
 		Rule r2 = builder.build();
 
 		assertEquals(r1.hashCode(), r2.hashCode());
+	}
+
+	@Test
+	public void hashCodeIsTheHashOfTheFieldArraysOverTheSuperclassHash(){
+		Rule r = builder.build();
+		int base = Objects.hashCode(r.getId(), r.getTarget(), r.getCondition(),
+				r.getAdviceExpressions(), r.getObligationExpressions(), r.getDescription());
+
+		assertEquals(base * 31 + Objects.hashCode(r.getEffect()), r.hashCode());
+	}
+
+	@Test
+	public void evaluationStatusIsFoundWithAnEqualButDistinctRule(){
+		Rule r1 = builder.build();
+		Rule r2 = builder.build();
+		Status status = Status.processingError().build();
+		EvaluationContext root = new RootEvaluationContext(false, Duration.ZERO, resolver, handler);
+
+		root.setEvaluationStatus(r1, status);
+		assertNotSame(r1, r2);
+		assertEquals(status, root.getEvaluationStatus(r2).get());
 	}
 }

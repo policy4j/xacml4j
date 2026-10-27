@@ -22,8 +22,6 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
@@ -37,8 +35,6 @@ import com.google.common.base.Preconditions;
 public final class PolicyIDReference extends
 	BaseCompositeDecisionRuleIDReference implements PolicyElement
 {
-	private final static Logger log = LoggerFactory.getLogger(PolicyIDReference.class);
-
 	private PolicyIDReference(Builder b) {
 		super(b);
 	}
@@ -81,20 +77,10 @@ public final class PolicyIDReference extends
 		try{
 			CompositeDecisionRule resolvedPolicy = context.resolve(this);
 			if(resolvedPolicy == null){
-				if(log.isDebugEnabled()){
-					log.debug("Failed to resolve policy reference=\"{}\"", this);
-				}
 				return refContext;
-			}
-			if(log.isDebugEnabled()){
-				log.debug("Found matching policy " +
-						"to the policy reference\"{}\"", this);
 			}
 			return resolvedPolicy.createContext(refContext);
 		}catch(PolicyResolutionException e){
-			if(log.isDebugEnabled()){
-				log.debug("Failed to resolve policy reference=\"{}\"", this, e);
-			}
 			return refContext;
 		}
 	}
@@ -152,9 +138,6 @@ public final class PolicyIDReference extends
 		CompositeDecisionRuleIDReference otherRef = context.getCurrentPolicyIDReference();
 		if(otherRef != null){
 			if(ref.equals(otherRef)){
-				if(log.isDebugEnabled()){
-					log.debug("Policy reference=\"{}\" cycle detected", ref);
-				}
 				return true;
 			}
 			return isReferenceCyclic(ref, context.getParentContext());
@@ -190,8 +173,10 @@ public final class PolicyIDReference extends
 			return getParent();
 		}
 
-		@Override
-		public PolicyIDReference getCurrentPolicyIDReference() {
+		/**
+		 * The reference of this context, which answers {@link #getCurrentPolicyIDReference()} (design D17)
+		 */
+		final PolicyIDReference reference() {
 			return PolicyIDReference.this;
 		}
 	}

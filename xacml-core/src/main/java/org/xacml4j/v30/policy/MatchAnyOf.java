@@ -22,10 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.List;
 import java.util.Collection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
@@ -37,9 +36,8 @@ import com.google.common.collect.ImmutableList;
 public class MatchAnyOf
 		implements PolicyElement, Matchable
 {
-	private final static Logger log = LoggerFactory.getLogger(MatchAnyOf.class);
-
-	private final Collection<MatchAllOf> allOfs;
+	// a list, iterated by index on the decide path (design D16)
+	private final List<MatchAllOf> allOfs;
 
 	private MatchAnyOf(Builder b){
 		this.allOfs = b.allMatchAllOfs.build();
@@ -58,19 +56,13 @@ public class MatchAnyOf
 	public MatchResult match(EvaluationContext context)
 	{
 		MatchResult state = MatchResult.NOMATCH;
-		for(Matchable m : allOfs){
-			MatchResult result = m.match(context);
+		for(int i = 0, n = allOfs.size(); i < n; i++){
+			MatchResult result = allOfs.get(i).match(context);
 			if(result == MatchResult.INDETERMINATE){
-				if(log.isDebugEnabled()){
-					log.debug("AnyOf matchable match result=\"{}\"", result);
-				}
 				state = MatchResult.INDETERMINATE;
 				continue;
 			}
 			if(result == MatchResult.MATCH){
-				if(log.isDebugEnabled()){
-					log.debug("AnyOf matchable match result=\"{}\"", result);
-				}
 				state = MatchResult.MATCH;
 				break;
 			}

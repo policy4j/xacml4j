@@ -23,7 +23,6 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Objects;
 
 import org.slf4j.Logger;
@@ -66,13 +65,8 @@ public interface FunctionInvocationFactory
                 final Object ...params){
 
             try{
-                if(LOG.isDebugEnabled()){
-                    LOG.debug("invocation instance={} params={}", instance,
-                              Arrays.deepToString(params));
-                }
                 return (T)Objects.requireNonNull(m, "method").invoke(instance, params);
             }catch(Throwable t){
-                LOG.debug(t.getMessage(), t);
                 throw new RuntimeException(t);
             }
         }

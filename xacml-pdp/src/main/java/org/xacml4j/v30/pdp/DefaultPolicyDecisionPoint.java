@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
@@ -64,6 +66,7 @@ import com.google.common.collect.Multimap;
 final class DefaultPolicyDecisionPoint
 	implements PolicyDecisionPoint
 {
+	private final static Logger LOG = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
 
 	private final String id;
 	private final PolicyDecisionPointContextFactory factory;
@@ -142,6 +145,10 @@ final class DefaultPolicyDecisionPoint
 				r = decisionCache.getDecision(request);
 			}
 			if(r != null){
+				if(LOG.isDebugEnabled()){
+					LOG.debug("Request id=\"{}-{}\" decision=\"{}\" from the decision cache",
+							context.getCorrelationId(), number, r.getDecision());
+				}
 				if(context.isDecisionAuditEnabled()){
 					decisionAuditor.audit(this, r, request);
 				}
@@ -151,6 +158,11 @@ final class DefaultPolicyDecisionPoint
 			EvaluationContext evalContext = context.createEvaluationContext(request);
 			CompositeDecisionRule rootPolicy = context.getDomainPolicy();
 			Decision decision = rootPolicy.evaluate(rootPolicy.createContext(evalContext));
+			// One debug line per decision; the policy elements log none (design D18)
+			if(LOG.isDebugEnabled()){
+				LOG.debug("Request id=\"{}-{}\" decision=\"{}\" evaluated policies={}",
+						context.getCorrelationId(), number, decision, evalContext.getEvaluatedPolicies().size());
+			}
 			incrementDecisionCounters(decision);
 			r = createResult(evalContext,
 					decision,

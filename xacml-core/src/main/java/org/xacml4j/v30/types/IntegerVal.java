@@ -42,6 +42,17 @@ public final class IntegerVal
         super(XacmlTypes.INTEGER, value);
     }
 
+    private static final class SmallValues {
+        private static final int LOW = -128;
+        private static final int HIGH = 255;
+        private static final IntegerVal[] CACHE = new IntegerVal[HIGH - LOW + 1];
+        static {
+            for (int i = LOW; i <= HIGH; i++) {
+                CACHE[i - LOW] = new IntegerVal((long) i);
+            }
+        }
+    }
+
 
     public static IntegerVal ofAny(Object v, Object... params) {
         if (v instanceof java.lang.String) {
@@ -61,10 +72,16 @@ public final class IntegerVal
     }
 
     public static IntegerVal of(Number value){
-        return new IntegerVal(value.longValue());
+        return of(value.longValue());
     }
     public static IntegerVal of(BigInteger value){
-        return new IntegerVal(value.longValue());
+        return of(value.longValue());
+    }
+
+    public static IntegerVal of(long value){
+        return value >= SmallValues.LOW && value <= SmallValues.HIGH
+                ? SmallValues.CACHE[(int) value - SmallValues.LOW]
+                : new IntegerVal(value);
     }
 
     static IntegerVal of(java.lang.String v){
@@ -73,7 +90,7 @@ public final class IntegerVal
                 (v.charAt(0) == '+')){
             v = v.substring(1);
         }
-        return new IntegerVal(Long.parseLong(v));
+        return of(Long.parseLong(v));
     }
 
     public Integer toInt(){

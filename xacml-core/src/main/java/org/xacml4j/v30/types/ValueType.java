@@ -24,6 +24,7 @@ package org.xacml4j.v30.types;
 
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.BagOfValuesType;
+import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueExpTypeInfo;
 
@@ -116,6 +117,11 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value<?>>
 	default BagOfValues.Builder bagBuilder(){
 	    return new BagOfValues.Builder(bagType());
     }
+
+	/** Creates the storage builder used for bags of this type. */
+	default BagStorage.Builder bagStorageBuilder(){
+		return BagStorage.values();
+	}
 
 	/**
 	 * Shortcut for {}

@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.BagOfValuesType;
+import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.SyntaxException;
 
@@ -216,6 +217,16 @@ public enum XacmlTypes implements ValueType
 	@Override
 	public BagOfValuesType bagType() {
 		return bagType;
+	}
+
+	@Override
+	public BagStorage.Builder bagStorageBuilder() {
+		return switch (this) {
+			case INTEGER -> BagStorage.integers();
+			case DOUBLE -> BagStorage.doubles();
+			case BOOLEAN -> BagStorage.booleans();
+			default -> BagStorage.values();
+		};
 	}
 
 	@Override

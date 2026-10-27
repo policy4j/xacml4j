@@ -859,7 +859,7 @@ public class DefaultEvaluationContextHandlerTest
 		Optional<BagOfValues> second = handler.resolve(context, RESOURCE_ID);
 
 		assertEquals(Optional.of(XacmlTypes.STRING.ofAny("doc-1").toBag()), first);
-		org.junit.jupiter.api.Assertions.assertSame(first.get(), second.get());
+		org.junit.jupiter.api.Assertions.assertSame(first, second);
 		Mockito.verify(requestContextCallback, Mockito.times(1)).getEntity(CategoryId.RESOURCE);
 		Mockito.verifyNoInteractions(pip);
 		org.junit.jupiter.api.Assertions.assertTrue(

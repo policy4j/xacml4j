@@ -59,7 +59,7 @@ public final class QuantifiedSelect extends QuantifiedExpression
         BagOfValues.Builder b = bag
                 .getEvaluatesTo()
                 .builder();
-        for(Value v : bag.values()){
+        for(Value v : bag){
             if(evaluateIterant(v, context).equals(TRUE)){
                 b.attribute(v);
             }

@@ -102,8 +102,7 @@ public final class AttributeDesignatorFunctions implements FunctionReturnTypeRes
 						.dataType(dataType)
 						.path(xpath, true);
 		if(categoryOrEntity.getEvaluatesTo().equals(XacmlTypes.ANYURI)){
-			selectorKeyBuilder
-					.category(categoryOrEntity).build();
+			selectorKeyBuilder.category(categoryOrEntity);
 		}
 		Optional<BagOfValues> v = Optional.empty();
 		final AttributeSelectorKey selectorKey = selectorKeyBuilder.build();

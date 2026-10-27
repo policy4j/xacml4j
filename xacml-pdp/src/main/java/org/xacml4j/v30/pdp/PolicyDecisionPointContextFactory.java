@@ -1,14 +1,9 @@
 package org.xacml4j.v30.pdp;
 
 import java.time.Duration;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
-import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.XPathVersion;
@@ -63,8 +58,6 @@ public interface PolicyDecisionPointContextFactory
 	final class DefaultPolicyDecisionPointContextFactory
 		implements PolicyDecisionPointContextFactory
 	{
-		private final static Logger LOG = LoggerFactory.getLogger(DefaultPolicyDecisionPointContextFactory.class);
-
 		/** Fixed when the PDP is built; the PpId MDC key tells PDPs with one prefix apart. */
 		private final String correlationPrefix = Long.toHexString(System.currentTimeMillis());
 		/** Numbers the decide calls of this PDP from 1, without a random number generator. */
@@ -174,15 +167,7 @@ public interface PolicyDecisionPointContextFactory
 					Preconditions.checkArgument(
 							!request.containsRequestReferences(),
 							"RequestContext contains multiple request references");
-					EvaluationContextHandler handler = new DefaultEvaluationContextHandler(
-							new RequestContextCallback() {
-								@Override
-								public Optional<Entity> getEntity(CategoryId category) {
-									Optional<Entity> e = request.getEntity(category);
-									LOG.debug("CategoryId={} entity={}", category.getAbbreviatedId(), e);
-									return e;
-								}
-							}, pip);
+					EvaluationContextHandler handler = new DefaultEvaluationContextHandler(request::getEntity, pip);
 					return new RootEvaluationContext(
 							validateFuncParamsAtRuntime,
 							decisionCacheTTL,

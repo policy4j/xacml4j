@@ -228,10 +228,16 @@ public class PolicySet extends
 
 	@Override
 	public int hashCode() {
-		return super.hashCode() * 31 +
-				Objects.hashCode(policySetDefaults, combiningAlgorithm,
-						decisionRules, policyCombinerParameters,
-						policySetCombinerParameters, reference);
+		// Arrays.hashCode of the fields in this order, without the array (design D22)
+		int base = super.hashCode();
+		int h = 1;
+		h = 31 * h + java.util.Objects.hashCode(policySetDefaults);
+		h = 31 * h + java.util.Objects.hashCode(combiningAlgorithm);
+		h = 31 * h + java.util.Objects.hashCode(decisionRules);
+		h = 31 * h + java.util.Objects.hashCode(policyCombinerParameters);
+		h = 31 * h + java.util.Objects.hashCode(policySetCombinerParameters);
+		h = 31 * h + java.util.Objects.hashCode(reference);
+		return base * 31 + h;
 	}
 
 	class PolicySetDescendantEvaluationContext
@@ -274,8 +280,10 @@ public class PolicySet extends
 			};
 		}
 
-		@Override
-		public PolicySet getCurrentPolicySet() {
+		/**
+		 * The policy set of this context, which answers {@link #getCurrentPolicySet()} (design D17)
+		 */
+		final PolicySet policySet() {
 			return PolicySet.this;
 		}
 
