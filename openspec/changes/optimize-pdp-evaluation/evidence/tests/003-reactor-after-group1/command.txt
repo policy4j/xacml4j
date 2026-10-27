@@ -1,0 +1,2 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk mvn -B -o -Dlicense.skipUpdateLicense=true clean test
+rtk git status --porcelain    # only the group 1 files, the new change directories, the test, and the rule

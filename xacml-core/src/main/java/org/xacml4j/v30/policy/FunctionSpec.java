@@ -145,6 +145,19 @@ public interface FunctionSpec
 		return invokeWithList(context, arguments == null ? Collections.emptyList() : Arrays.asList(arguments));
 	}
 
+	/**
+	 * Invokes this function with two arguments, as a {@code Match}
+	 * predicate is called. The default calls the variadic form, so an
+	 * implementation that overrides it keeps its behavior; the built-in
+	 * implementation overrides this method to skip the argument array.
+	 *
+	 * @return {@link ValueExp} representing function invocation result
+	 */
+	default<T extends ValueExp> T invoke(EvaluationContext context, Expression arg0, Expression arg1)
+		throws EvaluationException{
+		return invoke(context, new Expression[]{arg0, arg1});
+	}
+
 	<T extends ValueExp> T invokeWithList(EvaluationContext context, List<Expression> arguments)
 			throws EvaluationException;
 

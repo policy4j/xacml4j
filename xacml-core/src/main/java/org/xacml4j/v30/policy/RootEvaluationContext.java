@@ -22,16 +22,20 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.time.Clock;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,23 +61,34 @@ import org.xacml4j.v30.XPathVersion;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Supplier;
 import org.xacml4j.v30.types.Entity;
 
 
 public final class RootEvaluationContext implements EvaluationContext
 {
-	protected final Logger LOG = LoggerFactory.getLogger(RootEvaluationContext.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RootEvaluationContext.class);
+
+	// The maps below are created on their first use and published with a
+	// compare-and-set (change optimize-pdp-evaluation, D9). A decision creates the
+	// advice and obligation maps of its effect when the result reads them, and the
+	// getters return the maps' own values views, so a kept view behaves as before
+	// (reviews rv006 to rv010). A missing map compares and hashes as an empty one.
+	private static final VarHandle DENY_ADVICES = handle("denyAdvices", ConcurrentMap.class);
+	private static final VarHandle PERMIT_ADVICES = handle("permitAdvices", ConcurrentMap.class);
+	private static final VarHandle DENY_OBLIGATIONS = handle("denyObligations", ConcurrentMap.class);
+	private static final VarHandle PERMIT_OBLIGATIONS = handle("permitObligations", ConcurrentMap.class);
+	private static final VarHandle EVALUATED_POLICIES = handle("evaluatedPolicies", ConcurrentMap.class);
+	private static final VarHandle EVALUATION_STATUS_MAP = handle("evaluationStatusMap", ConcurrentMap.class);
 
 	private final XPathVersion defaultXPathVersion;
 	private final EvaluationContextHandler contextHandler;
 	private final PolicyReferenceResolver resolver;
-	private final ConcurrentMap<String, Advice> denyAdvices;
-	private final ConcurrentMap<String, Obligation> denyObligations;
-	private final ConcurrentMap<String, Advice> permitAdvices;
-	private final ConcurrentMap<String, Obligation> permitObligations;
-	private final ConcurrentMap<String, CompositeDecisionRule> evaluatedPolicies;
-	private final ConcurrentMap<DecisionRule, Status> evaluationStatusMap;
+	private volatile ConcurrentMap<String, Advice> denyAdvices;
+	private volatile ConcurrentMap<String, Advice> permitAdvices;
+	private volatile ConcurrentMap<String, Obligation> denyObligations;
+	private volatile ConcurrentMap<String, Obligation> permitObligations;
+	private volatile ConcurrentMap<String, CompositeDecisionRule> evaluatedPolicies;
+	private volatile ConcurrentMap<DecisionRule, Status> evaluationStatusMap;
 
 	private Clock clock;
 
@@ -104,18 +119,57 @@ public final class RootEvaluationContext implements EvaluationContext
 			EvaluationContextHandler contextHandler) {
 		Preconditions.checkNotNull(contextHandler);
 		Preconditions.checkNotNull(referenceResolver);
-		this.denyAdvices = new ConcurrentHashMap<>();
-		this.denyObligations = new ConcurrentHashMap<>();
-		this.permitAdvices = new ConcurrentHashMap<>();
-		this.permitObligations = new ConcurrentHashMap<>();
-		this.evaluationStatusMap = new ConcurrentHashMap<>();
 		this.contextHandler = contextHandler;
 		this.resolver = referenceResolver;
 		this.clock = java.util.Objects.requireNonNull(clock);
-		this.evaluatedPolicies = new ConcurrentSkipListMap<>();
 		this.combinedDecisionCacheTTL = new AtomicReference<>(defaultDecisionCacheTTL);
 		this.defaultXPathVersion = defaultXPathVersion;
 		this.validateFuncParamsAtRuntime = validateFuncParamsAtRuntime;
+	}
+
+	private static VarHandle handle(String field, Class<?> type) {
+		try {
+			return MethodHandles.lookup().findVarHandle(RootEvaluationContext.class, field, type);
+		} catch (ReflectiveOperationException e) {
+			throw new ExceptionInInitializerError(e);
+		}
+	}
+
+	/** @return the given new value, or the value another thread set first */
+	private <T> T created(VarHandle field, T value) {
+		@SuppressWarnings("unchecked")
+		T witness = (T) field.compareAndExchange(this, null, value);
+		return witness != null ? witness : value;
+	}
+
+	private ConcurrentMap<String, Advice> denyAdvicesMap() {
+		ConcurrentMap<String, Advice> m = denyAdvices;
+		return m != null ? m : created(DENY_ADVICES, new ConcurrentHashMap<>());
+	}
+
+	private ConcurrentMap<String, Advice> permitAdvicesMap() {
+		ConcurrentMap<String, Advice> m = permitAdvices;
+		return m != null ? m : created(PERMIT_ADVICES, new ConcurrentHashMap<>());
+	}
+
+	private ConcurrentMap<String, Obligation> denyObligationsMap() {
+		ConcurrentMap<String, Obligation> m = denyObligations;
+		return m != null ? m : created(DENY_OBLIGATIONS, new ConcurrentHashMap<>());
+	}
+
+	private ConcurrentMap<String, Obligation> permitObligationsMap() {
+		ConcurrentMap<String, Obligation> m = permitObligations;
+		return m != null ? m : created(PERMIT_OBLIGATIONS, new ConcurrentHashMap<>());
+	}
+
+	private ConcurrentMap<String, CompositeDecisionRule> evaluatedPolicies() {
+		ConcurrentMap<String, CompositeDecisionRule> m = evaluatedPolicies;
+		return m != null ? m : created(EVALUATED_POLICIES, new ConcurrentHashMap<>());
+	}
+
+	private ConcurrentMap<DecisionRule, Status> evaluationStatusMap() {
+		ConcurrentMap<DecisionRule, Status> m = evaluationStatusMap;
+		return m != null ? m : created(EVALUATION_STATUS_MAP, new ConcurrentHashMap<>());
 	}
 
 	public RootEvaluationContext(
@@ -142,7 +196,7 @@ public final class RootEvaluationContext implements EvaluationContext
 			this.evaluationStatus = status;
 			return;
 		}
-		this.evaluationStatusMap.put(rule, status);
+		evaluationStatusMap().put(rule, status);
 	}
 
 	@Override
@@ -156,7 +210,10 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public Optional<Status> getEvaluationStatus(DecisionRule rule) {
-		return Optional.ofNullable(evaluationStatusMap.get(rule));
+		// The concurrent map rejected a null rule; so does the missing one
+		java.util.Objects.requireNonNull(rule);
+		Map<DecisionRule, Status> m = evaluationStatusMap;
+		return m == null ? Optional.empty() : Optional.ofNullable(m.get(rule));
 	}
 
 	@Override
@@ -200,7 +257,7 @@ public final class RootEvaluationContext implements EvaluationContext
 	@Override
 	public final void addEvaluationResult(CompositeDecisionRule policy, Decision result) {
 		if (!result.isIndeterminate() && result != Decision.NOT_APPLICABLE) {
-			this.evaluatedPolicies.put(policy.getId(), policy);
+			evaluatedPolicies().put(policy.getId(), policy);
 		}
 	}
 
@@ -224,8 +281,8 @@ public final class RootEvaluationContext implements EvaluationContext
 		}
 		for(Advice a : advices){
 			LOG.debug("Adding advice=\"{}\"", a);
-			addAndMergeConcurrent(a, ()-> (Decision.PERMIT.equals(d) ? permitAdvices :
-			                               ((Decision.DENY.equals(d))?denyAdvices:null)));
+			addAndMergeConcurrent(a, Decision.PERMIT.equals(d) ? permitAdvicesMap() :
+			                         ((Decision.DENY.equals(d))?denyAdvicesMap():null));
 		}
 	}
 
@@ -243,16 +300,15 @@ public final class RootEvaluationContext implements EvaluationContext
 			return;
 		}
 		for(Obligation a : obligations){
-			addAndMergeConcurrent(a, ()-> (Decision.PERMIT.equals(d) ? permitObligations :
-			                               ((Decision.DENY.equals(d))?denyObligations:null)));
+			addAndMergeConcurrent(a, Decision.PERMIT.equals(d) ? permitObligationsMap() :
+			                         ((Decision.DENY.equals(d))?denyObligationsMap():null));
 		}
 	}
 
 	private <T extends DecisionRuleResponse> void addAndMergeConcurrent(T response,
-	                                                                    Supplier<ConcurrentMap<String, T>> mapSupplier)
+	                                                                    ConcurrentMap<String, T> rules)
 	{
 		LOG.debug("Processing {}=\"{}\"", response.getClass().getSimpleName(), response);
-		ConcurrentMap<String, T> rules = mapSupplier.get();
 		if(rules == null){
 			return;
 		}
@@ -362,10 +418,22 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public Collection<CompositeDecisionRuleIDReference> getEvaluatedPolicies() {
-		return evaluatedPolicies.values()
-		                        .stream()
-		                        .map(v->v.getReference())
-		                        .collect(Collectors.toList());
+		// In the order of the policy ids, as the sorted map kept them before
+		Map<String, CompositeDecisionRule> m = evaluatedPolicies;
+		if(m == null || m.isEmpty()){
+			// A new modifiable list, as the stream collector returned (review RVC2)
+			return new ArrayList<>(0);
+		}
+		String[] ids = m.keySet().toArray(new String[0]);
+		Arrays.sort(ids);
+		List<CompositeDecisionRuleIDReference> references = new ArrayList<>(ids.length);
+		for(String id : ids){
+			CompositeDecisionRule policy = m.get(id);
+			if(policy != null){
+				references.add(policy.getReference());
+			}
+		}
+		return references;
 	}
 
 	@Override
@@ -380,12 +448,12 @@ public final class RootEvaluationContext implements EvaluationContext
 
 	@Override
 	public Collection<Obligation> getMatchingObligations(final Decision decision) {
-		return (decision == Decision.PERMIT)?permitObligations.values():denyObligations.values();
+		return (decision == Decision.PERMIT)?permitObligationsMap().values():denyObligationsMap().values();
 	}
 
 	@Override
 	public Collection<Advice> getMatchingAdvices(final Decision decision) {
-		return (decision == Decision.PERMIT)?permitAdvices.values():denyAdvices.values();
+		return (decision == Decision.PERMIT)?permitAdvicesMap().values():denyAdvicesMap().values();
 	}
 
 	@Override
@@ -400,23 +468,24 @@ public final class RootEvaluationContext implements EvaluationContext
 				.add("evaluationStatus", evaluationStatus)
 				.add("combinedDecisionCacheTTL", combinedDecisionCacheTTL)
 				.add("extendedIndeterminateEval", extendedIndeterminateEval)
-				.add("denyAdvices", denyAdvices)
-				.add("denyObligations", denyObligations)
-				.add("permitAdvices", permitAdvices)
-				.add("permitObligations", permitObligations)
-				.add("evaluatedPolicies", evaluatedPolicies)
+				.add("denyAdvices", denyAdvices())
+				.add("denyObligations", denyObligations())
+				.add("permitAdvices", permitAdvices())
+				.add("permitObligations", permitObligations())
+				.add("evaluatedPolicies", orEmpty(evaluatedPolicies))
 				.toString();
 	}
 
 	@Override
 	public int hashCode() {
+		// A missing map hashes as an empty one: both give 0
 		return Objects.hashCode(defaultXPathVersion,
 				contextHandler,
 				resolver,
-				denyAdvices,
-				denyObligations,
-				permitAdvices,
-				permitObligations,
+				denyAdvices(),
+				denyObligations(),
+				permitAdvices(),
+				permitObligations(),
 				evaluatedPolicies,
 				validateFuncParamsAtRuntime,
 				evaluationStatus,
@@ -436,11 +505,11 @@ public final class RootEvaluationContext implements EvaluationContext
 		return Objects.equal(defaultXPathVersion, c.defaultXPathVersion)
 			&& Objects.equal(contextHandler, c.contextHandler)
 			&& Objects.equal(resolver, c.resolver)
-			&& Objects.equal(denyAdvices, c.denyAdvices)
-			&& Objects.equal(denyObligations, c.denyObligations)
-			&& Objects.equal(permitAdvices, c.permitAdvices)
-			&& Objects.equal(permitObligations, c.permitObligations)
-			&& Objects.equal(evaluatedPolicies, c.evaluatedPolicies)
+			&& denyAdvices().equals(c.denyAdvices())
+			&& denyObligations().equals(c.denyObligations())
+			&& permitAdvices().equals(c.permitAdvices())
+			&& permitObligations().equals(c.permitObligations())
+			&& orEmpty(evaluatedPolicies).equals(orEmpty(c.evaluatedPolicies))
 			&& Objects.equal(clock, c.clock)
 			&& Objects.equal(validateFuncParamsAtRuntime, c.validateFuncParamsAtRuntime)
 			&& Objects.equal(evaluationStatus, c.evaluationStatus)
@@ -453,6 +522,29 @@ public final class RootEvaluationContext implements EvaluationContext
 	 */
 	public void clear() {
 		this.combinedDecisionCacheTTL = null;
-		this.evaluatedPolicies.clear();
+		Map<String, CompositeDecisionRule> m = evaluatedPolicies;
+		if(m != null){
+			m.clear();
+		}
+	}
+
+	private static <K, V> Map<K, V> orEmpty(Map<K, V> m) {
+		return m != null ? m : Collections.emptyMap();
+	}
+
+	private Map<String, Advice> denyAdvices() {
+		return orEmpty(denyAdvices);
+	}
+
+	private Map<String, Obligation> denyObligations() {
+		return orEmpty(denyObligations);
+	}
+
+	private Map<String, Advice> permitAdvices() {
+		return orEmpty(permitAdvices);
+	}
+
+	private Map<String, Obligation> permitObligations() {
+		return orEmpty(permitObligations);
 	}
 }

@@ -1,0 +1,20 @@
+[ERROR] Tests run: 4, Failures: 2, Errors: 2, Skipped: 0, Time elapsed: 0.894 s <<< FAILURE! - in org.xacml4j.v30.pdp.CorrelationIdTest
+[ERROR] org.xacml4j.v30.pdp.CorrelationIdTest.individualDecisionsOfOneCallAreNumberedFromOne  Time elapsed: 0.872 s  <<< FAILURE!
+expected      : [8c320eec7ebbb6b5-1, 8c320eec7ebbb6b5-2, 514a000dc93280ab-1, 514a000dc93280ab-2]
+but was       : [8c320eec7ebbb6b5-c6077e4c7c5592b8, 8c320eec7ebbb6b5-c5f417e55537fed4, 514a000dc93280ab-39f91295a788110c, 514a000dc93280ab-d9be55c2edd5a65b]
+[ERROR] org.xacml4j.v30.pdp.CorrelationIdTest.oneRequestHasRequestIdOneAndTheKeyIsRemovedAfterDecide  Time elapsed: 0.007 s  <<< FAILURE!
+expected: 2ca26759e648c39f-1
+but was : 2ca26759e648c39f-ea7f8b1693214b3a
+[ERROR] org.xacml4j.v30.pdp.CorrelationIdTest.twoPdpsNumberTheirCallsAlike  Time elapsed: 0.004 s  <<< ERROR!
+java.lang.StringIndexOutOfBoundsException: Range [0, -1) out of bounds for length 16
+[ERROR] org.xacml4j.v30.pdp.CorrelationIdTest.correlationIdsOfOnePdpFollowOneSequence  Time elapsed: 0.002 s  <<< ERROR!
+java.lang.StringIndexOutOfBoundsException: Range [0, -1) out of bounds for length 16
+expected      : [8c320eec7ebbb6b5-1, 8c320eec7ebbb6b5-2, 514a000dc93280ab-1, 514a000dc93280ab-2]
+but was       : [8c320eec7ebbb6b5-c6077e4c7c5592b8, 8c320eec7ebbb6b5-c5f417e55537fed4, 514a000dc93280ab-39f91295a788110c, 514a000dc93280ab-d9be55c2edd5a65b]
+expected: 2ca26759e648c39f-1
+but was : 2ca26759e648c39f-ea7f8b1693214b3a
+[ERROR]   CorrelationIdTest.correlationIdsOfOnePdpFollowOneSequence:108->prefixOf:95 » StringIndexOutOfBounds Range [0, -1) out of bounds for length 16
+[ERROR]   CorrelationIdTest.twoPdpsNumberTheirCallsAlike:128->prefixOf:95 » StringIndexOutOfBounds Range [0, -1) out of bounds for length 16
+[ERROR] Tests run: 4, Failures: 2, Errors: 2, Skipped: 0
+[INFO] Xacml4J PDP ........................................ FAILURE [  2.749 s]
+[INFO] BUILD FAILURE

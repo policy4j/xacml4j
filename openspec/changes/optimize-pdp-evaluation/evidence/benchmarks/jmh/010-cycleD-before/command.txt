@@ -1,0 +1,2 @@
+java -jar <jar> PdpDecideBenchmark -p store=in-memory -p corpus=rsa2008,synthetic:100 -p request=all -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff results-mix.json
+java -jar <jar> PdpDecideBenchmark -p store=in-memory -p corpus=synthetic:1000 -p request=all,first-permit,first-deny,middle-permit,middle-deny,last-permit,last-deny,unknown-notapplicable -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff results-scan.json

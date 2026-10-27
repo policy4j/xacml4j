@@ -31,11 +31,12 @@ import com.google.common.collect.Multimap;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -84,9 +85,8 @@ public final class AttributeIndex
 	 * if no attribute available with a given identifier
 	 */
 	public Optional<Attribute> single(String attributeId){
-		return attributes.get(attributeId)
-				.stream()
-				.findFirst();
+		List<Attribute> found = attributes(attributeId);
+		return found.isEmpty() ? Optional.empty() : Optional.of(found.get(0));
 	}
 
 	public boolean isEmpty(){
@@ -103,26 +103,54 @@ public final class AttributeIndex
 	 * and given issuer
 	 */
 	public Collection<Attribute> findByIssuer(final String attributeId, final String issuer){
-		return attributes.get(attributeId)
-				          .stream()
-				         .filter(a -> issuer == null || Objects.equals(issuer, a.getIssuer())).collect(Collectors.toList());
+		// A new modifiable list, as the stream code returned (public behavior, change
+		// optimize-pdp-evaluation D6 characterization)
+		List<Attribute> candidates = attributes(attributeId);
+		if(issuer == null){
+			return new ArrayList<>(candidates);
+		}
+		List<Attribute> found = new ArrayList<>(candidates.size());
+		for(int i = 0; i < candidates.size(); i++){
+			Attribute a = candidates.get(i);
+			if(hasIssuer(a, issuer)){
+				found.add(a);
+			}
+		}
+		return found;
 	}
 
 	public Collection<Attribute> find(Predicate<Attribute> attributePredicate){
-		return stream().filter(attributePredicate)
-				.collect(Collectors.toList());
+		Objects.requireNonNull(attributePredicate);
+		List<Attribute> found = new ArrayList<>(0);
+		for(Attribute a : attributes.values()){
+			if(attributePredicate.test(a)){
+				found.add(a);
+			}
+		}
+		return found;
 	}
 
 	public Optional<Attribute> findFirst(Predicate<Attribute> attributePredicate){
-		return attributes.values().stream()
-				.filter(attributePredicate)
-				.findFirst();
+		Objects.requireNonNull(attributePredicate);
+		for(Attribute a : attributes.values()){
+			if(attributePredicate.test(a)){
+				return Optional.of(a);
+			}
+		}
+		return Optional.empty();
 	}
 
 	public Collection<Attribute> find(String id, Predicate<Attribute> attributePredicate){
-		return attributes.get(id).stream()
-				.filter(attributePredicate)
-				.collect(Collectors.toList());
+		Objects.requireNonNull(attributePredicate);
+		List<Attribute> candidates = attributes(id);
+		List<Attribute> found = new ArrayList<>(candidates.size());
+		for(int i = 0; i < candidates.size(); i++){
+			Attribute a = candidates.get(i);
+			if(attributePredicate.test(a)){
+				found.add(a);
+			}
+		}
+		return found;
 	}
 
 	public Stream<Attribute> stream(){
@@ -160,30 +188,96 @@ public final class AttributeIndex
 	 * @param issuer an attribute issuer
 	 * @return a collection of {@link Value} instances
 	 */
+	@SuppressWarnings("unchecked")
 	public <T extends Value<?>> Collection<T> findValues(
 			String attributeId, final ValueType type, String issuer){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> found = findByIssuer(attributeId, issuer);
-		ImmutableList.Builder<T> b = ImmutableList.builder();
-		for(Attribute a : found){
-			b.addAll(a.getValuesByType(type));
+		// Loops, not streams: this runs for every attribute lookup of a decision (change
+		// optimize-pdp-evaluation, D6). Same values in the same order as before.
+		List<Attribute> candidates = attributes(attributeId);
+		ImmutableList.Builder<T> b = null;
+		List<Value<?>> only = null;
+		for(int i = 0; i < candidates.size(); i++){
+			Attribute a = candidates.get(i);
+			if(!hasIssuer(a, issuer)){
+				continue;
+			}
+			List<Value<?>> values = valueList(a);
+			int matching = countOfType(values, type);
+			if(matching == 0){
+				continue;
+			}
+			if(b == null && only == null && matching == values.size()){
+				// So far one attribute, all of whose values have the type: its own immutable list.
+				only = values;
+				continue;
+			}
+			if(b == null){
+				b = ImmutableList.builder();
+				if(only != null){
+					b.addAll((List<T>)only);
+					only = null;
+				}
+			}
+			for(int j = 0; j < values.size(); j++){
+				Value<?> v = values.get(j);
+				if(isOfType(v, type)){
+					b.add((T)v);
+				}
+			}
 		}
-		return b.build();
+		if(b != null){
+			return b.build();
+		}
+		return only != null ? (Collection<T>)only : ImmutableList.of();
 	}
 
 	public boolean hasValues(
 			final String attributeId, final ValueType type, final String issuer){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> found = findByIssuer(attributeId, issuer);
-		if(found.isEmpty()){
-			return false;
-		}
-		for(Attribute a : found){
-			if(!a.getValuesByType(type).isEmpty()){
+		List<Attribute> candidates = attributes(attributeId);
+		for(int i = 0; i < candidates.size(); i++){
+			Attribute a = candidates.get(i);
+			if(hasIssuer(a, issuer) && countOfType(valueList(a), type) > 0){
 				return true;
 			}
 		}
 		return false;
+	}
+
+	/** @return the attributes with the id, as stored (an immutable list of the multimap) */
+	private List<Attribute> attributes(String attributeId){
+		Collection<Attribute> found = attributes.get(attributeId);
+		return found instanceof List ? (List<Attribute>)found : ImmutableList.copyOf(found);
+	}
+
+	/**
+	 * @return the values of the attribute as stored (an immutable list); no accessor is added to
+	 * {@link Attribute}, whose default serialVersionUID counts its non-private methods (review RVC1)
+	 */
+	@SuppressWarnings("unchecked")
+	private static List<Value<?>> valueList(Attribute a){
+		Collection<Value<?>> values = a.values();
+		return values instanceof List ? (List<Value<?>>)values : ImmutableList.copyOf(values);
+	}
+
+	private static boolean hasIssuer(Attribute a, String issuer){
+		return issuer == null || Objects.equals(issuer, a.getIssuer());
+	}
+
+	/** The type test of {@link Attribute#getValuesByType}: the value's type equals the type. */
+	private static boolean isOfType(Value<?> v, ValueType type){
+		return Objects.equals(v.getEvaluatesTo(), type);
+	}
+
+	private static int countOfType(List<Value<?>> values, ValueType type){
+		int n = 0;
+		for(int i = 0; i < values.size(); i++){
+			if(isOfType(values.get(i), type)){
+				n++;
+			}
+		}
+		return n;
 	}
 	public <T extends Value<?>> Optional<T> findValue(
 			String attributeId, final ValueType type, String issuer){
@@ -193,14 +287,21 @@ public final class AttributeIndex
 	public <T extends Value<?>> Optional<T> findValue(
 			String attributeId, final ValueType type, String issuer, Predicate<T>  filter){
 		Preconditions.checkNotNull(type);
-		Collection<Attribute> found = findByIssuer(attributeId, issuer);
-		for(Attribute a : found){
-			Collection<T> values = a.getValuesByType(type);
-			Optional<T> v = values.stream()
-					.filter(filter)
-					.findFirst();
-			if(v.isPresent()){
-				return v;
+		List<Attribute> candidates = attributes(attributeId);
+		for(int i = 0; i < candidates.size(); i++){
+			Attribute a = candidates.get(i);
+			if(!hasIssuer(a, issuer)){
+				continue;
+			}
+			// The stream filter rejected a null filter for every attribute it reached
+			Objects.requireNonNull(filter);
+			List<Value<?>> values = valueList(a);
+			for(int j = 0; j < values.size(); j++){
+				@SuppressWarnings("unchecked")
+				T v = (T)values.get(j);
+				if(isOfType(v, type) && filter.test(v)){
+					return Optional.of(v);
+				}
 			}
 		}
 		return Optional.empty();

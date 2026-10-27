@@ -1,0 +1,16 @@
+77:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-core ---
+1166:[INFO] Tests run: 6547, Failures: 0, Errors: 0, Skipped: 2
+1208:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-xml-jaxb ---
+1247:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-xml ---
+1290:[INFO] Tests run: 253, Failures: 0, Errors: 0, Skipped: 0
+1328:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-json ---
+1349:[INFO] Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+1391:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-pdp ---
+1519:[INFO] Tests run: 217, Failures: 0, Errors: 0, Skipped: 3
+1559:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-test ---
+1587:[INFO] Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+1626:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-conformance-tests ---
+3427:[INFO] Tests run: 938, Failures: 0, Errors: 0, Skipped: 12
+3467:[INFO] --- surefire:3.6.1:test (default-test) @ xacml-jmh ---
+3684:[INFO] Tests run: 196, Failures: 0, Errors: 0, Skipped: 0
+3699:[INFO] BUILD SUCCESS

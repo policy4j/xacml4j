@@ -1,0 +1,3 @@
+# runner: run-profile-004.sh (scratch): the profile part of run-jdk25.sh on the Logback build; CPU interval 1 ms
+"$(jenv prefix 25)/bin/java" -jar xacml-jmh/target/benchmarks.jar PdpDecideBenchmark -p store=in-memory -p corpus=<rsa2008|synthetic:1000> -p request=<all|first-deny> -f 1 -wi 5 -w 1s -i 5 -r 2s -t 1 -foe true -jvmArgs -XX:-UseJVMCICompiler -prof "async:libPath=/opt/homebrew/opt/async-profiler/lib/libasyncProfiler.dylib;event=<cpu|alloc>;[interval=1000000;]output=collapsed,flamegraph;dir=<run>/<event>-<corpus>-<request>"
+# then: collapsed_top.py <collapsed> 30 > top-<name>.md; gzip -9 collapsed-*.csv

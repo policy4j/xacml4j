@@ -1,0 +1,121 @@
+id: java-no-random-on-decide-path
+snapshots:
+  ? |
+    class A {
+      Object f() throws Exception {
+        return java.security.SecureRandom.getInstance("SHA1PRNG");
+      }
+    }
+  : labels:
+    - source: java.security.SecureRandom.getInstance("SHA1PRNG")
+      style: primary
+      start: 53
+      end: 103
+  ? |
+    class A {
+      Object f() {
+        return java.util.random.RandomGenerator.getDefault();
+      }
+    }
+  : labels:
+    - source: java.util.random.RandomGenerator.getDefault()
+      style: primary
+      start: 36
+      end: 81
+  ? |
+    class A {
+      Object f() {
+        return new java.util.SplittableRandom();
+      }
+    }
+  : labels:
+    - source: new java.util.SplittableRandom()
+      style: primary
+      start: 36
+      end: 68
+  ? |
+    class A {
+      String f() {
+        return UUID.randomUUID().toString();
+      }
+    }
+  : labels:
+    - source: UUID.randomUUID()
+      style: primary
+      start: 36
+      end: 53
+  ? |
+    class A {
+      double f() {
+        return Math.random();
+      }
+    }
+  : labels:
+    - source: Math.random()
+      style: primary
+      start: 36
+      end: 49
+  ? |
+    class A {
+      double f() {
+        return java.lang.Math.random();
+      }
+    }
+  : labels:
+    - source: java.lang.Math.random()
+      style: primary
+      start: 36
+      end: 59
+  ? |
+    class A {
+      java.security.SecureRandom r = new SecureRandom();
+    }
+  : labels:
+    - source: new SecureRandom()
+      style: primary
+      start: 43
+      end: 61
+  ? |
+    class A {
+      long f() {
+        return java.util.concurrent.ThreadLocalRandom.current().nextLong();
+      }
+    }
+  : labels:
+    - source: java.util.concurrent.ThreadLocalRandom.current()
+      style: primary
+      start: 34
+      end: 82
+  ? |
+    class A {
+      private final static java.util.Random RND = new Random();
+    }
+  : labels:
+    - source: new Random()
+      style: primary
+      start: 56
+      end: 68
+  ? |
+    import static java.lang.Math.random;
+    class A {
+      double f() {
+        return random();
+      }
+    }
+  : labels:
+    - source: random()
+      style: primary
+      start: 73
+      end: 81
+  ? |
+    import static java.util.UUID.randomUUID;
+    class A {
+      String f() {
+        return randomUUID().toString();
+      }
+    }
+  : labels:
+    - source: randomUUID()
+      style: primary
+      start: 77
+      end: 89

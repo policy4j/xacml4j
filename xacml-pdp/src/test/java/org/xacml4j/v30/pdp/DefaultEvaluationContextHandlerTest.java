@@ -835,4 +835,153 @@ public class DefaultEvaluationContextHandlerTest
 		handler.resolve(context, ref);
 		Mockito.verify(pip, Mockito.times(1)).resolve(context, ref);
 	}
+
+	// One bag per request attribute and decision (change optimize-pdp-evaluation, cycle A, D5;
+	// XACML 3.0 section 7.3.5: every later test of an attribute uses the bag first tested).
+
+	private static final AttributeDesignatorKey RESOURCE_ID = AttributeDesignatorKey.builder()
+			.category(CategoryId.RESOURCE).attributeId("urn:xacml4j:test:resource-id")
+			.dataType(XacmlTypes.STRING).build();
+
+	private static Entity resource(String id)
+	{
+		return Entity.builder()
+				.attribute(Attribute.builder("urn:xacml4j:test:resource-id").value(XacmlTypes.STRING.ofAny(id)).build())
+				.build();
+	}
+
+	@Test
+	public void repeatedRequestDesignatorIsTakenFromTheRequestOnceAndGivesTheSameBag() throws EvaluationException
+	{
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(resource("doc-1")));
+
+		Optional<BagOfValues> first = handler.resolve(context, RESOURCE_ID);
+		Optional<BagOfValues> second = handler.resolve(context, RESOURCE_ID);
+
+		assertEquals(Optional.of(XacmlTypes.STRING.ofAny("doc-1").toBag()), first);
+		org.junit.jupiter.api.Assertions.assertSame(first.get(), second.get());
+		Mockito.verify(requestContextCallback, Mockito.times(1)).getEntity(CategoryId.RESOURCE);
+		Mockito.verifyNoInteractions(pip);
+		org.junit.jupiter.api.Assertions.assertTrue(
+				((DefaultEvaluationContextHandler) handler).getResolvedDesignators().isEmpty(),
+				"request attributes are not resolved attributes of the response");
+	}
+
+	@Test
+	public void attributeFromTheInformationPointIsAskedOnceAndListedAsResolved() throws EvaluationException
+	{
+		BagOfValues supplied = XacmlTypes.STRING.ofAny("doc-2").toBag();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.empty());
+		when(pip.resolve(context, RESOURCE_ID)).thenReturn(Optional.of(supplied));
+
+		assertEquals(Optional.of(supplied), handler.resolve(context, RESOURCE_ID));
+		assertEquals(Optional.of(supplied), handler.resolve(context, RESOURCE_ID));
+
+		Mockito.verify(pip, Mockito.times(1)).resolve(context, RESOURCE_ID);
+		assertEquals(java.util.Map.of(RESOURCE_ID, supplied),
+				((DefaultEvaluationContextHandler) handler).getResolvedDesignators());
+	}
+
+	@Test
+	public void absentAttributeIsNotRemembered() throws EvaluationException
+	{
+		BagOfValues later = XacmlTypes.STRING.ofAny("doc-3").toBag();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(Entity.builder().build()));
+		when(pip.resolve(context, RESOURCE_ID)).thenReturn(Optional.empty(), Optional.of(later));
+
+		assertEquals(Optional.empty(), handler.resolve(context, RESOURCE_ID));
+		assertEquals(Optional.of(later), handler.resolve(context, RESOURCE_ID));
+	}
+
+	@Test
+	public void failedResolutionIsNotRemembered() throws EvaluationException
+	{
+		BagOfValues later = XacmlTypes.STRING.ofAny("doc-4").toBag();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.empty());
+		when(pip.resolve(context, RESOURCE_ID)).thenThrow(new IllegalStateException("information point down"))
+				.thenReturn(Optional.of(later));
+
+		assertThrows(EvaluationException.class, () -> handler.resolve(context, RESOURCE_ID));
+		assertEquals(Optional.of(later), handler.resolve(context, RESOURCE_ID));
+	}
+
+	@Test
+	public void separateDecisionsResolveSeparately() throws EvaluationException
+	{
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(resource("doc-5")));
+		EvaluationContextHandler other = new DefaultEvaluationContextHandler(requestContextCallback, pip);
+
+		handler.resolve(context, RESOURCE_ID);
+		other.resolve(context, RESOURCE_ID);
+
+		Mockito.verify(requestContextCallback, Mockito.times(2)).getEntity(CategoryId.RESOURCE);
+	}
+
+	/** Review RVP: two concurrent first resolutions in one decision both return the bag stored first. */
+	@Test
+	public void concurrentFirstResolutionsReturnTheBagStoredFirst() throws Exception
+	{
+		java.util.concurrent.CyclicBarrier bothInside = new java.util.concurrent.CyclicBarrier(2);
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenAnswer(invocation -> {
+			bothInside.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			return Optional.of(resource("doc-6"));
+		});
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> a = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			java.util.concurrent.Future<Optional<BagOfValues>> b = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			BagOfValues first = a.get(20, java.util.concurrent.TimeUnit.SECONDS).get();
+			BagOfValues second = b.get(20, java.util.concurrent.TimeUnit.SECONDS).get();
+
+			org.junit.jupiter.api.Assertions.assertSame(first, second);
+			org.junit.jupiter.api.Assertions.assertSame(first, handler.resolve(context, RESOURCE_ID).get());
+		}finally{
+			pool.shutdownNow();
+		}
+	}
+
+	/** Review RVP: an information point that resolves a request attribute through its context. */
+	@Test
+	public void informationPointCallingBackResolvesTheRequestAttributeOnce() throws EvaluationException
+	{
+		AttributeDesignatorKey clearance = AttributeDesignatorKey.builder()
+				.category(CategoryId.SUBJECT_ACCESS).attributeId("urn:xacml4j:test:clearance")
+				.dataType(XacmlTypes.STRING).build();
+		BagOfValues[] seenByPip = new BagOfValues[1];
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(resource("doc-7")));
+		when(pip.resolve(context, clearance)).thenAnswer(invocation -> {
+			seenByPip[0] = handler.resolve(context, RESOURCE_ID).get();
+			return Optional.of(XacmlTypes.STRING.ofAny("high").toBag());
+		});
+
+		assertEquals(Optional.of(XacmlTypes.STRING.ofAny("high").toBag()), handler.resolve(context, clearance));
+		org.junit.jupiter.api.Assertions.assertSame(seenByPip[0], handler.resolve(context, RESOURCE_ID).get());
+		Mockito.verify(requestContextCallback, Mockito.times(1)).getEntity(CategoryId.RESOURCE);
+	}
+
+	/** Reviews RVC1 and RVC2: a resolved-attributes map kept before the first information point bag sees it. */
+	@Test
+	public void resolvedMapsKeptBeforeTheFirstBagSeeLaterBags() throws EvaluationException
+	{
+		BagOfValues supplied = XacmlTypes.STRING.ofAny("doc-8").toBag();
+		java.util.Map<AttributeDesignatorKey, BagOfValues> kept = ((DefaultEvaluationContextHandler) handler).getResolvedDesignators();
+		java.util.Set<java.util.Map.Entry<AttributeDesignatorKey, BagOfValues>> keptEntries = kept.entrySet();
+		java.util.Map<org.xacml4j.v30.AttributeSelectorKey, BagOfValues> keptSelectors = ((DefaultEvaluationContextHandler) handler).getResolvedSelectors();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.empty());
+		when(pip.resolve(context, RESOURCE_ID)).thenReturn(Optional.of(supplied));
+
+		org.junit.jupiter.api.Assertions.assertTrue(kept.isEmpty());
+		handler.resolve(context, RESOURCE_ID);
+
+		assertEquals(java.util.Map.of(RESOURCE_ID, supplied), kept);
+		assertEquals(supplied, kept.get(RESOURCE_ID));
+		assertEquals(1, keptEntries.size());
+		org.junit.jupiter.api.Assertions.assertTrue(keptSelectors.isEmpty());
+		// the unmodifiable wrapper of a concurrent map, as before (review RVC2R)
+		org.junit.jupiter.api.Assertions.assertThrows(UnsupportedOperationException.class, () -> kept.put(RESOURCE_ID, supplied));
+		org.junit.jupiter.api.Assertions.assertThrows(UnsupportedOperationException.class, () -> keptSelectors.remove(RESOURCE_ID));
+		org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> keptSelectors.get(null));
+		org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> keptSelectors.containsValue(null));
+	}
 }

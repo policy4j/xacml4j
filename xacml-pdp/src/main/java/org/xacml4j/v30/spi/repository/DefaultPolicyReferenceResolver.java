@@ -22,6 +22,9 @@ package org.xacml4j.v30.spi.repository;
  * #L%
  */
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.PolicyResolutionException;
@@ -32,8 +35,6 @@ import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.policy.PolicySetIDReference;
 
 import com.google.common.base.Preconditions;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 /**
  * A default implementation of {@link PolicyReferenceResolver}.
@@ -46,8 +47,10 @@ public class DefaultPolicyReferenceResolver
 {
 	private final static Logger log = LoggerFactory.getLogger(DefaultPolicyReferenceResolver.class);
 
-	private final Cache<PolicyIDReference, Policy> policyIDRefCache;
-	private final Cache<PolicySetIDReference, PolicySet> policySetIDRefCache;
+	// Unbounded, as the Guava caches before them were (no size limit was set); emptied by
+	// the repository listener below (change optimize-pdp-evaluation, D10)
+	private final ConcurrentMap<PolicyIDReference, Policy> policyIDRefCache = new ConcurrentHashMap<>();
+	private final ConcurrentMap<PolicySetIDReference, PolicySet> policySetIDRefCache = new ConcurrentHashMap<>();
 
 	private final PolicyRepository repository;
 	private final boolean enableRefCache;
@@ -65,14 +68,6 @@ public class DefaultPolicyReferenceResolver
 		this.repository = policyRepository;
 		Preconditions.checkState(repository != null);
 		this.enableRefCache = enabledRefCache;
-		this.policyIDRefCache = CacheBuilder
-				.newBuilder()
-				.initialCapacity(1024)
-				.build();
-		this.policySetIDRefCache = CacheBuilder
-				.newBuilder()
-				.initialCapacity(1024)
-				.build();
 		this.repository.addPolicyRepositoryListener(this);
 	}
 
@@ -80,7 +75,7 @@ public class DefaultPolicyReferenceResolver
 	public Policy resolve(PolicyIDReference ref)
 			throws PolicyResolutionException
 	{
-		Policy p =  policyIDRefCache.getIfPresent(ref);
+		Policy p =  policyIDRefCache.get(ref);
 		if(p != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found Policy id=\"{}\" " +
@@ -111,7 +106,7 @@ public class DefaultPolicyReferenceResolver
 	public PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException
 	{
-		PolicySet p = policySetIDRefCache.getIfPresent(ref);
+		PolicySet p = policySetIDRefCache.get(ref);
 		if(p != null){
 			if(log.isDebugEnabled()){
 				log.debug("Found PolicySet id=\"{}\" " +
@@ -138,8 +133,8 @@ public class DefaultPolicyReferenceResolver
 	}
 
 	protected final void clearRefCache(){
-		policyIDRefCache.invalidateAll();
-		policySetIDRefCache.invalidateAll();
+		policyIDRefCache.clear();
+		policySetIDRefCache.clear();
 	}
 
 	/**
@@ -150,12 +145,12 @@ public class DefaultPolicyReferenceResolver
 	 */
 	private void removeCachedReferences(Policy p)
 	{
-		for(PolicyIDReference ref : policyIDRefCache.asMap().keySet()){
+		for(PolicyIDReference ref : policyIDRefCache.keySet()){
 			if(ref.isReferenceTo(p)){
 				if(log.isDebugEnabled()){
 					log.debug("Removing=\"{}\" from cache", ref);
 				}
-				policyIDRefCache.invalidate(ref);
+				policyIDRefCache.remove(ref);
 			}
 		}
 	}
@@ -168,12 +163,12 @@ public class DefaultPolicyReferenceResolver
 	 */
 	private void removeCachedReferences(PolicySet p)
 	{
-		for(PolicySetIDReference ref : policySetIDRefCache.asMap().keySet()){
+		for(PolicySetIDReference ref : policySetIDRefCache.keySet()){
 			if(ref.isReferenceTo(p)){
 				if(log.isDebugEnabled()){
 					log.debug("Removing=\"{}\" from cache", ref);
 				}
-				policySetIDRefCache.invalidate(ref);
+				policySetIDRefCache.remove(ref);
 			}
 		}
 	}

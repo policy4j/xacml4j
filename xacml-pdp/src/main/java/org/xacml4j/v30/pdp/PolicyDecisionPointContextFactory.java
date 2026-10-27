@@ -2,7 +2,7 @@ package org.xacml4j.v30.pdp;
 
 import java.time.Duration;
 import java.util.Optional;
-import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,10 @@ public interface PolicyDecisionPointContextFactory
 	{
 		private final static Logger LOG = LoggerFactory.getLogger(DefaultPolicyDecisionPointContextFactory.class);
 
-		private final static Random RND = new Random();
+		/** Fixed when the PDP is built; the PpId MDC key tells PDPs with one prefix apart. */
+		private final String correlationPrefix = Long.toHexString(System.currentTimeMillis());
+		/** Numbers the decide calls of this PDP from 1, without a random number generator. */
+		private final AtomicLong correlationSequence = new AtomicLong();
 
 		private PolicyInformationPoint pip;
 		private PolicyDecisionAuditor decisionAuditor;
@@ -78,7 +81,8 @@ public interface PolicyDecisionPointContextFactory
 		private boolean decisionCacheEnabled = true;
 		private boolean decisionAuditEnabled = true;
 		private boolean validateFuncParamsAtRuntime = false;
-		private int decisionCacheTTL = 30;
+		// Built once, not for every decision (change optimize-pdp-evaluation, D9)
+		private final Duration decisionCacheTTL = Duration.ofSeconds(30);
 		private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 
 		DefaultPolicyDecisionPointContextFactory(
@@ -108,7 +112,8 @@ public interface PolicyDecisionPointContextFactory
 		@Override
 		public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp)
 		{
-			final String correlationId = Long.toHexString(RND.nextLong());
+			final String correlationId = correlationPrefix + "-"
+					+ Long.toHexString(correlationSequence.incrementAndGet());
 			return new PolicyDecisionPointContext() {
 
 				@Override
@@ -180,7 +185,7 @@ public interface PolicyDecisionPointContextFactory
 							}, pip);
 					return new RootEvaluationContext(
 							validateFuncParamsAtRuntime,
-							Duration.ofSeconds(decisionCacheTTL),
+							decisionCacheTTL,
 							defaultXPathVersion,
 							policyReferenceResolver,
 							handler);

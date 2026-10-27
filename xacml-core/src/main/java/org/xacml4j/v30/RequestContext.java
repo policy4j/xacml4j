@@ -246,9 +246,14 @@ public class RequestContext
 
 
 	public Optional<Entity> getEntity(CategoryId category){
-		return getEntities(category)
-				.stream()
-				.findFirst();
+		// No stream over a transformed view: this runs for every attribute lookup of a decision
+		// (change optimize-pdp-evaluation, D6). The first entity of the category, as before.
+		Collection<Category> found = getCategory(category);
+		if(found.isEmpty()){
+			return Optional.empty();
+		}
+		return Optional.of(found instanceof List ? ((List<Category>)found).get(0).getEntity()
+				: found.iterator().next().getEntity());
 	}
 
 	public Optional<Attribute> getAttribute(CategoryId id,
@@ -272,12 +277,9 @@ public class RequestContext
 	 * has multiple attributes of same category
 	 */
 	public boolean containsRepeatingCategories() {
-		for (Category category : getCategories()) {
-			if (getCategoryOccurrences(category.getCategoryId()) > 1) {
-				return true;
-			}
-		}
-		return false;
+		// A list multimap holds more values than keys exactly when a category repeats;
+		// both sizes are kept by the immutable multimap (change optimize-pdp-evaluation, D9)
+		return entities.size() != entities.keySet().size();
 	}
 
 	public boolean containsAttributeValues(
@@ -338,18 +340,21 @@ public class RequestContext
 	 */
 	public Collection<Category> getIncludeInResultAttributes()
 	{
-		ImmutableList.Builder<Category> resultAttr = ImmutableList.builder();
+		ImmutableList.Builder<Category> resultAttr = null;
 		for(Category a : entities.values()){
 			Collection<Attribute> includeInResult = a.getIncludeInResultAttributes();
 			if(!includeInResult.isEmpty()){
+				if(resultAttr == null){
+					resultAttr = ImmutableList.builder();
+				}
 				resultAttr.add(Category
 						.builder(a.getCategoryId())
 						.id(a.getReferenceId().orElse(null))
-						.entity(Entity.builder().attributes(a.getIncludeInResultAttributes()).build())
+						.entity(Entity.builder().attributes(includeInResult).build())
 						.build());
 			}
 		}
-		return resultAttr.build();
+		return resultAttr != null ? resultAttr.build() : ImmutableList.of();
 	}
 
 	@Override

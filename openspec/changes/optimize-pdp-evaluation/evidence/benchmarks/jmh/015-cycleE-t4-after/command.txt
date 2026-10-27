@@ -1,0 +1,1 @@
+java -jar <jar> PdpDecideBenchmark -p store=in-memory -p corpus=rsa2008,synthetic:100 -p request=all -t 4 -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff results-t4.json

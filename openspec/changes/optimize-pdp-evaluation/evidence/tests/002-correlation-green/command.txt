@@ -1,0 +1,3 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest='CorrelationIdTest,DefaultPolicyDecisionPointTest' -Dsurefire.failIfNoSpecifiedTests=false test
+ast-grep scan --rule tools/ast-grep/rules/java-no-random-on-decide-path.yml xacml-pdp/src/main/java
+ast-grep test

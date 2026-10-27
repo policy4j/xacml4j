@@ -1,0 +1,45 @@
+id: java-no-random-on-decide-path
+language: Java
+severity: error
+message: The PDP package must not use a random number generator.
+note: |
+  Each decide call is named from a per-PDP sequence (change
+  optimize-pdp-evaluation, group 1). A shared java.util.Random makes
+  concurrent decisions contend on one seed and makes ids unreproducible.
+  The rule also matches the static-import forms random() and randomUUID().
+files:
+  - "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/**/*.java"
+rule:
+  any:
+    - pattern: new Random($$$ARGS)
+    - pattern: new java.util.Random($$$ARGS)
+    - pattern: new SecureRandom($$$ARGS)
+    - pattern: new java.security.SecureRandom($$$ARGS)
+    - pattern: SecureRandom.getInstance($$$ARGS)
+    - pattern: SecureRandom.getInstanceStrong()
+    - pattern: java.security.SecureRandom.getInstance($$$ARGS)
+    - pattern: new SplittableRandom($$$ARGS)
+    - pattern: new java.util.SplittableRandom($$$ARGS)
+    - pattern: ThreadLocalRandom.current()
+    - pattern: java.util.concurrent.ThreadLocalRandom.current()
+    - pattern: RandomGenerator.getDefault()
+    - pattern: RandomGenerator.of($$$ARGS)
+    - pattern: java.util.random.RandomGenerator.getDefault()
+    - pattern: java.util.random.RandomGenerator.of($$$ARGS)
+    - pattern: Math.random()
+    - pattern: java.lang.Math.random()
+    - pattern: StrictMath.random()
+    - pattern: UUID.randomUUID()
+    - pattern: java.util.UUID.randomUUID()
+    # Statically imported forms: a call without a receiver.
+    - all:
+        - kind: method_invocation
+        - not:
+            has:
+              field: object
+              stopBy: neighbor
+              pattern: $RECV
+        - any:
+            - pattern: random()
+            - pattern: randomUUID()
+            - pattern: current()

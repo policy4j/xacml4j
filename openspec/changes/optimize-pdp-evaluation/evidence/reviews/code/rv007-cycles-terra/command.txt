@@ -1,0 +1,2 @@
+ntm send xacml4j--review-regex-1 --pane=<Codex GPT-6.1 Terra pane> --base-prompt-file .ntm/roles/policy4j_code_review.md --file RVC2-packet.md
+# then a follow-up asking for the full report between the RVC2 markers; report taken from the Codex session record

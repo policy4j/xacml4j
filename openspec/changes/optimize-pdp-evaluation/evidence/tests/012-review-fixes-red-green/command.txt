@@ -1,0 +1,2 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -f <tree>/pom.xml -pl xacml-pdp -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest=<review test classes> test
+(trees: the pre-fix snapshot, with -Dmaven.test.failure.ignore=true; the tree before cycle A for B; the before-trees of D, E, F; the working tree)

@@ -25,6 +25,7 @@ package org.xacml4j.v30.pdp;
 import static org.xacml4j.v30.pdp.MetricsSupport.name;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -95,7 +96,7 @@ final class DefaultPolicyDecisionPoint
 		try
 		{
 			PolicyDecisionPointContext context = factory.createContext(
-					this::requestDecision);
+					new NumberedDecisions());
 			RequestContextHandler chain =
 					context.getRequestHandlers();
 			return ResponseContext
@@ -112,11 +113,26 @@ final class DefaultPolicyDecisionPoint
 		return id;
 	}
 
+	/**
+	 * The callback of one decide call. It numbers the individual decisions
+	 * of the call from 1; only the thread that handles the call uses it.
+	 */
+	private final class NumberedDecisions implements PolicyDecisionCallback
+	{
+		private int decisions;
+
+		@Override
+		public Result requestDecision(PolicyDecisionPointContext context, RequestContext request){
+			return DefaultPolicyDecisionPoint.this.requestDecision(context, request, ++decisions);
+		}
+	}
+
 	private Result requestDecision(
 			PolicyDecisionPointContext context,
-			RequestContext request)
+			RequestContext request,
+			int number)
 	{
-		MDCSupport.setXacmlRequestId(context.getCorrelationId(), request);
+		MDCSupport.setXacmlRequestId(context.getCorrelationId(), number);
 		try
 		{
 			PolicyDecisionCache decisionCache = context.getDecisionCache();
@@ -214,6 +230,10 @@ final class DefaultPolicyDecisionPoint
 	 */
 	private Collection<Category> getResolvedAttributes(EvaluationContext context){
 		Map<AttributeDesignatorKey, BagOfValues> desig = context.getResolvedDesignators();
+		if(desig.isEmpty()){
+			// The usual case: every attribute came from the request (change optimize-pdp-evaluation, D9)
+			return Collections.emptyList();
+		}
 		Multimap<CategoryId, Attribute> attributes = HashMultimap.create();
 		for(AttributeDesignatorKey k : desig.keySet()){
 			BagOfValues v = desig.get(k);

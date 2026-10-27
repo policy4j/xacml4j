@@ -68,3 +68,6 @@
 .doctor/
 # Python bytecode of evidence scripts (it holds the absolute path of the script)
 __pycache__/
+
+# Flame graphs are generated views of the committed collapsed stacks (collapsed-*.csv.gz); kept local
+openspec/changes/*/evidence/**/flame-*.html

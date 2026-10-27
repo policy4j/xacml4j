@@ -1,0 +1,8 @@
+scan exit 0
+Running 2 tests
+
+----------- Case Details -----------
+PASS java-no-console-output  ....
+PASS java-no-random-on-decide-path  ......
+
+test result: ok. 2 passed; 0 failed;

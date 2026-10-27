@@ -23,6 +23,8 @@ package org.xacml4j.v30.policy;
  */
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -249,7 +251,10 @@ public class Policy extends BaseCompositeDecisionRule
 		 */
 		PolicyDescendantEvaluationContext(EvaluationContext context){
 			super(context);
-			this.varDefEvalResults = Maps.newHashMap();
+			// A policy without variables never writes the map: setVariableEvaluationResult
+			// rejects an undefined id first (change optimize-pdp-evaluation, D10)
+			this.varDefEvalResults = variableDefinitions.isEmpty() ? Collections.emptyMap()
+					: new HashMap<>(variableDefinitions.size() * 2);
 		}
 
 		@Override

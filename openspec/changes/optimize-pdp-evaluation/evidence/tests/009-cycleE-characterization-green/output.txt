@@ -1,0 +1,19 @@
+## before
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.179 s -- in org.xacml4j.v30.RequestFixedCostCharacterizationTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.648 s -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.529 s -- in org.xacml4j.v30.pdp.DecisionFixedCostPdpTest
+[INFO] BUILD SUCCESS
+
+## after
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.207 s -- in org.xacml4j.v30.RequestContextIncludeInResultTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s -- in org.xacml4j.v30.AttributeLookupCharacterizationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in org.xacml4j.v30.RequestFixedCostCharacterizationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.082 s -- in org.xacml4j.v30.policy.RootEvaluationContextTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.245 s -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[INFO] BUILD FAILURE
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.132 s -- in org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.067 s -- in org.xacml4j.v30.pdp.CorrelationIdTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.117 s -- in org.xacml4j.v30.pdp.DecisionFixedCostPdpTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s -- in org.xacml4j.v30.pdp.RequestAttributeMemoPdpTest
+[INFO] Tests run: 38, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.309 s -- in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[INFO] BUILD SUCCESS

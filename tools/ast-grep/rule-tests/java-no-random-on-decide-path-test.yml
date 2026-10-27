@@ -1,0 +1,80 @@
+id: java-no-random-on-decide-path
+valid:
+  - |
+    class A {
+      private final java.util.concurrent.atomic.AtomicLong sequence = new java.util.concurrent.atomic.AtomicLong();
+      String next(String prefix) {
+        return prefix + "-" + Long.toHexString(sequence.incrementAndGet());
+      }
+    }
+  - |
+    class A {
+      Object f(java.util.Map<String, Object> m) {
+        return m.get("random");
+      }
+    }
+invalid:
+  - |
+    class A {
+      private final static java.util.Random RND = new Random();
+    }
+  - |
+    class A {
+      long f() {
+        return java.util.concurrent.ThreadLocalRandom.current().nextLong();
+      }
+    }
+  - |
+    class A {
+      String f() {
+        return UUID.randomUUID().toString();
+      }
+    }
+  - |
+    class A {
+      double f() {
+        return Math.random();
+      }
+    }
+  - |
+    class A {
+      java.security.SecureRandom r = new SecureRandom();
+    }
+  - |
+    class A {
+      double f() {
+        return java.lang.Math.random();
+      }
+    }
+  - |
+    import static java.util.UUID.randomUUID;
+    class A {
+      String f() {
+        return randomUUID().toString();
+      }
+    }
+  - |
+    import static java.lang.Math.random;
+    class A {
+      double f() {
+        return random();
+      }
+    }
+  - |
+    class A {
+      Object f() throws Exception {
+        return java.security.SecureRandom.getInstance("SHA1PRNG");
+      }
+    }
+  - |
+    class A {
+      Object f() {
+        return new java.util.SplittableRandom();
+      }
+    }
+  - |
+    class A {
+      Object f() {
+        return java.util.random.RandomGenerator.getDefault();
+      }
+    }

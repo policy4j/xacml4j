@@ -192,4 +192,31 @@ public class MatchTest
 		verify(context).setEvaluationStatus(eq(rule), any(Status.class));
 		verifyNoMoreInteractions(context, invocation);
 	}
+
+	/**
+	 * Characterization for cycle C of change optimize-pdp-evaluation (review rv005): the bag
+	 * [2, 3, 2] iterates as [2, 2, 3] (equal values grouped), so a predicate that is false for the
+	 * first 2 and fails on the second 2 gives Indeterminate before 3 is tested. An
+	 * insertion-order bag would test 3 second and give Match. Today's result must stay; changing
+	 * it is the semantics question of bug policy4j-0972 (XACML 3.0 section 7.6).
+	 */
+	@Test
+	public void failureOnAGroupedDuplicateComesBeforeALaterMatchingValue() throws EvaluationException
+	{
+		java.util.List<Expression> withTwo = ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).build();
+		java.util.List<Expression> withThree = ImmutableList.<Expression>builder().add(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(3)).build();
+		when(context.resolve(ref.getReferenceKey())).thenReturn(java.util.Optional.of(XacmlTypes.INTEGER.bagBuilder()
+				.attribute(XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(3), XacmlTypes.INTEGER.ofAny(2)).build()));
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+		when(context.getCurrentRule()).thenReturn(rule);
+		when(invocation.invoke(spec, context, withTwo))
+				.thenReturn(XacmlTypes.BOOLEAN.ofAny(false))
+				.thenThrow(new AttributeReferenceEvaluationException(ref.getReferenceKey(), "second value fails"));
+		lenient().when(invocation.invoke(spec, context, withThree)).thenReturn(XacmlTypes.BOOLEAN.ofAny(true));
+		Match m = Match.builder().predicate(spec).attribute(XacmlTypes.INTEGER.ofAny(1)).attrRef(ref).build();
+
+		assertEquals(MatchResult.INDETERMINATE, m.match(context));
+		verify(invocation, times(2)).invoke(spec, context, withTwo);
+		verify(invocation, never()).invoke(spec, context, withThree);
+	}
 }

@@ -1,0 +1,1 @@
+ntm send xacml4j--pdp-profile-1 --pane=0 --base-prompt-file .ntm/roles/policy4j_arch_review.md --file RVP.md   # then a follow-up asking for the full report

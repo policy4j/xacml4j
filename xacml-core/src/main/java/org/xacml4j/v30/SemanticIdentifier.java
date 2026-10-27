@@ -100,7 +100,12 @@ public class SemanticIdentifier implements Serializable
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, abbreviatedId, getClass());
+        // Objects.hash(id, abbreviatedId, getClass()) without its array; computed each time,
+        // because subclasses can change the protected fields (review RVC1, RVC2)
+        // null-safe as Objects.hash was: a subclass can set the protected fields to null (RVC2R)
+        int h = 31 + Objects.hashCode(id);
+        h = 31 * h + Objects.hashCode(abbreviatedId);
+        return 31 * h + getClass().hashCode();
     }
 
     protected static <T extends SemanticIdentifier> Map<String, T> getById(Class<T> type){

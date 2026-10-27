@@ -22,6 +22,8 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.Map;
@@ -54,15 +56,34 @@ final class DefaultEvaluationContextHandler
 {
 	private final static Logger LOG = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
 
+	// The information point caches and the cycle stacks are created on their first use and
+	// published with a compare-and-set (change optimize-pdp-evaluation, D9). A decision answered
+	// from the request alone creates no stack; it creates the designator cache when the result
+	// reads the resolved attributes, because that view must stay backed by the cache (rv008).
+	private static final VarHandle SELECTOR_CACHE = handle("selectorCache", Map.class);
+	private static final VarHandle DESIGNATOR_CACHE = handle("designatorCache", Map.class);
+	private static final VarHandle DESIGNATOR_STACK = handle("designatorResolutionStack", Deque.class);
+	private static final VarHandle SELECTOR_STACK = handle("selectorResolutionStack", Deque.class);
+
 	private PolicyInformationPoint pip;
 
 	private RequestContextCallback requestCallback;
 
-	private Map<AttributeSelectorKey, BagOfValues> selectorCache;
-	private Map<AttributeDesignatorKey, BagOfValues> designatorCache;
+	private final Supplier<Map<AttributeDesignatorKey, BagOfValues>> designatorCacheSup;
+	private final Supplier<Map<AttributeSelectorKey, BagOfValues>> selectorCacheSup;
+	private volatile Map<AttributeSelectorKey, BagOfValues> selectorCache;
+	private volatile Map<AttributeDesignatorKey, BagOfValues> designatorCache;
 
-	private Deque<AttributeDesignatorKey> designatorResolutionStack;
-	private Deque<AttributeSelectorKey> selectorResolutionStack;
+	/**
+	 * Bags found in the request, by designator, for this one decision: XACML 3.0 section
+	 * 7.3.5 asks every later test of an attribute to use the bag first tested. Request
+	 * results only; information point results stay in {@link #designatorCache}, which the
+	 * response's resolved attributes come from. Neither absence nor a failure is kept.
+	 */
+	private final Map<AttributeDesignatorKey, BagOfValues> requestDesignators = new ConcurrentHashMap<>();
+
+	private volatile Deque<AttributeDesignatorKey> designatorResolutionStack;
+	private volatile Deque<AttributeSelectorKey> selectorResolutionStack;
 
 	DefaultEvaluationContextHandler(
 			RequestContextCallback requestCallback,
@@ -74,10 +95,49 @@ final class DefaultEvaluationContextHandler
 		Preconditions.checkNotNull(requestCallback);
 		this.pip = pip;
 		this.requestCallback = requestCallback;
-		this.selectorResolutionStack = new ConcurrentLinkedDeque<>();
-		this.designatorResolutionStack = new ConcurrentLinkedDeque<>();
-		this.designatorCache = designatorCacheSup.get();
-		this.selectorCache = selectorCacheSup.get();
+		this.designatorCacheSup = Preconditions.checkNotNull(designatorCacheSup);
+		this.selectorCacheSup = Preconditions.checkNotNull(selectorCacheSup);
+	}
+
+	private static VarHandle handle(String field, Class<?> type)
+	{
+		try{
+			return MethodHandles.lookup().findVarHandle(DefaultEvaluationContextHandler.class, field, type);
+		}catch(ReflectiveOperationException e){
+			throw new ExceptionInInitializerError(e);
+		}
+	}
+
+	/** @return the given new value, or the value another thread set first */
+	private <T> T created(VarHandle field, T value)
+	{
+		@SuppressWarnings("unchecked")
+		T witness = (T)field.compareAndExchange(this, null, value);
+		return witness != null ? witness : value;
+	}
+
+	private Map<AttributeDesignatorKey, BagOfValues> designatorCache()
+	{
+		Map<AttributeDesignatorKey, BagOfValues> m = designatorCache;
+		return m != null ? m : created(DESIGNATOR_CACHE, designatorCacheSup.get());
+	}
+
+	private Map<AttributeSelectorKey, BagOfValues> selectorCache()
+	{
+		Map<AttributeSelectorKey, BagOfValues> m = selectorCache;
+		return m != null ? m : created(SELECTOR_CACHE, selectorCacheSup.get());
+	}
+
+	private Deque<AttributeDesignatorKey> designatorResolutionStack()
+	{
+		Deque<AttributeDesignatorKey> d = designatorResolutionStack;
+		return d != null ? d : created(DESIGNATOR_STACK, new ConcurrentLinkedDeque<>());
+	}
+
+	private Deque<AttributeSelectorKey> selectorResolutionStack()
+	{
+		Deque<AttributeSelectorKey> d = selectorResolutionStack;
+		return d != null ? d : created(SELECTOR_STACK, new ConcurrentLinkedDeque<>());
 	}
 
 	DefaultEvaluationContextHandler(
@@ -89,12 +149,17 @@ final class DefaultEvaluationContextHandler
 				()->new ConcurrentHashMap<>());
 	}
 
+	/**
+	 * The bags from the information point, as the read-only view of the cache. Asking for the
+	 * view creates the cache, so a caller that keeps the map or its entry set sees later bags,
+	 * as before the caches were created on first use (reviews RVC1, RVC2, RVC2R).
+	 */
 	public Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators(){
-		return Collections.unmodifiableMap(designatorCache);
+		return Collections.unmodifiableMap(designatorCache());
 	}
 
 	public Map<AttributeSelectorKey, BagOfValues> getResolvedSelectors(){
-		return Collections.unmodifiableMap(selectorCache);
+		return Collections.unmodifiableMap(selectorCache());
 	}
 
 	@Override
@@ -106,12 +171,18 @@ final class DefaultEvaluationContextHandler
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(ref);
 		if(ref instanceof AttributeDesignatorKey){
-			return Optional.ofNullable(designatorCache.get(ref))
-					.or(()->doDesignatorResolve(context, ref));
+			AttributeDesignatorKey key = (AttributeDesignatorKey)ref;
+			Map<AttributeDesignatorKey, BagOfValues> pipBags = designatorCache;
+			BagOfValues bag = pipBags != null ? pipBags.get(key) : null;
+			if(bag == null){
+				bag = requestDesignators.get(key);
+			}
+			return bag != null ? Optional.of(bag) : doDesignatorResolve(context, key);
 		}
 		if(ref instanceof AttributeSelectorKey){
-			return Optional.ofNullable(selectorCache.get(ref))
-					.or(()->doSelectorResolve(context, ref));
+			Map<AttributeSelectorKey, BagOfValues> pipBags = selectorCache;
+			BagOfValues bag = pipBags != null ? pipBags.get(ref) : null;
+			return bag != null ? Optional.of(bag) : doSelectorResolve(context, ref);
 		}
 		return Optional.empty();
 	}
@@ -145,28 +216,34 @@ final class DefaultEvaluationContextHandler
 		return entity.resolve(selectorKey);
 	}
 
-	private Optional<BagOfValues> doDesignatorResolve(EvaluationContext context, AttributeReferenceKey ref)
+	private Optional<BagOfValues> doDesignatorResolve(EvaluationContext context, AttributeDesignatorKey key)
 	{
-		Preconditions.checkArgument(ref instanceof AttributeDesignatorKey);
-		AttributeDesignatorKey designatorKey = (AttributeDesignatorKey)ref;
-		Optional<BagOfValues> v = requestCallback.getEntity(ref.getCategory())
-		                                         .flatMap(e-> e.resolve(designatorKey.getAttributeId(),
-		                                                              designatorKey.getDataType(), designatorKey.getIssuer()))
-		                                         .or(()->doPipResolve(context, (AttributeDesignatorKey)ref));
-		return v;
+		Optional<Entity> entity = requestCallback.getEntity(key.getCategory());
+		if(entity.isPresent()){
+			Optional<BagOfValues> found = entity.get().resolve(key.getAttributeId(), key.getDataType(), key.getIssuer());
+			if(found.isPresent()){
+				// The first bag wins, so that every test of the attribute sees one bag.
+				BagOfValues first = requestDesignators.putIfAbsent(key, found.get());
+				return first != null ? Optional.of(first) : found;
+			}
+		}
+		return doPipResolve(context, key);
 	}
 
 	private Optional<BagOfValues> doPipResolve(EvaluationContext context, AttributeDesignatorKey key)
 	{
-		if(designatorResolutionStack.contains(key)){
+		Deque<AttributeDesignatorKey> stack = designatorResolutionStack();
+		if(stack.contains(key)){
 			LOG.warn("Cyclic designator=\"{}\" resolution detected", key);
 			return Optional.empty();
 		}
 		try
 		{
-			designatorResolutionStack.push(key);
+			stack.push(key);
 			Optional<BagOfValues> v =  pip.resolve(context, key);
-			v.ifPresent(bag -> designatorCache.putIfAbsent(key, bag));
+			if(v.isPresent()){
+				designatorCache().putIfAbsent(key, v.get());
+			}
 			return v;
 
 		}catch(Exception e){
@@ -175,7 +252,7 @@ final class DefaultEvaluationContextHandler
 			// message is visible in the response.
 			throw failed(key, e);
 		}finally{
-			designatorResolutionStack.pop();
+			stack.pop();
 		}
 	}
 
@@ -183,13 +260,14 @@ final class DefaultEvaluationContextHandler
 			final EvaluationContext context,
 			final AttributeSelectorKey ref) throws EvaluationException
 	{
-		if(selectorResolutionStack.contains(ref)){
+		Deque<AttributeSelectorKey> stack = selectorResolutionStack();
+		if(stack.contains(ref)){
 			LOG.warn("Cyclic selector=\"{}\" resolution detected", ref);
 			return Optional.empty();
 		}
 		try
 		{
-			selectorResolutionStack.push(ref);
+			stack.push(ref);
 			Optional<BagOfValues> v = resolveViaPip(context, ref);
 			if(!v.isPresent() &&
 					ref.getContextSelectorId() != null){
@@ -205,7 +283,9 @@ final class DefaultEvaluationContextHandler
 				          .map(Entity.class::cast)
 						.flatMap(e->e.resolve(ref));
 			}
-			v.ifPresent(bag -> selectorCache.putIfAbsent(ref, bag));
+			if(v.isPresent()){
+				selectorCache().putIfAbsent(ref, v.get());
+			}
 			return v;
 		}
 		catch(PathEvaluationException e){
@@ -219,7 +299,7 @@ final class DefaultEvaluationContextHandler
 			throw failed(ref, e);
 		}
 		finally {
-			selectorResolutionStack.pop();
+			stack.pop();
 		}
 	}
 

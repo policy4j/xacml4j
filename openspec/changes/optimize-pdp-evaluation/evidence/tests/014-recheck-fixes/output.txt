@@ -1,0 +1,21 @@
+## after: the working tree
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.CategoryIdTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.RequestFixedCostCharacterizationTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverCacheTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.pdp.DecisionFixedCostPdpTest
+[INFO] Tests run: 39, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[INFO] BUILD SUCCESS
+
+## before B (tree before cycle A)
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.RequestFixedCostCharacterizationTest
+[INFO] BUILD SUCCESS
+
+## before E
+[INFO] Tests run: 39, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[INFO] BUILD SUCCESS
+
+## before F
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverCacheTest
+[INFO] BUILD SUCCESS
+

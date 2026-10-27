@@ -1,0 +1,4 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -f <before-tree>/pom.xml -pl xacml-pdp -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest=RootEvaluationContextCharacterizationTest,RequestFixedCostCharacterizationTest,DecisionFixedCostPdpTest test
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-pdp -Dsurefire.failIfNoSpecifiedTests=false -Dtest=<core test list> test
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest=<pdp test list> test
+(the xacml-pdp part of the first command stopped at the ban-log4j enforcer rule: without -am it resolved a stale installed xacml-xml-jaxb snapshot that still had Log4j; the second command builds the upstream modules in the reactor)

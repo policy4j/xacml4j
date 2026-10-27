@@ -23,7 +23,6 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
@@ -84,7 +83,7 @@ public final class FunctionSpecBuilder {
 		this.functionId = Objects.requireNonNull(functionId, "functionId");
 		this.shortId = getShortId(functionId, shortId);
 		this.legacyId = legacyId;
-		this.paramSpec = new LinkedList<>();
+		this.paramSpec = new ArrayList<>();
 	}
 
 	public static String getShortId(String id, String shortId) {
@@ -259,8 +258,10 @@ public final class FunctionSpecBuilder {
 		private String functionId;
 		private String shortId;
 		private Optional<String> legacyId;
-		private List<FunctionParamSpec> parameters = new LinkedList<FunctionParamSpec>();
+		private List<FunctionParamSpec> parameters = new ArrayList<FunctionParamSpec>();
 		private boolean evaluateParameters;
+		// two mandatory parameters, evaluated before the call (design D8)
+		private final boolean eagerPair;
 
 		private FunctionInvocation invocation;
 		private FunctionReturnTypeResolver resolver;
@@ -298,6 +299,12 @@ public final class FunctionSpecBuilder {
 			this.evaluateParameters = evaluateParameters;
 			this.shortId = Objects.requireNonNull(FunctionSpecBuilder.getShortId(functionId, shortId));
 			this.legacyId = Optional.ofNullable(legacyId);
+			this.eagerPair = !evaluateParameters && parameters.size() == 2 &&
+					isMandatory(parameters.get(0)) && isMandatory(parameters.get(1));
+		}
+
+		private static boolean isMandatory(FunctionParamSpec p) {
+			return !(p.isOptional() || p.isVariadic());
 		}
 
 		public FunctionSpecImpl(
@@ -355,16 +362,43 @@ public final class FunctionSpecBuilder {
 			return resolver.resolve(this, arguments);
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends ValueExp> T invokeWithList(
 				EvaluationContext context,
 				List<Expression> arguments) throws EvaluationException {
+			return doInvoke(context, arguments, false);
+		}
+
+		/**
+		 * Two mandatory parameters normalize two arguments to themselves, so
+		 * the call skips {@link #normalize(List)} and evaluates the operands
+		 * into the list it creates here (design D8).
+		 */
+		@Override
+		public <T extends ValueExp> T invoke(
+				EvaluationContext context,
+				Expression arg0, Expression arg1) throws EvaluationException {
+			// A modifiable list, as the evaluated list of the generic path is (review RVC1, RVC2)
+			List<Expression> arguments = new ArrayList<>(2);
+			arguments.add(arg0);
+			arguments.add(arg1);
+			return eagerPair ? doInvoke(context, arguments, true) : invokeWithList(context, arguments);
+		}
+
+		/**
+		 * @param pair {@code true} when the arguments are a list owned by this
+		 *             call that matches the two mandatory eager parameters
+		 */
+		@SuppressWarnings("unchecked")
+		private <T extends ValueExp> T doInvoke(
+				EvaluationContext context,
+				List<Expression> arguments, boolean pair) throws EvaluationException {
 
 			try {
-				List<Expression> normalizedArgs = normalize(arguments);
+				List<Expression> normalizedArgs = pair ? arguments : normalize(arguments);
 				LOG.debug("functionId={} normalizedArgs={}", shortId, normalizedArgs);
-				if (context.isValidateFuncParamsAtRuntime()) {
+				boolean validate = context.isValidateFuncParamsAtRuntime();
+				if (validate) {
 					if (LOG.isDebugEnabled()) {
 						LOG.debug("Validating " +
 								          "functionId=\"{}\" parameters=\"{}\"", shortId, parameters);
@@ -380,7 +414,9 @@ public final class FunctionSpecBuilder {
 					LOG.debug("Invoking function=\"{}\" with length={} params=\"{}\"",
 					          shortId, normalizedArgs.size(), normalizedArgs);
 				}
-				List<Expression> params = evaluateParameters ? normalizedArgs : evaluate(context, normalizedArgs);
+				// In place only when no validator has seen the list (review rv009): a validator may keep it
+				List<Expression> params = evaluateParameters ? normalizedArgs :
+						(pair && !validate) ? evaluateInPlace(context, normalizedArgs) : evaluate(context, normalizedArgs);
 				LOG.debug("Function=\"{}\" params=\"{}\"", shortId, params);
 				T result = (T) invocation.invoke(this, context, params);
 				if (LOG.isDebugEnabled()) {
@@ -504,7 +540,7 @@ public final class FunctionSpecBuilder {
 			// the assumption is made that parameter types
 			// follow in mandatory, optional, variadic order
 			// and parameter type groups do not interleave
-			List<Expression> normalizedParams = new LinkedList<Expression>();
+			List<Expression> normalizedParams = new ArrayList<Expression>(Math.max(actualParameters.size(), parameters.size()));
 			normalizedParams = normalizeMandatoryParameters(actualParameterIterator,
 			                                                formalParameterIterator, normalizedParams);
 			normalizedParams = normalizeOptionalParameters(actualParameterIterator,
@@ -605,6 +641,24 @@ public final class FunctionSpecBuilder {
 				eval.add((exp == null) ? null : exp.evaluate(context));
 			}
 			return eval;
+		}
+
+		/**
+		 * Evaluates the given arguments in the given list, in order
+		 *
+		 * @param context   an evaluation context
+		 * @param arguments a mutable list owned by the caller
+		 * @return the given list
+		 * @throws EvaluationException if an evaluation
+		 *                             error occurs
+		 */
+		private static List<Expression> evaluateInPlace(EvaluationContext context, List<Expression> arguments)
+				throws EvaluationException {
+			for (int i = 0; i < arguments.size(); i++) {
+				Expression exp = arguments.get(i);
+				arguments.set(i, (exp == null) ? null : exp.evaluate(context));
+			}
+			return arguments;
 		}
 
 		/**

@@ -22,14 +22,11 @@ package org.xacml4j.v30.pdp;
  * #L%
  */
 
-import java.util.Random;
-
 import org.slf4j.MDC;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.policy.Rule;
-import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 import org.xacml4j.v30.spi.pip.ContentResolverDescriptor;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
@@ -46,15 +43,18 @@ public class MDCSupport
 	private final static String CONT_RESOLVER_ID_KEY = "ContentResolverId";
 	private final static String XACML_MAIN_REQ_ID = "XacmlRequestId";
 
-	private final static Random RND = new Random();
-
 	/** Private constructor for utility class */
 	private MDCSupport() {}
 
-	public static void setXacmlRequestId(String correlationId,
-			RequestContext req){
-		String identifier = correlationId + "-" + Long.toHexString(RND.nextLong());
-		MDC.put(XACML_MAIN_REQ_ID, identifier);
+	/**
+	 * Names an individual decision of a decide call.
+	 *
+	 * @param correlationId the correlation id of the decide call
+	 * @param number the number of the individual decision within that
+	 * call, from 1
+	 */
+	public static void setXacmlRequestId(String correlationId, int number){
+		MDC.put(XACML_MAIN_REQ_ID, correlationId + "-" + number);
 	}
 
 	public static void cleanXacmlRequestId(){
