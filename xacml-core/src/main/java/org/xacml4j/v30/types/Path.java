@@ -163,7 +163,9 @@ public interface Path extends Value<Path>
 
 		@Override
 		public int hashCode(){
-			return Objects.hash(categoryId, path, pathType);
+			int hash = 31 + Objects.hashCode(categoryId);
+			hash = 31 * hash + Objects.hashCode(path);
+			return 31 * hash + Objects.hashCode(pathType);
 		}
 
 		@Override

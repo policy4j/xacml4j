@@ -73,7 +73,12 @@ final class TypeAssertion implements Expression
 		T value = argument.evaluate(context);
 		if(!parameter.isValidParamType(value.getEvaluatesTo())){
 			// The status message names the function only; the value is from the request.
-			throw new FunctionInvocationException(function, Apply.NOT_TYPE_CORRECT, function.getId());
+			FunctionInvocationException failure = new FunctionInvocationException(function, Apply.NOT_TYPE_CORRECT, function.getId());
+			if(!function.isRequiresLazyParamEval()){
+				// A lazy function evaluates this inside its call, which reports the failure (design D34)
+				RootEvaluationContext.observationOf(context).functionFailed(context, function, failure);
+			}
+			throw failure;
 		}
 		return value;
 	}

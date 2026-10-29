@@ -22,17 +22,17 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.EvaluationContext;
@@ -80,12 +80,15 @@ final class DefaultResolverRegistry implements ResolverRegistry
 	public Collection<AttributeResolverDescriptor> getMatchingAttributeResolver(
 			EvaluationContext context, AttributeDesignatorKey key) {
 		Multimap<String, AttributeResolverDescriptor> r = attributeResolvers.get(key.getCategory());
-		return Optional.ofNullable(r)
-				.map(v->v.get(key.getAttributeId()))
-				.orElse(Collections.emptyList())
-				.stream().filter(v-> key.getIssuer() != null?
-				                     Objects.equals(key.getIssuer(), v.getIssuer()):true)
-				.collect(Collectors.toList());
+		Collection<AttributeResolverDescriptor> matches = new ArrayList<>();
+		if(r != null){
+			for(AttributeResolverDescriptor v : r.get(key.getAttributeId())){
+				if(key.getIssuer() == null || Objects.equals(key.getIssuer(), v.getIssuer())){
+					matches.add(v);
+				}
+			}
+		}
+		return matches;
 	}
 
 	@Override
@@ -95,6 +98,23 @@ final class DefaultResolverRegistry implements ResolverRegistry
 		ContentResolverDescriptor descriptor = contentResolvers.get(selectorKey.getCategory());
 		return descriptor == null?Collections.emptyList():ImmutableList.of(descriptor);
 
+	}
+
+	/**
+	 * From the index of the resolvers by category and attribute, which registration keeps; the
+	 * issuer is not consulted, so a resolver of another issuer is still asked (cycle AN)
+	 */
+	@Override
+	public boolean hasNoResolver(AttributeReferenceKey key)
+	{
+		if(key instanceof AttributeDesignatorKey designator){
+			Multimap<String, AttributeResolverDescriptor> byAttributeId = attributeResolvers.get(designator.getCategory());
+			return byAttributeId == null || !byAttributeId.containsKey(designator.getAttributeId());
+		}
+		if(key instanceof AttributeSelectorKey selector){
+			return !contentResolvers.containsKey(selector.getCategory());
+		}
+		return false;
 	}
 
 	private void addResolverForCategory(CategoryId categoryId,

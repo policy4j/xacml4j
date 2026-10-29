@@ -63,7 +63,6 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 	@Override
 	public Collection<Result> handle(RequestContext request, PolicyDecisionPointContext context)
 	{
-		Collection<Result> results = new LinkedList<Result>();
 		Collection<RequestReference> references = request.getRequestReferences();
 		if(references.isEmpty()){
 			return handleNext(request, context);
@@ -74,6 +73,7 @@ final class MultipleResourcesViaRequestReferencesHandler extends AbstractRequest
 					"maxExpandedRequests=\"{}\" request references", maxExpandedRequests);
 			return MultipleResourcesBudgetHandler.limitExceeded(request);
 		}
+		Collection<Result> results = new LinkedList<Result>();
 		for(RequestReference ref : references){
 			try
 			{

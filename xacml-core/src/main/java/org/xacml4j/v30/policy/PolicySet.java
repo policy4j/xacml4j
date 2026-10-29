@@ -22,10 +22,13 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
@@ -34,6 +37,19 @@ import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.policy.combine.impl.DenyOverridesPolicyCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.DenyOverridesPolicyOrderedCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitPolicyCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.FirstApplicablePolicyCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyDenyOverridesPolicyCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyOrderedDenyOverridesPolicyCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyOrderedPermitOverridesPolicyCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyPermitOverridesPolicyCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.PermitOverridesPolicyCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.PermitOverridesPolicyOrderedCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyPolicyCombiningAlgorithm;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
@@ -50,11 +66,19 @@ public class PolicySet extends
 	private final PolicySetDefaults policySetDefaults;
 	private final DecisionCombiningAlgorithm<CompositeDecisionRule> combiningAlgorithm;
 	private final List<CompositeDecisionRule> decisionRules;
+	private final boolean canRespond;
+	/** Whether the combining algorithm is one of the engine's own classes, which stage in the root (review R-AN) */
+	private final boolean builtInAlgorithm;
 
 	private final Map<String, Multimap<String, CombinerParameter>> policyCombinerParameters;
 	private	final Map<String, Multimap<String, CombinerParameter>> policySetCombinerParameters;
 
 	private final PolicySetIDReference reference;
+	/**
+	 * The hash code once computed; every field that it reads is fixed when the policy set is built (cycle AR).
+	 * Hash inputs must remain immutable, including values supplied by trusted extensions.
+	 */
+	private int hashCode;
 
 	private PolicySet(Builder b)
 	{
@@ -65,6 +89,9 @@ public class PolicySet extends
 				"Policy decision combining algorithm must be specified");
 		this.combiningAlgorithm = b.combiningAlgorithm;
 		this.decisionRules = b.policies.build();
+		this.builtInAlgorithm = Prepared.ALGORITHMS.contains(combiningAlgorithm.getClass());
+		this.canRespond = hasResponseExpressions() || !builtInAlgorithm
+				|| decisionRules.stream().anyMatch(PolicySet::canRespondToParent);
 		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicySets = ImmutableMap.builder();
 		ImmutableMap.Builder<String, Multimap<String, CombinerParameter>> forPolicies = ImmutableMap.builder();
 		for(Entry<String, Multimap<String, CombinerParameter>> e : b.policySetCombinerParams.entrySet()){
@@ -166,7 +193,9 @@ public class PolicySet extends
 		if(context.getCurrentPolicySet() == this){
 			return context;
 		}
-		return new PolicySetDescendantEvaluationContext(context);
+		// A foreign context can change its answer between the factory and constructor checks.
+		// Every own set context answers getCurrentPolicySet() from its final outer reference.
+		return new PolicySetDescendantEvaluationContext(context, context instanceof PolicySetDescendantEvaluationContext);
 	}
 
 	@Override
@@ -175,7 +204,79 @@ public class PolicySet extends
 	}
 
 	protected Decision combineDecisions(EvaluationContext context){
-		return combiningAlgorithm.combine(context, decisionRules);
+		List<CompositeDecisionRule> children = Prepared.children(context, this);
+		if(children != decisionRules) RootEvaluationContext.observationOf(context).childrenSelected(context, this, children);
+		return combiningAlgorithm.combine(context, children);
+	}
+
+	@Override
+	boolean canRespond(){
+		return canRespond;
+	}
+
+	@Override
+	boolean hasBuiltInCombiningAlgorithm(){
+		return builtInAlgorithm;
+	}
+
+	/** A child of another implementation, or a reference, which resolves later, counts as able to respond */
+	private static boolean canRespondToParent(CompositeDecisionRule child){
+		if(child instanceof Policy policy) return policy.canRespondToParent();
+		if(child instanceof PolicySet policySet) return policySet.canRespondToParent();
+		return true;
+	}
+
+	private static final class Prepared
+	{
+		private static final Set<Class<?>> ALGORITHMS = Set.of(
+				DenyOverridesPolicyCombiningAlgorithm.class, DenyOverridesPolicyOrderedCombiningAlgorithm.class,
+				PermitOverridesPolicyCombineAlgorithm.class, PermitOverridesPolicyOrderedCombineAlgorithm.class,
+				DenyUnlessPermitPolicyCombiningAlgorithm.class, PermitUnlessDenyPolicyCombiningAlgorithm.class,
+				FirstApplicablePolicyCombiningAlgorithm.class, OnlyOneApplicablePolicyCombiningAlgorithm.class,
+				OnPermitApplySecondPolicyCombiningAlgorithm.class, LegacyDenyOverridesPolicyCombineAlgorithm.class,
+				LegacyOrderedDenyOverridesPolicyCombineAlgorithm.class, LegacyPermitOverridesPolicyCombineAlgorithm.class,
+				LegacyOrderedPermitOverridesPolicyCombineAlgorithm.class);
+
+		private static List<CompositeDecisionRule> children(EvaluationContext context, PolicySet set){
+			if(!ALGORITHMS.contains(set.combiningAlgorithm.getClass())) return set.decisionRules;
+			EvaluationContext top = DescendantEvaluationContext.topOf(context);
+			if(!(top instanceof RootEvaluationContext decision) || decision.generation().isEmpty()) return set.decisionRules;
+			Generation generation = decision.generation().orElseThrow();
+			PreparedList existing = generation.sets.get(set);
+			boolean indexable = generation.indexes.isPresent() && set.decisionRules.size() > 1
+					&& decision.hasRequestAttributeResolution()
+					&& set.combiningAlgorithm.getClass() != OnPermitApplySecondPolicyCombiningAlgorithm.class;
+			if(existing == null){
+				ArrayList<CompositeDecisionRule> children = new ArrayList<>(set.decisionRules.size());
+				TargetIndex.Builder<CompositeDecisionRule> index = indexable && !context.isValidateFuncParamsAtRuntime()
+						? new TargetIndex.Builder<>(context) : null;
+				for(CompositeDecisionRule child : set.decisionRules){
+					CompositeDecisionRule preparedChild = child;
+					if(child instanceof PolicyIDReference || child instanceof PolicySetIDReference){
+						CompositeDecisionRuleIDReference ref = (CompositeDecisionRuleIDReference)child;
+						preparedChild = decision.outcome(ref).<CompositeDecisionRule>map(target -> new PinnedReference(ref, target))
+								.orElse(child);
+					}
+					children.add(preparedChild);
+					if(index != null) index.add(preparedChild);
+				}
+				PreparedList prepared = new PreparedList(children);
+				PreparedList winner = generation.sets.putIfAbsent(set, prepared);
+				existing = winner == null ? prepared : winner;
+				if(winner == null && index != null){
+					generation.indexes.orElseThrow().sets.putIfAbsent(set, index.build(prepared.children()));
+				}
+			}
+			if(!indexable || decision.hasMisses() || context.isValidateFuncParamsAtRuntime()) return existing.children();
+			ConcurrentMap<PolicySet, TargetIndex<CompositeDecisionRule>> indexes = generation.indexes.orElseThrow().sets;
+			TargetIndex<CompositeDecisionRule> index = indexes.get(set);
+			if(index == null){
+				TargetIndex<CompositeDecisionRule> built = TargetIndex.create(context, existing.children());
+				TargetIndex<CompositeDecisionRule> winner = indexes.putIfAbsent(set, built);
+				index = winner == null ? built : winner;
+			}
+			return index.candidates(context);
+		}
 	}
 
 	public List<? extends CompositeDecisionRule> getDecisions() {
@@ -228,20 +329,24 @@ public class PolicySet extends
 
 	@Override
 	public int hashCode() {
-		// Arrays.hashCode of the fields in this order, without the array (design D22)
-		int base = super.hashCode();
-		int h = 1;
-		h = 31 * h + java.util.Objects.hashCode(policySetDefaults);
-		h = 31 * h + java.util.Objects.hashCode(combiningAlgorithm);
-		h = 31 * h + java.util.Objects.hashCode(decisionRules);
-		h = 31 * h + java.util.Objects.hashCode(policyCombinerParameters);
-		h = 31 * h + java.util.Objects.hashCode(policySetCombinerParameters);
-		h = 31 * h + java.util.Objects.hashCode(reference);
-		return base * 31 + h;
+		int h = hashCode;
+		if(h == 0){
+			// Arrays.hashCode of the fields in this order, without the array (design D22)
+			int fields = 1;
+			fields = 31 * fields + java.util.Objects.hashCode(policySetDefaults);
+			fields = 31 * fields + java.util.Objects.hashCode(combiningAlgorithm);
+			fields = 31 * fields + java.util.Objects.hashCode(decisionRules);
+			fields = 31 * fields + java.util.Objects.hashCode(policyCombinerParameters);
+			fields = 31 * fields + java.util.Objects.hashCode(policySetCombinerParameters);
+			fields = 31 * fields + java.util.Objects.hashCode(reference);
+			h = super.hashCode() * 31 + fields;
+			hashCode = h;
+		}
+		return h;
 	}
 
 	class PolicySetDescendantEvaluationContext
-			extends DescendantEvaluationContext {
+			extends CompositeRuleEvaluationContext {
 
 		/**
 		 * Constructs delegating evaluation context
@@ -253,11 +358,36 @@ public class PolicySet extends
 		 */
 		PolicySetDescendantEvaluationContext(
 				EvaluationContext parentContext){
+			this(parentContext, false);
+		}
+
+		private PolicySetDescendantEvaluationContext(
+				EvaluationContext parentContext, boolean policySetChecked){
 			super(parentContext);
+			if(!policySetChecked){
+				Preconditions.checkArgument(
+						parentContext.getCurrentPolicySet() != PolicySet.this);
+			}
+			// Tests run with assertions: wherever the proof skips the walk, the walk agrees
+			assert !answersNoPolicy(parentContext) || parentContext.getCurrentPolicy() == null;
 			Preconditions.checkArgument(
-					parentContext.getCurrentPolicySet() != PolicySet.this);
-			Preconditions.checkArgument(
-					parentContext.getCurrentPolicy() == null);
+					answersNoPolicy(parentContext) || parentContext.getCurrentPolicy() == null);
+		}
+
+		/**
+		 * Tells whether a parent is known to answer no current policy, so that it is not asked (cycle AZ):
+		 * the root of the engine, a final class that answers none, or a set context of the engine whose top
+		 * is that root. Such a set context was made after this check, or this proof, said that its own
+		 * parent answers none, and its chain never changes: the contexts of this package keep their parent
+		 * and top in final fields, and answer the current policy only by the walk of
+		 * {@link DescendantEvaluationContext#getCurrentPolicy()}, which finds no policy context on that
+		 * chain and asks the root last. Any other parent is asked: a context of another implementation or
+		 * with one at its top, a mock, and every other context of this package.
+		 */
+		private static boolean answersNoPolicy(EvaluationContext parent){
+			return parent instanceof RootEvaluationContext
+					|| parent instanceof PolicySetDescendantEvaluationContext
+							&& DescendantEvaluationContext.topOf(parent) instanceof RootEvaluationContext;
 		}
 
 		@Override
@@ -267,17 +397,7 @@ public class PolicySet extends
 
 		@Override
 		public EvaluationContext createExtIndeterminateEvalContext() {
-			return new DescendantEvaluationContext(this){
-				@Override
-				public EvaluationContext createExtIndeterminateEvalContext() {
-					return this;
-				}
-
-				@Override
-				public boolean isExtendedIndeterminateEval() {
-					return true;
-				}
-			};
+			return new PolicySetPassEvaluationContext(this);
 		}
 
 		/**
@@ -295,6 +415,24 @@ public class PolicySet extends
 				return defaults.getXPathVersion();
 			}
 			return super.getXPathVersion();
+		}
+	}
+
+	/** The context of the extended Indeterminate pass of a policy set, which stages on its own */
+	private static final class PolicySetPassEvaluationContext extends CompositeRuleEvaluationContext
+	{
+		PolicySetPassEvaluationContext(PolicySetDescendantEvaluationContext parentContext){
+			super(parentContext);
+		}
+
+		@Override
+		public EvaluationContext createExtIndeterminateEvalContext() {
+			return this;
+		}
+
+		@Override
+		public boolean isExtendedIndeterminateEval() {
+			return true;
 		}
 	}
 

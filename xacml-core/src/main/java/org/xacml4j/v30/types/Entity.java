@@ -84,6 +84,19 @@ public final class Entity extends Value.SelfValue<Entity>
 	public boolean hasAttributes(){
 		return !attributeIndex.isEmpty();
 	}
+
+	/** @return whether an attribute of this entity is marked to be included in the result (design D32) */
+	public boolean hasIncludeInResultAttributes(){
+		return attributeIndex.hasIncludeInResultAttributes();
+	}
+
+	/**
+	 * @return the attributes marked to be included in the result, in the order of
+	 * {@link #attributes()}; known since the entity was built (cycle AM)
+	 */
+	public Collection<Attribute> includeInResultAttributes(){
+		return attributeIndex.includeInResultAttributes();
+	}
 	public boolean hasContent(Content.Type type){
 		return content != null && content.getType().equals(type);
 	}
@@ -202,12 +215,22 @@ public final class Entity extends Value.SelfValue<Entity>
 	}
 
 	public java.util.Optional<BagOfValues> resolve(String id, ValueType type, String issuer)
-    {
-		Collection<Value<?>> v = attributeIndex.findValues(id, type, issuer);
-		if(v.isEmpty()){
-			return java.util.Optional.empty();
-		}
-		return Optional.of(type.bagType().builder().attributes(v).build());
+	{
+		return attributeIndex.resolve(id, type, issuer);
+	}
+
+	/**
+	 * The bag of the values of the designator's attribute, type, and issuer, built once per
+	 * entity for that attribute id, type, and issuer (change optimize-pdp-evaluation, cycle AF).
+	 * The category of the designator plays no part, as with {@link #resolve(AttributeSelectorKey)}:
+	 * an entity has no category of its own.
+	 *
+	 * @param key an attribute designator
+	 * @return the bag of the designator's values, if there are any
+	 */
+	public java.util.Optional<BagOfValues> resolve(AttributeDesignatorKey key)
+	{
+		return attributeIndex.resolve(key);
 	}
 
 	public java.util.Optional<BagOfValues> resolve(AttributeSelectorKey selectorKey){
@@ -220,7 +243,7 @@ public final class Entity extends Value.SelfValue<Entity>
 	@Override
 	public int hashCode(){
 		if(hashCode == -1){
-			this.hashCode = Objects.hashCode(attributeIndex, content);
+			this.hashCode = 31 * (31 + attributeIndex.hashCode()) + java.util.Objects.hashCode(content);
 		}
 		return hashCode;
 	}

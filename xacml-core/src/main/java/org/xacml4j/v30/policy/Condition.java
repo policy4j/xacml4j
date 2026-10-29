@@ -44,6 +44,13 @@ import com.google.common.base.Preconditions;
 public class Condition implements PolicyElement
 {
 	private final Expression predicate;
+	/**
+	 * The occurrences in the predicate of expressions whose values a policy may share in a decision
+	 * (design D45); a condition without one never asks its context for the policy. A subclass has none:
+	 * it may answer {@link #getExpression()} with another expression than the one it evaluates (review
+	 * R-D45-sol)
+	 */
+	private final int shareableOccurrences;
 
 	/**
 	 * Constructs condition with an predicate
@@ -62,6 +69,7 @@ public class Condition implements PolicyElement
 					"with return value type=\"%s\"",
 					XacmlTypes.BOOLEAN, resultType);
 		this.predicate = predicate;
+		this.shareableOccurrences = getClass() == Condition.class ? PreparedConditions.occurrences(predicate) : 0;
 	}
 
 	public static Condition condition(Expression e){
@@ -88,7 +96,7 @@ public class Condition implements PolicyElement
 	{
 		try
 		{
-			BooleanVal result = predicate.evaluate(context);
+			BooleanVal result = predicateIn(context).evaluate(context);
 			return result.get() ? ConditionResult.TRUE : ConditionResult.FALSE;
 		}catch(EvaluationException e){
 			context.setEvaluationStatus(e.getStatus());
@@ -99,6 +107,21 @@ public class Condition implements PolicyElement
 			                                  .build());
 			return ConditionResult.INDETERMINATE;
 		}
+	}
+
+	/**
+	 * The predicate to evaluate: the one that the policy of the context prepared to share the values of
+	 * the expressions its rules repeat (design D45), or else this condition's own
+	 */
+	private Expression predicateIn(EvaluationContext context)
+	{
+		return shareableOccurrences > 0 && context.getCurrentPolicy() instanceof Policy policy && policy.mayShareConditions()
+				? PreparedConditions.predicate(context, policy, this).orElse(predicate) : predicate;
+	}
+
+	/** The occurrences of expressions whose values a policy may share, for its flag (design D45) */
+	int shareableOccurrences(){
+		return shareableOccurrences;
 	}
 
 	public void accept(PolicyTreeVisitor v) {

@@ -22,6 +22,10 @@ package org.xacml4j.v30.policy.combine.impl;
  * #L%
  */
 
+import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.supportsIndexedTraversal;
+
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -64,9 +68,10 @@ public class LegacyDenyOverridesRuleCombineAlgorithm extends BaseDecisionCombini
 		boolean potentialDeny	= false;
 		boolean atLeastOnePermit = false;
 		boolean atLeastOneError = false;
-		for(Rule r : rules)
-		{
-			Decision d = r.evaluate(r.createContext(context));
+		Iterator<Rule> iterator = supportsIndexedTraversal(rules) ? null : rules.iterator();
+		for (int i = 0; iterator == null ? i < rules.size() : iterator.hasNext(); i++) {
+			Rule r = iterator == null ? rules.get(i) : iterator.next();
+			Decision d = evaluateIfMatch(context, r);
 			if(log.isDebugEnabled()){
 				log.debug("Decision rule id=\"{}\" evaluation result=\"{}\"", r.getId(), d);
 			}

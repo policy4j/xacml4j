@@ -33,6 +33,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -238,6 +239,24 @@ public class FunctionInvocationCharacterizationTest
 		}
 	}
 
+	/** Review r-AG: outside a call too, a validator gets a list of its own, which it may change. */
+	@Test
+	public void validatorMayChangeItsListWithoutChangingTheCallersList()
+	{
+		FunctionParametersValidator changing = (spec, arguments) -> {
+			arguments.set(0, XacmlTypes.INTEGER.ofAny(3));
+			return true;
+		};
+		FunctionSpec spec = FunctionSpecBuilder.builder("urn:xacml4j:test:changing-validator")
+				.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER)
+				.build(new StaticFunctionReturnTypeResolver(XacmlTypes.BOOLEAN), changing, impl);
+		Expression[] arguments = {XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)};
+
+		assertThat(spec.validateParameters(List.of(arguments))).isTrue();
+		assertThat(spec.validateParameters(Arrays.asList(arguments))).isTrue();
+		assertThat(arguments).asList().containsExactly(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2)).inOrder();
+	}
+
 	/** Reviews RVC1 and RVC2: a custom spec that overrides the variadic invoke keeps it for two arguments. */
 	@Test
 	public void twoArgumentCallKeepsAnOverriddenVariadicInvoke() throws Throwable
@@ -336,6 +355,27 @@ public class FunctionInvocationCharacterizationTest
 		for(List<Expression> seen : captor.getAllValues()){
 			assertThat(seen).containsExactly(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(3)).inOrder();
 		}
+	}
+
+	/** Review r-AG: every operand is read before the first is evaluated, so one that changes the caller's array changes no later one. */
+	@Test
+	public void operandThatChangesTheCallersArrayDoesNotChangeTheCall() throws EvaluationException
+	{
+		FunctionSpec substring = FunctionProvider.builder().withDefaultFunctions().build()
+				.getFunction("urn:oasis:names:tc:xacml:3.0:function:string-substring").orElseThrow();
+		Expression[] arguments = new Expression[3];
+		Expression changing = mock(Expression.class);
+		when(changing.evaluate(context)).thenAnswer(invocation -> {
+			arguments[2] = XacmlTypes.INTEGER.ofAny(4);
+			return XacmlTypes.STRING.ofAny("abcd");
+		});
+		arguments[0] = changing;
+		arguments[1] = XacmlTypes.INTEGER.ofAny(0);
+		arguments[2] = XacmlTypes.INTEGER.ofAny(2);
+
+		Object result = substring.invoke(context, arguments);
+
+		assertThat(result).isEqualTo(XacmlTypes.STRING.ofAny("ab"));
 	}
 
 	@Test

@@ -22,17 +22,23 @@ package org.xacml4j.jmh.harness;
  * #L%
  */
 
+import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.xacml4j.v30.Decision;
+import org.xacml4j.v30.Effect;
+import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.Result;
 
 /**
  * The decision check of a fixture: an expected decision from a response
@@ -74,5 +80,20 @@ public class CorpusRequestTest
 
 		assertWithMessage("expected %s, actual %s", expected, actual)
 				.that(request.matches(actual)).isEqualTo(matches);
+	}
+
+	/** A whole expected result also fixes the order of the obligations (I-CORPUS). */
+	@Test
+	public void wholeExpectedResultFixesTheOrderOfObligations()
+	{
+		Obligation first = Obligation.builder("urn:xacml4j:test:first", Effect.PERMIT).build();
+		Obligation second = Obligation.builder("urn:xacml4j:test:second", Effect.PERMIT).build();
+		CorpusRequest request = new CorpusRequest("r", RequestContext.builder().build(),
+				Result.ok(Decision.PERMIT).obligation(first, second).build());
+
+		assertThat(request.expected()).isEqualTo(Decision.PERMIT);
+		assertThat(request.mismatch(Result.ok(Decision.PERMIT).obligation(first, second).build())).isEqualTo(Optional.empty());
+		assertThat(request.mismatch(Result.ok(Decision.PERMIT).obligation(second, first).build()).isPresent()).isTrue();
+		assertThat(request.mismatch(Result.ok(Decision.DENY).build()).isPresent()).isTrue();
 	}
 }

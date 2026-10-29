@@ -39,6 +39,7 @@ import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -49,7 +50,9 @@ import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.content.XmlContent;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.policy.AttributeSelector;
+import org.xacml4j.v30.spi.pip.AttributeResolverDescriptor;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
+import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -70,7 +73,7 @@ public class DefaultEvaluationContextHandlerTest
 
 	private PolicyInformationPoint pip;
 	private XPathProvider xpathProvider;
-	private RequestContextCallback requestContextCallback;
+	private RequestContext requestContextCallback;
 	private EvaluationContextHandler handler;
 
 	@BeforeEach
@@ -78,7 +81,7 @@ public class DefaultEvaluationContextHandlerTest
 	{
 
 		this.context = Mockito.mock(EvaluationContext.class);
-		this.requestContextCallback = Mockito.mock(RequestContextCallback.class);
+		this.requestContextCallback = Mockito.mock(RequestContext.class);
 		this.pip = Mockito.mock(PolicyInformationPoint.class);
 		this.entity = Entity
 				.builder()
@@ -255,6 +258,10 @@ public class DefaultEvaluationContextHandlerTest
 		assertEquals(StatusCodeId.SYNTAX_ERROR, exception.getStatus().getStatusCode().getValue());
 		Mockito.verify(pip).resolve(context, selector);
 		Mockito.verify(pip).resolve(context, entitySelector);
+		// The handler asks the point for the point of its decision (task 30) and whether it has
+		// a resolver for a key (cycle AN)
+		Mockito.verify(pip, Mockito.atMostOnce()).forDecision();
+		Mockito.verify(pip, Mockito.atLeast(0)).hasNoResolver(Mockito.any());
 		Mockito.verifyNoMoreInteractions(pip);
 	}
 
@@ -328,6 +335,8 @@ public class DefaultEvaluationContextHandlerTest
 		Mockito.verify(requestContextCallback, Mockito.times(2)).getEntity(CategoryId.SUBJECT_RECIPIENT);
 		Mockito.verify(pip).resolve(context, selector);
 		Mockito.verify(pip).resolve(context, designator);
+		Mockito.verify(pip, Mockito.atMostOnce()).forDecision();
+		Mockito.verify(pip, Mockito.atLeast(0)).hasNoResolver(Mockito.any());
 		Mockito.verifyNoMoreInteractions(requestContextCallback, pip);
 	}
 
@@ -385,6 +394,8 @@ public class DefaultEvaluationContextHandlerTest
 		assertEquals(XacmlTypes.INTEGER.bagBuilder().value(555555).build(), v.get());
 		Mockito.verify(requestContextCallback, Mockito.times(1)).getEntity(CategoryId.SUBJECT_RECIPIENT);
 		Mockito.verify(pip).resolve(context, ref);
+		Mockito.verify(pip, Mockito.atMostOnce()).forDecision();
+		Mockito.verify(pip, Mockito.atLeast(0)).hasNoResolver(Mockito.any());
 		Mockito.verifyNoMoreInteractions(requestContextCallback, pip);
 	}
 
@@ -850,8 +861,9 @@ public class DefaultEvaluationContextHandlerTest
 				.build();
 	}
 
+	/** The request entity keeps one bag per designator (cycle AF); an unobserved decision keeps no memo of its own (cycle AN) */
 	@Test
-	public void repeatedRequestDesignatorIsTakenFromTheRequestOnceAndGivesTheSameBag() throws EvaluationException
+	public void repeatedRequestDesignatorGivesTheSameBag() throws EvaluationException
 	{
 		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(resource("doc-1")));
 
@@ -860,7 +872,7 @@ public class DefaultEvaluationContextHandlerTest
 
 		assertEquals(Optional.of(XacmlTypes.STRING.ofAny("doc-1").toBag()), first);
 		org.junit.jupiter.api.Assertions.assertSame(first, second);
-		Mockito.verify(requestContextCallback, Mockito.times(1)).getEntity(CategoryId.RESOURCE);
+		Mockito.verify(requestContextCallback, Mockito.atLeastOnce()).getEntity(CategoryId.RESOURCE);
 		Mockito.verifyNoInteractions(pip);
 		org.junit.jupiter.api.Assertions.assertTrue(
 				((DefaultEvaluationContextHandler) handler).getResolvedDesignators().isEmpty(),
@@ -917,14 +929,22 @@ public class DefaultEvaluationContextHandlerTest
 		Mockito.verify(requestContextCallback, Mockito.times(2)).getEntity(CategoryId.RESOURCE);
 	}
 
-	/** Review RVP: two concurrent first resolutions in one decision both return the bag stored first. */
+	/**
+	 * Review RVP: two concurrent first resolutions in one decision both return the bag stored first,
+	 * which the request entity keeps (cycle AF)
+	 */
 	@Test
 	public void concurrentFirstResolutionsReturnTheBagStoredFirst() throws Exception
 	{
 		java.util.concurrent.CyclicBarrier bothInside = new java.util.concurrent.CyclicBarrier(2);
+		java.util.concurrent.atomic.AtomicInteger lookups = new java.util.concurrent.atomic.AtomicInteger();
+		Optional<Entity> document = Optional.of(resource("doc-6"));
 		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenAnswer(invocation -> {
-			bothInside.await(10, java.util.concurrent.TimeUnit.SECONDS);
-			return Optional.of(resource("doc-6"));
+			if(lookups.incrementAndGet() <= 2){
+				// the two first resolutions, inside the lookup of the request at the same time
+				bothInside.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			}
+			return document;
 		});
 		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
 		try{
@@ -940,9 +960,9 @@ public class DefaultEvaluationContextHandlerTest
 		}
 	}
 
-	/** Review RVP: an information point that resolves a request attribute through its context. */
+	/** Review RVP: an information point that resolves a request attribute through its context gets the bag of the request. */
 	@Test
-	public void informationPointCallingBackResolvesTheRequestAttributeOnce() throws EvaluationException
+	public void informationPointCallingBackGetsTheRequestBag() throws EvaluationException
 	{
 		AttributeDesignatorKey clearance = AttributeDesignatorKey.builder()
 				.category(CategoryId.SUBJECT_ACCESS).attributeId("urn:xacml4j:test:clearance")
@@ -957,7 +977,7 @@ public class DefaultEvaluationContextHandlerTest
 
 		assertEquals(Optional.of(XacmlTypes.STRING.ofAny("high").toBag()), handler.resolve(context, clearance));
 		org.junit.jupiter.api.Assertions.assertSame(seenByPip[0], handler.resolve(context, RESOURCE_ID).get());
-		Mockito.verify(requestContextCallback, Mockito.times(1)).getEntity(CategoryId.RESOURCE);
+		Mockito.verify(requestContextCallback, Mockito.atLeastOnce()).getEntity(CategoryId.RESOURCE);
 	}
 
 	/** Reviews RVC1 and RVC2: a resolved-attributes map kept before the first information point bag sees it. */
@@ -983,5 +1003,369 @@ public class DefaultEvaluationContextHandlerTest
 		org.junit.jupiter.api.Assertions.assertThrows(UnsupportedOperationException.class, () -> keptSelectors.remove(RESOURCE_ID));
 		org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> keptSelectors.get(null));
 		org.junit.jupiter.api.Assertions.assertThrows(NullPointerException.class, () -> keptSelectors.containsValue(null));
+	}
+
+	// Resolution state ready for concurrency (change optimize-pdp-evaluation, design D27): one
+	// information point attempt per key at a time, shared by the callers that overlap it; a cycle
+	// on one thread gives absence as before; a nested decision is not a cycle.
+
+	private static final AttributeDesignatorKey CLEARANCE = AttributeDesignatorKey.builder()
+			.category(CategoryId.SUBJECT_ACCESS).attributeId("urn:xacml4j:test:clearance")
+			.dataType(XacmlTypes.STRING).build();
+
+	private static final AttributeDesignatorKey ROLE = AttributeDesignatorKey.builder()
+			.category(CategoryId.SUBJECT_ACCESS).attributeId("urn:xacml4j:test:role")
+			.dataType(XacmlTypes.STRING).build();
+
+	private static final AttributeDesignatorKey DEPARTMENT = AttributeDesignatorKey.builder()
+			.category(CategoryId.SUBJECT_ACCESS).attributeId("urn:xacml4j:test:department")
+			.dataType(XacmlTypes.STRING).build();
+
+	private static BagOfValues bag(String value)
+	{
+		return XacmlTypes.STRING.ofAny(value).toBag();
+	}
+
+	@Test
+	public void overlappingLookupsOfOneInformationPointAttributeGetTheBagPublishedFirst() throws Exception
+	{
+		java.util.concurrent.CountDownLatch entered = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.CountDownLatch proceed = new java.util.concurrent.CountDownLatch(1);
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.empty());
+		when(pip.resolve(context, RESOURCE_ID)).thenAnswer(invocation -> {
+			entered.countDown();
+			proceed.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			return Optional.of(bag("doc-9"));
+		});
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> a = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			entered.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			java.util.concurrent.Future<Optional<BagOfValues>> b = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			proceed.countDown();
+			BagOfValues first = a.get(20, java.util.concurrent.TimeUnit.SECONDS).get();
+			BagOfValues second = b.get(20, java.util.concurrent.TimeUnit.SECONDS).get();
+
+			assertEquals(bag("doc-9"), first);
+			org.junit.jupiter.api.Assertions.assertSame(first, second);
+			org.junit.jupiter.api.Assertions.assertSame(first,
+					((DefaultEvaluationContextHandler) handler).getResolvedDesignators().get(RESOURCE_ID));
+		}finally{
+			pool.shutdownNow();
+		}
+	}
+
+	@Test
+	public void overlappingLookupsShareOneFailureAndALaterCallAsksAgain() throws Exception
+	{
+		java.util.concurrent.CountDownLatch entered = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.CountDownLatch proceed = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.atomic.AtomicBoolean down = new java.util.concurrent.atomic.AtomicBoolean(true);
+		java.util.concurrent.atomic.AtomicReference<Thread> waiter = new java.util.concurrent.atomic.AtomicReference<>();
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.empty());
+		when(pip.resolve(context, RESOURCE_ID)).thenAnswer(invocation -> {
+			entered.countDown();
+			proceed.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			if(down.get()){
+				throw new IllegalStateException("information point down");
+			}
+			return Optional.of(bag("doc-10"));
+		});
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> owner = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			entered.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			java.util.concurrent.Future<Optional<BagOfValues>> attached = pool.submit(() -> {
+				waiter.set(Thread.currentThread());
+				return handler.resolve(context, RESOURCE_ID);
+			});
+			awaitBlocked(waiter);
+			proceed.countDown();
+			Throwable ownerFailure = assertThrows(java.util.concurrent.ExecutionException.class,
+					() -> owner.get(20, java.util.concurrent.TimeUnit.SECONDS)).getCause();
+			Throwable attachedFailure = assertThrows(java.util.concurrent.ExecutionException.class,
+					() -> attached.get(20, java.util.concurrent.TimeUnit.SECONDS)).getCause();
+
+			org.junit.jupiter.api.Assertions.assertSame(ownerFailure, attachedFailure);
+			AttributeReferenceEvaluationException e = (AttributeReferenceEvaluationException) ownerFailure;
+			assertEquals(true, e.isResolverFailure());
+			assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+			org.junit.jupiter.api.Assertions.assertTrue(
+					((DefaultEvaluationContextHandler) handler).getResolvedDesignators().isEmpty());
+			down.set(false);
+			assertEquals(Optional.of(bag("doc-10")), handler.resolve(context, RESOURCE_ID));
+		}finally{
+			pool.shutdownNow();
+		}
+	}
+
+	/** Waits until the thread blocks, on the shared attempt, so that the overlap is established before the owner goes on */
+	private static void awaitBlocked(java.util.concurrent.atomic.AtomicReference<Thread> thread) throws InterruptedException
+	{
+		long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(10);
+		while(System.nanoTime() < deadline){
+			Thread t = thread.get();
+			if(t != null && (t.getState() == Thread.State.WAITING || t.getState() == Thread.State.TIMED_WAITING)){
+				return;
+			}
+			Thread.sleep(1);
+		}
+		throw new AssertionError("the second lookup did not block on the first attempt");
+	}
+
+	@Test
+	public void overlappingLookupsShareAbsenceAndALaterCallAsksAgain() throws Exception
+	{
+		java.util.concurrent.CountDownLatch entered = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.CountDownLatch proceed = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.atomic.AtomicBoolean absent = new java.util.concurrent.atomic.AtomicBoolean(true);
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.empty());
+		when(pip.resolve(context, RESOURCE_ID)).thenAnswer(invocation -> {
+			entered.countDown();
+			proceed.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			return absent.get() ? Optional.empty() : Optional.of(bag("doc-11"));
+		});
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> a = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			entered.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			java.util.concurrent.Future<Optional<BagOfValues>> b = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			proceed.countDown();
+
+			assertEquals(Optional.empty(), a.get(20, java.util.concurrent.TimeUnit.SECONDS));
+			assertEquals(Optional.empty(), b.get(20, java.util.concurrent.TimeUnit.SECONDS));
+			org.junit.jupiter.api.Assertions.assertTrue(
+					((DefaultEvaluationContextHandler) handler).getResolvedDesignators().isEmpty());
+			absent.set(false);
+			assertEquals(Optional.of(bag("doc-11")), handler.resolve(context, RESOURCE_ID));
+		}finally{
+			pool.shutdownNow();
+		}
+	}
+
+	@Test
+	public void concurrentResolutionsThroughOneSharedAttributeGiveNoFalseCycle() throws Exception
+	{
+		java.util.concurrent.CyclicBarrier bothInside = new java.util.concurrent.CyclicBarrier(2);
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		when(pip.resolve(context, DEPARTMENT)).thenAnswer(invocation -> Optional.of(bag("ops")));
+		when(pip.resolve(context, CLEARANCE)).thenAnswer(invocation -> {
+			bothInside.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			return handler.resolve(context, DEPARTMENT).map(department -> bag("high"));
+		});
+		when(pip.resolve(context, ROLE)).thenAnswer(invocation -> {
+			bothInside.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			return handler.resolve(context, DEPARTMENT).map(department -> bag("admin"));
+		});
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> clearance = pool.submit(() -> handler.resolve(context, CLEARANCE));
+			java.util.concurrent.Future<Optional<BagOfValues>> role = pool.submit(() -> handler.resolve(context, ROLE));
+
+			assertEquals(Optional.of(bag("high")), clearance.get(20, java.util.concurrent.TimeUnit.SECONDS));
+			assertEquals(Optional.of(bag("admin")), role.get(20, java.util.concurrent.TimeUnit.SECONDS));
+			assertEquals(bag("ops"), ((DefaultEvaluationContextHandler) handler).getResolvedDesignators().get(DEPARTMENT));
+		}finally{
+			pool.shutdownNow();
+		}
+	}
+
+	@Test
+	public void aCycleThroughTwoAttributesGivesAbsenceToTheInnerLookupAsBefore() throws EvaluationException
+	{
+		java.util.List<Optional<BagOfValues>> innerClearance = new java.util.ArrayList<>();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		when(pip.resolve(context, CLEARANCE)).thenAnswer(invocation -> handler.resolve(context, ROLE).map(role -> bag("high")));
+		when(pip.resolve(context, ROLE)).thenAnswer(invocation -> {
+			innerClearance.add(handler.resolve(context, CLEARANCE));
+			return Optional.of(bag("admin"));
+		});
+
+		assertEquals(Optional.of(bag("high")), handler.resolve(context, CLEARANCE));
+		assertEquals(java.util.List.of(Optional.empty()), innerClearance);
+		assertEquals(java.util.Map.of(CLEARANCE, bag("high"), ROLE, bag("admin")),
+				((DefaultEvaluationContextHandler) handler).getResolvedDesignators());
+	}
+
+	@Test
+	public void aNestedDecisionResolvingTheSameAttributeIsNotACycle() throws EvaluationException
+	{
+		EvaluationContextHandler nested = new DefaultEvaluationContextHandler(requestContextCallback, pip);
+		java.util.List<Optional<BagOfValues>> seenByNested = new java.util.ArrayList<>();
+		java.util.concurrent.atomic.AtomicInteger depth = new java.util.concurrent.atomic.AtomicInteger();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		when(pip.resolve(context, CLEARANCE)).thenAnswer(invocation -> {
+			if(depth.getAndIncrement() == 0){
+				// the resolver of the outer decision runs a nested decision that asks for the same attribute
+				seenByNested.add(nested.resolve(context, CLEARANCE));
+				return Optional.of(bag("outer"));
+			}
+			return Optional.of(bag("inner"));
+		});
+
+		assertEquals(Optional.of(bag("outer")), handler.resolve(context, CLEARANCE));
+		assertEquals(java.util.List.of(Optional.of(bag("inner"))), seenByNested);
+	}
+
+	/** Design D32: the answer about resolved designators without creating their view. */
+	@Test
+	public void hasResolvedDesignatorsTellsWhetherTheInformationPointSuppliedABag() throws EvaluationException
+	{
+		DefaultEvaluationContextHandler h = (DefaultEvaluationContextHandler) handler;
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenReturn(Optional.of(resource("doc-12")));
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		when(pip.resolve(context, CLEARANCE)).thenReturn(Optional.of(bag("high")));
+
+		assertFalse(h.hasResolvedDesignators());
+		handler.resolve(context, RESOURCE_ID);
+		assertFalse(h.hasResolvedDesignators());
+		handler.resolve(context, CLEARANCE);
+		org.junit.jupiter.api.Assertions.assertTrue(h.hasResolvedDesignators());
+		assertEquals(java.util.Map.of(CLEARANCE, bag("high")), h.getResolvedDesignators());
+	}
+
+	/**
+	 * Task 30: the attributes that one resolver gives in one set serve the decision together,
+	 * each listed among the resolved attributes once demanded; another decision reads again.
+	 */
+	@Test
+	public void theAttributesOfOneResolverReadServeTheDecisionTogether() throws EvaluationException
+	{
+		java.util.Deque<java.util.Map<String, BagOfValues>> reads = new java.util.ArrayDeque<>(java.util.List.of(
+				java.util.Map.of(ROLE.getAttributeId(), bag("admin"), DEPARTMENT.getAttributeId(), bag("sales")),
+				java.util.Map.of(ROLE.getAttributeId(), bag("admin"), DEPARTMENT.getAttributeId(), bag("support"))));
+		AttributeResolverDescriptor profile = AttributeResolverDescriptor.builder("profile", "profile", CategoryId.SUBJECT_ACCESS)
+				.cache(3600)
+				.attribute(ROLE.getAttributeId(), XacmlTypes.STRING)
+				.attribute(DEPARTMENT.getAttributeId(), XacmlTypes.STRING)
+				.build(resolverContext -> reads.remove());
+		PolicyInformationPoint point = PolicyInformationPoint.builder("profiles")
+				.registry(ResolverRegistry.builder().withAttributeResolver(profile).build()).build();
+		DefaultEvaluationContextHandler decision = new DefaultEvaluationContextHandler(requestContextCallback, point);
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		when(context.getClock()).thenReturn(java.time.Clock.systemUTC());
+
+		assertEquals(Optional.of(bag("admin")), decision.resolve(context, ROLE));
+		assertEquals(java.util.Map.of(ROLE, bag("admin")), decision.getResolvedDesignators());
+		assertEquals(Optional.of(bag("sales")), decision.resolve(context, DEPARTMENT));
+		assertEquals(java.util.Map.of(ROLE, bag("admin"), DEPARTMENT, bag("sales")), decision.getResolvedDesignators());
+		assertEquals(Optional.of(bag("support")),
+				new DefaultEvaluationContextHandler(requestContextCallback, point).resolve(context, DEPARTMENT));
+	}
+
+	/** A caller that missed the cache before another caller published a bag gets that bag, not a new attempt's absence (design D27) */
+	@Test
+	public void aCallerThatMissedBeforeAnotherPublishedGetsThePublishedBag() throws Exception
+	{
+		java.util.concurrent.CountDownLatch paused = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.CountDownLatch resume = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.atomic.AtomicBoolean first = new java.util.concurrent.atomic.AtomicBoolean(true);
+		when(requestContextCallback.getEntity(CategoryId.RESOURCE)).thenAnswer(invocation -> {
+			if(first.compareAndSet(true, false)){
+				// the first caller, after its cache miss and before its attempt
+				paused.countDown();
+				resume.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			}
+			return Optional.empty();
+		});
+		when(pip.resolve(context, RESOURCE_ID)).thenReturn(Optional.of(bag("doc-13")), Optional.empty());
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> late = pool.submit(() -> handler.resolve(context, RESOURCE_ID));
+			paused.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			BagOfValues published = pool.submit(() -> handler.resolve(context, RESOURCE_ID))
+					.get(20, java.util.concurrent.TimeUnit.SECONDS).get();
+			resume.countDown();
+
+			assertEquals(bag("doc-13"), published);
+			assertEquals(Optional.of(published), late.get(20, java.util.concurrent.TimeUnit.SECONDS));
+			org.junit.jupiter.api.Assertions.assertSame(published, late.get().get());
+		}finally{
+			pool.shutdownNow();
+		}
+	}
+
+	/** Two attempts on two threads that each need the other's key both end: a lookup inside an attempt never waits (design D27) */
+	@Test
+	public void lookupsInsideAttemptsThatNeedEachOtherEnd() throws Exception
+	{
+		java.util.concurrent.CyclicBarrier bothInside = new java.util.concurrent.CyclicBarrier(2);
+		java.util.concurrent.atomic.AtomicBoolean clearanceEntered = new java.util.concurrent.atomic.AtomicBoolean();
+		java.util.concurrent.atomic.AtomicBoolean roleEntered = new java.util.concurrent.atomic.AtomicBoolean();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_ACCESS)).thenReturn(Optional.empty());
+		when(pip.resolve(context, CLEARANCE)).thenAnswer(invocation -> {
+			if(clearanceEntered.compareAndSet(false, true)){
+				bothInside.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			}
+			return Optional.of(bag(handler.resolve(context, ROLE).isPresent() ? "clearance-with-role" : "clearance-alone"));
+		});
+		when(pip.resolve(context, ROLE)).thenAnswer(invocation -> {
+			if(roleEntered.compareAndSet(false, true)){
+				bothInside.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			}
+			return Optional.of(bag(handler.resolve(context, CLEARANCE).isPresent() ? "role-with-clearance" : "role-alone"));
+		});
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> clearance = pool.submit(() -> handler.resolve(context, CLEARANCE));
+			java.util.concurrent.Future<Optional<BagOfValues>> role = pool.submit(() -> handler.resolve(context, ROLE));
+			Optional<BagOfValues> c = clearance.get(20, java.util.concurrent.TimeUnit.SECONDS);
+			Optional<BagOfValues> r = role.get(20, java.util.concurrent.TimeUnit.SECONDS);
+
+			java.util.Map<AttributeDesignatorKey, BagOfValues> resolved = ((DefaultEvaluationContextHandler) handler).getResolvedDesignators();
+			org.junit.jupiter.api.Assertions.assertSame(resolved.get(CLEARANCE), c.get());
+			org.junit.jupiter.api.Assertions.assertSame(resolved.get(ROLE), r.get());
+		}finally{
+			pool.shutdownNow();
+		}
+	}
+
+	/** Overlapping lookups of a selector whose path fails on the resolved entity get one mapped exception (design D27) */
+	@Test
+	public void overlappingSelectorLookupsShareOneMappedPathFailure() throws Exception
+	{
+		String selectorId = "context-selector";
+		AttributeSelectorKey selector = AttributeSelectorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).contextSelectorId(selectorId)
+				.xpath("/md:record/md:patient-number/text()")
+				.dataType(XacmlTypes.INTEGER).build();
+		AttributeDesignatorKey entitySelector = AttributeDesignatorKey.builder()
+				.category(CategoryId.SUBJECT_RECIPIENT).attributeId(selectorId)
+				.dataType(XacmlTypes.ENTITY).build();
+		Entity supplied = Entity.builder().content(content)
+				.attribute(Attribute.builder(selectorId)
+						.value(XacmlTypes.XPATH.ofAny("/md:record/md:missing", CategoryId.SUBJECT_RECIPIENT))
+						.build()).build();
+		java.util.concurrent.CountDownLatch entered = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.CountDownLatch proceed = new java.util.concurrent.CountDownLatch(1);
+		java.util.concurrent.atomic.AtomicReference<Thread> waiter = new java.util.concurrent.atomic.AtomicReference<>();
+		when(requestContextCallback.getEntity(CategoryId.SUBJECT_RECIPIENT)).thenReturn(Optional.empty());
+		when(pip.resolve(context, selector)).thenAnswer(invocation -> {
+			entered.countDown();
+			proceed.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			return Optional.empty();
+		});
+		when(pip.resolve(context, entitySelector)).thenReturn(Optional.of(supplied.toBag()));
+		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(2);
+		try{
+			java.util.concurrent.Future<Optional<BagOfValues>> owner = pool.submit(() -> handler.resolve(context, selector));
+			entered.await(10, java.util.concurrent.TimeUnit.SECONDS);
+			java.util.concurrent.Future<Optional<BagOfValues>> attached = pool.submit(() -> {
+				waiter.set(Thread.currentThread());
+				return handler.resolve(context, selector);
+			});
+			awaitBlocked(waiter);
+			proceed.countDown();
+			Throwable ownerFailure = assertThrows(java.util.concurrent.ExecutionException.class,
+					() -> owner.get(20, java.util.concurrent.TimeUnit.SECONDS)).getCause();
+			Throwable attachedFailure = assertThrows(java.util.concurrent.ExecutionException.class,
+					() -> attached.get(20, java.util.concurrent.TimeUnit.SECONDS)).getCause();
+
+			org.junit.jupiter.api.Assertions.assertSame(ownerFailure, attachedFailure);
+			assertEquals(StatusCodeId.SYNTAX_ERROR,
+					((AttributeReferenceEvaluationException) ownerFailure).getStatus().getStatusCode().getValue());
+		}finally{
+			pool.shutdownNow();
+		}
 	}
 }

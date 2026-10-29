@@ -22,12 +22,16 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
@@ -37,6 +41,17 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.policy.combine.impl.DenyOverridesRuleCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.DenyOverridesRuleOrderedCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitRuleCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.FirstApplicableRuleCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyDenyOverridesRuleCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyOrderedDenyOverridesRuleCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyOrderedPermitOverridesRuleCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.LegacyPermitOverridesRuleCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.PermitOverridesRuleCombineAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.PermitOverridesRuleOrderedCombiningAlgorithm;
+import org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyRuleCombiningAlgorithm;
 
 import com.google.common.base.Function;
 import com.google.common.base.MoreObjects;
@@ -51,11 +66,43 @@ import com.google.common.collect.Multimap;
 
 public class Policy extends BaseCompositeDecisionRule
 		implements PolicyElement {
+	private static final Set<Class<?>> BUILT_IN_ALGORITHMS = Set.of(
+			DenyOverridesRuleCombiningAlgorithm.class, DenyOverridesRuleOrderedCombiningAlgorithm.class,
+			PermitOverridesRuleCombineAlgorithm.class, PermitOverridesRuleOrderedCombiningAlgorithm.class,
+			DenyUnlessPermitRuleCombiningAlgorithm.class, PermitUnlessDenyRuleCombiningAlgorithm.class,
+			FirstApplicableRuleCombiningAlgorithm.class, LegacyDenyOverridesRuleCombineAlgorithm.class,
+			LegacyOrderedDenyOverridesRuleCombineAlgorithm.class, LegacyPermitOverridesRuleCombineAlgorithm.class,
+			LegacyOrderedPermitOverridesRuleCombineAlgorithm.class);
+	private static final VarHandle PREPARED_CONDITIONS;
+
+	static {
+		try{
+			PREPARED_CONDITIONS = MethodHandles.lookup().findVarHandle(Policy.class, "preparedConditions", PreparedConditions.class);
+		}catch(ReflectiveOperationException e){
+			throw new ExceptionInInitializerError(e);
+		}
+	}
+
 	private final PolicyDefaults policyDefaults;
 	private final Map<String, VariableDefinition> variableDefinitions;
 	private final List<Rule> rules;
 	private final DecisionCombiningAlgorithm<Rule> combiningAlgorithm;
 	private final Map<String, Multimap<String, CombinerParameter>> ruleCombiningParameters;
+	private final boolean canRespond;
+	/** Whether the combining algorithm is one of the engine's own classes, which stage in the root (review R-AN) */
+	private final boolean builtInAlgorithm;
+	/** Whether the conditions of the rules may share values within a decision, by a cheap scan (design D45) */
+	private final boolean mayShareConditions;
+	/**
+	 * The conditions of the rules prepared to share values, by the first decision that shares them: the
+	 * policy keeps them, so that what they hold of the policy goes with it (design D45, review R-D45-sol)
+	 */
+	private PreparedConditions preparedConditions;
+	/**
+	 * The hash code once computed; every field that it reads is fixed when the policy is built (cycle AR).
+	 * Hash inputs must remain immutable, including values supplied by trusted extensions.
+	 */
+	private int hashCode;
 
 	/**
 	 * A reference to itself
@@ -70,6 +117,10 @@ public class Policy extends BaseCompositeDecisionRule
 		this.policyDefaults = b.policyDefaults;
 		this.reference = PolicyIDReference.builder(b.id).version(b.version).build();
 		this.rules = b.rules.build();
+		this.builtInAlgorithm = BUILT_IN_ALGORITHMS.contains(combiningAlgorithm.getClass());
+		this.canRespond = hasResponseExpressions() || !builtInAlgorithm
+				|| rules.stream().anyMatch(Rule::mayWriteResponses);
+		this.mayShareConditions = PreparedConditions.mayShare(rules);
 		this.variableDefinitions = Maps.uniqueIndex(b.variables,
 				new Function<VariableDefinition, String>(){
 					@Override
@@ -170,7 +221,61 @@ public class Policy extends BaseCompositeDecisionRule
 	}
 
 	protected Decision combineDecisions(EvaluationContext context){
-		return combiningAlgorithm.combine(context, rules);
+		List<Rule> selected = Prepared.children(context, this);
+		if(selected != rules) RootEvaluationContext.observationOf(context).childrenSelected(context, this, selected);
+		return combiningAlgorithm.combine(context, selected);
+	}
+
+	private static final class Prepared
+	{
+		private static List<Rule> children(EvaluationContext context, Policy policy){
+			if(!BUILT_IN_ALGORITHMS.contains(policy.combiningAlgorithm.getClass())) return policy.rules;
+			EvaluationContext top = DescendantEvaluationContext.topOf(context);
+			if(!(top instanceof RootEvaluationContext decision) || decision.generation().isEmpty()) return policy.rules;
+			Generation generation = decision.generation().orElseThrow();
+			if(generation.indexes.isEmpty() || policy.rules.size() < 2 || !decision.hasRequestAttributeResolution()
+					|| decision.hasMisses() || context.isValidateFuncParamsAtRuntime()) return policy.rules;
+			ConcurrentMap<Policy, TargetIndex<Rule>> indexes = generation.indexes.orElseThrow().policies;
+			TargetIndex<Rule> index = indexes.get(policy);
+			if(index == null){
+				TargetIndex<Rule> built = TargetIndex.createRules(context, policy.rules);
+				TargetIndex<Rule> winner = indexes.putIfAbsent(policy, built);
+				index = winner == null ? built : winner;
+			}
+			return index.candidates(context);
+		}
+	}
+
+	@Override
+	boolean canRespond(){
+		return canRespond;
+	}
+
+	@Override
+	boolean hasBuiltInCombiningAlgorithm(){
+		return builtInAlgorithm;
+	}
+
+	/** Whether a decision may prepare the conditions of the rules to share values: without, they are evaluated as written (design D45) */
+	boolean mayShareConditions(){
+		return mayShareConditions;
+	}
+
+	/**
+	 * The conditions of the rules prepared to share values (design D45). Decisions that race each prepare
+	 * them, and the first to publish its preparation wins: every decision reads that one. A plain read
+	 * suffices, as the fields of a preparation are final.
+	 */
+	PreparedConditions preparedConditions(){
+		PreparedConditions prepared = preparedConditions;
+		if(prepared == null){
+			PreparedConditions built = PreparedConditions.prepare(this);
+			prepared = (PreparedConditions)PREPARED_CONDITIONS.compareAndExchange(this, null, built);
+			if(prepared == null){
+				prepared = built;
+			}
+		}
+		return prepared;
 	}
 
 	@Override
@@ -211,15 +316,19 @@ public class Policy extends BaseCompositeDecisionRule
 
 	@Override
 	public int hashCode() {
-		// Arrays.hashCode of the fields in this order, without the array (design D22)
-		int base = super.hashCode();
-		int h = 1;
-		h = 31 * h + java.util.Objects.hashCode(policyDefaults);
-		h = 31 * h + java.util.Objects.hashCode(variableDefinitions);
-		h = 31 * h + java.util.Objects.hashCode(rules);
-		h = 31 * h + java.util.Objects.hashCode(combiningAlgorithm);
-		h = 31 * h + java.util.Objects.hashCode(ruleCombiningParameters);
-		return base * 31 + h;
+		int h = hashCode;
+		if(h == 0){
+			// Arrays.hashCode of the fields in this order, without the array (design D22)
+			int fields = 1;
+			fields = 31 * fields + java.util.Objects.hashCode(policyDefaults);
+			fields = 31 * fields + java.util.Objects.hashCode(variableDefinitions);
+			fields = 31 * fields + java.util.Objects.hashCode(rules);
+			fields = 31 * fields + java.util.Objects.hashCode(combiningAlgorithm);
+			fields = 31 * fields + java.util.Objects.hashCode(ruleCombiningParameters);
+			h = super.hashCode() * 31 + fields;
+			hashCode = h;
+		}
+		return h;
 	}
 
 	public void accept(PolicyTreeVisitor v) {
@@ -246,7 +355,7 @@ public class Policy extends BaseCompositeDecisionRule
 	 * An {@link EvaluationContext} implementation for evaluating
 	 * {@link Policy} instances
 	 */
-	class PolicyDescendantEvaluationContext extends DescendantEvaluationContext
+	class PolicyDescendantEvaluationContext extends CompositeRuleEvaluationContext
 	{
 		private final Map<String, ValueExp> varDefEvalResults;
 

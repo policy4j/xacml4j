@@ -92,6 +92,25 @@ public class PdpFixtureTest
 		}
 	}
 
+	@ParameterizedTest
+	@ValueSource(strings = {"rsa2008", "synthetic:100"})
+	public void targetIndexKeepsTheCorpusResponses(String corpus) throws Exception
+	{
+		try(PdpFixture linear = PdpFixture.open("in-memory", corpus, false);
+				PdpFixture indexed = PdpFixture.open("in-memory", corpus, true)){
+			for(CorpusRequest request : linear.corpus().requests()){
+				List<Result> expected = List.copyOf(linear.pdp().decide(request.request()).getResults());
+				List<Result> actual = List.copyOf(indexed.pdp().decide(request.request()).getResults());
+				assertWithMessage("response for %s", request.id()).that(actual).isEqualTo(expected);
+				for(int i = 0; i < expected.size(); i++){
+					assertThat(List.copyOf(actual.get(i).getObligations())).isEqualTo(List.copyOf(expected.get(i).getObligations()));
+					assertThat(List.copyOf(actual.get(i).getAssociatedAdvice())).isEqualTo(List.copyOf(expected.get(i).getAssociatedAdvice()));
+					assertThat(List.copyOf(actual.get(i).getPolicyIdentifiers())).isEqualTo(List.copyOf(expected.get(i).getPolicyIdentifiers()));
+				}
+			}
+		}
+	}
+
 	@Test
 	public void requestSelection() throws Exception
 	{

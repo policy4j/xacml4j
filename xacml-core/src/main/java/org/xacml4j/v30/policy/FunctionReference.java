@@ -30,6 +30,7 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -71,6 +72,11 @@ public final class FunctionReference implements Expression
 		return spec.getId();
 	}
 
+	/** The referenced function (design D36) */
+	FunctionSpec function(){
+		return spec;
+	}
+
 	@Override
 	public ValueExpTypeInfo getEvaluatesTo(){
 		return returnType;
@@ -93,6 +99,37 @@ public final class FunctionReference implements Expression
 						spec.getId());
 		}
 		return spec.invoke(context, params);
+	}
+
+	/**
+	 * Invokes a function with two parameters (design D39)
+	 *
+	 * @param <T> value expression type
+	 * @param context evaluation context
+	 * @param arg0 the first parameter
+	 * @param arg1 the second parameter
+	 * @return function invocation value
+	 * @throws EvaluationException if function information fails
+	 */
+	public <T extends ValueExp> T invoke(EvaluationContext context,
+	                                     Expression arg0, Expression arg1) throws EvaluationException
+	{
+		if(log.isDebugEnabled()){
+				log.debug("Invoking function reference=\"{}\"",
+						spec.getId());
+		}
+		return FunctionSpecBuilder.usesBuiltInInvocation(spec) ? spec.invoke(context, arg0, arg1)
+				: spec.invoke(context, new Expression[]{arg0, arg1});
+	}
+
+	/** Invokes a function with one parameter. */
+	public <T extends ValueExp> T invoke(EvaluationContext context, Expression argument)
+			throws EvaluationException
+	{
+		if(log.isDebugEnabled()){
+			log.debug("Invoking function reference=\"{}\"", spec.getId());
+		}
+		return FunctionSpecBuilder.invokeVariadicSingle(spec, context, argument);
 	}
 
 	/**

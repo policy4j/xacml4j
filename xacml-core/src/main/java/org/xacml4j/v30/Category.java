@@ -44,12 +44,19 @@ import org.xacml4j.v30.types.Entity;
  */
 public final class Category implements Serializable
 {
+	/** The default value of the class before cycle AM added members (serialver) */
+	private static final long serialVersionUID = 1764671001452130122L;
+
 	private final static Logger LOG = LoggerFactory.getLogger(Category.class);
 
 	private final String refId;
 	private final CategoryReference cachedRef;
 	private final CategoryId categoryId;
 	private final Entity entity;
+	/** The entity as an {@code Optional}, created on the first lookup (cycle AM) */
+	private transient Optional<Entity> optionalEntity;
+	/** This category as included in a result, built on the first use (cycle AM) */
+	private transient Category includedInResult;
 
 	/**
 	 * Creates {@link Category} from given {@link Category.Builder}
@@ -77,7 +84,8 @@ public final class Category implements Serializable
 		if(!key.getCategory().equals(getCategoryId())){
 			return java.util.Optional.empty();
 		}
-		return entity.resolve(key.getAttributeId(), key.getDataType(), key.getIssuer());
+		// The entity keeps the bag of the designator (change optimize-pdp-evaluation, cycle AF)
+		return entity.resolve(key);
 	}
 
 	/**
@@ -103,7 +111,36 @@ public final class Category implements Serializable
 	 * instances
 	 */
 	public Collection<Attribute> getIncludeInResultAttributes(){
-		return entity.find(a->a.isIncludeInResult());
+		return entity.includeInResultAttributes();
+	}
+
+	/**
+	 * This category as a result includes it (XACML 3.0 §5.46, §5.48): its attributes marked to be
+	 * included in the result, with its category and reference id, and without content. The category
+	 * itself when all its attributes are marked and it has no content; otherwise a copy built once,
+	 * which the individual requests that share this category share too (cycle AM).
+	 *
+	 * @return the category to include in a result
+	 */
+	Category includedInResult(){
+		Category included = includedInResult;
+		if(included == null){
+			Collection<Attribute> attributes = getIncludeInResultAttributes();
+			included = attributes.size() == entity.attributes().size() && !entity.hasContent() ? this
+					: Category.builder(categoryId).id(refId).entity(Entity.builder().attributes(attributes).build()).build();
+			includedInResult = included;
+		}
+		return included;
+	}
+
+	/** @return the entity as an {@code Optional}, the same one for every lookup (cycle AM) */
+	Optional<Entity> optionalEntity(){
+		Optional<Entity> e = optionalEntity;
+		if(e == null){
+			e = Optional.of(entity);
+			optionalEntity = e;
+		}
+		return e;
 	}
 	/**
 	 * Constructs {@link Category.Builder} for given

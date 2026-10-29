@@ -203,7 +203,9 @@ public class IPAddress extends Value.SelfValue<IPAddress>
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(address, mask, range);
+		int hash = 31 + java.util.Objects.hashCode(address);
+		hash = 31 * hash + java.util.Objects.hashCode(mask);
+		return 31 * hash + java.util.Objects.hashCode(range);
 	}
 
 	@Override

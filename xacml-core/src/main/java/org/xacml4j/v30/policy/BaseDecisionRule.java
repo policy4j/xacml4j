@@ -22,9 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +36,7 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
@@ -49,9 +50,20 @@ abstract class  BaseDecisionRule implements DecisionRule
 	protected final String id;
 	private final String description;
 	private final Target target;
+	final TargetBeforeContext.Plan contextFreeTarget;
 	protected final Condition condition;
-	protected final Collection<AdviceExpression> adviceExpressions;
-	protected final Collection<ObligationExpression> obligationExpressions;
+	protected final ImmutableList<AdviceExpression> adviceExpressions;
+	protected final ImmutableList<ObligationExpression> obligationExpressions;
+	/** Whether evaluating the target or the condition can write responses (design D36) */
+	private final boolean targetOrConditionCanWrite;
+	/**
+	 * Whether every advice and obligation expression gives the same response at each evaluation
+	 * (cycle AN), so that the responses of a decision are kept from its first evaluation (cycle AU)
+	 */
+	private final boolean constantResponses;
+	/** The responses of a Permit and of a Deny decision when constant, kept as first evaluated; immutable, so read and written without a lock */
+	private DecisionResponses permitResponses;
+	private DecisionResponses denyResponses;
 
 
 	protected BaseDecisionRule(
@@ -61,9 +73,27 @@ abstract class  BaseDecisionRule implements DecisionRule
 		this.id = b.id;
 		this.description = b.description;
 		this.target = b.target;
+		this.contextFreeTarget = TargetBeforeContext.prepare(target);
 		this.condition = b.condition;
 		this.adviceExpressions = b.adviceExpressions.build();
 		this.obligationExpressions = b.obligationExpressions.build();
+		this.targetOrConditionCanWrite = ResponseWriters.canWrite(target) || ResponseWriters.canWrite(condition);
+		this.constantResponses = allConstant(adviceExpressions, AdviceExpression.class)
+				&& allConstant(obligationExpressions, ObligationExpression.class);
+	}
+
+	/**
+	 * Tells whether every expression gives the same response at each evaluation: it is exactly of
+	 * the engine's class, which decides what applies by its effect, and every assignment is a
+	 * literal value (cycle AN, review R-AN)
+	 */
+	private static boolean allConstant(List<? extends BaseDecisionRuleResponseExpression> expressions, Class<?> engineClass){
+		for(BaseDecisionRuleResponseExpression e : expressions){
+			if(e.getClass() != engineClass || e.constantAssignments().isEmpty()){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -119,6 +149,57 @@ abstract class  BaseDecisionRule implements DecisionRule
 	}
 
 	/**
+	 * Tells whether this rule has advice or obligation expressions (design D36)
+	 */
+	final boolean hasResponseExpressions(){
+		return !adviceExpressions.isEmpty() || !obligationExpressions.isEmpty();
+	}
+
+	/**
+	 * Tells whether evaluating this rule's target or condition can write responses (design D36).
+	 * They are evaluated with the rule's own context, outside the staging of a composite rule, so
+	 * they count for the rule that encloses it.
+	 */
+	final boolean targetOrConditionCanWrite(){
+		return targetOrConditionCanWrite;
+	}
+
+	/**
+	 * Tells whether evaluating this rule, its target and condition included, can write responses
+	 * (design D36)
+	 */
+	final boolean mayWriteResponses(){
+		return hasResponseExpressions() || targetOrConditionCanWrite;
+	}
+
+	/**
+	 * Evaluates this rule, as one evaluation of the observation of its decision (design D34)
+	 *
+	 * @param context an evaluation context
+	 * @return {@link Decision} the decision of this rule
+	 */
+	@Override
+	public final Decision evaluate(EvaluationContext context)
+	{
+		DecisionObservation o = RootEvaluationContext.observationOf(context);
+		if(!o.isEnabled()){
+			return evaluateRule(context);
+		}
+		Object parent = o.evaluationStarted(context, this);
+		Decision d;
+		try{
+			d = evaluateRule(context);
+		}catch(Throwable t){
+			o.evaluationFailed(context, this, parent, t);
+			throw t;
+		}
+		o.evaluationFinished(context, this, parent, d);
+		return d;
+	}
+
+	abstract Decision evaluateRule(EvaluationContext context);
+
+	/**
 	 * Testing if this decision rule is applicable to
 	 * the current evaluation context
 	 *
@@ -127,9 +208,19 @@ abstract class  BaseDecisionRule implements DecisionRule
 	 */
 	@Override
 	public MatchResult isMatch(EvaluationContext context){
-		if(!isEvaluationContextValid(context)){
+		// A no-match from the precheck of the enclosing algorithm is answered from the parent context;
+		// a match is answered in this rule's own context, like a target evaluation (design D41)
+		Optional<MatchResult> prechecked = TargetBeforeContext.takePrechecked(context, this);
+		boolean noMatch = prechecked.isPresent() && prechecked.get() == MatchResult.NOMATCH;
+		if(!noMatch && !isEvaluationContextValid(context)){
 			return MatchResult.INDETERMINATE;
 		}
+		MatchResult r = prechecked.isPresent() ? prechecked.get() : match(context);
+		RootEvaluationContext.observationOf(context).targetMatched(context, this, r);
+		return r;
+	}
+
+	private MatchResult match(EvaluationContext context){
 		try{
 			return (target == null)?MatchResult.MATCH:target.match(context);
 		}catch(EvaluationException e){
@@ -144,6 +235,18 @@ abstract class  BaseDecisionRule implements DecisionRule
 	}
 
 	/**
+	 * Evaluates the condition of this rule, which must have one, and reports its result (design D34)
+	 *
+	 * @param context an evaluation context
+	 * @return {@link ConditionResult} the result of the condition
+	 */
+	final ConditionResult evaluateCondition(EvaluationContext context){
+		ConditionResult r = condition.evaluate(context);
+		RootEvaluationContext.observationOf(context).conditionEvaluated(context, this, r);
+		return r;
+	}
+
+	/**
 	 * Evaluates all matching to the given
 	 * decision rule advice and obligations
 	 *
@@ -154,13 +257,26 @@ abstract class  BaseDecisionRule implements DecisionRule
 			EvaluationContext context, Decision result) throws EvaluationException
 	{
 		if(result.isIndeterminate() ||
-				result == Decision.NOT_APPLICABLE){
+				result == Decision.NOT_APPLICABLE ||
+				!hasResponseExpressions()){
 			return;
 		}
+		ImmutableList<Advice> advices;
+		ImmutableList<Obligation> obligations;
 		try
 		{
-			List<Advice> advices = evaluateAdvices(context, result);
-			List<Obligation> obligations = evaluateObligations(context, result);
+			// Immutable lists, which the contexts above keep as they are (cycle AU)
+			DecisionResponses kept = (result == Decision.PERMIT)?permitResponses:denyResponses;
+			if(kept != null){
+				advices = kept.advices();
+				obligations = kept.obligations();
+			}else{
+				advices = evaluateAdvices(context, result);
+				obligations = evaluateObligations(context, result);
+				if(constantResponses){
+					keep(result, new DecisionResponses(advices, obligations));
+				}
+			}
 			if(!advices.isEmpty()){
 				context.addAdvices(result, advices);
 			}
@@ -179,7 +295,21 @@ abstract class  BaseDecisionRule implements DecisionRule
 			context.setEvaluationStatus(status);
 			throw new EvaluationException(status, e);
 		}
+		if(!advices.isEmpty() || !obligations.isEmpty()){
+			RootEvaluationContext.observationOf(context).responsesStaged(context, this, result, advices, obligations);
+		}
 	}
+
+	private void keep(Decision result, DecisionResponses responses){
+		if(result == Decision.PERMIT){
+			permitResponses = responses;
+		}else{
+			denyResponses = responses;
+		}
+	}
+
+	/** The advice and obligations of one decision of a rule (cycle AU) */
+	private record DecisionResponses(ImmutableList<Advice> advices, ImmutableList<Obligation> obligations) {}
 
 	/**
 	 * Evaluates advice expressions matching given decision
@@ -190,23 +320,25 @@ abstract class  BaseDecisionRule implements DecisionRule
 	 * @return the applicable {@link Advice} instances, an empty immutable list if there is none
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	private List<Advice> evaluateAdvices(EvaluationContext context,
+	private ImmutableList<Advice> evaluateAdvices(EvaluationContext context,
 			Decision result)
 		throws EvaluationException
 	{
-		List<Advice> advices = null;
+		ImmutableList.Builder<Advice> advices = null;
 		try{
-			for(AdviceExpression adviceExp : adviceExpressions){
+			for(int i = 0; i < adviceExpressions.size(); i++){
+				AdviceExpression adviceExp = adviceExpressions.get(i);
 				if(adviceExp.isApplicable(result)){
 					Advice a = adviceExp.evaluate(context);
 					Preconditions.checkState(a != null);
 					if(advices == null){
-						advices = new ArrayList<>();
+						// At most the expressions left apply
+						advices = ImmutableList.builderWithExpectedSize(adviceExpressions.size() - i);
 					}
 					advices.add(a);
 				}
 			}
-			return (advices == null)?ImmutableList.<Advice>of():advices;
+			return (advices == null)?ImmutableList.of():advices.build();
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule advices", e);
@@ -232,22 +364,24 @@ abstract class  BaseDecisionRule implements DecisionRule
 	 * @return the applicable {@link Obligation} instances, an empty immutable list if there is none
 	 * @throws EvaluationException if an evaluation error occurs
 	 */
-	private List<Obligation> evaluateObligations(EvaluationContext context, Decision result)
+	private ImmutableList<Obligation> evaluateObligations(EvaluationContext context, Decision result)
 		throws EvaluationException
 	{
-		List<Obligation> obligations = null;
+		ImmutableList.Builder<Obligation> obligations = null;
 		try{
-			for(ObligationExpression obligationExp : obligationExpressions){
+			for(int i = 0; i < obligationExpressions.size(); i++){
+				ObligationExpression obligationExp = obligationExpressions.get(i);
 				if(obligationExp.isApplicable(result)){
 					Obligation o = obligationExp.evaluate(context);
 					Preconditions.checkState(o != null);
 					if(obligations == null){
-						obligations = new ArrayList<>();
+						// At most the expressions left apply
+						obligations = ImmutableList.builderWithExpectedSize(obligationExpressions.size() - i);
 					}
 					obligations.add(o);
 				}
 			}
-			return (obligations == null)?ImmutableList.<Obligation>of():obligations;
+			return (obligations == null)?ImmutableList.of():obligations.build();
 		}catch(EvaluationException e){
 			if(log.isDebugEnabled()){
 				log.debug("Failed to evaluate decision rule obligations", e);

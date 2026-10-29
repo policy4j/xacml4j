@@ -48,6 +48,7 @@ import com.google.common.collect.Multimap;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * A XACML Request Context Abstraction
@@ -59,11 +60,18 @@ public class RequestContext
 	private final boolean returnPolicyIdList;
 	private final boolean combinedDecision;
 	private final Multimap<CategoryId, Category> entities;
+	/** The categories in request order, as a list for the loops of a decision (design D32) */
+	private final ImmutableList<Category> categories;
 	private final Map<String, Category> attributesByXmlId;
 	private final List<RequestReference> requestReferences;
 	private final RequestDefaults requestDefaults;
+	private final boolean multipleContentSelector;
+	private final boolean legacyContentSelector;
+	private final boolean requiresExpansion;
 
 	private transient int cachedHashCode = 0;
+	/** The categories to include in a result, built on the first use (cycle AM) */
+	private transient ImmutableList<Category> includedInResult;
 
 	private RequestContext(Builder b)
 	{
@@ -72,17 +80,30 @@ public class RequestContext
 		this.requestDefaults = b.reqDefaults;
 		this.combinedDecision = b.combinedDecision;
 		this.entities = b.attrBuilder.build();
+		this.categories = ImmutableList.copyOf(entities.values());
 		ImmutableMap.Builder<String, Category> attributesByXmlIdBuilder = ImmutableMap.builder();
 		Set<String> attributeXmlIds = new HashSet<>();
-		for(Category attr : entities.values()){
+		boolean multipleContentSelector = false;
+		boolean legacyContentSelector = false;
+		for(Category attr : categories){
 			attr.getReferenceId().ifPresent(id -> {
 				if(!attributeXmlIds.add(id)){
 					throw new SyntaxException("Duplicate Attributes xml:id: " + id);
 				}
 				attributesByXmlIdBuilder.put(id, attr);
 			});
+			Entity entity = attr.getEntity();
+			multipleContentSelector = multipleContentSelector
+					|| entity.hasValues("urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector", XacmlTypes.XPATH, null)
+					|| entity.hasValues("urn:oasis:names:tc:xacml:3.0:multiple:content-selector", XacmlTypes.XPATH, null);
+			legacyContentSelector = legacyContentSelector || attr.getCategoryId().equals(CategoryId.RESOURCE)
+					&& entity.hasValues("urn:oasis:names:tc:xacml:1.0:resource:resource-id", XacmlTypes.XPATH, null);
 		}
 		this.attributesByXmlId = attributesByXmlIdBuilder.build();
+		this.multipleContentSelector = multipleContentSelector;
+		this.legacyContentSelector = legacyContentSelector;
+		this.requiresExpansion = !requestReferences.isEmpty() || entities.size() != entities.keySet().size()
+				|| multipleContentSelector || legacyContentSelector;
 		this.cachedHashCode = Objects.hashCode(
 				this.returnPolicyIdList,
 				this.combinedDecision,
@@ -190,6 +211,21 @@ public class RequestContext
 		return !requestReferences.isEmpty();
 	}
 
+	/** Whether a built-in multiple-decision handler has input to process (Multiple Decision Profile §§3.2–3.4). */
+	public boolean requiresExpansion(){
+		return requiresExpansion;
+	}
+
+	/** An XPath multiple:content-selector, including the accepted draft identifier (Multiple Decision Profile §3.2). */
+	public boolean containsMultipleContentSelector(){
+		return multipleContentSelector;
+	}
+
+	/** An XPath resource-id in the resource category (XACML 2.0 Multiple Resource Profile §2.2). */
+	public boolean containsLegacyContentSelector(){
+		return legacyContentSelector;
+	}
+
 
 	/**
 	 * Resolves attribute reference to {@link Category}
@@ -252,8 +288,8 @@ public class RequestContext
 		if(found.isEmpty()){
 			return Optional.empty();
 		}
-		return Optional.of(found instanceof List ? ((List<Category>)found).get(0).getEntity()
-				: found.iterator().next().getEntity());
+		// The category keeps the Optional, so a lookup creates none (cycle AM)
+		return (found instanceof List ? ((List<Category>)found).get(0) : found.iterator().next()).optionalEntity();
 	}
 
 	public Optional<Attribute> getAttribute(CategoryId id,
@@ -285,9 +321,9 @@ public class RequestContext
 	public boolean containsAttributeValues(
 			String attributeId, String issuer, ValueType type)
 	{
-		for (Category a : entities.values()) {
-			Entity e = a.getEntity();
-			if (e.hasValues(attributeId, type, issuer)) {
+		// By index over the list built at construction (design D32)
+		for(int i = 0; i < categories.size(); i++){
+			if(categories.get(i).getEntity().hasValues(attributeId, type, issuer)){
 				return true;
 			}
 		}
@@ -340,21 +376,24 @@ public class RequestContext
 	 */
 	public Collection<Category> getIncludeInResultAttributes()
 	{
-		ImmutableList.Builder<Category> resultAttr = null;
-		for(Category a : entities.values()){
-			Collection<Attribute> includeInResult = a.getIncludeInResultAttributes();
-			if(!includeInResult.isEmpty()){
-				if(resultAttr == null){
-					resultAttr = ImmutableList.builder();
+		ImmutableList<Category> included = includedInResult;
+		if(included == null){
+			ImmutableList.Builder<Category> resultAttr = null;
+			for(int i = 0; i < categories.size(); i++){
+				Category a = categories.get(i);
+				// Known since the entity was built, so a category without marked attributes is
+				// left out unread (design D32); a category builds its part once (cycle AM)
+				if(a.getEntity().hasIncludeInResultAttributes()){
+					if(resultAttr == null){
+						resultAttr = ImmutableList.builder();
+					}
+					resultAttr.add(a.includedInResult());
 				}
-				resultAttr.add(Category
-						.builder(a.getCategoryId())
-						.id(a.getReferenceId().orElse(null))
-						.entity(Entity.builder().attributes(includeInResult).build())
-						.build());
 			}
+			included = resultAttr != null ? resultAttr.build() : ImmutableList.of();
+			includedInResult = included;
 		}
-		return resultAttr != null ? resultAttr.build() : ImmutableList.of();
+		return included;
 	}
 
 	@Override

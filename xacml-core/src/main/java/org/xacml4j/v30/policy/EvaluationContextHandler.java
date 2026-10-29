@@ -58,6 +58,22 @@ public interface EvaluationContextHandler
 	 */
 	Optional<Entity> getEntity(CategoryId id);
 
+	/**
+	 * Whether a designator whose request entity has a bag resolves to that bag with no other effect
+	 * on the decision, so that a child can be selected or its target matched from the entity and
+	 * the resolution left out.
+	 *
+	 * @return {@code true} when this contract holds, {@code false} by default
+	 */
+	default boolean usesRequestEntityForDesignators(){
+		return false;
+	}
+
 	Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators();
 	Map<AttributeSelectorKey, BagOfValues> getResolvedSelectors();
+
+	/** @return whether the information point supplied a designator bag, without creating the view (design D32) */
+	default boolean hasResolvedDesignators(){
+		return !getResolvedDesignators().isEmpty();
+	}
 }

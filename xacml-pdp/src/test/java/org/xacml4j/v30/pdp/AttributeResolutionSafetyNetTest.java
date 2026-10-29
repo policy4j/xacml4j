@@ -24,6 +24,8 @@ package org.xacml4j.v30.pdp;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -107,10 +109,10 @@ class AttributeResolutionSafetyNetTest
 				.getResults().stream().findFirst().orElseThrow();
 		assertDecisionAndStatus(result, expectedDecision, expectedStatus);
 		if (name.startsWith("present")) {
-			verifyNoMoreInteractions(pip);
+			verifyNoOtherInteractions(pip);
 		} else {
 			verify(pip, times(1)).resolve(any(), any(AttributeDesignatorKey.class));
-			verifyNoMoreInteractions(pip);
+			verifyNoOtherInteractions(pip);
 		}
 	}
 
@@ -125,7 +127,7 @@ class AttributeResolutionSafetyNetTest
 
 		assertDecisionAndStatus(result, Decision.PERMIT, StatusCodeId.OK);
 		verify(pip, times(1)).resolve(any(), any(AttributeDesignatorKey.class));
-		verifyNoMoreInteractions(pip);
+		verifyNoOtherInteractions(pip);
 	}
 
 	@Test
@@ -143,7 +145,7 @@ class AttributeResolutionSafetyNetTest
 
 		assertDecisionAndStatus(result, Decision.PERMIT, StatusCodeId.OK);
 		verify(pip, times(1)).resolve(any(), any(AttributeSelectorKey.class));
-		verifyNoMoreInteractions(pip);
+		verifyNoOtherInteractions(pip);
 	}
 
 	@Test
@@ -165,7 +167,7 @@ class AttributeResolutionSafetyNetTest
 		assertThat(result.getStatus().getMessage().orElse(null))
 				.isEqualTo(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE);
 		verify(pip, times(1)).resolve(any(), any(AttributeSelectorKey.class));
-		verifyNoMoreInteractions(pip);
+		verifyNoOtherInteractions(pip);
 	}
 
 	@Test
@@ -187,7 +189,7 @@ class AttributeResolutionSafetyNetTest
 		assertThat(result.getStatus().getMessage().orElse(null))
 				.isEqualTo(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE);
 		verify(pip, times(1)).resolve(any(), any(AttributeSelectorKey.class));
-		verifyNoMoreInteractions(pip);
+		verifyNoOtherInteractions(pip);
 	}
 
 	@Test
@@ -202,7 +204,7 @@ class AttributeResolutionSafetyNetTest
 
 		assertDecisionAndStatus(result, Decision.INDETERMINATE_D, StatusCodeId.STATUS_PROCESSING_ERROR);
 		verify(pip, times(1)).resolve(any(), any(AttributeDesignatorKey.class));
-		verifyNoMoreInteractions(pip);
+		verifyNoOtherInteractions(pip);
 	}
 
 	@Test
@@ -247,7 +249,7 @@ class AttributeResolutionSafetyNetTest
 		assertDecisionAndStatus(result, Decision.INDETERMINATE_P, StatusCodeId.STATUS_PROCESSING_ERROR);
 		assertThat(result.getStatus().getMessage().orElse("")).doesNotContain("secret");
 		verify(pip, times(1)).resolve(any(), any(AttributeDesignatorKey.class));
-		verifyNoMoreInteractions(pip);
+		verifyNoOtherInteractions(pip);
 	}
 
 	@ParameterizedTest(name = "mustBePresent={0}")
@@ -272,7 +274,7 @@ class AttributeResolutionSafetyNetTest
 		assertThat(result.getStatus().getMessage().orElse(null))
 				.isEqualTo(AttributeReferenceEvaluationException.RESOLUTION_FAILED_MESSAGE);
 		verify(pip, times(1)).resolve(any(), any(AttributeSelectorKey.class));
-		verifyNoMoreInteractions(pip);
+		verifyNoOtherInteractions(pip);
 	}
 
 	@Test
@@ -516,6 +518,18 @@ class AttributeResolutionSafetyNetTest
 		} else {
 			when(pip.resolve(any(), any(AttributeDesignatorKey.class))).thenReturn(Optional.empty());
 		}
+	}
+
+	/**
+	 * Beyond the verified resolutions, a decision only asks the information point for its own
+	 * point (task 30 of change optimize-pdp-evaluation), at most once, and whether it has a
+	 * resolver for a key (cycle AN).
+	 */
+	private static void verifyNoOtherInteractions(PolicyInformationPoint pip)
+	{
+		verify(pip, atMostOnce()).forDecision();
+		verify(pip, atLeast(0)).hasNoResolver(any());
+		verifyNoMoreInteractions(pip);
 	}
 
 	private static PolicyDecisionPoint pdp(Expression condition, boolean resolverFailure)

@@ -33,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 
+import com.google.common.collect.ImmutableList;
+
 import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
@@ -81,8 +83,10 @@ public class CombiningListTypesCharacterizationTest
 			Run array = run(algorithm, sequence, factory, ArrayList::new);
 			Run linked = run(algorithm, sequence, factory, LinkedList::new);
 			Run immutable = run(algorithm, sequence, factory, List::copyOf);
+			Run guava = run(algorithm, sequence, factory, ImmutableList::copyOf);
 			assertWithMessage("%s over %s, LinkedList", name, sequence).that(linked).isEqualTo(array);
 			assertWithMessage("%s over %s, List.of", name, sequence).that(immutable).isEqualTo(array);
+			assertWithMessage("%s over %s, ImmutableList", name, sequence).that(guava).isEqualTo(array);
 		}
 	}
 

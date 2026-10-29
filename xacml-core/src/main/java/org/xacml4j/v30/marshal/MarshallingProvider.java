@@ -28,8 +28,10 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Suppliers;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
 import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.policy.FunctionSpec;
 
 
 public interface MarshallingProvider
@@ -44,9 +46,22 @@ public interface MarshallingProvider
 		return Optional.empty();
 	}
 
-	FunctionProvider funcSystemProvider = FunctionProvider.builder()
-	                                                  .withDefaultFunctions()
-	                                                  .build();
+	FunctionProvider funcSystemProvider = new FunctionProvider() {
+		private final java.util.function.Supplier<FunctionProvider> delegate = Suppliers.memoize(
+				() -> FunctionProvider.builder().withDefaultFunctions().build());
+
+		@Override
+		public String getId(){ return delegate.get().getId(); }
+
+		@Override
+		public String getDescription(){ return delegate.get().getDescription(); }
+
+		@Override
+		public Optional<FunctionSpec> getFunction(String functionId){ return delegate.get().getFunction(functionId); }
+
+		@Override
+		public java.util.Collection<FunctionSpec> getProvidedFunctions(){ return delegate.get().getProvidedFunctions(); }
+	};
 	DecisionCombiningAlgorithmProvider combineSystemProvider = DecisionCombiningAlgorithmProvider.builder()
 	                                                                                             .withDefaultAlgorithms()
 	                                                                                             .build();

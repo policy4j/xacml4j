@@ -60,10 +60,10 @@ final class MultipleResourcesViaXPathExpressionLegacyHandler
 							.build())
 							.includeInResultAttr(request.getIncludeInResultAttributes()).build());
 		}
-		Category resource = request.getOnlyAttributes(CategoryId.RESOURCE);
-		if(resource == null){
+		if(!request.containsLegacyContentSelector()){
 			return handleNext(request, context);
 		}
+		Category resource = request.getOnlyAttributes(CategoryId.RESOURCE);
 		Entity entity = resource.getEntity();
 		Collection<Value<?>> resourceId = entity.findValues(RESOURCE_ID_ATTRIBUTE,
 		                                                         XacmlTypes.XPATH);

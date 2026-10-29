@@ -31,7 +31,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.slf4j.MDC;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationContext;
@@ -39,17 +38,38 @@ import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.request.AbstractRequestContextHandler;
+import org.xacml4j.v30.spi.observe.DecisionObserver;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 
 /**
  * The names of a {@code decide} call and of its individual decisions come
  * from sequences, not from random numbers (change optimize-pdp-evaluation,
- * group 1).
+ * group 1). The name of a decision is the correlation id of its call and
+ * its number, as an observer forms it (design D34).
  */
 public class CorrelationIdTest
 {
-	private static final String REQUEST_ID_KEY = "XacmlRequestId";
+	/** Records the name of each decision */
+	private static final class DecisionIds implements DecisionObserver<PolicyDecisionPoint>
+	{
+		private final List<String> ids;
+
+		DecisionIds(List<String> ids){
+			this.ids = ids;
+		}
+
+		@Override
+		public PolicyDecisionPoint requestStarted(PolicyDecisionPoint pdp, RequestContext request){
+			return pdp;
+		}
+
+		@Override
+		public PolicyDecisionPoint decisionStarted(PolicyDecisionPoint pdp, RequestContext request, long correlation, int number){
+			ids.add(pdp.getCorrelationId(correlation) + "-" + number);
+			return pdp;
+		}
+	}
 
 	/** Records the correlation id of each call, then asks for the given number of individual decisions. */
 	private static final class RecordingHandler extends AbstractRequestContextHandler
@@ -73,7 +93,7 @@ public class CorrelationIdTest
 		}
 	}
 
-	private static PolicyDecisionPoint newPdp(AbstractRequestContextHandler handler, List<String> auditedRequestIds)
+	private static PolicyDecisionPoint newPdp(AbstractRequestContextHandler handler, List<String> decisionIds)
 	{
 		CompositeDecisionRule root = Mockito.mock(CompositeDecisionRule.class);
 		when(root.createContext(Mockito.any())).thenReturn(Mockito.mock(EvaluationContext.class));
@@ -83,7 +103,7 @@ public class CorrelationIdTest
 				.pip(Mockito.mock(PolicyInformationPoint.class))
 				.rootPolicy(root)
 				.requestHandler(handler)
-				.decisionAuditor((pdp, result, request) -> auditedRequestIds.add(MDC.get(REQUEST_ID_KEY)))
+				.observer(new DecisionIds(decisionIds))
 				.build();
 	}
 
@@ -142,9 +162,9 @@ public class CorrelationIdTest
 				return List.of(context.requestDecision(request));
 			}
 		};
-		// The auditor runs on every worker thread, so its list must be thread-safe (review rv010 N2).
-		List<String> audited = java.util.Collections.synchronizedList(new ArrayList<>());
-		PolicyDecisionPoint pdp = newPdp(collecting, audited);
+		// The observer runs on every worker thread, so its list must be thread-safe (review rv010 N2).
+		List<String> decisionIds = java.util.Collections.synchronizedList(new ArrayList<>());
+		PolicyDecisionPoint pdp = newPdp(collecting, decisionIds);
 		java.util.concurrent.ExecutorService pool = java.util.concurrent.Executors.newFixedThreadPool(threads);
 		try{
 			java.util.concurrent.CountDownLatch start = new java.util.concurrent.CountDownLatch(1);
@@ -168,26 +188,8 @@ public class CorrelationIdTest
 
 		assertThat(ids).hasSize(threads * callsPerThread);
 		assertThat(new java.util.HashSet<>(ids)).hasSize(threads * callsPerThread);
-		assertThat(audited).hasSize(threads * callsPerThread);
-		assertThat(new java.util.HashSet<>(audited)).hasSize(threads * callsPerThread);
-	}
-
-	@Test
-	public void requestIdIsRemovedWhenEvaluationThrows()
-	{
-		CompositeDecisionRule root = Mockito.mock(CompositeDecisionRule.class);
-		when(root.createContext(Mockito.any())).thenReturn(Mockito.mock(EvaluationContext.class));
-		when(root.evaluate(Mockito.any())).thenThrow(new IllegalStateException("evaluation failed"));
-		PolicyDecisionPoint pdp = PolicyDecisionPointBuilder.builder("correlation-test")
-				.policyRepository(Mockito.mock(PolicyRepository.class))
-				.pip(Mockito.mock(PolicyInformationPoint.class))
-				.rootPolicy(root)
-				.build();
-
-		org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class, () -> pdp.decide(request()));
-
-		assertThat(MDC.get(REQUEST_ID_KEY)).isNull();
-		assertThat(MDC.get("PpId")).isNull();
+		assertThat(decisionIds).hasSize(threads * callsPerThread);
+		assertThat(new java.util.HashSet<>(decisionIds)).hasSize(threads * callsPerThread);
 	}
 
 	@Test
@@ -212,31 +214,30 @@ public class CorrelationIdTest
 	}
 
 	@Test
-	public void oneRequestHasRequestIdOneAndTheKeyIsRemovedAfterDecide()
+	public void theDecisionOfOneRequestIsNumberOneOfTheContextsCorrelationId()
 	{
 		RecordingHandler handler = new RecordingHandler(1);
-		List<String> audited = new ArrayList<>();
-		PolicyDecisionPoint pdp = newPdp(handler, audited);
+		List<String> decisionIds = new ArrayList<>();
+		PolicyDecisionPoint pdp = newPdp(handler, decisionIds);
 
 		pdp.decide(request());
 
-		assertThat(audited).containsExactly(handler.correlationIds.get(0) + "-1");
-		assertThat(MDC.get(REQUEST_ID_KEY)).isNull();
+		assertThat(decisionIds).containsExactly(handler.correlationIds.get(0) + "-1");
 	}
 
 	@Test
 	public void individualDecisionsOfOneCallAreNumberedFromOne()
 	{
 		RecordingHandler handler = new RecordingHandler(2);
-		List<String> audited = new ArrayList<>();
-		PolicyDecisionPoint pdp = newPdp(handler, audited);
+		List<String> decisionIds = new ArrayList<>();
+		PolicyDecisionPoint pdp = newPdp(handler, decisionIds);
 
 		pdp.decide(request());
 		pdp.decide(request());
 
 		String firstCall = handler.correlationIds.get(0);
 		String secondCall = handler.correlationIds.get(1);
-		assertThat(audited)
+		assertThat(decisionIds)
 				.containsExactly(firstCall + "-1", firstCall + "-2", secondCall + "-1", secondCall + "-2")
 				.inOrder();
 	}

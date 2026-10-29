@@ -24,7 +24,6 @@ package org.xacml4j.v30.types;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import com.google.common.base.Objects;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -48,6 +47,7 @@ public final class ISO8601DateTime
 
     // Keep lexical timezone absence while retaining the existing UTC comparison default.
     private final boolean timeZoneAbsent;
+    private transient int hashCode;
 
     private ISO8601DateTime(OffsetDateTime value) {
         this(value, false);
@@ -164,18 +164,26 @@ public final class ISO8601DateTime
     }
     @Override
     public int compareTo(ISO8601DateTime o) {
-        return get().toInstant().compareTo(o.get().toInstant());
+        int comparison = Long.compare(value.toEpochSecond(), o.value.toEpochSecond());
+        return comparison != 0 ? comparison : value.getNano() - o.value.getNano();
     }
 
     @Override
     public boolean equals(Object other) {
         return other instanceof ISO8601DateTime
-                && get().toInstant().equals(((ISO8601DateTime)other).get().toInstant());
+                && value.toEpochSecond() == ((ISO8601DateTime)other).value.toEpochSecond()
+                && value.getNano() == ((ISO8601DateTime)other).value.getNano();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(get().toInstant(), getEvaluatesTo());
+        int hash = hashCode;
+        if (hash == 0) {
+            int instantHash = Long.hashCode(value.toEpochSecond()) + 51 * value.getNano();
+            hash = 31 * (31 + instantHash) + getEvaluatesTo().hashCode();
+            hashCode = hash;
+        }
+        return hash;
     }
 
     public ISO8601DateTime plus(Duration v){

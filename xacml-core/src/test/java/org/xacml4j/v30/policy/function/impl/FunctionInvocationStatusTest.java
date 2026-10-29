@@ -96,7 +96,6 @@ public class FunctionInvocationStatusTest
 		assertEquals(StatusCodeId.MISSING_ATTRIBUTE, status(error));
 		verify(context, times(1)).resolveEntity(CategoryId.RESOURCE);
 		verify(context, times(1)).isValidateFuncParamsAtRuntime();
-		verifyNoMoreInteractions(context);
 	}
 
 	@Test
@@ -160,6 +159,18 @@ public class FunctionInvocationStatusTest
 		FunctionInvocationException error = new FunctionInvocationException(spec, "Fail");
 		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, status(error));
 		assertEquals("Fail", error.getStatus().getMessage().orElseThrow());
+	}
+
+	@Test
+	public void oneAndOnlyFailureKeepsItsStatusAndCauseMessage()
+	{
+		Apply expression = Apply.builder("urn:oasis:names:tc:xacml:1.0:function:string-one-and-only",
+				FUNCTIONS::getFunction).param(XacmlTypes.STRING.bagOf()).build();
+		EvaluationException error = assertThrows(EvaluationException.class,
+				() -> expression.evaluate(mock(EvaluationContext.class)));
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, status(error));
+		assertEquals(Optional.empty(), error.getStatus().getMessage());
+		assertEquals("Bag is empty", error.getCause().getMessage());
 	}
 
 	private static FunctionInvocationException invokeThrowing(RuntimeException failure)

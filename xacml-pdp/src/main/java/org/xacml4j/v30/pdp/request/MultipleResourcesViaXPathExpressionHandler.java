@@ -98,7 +98,7 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		if(request.containsRepeatingCategories()){
 			return handleNext(request, context);
 		}
-		if(!containsMultipleContentSelector(request)){
+		if(!request.containsMultipleContentSelector()){
 			if(LOG.isDebugEnabled()){
 				LOG.debug("Request does not have id=\"{}\" of type=\"{}\", " +
 						"passing request to next handler",
@@ -179,12 +179,6 @@ final class MultipleResourcesViaXPathExpressionHandler extends AbstractRequestCo
 		ExpansionLimitExceededException(String message){
 			super(message);
 		}
-	}
-
-	private boolean containsMultipleContentSelector(RequestContext request)
-	{
-		return request.containsAttributeValues(MULTIPLE_CONTENT_SELECTOR, XacmlTypes.XPATH)
-				|| request.containsAttributeValues(DRAFT_MULTIPLE_CONTENT_SELECTOR, XacmlTypes.XPATH);
 	}
 
 	private String normalizeMultipleContentSelectorId(String attributeId)

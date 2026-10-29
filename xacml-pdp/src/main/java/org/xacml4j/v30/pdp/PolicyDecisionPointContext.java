@@ -27,6 +27,7 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
@@ -39,7 +40,17 @@ public interface PolicyDecisionPointContext
 	 * @return correlation identifier
 	 */
 	String getCorrelationId();
-	
+
+	/**
+	 * Gets the correlation sequence of the decide call, which the correlation identifier
+	 * formats (design D34)
+	 *
+	 * @return the correlation sequence, 0 when the context has none
+	 */
+	default long getCorrelation(){
+		return 0;
+	}
+
 	/**
 	 * Creates {@link EvaluationContext} to evaluate
 	 * given {@link RequestContext} access decision request
@@ -48,7 +59,20 @@ public interface PolicyDecisionPointContext
 	 * @return {@link EvaluationContext}
 	 */
 	EvaluationContext createEvaluationContext(RequestContext req);
-	
+
+	/**
+	 * Creates {@link EvaluationContext} to evaluate a given access decision request whose
+	 * decision the given observation observes (design D34). A context that does not support
+	 * observation evaluates the request unobserved.
+	 *
+	 * @param req an access decision request
+	 * @param observation the observation of the decision
+	 * @return {@link EvaluationContext}
+	 */
+	default EvaluationContext createEvaluationContext(RequestContext req, DecisionObservation observation){
+		return createEvaluationContext(req);
+	}
+
 	/**
 	 * Gets root policy for authorization domain
 	 * 

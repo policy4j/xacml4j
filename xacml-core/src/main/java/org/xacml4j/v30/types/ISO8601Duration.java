@@ -124,7 +124,7 @@ public abstract class ISO8601Duration <T extends ISO8601Duration<T>> extends Val
 
     @Override
     public int hashCode() {
-        return Objects.hash(duration, getEvaluatesTo());
+        return 31 * (31 + Objects.hashCode(duration)) + Objects.hashCode(getEvaluatesTo());
     }
 
     protected abstract T build(Duration d);

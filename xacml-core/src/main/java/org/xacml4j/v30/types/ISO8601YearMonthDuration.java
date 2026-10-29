@@ -37,6 +37,7 @@ public final class ISO8601YearMonthDuration
         extends ISO8601Duration<ISO8601YearMonthDuration>
 {
     private static final long serialVersionUID = 6510264772808336009L;
+    private transient int hashCode;
     private ISO8601YearMonthDuration(Duration value) {
        super(XacmlTypes.YEARMONTHDURATION, value);
     }
@@ -76,6 +77,16 @@ public final class ISO8601YearMonthDuration
     }
     public static ISO8601YearMonthDuration of(Period v){
         return new ISO8601YearMonthDuration(v);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = hashCode;
+        if (hash == 0) {
+            hash = super.hashCode();
+            hashCode = hash;
+        }
+        return hash;
     }
 
     @Override

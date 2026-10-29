@@ -34,6 +34,7 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
 
@@ -182,8 +183,18 @@ final class MultipleResourcesBudgetHandler extends AbstractRequestContextHandler
 		}
 
 		@Override
+		public long getCorrelation(){
+			return context.getCorrelation();
+		}
+
+		@Override
 		public EvaluationContext createEvaluationContext(RequestContext req){
 			return context.createEvaluationContext(req);
+		}
+
+		@Override
+		public EvaluationContext createEvaluationContext(RequestContext req, DecisionObservation observation){
+			return context.createEvaluationContext(req, observation);
 		}
 
 		@Override

@@ -30,6 +30,8 @@ import org.xacml4j.v30.marshal.PolicyUnmarshaller;
 import org.xacml4j.v30.marshal.RequestMarshaller;
 import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.marshal.ResponseUnmarshaller;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 
 /** XACML unmarshallers and request marshallers by media type, from providers discovered once. */
 public final class Marshalling
@@ -39,8 +41,19 @@ public final class Marshalling
 	private Marshalling(){
 	}
 
+	/** @return a policy unmarshaller whose policies call the standard functions of the marshalling providers */
 	public static PolicyUnmarshaller policies(MediaType mediaType){
 		return provider(mediaType).newPolicyUnmarshaller()
+				.orElseThrow(() -> new IllegalArgumentException("No policy unmarshaller for " + mediaType));
+	}
+
+	/**
+	 * @return a policy unmarshaller whose policies call the given functions and combining algorithms,
+	 * those of the repository the policies go to (change add-regex-engine-spi, design D3)
+	 */
+	public static PolicyUnmarshaller policies(MediaType mediaType, FunctionProvider functions,
+			DecisionCombiningAlgorithmProvider algorithms){
+		return provider(mediaType).newPolicyUnmarshaller(functions, algorithms)
 				.orElseThrow(() -> new IllegalArgumentException("No policy unmarshaller for " + mediaType));
 	}
 

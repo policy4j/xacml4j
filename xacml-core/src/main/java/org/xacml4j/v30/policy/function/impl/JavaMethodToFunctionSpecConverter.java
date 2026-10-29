@@ -107,6 +107,12 @@ class JavaMethodToFunctionSpecConverter
 			// The function evaluates its arguments itself, in its own order.
 			b.lazyArgEval();
 		}
+		// Only the default factory calls the engine's own method as it is; the invocation of another
+		// factory gets the evaluation context and can write responses (design D36, review R-AA)
+		if (invocationFactory == FunctionInvocationFactory.defaultFactory()
+				&& XacmlDefaultFunctions.isBuiltIn(m.getDeclaringClass())) {
+			b.writesNoResponses();
+		}
 		Annotation[][] params = m.getParameterAnnotations();
 		Class<?>[] types = m.getParameterTypes();
 		Class<?> varArgComponentType = m.isVarArgs() ? types[types.length - 1].getComponentType() : null;

@@ -43,4 +43,16 @@ public interface PolicyDecisionPoint extends Closeable
 	 * @return {@link Result}
 	 */
 	ResponseContext decide(RequestContext request);
+
+	/**
+	 * Gets the correlation identifier of a decide call of this decision point: the identifier that its log lines
+	 * print (design D34). An individual decision of the call adds {@code "-"} and its number.
+	 *
+	 * @param correlation the correlation sequence of the call, as
+	 * {@link org.xacml4j.v30.spi.observe.DecisionObserver#decisionStarted} gets it
+	 * @return the correlation identifier
+	 */
+	default String getCorrelationId(long correlation){
+		return getId() + "-" + Long.toHexString(correlation);
+	}
 }

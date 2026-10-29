@@ -106,11 +106,10 @@ public final class AttributeAssignment
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(
-				attributeId,
-				category,
-				attribute,
-				issuer);
+		int hash = 31 + attributeId.hashCode();
+		hash = 31 * hash + java.util.Objects.hashCode(category);
+		hash = 31 * hash + attribute.hashCode();
+		return 31 * hash + java.util.Objects.hashCode(issuer);
 	}
 
 	@Override

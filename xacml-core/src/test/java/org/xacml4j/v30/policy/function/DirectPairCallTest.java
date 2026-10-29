@@ -115,13 +115,16 @@ public class DirectPairCallTest
 			Map.entry(XacmlTypes.IPADDRESS, List.of("10.0.0.1", "10.0.0.2")),
 			Map.entry(XacmlTypes.DNSNAME, List.of("example.com", "www.example.org")));
 
-	/** A context that only answers {@code isValidateFuncParamsAtRuntime}; it allocates nothing per call. */
+	/** An unobserved context that answers {@code isValidateFuncParamsAtRuntime}. */
 	private static EvaluationContext context(boolean validate)
 	{
 		return (EvaluationContext) Proxy.newProxyInstance(EvaluationContext.class.getClassLoader(),
 				new Class<?>[]{EvaluationContext.class}, (proxy, method, args) -> {
 					if(method.getName().equals("isValidateFuncParamsAtRuntime")){
 						return validate;
+					}
+					if(method.getName().equals("getDecisionObservation")){
+						return org.xacml4j.v30.spi.observe.DecisionObservation.none();
 					}
 					throw new UnsupportedOperationException(method.getName());
 				});
@@ -354,7 +357,8 @@ public class DirectPairCallTest
 
 		Outcome failure = single(spec, context, bug);
 
-		assertThat(failure.failure()).isEqualTo(FunctionInvocationException.class);
+		// The failure of an operand is not a failure of the function: the enclosing Apply maps it (design D34)
+		assertThat(failure.failure()).isEqualTo(IllegalStateException.class);
 		assertThat(failure).isEqualTo(list(spec, context, bug));
 		assertThat(single(spec, context, missing)).isEqualTo(list(spec, context, missing));
 	}

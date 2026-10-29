@@ -30,6 +30,8 @@ import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.spi.repository.PolicyRepositoryListener;
 
@@ -49,6 +51,16 @@ public class ForwardingPolicyRepository implements PolicyRepository
 	@Override
 	public String getId(){
 		return delegate.getId();
+	}
+
+	@Override
+	public FunctionProvider getFunctionProvider(){
+		return delegate.getFunctionProvider();
+	}
+
+	@Override
+	public DecisionCombiningAlgorithmProvider getAlgorithmProvider(){
+		return delegate.getAlgorithmProvider();
 	}
 
 	@Override

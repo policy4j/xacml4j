@@ -1,8 +1,12 @@
 package org.xacml4j.v30.pdp;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Result;
@@ -10,9 +14,11 @@ import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
 import org.xacml4j.v30.policy.PolicyReferenceResolver;
+import org.xacml4j.v30.policy.PreparedPolicySets;
 import org.xacml4j.v30.policy.RootEvaluationContext;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandlerChain;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
@@ -58,7 +64,10 @@ public interface PolicyDecisionPointContextFactory
 	final class DefaultPolicyDecisionPointContextFactory
 		implements PolicyDecisionPointContextFactory
 	{
-		/** Fixed when the PDP is built; the PpId MDC key tells PDPs with one prefix apart. */
+		/** The logger of the decision point, whose debug line prints the count of the applicable policies (design D32) */
+		private static final Logger DECISIONS = LoggerFactory.getLogger(DefaultPolicyDecisionPoint.class);
+
+		/** Fixed when the PDP is built */
 		private final String correlationPrefix = Long.toHexString(System.currentTimeMillis());
 		/** Numbers the decide calls of this PDP from 1, without a random number generator. */
 		private final AtomicLong correlationSequence = new AtomicLong();
@@ -67,16 +76,14 @@ public interface PolicyDecisionPointContextFactory
 		private PolicyDecisionAuditor decisionAuditor;
 		private PolicyDecisionCache decisionCache;
 		private XPathProvider xpathProvider;
-		private PolicyReferenceResolver policyReferenceResolver;
+		private final RootEvaluationContext.Configuration evaluationConfiguration;
+		private final Optional<PreparedPolicySets> prepared;
 		private CompositeDecisionRule policyDomain;
 		private RequestContextHandlerChain requestHandlers;
 
 		private boolean decisionCacheEnabled = true;
 		private boolean decisionAuditEnabled = true;
 		private boolean validateFuncParamsAtRuntime = false;
-		// Built once, not for every decision (change optimize-pdp-evaluation, D9)
-		private final Duration decisionCacheTTL = Duration.ofSeconds(30);
-		private XPathVersion defaultXPathVersion = XPathVersion.XPATH1;
 
 		DefaultPolicyDecisionPointContextFactory(
 				CompositeDecisionRule policyDomain,
@@ -87,13 +94,45 @@ public interface PolicyDecisionPointContextFactory
 				PolicyInformationPoint pip,
 				RequestContextHandlerChain handlerChain)
 		{
+			this(policyDomain, repository, auditor, cache, xpathProvider, pip, handlerChain, Optional.empty());
+		}
+
+		DefaultPolicyDecisionPointContextFactory(
+				CompositeDecisionRule policyDomain,
+				PolicyRepository repository,
+				PolicyDecisionAuditor auditor,
+				PolicyDecisionCache cache,
+				XPathProvider xpathProvider,
+				PolicyInformationPoint pip,
+				RequestContextHandlerChain handlerChain,
+				PreparedPolicySets prepared)
+		{
+			this(policyDomain, repository, auditor, cache, xpathProvider, pip, handlerChain, Optional.of(prepared));
+		}
+
+		private DefaultPolicyDecisionPointContextFactory(
+				CompositeDecisionRule policyDomain,
+				PolicyRepository repository,
+				PolicyDecisionAuditor auditor,
+				PolicyDecisionCache cache,
+				XPathProvider xpathProvider,
+				PolicyInformationPoint pip,
+				RequestContextHandlerChain handlerChain,
+				Optional<PreparedPolicySets> prepared)
+		{
 			Preconditions.checkArgument(policyDomain != null);
 			Preconditions.checkArgument(repository != null);
 			Preconditions.checkArgument(xpathProvider != null);
 			Preconditions.checkArgument(pip != null);
 			Preconditions.checkArgument(auditor != null);
 			Preconditions.checkArgument(cache != null);
-			this.policyReferenceResolver = new DefaultPolicyReferenceResolver(repository);
+			this.prepared = prepared;
+			PolicyReferenceResolver policyReferenceResolver = prepared.isPresent()
+					? new DefaultPolicyReferenceResolver(repository, false, 1024)
+					: new DefaultPolicyReferenceResolver(repository);
+			this.evaluationConfiguration = new RootEvaluationContext.Configuration(
+					Clock.systemUTC(), Duration.ofSeconds(30), XPathVersion.XPATH1, policyReferenceResolver);
+			prepared.ifPresent(value -> repository.addPolicyRepositoryListener(new PreparedPolicySetsListener(value)));
 			this.pip = pip;
 			this.xpathProvider = xpathProvider;
 			this.policyDomain = policyDomain;
@@ -102,11 +141,29 @@ public interface PolicyDecisionPointContextFactory
 			this.requestHandlers = handlerChain;
 		}
 
+		/** The correlation identifier of a decide call, formatted when it is read (design D34) */
+		String getCorrelationId(long correlation){
+			return correlationPrefix + "-" + Long.toHexString(correlation);
+		}
+
 		@Override
 		public PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp)
 		{
-			final String correlationId = correlationPrefix + "-"
-					+ Long.toHexString(correlationSequence.incrementAndGet());
+			return createContext(pdp, nextCorrelation());
+		}
+
+		long nextCorrelation(){
+			return correlationSequence.incrementAndGet();
+		}
+
+		boolean canHandleDirectly(RequestContext request){
+			return request != null && request.getClass() == RequestContext.class
+					&& !request.requiresExpansion() && !request.isCombinedDecision()
+					&& requestHandlers != null && requestHandlers.canHandleSingleRequestDirectly();
+		}
+
+		PolicyDecisionPointContext createContext(final PolicyDecisionCallback pdp, final long correlation)
+		{
 			return new PolicyDecisionPointContext() {
 
 				@Override
@@ -154,11 +211,22 @@ public interface PolicyDecisionPointContextFactory
 
 				@Override
 				public String getCorrelationId() {
-					return correlationId;
+					return DefaultPolicyDecisionPointContextFactory.this.getCorrelationId(correlation);
+				}
+
+				@Override
+				public long getCorrelation() {
+					return correlation;
 				}
 
 				@Override
 				public EvaluationContext createEvaluationContext(RequestContext request)
+				{
+					return createEvaluationContext(request, DecisionObservation.none());
+				}
+
+				@Override
+				public EvaluationContext createEvaluationContext(RequestContext request, DecisionObservation observation)
 				{
 					Preconditions.checkNotNull(request);
 					Preconditions.checkArgument(
@@ -167,13 +235,17 @@ public interface PolicyDecisionPointContextFactory
 					Preconditions.checkArgument(
 							!request.containsRequestReferences(),
 							"RequestContext contains multiple request references");
-					EvaluationContextHandler handler = new DefaultEvaluationContextHandler(request::getEntity, pip);
-					return new RootEvaluationContext(
-							validateFuncParamsAtRuntime,
-							decisionCacheTTL,
-							defaultXPathVersion,
-							policyReferenceResolver,
-							handler);
+					// The handler takes the request itself: no callback per decision (cycle AH)
+					EvaluationContextHandler handler = new DefaultEvaluationContextHandler(request, pip);
+					// The applicable policies are recorded only for a policy identifier list or
+					// for the decision point's debug line (design D32)
+					boolean record = request.isReturnPolicyIdList() || DECISIONS.isDebugEnabled();
+					if(prepared.isPresent()){
+						return new RootEvaluationContext(evaluationConfiguration, validateFuncParamsAtRuntime,
+								handler, record, prepared.orElseThrow(), observation);
+					}
+					return new RootEvaluationContext(evaluationConfiguration, validateFuncParamsAtRuntime,
+							handler, record, observation);
 				}
 			};
 		}

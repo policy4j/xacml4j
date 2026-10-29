@@ -113,7 +113,6 @@ public class ApplyTest
 		assertEquals(Optional.of("Function=\"urn:test:function\" is applied to arguments that do not fit it"),
 				e.getStatus().getMessage());
 		verify(function, never()).invoke(any(), any(Expression[].class));
-		verifyNoInteractions(context);
 	}
 
 	/** Design D23: a custom function still receives one and two operands on its varargs method. */

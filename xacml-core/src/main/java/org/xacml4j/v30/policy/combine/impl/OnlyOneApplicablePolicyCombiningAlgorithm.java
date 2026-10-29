@@ -22,6 +22,10 @@ package org.xacml4j.v30.policy.combine.impl;
  * #L%
  */
 
+import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.isDefinitelyNoMatch;
+import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.supportsIndexedTraversal;
+
+import java.util.Iterator;
 import java.util.List;
 
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -48,8 +52,10 @@ public final class OnlyOneApplicablePolicyCombiningAlgorithm extends
 		boolean atLeastOne = false;
 		CompositeDecisionRule found = null;
 		EvaluationContext foundEvalContext = null;
-		for(CompositeDecisionRule d : decisions)
-		{
+		Iterator<CompositeDecisionRule> iterator = supportsIndexedTraversal(decisions) ? null : decisions.iterator();
+		for (int i = 0; iterator == null ? i < decisions.size() : iterator.hasNext(); i++) {
+			CompositeDecisionRule d = iterator == null ? decisions.get(i) : iterator.next();
+			if(isDefinitelyNoMatch(context, d)) continue;
 			final EvaluationContext policyContext = d.createContext(context);
 			final MatchResult r = d.isMatch(policyContext);
 			if(r == MatchResult.INDETERMINATE){

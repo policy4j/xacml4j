@@ -23,9 +23,14 @@ package org.xacml4j.v30.policy.combine;
  */
 
 
+import java.util.List;
+
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.policy.TargetBeforeContext;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * An utility class for evaluating {@link DecisionRule}
@@ -38,9 +43,21 @@ public final class DecisionCombiningAlgorithms
 	}
 
 	/**
-	 * A helper method which invokes {@link DecisionRule#createContext(EvaluationContext)}
-	 * then sub-sequentially invokes {@link DecisionRule#evaluate(org.xacml4j.v30.EvaluationContext)}
-	 * with the just created {@link EvaluationContext} defaultProvider as an argument
+	 * Tests whether a list supports indexed traversal without changing its iterator semantics.
+	 * Guava immutable lists provide constant-time indexed access; other lists keep their
+	 * iterators to preserve snapshot, fail-fast, and lazy traversal behavior.
+	 *
+	 * @param values the list to traverse
+	 * @return {@code true} for Guava immutable lists
+	 */
+	public static boolean supportsIndexedTraversal(List<?> values){
+		return values instanceof ImmutableList<?>;
+	}
+
+	/**
+	 * Evaluates a child in a context of its own, except that a child whose built-in target the
+	 * request entity decides gets no context when it cannot match, and is not matched again when it
+	 * does (design D41).
 	 *
 	 * @param <D> {@link DecisionRule} subclass
 	 * @param context a parent evaluation context
@@ -48,8 +65,21 @@ public final class DecisionCombiningAlgorithms
 	 * @return evaluation result as {@link Decision} defaultProvider
 	 */
 	public static <D extends DecisionRule> Decision evaluateIfMatch(EvaluationContext context, D decision) {
-		EvaluationContext decisionContext = decision.createContext(context);
-		return decision.evaluate(decisionContext);
+		return TargetBeforeContext.evaluateIfMatch(context, decision);
+	}
+
+	/**
+	 * Tells whether a child's target cannot match, for an algorithm that matches every child before
+	 * it evaluates one: such a child answers its match call from the parent context and is skipped,
+	 * and a matching child answers its next match call, in the context the algorithm creates.
+	 *
+	 * @param <D> {@link DecisionRule} subclass
+	 * @param context a parent evaluation context
+	 * @param decision a decision rule about to be matched
+	 * @return {@code true} when the child cannot match and is skipped
+	 */
+	public static <D extends DecisionRule> boolean isDefinitelyNoMatch(EvaluationContext context, D decision) {
+		return TargetBeforeContext.isDefinitelyNoMatch(context, decision);
 	}
 
 	/**

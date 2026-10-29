@@ -161,4 +161,25 @@ public class AttributeResolverDescriptorTest
 		assertTrue(keys.containsKey(key0.build()));
 		assertTrue(keys.containsKey(key1.build()));
 	}
+
+	@Test
+	public void testDescriptorWithoutCacheSettingResolves()
+	{
+		AttributeResolverDescriptor d = AttributeResolverDescriptor
+				.builder("id", "name", CategoryId.SUBJECT_ACCESS)
+				.attribute("testId1", XacmlTypes.INTEGER)
+				.build((c)->ImmutableMap.of("testId1", XacmlTypes.INTEGER.ofAny(10).toBag()));
+		PolicyInformationPoint pip = PolicyInformationPoint
+				.builder("pip")
+				.registry(ResolverRegistry.builder().withAttributeResolver(d).build())
+				.build();
+		when(context.getClock()).thenReturn(Clock.systemUTC());
+		assertEquals(Optional.of(XacmlTypes.INTEGER.ofAny(10).toBag()),
+		             pip.resolve(context, AttributeDesignatorKey
+				             .builder()
+				             .category(CategoryId.SUBJECT_ACCESS)
+				             .attributeId("testId1")
+				             .dataType(XacmlTypes.INTEGER)
+				             .build()));
+	}
 }

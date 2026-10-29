@@ -22,9 +22,12 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
 
 import org.xacml4j.v30.BagOfValues;
@@ -43,26 +46,55 @@ public final class ResolverCacheKey implements Serializable
 {
 	private static final long serialVersionUID = -6895205924708410228L;
 
+	private static final BagOfValues[] NO_KEYS = new BagOfValues[0];
+
 	private final String resolverId;
 	private final BagOfValues[] keys;
 
 	private int hashCode = -1;
 
 	public ResolverCacheKey(Builder b) {
-		this.resolverId = b.id;
-		this.keys = b.keysBuilder.toArray(new BagOfValues[0]);
+		this(b.id, b.keys.toArray(NO_KEYS));
+	}
+
+	private ResolverCacheKey(String resolverId, BagOfValues[] keys) {
+		this.resolverId = resolverId;
+		this.keys = keys;
 	}
 
 	public static Builder builder(String resolverId){
 		return new Builder().id(resolverId);
 	}
 
+	/**
+	 * The key of a resolver call from the resolved values of its context keys, in their order,
+	 * copied once into the key without a builder (change optimize-pdp-evaluation, cycle AL). It
+	 * equals the key the builder makes of the same values.
+	 */
+	static ResolverCacheKey of(String resolverId, Collection<BagOfValues> keys){
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(resolverId));
+		return new ResolverCacheKey(resolverId, keys.toArray(NO_KEYS));
+	}
+
 	@Override
 	public int hashCode(){
-		if(hashCode == -1){
-			this.hashCode = java.util.Objects.hash(resolverId, keys);
+		int h = hashCode;
+		if(h == -1){
+			// By the contents of the bags, as equals compares them (bead policy4j-3huw, design D27)
+			h = 31 * resolverId.hashCode() + Arrays.deepHashCode(keys);
+			hashCode = h;
 		}
-		return hashCode;
+		return h;
+	}
+
+	/**
+	 * A stream written before the hash was computed by content may carry the cached hash of
+	 * that time; it is dropped, so the key is computed again (design D27)
+	 */
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+	{
+		in.defaultReadObject();
+		hashCode = -1;
 	}
 
 	@Override
@@ -90,7 +122,7 @@ public final class ResolverCacheKey implements Serializable
 	public static class Builder
 	{
 		private String id;
-		private List<BagOfValues> keysBuilder = new LinkedList<>();
+		private final List<BagOfValues> keys = new ArrayList<>(2);
 
 		public Builder id(String id){
 			Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
@@ -113,7 +145,7 @@ public final class ResolverCacheKey implements Serializable
 
 		public Builder keys(Iterable<BagOfValues> keys){
 			for(BagOfValues bag : keys){
-				keysBuilder.add(bag);
+				this.keys.add(bag);
 			}
 			return this;
 		}

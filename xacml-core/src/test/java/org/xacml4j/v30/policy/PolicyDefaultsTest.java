@@ -23,12 +23,45 @@ package org.xacml4j.v30.policy;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.XPathVersion;
 
 public class PolicyDefaultsTest
 {
+	@Test
+	public void genericDefaultsKeepImmutableScalarValues()
+	{
+		for(Object value : List.of(XPathVersion.XPATH2, "text", true, 'x', (byte)1, (short)2,
+				3, 4L, 5.0f, 6.0d, BigInteger.TEN, BigDecimal.ONE, URI.create("urn:default"))){
+			PolicyDefaults policy = PolicyDefaults.builder().value("custom", value).build();
+			PolicySetDefaults set = PolicySetDefaults.builder().value("custom", value).build();
+			assertEquals(value, policy.getValue("custom"));
+			assertEquals(value, set.getValue("custom"));
+		}
+		assertEquals(XPathVersion.XPATH2, PolicyDefaults.builder()
+				.value(PolicyDefaults.XPATH_VERSION, XPathVersion.XPATH2).build().getXPathVersion());
+	}
+
+	@Test
+	public void genericDefaultsRejectMutableValues()
+	{
+		for(Object value : List.of(new ArrayList<>(), new StringBuilder("text"),
+				new AtomicInteger(1), new byte[]{1}, ByteBuffer.wrap(new byte[]{1}))){
+			assertThrows(IllegalArgumentException.class, () -> PolicyDefaults.builder().value("custom", value));
+			assertThrows(IllegalArgumentException.class, () -> PolicySetDefaults.builder().value("custom", value));
+		}
+	}
+
 	@Test
 	public void testCreatePolicyDefaults()
 	{

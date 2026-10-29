@@ -23,6 +23,7 @@ package org.xacml4j.v30.policy;
  */
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.BagOfValues;
@@ -55,6 +56,11 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 	protected final String id;
 	protected final Effect effect;
 	protected final Multimap<String, AttributeAssignmentExpression> attributeExpressions;
+	/**
+	 * The assignments of an expression that has none or only literal values, built once; nothing
+	 * when a value is evaluated (cycle AN)
+	 */
+	private final Optional<Collection<AttributeAssignment>> constantAssignments;
 
 	private int hashCode;
 
@@ -68,6 +74,7 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 		this.id = b.id;
 		this.effect = b.effect;
 		this.attributeExpressions = b.attributes.build();
+		this.constantAssignments = constantAssignments(attributeExpressions.values());
 		this.hashCode = Objects.hashCode(id, effect, attributeExpressions);
 	}
 
@@ -117,24 +124,13 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 			EvaluationContext context)
 		throws EvaluationException
 	{
-		if(attributeExpressions.isEmpty()){
-			return ImmutableList.of();
+		if(constantAssignments.isPresent()){
+			return constantAssignments.get();
 		}
 		try {
 			ImmutableList.Builder<AttributeAssignment> attr = ImmutableList.builder();
 			for (AttributeAssignmentExpression attrExp : attributeExpressions.values()) {
-				AttributeAssignment.Builder b = AttributeAssignment.builder(attrExp.getAttributeId())
-				                                                   .category(attrExp.getCategory())
-				                                                   .issuer(attrExp.getIssuer());
-				ValueExp val = attrExp.evaluate(context);
-				if (val instanceof Value) {
-					attr.add(b.value((Value) val).build());
-					continue;
-				}
-				BagOfValues bag = (BagOfValues) val;
-				for (Value v : bag) {
-					attr.add(b.value(v).build());
-				}
+				assign(attr, attrExp, attrExp.evaluate(context));
 			}
 			return attr.build();
 		}catch (EvaluationException e){
@@ -143,6 +139,44 @@ abstract class BaseDecisionRuleResponseExpression implements PolicyElement
 			throw new EvaluationException(Status.processingError()
 			                                    .error(e)
 			                                    .build(), e);
+		}
+	}
+
+	/**
+	 * The assignments of this expression when they are the same for every decision: it has no
+	 * assignment expressions, or only literal values
+	 */
+	protected final Optional<Collection<AttributeAssignment>> constantAssignments(){
+		return constantAssignments;
+	}
+
+	private static Optional<Collection<AttributeAssignment>> constantAssignments(
+			Collection<AttributeAssignmentExpression> expressions)
+	{
+		ImmutableList.Builder<AttributeAssignment> attr = ImmutableList.builder();
+		for (AttributeAssignmentExpression attrExp : expressions) {
+			if (!(attrExp.getExpression() instanceof ValueExp value)) {
+				return Optional.empty();
+			}
+			assign(attr, attrExp, value);
+		}
+		return Optional.of(attr.build());
+	}
+
+	/** Adds the assignment of a value, or one assignment per value of a bag */
+	private static void assign(ImmutableList.Builder<AttributeAssignment> attr,
+			AttributeAssignmentExpression attrExp, ValueExp val)
+	{
+		AttributeAssignment.Builder b = AttributeAssignment.builder(attrExp.getAttributeId())
+		                                                   .category(attrExp.getCategory())
+		                                                   .issuer(attrExp.getIssuer());
+		if (val instanceof Value) {
+			attr.add(b.value((Value) val).build());
+			return;
+		}
+		BagOfValues bag = (BagOfValues) val;
+		for (Value v : bag) {
+			attr.add(b.value(v).build());
 		}
 	}
 

@@ -23,7 +23,9 @@ package org.xacml4j.v30.policy.combine.impl;
  */
 
 import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.supportsIndexedTraversal;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,7 +51,9 @@ public class DenyUnlessPermit<D extends DecisionRule> extends BaseDecisionCombin
 	@XacmlPolicyDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-unless-permit")
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit")
 	public static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions) {
-		for (D d : decisions) {
+		Iterator<D> iterator = supportsIndexedTraversal(decisions) ? null : decisions.iterator();
+		for (int i = 0; iterator == null ? i < decisions.size() : iterator.hasNext(); i++) {
+			D d = iterator == null ? decisions.get(i) : iterator.next();
 			Decision decision = evaluateIfMatch(context, d);
 			if (decision == Decision.PERMIT) {
 				return decision;

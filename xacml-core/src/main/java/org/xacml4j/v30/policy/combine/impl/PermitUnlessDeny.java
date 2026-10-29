@@ -23,7 +23,9 @@ package org.xacml4j.v30.policy.combine.impl;
  */
 
 import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.supportsIndexedTraversal;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.xacml4j.v30.Decision;
@@ -47,7 +49,9 @@ public class PermitUnlessDeny <DecisionType extends DecisionRule>
 	public Decision combine(EvaluationContext context,
 			List<DecisionType> decisions)
 	{
-		for(DecisionType d : decisions){
+		Iterator<DecisionType> iterator = supportsIndexedTraversal(decisions) ? null : decisions.iterator();
+		for (int i = 0; iterator == null ? i < decisions.size() : iterator.hasNext(); i++) {
+			DecisionType d = iterator == null ? decisions.get(i) : iterator.next();
 			Decision decision = evaluateIfMatch(context, d);
 			if(decision == Decision.DENY){
 				return decision;

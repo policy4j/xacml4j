@@ -166,6 +166,47 @@ public interface FunctionSpec
 		return BagStorage.Scan.NONE;
 	}
 
+	/**
+	 * Tells whether {@link #scan} with this literal can answer a match or a no-match: a built-in
+	 * two-argument predicate with a bag scan over the literal's type can, so a target over it is
+	 * matched before the context of its rule exists (design D41)
+	 *
+	 * @param literal the literal of a match
+	 * @return {@code true} when a scan with this literal can answer; {@code false} by default
+	 */
+	default boolean hasDirectScan(Value<?> literal) {
+		return false;
+	}
+
+	/**
+	 * Binds a literal first argument of a two-argument call of this function at its call site
+	 * (change add-regex-engine-spi, design D6), when this function prepares such a literal once,
+	 * as the regexp-match functions compile a pattern. The default binds nothing.
+	 *
+	 * @param literal the literal first argument of a call
+	 * @return the bound call, or nothing when this function binds no literal
+	 */
+	default Optional<BoundCall> bind(Value<?> literal) {
+		return Optional.empty();
+	}
+
+	/**
+	 * Tells whether this function writes no advice or obligations to the evaluation context. The
+	 * functions of the engine's own providers, called through the default invocation factory, write
+	 * none; any other function counts as one that can, unless its builder declares otherwise
+	 * (design D36).
+	 *
+	 * @return {@code true} if this function writes no advice or obligations
+	 */
+	default boolean writesNoResponses() {
+		return false;
+	}
+
+	/**
+	 * Invokes this function with the given arguments. The list is not changed.
+	 *
+	 * @return {@link ValueExp} representing function invocation result
+	 */
 	<T extends ValueExp> T invokeWithList(EvaluationContext context, List<Expression> arguments)
 			throws EvaluationException;
 

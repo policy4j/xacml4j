@@ -31,11 +31,15 @@ import com.google.common.collect.Multimap;
 import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.ValueType;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -46,7 +50,29 @@ import java.util.stream.Stream;
  */
 public final class AttributeIndex
 {
+	private static final VarHandle BAGS;
+
+	static {
+		try{
+			BAGS = MethodHandles.lookup().findVarHandle(AttributeIndex.class, "bags", ConcurrentMap.class);
+		}catch(ReflectiveOperationException e){
+			throw new ExceptionInInitializerError(e);
+		}
+	}
+
 	private final Multimap<String, Attribute> attributes;
+	/** Whether an attribute is marked to be included in the result; known since the index was built (design D32) */
+	private final boolean includeInResult;
+	/** The attributes marked to be included in the result, in the order of {@link #attributes()} (cycle AM) */
+	private final ImmutableList<Attribute> includedInResult;
+	/**
+	 * The bags resolved against this index, by lookup and by designator, each built on the first
+	 * demand and kept, so that a reused index costs no bag per decision; created on the first bag
+	 * (change optimize-pdp-evaluation, cycle AF). Only a key with values is kept, so the map is
+	 * bounded by the stored attributes: an attribute id, a type of its values, and no issuer or
+	 * its issuer (review R-FABLE2-sol), and by the designators that found them (cycle AM).
+	 */
+	private transient volatile ConcurrentMap<Object, Optional<BagOfValues>> bags;
 
 	private transient int hashCode;
 
@@ -54,6 +80,28 @@ public final class AttributeIndex
 
 	private AttributeIndex(Builder b){
 		this.attributes = b.attrsBuilder.build();
+		this.includeInResult = b.includeInResult;
+		this.includedInResult = includedInResult(b);
+	}
+
+	/**
+	 * The marked attributes in the order the builder added them, which is the order of the index
+	 * unless an attribute id repeats: the index groups the attributes of an id (cycle AM)
+	 */
+	private ImmutableList<Attribute> includedInResult(Builder b){
+		if(!includeInResult){
+			return ImmutableList.of();
+		}
+		if(attributes.size() == attributes.asMap().size()){
+			return b.included.build();
+		}
+		ImmutableList.Builder<Attribute> grouped = ImmutableList.builder();
+		for(Attribute a : attributes.values()){
+			if(a.isIncludeInResult()){
+				grouped.add(a);
+			}
+		}
+		return grouped.build();
 	}
 
 	public static Builder builder(){
@@ -91,6 +139,19 @@ public final class AttributeIndex
 
 	public boolean isEmpty(){
 		return attributes.isEmpty();
+	}
+
+	/** @return whether an attribute of this index is marked to be included in the result (design D32) */
+	public boolean hasIncludeInResultAttributes(){
+		return includeInResult;
+	}
+
+	/**
+	 * @return the attributes marked to be included in the result, in the order of
+	 * {@link #attributes()}; known since the index was built (cycle AM)
+	 */
+	public Collection<Attribute> includeInResultAttributes(){
+		return includedInResult;
 	}
 
 	/**
@@ -245,6 +306,80 @@ public final class AttributeIndex
 		return false;
 	}
 
+	/**
+	 * The bag of the values of {@link #findValues(String, ValueType, String)}, built on the first
+	 * demand of the attribute id, type, and issuer and kept for the next ones (cycle AF).
+	 * Absence is answered from the attributes each time, as it costs no bag.
+	 *
+	 * @param attributeId an attribute id
+	 * @param type an attribute value data type
+	 * @param issuer an attribute issuer, or {@code null} for any
+	 * @return the bag of the values, if there are any
+	 */
+	public Optional<BagOfValues> resolve(String attributeId, ValueType type, String issuer){
+		Preconditions.checkNotNull(type);
+		if(!attributes.containsKey(attributeId)){
+			// Absent: no lookup to build (cycle AM)
+			return Optional.empty();
+		}
+		Lookup lookup = new Lookup(attributeId, type, issuer);
+		ConcurrentMap<Object, Optional<BagOfValues>> kept = bags;
+		Optional<BagOfValues> bag = kept != null? kept.get(lookup): null;
+		if(bag != null){
+			return bag;
+		}
+		Collection<Value<?>> values = findValues(attributeId, type, issuer);
+		if(values.isEmpty()){
+			return Optional.empty();
+		}
+		bag = Optional.of(type.bagType().builder().attributes(values).build());
+		Optional<BagOfValues> first = bags().putIfAbsent(lookup, bag);
+		return first != null? first: bag;
+	}
+
+	/**
+	 * The bag of {@link #resolve(String, ValueType, String)} for the attribute, type, and issuer
+	 * of the designator. The category of the designator plays no part: the index belongs to
+	 * whatever category holds it, as with
+	 * {@link org.xacml4j.v30.types.Entity#resolve(AttributeSelectorKey)}. The bag is kept under the
+	 * designator too, so a later demand by the designator builds no lookup; every demand sees the
+	 * one {@code Optional} that the lookup kept (design D17, cycle AM).
+	 *
+	 * @param key an attribute designator
+	 * @return the bag of the designator's values, if there are any
+	 */
+	public Optional<BagOfValues> resolve(AttributeDesignatorKey key){
+		ConcurrentMap<Object, Optional<BagOfValues>> kept = bags;
+		Optional<BagOfValues> bag = kept != null? kept.get(key): null;
+		if(bag != null){
+			return bag;
+		}
+		bag = resolve(key.getAttributeId(), key.getDataType(), key.getIssuer());
+		if(bag.isEmpty()){
+			return bag;
+		}
+		Optional<BagOfValues> first = bags().putIfAbsent(key, bag);
+		return first != null? first: bag;
+	}
+
+	/** The kept bags, created on the first one; concurrent first demands keep one map */
+	@SuppressWarnings("unchecked")
+	private ConcurrentMap<Object, Optional<BagOfValues>> bags(){
+		ConcurrentMap<Object, Optional<BagOfValues>> kept = bags;
+		if(kept == null){
+			kept = new ConcurrentHashMap<>(attributes.keySet().size());
+			ConcurrentMap<Object, Optional<BagOfValues>> raced =
+					(ConcurrentMap<Object, Optional<BagOfValues>>) BAGS.compareAndExchange(this, null, kept);
+			if(raced != null){
+				kept = raced;
+			}
+		}
+		return kept;
+	}
+
+	/** A lookup of values by attribute id, type, and issuer ({@code null} for any): the key of a kept bag */
+	private record Lookup(String attributeId, ValueType type, String issuer) {}
+
 	/** @return the attributes with the id, as stored (an immutable list of the multimap) */
 	private List<Attribute> attributes(String attributeId){
 		Collection<Attribute> found = attributes.get(attributeId);
@@ -339,19 +474,24 @@ public final class AttributeIndex
 	public final static class Builder
 	{
 		private ImmutableListMultimap.Builder<String, Attribute> attrsBuilder = ImmutableListMultimap.builder();
+		private boolean includeInResult;
+		/** The attributes marked to be included in the result, created by the first one (cycle AM) */
+		private ImmutableList.Builder<Attribute> included;
 
 		public Builder attribute(Attribute... attrs) {
 			Objects.requireNonNull(attrs,
 					"At least one attribute must be specified");
 			for(Attribute a : attrs){
 				Objects.requireNonNull(a, "Attribute");
-				attrsBuilder.put(a.getAttributeId(), a);
+				add(a);
 			}
 			return this;
 		}
 
 		public Builder noAttributes() {
 			this.attrsBuilder = ImmutableListMultimap.builder();
+			this.includeInResult = false;
+			this.included = null;
 			return this;
 		}
 
@@ -360,9 +500,20 @@ public final class AttributeIndex
 				return this;
 			}
 			for(Attribute attr : attrs){
-				attrsBuilder.put(attr.getAttributeId(), attr);
+				add(attr);
 			}
 			return this;
+		}
+
+		private void add(Attribute a){
+			attrsBuilder.put(a.getAttributeId(), a);
+			if(a.isIncludeInResult()){
+				includeInResult = true;
+				if(included == null){
+					included = ImmutableList.builder();
+				}
+				included.add(a);
+			}
 		}
 
 		public AttributeIndex build(){

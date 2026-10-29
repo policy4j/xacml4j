@@ -25,11 +25,12 @@ package org.xacml4j.v30.pdp;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,11 @@ import org.xacml4j.v30.Content;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.PathEvaluationException;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
+import org.xacml4j.v30.policy.RootEvaluationContext;
+import org.xacml4j.v30.spi.observe.AttributeSource;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.XacmlTypes;
@@ -56,99 +61,144 @@ final class DefaultEvaluationContextHandler
 {
 	private final static Logger LOG = LoggerFactory.getLogger(DefaultEvaluationContextHandler.class);
 
-	// The information point caches and the cycle stacks are created on their first use and
-	// published with a compare-and-set (change optimize-pdp-evaluation, D9). A decision answered
-	// from the request alone creates no stack; it creates the designator cache when the result
+	// The information point caches, the bags from the request, the resolutions in progress, and
+	// the information point of the decision are created on their first use and published with a
+	// compare-and-set (change optimize-pdp-evaluation, D9, task 30, cycle AH). The state lives
+	// in one holder, created with its first member (cycle AV). A decision that
+	// tests no attribute creates none of them; it creates the designator cache when the result
 	// reads the resolved attributes, because that view must stay backed by the cache (rv008).
-	private static final VarHandle SELECTOR_CACHE = handle("selectorCache", Map.class);
-	private static final VarHandle DESIGNATOR_CACHE = handle("designatorCache", Map.class);
-	private static final VarHandle DESIGNATOR_STACK = handle("designatorResolutionStack", Deque.class);
-	private static final VarHandle SELECTOR_STACK = handle("selectorResolutionStack", Deque.class);
-
-	private PolicyInformationPoint pip;
-
-	private RequestContextCallback requestCallback;
-
-	private final Supplier<Map<AttributeDesignatorKey, BagOfValues>> designatorCacheSup;
-	private final Supplier<Map<AttributeSelectorKey, BagOfValues>> selectorCacheSup;
-	private volatile Map<AttributeSelectorKey, BagOfValues> selectorCache;
-	private volatile Map<AttributeDesignatorKey, BagOfValues> designatorCache;
+	private static final VarHandle STATE = handle(DefaultEvaluationContextHandler.class, "state", ResolutionState.class);
+	private static final VarHandle SELECTOR_CACHE = handle(ResolutionState.class, "selectorCache", Map.class);
+	private static final VarHandle DESIGNATOR_CACHE = handle(ResolutionState.class, "designatorCache", Map.class);
+	private static final VarHandle REQUEST_DESIGNATORS = handle(ResolutionState.class, "requestDesignators", ConcurrentMap.class);
+	private static final VarHandle FLIGHTS = handle(ResolutionState.class, "flights", Map.class);
+	private static final VarHandle SESSION = handle(ResolutionState.class, "session", PolicyInformationPoint.class);
 
 	/**
-	 * Bags found in the request, by designator, for this one decision: XACML 3.0 section
-	 * 7.3.5 asks every later test of an attribute to use the bag first tested. Request
-	 * results only; information point results stay in {@link #designatorCache}, which the
-	 * response's resolved attributes come from. Neither absence nor a failure is kept.
-	 * The {@code Optional} that the request entity gave is kept, so every later test of
-	 * the attribute gets the same instance (change optimize-pdp-evaluation, design D17).
+	 * The information point resolutions on the way down on the current thread, the innermost
+	 * first, bound around every call of the information point. A frame names its handler, so a
+	 * nested decision that resolves the same key inside a resolver is not a cycle (design D27).
 	 */
-	private final Map<AttributeDesignatorKey, Optional<BagOfValues>> requestDesignators = new ConcurrentHashMap<>();
+	private static final ScopedValue<Frame> ANCESTRY = ScopedValue.newInstance();
 
-	private volatile Deque<AttributeDesignatorKey> designatorResolutionStack;
-	private volatile Deque<AttributeSelectorKey> selectorResolutionStack;
+	private final PolicyInformationPoint pip;
+
+	/** The request of the decision, which answers the categories (cycle AH: no callback per decision) */
+	private final RequestContext request;
+
+	private volatile ResolutionState state;
 
 	DefaultEvaluationContextHandler(
-			RequestContextCallback requestCallback,
-			PolicyInformationPoint pip,
-			Supplier<Map<AttributeDesignatorKey, BagOfValues>> designatorCacheSup,
-			Supplier<Map<AttributeSelectorKey, BagOfValues>> selectorCacheSup)
+			RequestContext request,
+			PolicyInformationPoint pip)
 	{
 		Preconditions.checkNotNull(pip);
-		Preconditions.checkNotNull(requestCallback);
+		Preconditions.checkNotNull(request);
 		this.pip = pip;
-		this.requestCallback = requestCallback;
-		this.designatorCacheSup = Preconditions.checkNotNull(designatorCacheSup);
-		this.selectorCacheSup = Preconditions.checkNotNull(selectorCacheSup);
+		this.request = request;
 	}
 
-	private static VarHandle handle(String field, Class<?> type)
+	private static VarHandle handle(Class<?> owner, String field, Class<?> type)
 	{
 		try{
-			return MethodHandles.lookup().findVarHandle(DefaultEvaluationContextHandler.class, field, type);
+			return MethodHandles.lookup().findVarHandle(owner, field, type);
 		}catch(ReflectiveOperationException e){
 			throw new ExceptionInInitializerError(e);
 		}
 	}
 
 	/** @return the given new value, or the value another thread set first */
-	private <T> T created(VarHandle field, T value)
+	private static <T> T created(Object owner, VarHandle field, T value)
 	{
 		@SuppressWarnings("unchecked")
-		T witness = (T)field.compareAndExchange(this, null, value);
+		T witness = (T)field.compareAndExchange(owner, null, value);
 		return witness != null ? witness : value;
+	}
+
+	private ResolutionState state()
+	{
+		ResolutionState s = state;
+		return s != null ? s : created(this, STATE, new ResolutionState());
 	}
 
 	private Map<AttributeDesignatorKey, BagOfValues> designatorCache()
 	{
-		Map<AttributeDesignatorKey, BagOfValues> m = designatorCache;
-		return m != null ? m : created(DESIGNATOR_CACHE, designatorCacheSup.get());
+		ResolutionState s = state();
+		Map<AttributeDesignatorKey, BagOfValues> m = s.designatorCache;
+		return m != null ? m : created(s, DESIGNATOR_CACHE, new ConcurrentHashMap<>());
 	}
 
 	private Map<AttributeSelectorKey, BagOfValues> selectorCache()
 	{
-		Map<AttributeSelectorKey, BagOfValues> m = selectorCache;
-		return m != null ? m : created(SELECTOR_CACHE, selectorCacheSup.get());
+		ResolutionState s = state();
+		Map<AttributeSelectorKey, BagOfValues> m = s.selectorCache;
+		return m != null ? m : created(s, SELECTOR_CACHE, new ConcurrentHashMap<>());
 	}
 
-	private Deque<AttributeDesignatorKey> designatorResolutionStack()
+	private Map<AttributeReferenceKey, CompletableFuture<Optional<BagOfValues>>> flights()
 	{
-		Deque<AttributeDesignatorKey> d = designatorResolutionStack;
-		return d != null ? d : created(DESIGNATOR_STACK, new ConcurrentLinkedDeque<>());
+		ResolutionState s = state();
+		Map<AttributeReferenceKey, CompletableFuture<Optional<BagOfValues>>> m = s.flights;
+		return m != null ? m : created(s, FLIGHTS, new ConcurrentHashMap<>());
 	}
 
-	private Deque<AttributeSelectorKey> selectorResolutionStack()
+	/**
+	 * The bags from the request, created on the first one with the default table: a smaller
+	 * table grows in decisions that find more than six request bags, as rsa2008's do (cycle AH)
+	 */
+	private ConcurrentMap<AttributeDesignatorKey, Optional<BagOfValues>> requestDesignators()
 	{
-		Deque<AttributeSelectorKey> d = selectorResolutionStack;
-		return d != null ? d : created(SELECTOR_STACK, new ConcurrentLinkedDeque<>());
+		ResolutionState s = state();
+		ConcurrentMap<AttributeDesignatorKey, Optional<BagOfValues>> m = s.requestDesignators;
+		return m != null ? m : created(s, REQUEST_DESIGNATORS, new ConcurrentHashMap<>());
 	}
 
-	DefaultEvaluationContextHandler(
-			RequestContextCallback requestCallback,
-			PolicyInformationPoint pip)
+	private PolicyInformationPoint session()
 	{
-		this(requestCallback, pip,
-				()->new ConcurrentHashMap<>(),
-				()->new ConcurrentHashMap<>());
+		ResolutionState s = state();
+		PolicyInformationPoint point = s.session;
+		return point != null ? point : created(s, SESSION, forDecision(pip));
+	}
+
+	/**
+	 * The information point for one decision: the one that the point gives for it, or the point
+	 * itself when it gives none, as a test double does.
+	 */
+	private static PolicyInformationPoint forDecision(PolicyInformationPoint pip)
+	{
+		PolicyInformationPoint s = pip.forDecision();
+		return s != null ? s : pip;
+	}
+
+	private static final class ResolutionState
+	{
+		private volatile Map<AttributeSelectorKey, BagOfValues> selectorCache;
+		private volatile Map<AttributeDesignatorKey, BagOfValues> designatorCache;
+
+		/**
+		 * Bags found in the request, by designator, for this one decision, kept only while the
+		 * decision is observed: the observation tells a repeated test of an attribute from its first
+		 * (design D34). XACML 3.0 section 7.3.5 asks every later test of an attribute to use the bag
+		 * first tested, and the request entity itself keeps one bag per designator for the life of the
+		 * request (cycle AF), so an unobserved decision needs no memo of its own (cycle AN). Request
+		 * results only; information point results stay in {@link #designatorCache}, which the
+		 * response's resolved attributes come from. Neither absence nor a failure is kept.
+		 */
+		private volatile ConcurrentMap<AttributeDesignatorKey, Optional<BagOfValues>> requestDesignators;
+
+		/**
+		 * The information point resolutions in progress, by key. The first caller of a key runs the
+		 * attempt; a caller outside any resolution of this handler that arrives while it runs shares
+		 * its outcome; a caller inside a resolution runs its own attempt. The entry goes on every
+		 * exit (design D27).
+		 */
+		private volatile Map<AttributeReferenceKey, CompletableFuture<Optional<BagOfValues>>> flights;
+
+		/**
+		 * The information point of this decision, which may keep what the decision resolved for the
+		 * length of the decision (task 30 of change optimize-pdp-evaluation).
+		 */
+		private volatile PolicyInformationPoint session;
 	}
 
 	/**
@@ -165,6 +215,22 @@ final class DefaultEvaluationContextHandler
 	}
 
 	@Override
+	public boolean hasResolvedDesignators(){
+		ResolutionState s = state;
+		Map<AttributeDesignatorKey, BagOfValues> m = s != null ? s.designatorCache : null;
+		return m != null && !m.isEmpty();
+	}
+
+	@Override
+	public boolean usesRequestEntityForDesignators(){
+		return true;
+	}
+
+	/**
+	 * Resolves a designator or a selector as one attribute span of the observation of the
+	 * decision; each return path names the source of its outcome (design D34)
+	 */
+	@Override
 	public java.util.Optional<BagOfValues> resolve(
 			EvaluationContext context,
 			AttributeReferenceKey ref)
@@ -172,42 +238,68 @@ final class DefaultEvaluationContextHandler
 	{
 		Preconditions.checkNotNull(context);
 		Preconditions.checkNotNull(ref);
-		if(ref instanceof AttributeDesignatorKey){
-			AttributeDesignatorKey key = (AttributeDesignatorKey)ref;
-			Map<AttributeDesignatorKey, BagOfValues> pipBags = designatorCache;
-			BagOfValues bag = pipBags != null ? pipBags.get(key) : null;
-			if(bag != null){
-				return Optional.of(bag);
-			}
-			Optional<BagOfValues> fromRequest = requestDesignators.get(key);
-			return fromRequest != null ? fromRequest : doDesignatorResolve(context, key);
+		if(!(ref instanceof AttributeDesignatorKey) && !(ref instanceof AttributeSelectorKey)){
+			return Optional.empty();
 		}
-		if(ref instanceof AttributeSelectorKey){
-			Map<AttributeSelectorKey, BagOfValues> pipBags = selectorCache;
-			BagOfValues bag = pipBags != null ? pipBags.get(ref) : null;
-			return bag != null ? Optional.of(bag) : doSelectorResolve(context, ref);
+		DecisionObservation o = RootEvaluationContext.observationOf(context);
+		if(!o.isEnabled()){
+			return resolve(o, context, ref);
 		}
-		return Optional.empty();
+		Object parent = o.attributeRequested(context, ref);
+		Optional<BagOfValues> v;
+		try{
+			v = resolve(o, context, ref);
+		}catch(Throwable t){
+			o.attributeFailed(context, ref, parent, t);
+			throw t;
+		}
+		o.attributeResolved(context, ref, parent, v);
+		return v;
 	}
 
-	private Optional<BagOfValues> doSelectorResolve(EvaluationContext context, AttributeReferenceKey ref)
+	private Optional<BagOfValues> resolve(DecisionObservation o, EvaluationContext context, AttributeReferenceKey ref)
+	{
+		ResolutionState s = state;
+		if(ref instanceof AttributeDesignatorKey key){
+			Map<AttributeDesignatorKey, BagOfValues> pipBags = s != null ? s.designatorCache : null;
+			BagOfValues bag = pipBags != null ? pipBags.get(key) : null;
+			if(bag != null){
+				o.resolvedFrom(AttributeSource.INFORMATION_POINT_MEMO);
+				return Optional.of(bag);
+			}
+			ConcurrentMap<AttributeDesignatorKey, Optional<BagOfValues>> requestBags = s != null ? s.requestDesignators : null;
+			Optional<BagOfValues> fromRequest = requestBags != null ? requestBags.get(key) : null;
+			if(fromRequest != null){
+				o.resolvedFrom(AttributeSource.REQUEST_MEMO);
+				return fromRequest;
+			}
+			return doDesignatorResolve(o, context, key);
+		}
+		Map<AttributeSelectorKey, BagOfValues> pipBags = s != null ? s.selectorCache : null;
+		BagOfValues bag = pipBags != null ? pipBags.get(ref) : null;
+		if(bag != null){
+			o.resolvedFrom(AttributeSource.INFORMATION_POINT_MEMO);
+			return Optional.of(bag);
+		}
+		return doSelectorResolve(o, context, ref);
+	}
+
+	private Optional<BagOfValues> doSelectorResolve(DecisionObservation o, EvaluationContext context, AttributeReferenceKey ref)
 	{
 		Preconditions.checkArgument(ref instanceof AttributeSelectorKey);
 		AttributeSelectorKey selectorKey = (AttributeSelectorKey)ref;
 		try{
-			return requestCallback.getEntity(ref.getCategory())
-			                      .flatMap(e-> resolveSelector(e, selectorKey))
-			                      .or(()->doPipResolve(context, selectorKey));
-		}catch(PathEvaluationException e){
-			// The outcome of the engine's own evaluation of the selector path
-			// on request content or on a resolved entity. The status message is
-			// visible in the response, so the text of the XPath engine is not
-			// passed on: a syntax error keeps its status code, and every other
-			// path error is a processing error, whatever MustBePresent is.
-			if(e.getStatus().getStatusCode().isSyntaxError()){
-				throw AttributeReferenceEvaluationException.forSyntaxError(selectorKey, e);
+			Optional<BagOfValues> fromRequest = request.getEntity(ref.getCategory())
+			                                           .flatMap(e-> resolveSelector(e, selectorKey));
+			if(fromRequest.isPresent()){
+				o.resolvedFrom(AttributeSource.REQUEST);
+				return fromRequest;
 			}
-			throw failed(selectorKey, e);
+			return doPipResolve(o, context, selectorKey);
+		}catch(PathEvaluationException e){
+			// The engine's own evaluation of the selector path on request content; the
+			// evaluation on a resolved entity is mapped inside the shared attempt (design D27)
+			throw pathFailure(selectorKey, e);
 		}
 	}
 
@@ -219,90 +311,212 @@ final class DefaultEvaluationContextHandler
 		return entity.resolve(selectorKey);
 	}
 
-	private Optional<BagOfValues> doDesignatorResolve(EvaluationContext context, AttributeDesignatorKey key)
+	private Optional<BagOfValues> doDesignatorResolve(DecisionObservation o, EvaluationContext context, AttributeDesignatorKey key)
 	{
-		Optional<Entity> entity = requestCallback.getEntity(key.getCategory());
+		Optional<Entity> entity = request.getEntity(key.getCategory());
 		if(entity.isPresent()){
-			Optional<BagOfValues> found = entity.get().resolve(key.getAttributeId(), key.getDataType(), key.getIssuer());
+			// The entity keeps the bag of the designator, so a reused request costs no bag (cycle AF)
+			Optional<BagOfValues> found = entity.get().resolve(key);
 			if(found.isPresent()){
+				if(!o.isEnabled()){
+					return found;
+				}
 				// The first bag wins, so that every test of the attribute sees one bag.
-				Optional<BagOfValues> first = requestDesignators.putIfAbsent(key, found);
+				Optional<BagOfValues> first = requestDesignators().putIfAbsent(key, found);
+				o.resolvedFrom(first != null ? AttributeSource.REQUEST_MEMO : AttributeSource.REQUEST);
 				return first != null ? first : found;
 			}
 		}
-		return doPipResolve(context, key);
+		return doPipResolve(o, context, key);
 	}
 
-	private Optional<BagOfValues> doPipResolve(EvaluationContext context, AttributeDesignatorKey key)
+	private Optional<BagOfValues> doPipResolve(DecisionObservation o, EvaluationContext context, AttributeDesignatorKey key)
 	{
-		Deque<AttributeDesignatorKey> stack = designatorResolutionStack();
-		if(stack.contains(key)){
-			LOG.warn("Cyclic designator=\"{}\" resolution detected", key);
-			return Optional.empty();
+		if(pip.hasNoResolver(key)){
+			return missing(o);
 		}
-		try
-		{
-			stack.push(key);
-			Optional<BagOfValues> v =  pip.resolve(context, key);
-			if(v.isPresent()){
-				designatorCache().putIfAbsent(key, v.get());
+		return resolveOnce(o, key, ()->{
+			try{
+				return session().resolve(context, key);
+			}catch(Exception e){
+				// A failure of the information point is never a missing attribute.
+				// Its own status and message are not passed on, because a status
+				// message is visible in the response.
+				throw failed(key, e);
 			}
-			return v;
-
-		}catch(Exception e){
-			// A failure of the information point is never a missing attribute.
-			// Its own status and message are not passed on, because a status
-			// message is visible in the response.
-			throw failed(key, e);
-		}finally{
-			stack.pop();
-		}
+		});
 	}
 
 	private java.util.Optional<BagOfValues> doPipResolve(
+			DecisionObservation o,
 			final EvaluationContext context,
 			final AttributeSelectorKey ref) throws EvaluationException
 	{
-		Deque<AttributeSelectorKey> stack = selectorResolutionStack();
-		if(stack.contains(ref)){
-			LOG.warn("Cyclic selector=\"{}\" resolution detected", ref);
+		if(ref.getContextSelectorId() == null && pip.hasNoResolver(ref)){
+			return missing(o);
+		}
+		return resolveOnce(o, ref, ()->{
+			try{
+				Optional<BagOfValues> v = resolveViaPip(context, ref);
+				if(!v.isPresent() &&
+						ref.getContextSelectorId() != null){
+					AttributeDesignatorKey entitySelector =
+							AttributeDesignatorKey
+									.builder()
+									.dataType(XacmlTypes.ENTITY)
+									.attributeId(ref.getContextSelectorId())
+									.category(ref.getCategory())
+									.build();
+					v = resolve(context, entitySelector)
+					          .flatMap(b->b.single())
+					          .map(Entity.class::cast)
+							.flatMap(e->e.resolve(ref));
+				}
+				return v;
+			}
+			catch(PathEvaluationException e){
+				// Only the engine's own evaluation of the selector on a resolved entity arrives
+				// here, because resolveViaPip maps every exception of the information point.
+				// Mapped inside the attempt, so every caller that shares it gets this one
+				// exception (design D27).
+				throw pathFailure(ref, e);
+			}
+			catch(Exception e){
+				// A failure is never a missing attribute.
+				throw failed(ref, e);
+			}
+		});
+	}
+
+	/**
+	 * What an attempt of the information point gives for a key that none of its resolvers
+	 * supplies, without the session, the flight, and the frame of an attempt (cycle AN): a missing
+	 * attribute, so MustBePresent, the status, and the events of the decision are as for an attempt
+	 */
+	private static Optional<BagOfValues> missing(DecisionObservation o)
+	{
+		o.resolvedFrom(AttributeSource.INFORMATION_POINT);
+		return Optional.empty();
+	}
+
+	/**
+	 * The attempts of the information point for a key in one decision (design D27). The first
+	 * caller of a key runs an attempt and publishes a present bag, so every caller gets the bag
+	 * published first. A caller outside any resolution of this handler that arrives while an
+	 * attempt runs waits for its outcome, absence and failure included; a caller inside one runs
+	 * its own attempt instead, so that no attempt ever waits for another and no wait can form a
+	 * cycle: two attempts of one key can run at a time, one of them nested in a resolution. A
+	 * call after an attempt has ended starts a new one; nothing is kept of absence or of a
+	 * failure. A key already on the way down on this thread is a cycle, which gives absence,
+	 * as before.
+	 */
+	private Optional<BagOfValues> resolveOnce(DecisionObservation o, AttributeReferenceKey key, Supplier<Optional<BagOfValues>> attempt)
+	{
+		Frame ancestry = ANCESTRY.isBound() ? ANCESTRY.get() : null;
+		if(Frame.contains(ancestry, this, key)){
+			LOG.warn("Cyclic reference=\"{}\" resolution detected", key);
+			o.resolvedFrom(AttributeSource.CYCLE);
 			return Optional.empty();
 		}
-		try
-		{
-			stack.push(ref);
-			Optional<BagOfValues> v = resolveViaPip(context, ref);
-			if(!v.isPresent() &&
-					ref.getContextSelectorId() != null){
-				AttributeDesignatorKey entitySelector =
-						AttributeDesignatorKey
-								.builder()
-								.dataType(XacmlTypes.ENTITY)
-								.attributeId(ref.getContextSelectorId())
-								.category(ref.getCategory())
-								.build();
-				v = resolve(context, entitySelector)
-				          .flatMap(b->b.single())
-				          .map(Entity.class::cast)
-						.flatMap(e->e.resolve(ref));
+		Frame frame = new Frame(this, key, ancestry);
+		CompletableFuture<Optional<BagOfValues>> flight = new CompletableFuture<>();
+		Map<AttributeReferenceKey, CompletableFuture<Optional<BagOfValues>>> flights = flights();
+		CompletableFuture<Optional<BagOfValues>> running = flights.putIfAbsent(key, flight);
+		if(running != null){
+			if(Frame.inside(ancestry, this)){
+				return resolveWith(o, key, frame, attempt);
 			}
-			if(v.isPresent()){
-				selectorCache().putIfAbsent(ref, v.get());
-			}
+			Optional<BagOfValues> shared = outcome(running);
+			o.resolvedFrom(AttributeSource.INFORMATION_POINT);
+			return shared;
+		}
+		try{
+			Optional<BagOfValues> v = resolveWith(o, key, frame, attempt);
+			flight.complete(v);
+			return v;
+		}catch(Throwable t){
+			flight.completeExceptionally(t);
+			throw t;
+		}finally{
+			flights.remove(key, flight);
+		}
+	}
+
+	/**
+	 * The bag published for the key while the caller was on its way here, or else the outcome
+	 * of the attempt, run under its frame and published.
+	 */
+	private Optional<BagOfValues> resolveWith(DecisionObservation o, AttributeReferenceKey key, Frame frame,
+			Supplier<Optional<BagOfValues>> attempt)
+	{
+		Optional<BagOfValues> published = published(key);
+		if(published.isPresent()){
+			o.resolvedFrom(AttributeSource.INFORMATION_POINT_MEMO);
+			return published;
+		}
+		Optional<BagOfValues> v = publish(key, ScopedValue.where(ANCESTRY, frame).call(attempt::get));
+		o.resolvedFrom(AttributeSource.INFORMATION_POINT);
+		return v;
+	}
+
+	private Optional<BagOfValues> published(AttributeReferenceKey key)
+	{
+		ResolutionState s = state();
+		Map<?, BagOfValues> bags = key instanceof AttributeDesignatorKey ? s.designatorCache : s.selectorCache;
+		return bags != null ? Optional.ofNullable(bags.get(key)) : Optional.empty();
+	}
+
+	/** Publishes a present bag; the bag published first for a key is the one every caller gets */
+	private Optional<BagOfValues> publish(AttributeReferenceKey key, Optional<BagOfValues> v)
+	{
+		if(!v.isPresent()){
 			return v;
 		}
-		catch(PathEvaluationException e){
-			// Only the engine's own evaluation of the selector on a resolved
-			// entity arrives here, because resolveViaPip maps every exception
-			// of the information point. doSelectorResolve maps it.
+		BagOfValues first = key instanceof AttributeDesignatorKey designator
+				? designatorCache().putIfAbsent(designator, v.get())
+				: selectorCache().putIfAbsent((AttributeSelectorKey)key, v.get());
+		return first != null ? Optional.of(first) : v;
+	}
+
+	/** The outcome of an attempt: its bag or absence, or its failure as the attempt threw it */
+	private static Optional<BagOfValues> outcome(CompletableFuture<Optional<BagOfValues>> flight)
+	{
+		try{
+			return flight.join();
+		}catch(CompletionException e){
+			Throwable cause = e.getCause();
+			if(cause instanceof RuntimeException failure){
+				throw failure;
+			}
+			if(cause instanceof Error error){
+				throw error;
+			}
 			throw e;
 		}
-		catch(Exception e){
-			// A failure is never a missing attribute.
-			throw failed(ref, e);
+	}
+
+	/** One information point resolution on the way down: its handler, its key, and the one above it */
+	private record Frame(DefaultEvaluationContextHandler handler, AttributeReferenceKey key, Frame parent)
+	{
+		static boolean contains(Frame frame, DefaultEvaluationContextHandler handler, AttributeReferenceKey key)
+		{
+			for(Frame f = frame; f != null; f = f.parent){
+				if(f.handler == handler && f.key.equals(key)){
+					return true;
+				}
+			}
+			return false;
 		}
-		finally {
-			stack.pop();
+
+		/** @return whether a resolution of the handler is on the way down */
+		static boolean inside(Frame frame, DefaultEvaluationContextHandler handler)
+		{
+			for(Frame f = frame; f != null; f = f.parent){
+				if(f.handler == handler){
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 
@@ -314,7 +528,7 @@ final class DefaultEvaluationContextHandler
 	private Optional<BagOfValues> resolveViaPip(EvaluationContext context, AttributeSelectorKey ref)
 	{
 		try{
-			return pip.resolve(context, ref);
+			return session().resolve(context, ref);
 		}catch(Exception e){
 			throw failed(ref, e);
 		}
@@ -328,9 +542,23 @@ final class DefaultEvaluationContextHandler
 		return AttributeReferenceEvaluationException.forResolverFailure(ref, cause);
 	}
 
+	/**
+	 * Maps a failure of the engine's own evaluation of a selector path, on request content or
+	 * on a resolved entity: a syntax error keeps its status code, every other path error is a
+	 * processing error, whatever MustBePresent is. The status message is visible in the
+	 * response, so the text of the path engine is not passed on. The information point maps the
+	 * path errors on its own content as resolver failures itself.
+	 */
+	private static AttributeReferenceEvaluationException pathFailure(AttributeSelectorKey ref, PathEvaluationException e)
+	{
+		return e.getStatus().getStatusCode().isSyntaxError()
+				? AttributeReferenceEvaluationException.forSyntaxError(ref, e)
+				: AttributeReferenceEvaluationException.forResolverFailure(ref, e);
+	}
+
 	@Override
 	public Optional<Entity> getEntity(CategoryId id){
-		return requestCallback.getEntity(id);
+		return request.getEntity(id);
 	}
 
 }

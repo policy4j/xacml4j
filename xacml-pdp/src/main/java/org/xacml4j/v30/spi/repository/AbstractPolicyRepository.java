@@ -88,6 +88,16 @@ public abstract class AbstractPolicyRepository
 		return id;
 	}
 
+	@Override
+	public final FunctionProvider getFunctionProvider() {
+		return functions;
+	}
+
+	@Override
+	public final DecisionCombiningAlgorithmProvider getAlgorithmProvider() {
+		return decisionAlgorithms;
+	}
+
 	/**
 	 * Implementation assumes that
 	 * {@link PolicyRepository#getPolicies(String, VersionMatch, VersionMatch, VersionMatch)}

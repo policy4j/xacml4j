@@ -23,6 +23,9 @@ package org.xacml4j.v30.policy;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.AttributeAssignment;
@@ -32,6 +35,25 @@ import org.xacml4j.v30.types.XacmlTypes;
 
 public class AttributeAssignmentTest
 {
+	@Test
+	public void hashKeepsTheFieldOrderWithAndWithoutOptionalFields()
+	{
+		for(CategoryId category : new CategoryId[]{null, CategoryId.ACTION}){
+			for(String issuer : new String[]{null, "issuer"}){
+				AttributeAssignment assignment = AttributeAssignment.builder("testId")
+						.category(category).issuer(issuer).value(XacmlTypes.INTEGER.ofAny(10)).build();
+				AttributeAssignment copy = AttributeAssignment.builder("testId")
+						.category(category).issuer(issuer).value(XacmlTypes.INTEGER.ofAny(10)).build();
+				assertEquals(assignment, copy);
+				assertEquals(Arrays.hashCode(new Object[]{"testId", category, XacmlTypes.INTEGER.ofAny(10), issuer}),
+						assignment.hashCode());
+				assertEquals(assignment.hashCode(), copy.hashCode());
+				assertNotEquals(assignment, AttributeAssignment.builder("testId")
+						.category(category).issuer(issuer).value(XacmlTypes.INTEGER.ofAny(11)).build());
+			}
+		}
+	}
+
 	@Test
 	public void testCreateAndEquals()
 	{

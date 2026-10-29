@@ -38,6 +38,7 @@ import java.time.OffsetDateTime;
 public final class ISO8601DayTimeDuration extends ISO8601Duration<ISO8601DayTimeDuration>
 {
     private static final long serialVersionUID = -3264977978603429807L;
+    private transient int hashCode;
 
     private ISO8601DayTimeDuration(javax.xml.datatype.Duration d) {
         super(XacmlTypes.DAYTIMEDURATION, d);
@@ -90,6 +91,15 @@ public final class ISO8601DayTimeDuration extends ISO8601Duration<ISO8601DayTime
                 DateTimeDurationUtils.of(positive, DatatypeConstants.FIELD_UNDEFINED, hours, mins, seconds));
     }
 
+    @Override
+    public int hashCode() {
+        int hash = hashCode;
+        if (hash == 0) {
+            hash = super.hashCode();
+            hashCode = hash;
+        }
+        return hash;
+    }
 
     @Override
     protected ISO8601DayTimeDuration build(javax.xml.datatype.Duration d) {

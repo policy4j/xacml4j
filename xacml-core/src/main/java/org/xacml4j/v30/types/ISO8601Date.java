@@ -31,7 +31,6 @@ import java.time.temporal.TemporalAccessor;
 import java.time.temporal.ChronoField;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import com.google.common.base.Objects;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -44,6 +43,7 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
     private static final long serialVersionUID = -4744947303379182831L;
     private final ZoneOffset offset;
     private final boolean timeZoneDefined;
+    private transient int hashCode;
 
     private ISO8601Date(LocalDate value, ZoneOffset offset, boolean timeZoneDefined) {
         super(XacmlTypes.DATE, value);
@@ -155,21 +155,26 @@ public final class ISO8601Date extends Value.OtherValue<LocalDate>
 
     @Override
     public int compareTo(ISO8601Date o) {
-        return instant().compareTo(o.instant());
+        return Long.compare(epochSecond(), o.epochSecond());
     }
 
-    private java.time.Instant instant() {
-        return value.atStartOfDay().toInstant(offset);
+    private long epochSecond() {
+        return value.toEpochDay() * 86_400L - offset.getTotalSeconds();
     }
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof ISO8601Date && instant().equals(((ISO8601Date)other).instant());
+        return other instanceof ISO8601Date && epochSecond() == ((ISO8601Date)other).epochSecond();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(instant(), getEvaluatesTo());
+        int hash = hashCode;
+        if (hash == 0) {
+            hash = 31 * (31 + Long.hashCode(epochSecond())) + getEvaluatesTo().hashCode();
+            hashCode = hash;
+        }
+        return hash;
     }
 
     public ISO8601Date plus(ISO8601YearMonthDuration duration){

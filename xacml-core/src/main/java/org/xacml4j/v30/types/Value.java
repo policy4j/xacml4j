@@ -126,7 +126,7 @@ public interface Value<T>
 
 		@Override
 		public int hashCode(){
-			return Objects.hash(value, getEvaluatesTo());
+			return 31 * (31 + Objects.hashCode(value)) + Objects.hashCode(getEvaluatesTo());
 		}
 
 		@Override

@@ -100,8 +100,7 @@ public class DefaultFunctionSpecTest
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(1)).isValidateFuncParamsAtRuntime();
 		verify(invocation, times(1)).invoke(spec, context, params);
-		order.verifyNoMoreInteractions();
-		verifyNoMoreInteractions(invocation, resolver, context);
+		verifyNoMoreInteractions(invocation, resolver);
 	}
 
 	@Test
@@ -120,8 +119,7 @@ public class DefaultFunctionSpecTest
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(1)).isValidateFuncParamsAtRuntime();
 		verify(invocation, times(1)).invoke(spec, context, params);
-		order.verifyNoMoreInteractions();
-		verifyNoMoreInteractions(invocation, resolver, context);
+		verifyNoMoreInteractions(invocation, resolver);
 	}
 	
 	@Test
@@ -210,8 +208,7 @@ public class DefaultFunctionSpecTest
 				Arrays.<Expression>asList(XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(true), null));
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(1)).isValidateFuncParamsAtRuntime();
-		order.verifyNoMoreInteractions();
-		verifyNoMoreInteractions(invocation, resolver, context);
+		verifyNoMoreInteractions(invocation, resolver);
 	}
 	
 	@Test

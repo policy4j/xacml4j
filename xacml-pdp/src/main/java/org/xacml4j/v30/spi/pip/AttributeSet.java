@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -45,12 +46,14 @@ public final class AttributeSet
 	private static final Logger LOG = LoggerFactory.getLogger(AttributeSet.class);
 	private final Instant timestamp;
 	private final Map<String, BagOfValues> values;
+	private final Map<String, Throwable> failures;
 	private final AttributeResolverDescriptor d;
 	private transient int hashCode;
 
 	private AttributeSet(Builder b){
 		this.d = b.d;
 		this.values = b.mapBuilder.build();
+		this.failures = b.failureBuilder == null ? ImmutableMap.of() : b.failureBuilder.build();
 		this.timestamp = b.ticker.instant();
 	}
 
@@ -129,6 +132,36 @@ public final class AttributeSet
 		return values.isEmpty();
 	}
 
+	/**
+	 * Tells whether no attribute function of a parallel resolver failed for this set (design D26)
+	 */
+	boolean isComplete(){
+		return failures.isEmpty();
+	}
+
+	/**
+	 * Throws the failure of the function of the given attribute, if it failed (design D26)
+	 */
+	void rethrowFailure(String attributeId) throws Exception {
+		Throwable t = failures.get(attributeId);
+		if(t instanceof Error e){
+			throw e;
+		}
+		if(t instanceof Exception e){
+			throw e;
+		}
+		if(t != null){
+			throw new ExecutionException(t);
+		}
+	}
+
+	/**
+	 * Gets the failure of the first attribute function that failed (design D26)
+	 */
+	Optional<Throwable> firstFailure(){
+		return failures.values().stream().findFirst();
+	}
+
 	public Instant getTimestamp(){
 		return timestamp;
 	}
@@ -160,6 +193,7 @@ public final class AttributeSet
 		private Clock ticker = Clock.systemUTC();
 		private AttributeResolverDescriptor d;
 		private ImmutableMap.Builder<String, BagOfValues> mapBuilder = ImmutableMap.builder();
+		private ImmutableMap.Builder<String, Throwable> failureBuilder;
 
 		Builder(AttributeResolverDescriptor d){
 			Preconditions.checkNotNull(d);
@@ -192,6 +226,17 @@ public final class AttributeSet
 						id, value.getBagValueType(), attrDesc.getDataType()));
 			}
 			this.mapBuilder.put(id, value);
+			return this;
+		}
+
+		/**
+		 * Keeps the failure of the function of the given attribute of a parallel resolver (design D26)
+		 */
+		Builder failure(String id, Throwable t){
+			if(failureBuilder == null){
+				failureBuilder = ImmutableMap.builder();
+			}
+			this.failureBuilder.put(id, t);
 			return this;
 		}
 

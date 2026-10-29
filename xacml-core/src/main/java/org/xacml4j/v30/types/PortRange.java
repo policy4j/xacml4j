@@ -244,7 +244,7 @@ public final class PortRange implements Externalizable
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(lowerBound, upperBound);
+		return 31 * (31 + java.util.Objects.hashCode(lowerBound)) + java.util.Objects.hashCode(upperBound);
 	}
 
 	@Override

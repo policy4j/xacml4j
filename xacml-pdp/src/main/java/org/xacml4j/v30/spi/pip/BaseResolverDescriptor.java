@@ -46,7 +46,7 @@ abstract class BaseResolverDescriptor<R>
 		this.id = Objects.requireNonNull(builder.id, "id");
 		this.name = Objects.requireNonNull(builder.name, "name");
 		this.categoryId = Objects.requireNonNull(builder.categoryId, "category");
-		this.cacheTTL = builder.cacheTTL;
+		this.cacheTTL = Objects.requireNonNull(builder.cacheTTL, "cacheTTL");
 		this.allContextKeys = ImmutableList.copyOf(builder.contextReferenceKeys);
 	}
 

@@ -29,14 +29,20 @@ import org.mockito.InOrder;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
@@ -46,6 +52,8 @@ import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
+import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.Objects;
@@ -130,6 +138,85 @@ public class PolicySetTest
 	}
 
 	@Test
+	public void contextCreationRejectsNullAndForeignPolicyContexts()
+	{
+		assertNull(assertThrows(NullPointerException.class,
+				() -> policy.createContext(null)).getMessage());
+		EvaluationContext foreign = mock(EvaluationContext.class);
+		Policy enclosing = Policy.builder("enclosing")
+				.combiningAlgorithm(DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build()
+						.getRuleAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"))
+				.build();
+		when(foreign.getCurrentPolicy()).thenReturn(enclosing);
+
+		assertNull(assertThrows(IllegalArgumentException.class,
+				() -> policy.createContext(foreign)).getMessage());
+
+		EvaluationContext changing = mock(EvaluationContext.class);
+		when(changing.getCurrentPolicySet()).thenReturn(null, policy);
+		assertNull(assertThrows(IllegalArgumentException.class,
+				() -> policy.createContext(changing)).getMessage());
+	}
+
+	@Test
+	public void contextCreationReusesAForeignContextThatAlreadyNamesTheSet()
+	{
+		EvaluationContext foreign = mock(EvaluationContext.class);
+		when(foreign.getCurrentPolicySet()).thenReturn(policy);
+
+		assertSame(foreign, policy.createContext(foreign));
+	}
+
+	/** A set context below a foreign context asks its chain: the foreign context may name a policy later (cycle AZ) */
+	@Test
+	public void contextCreationBelowAForeignContextAsksTheChain()
+	{
+		EvaluationContext foreign = mock(EvaluationContext.class);
+		when(foreign.getCurrentPolicy()).thenReturn(null, enclosing());
+		EvaluationContext outer = policy.createContext(foreign);
+
+		assertNull(assertThrows(IllegalArgumentException.class,
+				() -> inner().createContext(outer)).getMessage());
+	}
+
+	/** A context of the engine other than a set context is asked: a policy context names its policy */
+	@Test
+	public void contextCreationRejectsAPolicyContextOfTheEngine()
+	{
+		EvaluationContext policyContext = enclosing().createContext(context);
+
+		assertNull(assertThrows(IllegalArgumentException.class,
+				() -> policy.createContext(policyContext)).getMessage());
+	}
+
+	@Test
+	public void setContextsBelowTheRootNameNoPolicy()
+	{
+		PolicySet inner = inner();
+		EvaluationContext nested = inner.createContext(policy.createContext(context));
+
+		assertNull(nested.getCurrentPolicy());
+		assertSame(inner, nested.getCurrentPolicySet());
+		assertSame(nested, inner.createContext(nested));
+	}
+
+	private static Policy enclosing()
+	{
+		return Policy.builder("enclosing")
+				.combiningAlgorithm(DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build()
+						.getRuleAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable"))
+				.build();
+	}
+
+	private static PolicySet inner()
+	{
+		return PolicySet.builder("inner")
+				.withCombiningAlgorithm(DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build()
+						.getPolicyAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides"))
+				.build();
+	}
+
+	@Test
 	public void testIsApplicableTargetMatch() throws EvaluationException
 	{
 		EvaluationContext policyContext = policy.createContext(context);
@@ -177,6 +264,8 @@ public class PolicySetTest
 		// rv019: inject at Target.match so BaseDecisionRule.isMatch must catch the exception.
 		Target throwingTarget = spy(target);
 		PolicySet policyWithThrowingTarget = builder.target(throwingTarget).build();
+		// Building the policy set reads its target once, to tell whether it can write responses (design D36)
+		clearInvocations(throwingTarget);
 		EvaluationContext policyContext = policyWithThrowingTarget.createContext(context);
 		doThrow(new NullPointerException()).when(throwingTarget).match(policyContext);
 		InOrder order = inOrder(throwingTarget, targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);
@@ -430,5 +519,61 @@ public class PolicySetTest
 		assertEquals(composite * 31 + Objects.hashCode(policy.getDefaults(),
 				policy.getPolicyDecisionCombiningAlgorithm(), policy.getDecisions(),
 				ImmutableMap.of(), ImmutableMap.of(), policy.getReference()), policy.hashCode());
+	}
+
+	/**
+	 * A tree whose rules all end Indeterminate (cycle AR): the decision, its status, and the status of
+	 * every rule, policy, and the policy set, also found through equal copies with equal hash codes
+	 */
+	@Test
+	public void everyIndeterminateRuleOfATreeKeepsItsStatusAlsoForAnEqualCopy() throws EvaluationException
+	{
+		PolicySet tree = failingTree();
+		PolicySet copy = failingTree();
+
+		assertEquals(Decision.INDETERMINATE_P, tree.evaluate(tree.createContext(context)));
+
+		assertEquals(tree, copy);
+		assertEquals(tree.hashCode(), copy.hashCode());
+		assertEquals(Optional.of(missing(1, 2)), context.getEvaluationStatus());
+		assertEquals(Optional.of(missing(1, 2)), context.getEvaluationStatus(copy));
+		for(int p = 0; p < 2; p++){
+			Policy policy = (Policy)copy.getDecisions().get(p);
+			assertEquals(Optional.of(missing(p, 2)), context.getEvaluationStatus(policy));
+			for(int r = 0; r < 3; r++){
+				assertEquals(Optional.of(missing(p, r)), context.getEvaluationStatus(policy.getRules().get(r)));
+			}
+		}
+	}
+
+	/** Two policies of three Permit rules under deny-overrides; each rule needs an attribute that no request has */
+	private static PolicySet failingTree()
+	{
+		FunctionProvider functions = FunctionProvider.builder().withDefaultFunctions().build();
+		DecisionCombiningAlgorithmProvider algorithms = DecisionCombiningAlgorithmProvider.builder().withDefaultAlgorithms().build();
+		PolicySet.Builder tree = PolicySet.builder("failing").version("1.0").withCombiningAlgorithm(
+				algorithms.getPolicyAlgorithm("urn:oasis:names:tc:xacml:3.0:policy-combining-algorithm:deny-overrides"));
+		for(int p = 0; p < 2; p++){
+			Policy.Builder policy = Policy.builder("failing-" + p).version("1.0").combiningAlgorithm(
+					algorithms.getRuleAlgorithm("urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-overrides"));
+			for(int r = 0; r < 3; r++){
+				policy.rule(Rule.builder("rule-" + p + "-" + r, Effect.PERMIT).condition(Condition.condition(
+						Apply.builder("urn:oasis:names:tc:xacml:1.0:function:boolean-one-and-only", functions::getFunction)
+								.param(AttributeDesignator.builder().key(key(p, r)).mustBePresent(true).build()).build())));
+			}
+			tree.policy(policy.build());
+		}
+		return tree.build();
+	}
+
+	private static Status missing(int policy, int rule)
+	{
+		return AttributeReferenceEvaluationException.forMissingRef(key(policy, rule)).getStatus();
+	}
+
+	private static AttributeDesignatorKey key(int policy, int rule)
+	{
+		return AttributeDesignatorKey.builder().category(CategoryId.SUBJECT_ACCESS)
+				.attributeId("attribute-" + policy + "-" + rule).dataType(XacmlTypes.BOOLEAN).build();
 	}
 }

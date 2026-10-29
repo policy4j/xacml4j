@@ -53,6 +53,7 @@ import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProviderBuilder;
 import org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithm;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.spi.observe.DecisionObserver;
 import org.xacml4j.v30.spi.pip.PolicyInformationPoint;
 import org.xacml4j.v30.spi.pip.ResolverRegistry;
 import org.xacml4j.v30.spi.repository.InMemoryPolicyRepository;
@@ -100,6 +101,12 @@ final class ConformanceCaseRunner
 
 	static PolicyDecisionPoint buildPdp(ConformanceManifest.Case testCase)
 	{
+		return buildPdp(testCase, DecisionObserver.none());
+	}
+
+	/** The decision point of a case, whose decisions the given observer observes (design D34) */
+	static PolicyDecisionPoint buildPdp(ConformanceManifest.Case testCase, DecisionObserver<?> observer)
+	{
 		PolicyRepository repository = newRepository(testCase.toString());
 		PolicyImportTool tool = repository.newImportTool();
 		List<CompositeDecisionRule> policies = new ArrayList<>();
@@ -136,6 +143,7 @@ final class ConformanceCaseRunner
 						.registry(registry.build()).noCacheProvider().build())
 				.defaultRequestHandlers()
 				.rootPolicy(root)
+				.observer(observer)
 				.build();
 	}
 
@@ -221,7 +229,7 @@ final class ConformanceCaseRunner
 				&& "Request Attribute is missing AttributeId".equals(failure.getMessage());
 	}
 
-	private static boolean expectedStaticRejection(ConformanceManifest.Case testCase, Throwable failure)
+	static boolean expectedStaticRejection(ConformanceManifest.Case testCase, Throwable failure)
 	{
 		// These Special.txt files allow static rejection only for the defect demonstrated by the case.
 		if ("IIA004".equals(testCase.caseId())) {

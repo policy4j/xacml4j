@@ -38,7 +38,8 @@ import com.google.common.base.Preconditions;
 
 /**
  * A default implementation of {@link PolicyReferenceResolver}.
- * Maintains a cache of resolved policies by the reference.
+ * Maintains a cache of resolved policies by the reference. Only targets that
+ * match the reference are cached; a mismatch is returned without caching it.
  *
  * @author Giedrius Trumpickas
  */
@@ -75,7 +76,7 @@ public class DefaultPolicyReferenceResolver
 	public Policy resolve(PolicyIDReference ref)
 			throws PolicyResolutionException
 	{
-		Policy p =  policyIDRefCache.get(ref);
+		Policy p = enableRefCache ? policyIDRefCache.get(ref) : null;
 		if(p != null){
 			return p;
 		}
@@ -84,8 +85,7 @@ public class DefaultPolicyReferenceResolver
 					ref.getVersion(),
 					ref.getEarliestVersion(),
 					ref.getLatestVersion());
-		if(p != null &&
-				enableRefCache){
+		if(p != null && enableRefCache && ref.isReferenceTo(p)){
 			policyIDRefCache.put(ref, p);
 		}
 		// Only a reference that matches nothing is logged (design D18)
@@ -100,7 +100,7 @@ public class DefaultPolicyReferenceResolver
 	public PolicySet resolve(PolicySetIDReference ref)
 			throws PolicyResolutionException
 	{
-		PolicySet p = policySetIDRefCache.get(ref);
+		PolicySet p = enableRefCache ? policySetIDRefCache.get(ref) : null;
 		if(p != null){
 			return p;
 		}
@@ -109,8 +109,7 @@ public class DefaultPolicyReferenceResolver
 					ref.getVersion(),
 					ref.getEarliestVersion(),
 					ref.getLatestVersion());
-		if(p != null &&
-				enableRefCache){
+		if(p != null && enableRefCache && ref.isReferenceTo(p)){
 			policySetIDRefCache.put(ref, p);
 		}
 		// Only a reference that matches nothing is logged (design D18)

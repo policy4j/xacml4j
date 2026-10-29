@@ -32,6 +32,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**
@@ -99,6 +100,56 @@ public class AttributeLookupCharacterizationTest
 				.isEqualTo(Optional.of(XacmlTypes.STRING.bagBuilder().attributes(List.of(XacmlTypes.STRING.ofAny("x"),
 						XacmlTypes.STRING.ofAny("y"), XacmlTypes.STRING.ofAny("x"), XacmlTypes.STRING.ofAny("z"))).build()));
 		assertThat(entity().resolve(ID, XacmlTypes.BOOLEAN, null)).isEqualTo(Optional.empty());
+	}
+
+	/** The bag of a designator is built once per entity (cycle AF): resolving it again gives an equal bag, as the lookup by id, type, and issuer does */
+	@Test
+	public void resolvingADesignatorTwiceGivesEqualBags()
+	{
+		Entity entity = entity();
+		AttributeDesignatorKey strings = designator(XacmlTypes.STRING, null);
+		AttributeDesignatorKey integersOfA = designator(XacmlTypes.INTEGER, "issuer-a");
+		AttributeDesignatorKey booleans = designator(XacmlTypes.BOOLEAN, null);
+
+		Optional<BagOfValues> first = entity.resolve(strings);
+
+		assertThat(first).isEqualTo(Optional.of(XacmlTypes.STRING.bagBuilder().attributes(List.of(XacmlTypes.STRING.ofAny("x"),
+				XacmlTypes.STRING.ofAny("y"), XacmlTypes.STRING.ofAny("x"), XacmlTypes.STRING.ofAny("z"))).build()));
+		assertThat(entity.resolve(strings)).isEqualTo(first);
+		assertThat(entity.resolve(ID, XacmlTypes.STRING, null)).isEqualTo(first);
+		// The category of the designator plays no part in the lookup
+		assertThat(entity.resolve(designator(CategoryId.RESOURCE, XacmlTypes.STRING, null))).isEqualTo(first);
+		assertThat(entity.resolve(integersOfA)).isEqualTo(Optional.of(XacmlTypes.INTEGER.ofAny(7).toBag()));
+		assertThat(entity.resolve(integersOfA)).isEqualTo(Optional.of(XacmlTypes.INTEGER.ofAny(7).toBag()));
+		assertThat(entity.resolve(booleans)).isEqualTo(Optional.empty());
+		assertThat(entity.resolve(booleans)).isEqualTo(Optional.empty());
+	}
+
+	/** A category answers a designator of its own category with the bag its entity keeps, and nothing for another category (cycle AK) */
+	@Test
+	public void categoryResolvesADesignatorOfItsCategoryThroughItsEntity()
+	{
+		Entity entity = entity();
+		Category category = Category.builder(CategoryId.SUBJECT_ACCESS).entity(entity).build();
+		AttributeDesignatorKey strings = designator(XacmlTypes.STRING, null);
+		AttributeDesignatorKey ofResource = AttributeDesignatorKey.builder().category(CategoryId.RESOURCE)
+				.attributeId(ID).dataType(XacmlTypes.STRING).build();
+
+		assertThat(category.resolve(strings)).isEqualTo(entity.resolve(strings));
+		assertThat(category.resolve(strings)).isEqualTo(Optional.of(XacmlTypes.STRING.bagBuilder().attributes(List.of(
+				XacmlTypes.STRING.ofAny("x"), XacmlTypes.STRING.ofAny("y"), XacmlTypes.STRING.ofAny("x"), XacmlTypes.STRING.ofAny("z"))).build()));
+		assertThat(category.resolve(ofResource)).isEqualTo(Optional.empty());
+	}
+
+	private static AttributeDesignatorKey designator(ValueType type, String issuer)
+	{
+		return designator(CategoryId.SUBJECT_ACCESS, type, issuer);
+	}
+
+	private static AttributeDesignatorKey designator(CategoryId category, ValueType type, String issuer)
+	{
+		return AttributeDesignatorKey.builder().category(category)
+				.attributeId(ID).dataType(type).issuer(issuer).build();
 	}
 
 	@Test

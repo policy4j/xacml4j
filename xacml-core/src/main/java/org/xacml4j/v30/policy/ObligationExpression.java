@@ -22,6 +22,8 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.Optional;
+
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -31,16 +33,22 @@ import org.xacml4j.v30.Obligation;
 public class ObligationExpression extends
 	BaseDecisionRuleResponseExpression
 {
+	/**
+	 * The one obligation of an expression of exactly this class whose assignments are constant
+	 * (cycle AN); a subclass evaluates its assignments on every call (review R-AN)
+	 */
+	private final Optional<Obligation> constant;
+
 	public ObligationExpression(Builder b)
 	{
 		super(b);
+		this.constant = getClass() == ObligationExpression.class
+				? constantAssignments().map(attributes -> Obligation.of(id, effect, attributes))
+				: Optional.empty();
 	}
 
 	public Obligation evaluate(EvaluationContext context) throws EvaluationException{
-		return Obligation
-				.builder(getId(), getEffect())
-				.attributes(evaluateAttributeAssignments(context))
-				.build();
+		return constant.isPresent() ? constant.get() : Obligation.of(getId(), getEffect(), evaluateAttributeAssignments(context));
 	}
 
 	public static Builder builder(String id, Effect appliesTo){

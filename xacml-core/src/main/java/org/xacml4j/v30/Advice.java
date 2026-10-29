@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Collection;
+
 /**
  * In some applications it is helpful to specify supplemental
  * information about a decision. XACML provides facilities
@@ -34,6 +36,15 @@ public final class Advice extends DecisionRuleResponse
 {
 	private Advice(Builder b){
 		super(b);
+	}
+
+	private Advice(String id, Effect fulfillOn, Collection<AttributeAssignment> attributes){
+		super(id, fulfillOn, attributes);
+	}
+
+	/** Creates advice with distinct assignments grouped in first-seen attribute order. */
+	public static Advice of(String id, Effect fulfillOn, Collection<AttributeAssignment> attributes){
+		return new Advice(id, fulfillOn, attributes);
 	}
 
 	public static Builder builder(String id, Effect fullFillOn){

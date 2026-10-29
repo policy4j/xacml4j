@@ -25,7 +25,7 @@ package org.xacml4j.v30.spi.pip;
 import java.time.Clock;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -43,6 +43,11 @@ import com.google.common.base.Ticker;
 import com.google.common.collect.ImmutableMap;
 
 
+/**
+ * The context of one call of a resolver. It belongs to that call: a resolver that hands work to
+ * other threads reads its dependencies here, on the calling thread, and passes the values on
+ * (design D27 of optimize-pdp-evaluation).
+ */
 public interface ResolverContext
 {
 	/**
@@ -101,10 +106,12 @@ public interface ResolverContext
 	final class Default implements
 			ResolverContext
 	{
-		private Optional<Content.Type> contentType;
-		private EvaluationContext context;
+		private final Optional<Content.Type> contentType;
+		private final EvaluationContext context;
+		private final ResolverDescriptor resolver;
+		// Resolved when first asked for; a descriptor whose context keys all resolved to nothing
+		// asks again on the next call, as before (design D27 keeps that retry)
 		private Map<AttributeReferenceKey, BagOfValues> resolvedKeys;
-		private ResolverDescriptor resolver;
 		private ResolverCacheKey cacheKey;
 
 		public Default(
@@ -145,11 +152,23 @@ public interface ResolverContext
 						resolvedKeys.isEmpty()){
 					this.resolvedKeys = resolveAllContextRefs();
 				}
-				this.cacheKey = ResolverCacheKey.builder(getDescriptor().getId())
-				                                .keys(resolvedKeys.values())
-				                                .build();
+				// From the resolved values in their order, without a builder (cycle AL)
+				this.cacheKey = ResolverCacheKey.of(getDescriptor().getId(), resolvedKeys.values());
 			}
 			return cacheKey;
+		}
+
+		/**
+		 * Whether {@link #getCacheKey()} answers from what this context resolved already: the key
+		 * is built, the context keys are resolved, or the descriptor declares none. Otherwise the
+		 * key would resolve the context keys before the resolver asks for them, and the resolver
+		 * would ask again when they all resolved to nothing (the timing design D27 keeps; the
+		 * sets of a decision are kept only with a known key, review R-FABLE-sol).
+		 */
+		boolean isCacheKeyAvailable(){
+			return cacheKey != null
+					|| (resolvedKeys != null && !resolvedKeys.isEmpty())
+					|| getDescriptor().getContextKeyRefs().isEmpty();
 		}
 
 		@Override
@@ -170,14 +189,38 @@ public interface ResolverContext
 			return Optional.ofNullable(resolvedKeys.get(key));
 		}
 
+		/**
+		 * Resolves the context keys of the descriptor in their declared order and keeps the
+		 * present ones in that order; one context key, the common case, makes its map directly
+		 * (cycle AL)
+		 */
 		@Override
 		public Map<AttributeReferenceKey, BagOfValues> resolveAllContextRefs(){
-			ImmutableMap.Builder<AttributeReferenceKey, BagOfValues> contextKeys = ImmutableMap.builder();
-			Collection<AttributeReferenceKey> keys = getDescriptor().getContextKeyRefs();
-			keys.forEach((k)->context.resolve(k)
-					.ifPresent((v)->contextKeys.put(k, v)));
-			this.resolvedKeys = contextKeys.build();
+			List<AttributeReferenceKey> keys = getDescriptor().getContextKeyRefs();
+			this.resolvedKeys = keys.size() == 1? resolved(keys.get(0)): resolved(keys);
 			return resolvedKeys;
+		}
+
+		/** The map of one context key: its value when it has one, else nothing */
+		private Map<AttributeReferenceKey, BagOfValues> resolved(AttributeReferenceKey key){
+			Optional<BagOfValues> value = context.resolve(key);
+			return value.isPresent()? ImmutableMap.of(key, value.get()): ImmutableMap.of();
+		}
+
+		/** The map of several context keys, or of none: nothing to resolve, so nothing to ask again (design D27) */
+		private Map<AttributeReferenceKey, BagOfValues> resolved(List<AttributeReferenceKey> keys){
+			if(keys.isEmpty()){
+				return ImmutableMap.of();
+			}
+			ImmutableMap.Builder<AttributeReferenceKey, BagOfValues> contextKeys = ImmutableMap.builderWithExpectedSize(keys.size());
+			for(int i = 0; i < keys.size(); i++){
+				AttributeReferenceKey key = keys.get(i);
+				Optional<BagOfValues> value = context.resolve(key);
+				if(value.isPresent()){
+					contextKeys.put(key, value.get());
+				}
+			}
+			return contextKeys.build();
 		}
 
 		public boolean isCacheable(){

@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -46,6 +47,7 @@ import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.Apply;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
@@ -55,6 +57,8 @@ import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import static org.mockito.Mockito.when;
 
 /**
  * Maintainer ruling 2026-10-07 (run 061 D11, bead policy4j-the.4.12): in
@@ -81,6 +85,56 @@ public class LaterDecidingOperandTest
 			.build();
 
 	private EvaluationContext context;
+
+	@ParameterizedTest(name = "runtimeValidation={0}")
+	@ValueSource(booleans = {false, true})
+	public void applyPreservesShortCircuitAndHigherOrderOutcomes(boolean validate)
+	{
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(validate);
+		Expression missing = new FailingBoolean();
+		assertApply('F', F + "1.0:function:and", BooleanVal.of(false), missing);
+		assertApply('T', F + "1.0:function:or", BooleanVal.of(true), missing);
+		assertApply('F', F + "1.0:function:and", missing, BooleanVal.of(false));
+		assertApply('T', F + "1.0:function:or", missing, BooleanVal.of(true));
+		assertApply('M', F + "1.0:function:and", BooleanVal.of(true), missing);
+		assertApply('M', F + "1.0:function:or", BooleanVal.of(false), missing);
+
+		FunctionReference predicate = new FunctionReference(require(PREDICATE));
+		assertApply('F', F + "3.0:function:any-of", predicate, integer(5), ints());
+		assertApply('T', F + "3.0:function:all-of", predicate, integer(5), ints());
+		assertApply('T', F + "3.0:function:any-of", predicate, integer(5), ints(-2, 3));
+		assertApply('F', F + "3.0:function:all-of", predicate, integer(5), ints(-2, 9));
+		assertApply('M', F + "3.0:function:any-of", predicate, integer(5), ints(-2, 9));
+		assertApply('M', F + "3.0:function:all-of", predicate, integer(5), ints(-2, 3));
+		assertApply('F', F + "3.0:function:any-of-any", predicate, ints(), ints(3));
+		assertApply('T', F + "3.0:function:any-of-any", predicate, ints(-2, 5), ints(3));
+		assertApply('M', F + "3.0:function:any-of-any", predicate, ints(-2, 1), ints(3));
+		assertApply('F', F + "1.0:function:all-of-any", predicate, ints(-2, 1), ints(3));
+		assertApply('M', F + "1.0:function:any-of-all", predicate, ints(5), ints(-2, 3));
+		assertApply('T', F + "1.0:function:all-of-all", predicate, ints(), ints(3));
+		assertApply('F', F + "1.0:function:all-of-all", predicate, ints(-2, 1), ints(3));
+		assertApply('M', F + "1.0:function:all-of-all", predicate, ints(-2, 5), ints(3));
+	}
+
+	private void assertApply(char expected, String function, Expression... arguments)
+	{
+		Apply expression = Apply.builder(require(function)).param(arguments).build();
+		assertOutcome(expected, () -> expression.evaluate(context));
+	}
+
+	private static final class FailingBoolean implements Expression
+	{
+		@Override
+		public ValueExpTypeInfo getEvaluatesTo() { return XacmlTypes.BOOLEAN; }
+
+		@Override
+		public <T extends Expression> T evaluate(EvaluationContext context) {
+			throw new EvaluationException(Status.missingAttribute("urn:test:attribute").build(), "missing");
+		}
+
+		@Override
+		public void accept(ExpressionVisitor visitor) {}
+	}
 
 	@BeforeEach
 	public void init()

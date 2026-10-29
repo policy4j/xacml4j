@@ -22,6 +22,8 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import java.util.Collection;
+
 /**
  * In many applications, policies specify actions that MUST be performed,
  * either instead of, or in addition to, actions that MAY be performed.
@@ -43,6 +45,15 @@ public class Obligation
 	Obligation(Builder b)
 	{
 		super(b);
+	}
+
+	private Obligation(String id, Effect fulfillOn, Collection<AttributeAssignment> attributes){
+		super(id, fulfillOn, attributes);
+	}
+
+	/** Creates an obligation with distinct assignments grouped in first-seen attribute order. */
+	public static Obligation of(String id, Effect fulfillOn, Collection<AttributeAssignment> attributes){
+		return new Obligation(id, fulfillOn, attributes);
 	}
 
 	public static Builder builder(String id, Effect appliesTo){

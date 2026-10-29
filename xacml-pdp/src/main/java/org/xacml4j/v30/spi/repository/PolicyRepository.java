@@ -24,10 +24,12 @@ package org.xacml4j.v30.spi.repository;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.VersionMatch;
+import org.xacml4j.v30.marshal.MarshallingProvider;
 import org.xacml4j.v30.policy.Policy;
 import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmProvider;
@@ -186,9 +188,31 @@ public interface PolicyRepository
 	void removePolicyRepositoryListener(PolicyRepositoryListener l);
 
 	/**
-	 * Creates policy import tool with a given policy unmarshaller
-	 * @param unmarshaller a policy unmarshaller
-	 * @return {@Link ImportTool}
+	 * The functions of the policies of this repository: the policies it loads, also through
+	 * {@link #newImportTool()}, call them (change add-regex-engine-spi, design D3). The default is
+	 * the standard functions of the marshalling providers, which every repository loaded with
+	 * before.
+	 *
+	 * @return the function provider of this repository
+	 */
+	default FunctionProvider getFunctionProvider(){
+		return MarshallingProvider.funcSystemProvider;
+	}
+
+	/**
+	 * The combining algorithms of the policies of this repository (design D3)
+	 *
+	 * @return the algorithm provider of this repository
+	 */
+	default DecisionCombiningAlgorithmProvider getAlgorithmProvider(){
+		return MarshallingProvider.combineSystemProvider;
+	}
+
+	/**
+	 * Creates a policy import tool, which unmarshals policies with the functions and algorithms
+	 * of this repository and adds them to it
+	 *
+	 * @return {@link PolicyImportTool}
 	 */
 	default PolicyImportTool newImportTool(){
 		return new PolicyImportTool(this);
@@ -200,10 +224,9 @@ public interface PolicyRepository
 
 	class Builder
 	{
-		private String id;
-		private FunctionProvider functionProvider = FunctionProvider.builder()
-		                                                            .withDefaultFunctions()
-		                                                            .build();
+		private final String id;
+		/** The functions, or the standard functions built when the repository is (design D3) */
+		private Optional<FunctionProvider> functionProvider = Optional.empty();
 		private DecisionCombiningAlgorithmProvider algorithmProvider = DecisionCombiningAlgorithmProvider
 				.builder()
 				.withDefaultAlgorithms()
@@ -214,8 +237,26 @@ public interface PolicyRepository
 		}
 
 		public Builder withFunctionProvider(FunctionProvider functionProvider){
-			this.functionProvider = Objects.requireNonNull(functionProvider, "functionProvider");
+			this.functionProvider = Optional.of(Objects.requireNonNull(functionProvider, "functionProvider"));
 			return this;
+		}
+
+		/**
+		 * The standard functions with the given regular-expression engine and profile (change
+		 * add-regex-engine-spi, design D3); replaces a function provider given before
+		 *
+		 * @param engine the name of an engine on the class path, such as {@code jdk}
+		 * @param profile the name of a profile the engine offers, {@code legacy} or {@code xf}
+		 * @return this builder
+		 * @throws IllegalArgumentException when no engine or profile has the name, or the engine
+		 * does not offer the profile
+		 * @throws IllegalStateException when more than one engine provider has the name
+		 */
+		public Builder withRegexEngine(String engine, String profile){
+			return withFunctionProvider(FunctionProvider.builder()
+					.withRegexEngine(engine, profile)
+					.withDefaultFunctions()
+					.build());
 		}
 
 		public Builder withAlgorithmProvider(DecisionCombiningAlgorithmProvider algorithmProvider){
@@ -224,7 +265,9 @@ public interface PolicyRepository
 		}
 
 		public PolicyRepository build(){
-			return new InMemoryPolicyRepository(id, functionProvider, algorithmProvider);
+			return new InMemoryPolicyRepository(id,
+					functionProvider.orElseGet(() -> FunctionProvider.builder().withDefaultFunctions().build()),
+					algorithmProvider);
 		}
 	}
 }

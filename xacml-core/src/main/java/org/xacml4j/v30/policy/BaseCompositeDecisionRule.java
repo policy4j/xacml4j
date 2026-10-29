@@ -22,9 +22,7 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -36,11 +34,11 @@ import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Version;
 import org.xacml4j.v30.Versionable;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
@@ -114,56 +112,141 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 
 	@Override
-	public Decision evaluate(EvaluationContext context) {
+	final Decision evaluateRule(EvaluationContext context) {
 		MatchResult r = isMatch(context);
 		if(r == MatchResult.NOMATCH){
 			return Decision.NOT_APPLICABLE;
 		}
 		if(r == MatchResult.MATCH){
-			ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
+			ConditionResult result = (condition == null)?ConditionResult.TRUE:evaluateCondition(context);
 			if(result == ConditionResult.TRUE){
-				// XACML 3.0, section 7.18: the obligations and advice from the evaluation of
-				// this rule go to an enclosing policy set only if they match its decision
-				StagedResponses staged = isEnclosed(context)?new StagedResponses(context):null;
-				EvaluationContext evaluationContext = (staged == null)?context:staged;
-				Decision decision = combineDecisions(evaluationContext);
-				if(!decision.isIndeterminate() &&
-						decision != Decision.NOT_APPLICABLE){
-					if(!context.isExtendedIndeterminateEval()){
-						try
-						{
-							evaluateAdvicesAndObligations(evaluationContext, decision);
-						}catch(EvaluationException e){
-							return getExtendedIndeterminate(
-									createExtIndeterminateEvalContext(context));
-						}
-						if(staged != null){
-							staged.publish(decision);
-						}
-						context.addEvaluationResult(this, decision);
-					}
-				}
-				return decision;
+				return combine(context);
 			}
 			if(result == ConditionResult.FALSE){
 				return Decision.NOT_APPLICABLE;
 			}
 		}
-		return getExtendedIndeterminate(createExtIndeterminateEvalContext(context));
+		return extendedIndeterminatePass(context);
 	}
 
 	/**
-	 * Creates a context to evaluate this rule for the extended indeterminate.
-	 * The result of that evaluation is never Permit or Deny, so a rule which is
-	 * evaluated inside a policy set gives no obligations and no advice to it
-	 *
-	 * @param context an evaluation context of this rule
-	 * @return {@link EvaluationContext} to evaluate extended indeterminate
+	 * Combines the children and adds the responses of an applicable decision. XACML 3.0, section
+	 * 7.18: inside a policy set the responses wait until the decision of this rule is known and go
+	 * up only when they match it (design D36). Under a built-in combining algorithm, on the thread
+	 * that decides, they wait in the root of the decision, which records the staging of this rule
+	 * and creates its frame on the first response that passes through the context of this rule
+	 * (cycle AN, reviews R-AN, R-AN2); where custom code can run inside the subtree, a custom
+	 * combining algorithm or a root of another implementation, or where the root cannot record the
+	 * staging, they wait in a wrapper context.
 	 */
-	private static EvaluationContext createExtIndeterminateEvalContext(EvaluationContext context)
-	{
-		EvaluationContext extContext = context.createExtIndeterminateEvalContext();
-		return isEnclosed(context)?new StagedResponses(extContext):extContext;
+	private Decision combine(EvaluationContext context){
+		if(!(canRespond() && isEnclosed(context))){
+			return respond(context, context);
+		}
+		if(context instanceof CompositeRuleEvaluationContext own && stagesInRoot(own) && own.openStaging()){
+			RootEvaluationContext root = own.stagingRoot();
+			try{
+				Decision decision = respond(context, context);
+				if(isApplicable(decision)){
+					own.closeStaging();
+					root.publishStaged(own, decision);
+				}
+				return decision;
+			}finally{
+				own.closeStaging();
+				root.dropStaged(own);
+			}
+		}
+		StagedResponses staged = new StagedResponses(context);
+		Decision decision = respond(staged, context);
+		if(isApplicable(decision)){
+			staged.publish(decision);
+		}
+		return decision;
+	}
+
+	/**
+	 * Tells whether a context of this rule can stage in the root of its decision: the root is the
+	 * engine's, the current thread decides on it, and a built-in combining algorithm combines the
+	 * children, so that no custom code runs between this rule and the staging of its children.
+	 * Only the opening is limited to the deciding thread; once open, the staging holds what any
+	 * thread writes through the context (review R-AN2)
+	 */
+	private boolean stagesInRoot(CompositeRuleEvaluationContext context){
+		return hasBuiltInCombiningAlgorithm()
+				&& DescendantEvaluationContext.topOf(context) instanceof RootEvaluationContext root
+				&& root.isDecidingThread();
+	}
+
+	/** Whether the combining algorithm of this rule is one of the engine's own classes */
+	abstract boolean hasBuiltInCombiningAlgorithm();
+
+	/**
+	 * Combines the children in the given context and adds the responses of an applicable decision;
+	 * when one of them fails, the extended Indeterminate pass (XACML 3.0, section 7.18)
+	 */
+	private Decision respond(EvaluationContext evaluationContext, EvaluationContext context){
+		Decision decision = combineDecisions(evaluationContext);
+		if(!isApplicable(decision)){
+			return decision;
+		}
+		// Also inside an extended Indeterminate pass, whose value they can change; the pass never
+		// publishes them
+		try{
+			evaluateAdvicesAndObligations(evaluationContext, decision);
+		}catch(EvaluationException e){
+			return extendedIndeterminatePass(context);
+		}
+		// A context of this package skips a pass itself, after it asks the root whether it records
+		// anything; another is asked here, as before (cycle AU)
+		if(DescendantEvaluationContext.isOwn(context) || !context.isExtendedIndeterminateEval()){
+			context.addEvaluationResult(this, decision);
+		}
+		return decision;
+	}
+
+	private static boolean isApplicable(Decision decision){
+		return !decision.isIndeterminate() && decision != Decision.NOT_APPLICABLE;
+	}
+
+	/**
+	 * Evaluates the children for the extended Indeterminate of this rule, in a pass whose responses
+	 * are never published: the pass never gives Permit or Deny, so a rule inside a policy set gives
+	 * it no obligations and no advice. The pass opens and closes the staging of its own context only
+	 * (review R-AN2)
+	 */
+	private Decision extendedIndeterminatePass(EvaluationContext context){
+		EvaluationContext pass = context.createExtIndeterminateEvalContext();
+		if(!(canRespond() && isEnclosed(context))){
+			return getExtendedIndeterminate(pass);
+		}
+		if(pass instanceof CompositeRuleEvaluationContext own && stagesInRoot(own) && own.openStaging()){
+			RootEvaluationContext root = own.stagingRoot();
+			try{
+				return getExtendedIndeterminate(pass);
+			}finally{
+				own.closeStaging();
+				root.dropStaged(own);
+			}
+		}
+		return getExtendedIndeterminate(new StagedResponses(pass));
+	}
+
+	/**
+	 * Tells whether the evaluation that this rule's staging holds can write responses: its children,
+	 * its combining algorithm, its advice and its obligations (design D36). Its own target and
+	 * condition run before the staging exists and count in {@link #canRespondToParent()}.
+	 */
+	boolean canRespond(){
+		return true;
+	}
+
+	/**
+	 * Tells whether evaluating this rule, its target and condition included, can write responses to
+	 * the context of the rule that encloses it (design D36)
+	 */
+	final boolean canRespondToParent(){
+		return canRespond() || targetOrConditionCanWrite();
 	}
 
 	/**
@@ -186,7 +269,32 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 		return false;
 	}
 
+	/**
+	 * Evaluates the children of this rule for its extended Indeterminate, as one pass of the observation of
+	 * its decision (design D34)
+	 *
+	 * @param context an evaluation context of the pass
+	 * @return the extended Indeterminate, or NotApplicable
+	 */
 	protected Decision getExtendedIndeterminate(EvaluationContext context)
+	{
+		DecisionObservation o = RootEvaluationContext.observationOf(context);
+		if(!o.isEnabled()){
+			return extendedIndeterminate(context);
+		}
+		Object parent = o.extendedIndeterminateStarted(context, this);
+		Decision d;
+		try{
+			d = extendedIndeterminate(context);
+		}catch(Throwable t){
+			o.extendedIndeterminateFailed(context, this, parent, t);
+			throw t;
+		}
+		o.extendedIndeterminateFinished(context, this, parent, d);
+		return d;
+	}
+
+	private Decision extendedIndeterminate(EvaluationContext context)
 	{
 		Decision evaluationResult = null;
 		try{
@@ -234,19 +342,15 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 	}
 
 	/**
-	 * Holds the obligations and advice from the evaluation of one composite decision
-	 * rule until the decision of that rule is known. The root context is not changed
-	 * before that, so nothing must be removed from it when the rule is not applicable,
-	 * is indeterminate, or has a different decision. A staging list is created when the
-	 * first response is staged, and only a list with something in it reaches the parent
-	 * context (design D19)
+	 * Holds the obligations and advice from the evaluation of one composite decision rule until
+	 * the decision of that rule is known, where custom code can run inside the rule: a custom
+	 * combining algorithm, a root context of another implementation, or another thread, and where
+	 * the root cannot record the staging; under a built-in algorithm the root context of the engine
+	 * stages them in frames of its own (designs D19, D36, cycle AN, reviews R-AN, R-AN2)
 	 */
 	private static final class StagedResponses extends DescendantEvaluationContext
 	{
-		private List<Advice> permitAdvices = ImmutableList.of();
-		private List<Advice> denyAdvices = ImmutableList.of();
-		private List<Obligation> permitObligations = ImmutableList.of();
-		private List<Obligation> denyObligations = ImmutableList.of();
+		private final RootEvaluationContext.Staged staged = new RootEvaluationContext.Staged();
 
 		StagedResponses(EvaluationContext context){
 			super(context);
@@ -265,58 +369,17 @@ abstract class BaseCompositeDecisionRule extends BaseDecisionRule
 
 		@Override
 		public void addAdvices(Decision d, Iterable<Advice> advices){
-			Preconditions.checkNotNull(d, "decision");
-			if(d == Decision.PERMIT){
-				permitAdvices = staged(permitAdvices, advices);
-			}else if(d == Decision.DENY){
-				denyAdvices = staged(denyAdvices, advices);
-			}
+			staged.addAdvices(Preconditions.checkNotNull(d, "decision"), advices);
 		}
 
 		@Override
 		public void addObligations(Decision d, Iterable<Obligation> obligations){
-			Preconditions.checkNotNull(d, "decision");
-			if(d == Decision.PERMIT){
-				permitObligations = staged(permitObligations, obligations);
-			}else if(d == Decision.DENY){
-				denyObligations = staged(denyObligations, obligations);
-			}
+			staged.addObligations(Preconditions.checkNotNull(d, "decision"), obligations);
 		}
 
-		/**
-		 * Gives the obligations and advice which match a given decision to the parent context
-		 *
-		 * @param d a Permit or Deny decision of the rule
-		 */
+		/** Gives the obligations and advice which match a Permit or Deny decision to the parent context */
 		void publish(Decision d){
-			EvaluationContext parent = getParent();
-			List<Advice> advices = (d == Decision.PERMIT)?permitAdvices:denyAdvices;
-			if(!advices.isEmpty()){
-				parent.addAdvices(d, advices);
-			}
-			List<Obligation> obligations = (d == Decision.PERMIT)?permitObligations:denyObligations;
-			if(!obligations.isEmpty()){
-				parent.addObligations(d, obligations);
-			}
-		}
-
-		/**
-		 * Adds responses to a staging list, which is the shared empty list until the first
-		 * response replaces it with a list of its own
-		 *
-		 * @param staged the staging list so far
-		 * @param responses the responses to stage
-		 * @return the staging list with the responses in it
-		 */
-		private static <T> List<T> staged(List<T> staged, Iterable<T> responses){
-			List<T> list = staged;
-			for(T response : responses){
-				if(list.isEmpty()){
-					list = new ArrayList<>();
-				}
-				list.add(response);
-			}
-			return list;
+			staged.publishTo(getParent(), d);
 		}
 	}
 

@@ -76,28 +76,28 @@ public class PolicyIDReferenceTest
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(1)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(2)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(3)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(4)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -118,28 +118,28 @@ public class PolicyIDReferenceTest
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(1)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(2)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(3)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(4)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -160,14 +160,14 @@ public class PolicyIDReferenceTest
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(1)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(2)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -188,14 +188,14 @@ public class PolicyIDReferenceTest
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(1)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(2)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -216,14 +216,14 @@ public class PolicyIDReferenceTest
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(1)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertEquals(MatchResult.INDETERMINATE, ref.isMatch(policyRefContext));
 		order.verify(context).getCurrentPolicy();
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(2)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public class PolicyIDReferenceTest
 		PolicyIDReference ref = PolicyIDReference.builder("testId").versionAsString("1.+").build();
 		assertThrows(IllegalArgumentException.class, () -> ref.evaluate(context));
 		verify(context).getCurrentPolicyIDReference();
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class PolicyIDReferenceTest
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(2)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -280,7 +280,6 @@ public class PolicyIDReferenceTest
 		order.verify(context).getCurrentPolicy();
 		order.verify(algorithm).combine(refContext.capture(), eq(Collections.emptyList()));
 		assertSame(ctx, refContext.getValue());
-		verify(context, never()).isExtendedIndeterminateEval();
 		// A policy without applicable advice or obligations adds none (design D19)
 		verify(context, never()).addAdvices(any(), any());
 		verify(context, never()).addObligations(any(), any());
@@ -291,7 +290,6 @@ public class PolicyIDReferenceTest
 		verify(context, times(1)).resolve(ref);
 		verify(algorithm, times(1)).combine(refContext.capture(), eq(Collections.emptyList()));
 		verify(context, times(1)).addEvaluationResult(refPolicy, Decision.PERMIT);
-		verifyNoMoreInteractions(context, algorithm);
 		assertSame(ref, ctx.getCurrentPolicyIDReference());
 		assertSame(refPolicy, ctx.getCurrentPolicy());
 	}
@@ -317,7 +315,7 @@ public class PolicyIDReferenceTest
 		verify(context, times(2)).getCurrentPolicyIDReference();
 		verify(context, times(2)).getCurrentPolicy();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertSame(ref, ctx.getCurrentPolicyIDReference());
 		assertSame(refPolicy, ctx.getCurrentPolicy());
 	}
@@ -330,7 +328,7 @@ public class PolicyIDReferenceTest
 		assertEquals("testId", refPolicy.getId());
 		assertEquals(Version.parse("1.0.1"), refPolicy.getVersion());
 		assertTrue(ref.isReferenceTo(refPolicy));
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test

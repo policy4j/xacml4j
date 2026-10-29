@@ -38,6 +38,7 @@ import java.util.stream.StreamSupport;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import org.xacml4j.v30.types.Value;
@@ -69,19 +70,18 @@ public final class BagOfValues
 
 	private transient volatile BagOfValuesType type;
 	private transient volatile BagStorage storage;
-	private transient volatile Optional<Value<?>> firstValue;
 	private transient volatile Multiset<Value<?>> values;
 	private int hashCode;
 	
 	/**
 	 * Constructs bag of attributes.
 	 *
-	 * @param b a builder
+	 * @param type the bag type
+	 * @param storage the values, as the storage builder of the value type built them
 	 */
-	private BagOfValues(Builder b){
-		this.type = b.bagType;
-		this.storage = b.valuesBuilder.build();
-		this.firstValue = firstValue(storage);
+	private BagOfValues(BagOfValuesType type, BagStorage storage){
+		this.type = type;
+		this.storage = storage;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -131,6 +131,10 @@ public final class BagOfValues
 		return storage.compareIntegers(comparison, literal);
 	}
 
+	public BagStorage.Scan scanTemporal(BagStorage.Comparison comparison, Value<?> literal) {
+		return storage.compareTemporal(comparison, literal);
+	}
+
 	/**
 	 * Gets bag value data type
 	 *
@@ -160,13 +164,8 @@ public final class BagOfValues
 		return valueAt(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T extends Value<?>> Optional<T> single() {
-		return (Optional<T>) (Optional<?>) firstValue;
-	}
-
-	private static Optional<Value<?>> firstValue(BagStorage storage) {
-		return storage.size() == 0 ? Optional.empty() : Optional.of(storage.valueAt(0));
+		return isEmpty() ? Optional.empty() : Optional.of(valueAt(0));
 	}
 
 	/**
@@ -271,8 +270,8 @@ public final class BagOfValues
 	 */
 	public boolean containsAll(BagOfValues bag){
 		Preconditions.checkArgument(type.equals(bag.type));
-		for (Value<?> value : bag) {
-			if (!contains(value)) return false;
+		for (int i = 0; i < bag.size(); i++) {
+			if (!contains(bag.valueAt(i))) return false;
 		}
 		return true;
 	}
@@ -332,7 +331,6 @@ public final class BagOfValues
 		for (Value<?> value : readValues) builder.add(value);
 		this.type = readType;
 		this.storage = builder.build();
-		this.firstValue = firstValue(storage);
 		this.hashCode = fields.get("hashCode", 0);
 	}
 
@@ -409,6 +407,14 @@ public final class BagOfValues
 		}
 
 		public Builder attributes(Iterable<? extends Value<?>> values){
+			// Index loops only over a Guava ImmutableList, which is random access and cannot
+			// change between the two passes: the rule of the combining algorithms (design D30,
+			// review R-UX P3-2). Every other iterable, a JDK random-access list too, iterates.
+			if (values instanceof ImmutableList<? extends Value<?>> list) {
+				for (int i = 0; i < list.size(); i++) assertExpressionType(list.get(i), bagType);
+				for (int i = 0; i < list.size(); i++) this.valuesBuilder.add(list.get(i));
+				return this;
+			}
 			for (Value<?> v : values) {
 				assertExpressionType(v, bagType);
 			}
@@ -425,7 +431,7 @@ public final class BagOfValues
 		}
 
 		public BagOfValues build(){
-			return new BagOfValues(this);
+			return new BagOfValues(bagType, valuesBuilder.build());
 		}
 	}
 }

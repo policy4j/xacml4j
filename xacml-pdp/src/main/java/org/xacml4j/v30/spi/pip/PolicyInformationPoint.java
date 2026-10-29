@@ -23,11 +23,14 @@ package org.xacml4j.v30.spi.pip;
  */
 
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.Executor;
 
 import org.w3c.dom.Node;
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.EvaluationContext;
@@ -48,6 +51,31 @@ public interface PolicyInformationPoint
 	 * @return a unique identifier
 	 */
 	String getId();
+
+	/**
+	 * Gets the information point of one decision. The decision point asks for it when a
+	 * decision first needs the information point, resolves every attribute of that decision
+	 * through it, and drops it with the decision. An information point that keeps state for
+	 * the length of a decision, such as the attribute sets its resolvers gave, returns a new
+	 * object for each decision. By default the information point itself is returned.
+	 *
+	 * @return the information point of one decision
+	 */
+	default PolicyInformationPoint forDecision(){
+		return this;
+	}
+
+	/**
+	 * Tells whether this point knows that none of its resolvers supplies a key, so that the
+	 * decision point treats the attribute as missing without asking, as an attempt would.
+	 * {@code false} by default, which asks the point.
+	 *
+	 * @param key a designator or selector key
+	 * @return {@code true} when no resolver of this point supplies the key
+	 */
+	default boolean hasNoResolver(AttributeReferenceKey key){
+		return false;
+	}
 
 	/**
 	 * Resolves a given {@link AttributeDesignatorKey}
@@ -95,6 +123,9 @@ public interface PolicyInformationPoint
 		ResolverRegistry registry = ResolverRegistry.builder()
 		                                            .withDefaultResolvers()
 		                                            .build();
+		Optional<Duration> resolverTimeout = Optional.empty();
+		int maxConcurrentResolutions = Integer.MAX_VALUE;
+		Optional<Executor> resolverExecutor = Optional.empty();
 
 		public Builder(String id){
 
@@ -124,6 +155,47 @@ public interface PolicyInformationPoint
 			this.registry = ResolverRegistry.builder()
 			                                .withDefaultResolvers()
 			                                .build();
+			return getThis();
+		}
+
+		/**
+		 * Sets how long a resolution waits for the attribute functions of a parallel resolver
+		 * (design D26). A function that did not end in time is cancelled, its attribute is a
+		 * resolution failure, and the next resolver is asked at once. Without it the wait has
+		 * no limit.
+		 *
+		 * @param timeout a positive duration
+		 * @return this builder
+		 */
+		public T resolverTimeout(Duration timeout){
+			Preconditions.checkArgument(Objects.requireNonNull(timeout, "timeout").toNanos() > 0,
+			                            "timeout=%s", timeout);
+			this.resolverTimeout = Optional.of(timeout);
+			return getThis();
+		}
+
+		/**
+		 * Sets how many attribute functions of parallel resolvers may run at once (design D26).
+		 * Without it there is no limit.
+		 *
+		 * @param maxConcurrent a positive number
+		 * @return this builder
+		 */
+		public T maxConcurrentResolutions(int maxConcurrent){
+			Preconditions.checkArgument(maxConcurrent > 0, "maxConcurrent=%s", maxConcurrent);
+			this.maxConcurrentResolutions = maxConcurrent;
+			return getThis();
+		}
+
+		/**
+		 * Sets the executor of the attribute functions of parallel resolvers (design D26).
+		 * Without it the information point runs them on virtual threads of its own.
+		 *
+		 * @param executor an executor
+		 * @return this builder
+		 */
+		public T resolverExecutor(Executor executor){
+			this.resolverExecutor = Optional.of(Objects.requireNonNull(executor, "executor"));
 			return getThis();
 		}
 

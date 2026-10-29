@@ -32,6 +32,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +46,8 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.XPathVersion;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -56,6 +61,32 @@ public class RootEvaluationContextTest
 	public void init(){
 		this.handler = mock(EvaluationContextHandler.class);
 		this.resolver = mock(PolicyReferenceResolver.class);
+	}
+
+	@Test
+	public void contextConfigurationKeepsDecisionTTLsIndependent()
+	{
+		Clock clock = Clock.fixed(Instant.parse("2026-10-28T12:00:00Z"), ZoneOffset.UTC);
+		RootEvaluationContext.Configuration configuration = new RootEvaluationContext.Configuration(
+				clock, Duration.ofSeconds(30), XPathVersion.XPATH2, resolver);
+		RootEvaluationContext first = new RootEvaluationContext(configuration, true, handler, true, DecisionObservation.none());
+		RootEvaluationContext second = new RootEvaluationContext(configuration, true, handler, true, DecisionObservation.none());
+		RootEvaluationContext legacy = new RootEvaluationContext(clock, true, Duration.ofSeconds(30),
+				XPathVersion.XPATH2, resolver, handler);
+
+		assertEquals(first, second);
+		assertEquals(legacy, first);
+		assertEquals(legacy.hashCode(), first.hashCode());
+		assertEquals(legacy.toString(), first.toString());
+		assertEquals(first.hashCode(), second.hashCode());
+		assertEquals(clock.instant(), first.getClock().instant());
+		assertEquals(XPathVersion.XPATH2, first.getXPathVersion());
+		first.setDecisionCacheTTL(Duration.ofSeconds(5));
+		assertEquals(Duration.ofSeconds(5), first.getDecisionCacheTTL());
+		assertEquals(Duration.ofSeconds(30), second.getDecisionCacheTTL());
+		first.clear();
+		assertEquals(Duration.ZERO, first.getDecisionCacheTTL());
+		assertEquals(Duration.ofSeconds(30), second.getDecisionCacheTTL());
 	}
 
 	@Test

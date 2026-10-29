@@ -92,6 +92,11 @@ public interface BagStorage extends Iterable<Value<?>>
 		return Scan.NO_MATCH;
 	}
 
+	/** Uses the temporal value's comparison, literal first; unsupported values or failures return NONE. */
+	default Scan compareTemporal(Comparison comparison, Value<?> literal) {
+		return BagStorages.compareTemporal(this, comparison, literal);
+	}
+
 	@Override
 	default Iterator<Value<?>> iterator() {
 		return new Iterator<>() {

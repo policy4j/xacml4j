@@ -22,16 +22,14 @@ package org.xacml4j.v30.policy.function.impl;
  * #L%
  */
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import java.util.List;
 
 
 /**
@@ -43,6 +41,7 @@ import org.xacml4j.v30.types.XacmlTypes;
 @XacmlFunctionProvider(description="XACML logical functions")
 public final class LogicalFunctions
 {
+	private static final Expression[] NO_OPERANDS = new Expression[0];
 
 	/** Private constructor for utility class */
 	private LogicalFunctions() {}
@@ -69,19 +68,23 @@ public final class LogicalFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression ...values)
 		throws EvaluationException
 	{
-		return XacmlTypes.BOOLEAN.ofAny(
-				DecidingOperands.allTrue(operands(values), e -> isTrue(context, e)));
+		return XacmlTypes.BOOLEAN.ofAny(DecidingOperands.allTrue(context, operands(values)));
 	}
 
-	private static boolean isTrue(org.xacml4j.v30.EvaluationContext context, Expression e)
+	static BooleanVal and(org.xacml4j.v30.EvaluationContext context, List<Expression> values)
 	{
-		return ((BooleanVal)e.evaluate(context)).get();
+		return XacmlTypes.BOOLEAN.ofAny(DecidingOperands.allTrue(context, values));
+	}
+
+	static BooleanVal or(org.xacml4j.v30.EvaluationContext context, List<Expression> values)
+	{
+		return XacmlTypes.BOOLEAN.ofAny(DecidingOperands.anyTrue(context, values));
 	}
 
 	/** The invocation passes {@code null} for a variadic parameter without arguments. */
-	private static List<Expression> operands(Expression[] values)
+	private static Expression[] operands(Expression[] values)
 	{
-		return values == null?Collections.<Expression>emptyList():Arrays.asList(values);
+		return values == null?NO_OPERANDS:values;
 	}
 
 
@@ -115,8 +118,7 @@ public final class LogicalFunctions
 			@XacmlFuncParamVarArg(typeId="http://www.w3.org/2001/XMLSchema#boolean", min=0)Expression...values)
 		throws EvaluationException
 	{
-		return XacmlTypes.BOOLEAN.ofAny(
-				DecidingOperands.anyTrue(operands(values), e -> isTrue(context, e)));
+		return XacmlTypes.BOOLEAN.ofAny(DecidingOperands.anyTrue(context, operands(values)));
 	}
 
 
@@ -154,12 +156,12 @@ public final class LogicalFunctions
 	{
 		// The integer is evaluated first, then the other arguments one by one.
 		IntegerVal min = n.evaluate(context);
-		List<Expression> operands = operands(values);
-		if(operands.size() < min.get()){
+		Expression[] operands = operands(values);
+		if(operands.length < min.get()){
 			throw new IllegalArgumentException(String.format(
 					"Number of arguments=\"%s\" is less " +
 					"than minimum required number=\"%s\"",
-					operands.size(), min.get()));
+					operands.length, min.get()));
 		}
 		if(min.get() > java.lang.Integer.MAX_VALUE){
 			throw new IllegalArgumentException(String.format(
@@ -169,7 +171,6 @@ public final class LogicalFunctions
 		if(min.get() == 0){
 			return XacmlTypes.BOOLEAN.ofAny(true);
 		}
-		return XacmlTypes.BOOLEAN.ofAny(DecidingOperands.atLeast(
-				min.get().intValue(), operands, e -> isTrue(context, e)));
+		return XacmlTypes.BOOLEAN.ofAny(DecidingOperands.atLeast(context, min.get().intValue(), operands));
 	}
 }

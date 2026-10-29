@@ -40,6 +40,8 @@ import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.BenchmarkParams;
 import org.openjdk.jmh.infra.ThreadParams;
+import org.xacml4j.jmh.corpus.PipCorpus;
+import org.xacml4j.jmh.corpus.PipWorkload;
 import org.xacml4j.jmh.harness.CorpusRequest;
 import org.xacml4j.jmh.harness.PdpFixture;
 import org.xacml4j.v30.ResponseContext;
@@ -62,7 +64,23 @@ public class PdpDecideBenchmark
 	@Param({"all"})
 	public String request;
 
+	@Param({"false"})
+	public boolean targetIndex;
+
+	@Param({"0"})
+	public long pipLatencyMicros;
+
+	@Param({"serial"})
+	public String pipMode;
+
+	@Param({"off"})
+	public String pipCache;
+
+	@Param({"32"})
+	public int pipMaxInFlight;
+
 	private PdpFixture fixture;
+	private PipWorkload workload;
 	private List<CorpusRequest> selected = List.of();
 
 	@Setup(Level.Trial)
@@ -70,12 +88,24 @@ public class PdpDecideBenchmark
 		if(fixture != null){
 			return;
 		}
-		PdpFixture opened = PdpFixture.open(store, corpus);
+		PipWorkload configured = PipCorpus.isPip(corpus)
+				? PipWorkload.open(PipCorpus.count(corpus), pipLatencyMicros, pipMode, pipCache, pipMaxInFlight) : null;
+		PdpFixture opened;
+		try{
+			opened = configured == null ? PdpFixture.open(store, corpus, targetIndex)
+					: PdpFixture.open(store, corpus, configured.pip(), targetIndex);
+		}catch(Exception | Error failure){
+			closeOnFailure(configured, failure);
+			throw failure;
+		}
 		try{
 			selected = opened.requests(request);
+			if(configured != null) configured.verifyCache(opened);
 			fixture = opened;
+			workload = configured;
 		}catch(RuntimeException | Error failure){
 			closeOnFailure(opened, failure);
+			closeOnFailure(configured, failure);
 			throw failure;
 		}
 	}
@@ -101,6 +131,10 @@ public class PdpDecideBenchmark
 			PdpFixture opened = fixture;
 			fixture = null;
 			closeOnFailure(opened, failure);
+			if(workload != null){
+				closeOnFailure(workload, failure);
+				workload = null;
+			}
 			throw failure;
 		}
 	}
@@ -119,10 +153,12 @@ public class PdpDecideBenchmark
 	public void tearDown(){
 		if(fixture != null){
 			PdpFixture opened = fixture;
+			PipWorkload configured = workload;
 			fixture = null;
+			workload = null;
 			// A store or corpus that changed during the trial fails the run (review rv005); a
 			// close failure is added as suppressed and keeps the check's diagnostic (review rv009).
-			try(opened){
+			try(configured; opened){
 				opened.recheck();
 			}
 		}
@@ -131,6 +167,15 @@ public class PdpDecideBenchmark
 	private static void closeOnFailure(PdpFixture opened, Throwable failure){
 		try{
 			opened.close();
+		}catch(RuntimeException | Error closeFailure){
+			failure.addSuppressed(closeFailure);
+		}
+	}
+
+	private static void closeOnFailure(PipWorkload workload, Throwable failure){
+		if(workload == null) return;
+		try{
+			workload.close();
 		}catch(RuntimeException | Error closeFailure){
 			failure.addSuppressed(closeFailure);
 		}

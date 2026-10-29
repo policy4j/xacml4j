@@ -25,8 +25,8 @@ package org.xacml4j.v30;
 import java.util.Collection;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSetMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -49,10 +49,39 @@ public abstract class DecisionRuleResponse
 	protected DecisionRuleResponse(
 			Builder<?> b)
 	{
-		this.id = b.id;
-		this.attributes = ImmutableSetMultimap.copyOf(b.attributes);
-		this.hashCode = Objects.hashCode(id, attributes);
-		this.fulfillOn = b.fullFillOn;
+		this(b.id, b.fullFillOn, ImmutableSetMultimap.copyOf(b.attributes));
+	}
+
+	DecisionRuleResponse(String id, Effect fulfillOn, Collection<AttributeAssignment> assignments)
+	{
+		this(Preconditions.checkNotNull(id), fulfillOn, attributes(ImmutableList.copyOf(assignments)));
+	}
+
+	private DecisionRuleResponse(String id, Effect fulfillOn,
+			ImmutableSetMultimap<String, AttributeAssignment> attributes)
+	{
+		this.id = id;
+		this.attributes = attributes;
+		this.hashCode = 31 * (31 + java.util.Objects.hashCode(id)) + attributes.hashCode();
+		this.fulfillOn = fulfillOn;
+	}
+
+	private static ImmutableSetMultimap<String, AttributeAssignment> attributes(
+			ImmutableList<AttributeAssignment> assignments)
+	{
+		if(assignments.isEmpty()){
+			return ImmutableSetMultimap.of();
+		}
+		if(assignments.size() == 1){
+			AttributeAssignment assignment = assignments.get(0);
+			return ImmutableSetMultimap.of(assignment.getAttributeId(), assignment);
+		}
+		ImmutableSetMultimap.Builder<String, AttributeAssignment> attributes = ImmutableSetMultimap.builder();
+		for(int i = 0; i < assignments.size(); i++){
+			AttributeAssignment assignment = assignments.get(i);
+			attributes.put(assignment.getAttributeId(), assignment);
+		}
+		return attributes.build();
 	}
 
 	public final String getId(){

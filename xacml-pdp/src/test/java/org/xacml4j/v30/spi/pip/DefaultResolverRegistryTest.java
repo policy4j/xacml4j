@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,8 +75,20 @@ public class DefaultResolverRegistryTest
 				.attribute("testAttr1", XacmlTypes.INTEGER)
 				.build((c)-> ImmutableMap.of());
 
+		AttributeDesignatorKey key = AttributeDesignatorKey.builder()
+				.category(CategoryId.SUBJECT_ACCESS)
+				.attributeId("testAttr1")
+				.dataType(XacmlTypes.INTEGER)
+				.build();
+		Collection<AttributeResolverDescriptor> empty = r.getMatchingAttributeResolver(context, key);
 		r.addResolver(d1);
+		Collection<AttributeResolverDescriptor> first = r.getMatchingAttributeResolver(context, key);
 		r.addResolver(d2);
+		assertTrue(empty.isEmpty());
+		assertEquals(List.of(d1), List.copyOf(first));
+		assertEquals(List.of(d1, d2), List.copyOf(r.getMatchingAttributeResolver(context, key)));
+		first.clear();
+		assertEquals(List.of(d1, d2), List.copyOf(r.getMatchingAttributeResolver(context, key)));
 		Mockito.verifyNoInteractions(context);
 	}
 

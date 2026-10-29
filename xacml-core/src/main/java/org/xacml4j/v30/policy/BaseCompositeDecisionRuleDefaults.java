@@ -22,6 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.URI;
 import java.util.Map;
 
 import org.xacml4j.v30.PolicyElement;
@@ -30,6 +33,7 @@ import org.xacml4j.v30.XPathVersion;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 
 public abstract class BaseCompositeDecisionRuleDefaults
 		implements PolicyElement
@@ -68,6 +72,11 @@ public abstract class BaseCompositeDecisionRuleDefaults
 
 	public static abstract class Builder<T extends Builder<?>>
 	{
+		private static final ImmutableSet<Class<?>> IMMUTABLE_VALUE_TYPES = ImmutableSet.of(
+				XPathVersion.class, String.class, Boolean.class, Character.class,
+				Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class,
+				BigInteger.class, BigDecimal.class, URI.class);
+
 		private ImmutableMap.Builder<String, Object> values = ImmutableMap.builder();
 
 		public T xpathVersion(String xpathVersion){
@@ -79,7 +88,16 @@ public abstract class BaseCompositeDecisionRuleDefaults
 			return getThis();
 		}
 
+		/**
+		 * Adds an immutable default: {@link XPathVersion}, {@link String}, a boxed primitive,
+		 * {@link BigInteger}, {@link BigDecimal}, or {@link URI}. Subclasses are not accepted.
+		 *
+		 * @throws IllegalArgumentException if the value has any other type
+		 */
 		public T value(String name, Object v){
+			Preconditions.checkNotNull(v);
+			Preconditions.checkArgument(IMMUTABLE_VALUE_TYPES.contains(v.getClass()),
+					"Default value \"%s\" must be an immutable scalar", name);
 			this.values.put(name, v);
 			return getThis();
 		}

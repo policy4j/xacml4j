@@ -25,6 +25,13 @@ package org.xacml4j.v30.policy.function.impl;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.policy.FunctionReference;
+import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.Value;
+
 /**
  * Combines boolean operands that are evaluated one by one, from first to
  * last, and whose evaluation can fail (Indeterminate).
@@ -71,6 +78,67 @@ final class DecidingOperands
 		return firstDeciding(operands, value, false);
 	}
 
+	/**
+	 * The {@code or} combination of boolean expressions, evaluated by index with no
+	 * list, function, or iterator (design D39).
+	 *
+	 * @param context the evaluation context of the operands
+	 * @param operands boolean expressions in evaluation order
+	 * @return {@code true} at the first operand that is true; {@code false}
+	 * when every operand is false
+	 * @throws RuntimeException the first failure, when no operand is true
+	 * and at least one failed
+	 */
+	static boolean anyTrue(EvaluationContext context, Expression[] operands)
+	{
+		return firstDeciding(context, operands, true);
+	}
+
+	/**
+	 * The {@code and} combination of boolean expressions, as
+	 * {@link #anyTrue(EvaluationContext, Expression[])}.
+	 */
+	static boolean allTrue(EvaluationContext context, Expression[] operands)
+	{
+		return firstDeciding(context, operands, false);
+	}
+
+	static boolean anyTrue(EvaluationContext context, List<Expression> operands)
+	{
+		return firstDeciding(context, operands, true);
+	}
+
+	static boolean allTrue(EvaluationContext context, List<Expression> operands)
+	{
+		return firstDeciding(context, operands, false);
+	}
+
+	/**
+	 * The {@code or} combination of a two-argument predicate over one argument and each
+	 * value of a bag, in bag order, by index with no array, function, or iterator
+	 * (design D39).
+	 *
+	 * @param predicate the predicate
+	 * @param argument the argument that goes with each value
+	 * @param bag the bag
+	 * @param bagFirst whether the value of the bag is the first argument
+	 */
+	static boolean anyTrue(EvaluationContext context, FunctionReference predicate, Expression argument,
+			BagOfValues bag, boolean bagFirst)
+	{
+		return firstDeciding(context, predicate, argument, bag, bagFirst, true);
+	}
+
+	/**
+	 * The {@code and} combination of a two-argument predicate over one argument and each
+	 * value of a bag, as {@link #anyTrue(EvaluationContext, FunctionReference, Expression, BagOfValues, boolean)}.
+	 */
+	static boolean allTrue(EvaluationContext context, FunctionReference predicate, Expression argument,
+			BagOfValues bag, boolean bagFirst)
+	{
+		return firstDeciding(context, predicate, argument, bag, bagFirst, false);
+	}
+
 	private static <V> boolean firstDeciding(Iterable<? extends V> operands,
 			Predicate<? super V> value, boolean deciding)
 	{
@@ -92,31 +160,93 @@ final class DecidingOperands
 		return !deciding;
 	}
 
+	private static boolean firstDeciding(EvaluationContext context, Expression[] operands, boolean deciding)
+	{
+		RuntimeException failure = null;
+		for(int i = 0; i < operands.length; i++){
+			try{
+				if(isTrue(context, operands[i]) == deciding){
+					return deciding;
+				}
+			}catch(RuntimeException e){
+				if(failure == null){
+					failure = e;
+				}
+			}
+		}
+		if(failure != null){
+			throw failure;
+		}
+		return !deciding;
+	}
+
+	private static boolean firstDeciding(EvaluationContext context, List<Expression> operands, boolean deciding)
+	{
+		RuntimeException failure = null;
+		for(int i = 0; i < operands.size(); i++){
+			try{
+				if(isTrue(context, operands.get(i)) == deciding) return deciding;
+			}catch(RuntimeException e){
+				if(failure == null) failure = e;
+			}
+		}
+		if(failure != null) throw failure;
+		return !deciding;
+	}
+
+	private static boolean firstDeciding(EvaluationContext context, FunctionReference predicate, Expression argument,
+			BagOfValues bag, boolean bagFirst, boolean deciding)
+	{
+		RuntimeException failure = null;
+		for(int i = 0; i < bag.size(); i++){
+			Value<?> value = bag.valueAt(i);
+			try{
+				BooleanVal r = bagFirst?predicate.invoke(context, value, argument):predicate.invoke(context, argument, value);
+				if(r.get() == deciding){
+					return deciding;
+				}
+			}catch(RuntimeException e){
+				if(failure == null){
+					failure = e;
+				}
+			}
+		}
+		if(failure != null){
+			throw failure;
+		}
+		return !deciding;
+	}
+
+	private static boolean isTrue(EvaluationContext context, Expression operand)
+	{
+		return ((BooleanVal)operand.evaluate(context)).get();
+	}
+
 	/**
-	 * The {@code n-of} combination.
+	 * The {@code n-of} combination of boolean expressions, evaluated by index.
 	 * Evaluation stops with {@code true} when {@code n} operands are true.
 	 * It stops with {@code false} when {@code n} can not be reached even if
 	 * every failed operand and every operand not yet evaluated were true.
 	 *
+	 * @param context the evaluation context of the operands
 	 * @param n the number of operands that must be true
-	 * @param operands operands in evaluation order
-	 * @param value evaluates one operand; it can throw
+	 * @param operands boolean expressions in evaluation order
 	 * @return whether at least {@code n} operands are true
 	 * @throws RuntimeException the first failure, when the operands that
 	 * are true and the operands that failed are together at least {@code n}
 	 */
-	static <V> boolean atLeast(int n, List<? extends V> operands, Predicate<? super V> value)
+	static boolean atLeast(EvaluationContext context, int n, Expression[] operands)
 	{
 		int trueCount = 0;
 		int failureCount = 0;
 		RuntimeException failure = null;
-		for(int i = 0; i < operands.size(); i++){
-			int notEvaluated = operands.size() - i;
+		for(int i = 0; i < operands.length; i++){
+			int notEvaluated = operands.length - i;
 			if(trueCount + failureCount + notEvaluated < n){
 				return false;
 			}
 			try{
-				if(value.test(operands.get(i)) && ++trueCount == n){
+				if(isTrue(context, operands[i]) && ++trueCount == n){
 					return true;
 				}
 			}catch(RuntimeException e){

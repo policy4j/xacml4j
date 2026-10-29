@@ -24,10 +24,12 @@ package org.xacml4j.v30.types;
 
 import java.io.Externalizable;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.InvalidMarkException;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -52,7 +54,17 @@ public final class Binary implements Externalizable
 	}
 
 	private Binary(ByteBuffer b){
-		this.value = b.duplicate();
+		// Encoding and equality include the whole backing array, also for a slice.
+		this.value = b.hasArray()
+				? ByteBuffer.wrap(b.array().clone()).slice(b.arrayOffset(), b.capacity())
+				: ByteBuffer.allocate(b.capacity()).put(0, b.duplicate().clear(), 0, b.capacity());
+		this.value.limit(b.limit()).position(b.position());
+		try{
+			int mark = b.duplicate().reset().position();
+			this.value.position(mark).mark().position(b.position());
+		}catch(InvalidMarkException e){
+			// An unmarked source leaves the copy unmarked.
+		}
 	}
 
 	private Binary(byte[] b, int srcPos, int length){
@@ -199,6 +211,9 @@ public final class Binary implements Externalizable
 
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		if(value != null){
+			throw new InvalidObjectException("Binary value is already initialized");
+		}
 		byte[] bytes = new byte[in.available()];
 		in.readFully(bytes);
 		this.value = ByteBuffer.wrap(bytes);

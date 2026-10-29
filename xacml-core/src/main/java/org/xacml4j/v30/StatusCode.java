@@ -28,6 +28,8 @@ import com.google.common.base.Preconditions;
 
 public class StatusCode
 {
+	private static final StatusCode PROCESSING_ERROR = builder(StatusCodeId.STATUS_PROCESSING_ERROR).build();
+
 	private StatusCodeId value;
 	private StatusCode minorStatus;
 
@@ -41,7 +43,7 @@ public class StatusCode
 	}
 
 	public static StatusCode processingError(){
-		return builder(StatusCodeId.STATUS_PROCESSING_ERROR).build();
+		return PROCESSING_ERROR;
 	}
 
 	public static StatusCode missingAttributeError(){

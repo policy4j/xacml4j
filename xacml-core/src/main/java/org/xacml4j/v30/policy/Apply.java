@@ -37,7 +37,9 @@ import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
 import org.xacml4j.v30.types.DynamicType;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -70,6 +72,19 @@ public final class Apply implements Expression
 	 */
 	private final List<Expression> invocationArguments;
 
+	/**
+	 * Whether the function reads {@link #invocationArguments} directly, with no argument array
+	 * (design D39). Any other function gets its arguments on its variadic method.
+	 */
+	private final boolean listInvocation;
+
+	/**
+	 * The function with the literal first argument of a type-correct two-argument expression bound
+	 * at this call site (design D6 of add-regex-engine-spi), or null when the expression has no such
+	 * argument or the function binds none
+	 */
+	private final BoundCall bound;
+
 	/** The status message of an expression that is not type correct. It names the function only. */
 	static final String NOT_TYPE_CORRECT = "Function=\"%s\" is applied to arguments that do not fit it";
 
@@ -88,6 +103,10 @@ public final class Apply implements Expression
 		Optional<String> inside = typeErrorInside(arguments);
 		this.typeError = inside.isPresent()?inside:typeErrorOf(spec, arguments);
 		this.invocationArguments = typeError.isPresent()?arguments:withTypeAssertions(spec, arguments);
+		this.listInvocation = FunctionSpecBuilder.readsArgumentLists(spec);
+		this.bound = (typeError.isEmpty() && arguments.size() == 2 && arguments.get(0) instanceof Value<?> literal)
+				?spec.bind(literal).orElse(null)
+				:null;
 	}
 
 	/**
@@ -243,6 +262,11 @@ public final class Apply implements Expression
 		return arguments;
 	}
 
+	/** The function of this expression (design D36) */
+	FunctionSpec function(){
+		return spec;
+	}
+
 	/**
 	 * Evaluates given expression by invoking function
 	 * with a given parameters
@@ -258,10 +282,17 @@ public final class Apply implements Expression
 		if(typeError.isPresent()){
 			// The reason was logged when the expression was built. The
 			// status message names the function only.
-			throw new FunctionInvocationException(spec, NOT_TYPE_CORRECT, typeError.get());
+			FunctionInvocationException failure = new FunctionInvocationException(spec, NOT_TYPE_CORRECT, typeError.get());
+			RootEvaluationContext.observationOf(context).functionFailed(context, spec, failure);
+			throw failure;
 		}
 		try{
-			return spec.invoke(context, invocationArguments.toArray(new Expression[]{}));
+			if(bound != null){
+				return bound.invoke(context, invocationArguments.get(1));
+			}
+			return listInvocation
+					?spec.invokeWithList(context, invocationArguments)
+					:spec.invoke(context, invocationArguments.toArray(new Expression[0]));
 		}catch(EvaluationException e){
 			throw e;
 		}catch(Exception e){

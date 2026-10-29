@@ -264,7 +264,7 @@ public final class RFC822Name extends Value.SelfValue<RFC822Name> implements Ser
 
 	@Override
 	public int hashCode(){
-		return Objects.hash(fqName, getEvaluatesTo());
+		return 31 * (31 + Objects.hashCode(fqName)) + Objects.hashCode(getEvaluatesTo());
 	}
 
 	@Override

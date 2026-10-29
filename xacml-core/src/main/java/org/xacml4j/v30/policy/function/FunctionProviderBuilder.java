@@ -23,18 +23,25 @@ package org.xacml4j.v30.policy.function;
  */
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ServiceLoader;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.policy.function.impl.AggregatingFunctionProvider;
 import org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionProvider;
+import org.xacml4j.v30.policy.function.impl.RegExpFunctions;
 import org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions;
+import org.xacml4j.v30.policy.function.regex.RegexEngine;
+import org.xacml4j.v30.policy.function.regex.RegexLimits;
+import org.xacml4j.v30.policy.function.regex.RegexProfile;
 
 /**
  * A builder for function provider
@@ -47,7 +54,9 @@ public final class FunctionProviderBuilder {
 
 	private List<FunctionProvider> providers;
 	private FunctionInvocationFactory invocationFactory;
-	private FunctionProvider defaultFunctionsProvider;
+	private int defaultPosition = -1;
+	/** The regexp functions of the standard functions, when an engine was selected (design D3 of add-regex-engine-spi) */
+	private Optional<Supplier<RegExpFunctions.Matching>> regexp = Optional.empty();
 
 	FunctionProviderBuilder(
 			FunctionInvocationFactory invocationFactory) {
@@ -64,6 +73,8 @@ public final class FunctionProviderBuilder {
 	public FunctionProviderBuilder withDiscoveredFunctions() {
 		return discoveredProviders(ServiceLoader.load(FunctionProvider.class)
 		                                    .stream()
+		                                    .filter(p -> defaultPosition < 0 && regexp.isEmpty()
+				                                    || !XacmlDefaultFunctions.class.isAssignableFrom(p.type()))
 		                                    .map(p -> p.get())
 		                                    .collect(Collectors.toList()));
 
@@ -90,19 +101,77 @@ public final class FunctionProviderBuilder {
 	}
 
 	/**
-	 * Discovers abvailable {@link FunctionProvider} implementations
-	 * via {@link ServiceLoader#load(Class)}
+	 * Adds the standard XACML functions: a discovered {@link XacmlDefaultFunctions} already added,
+	 * or a new one, with the regexp functions of the engine selected by {@link #withRegexEngine}
+	 * when one was
 	 *
 	 * @return {@link FunctionProviderBuilder}
 	 */
 	public FunctionProviderBuilder withDefaultFunctions() {
-		if (defaultFunctionsProvider == null) {
-			defaultFunctionsProvider = providers.stream()
-					.filter(XacmlDefaultFunctions.class::isInstance)
-					.findFirst()
-					.orElseGet(() -> new XacmlDefaultFunctions(invocationFactory));
-			provider(defaultFunctionsProvider);
+		if (defaultPosition < 0) {
+			defaultPosition = providers.size();
 		}
+		return this;
+	}
+
+	/**
+	 * Selects the regular-expression engine and profile of the standard regexp-match functions by
+	 * name (change add-regex-engine-spi, design D3): the standard functions this builder adds, or
+	 * has added, evaluate the six {@code *-regexp-match} functions with that engine, with the
+	 * limits of the system properties of {@link RegExpFunctions}. Without a selection they use the
+	 * engine and profile of the properties {@link RegExpFunctions#ENGINE_PROPERTY} and
+	 * {@link RegExpFunctions#PROFILE_PROPERTY}, or {@code jdk} with {@code legacy}.
+	 *
+	 * @param engine the name of an engine on the class path, such as {@code jdk}
+	 * @param profile the name of a profile the engine offers, {@code legacy} or {@code xf}
+	 * @return {@link FunctionProviderBuilder}
+	 * @throws IllegalArgumentException when no engine or profile has the name, or the engine does
+	 * not offer the profile
+	 * @throws IllegalStateException when more than one engine provider has the name
+	 */
+	public FunctionProviderBuilder withRegexEngine(String engine, String profile) {
+		return withRegexFunctions(() -> RegExpFunctions.matching(engine, profile));
+	}
+
+	/**
+	 * Selects the regular-expression engine and profile of the standard regexp-match functions, with
+	 * the limits of the system properties of {@link RegExpFunctions} (design D3)
+	 *
+	 * @param engine an engine
+	 * @param profile a profile the engine offers
+	 * @return {@link FunctionProviderBuilder}
+	 * @throws IllegalArgumentException when the engine does not offer the profile
+	 */
+	public FunctionProviderBuilder withRegexEngine(RegexEngine engine, RegexProfile profile) {
+		return withRegexFunctions(() -> RegExpFunctions.matching(engine, profile));
+	}
+
+	/**
+	 * Selects the regular-expression engine, profile and limits of the standard regexp-match
+	 * functions (design D3); the limits also size the cache of compiled patterns (design D6)
+	 *
+	 * @param engine an engine
+	 * @param profile a profile the engine offers
+	 * @param limits the limits of the patterns and of their matches
+	 * @return {@link FunctionProviderBuilder}
+	 * @throws IllegalArgumentException when the engine does not offer the profile
+	 */
+	public FunctionProviderBuilder withRegexEngine(RegexEngine engine, RegexProfile profile, RegexLimits limits) {
+		return withRegexFunctions(() -> new RegExpFunctions.Matching(engine, profile, limits));
+	}
+
+	/** Standard functions added before are built again with the regexp functions */
+	private FunctionProviderBuilder withRegexFunctions(Supplier<RegExpFunctions.Matching> regexp) {
+		this.regexp = Optional.of(regexp);
+		int existingPosition = -1;
+		for (int i = 0; i < providers.size(); i++) {
+			if (providers.get(i) instanceof XacmlDefaultFunctions) {
+				existingPosition = i;
+				break;
+			}
+		}
+		boolean hadDefaultFunctions = providers.removeIf(XacmlDefaultFunctions.class::isInstance);
+		if (hadDefaultFunctions && defaultPosition < 0) defaultPosition = existingPosition;
 		return this;
 	}
 
@@ -116,13 +185,16 @@ public final class FunctionProviderBuilder {
 	 */
 	public FunctionProviderBuilder withDiscoveredFunctions(ClassLoader classLoader) {
 		return discoveredProviders(ServiceLoader.load(FunctionProvider.class, classLoader).stream()
+		                                    .filter(p -> defaultPosition < 0 && regexp.isEmpty()
+				                                    || !XacmlDefaultFunctions.class.isAssignableFrom(p.type()))
 		                                    .map(p -> p.get())
 		                                    .collect(Collectors.toList()));
 	}
 
 	private FunctionProviderBuilder discoveredProviders(Collection<FunctionProvider> discovered) {
 		for (FunctionProvider provider : discovered) {
-			if (provider instanceof XacmlDefaultFunctions && defaultFunctionsProvider != null) {
+			// The standard functions of this builder, or those with the selected regex engine, take precedence
+			if (provider instanceof XacmlDefaultFunctions && (defaultPosition >= 0 || regexp.isPresent())) {
 				continue;
 			}
 			provider(provider);
@@ -202,6 +274,18 @@ public final class FunctionProviderBuilder {
 	 * @return {@link FunctionProvider} with all functions
 	 */
 	public FunctionProvider build() {
-		return new AggregatingFunctionProvider(providers);
+		List<FunctionProvider> selected = new ArrayList<>(providers);
+		if (defaultPosition < 0) {
+			regexp.ifPresent(Supplier::get);
+		}
+		if (defaultPosition >= 0) {
+			FunctionProvider standard = regexp.<FunctionProvider>map(r -> new XacmlDefaultFunctions(invocationFactory, r.get()))
+					.or(() -> selected.stream().filter(XacmlDefaultFunctions.class::isInstance).findFirst())
+					.orElseGet(() -> new XacmlDefaultFunctions(invocationFactory));
+			if (selected.stream().noneMatch(p -> p == standard)) {
+				selected.add(Math.min(defaultPosition, selected.size()), standard);
+			}
+		}
+		return new AggregatingFunctionProvider(selected);
 	}
 }

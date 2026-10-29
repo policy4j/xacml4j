@@ -180,6 +180,8 @@ public class PolicyTest
 		// rv019: inject at Target.match so BaseDecisionRule.isMatch must catch the exception.
 		Target throwingTarget = spy(target);
 		Policy policyWithThrowingTarget = builder.target(throwingTarget).build();
+		// Building the policy reads its target once, to tell whether it can write responses (design D36)
+		clearInvocations(throwingTarget);
 		EvaluationContext policyContext = policyWithThrowingTarget.createContext(context);
 		doThrow(new NullPointerException()).when(throwingTarget).match(policyContext);
 		InOrder order = inOrder(throwingTarget, targetExpression, conditionExpression, combingingAlg, permitAdviceAttributeExp, denyAdviceAttributeExp, denyObligationAttributeExp, permitObligationAttributeExp, referenceResolver, handler);

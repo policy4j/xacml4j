@@ -141,10 +141,12 @@ public class MatchTest
 		order.verify(context).resolve(ref.getReferenceKey());
 		order.verify(context).getCurrentRule();
 		order.verify(context).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());
+		order.verify(context).setEvaluationStatus(statusCapture.capture());
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(1)).resolve(ref.getReferenceKey());
 		verify(context, times(1)).getCurrentRule();
 		verify(context, times(1)).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());
+		verify(context, times(1)).setEvaluationStatus(statusCapture.capture());
 		order.verifyNoMoreInteractions();
 		verifyNoMoreInteractions(context, invocation);
 		assertSame(rule, ruleCapture.getValue());
@@ -190,6 +192,7 @@ public class MatchTest
 		verify(context).resolve(key);
 		verify(context).getCurrentRule();
 		verify(context).setEvaluationStatus(eq(rule), any(Status.class));
+		verify(context).setEvaluationStatus(any(Status.class));
 		verifyNoMoreInteractions(context, invocation);
 	}
 

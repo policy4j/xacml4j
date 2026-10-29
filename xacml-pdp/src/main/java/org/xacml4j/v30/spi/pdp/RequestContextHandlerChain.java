@@ -33,6 +33,8 @@ import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.pdp.PolicyDecisionPointContext;
 import org.xacml4j.v30.RequestContext;
+import org.xacml4j.v30.pdp.request.AbstractRequestContextHandler;
+import org.xacml4j.v30.pdp.request.MultipleResourcesHandler;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -70,6 +72,16 @@ public class RequestContextHandlerChain
 	public RequestContextHandlerChain(
 			RequestContextHandler ...handlers){
 		this(Arrays.asList(handlers));
+	}
+
+	/** Whether a request without multiple-decision features can bypass this chain. Custom handlers stay in the chain. */
+	public final boolean canHandleSingleRequestDirectly(){
+		if(getClass() == MultipleResourcesHandler.class){
+			return !((AbstractRequestContextHandler)handlers.get(handlers.size() - 1)).hasNext();
+		}
+		return getClass() == RequestContextHandlerChain.class && (handlers.isEmpty()
+				|| handlers.size() == 1 && handlers.get(0).getClass() == MultipleResourcesHandler.class
+				&& ((MultipleResourcesHandler)handlers.get(0)).canHandleSingleRequestDirectly());
 	}
 
 	@Override

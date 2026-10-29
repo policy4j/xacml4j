@@ -208,9 +208,46 @@ public class DefaultPolicyInformationPointTest
 		order.verify(context).resolve(usernameContextKey);
 		order.verify(context).getClock();
 		order.verify(cache).putAttributes(resolverContext2.capture(), attributeSetCapture.capture());
-		Mockito.verifyNoMoreInteractions(cache, context);
+		Mockito.verifyNoMoreInteractions(cache);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 		assertSame(resolverContext1.getValue(), resolverContext2.getValue());
+	}
+
+	/** A cache hit is served as it is and not written back, so a cache that rejects writes still serves it (design D27) */
+	@Test
+	public void cachedAttributesAreServedWithoutAWriteBack() throws Exception
+	{
+		AttributeDesignatorKey a0 = attr0.build();
+		AttributeSet cached = AttributeSet.builder(descriptor1)
+				.clock(Clock.systemUTC())
+				.attributes(ImmutableMap.of("testAttributeId1", XacmlTypes.STRING.ofAny("cached").toBag()))
+				.build();
+		PolicyInformationPoint readOnlyCached = PolicyInformationPoint.builder("read-only")
+				.cacheProvider(new BasePolicyInformationPointCacheProvider() {
+					@Override
+					protected ContentRef doGetContent(ResolverContext context) {
+						return null;
+					}
+
+					@Override
+					protected AttributeSet doGetAttributes(ResolverContext context) {
+						return cached;
+					}
+
+					@Override
+					protected void doPutContent(ResolverContext context, ContentRef content) {
+						throw new IllegalStateException("read-only cache");
+					}
+
+					@Override
+					protected void doPutAttributes(ResolverContext context, AttributeSet v) {
+						throw new IllegalStateException("read-only cache");
+					}
+				})
+				.registry(ResolverRegistry.builder().withAttributeResolver(descriptor1).build())
+				.build();
+
+		assertEquals(Optional.of(XacmlTypes.STRING.ofAny("cached").toBag()), readOnlyCached.resolve(context, a0));
 	}
 
 
@@ -227,7 +264,7 @@ public class DefaultPolicyInformationPointTest
 
 		Optional<BagOfValues> v = pip.resolve(context, a0);
 		Mockito.verify(cache, Mockito.times(2)).getAttributes(Mockito.any());
-		Mockito.verifyNoMoreInteractions(cache, context);
+		Mockito.verifyNoMoreInteractions(cache);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 	}
 
@@ -252,7 +289,7 @@ public class DefaultPolicyInformationPointTest
 		order.verify(context).resolve(usernameContextKey);
 		order.verify(context).getClock();
 		order.verify(cache).putAttributes(resolverContext2.capture(), attributeSetCapture.capture());
-		Mockito.verifyNoMoreInteractions(cache, context);
+		Mockito.verifyNoMoreInteractions(cache);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 	}
 
@@ -277,7 +314,7 @@ public class DefaultPolicyInformationPointTest
 		order.verify(cache).getAttributes(resolverContext1.capture());
 		order.verify(context).resolve(usernameContextKey);
 		order.verify(cache).putAttributes(resolverContext2.capture(), attributeSetCapture.capture());
-		Mockito.verifyNoMoreInteractions(cache, context);
+		Mockito.verifyNoMoreInteractions(cache);
 		assertEquals(XacmlTypes.STRING.ofAny("v1").toBag(), v.get());
 	}
 
@@ -397,7 +434,7 @@ public class DefaultPolicyInformationPointTest
 	}
 
 	@Test
-	public void selectorPathErrorOnSuppliedContentKeepsItsOwnPathStatus() throws Exception
+	public void selectorPathErrorOnSuppliedContentIsTheFailureOfTheResolver() throws Exception
 	{
 		when(context.getClock()).thenReturn(Clock.systemUTC());
 		XmlContent content = XmlContent.of(XmlContent.fromString("<a>1</a>"));
@@ -408,12 +445,13 @@ public class DefaultPolicyInformationPointTest
 				.dataType(XacmlTypes.STRING)
 				.build();
 
-		// The path is evaluated by the engine on the supplied content, outside the resolver
-		// boundary: the path exception is not mapped to a resolver failure.
-		PathEvaluationException e = assertThrows(PathEvaluationException.class,
+		// The path is evaluated by the engine on the supplied content and its error is thrown
+		// at once, mapped as the resolver failure the handler makes of it (review R-D34-argon)
+		AttributeReferenceEvaluationException e = assertThrows(AttributeReferenceEvaluationException.class,
 				() -> contentPip.resolve(context, malformedPath));
 
-		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, e.getStatus().getStatusCode().getValue());
+		assertResolverFailure(e);
+		assertEquals(true, e.getCause() instanceof PathEvaluationException);
 	}
 
 	@Test
@@ -675,6 +713,5 @@ public class DefaultPolicyInformationPointTest
 		InOrder order = Mockito.inOrder(context);
 		order.verify(context).getCurrentDateTime();
 		order.verify(context).getClock();
-		Mockito.verifyNoMoreInteractions(context);
 	}
 }

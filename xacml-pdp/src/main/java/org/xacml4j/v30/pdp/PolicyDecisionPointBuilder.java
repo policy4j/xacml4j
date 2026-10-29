@@ -31,8 +31,10 @@ import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.pdp.request.MultipleResourcesHandler;
+import org.xacml4j.v30.policy.PreparedPolicySets;
 import org.xacml4j.v30.spi.audit.NoAuditPolicyDecisionPointAuditor;
 import org.xacml4j.v30.spi.audit.PolicyDecisionAuditor;
+import org.xacml4j.v30.spi.observe.DecisionObserver;
 import org.xacml4j.v30.spi.pdp.NoCachePolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.PolicyDecisionCache;
 import org.xacml4j.v30.spi.pdp.RequestContextHandler;
@@ -56,6 +58,8 @@ public final class PolicyDecisionPointBuilder
 	private CompositeDecisionRule rootPolicy;
 	private List<RequestContextHandler> handlers;
 	private MetricRegistry metricRegistry;
+	private DecisionObserver<?> observer;
+	private boolean targetIndex;
 
 	private PolicyDecisionPointBuilder(String id){
 		this();
@@ -69,6 +73,7 @@ public final class PolicyDecisionPointBuilder
 		this.decisionCache = new NoCachePolicyDecisionCache();
 		this.metricRegistry = new MetricRegistry();
 		this.handlers = new LinkedList<>();
+		this.observer = DecisionObserver.none();
 	}
 
 	public static PolicyDecisionPointBuilder builder(String id){
@@ -124,6 +129,12 @@ public final class PolicyDecisionPointBuilder
 		return this;
 	}
 
+	/** Enables the restricted target index for this decision point. */
+	public PolicyDecisionPointBuilder targetIndex(){
+		this.targetIndex = true;
+		return this;
+	}
+
 	public PolicyDecisionPointBuilder decisionAuditor(
 			PolicyDecisionAuditor auditor){
 		Preconditions.checkNotNull(auditor);
@@ -135,6 +146,19 @@ public final class PolicyDecisionPointBuilder
 			XPathProvider xpath){
 		Preconditions.checkNotNull(xpath);
 		this.xpathProvider = xpath;
+		return this;
+	}
+
+	/**
+	 * Sets the observer of the decisions of the decision point (design D34)
+	 *
+	 * @param observer a decision observer; {@link DecisionObserver#none()} by default
+	 * @return this builder
+	 */
+	public PolicyDecisionPointBuilder observer(
+			DecisionObserver<?> observer){
+		Preconditions.checkNotNull(observer);
+		this.observer = observer;
 		return this;
 	}
 
@@ -156,6 +180,8 @@ public final class PolicyDecisionPointBuilder
 						decisionCache,
 						xpathProvider,
 						pip,
-						new RequestContextHandlerChain(handlers)));
+						new RequestContextHandlerChain(handlers),
+						PreparedPolicySets.create(targetIndex)),
+				observer);
 	}
 }

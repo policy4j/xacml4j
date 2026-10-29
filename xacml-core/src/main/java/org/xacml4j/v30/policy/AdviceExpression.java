@@ -22,10 +22,9 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import java.util.Collection;
+import java.util.Optional;
 
 import org.xacml4j.v30.Advice;
-import org.xacml4j.v30.AttributeAssignment;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -36,12 +35,21 @@ import org.xacml4j.v30.SyntaxException;
 public class AdviceExpression extends BaseDecisionRuleResponseExpression
 {
 	/**
+	 * The one advice of an expression of exactly this class whose assignments are constant (cycle
+	 * AN); a subclass evaluates its assignments on every call (review R-AN)
+	 */
+	private final Optional<Advice> constant;
+
+	/**
 	 * Constructs advice expression with a given identifier
 	 * @param b an advice expression builder
 	 * @exception SyntaxException
 	 */
 	private AdviceExpression(Builder b){
 		super(b);
+		this.constant = getClass() == AdviceExpression.class
+				? constantAssignments().map(attributes -> Advice.of(id, effect, attributes))
+				: Optional.empty();
 	}
 
 	/**
@@ -55,11 +63,7 @@ public class AdviceExpression extends BaseDecisionRuleResponseExpression
 	 */
 	public Advice evaluate(EvaluationContext context) throws EvaluationException
 	{
-		Collection<AttributeAssignment> attributes = evaluateAttributeAssignments(context);
-		return Advice
-				.builder(getId(), getEffect())
-				.attributes(attributes)
-				.build();
+		return constant.isPresent() ? constant.get() : Advice.of(getId(), getEffect(), evaluateAttributeAssignments(context));
 	}
 
 	public static Builder builder(String id, Effect appliesTo){

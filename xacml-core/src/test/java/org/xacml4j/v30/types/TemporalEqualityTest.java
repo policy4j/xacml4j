@@ -26,11 +26,81 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import org.junit.jupiter.api.Test;
+import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.policy.function.impl.NonNumericComparisonFunctions;
 
 public class TemporalEqualityTest
 {
+	@Test
+	public void dateAndDateTimeKeepInstantHashAndOrdering()
+	{
+		List<OffsetDateTime> inputs = List.of(
+				OffsetDateTime.of(LocalDate.MIN, LocalTime.MIDNIGHT, ZoneOffset.MAX),
+				OffsetDateTime.parse("1969-12-31T23:59:59.000000001Z"),
+				OffsetDateTime.parse("1970-01-01T00:00:00Z"),
+				OffsetDateTime.parse("1970-01-01T00:00:00.999999999Z"),
+				OffsetDateTime.parse("2002-10-10T00:00:00+14:00"),
+				OffsetDateTime.parse("2002-10-09T00:00:00-10:00"),
+				OffsetDateTime.parse("2002-10-10T01:00:00+01:00"),
+				OffsetDateTime.parse("2002-10-10T00:00:00Z"),
+				OffsetDateTime.of(LocalDate.MAX, LocalTime.MAX, ZoneOffset.MIN));
+		for (OffsetDateTime input : inputs) {
+			ISO8601Date date = ISO8601Date.of(input);
+			Instant midnight = input.toLocalDate().atStartOfDay().toInstant(input.getOffset());
+			ISO8601DateTime dateTime = ISO8601DateTime.of(input);
+			Instant instant = input.toInstant();
+			assertEquals(Objects.hash(midnight, date.getEvaluatesTo()), date.hashCode());
+			assertEquals(Objects.hash(instant, dateTime.getEvaluatesTo()), dateTime.hashCode());
+			for (OffsetDateTime other : inputs) {
+				Instant otherMidnight = other.toLocalDate().atStartOfDay().toInstant(other.getOffset());
+				ISO8601Date otherDate = ISO8601Date.of(other);
+				ISO8601DateTime otherDateTime = ISO8601DateTime.of(other);
+				assertEquals(midnight.equals(otherMidnight), date.equals(otherDate));
+				assertEquals(midnight.compareTo(otherMidnight), date.compareTo(otherDate));
+				assertEquals(instant.equals(other.toInstant()), dateTime.equals(otherDateTime));
+				assertEquals(instant.compareTo(other.toInstant()), dateTime.compareTo(otherDateTime));
+			}
+		}
+	}
+
+	@Test
+	public void timeKeepsBoxedNanosHash()
+	{
+		for (String input : List.of("00:00:00", "00:00:00Z", "00:00:00+14:00",
+				"12:34:56.987654321-12:00", "23:59:59.999999999Z")) {
+			ISO8601Time time = ISO8601Time.of(input);
+			assertEquals(Objects.hash(time.toUtcReferenceNanos(ZoneOffset.UTC), time.getEvaluatesTo()),
+					time.hashCode());
+		}
+	}
+
+	@Test
+	public void largeDateBagGroupsEqualInstantsInFirstOccurrenceOrder()
+	{
+		ISO8601Date first = ISO8601Date.of("2002-10-10+14:00");
+		ISO8601Date equivalent = ISO8601Date.of("2002-10-09-10:00");
+		BagOfValues.Builder builder = XacmlTypes.DATE.bagBuilder().attribute(first);
+		List<ISO8601Date> expected = new ArrayList<>(List.of(first, equivalent));
+		for (int day = 1; day <= 10; day++) {
+			ISO8601Date date = ISO8601Date.of(LocalDate.of(2003, 1, day));
+			builder.attribute(date);
+			expected.add(date);
+		}
+		BagOfValues bag = builder.attribute(equivalent).build();
+		assertEquals(expected, bag.stream().toList());
+		assertEquals(2L, bag.stream().filter(equivalent::equals).count());
+	}
+
 	@Test
 	public void dateEqualityAndFormattingPreserveTimezone()
 	{

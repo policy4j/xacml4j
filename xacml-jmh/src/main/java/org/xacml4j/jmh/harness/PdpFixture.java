@@ -34,8 +34,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.jmh.corpus.PipCorpus;
+import org.xacml4j.jmh.corpus.PipWorkload;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.PolicyDecisionPoint;
+import org.xacml4j.v30.ResponseContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.pdp.PolicyDecisionPointBuilder;
@@ -71,9 +74,12 @@ public final class PdpFixture implements AutoCloseable
 	private final PolicyRepository repository;
 	private final PolicyDecisionPoint pdp;
 	private final List<LookupQuery> lookups;
+	private final Optional<PipWorkload> ownedPip;
+	private final boolean pipCorpus;
 
 	private PdpFixture(PolicyStore store, Optional<String> argument, PolicyCorpus corpus, List<CompositeDecisionRule> policies,
-			PolicyRepository repository, PolicyDecisionPoint pdp, List<LookupQuery> lookups){
+			PolicyRepository repository, PolicyDecisionPoint pdp, List<LookupQuery> lookups,
+			Optional<PipWorkload> ownedPip, boolean pipCorpus){
 		this.store = store;
 		this.argument = argument;
 		this.corpus = corpus;
@@ -81,6 +87,8 @@ public final class PdpFixture implements AutoCloseable
 		this.repository = repository;
 		this.pdp = pdp;
 		this.lookups = lookups;
+		this.ownedPip = ownedPip;
+		this.pipCorpus = pipCorpus;
 	}
 
 	/**
@@ -91,6 +99,11 @@ public final class PdpFixture implements AutoCloseable
 	 */
 	public static PdpFixture open(String store, String corpus) throws IOException, SyntaxException {
 		return open(store, PolicyCorpusProvider.corpus(corpus));
+	}
+
+	/** Opens a checked fixture with optional target indexing. */
+	public static PdpFixture open(String store, String corpus, boolean targetIndex) throws IOException, SyntaxException {
+		return open(store, PolicyCorpusProvider.corpus(corpus), targetIndex);
 	}
 
 	/**
@@ -105,11 +118,57 @@ public final class PdpFixture implements AutoCloseable
 	 * @throws IllegalStateException if a check fails; the message names every failure
 	 */
 	public static PdpFixture open(String store, PolicyCorpus corpus) throws IOException, SyntaxException {
-		String[] nameAndArgument = Services.split(store);
-		return open(PolicyStore.named(nameAndArgument[0]), Optional.ofNullable(nameAndArgument[1]), corpus);
+		return open(store, corpus, false);
 	}
 
-	private static PdpFixture open(PolicyStore store, Optional<String> argument, PolicyCorpus corpus) throws IOException, SyntaxException {
+	private static PdpFixture open(String store, PolicyCorpus corpus, boolean targetIndex) throws IOException, SyntaxException {
+		if(PipCorpus.isPip(corpus.name())){
+			PipWorkload workload = PipWorkload.open(PipCorpus.count(corpus.name()), 0, "serial", "off", 32);
+			try{
+				return open(store, corpus, workload.pip(), Optional.of(workload), true, targetIndex);
+			}catch(IOException | RuntimeException | Error failure){
+				try{ workload.close(); }catch(RuntimeException closeFailure){ failure.addSuppressed(closeFailure); }
+				throw failure;
+			}
+		}
+		return open(store, corpus, PolicyInformationPoint.builder("jmh").withDefaultRegistry().noCacheProvider().build(),
+				Optional.empty(), false, targetIndex);
+	}
+
+	/**
+	 * Opens a checked fixture with a caller-supplied information point. The caller owns the PIP.
+	 *
+	 * @param store the store parameter
+	 * @param corpus the corpus parameter
+	 * @param pip the information point
+	 * @return an open, checked fixture
+	 */
+	public static PdpFixture open(String store, String corpus, PolicyInformationPoint pip) throws IOException, SyntaxException {
+		return open(store, PolicyCorpusProvider.corpus(corpus), pip);
+	}
+
+	/** Opens a checked fixture with a caller-owned PIP and optional target indexing. */
+	public static PdpFixture open(String store, String corpus, PolicyInformationPoint pip, boolean targetIndex)
+			throws IOException, SyntaxException {
+		PolicyCorpus parsed = PolicyCorpusProvider.corpus(corpus);
+		return open(store, parsed, java.util.Objects.requireNonNull(pip, "pip"),
+				Optional.empty(), PipCorpus.isPip(parsed.name()), targetIndex);
+	}
+
+	/** Opens a checked corpus with a caller-owned information point. */
+	public static PdpFixture open(String store, PolicyCorpus corpus, PolicyInformationPoint pip) throws IOException, SyntaxException {
+		return open(store, corpus, java.util.Objects.requireNonNull(pip, "pip"),
+				Optional.empty(), PipCorpus.isPip(corpus.name()), false);
+	}
+
+	private static PdpFixture open(String store, PolicyCorpus corpus, PolicyInformationPoint pip,
+			Optional<PipWorkload> ownedPip, boolean pipCorpus, boolean targetIndex) throws IOException, SyntaxException {
+		String[] nameAndArgument = Services.split(store);
+		return open(PolicyStore.named(nameAndArgument[0]), Optional.ofNullable(nameAndArgument[1]), corpus, pip, ownedPip, pipCorpus, targetIndex);
+	}
+
+	private static PdpFixture open(PolicyStore store, Optional<String> argument, PolicyCorpus corpus,
+			PolicyInformationPoint pip, Optional<PipWorkload> ownedPip, boolean pipCorpus, boolean targetIndex) throws IOException, SyntaxException {
 		List<CompositeDecisionRule> policies = parse(corpus.policies());
 		CompositeDecisionRule parsedRoot = policies.get(corpus.rootIndex());
 		PolicyRepository repository = openRepository(store, argument, corpus);
@@ -121,13 +180,15 @@ public final class PdpFixture implements AutoCloseable
 			if(root == null){
 				throw new IllegalStateException(header(store, corpus) + " did not return the root " + Rules.describe(parsedRoot));
 			}
-			pdp = PolicyDecisionPointBuilder.builder("jmh")
+			PolicyDecisionPointBuilder builder = PolicyDecisionPointBuilder.builder("jmh")
 					.policyRepository(repository)
-					.pip(PolicyInformationPoint.builder("jmh").withDefaultRegistry().noCacheProvider().build())
+					.pip(pip)
 					.defaultRequestHandlers()
-					.rootPolicy(root)
-					.build();
-			PdpFixture fixture = new PdpFixture(store, argument, corpus, policies, repository, pdp, LookupQuery.of(policies));
+					.rootPolicy(root);
+			if(targetIndex) builder.targetIndex();
+			pdp = builder.build();
+			PdpFixture fixture = new PdpFixture(store, argument, corpus, policies, repository, pdp,
+					LookupQuery.of(policies), ownedPip, pipCorpus);
 			fixture.check();
 			opened = true;
 			return fixture;
@@ -155,7 +216,10 @@ public final class PdpFixture implements AutoCloseable
 	}
 
 	/**
-	 * Parses policy documents with the policy unmarshaller of their media type.
+	 * Parses policy documents with the policy unmarshaller of their media type, over the functions
+	 * and algorithms of the fixture's repositories: the regular-expression engine the properties
+	 * {@code org.xacml4j.regex.engine} and {@code org.xacml4j.regex.profile} select evaluates the
+	 * regexp-match functions of the parsed policies (change add-regex-engine-spi, design D3).
 	 *
 	 * @param sources the documents
 	 * @return the parsed rules, in the same order
@@ -163,7 +227,7 @@ public final class PdpFixture implements AutoCloseable
 	public static List<CompositeDecisionRule> parse(List<PolicySource> sources) throws IOException, SyntaxException {
 		List<CompositeDecisionRule> rules = new ArrayList<>(sources.size());
 		for(PolicySource source : sources){
-			rules.add(Marshalling.policies(source.mediaType()).unmarshal(source.open()));
+			rules.add(Marshalling.policies(source.mediaType(), FUNCTIONS, ALGORITHMS).unmarshal(source.open()));
 		}
 		return List.copyOf(rules);
 	}
@@ -340,6 +404,15 @@ public final class PdpFixture implements AutoCloseable
 				failure.addSuppressed(e);
 			}
 		}
+		try{
+			ownedPip.ifPresent(PipWorkload::close);
+		}catch(RuntimeException e){
+			if(failure == null){
+				failure = new IllegalStateException("Cannot close the PIP of " + header(store, corpus), e);
+			}else{
+				failure.addSuppressed(e);
+			}
+		}
 		if(failure != null){
 			throw failure;
 		}
@@ -377,13 +450,15 @@ public final class PdpFixture implements AutoCloseable
 
 	private Optional<String> check(CorpusRequest request){
 		try{
-			Collection<Result> results = pdp.decide(request.request()).getResults();
+			ResponseContext response = pdp.decide(request.request());
+			if(pipCorpus){
+				return PipCorpus.check(corpus, request, response).map(message -> "request " + request.id() + ": " + message);
+			}
+			Collection<Result> results = response.getResults();
 			if(results.size() != 1){
 				return Optional.of("request " + request.id() + ": expected one result, got " + results.size());
 			}
-			Result result = results.iterator().next();
-			return request.matches(result.getDecision()) ? Optional.empty()
-					: Optional.of("request " + request.id() + ": expected " + request.expected() + ", got " + result.getDecision());
+			return request.mismatch(results.iterator().next()).map(message -> "request " + request.id() + ": " + message);
 		}catch(RuntimeException e){
 			return Optional.of("request " + request.id() + ": expected " + request.expected() + ", threw " + e);
 		}

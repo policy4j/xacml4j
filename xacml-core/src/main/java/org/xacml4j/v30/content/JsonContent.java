@@ -23,6 +23,7 @@ package org.xacml4j.v30.content;
  */
 
 import java.io.InputStream;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,12 +31,17 @@ import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.AttributeReferenceEvaluationException;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.TypeToString;
 import org.xacml4j.v30.types.ValueType;
+import org.xacml4j.v30.types.XacmlTypes;
 import org.xacml4j.v30.PathEvaluationException;
 
 import com.jayway.jsonpath.Configuration;
@@ -81,9 +87,19 @@ public final class JsonContent
                         Option.DEFAULT_PATH_LEAF_TO_NULL))
                 .parse(jsonDocument);
         this.valueListContext = JsonPath
-                .using(config.addOptions(
-                        Option.ALWAYS_RETURN_LIST))
+                .using(valueConfiguration(config))
                 .parse(jsonDocument);
+    }
+
+    /**
+     * The given configuration reading values as lists, without {@link Option#AS_PATH_LIST},
+     * which would read the paths of the values instead
+     */
+    private static Configuration valueConfiguration(Configuration config){
+        EnumSet<Option> options = EnumSet.of(Option.ALWAYS_RETURN_LIST);
+        options.addAll(config.getOptions());
+        options.remove(Option.AS_PATH_LIST);
+        return config.setOptions(options.toArray(new Option[0]));
     }
 
 
@@ -123,27 +139,27 @@ public final class JsonContent
 
     /**
      * Resolves the JSONPath of a given selector as {@link XmlContent} resolves an XPath:
-     * a path without a value resolves to nothing, and each scalar value converts from its
-     * string form to the selector data type. An object, an array, a value that does not
-     * convert, and an invalid path are processing errors. A JSON {@code null} is no value.
+     * a path without a value resolves to nothing, whatever the data type, and each selected
+     * scalar value converts from its string form to the selector data type. An object, an
+     * array, a value that does not convert, and an invalid path are processing errors.
+     * A JSON {@code null} is no value.
+     * With a context selector, the path runs on the one value that the context selector
+     * selects, which is its root {@code $}.
      */
     @Override
     public Optional<BagOfValues> resolve(
 		    AttributeSelectorKey selectorKey,
 		    Supplier<Entity> entitySupplier) {
         String path = selectorKey.getPath();
-        if(selectorKey.getContextSelectorId() != null){
-            // A context selector is not defined for JSON content yet (policy4j-izog): fail, never select from the root
-            throw PathEvaluationException.invalidJsonPathContextSelectorId(path, selectorKey.getContextSelectorId());
-        }
         try{
+            DocumentContext document = (selectorKey.getContextSelectorId() == null)?valueListContext:
+                    JsonPath.using(valueListContext.configuration())
+                            .parse(contextValue(selectorKey, entitySupplier.get()));
             ValueType type = selectorKey.getDataType();
-            TypeToString toString = TypeToString.forType(type)
-                    .orElseThrow(()->new IllegalArgumentException(
-                            String.format("Unsupported XACML type=\"%s\"", type.getTypeId())));
+            Optional<TypeToString> toString = TypeToString.forType(type);
             JsonProvider json = valueListContext.configuration().jsonProvider();
             BagOfValues.Builder bag = type.bagBuilder();
-            for(Object node : json.toIterable(valueListContext.read(path))){
+            for(Object node : json.toIterable(read(document, path))){
                 Object value = json.unwrap(node);
                 if(value == null){
                     continue;
@@ -152,14 +168,56 @@ public final class JsonContent
                     throw new IllegalArgumentException(
                             String.format("Unsupported JSON value=\"%s\" path=\"%s\"", value, path));
                 }
-                bag.attribute(toString.fromString(String.valueOf(value)));
+                bag.attribute(toString
+                        .orElseThrow(()->new IllegalArgumentException(
+                                String.format("Unsupported XACML type=\"%s\"", type.getTypeId())))
+                        .fromString(String.valueOf(value)));
             }
             BagOfValues values = bag.build();
             return values.isEmpty()?Optional.empty():Optional.of(values);
-        }catch (PathNotFoundException e){
-            return Optional.empty();
+        }catch (PathEvaluationException e){
+            throw e;
         }catch (Exception e){
             throw PathEvaluationException.invalidJsonPath(path, e);
+        }
+    }
+
+    /**
+     * Gets the value that the context selector of a given selector selects, as {@link XmlContent}
+     * gets the context node of an XPath (XACML 3.0 section 7.3.7). The context selector is the
+     * first {@link PathType#JPATH} path value of the entity attribute with the
+     * {@code ContextSelectorId}, and its category must be the selector category. Path values of
+     * both path types have the XPath expression data type. A JSONPath that selects no value or
+     * more than one value is a syntax error.
+     */
+    private Object contextValue(AttributeSelectorKey selectorKey, Entity entity){
+        String id = selectorKey.getContextSelectorId();
+        Path contextPath = Optional.ofNullable(entity)
+                .flatMap(e->e.<Path>findValue(id, XacmlTypes.XPATH, null,
+                        v->((Path)v).getPathType() == PathType.JPATH))
+                .orElseThrow(()->PathEvaluationException.invalidJsonPathContextSelectorId(selectorKey.getPath(), id));
+        CategoryId category = contextPath.getCategory().orElse(null);
+        if(!Objects.equals(category, selectorKey.getCategory())){
+            throw AttributeReferenceEvaluationException.forSelector(selectorKey,
+                    ()->String.format("and ContextSelectorId.Category=\"%s\"", category));
+        }
+        JsonProvider json = valueListContext.configuration().jsonProvider();
+        Object values = read(valueListContext, contextPath.getPath());
+        if(json.length(values) != 1){
+            throw PathEvaluationException.invalidJsonPath(
+                    selectorKey.getPath(), Status.syntaxError().build(), null);
+        }
+        return json.getArrayIndex(values, 0);
+    }
+
+    /**
+     * Reads a given path as a JSON array: a path without a value reads as an empty array
+     */
+    private static Object read(DocumentContext document, String path){
+        try{
+            return document.read(path);
+        }catch (PathNotFoundException e){
+            return document.configuration().jsonProvider().createArray();
         }
     }
 

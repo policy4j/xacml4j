@@ -22,8 +22,6 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
-import java.util.Optional;
-
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Status;
 
@@ -43,7 +41,8 @@ public class FunctionInvocationException extends EvaluationException
 	public FunctionInvocationException(
 			FunctionSpec spec,
 			Throwable cause) {
-		this(spec, cause, null);
+		super(statusFor(cause, null, null), cause);
+		this.spec = spec;
 	}
 
 	/**
@@ -67,9 +66,11 @@ public class FunctionInvocationException extends EvaluationException
 				break;
 			}
 		}
+		if(message == null){
+			return Status.processingError().error(cause).build();
+		}
 		return Status.processingError()
-				.message(Optional.ofNullable(message)
-				                 .map(v -> String.format(v, params)).orElse(null))
+				.message(String.format(message, params))
 				.error(cause)
 				.build();
 	}

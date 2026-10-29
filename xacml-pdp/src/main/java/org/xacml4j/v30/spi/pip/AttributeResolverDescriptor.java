@@ -22,14 +22,22 @@ package org.xacml4j.v30.spi.pip;
  * #L%
  */
 
+import java.time.Clock;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
 import org.slf4j.Logger;
@@ -39,11 +47,14 @@ import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
+import org.xacml4j.v30.Content;
+import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.types.ValueType;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 
@@ -55,20 +66,27 @@ public final class AttributeResolverDescriptor
 	private String issuer;
 	private Map<String, AttributeDescriptor> attributesById;
 	private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
+	private Map<String, Function<ResolverContext, BagOfValues>> attributeResolvers;
 	private Function<ResolverContext, Optional<AttributeSet>> resolver;
 
-	private AttributeResolverDescriptor(Builder b, Function<ResolverContext,
-			Map<String, BagOfValues>> resolverFunction){
+	private AttributeResolverDescriptor(Builder b){
 		super(b);
 		this.issuer = b.issuer;
 		this.attributesByKey = ImmutableMap.copyOf(b.attributesByKey);
 		this.attributesById = ImmutableMap.copyOf(b.attributesById);
-		this.resolver = decorate(Objects.requireNonNull(resolverFunction, "resolverFunction"));
+		this.attributeResolvers = ImmutableMap.copyOf(b.attributeResolvers);
+		this.resolver = this::resolveOnCallingThread;
 		for(AttributeReferenceKey k : attributesByKey.keySet()){
 			if(getContextKeyRefs().contains(k)){
 				throw SyntaxException.invalidResolverReferenceSelfRef(getId(), "key={}", k);
 			}
 		}
+	}
+
+	private AttributeResolverDescriptor(Builder b, Function<ResolverContext,
+			Map<String, BagOfValues>> resolverFunction){
+		this(b);
+		this.resolver = decorate(Objects.requireNonNull(resolverFunction, "resolverFunction"));
 	}
 
 	private Function<ResolverContext, Optional<AttributeSet>> decorate(Function<ResolverContext,
@@ -128,6 +146,91 @@ public final class AttributeResolverDescriptor
 	@Override
 	public Function<ResolverContext, Optional<AttributeSet>> getResolverFunction() {
 		return resolver;
+	}
+
+	/**
+	 * Tells whether this resolver has a function per attribute, which the information point
+	 * calls in parallel (design D26)
+	 */
+	boolean isParallel(){
+		return !attributeResolvers.isEmpty();
+	}
+
+	/**
+	 * Calls the attribute functions of this parallel resolver through the given runner and
+	 * combines their bags into one set (design D26). An attribute whose function gave no bag is
+	 * not in the set, as for a resolver that leaves an attribute out of its map. The failure of a
+	 * function, or a function that did not end in time, is kept for its attribute only.
+	 *
+	 * @param context the context of this call, prepared here for the functions
+	 * @param runner the runner of the functions
+	 * @return the set, or nothing when no function gave a bag and none failed
+	 */
+	Optional<AttributeSet> resolve(ResolverContext context, StructuredResolverRunner runner){
+		ResolverContext prepared = new PreparedContext(context);
+		List<Callable<BagOfValues>> tasks = new ArrayList<>(attributeResolvers.size());
+		for(Function<ResolverContext, BagOfValues> f : attributeResolvers.values()){
+			tasks.add(()->f.apply(prepared));
+		}
+		List<Future<BagOfValues>> outcomes = runner.runAll(tasks);
+		if(givesNothing(outcomes)){
+			return Optional.empty();
+		}
+		AttributeSet.Builder set = AttributeSet.builder(this).clock(prepared.getClock());
+		int i = 0;
+		for(String attributeId : attributeResolvers.keySet()){
+			Future<BagOfValues> outcome = outcomes.get(i++);
+			try{
+				switch(outcome.state()){
+					case SUCCESS -> {
+						BagOfValues v = outcome.resultNow();
+						if(v != null){
+							set.attribute(attributeId, v);
+						}
+					}
+					case FAILED -> set.failure(attributeId, outcome.exceptionNow());
+					default -> set.failure(attributeId, new TimeoutException(String.format(
+							"Attribute=\"%s\" of resolver=\"%s\" is not resolved in time", attributeId, getId())));
+				}
+			}catch(IllegalArgumentException e){
+				// A bag of another type than the attribute's
+				set.failure(attributeId, e);
+			}
+		}
+		return Optional.of(set.build());
+	}
+
+	/**
+	 * Tells whether every attribute function ended without a bag, which is no value from this
+	 * resolver, as an empty map is from a synchronous one
+	 */
+	private static boolean givesNothing(List<Future<BagOfValues>> outcomes){
+		for(Future<BagOfValues> outcome : outcomes){
+			if(outcome.state() != Future.State.SUCCESS || outcome.resultNow() != null){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * The resolver function of a parallel resolver: its attribute functions run on the calling
+	 * thread, and the failure of any of them is the failure of the call, as for any resolver
+	 */
+	private Optional<AttributeSet> resolveOnCallingThread(ResolverContext context){
+		Optional<AttributeSet> set = resolve(context, StructuredResolverRunner.DIRECT);
+		Optional<Throwable> failure = set.flatMap(AttributeSet::firstFailure);
+		if(failure.isPresent()){
+			Throwable t = failure.get();
+			if(t instanceof EvaluationException e){
+				throw e;
+			}
+			if(t instanceof Error e){
+				throw e;
+			}
+			throw new EvaluationException(context.getEvaluationContext(), t);
+		}
+		return set;
 	}
 
 	/**
@@ -200,6 +303,78 @@ public final class AttributeResolverDescriptor
 		return attributesById.containsKey(attributeId);
 	}
 
+	/**
+	 * The context that the attribute functions of a parallel resolver read. It is prepared on the
+	 * thread that resolves the attribute: a function, which may run on another thread, reads the
+	 * context keys resolved there and resolves nothing itself, so the evaluation context is not
+	 * given to it (designs D26, D27).
+	 */
+	private static final class PreparedContext implements ResolverContext
+	{
+		private final ResolverContext context;
+		private final Map<AttributeReferenceKey, BagOfValues> keys;
+		private final Clock clock;
+
+		PreparedContext(ResolverContext context){
+			this.context = context;
+			this.keys = context.getResolvedKeys();
+			this.clock = context.getClock();
+		}
+
+		@Override
+		public Optional<Content.Type> getContentType() {
+			return context.getContentType();
+		}
+
+		@Override
+		public ZonedDateTime getCurrentDateTime() {
+			return ZonedDateTime.now(clock);
+		}
+
+		@Override
+		public Clock getClock() {
+			return clock;
+		}
+
+		@Override
+		public ResolverDescriptor getDescriptor() {
+			return context.getDescriptor();
+		}
+
+		@Override
+		public ResolverCacheKey getCacheKey() {
+			// From the prepared values in their order, without a builder (cycle AL)
+			return ResolverCacheKey.of(getDescriptor().getId(), keys.values());
+		}
+
+		@Override
+		public Optional<BagOfValues> resolveContextRef(AttributeReferenceKey key) {
+			return Optional.ofNullable(keys.get(key));
+		}
+
+		@Override
+		public Map<AttributeReferenceKey, BagOfValues> resolveAllContextRefs() {
+			return keys;
+		}
+
+		@Override
+		public boolean isCacheable() {
+			return context.isCacheable();
+		}
+
+		@Override
+		public Map<AttributeReferenceKey, BagOfValues> getResolvedKeys() {
+			return keys;
+		}
+
+		@Override
+		public EvaluationContext getEvaluationContext() {
+			throw new IllegalStateException(String.format(
+					"The attribute functions of resolver=\"%s\" read their context keys, not the evaluation context",
+					getDescriptor().getId()));
+		}
+	}
+
 	public final static Builder builder(String id, String name, CategoryId category){
 		return builder(id, name, null, category);
 	}
@@ -215,6 +390,7 @@ public final class AttributeResolverDescriptor
 
 		private Map<String, AttributeDescriptor> attributesById;
 		private Map<AttributeDesignatorKey, AttributeDescriptor> attributesByKey;
+		private Map<String, Function<ResolverContext, BagOfValues>> attributeResolvers;
 		private String issuer;
 
 		private Builder(
@@ -226,6 +402,7 @@ public final class AttributeResolverDescriptor
 			this.issuer = Strings.emptyToNull(issuer);
 			this.attributesById = new HashMap<>();
 			this.attributesByKey = new HashMap<>();
+			this.attributeResolvers = new LinkedHashMap<>();
 		}
 
 		public Builder  attribute(
@@ -278,13 +455,54 @@ public final class AttributeResolverDescriptor
 			                 (aliases == null)? Collections.emptyList(): Arrays.asList(aliases));
 		}
 
+		/**
+		 * Adds an attribute with the function that resolves it, for a resolver built with
+		 * {@link #buildParallel()} (design D26). A function that returns {@code null} gives no
+		 * value for its attribute, so the next resolver is asked; an empty bag is a value. The
+		 * function may run on another thread: it reads the context keys of the resolver from its
+		 * context and does not get the evaluation context.
+		 *
+		 * @param attributeId an attribute identifier
+		 * @param dataType the attribute data type
+		 * @param resolver the function that resolves the attribute
+		 * @return this builder
+		 */
+		public Builder attribute(
+				String attributeId,
+				ValueType dataType,
+				Function<ResolverContext, BagOfValues> resolver){
+			Objects.requireNonNull(resolver, "resolver");
+			attribute(attributeId, dataType, Collections.emptyList());
+			attributeResolvers.put(attributeId, resolver);
+			return this;
+		}
+
 		@Override
 		protected Builder getThis() {
 			return this;
 		}
 
 		public AttributeResolverDescriptor build(Function<ResolverContext, Map<String, BagOfValues>> resolverFunction){
+			Preconditions.checkState(attributeResolvers.isEmpty(),
+			                         "Resolver=\"%s\" has attribute functions: build it with buildParallel()", id);
 			return new AttributeResolverDescriptor(this, resolverFunction);
+		}
+
+		/**
+		 * Builds a resolver whose attribute functions the information point calls in parallel,
+		 * within its time limit and its limit of concurrent resolutions (design D26). Every
+		 * attribute must have its function.
+		 *
+		 * @return the resolver descriptor
+		 */
+		public AttributeResolverDescriptor buildParallel(){
+			Preconditions.checkState(!attributeResolvers.isEmpty(),
+			                         "Resolver=\"%s\" has no attribute function", id);
+			for(AttributeDescriptor a : attributesById.values()){
+				Preconditions.checkState(attributeResolvers.containsKey(a.getAttributeId()),
+				                         "Attribute=\"%s\" of resolver=\"%s\" has no function", a.getAttributeId(), id);
+			}
+			return new AttributeResolverDescriptor(this);
 		}
 	}
 }

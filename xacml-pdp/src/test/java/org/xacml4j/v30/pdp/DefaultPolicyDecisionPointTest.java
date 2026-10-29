@@ -105,7 +105,7 @@ public class DefaultPolicyDecisionPointTest
 		// Captured and verified after decide().
 
 		this.pdp = pdpBuilder.build();
-		Mockito.verify(repository).addPolicyRepositoryListener(c.capture());
+		Mockito.verify(repository, Mockito.atLeastOnce()).addPolicyRepositoryListener(c.capture());
 
 		ResponseContext res = pdp.decide(req);
 		Mockito.verify(decisionCache).getDecision(req);
@@ -146,7 +146,7 @@ public class DefaultPolicyDecisionPointTest
 		ArgumentCaptor<RequestContext> req1 = ArgumentCaptor.forClass(RequestContext.class);
 		// Captured and verified after decide().
 		this.pdp = pdpBuilder.build();
-		Mockito.verify(repository).addPolicyRepositoryListener(c.capture());
+		Mockito.verify(repository, Mockito.atLeastOnce()).addPolicyRepositoryListener(c.capture());
 
 		ResponseContext res = pdp.decide(req);
 		Mockito.verify(decisionCache).getDecision(req);

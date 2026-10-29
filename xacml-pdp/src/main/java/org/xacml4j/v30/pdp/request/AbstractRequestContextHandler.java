@@ -23,7 +23,6 @@ package org.xacml4j.v30.pdp.request;
  */
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -75,8 +74,9 @@ public abstract class AbstractRequestContextHandler
 			PolicyDecisionPointContext context)
 	{
 		RequestContextHandler h = next.get();
+		// An immutable list, which the response builder keeps without a copy (cycle AH)
 		return  (h == null)?
-				Collections.singleton(context.requestDecision(request)):
+				ImmutableList.of(context.requestDecision(request)):
 					h.handle(request, context);
 	}
 

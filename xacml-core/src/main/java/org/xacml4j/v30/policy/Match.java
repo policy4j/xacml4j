@@ -41,6 +41,8 @@ public class Match implements PolicyElement, Matchable
 	private final Value value;
 	private final AttributeReference attributeRef;
 	private final FunctionSpec predicate;
+	// the predicate with the value bound at this call site, or null when it binds none (design D6 of add-regex-engine-spi)
+	private final BoundCall bound;
 
 	/**
 	 * Constructs match.
@@ -72,6 +74,7 @@ public class Match implements PolicyElement, Matchable
 		this.value = b.attr;
 		this.predicate = b.predicate;
 		this.attributeRef = b.attrRef;
+		this.bound = predicate.bind(value).orElse(null);
 	}
 
 	public static Builder builder(){
@@ -104,6 +107,11 @@ public class Match implements PolicyElement, Matchable
 		return attributeRef;
 	}
 
+	/** The match function (design D36) */
+	FunctionSpec predicate(){
+		return predicate;
+	}
+
 	@Override
 	public MatchResult match(EvaluationContext context)
 	{
@@ -119,16 +127,20 @@ public class Match implements PolicyElement, Matchable
 					return MatchResult.NOMATCH;
 				}
 			}
-			for(Value v : attributes){
-				Value match = predicate.invoke(context, value, v);
+			for(int i = 0; i < attributes.size(); i++){
+				Value match = (bound != null) ? bound.invoke(context, attributes.valueAt(i))
+						: predicate.invoke(context, value, attributes.valueAt(i));
 				if((Boolean)match.get()){
 					return MatchResult.MATCH;
 				}
 			}
 			return MatchResult.NOMATCH;
 		}catch(EvaluationException e){
-			context.setEvaluationStatus(context.getCurrentRule(),
-			                            e.getStatus());
+			var rule = context.getCurrentRule();
+			context.setEvaluationStatus(rule, e.getStatus());
+			if(rule != null){
+				context.setEvaluationStatus(e.getStatus());
+			}
 			return MatchResult.INDETERMINATE;
 		}
 	}

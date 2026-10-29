@@ -25,7 +25,6 @@ package org.xacml4j.v30.types;
 import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import com.google.common.base.Objects;
 import java.util.GregorianCalendar;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -176,6 +175,7 @@ public final class ISO8601Time
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(toUtcReferenceNanos(ZoneOffset.UTC), getEvaluatesTo());
+        return 31 * (31 + Long.hashCode(toUtcReferenceNanos(ZoneOffset.UTC)))
+                + getEvaluatesTo().hashCode();
     }
 }

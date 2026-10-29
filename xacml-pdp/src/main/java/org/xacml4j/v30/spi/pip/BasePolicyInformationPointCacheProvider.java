@@ -23,6 +23,7 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -53,9 +54,7 @@ public abstract class BasePolicyInformationPointCacheProvider
 				"ContentRef descriptor Id \"%s\" " +
 						"must match resolver context descriptor Id \"%s\"",
 				content.getDescriptor().getId(), context.getDescriptor().getId());
-		ContentResolverDescriptor d = (ContentResolverDescriptor) context.getDescriptor();
-		if (d.isCacheable() ||
-				!isExpired(content, context)) {
+		if (context.getDescriptor().isCacheable() && !isExpired(content, context)) {
 			doPutContent(context, content);
 		}
 	}
@@ -71,8 +70,7 @@ public abstract class BasePolicyInformationPointCacheProvider
 		Preconditions.checkArgument(context.getDescriptor().getId().equals(v.getDescriptor().getId()),
 				"Attribute set descriptor Id \"%s\" must match resolver context descriptor Id \"%s\"",
 				v.getDescriptor().getId(), context.getDescriptor().getId());
-		if (context.getDescriptor().isCacheable() ||
-				isExpired(v, context)) {
+		if (context.getDescriptor().isCacheable() && !isExpired(v, context)) {
 			doPutAttributes(context, v);
 		}
 	}
@@ -86,24 +84,17 @@ public abstract class BasePolicyInformationPointCacheProvider
 	protected abstract void doPutAttributes(ResolverContext context, AttributeSet v);
 
 	private static boolean isExpired(AttributeSet v, ResolverContext context) {
-		Duration expiresIn = Duration.between(context.getClock().instant(), v.getTimestamp());
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("AttributeSet=\"{}\" expiresIn=\"{}\" in cache", v, expiresIn);
-		}
-		return expiresIn
-				.compareTo(
-						v.getDescriptor().getPreferredCacheTTL()) > 0;
+		return isExpired(v, v.getTimestamp(), v.getDescriptor().getPreferredCacheTTL(), context);
 	}
 
 	private static boolean isExpired(ContentRef v, ResolverContext context) {
+		return isExpired(v, v.getTimestamp(), v.getDescriptor().getPreferredCacheTTL(), context);
+	}
 
-		Duration expiresIn = Duration.between(context.getClock().instant(),
-		                                      v.getTimestamp());
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("ContentRef=\"{}\" expiresIn=\"{}\" in cache", v, expiresIn);
-		}
-		return expiresIn
-				.compareTo(
-						v.getDescriptor().getPreferredCacheTTL()) > 0;
+	/** Whether the value is older than the time to live of its resolver: its age runs from its timestamp to now (review R-FABLE-sol) */
+	private static boolean isExpired(Object value, Instant timestamp, Duration timeToLive, ResolverContext context) {
+		Duration age = Duration.between(timestamp, context.getClock().instant());
+		LOG.debug("Cached value=\"{}\" age=\"{}\" timeToLive=\"{}\"", value, age, timeToLive);
+		return age.compareTo(timeToLive) > 0;
 	}
 }

@@ -498,6 +498,8 @@ public class RuleTest
 		// rv019: inject at Target.match so BaseDecisionRule.isMatch must catch the exception.
 		Target throwingTarget = spy(target);
 		Rule ruleWithThrowingTarget = builder.id(rulePermit.getId()).withEffect(Effect.PERMIT).target(throwingTarget).build();
+		// Building the rule reads its target once, to tell whether it can write responses (design D36)
+		clearInvocations(throwingTarget);
 		Status.Builder b =  Status.missingAttribute(AttributeDesignatorKey.builder("id")
 		                                              .category(CategoryId.ACTION)
 		                                              .dataType(XacmlTypes.INTEGER)

@@ -33,10 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.AttributeAssignment;
+import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CoreException;
 import org.xacml4j.v30.Decision;
@@ -46,6 +49,8 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.types.IntegerVal;
+import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -57,6 +62,54 @@ public class ObligationExpressionTest
 	@BeforeEach
 	public void init(){
 		this.context = mock(EvaluationContext.class);
+	}
+
+	/** An expression of literal values gives one obligation, with its assignments in order, for every decision (cycle AN) */
+	@Test
+	public void literalAssignmentsGiveTheSameObligationForEveryDecision() throws CoreException
+	{
+		ObligationExpression exp = ObligationExpression.builder("test", Effect.DENY)
+				.attribute("first", XacmlTypes.STRING.ofAny("a"))
+				.attribute("bag", XacmlTypes.INTEGER.bagOf(IntegerVal.of(1), IntegerVal.of(2)))
+				.attribute("last", XacmlTypes.STRING.ofAny("z"))
+				.build();
+
+		Obligation obligation = exp.evaluate(context);
+		assertEquals(obligation, exp.evaluate(mock(EvaluationContext.class)));
+		assertEquals(Effect.DENY, obligation.getFulfillOn());
+		assertEquals(List.of("first", "bag", "bag", "last"), ids(obligation));
+		assertEquals(List.<Object>of(XacmlTypes.STRING.ofAny("a"), IntegerVal.of(1), IntegerVal.of(2), XacmlTypes.STRING.ofAny("z")),
+				values(obligation));
+		verifyNoMoreInteractions(context);
+	}
+
+	/** Literal and evaluated assignments keep their content and their order */
+	@Test
+	public void literalAndEvaluatedAssignmentsKeepTheirContentAndOrder() throws CoreException
+	{
+		AttributeDesignatorKey roles = AttributeDesignatorKey.builder("role").category(CategoryId.SUBJECT_ACCESS)
+				.dataType(XacmlTypes.STRING).build();
+		when(context.resolve(roles)).thenReturn(Optional.of(XacmlTypes.STRING.bagOf(StringVal.of("admin"), StringVal.of("audit"), StringVal.of("admin"))));
+		ObligationExpression exp = ObligationExpression.builder("test", Effect.PERMIT)
+				.attribute("first", XacmlTypes.STRING.ofAny("a"))
+				.attribute("roles", AttributeDesignator.builder().key(roles).mustBePresent(true).build())
+				.attribute("last", XacmlTypes.STRING.ofAny("z"))
+				.attribute("roles", StringVal.of("audit"))
+				.attribute("first", StringVal.of("b"))
+				.build();
+
+		Obligation obligation = exp.evaluate(context);
+		assertEquals(List.of("first", "first", "roles", "roles", "last"), ids(obligation));
+		assertEquals(List.<Object>of(StringVal.of("a"), StringVal.of("b"), StringVal.of("admin"), StringVal.of("audit"), StringVal.of("z")),
+				values(obligation));
+	}
+
+	private static List<String> ids(Obligation obligation){
+		return obligation.getAttributes().stream().map(AttributeAssignment::getAttributeId).toList();
+	}
+
+	private static List<Object> values(Obligation obligation){
+		return obligation.getAttributes().stream().map(a -> (Object)a.getAttribute()).toList();
 	}
 
 	@Test

@@ -92,7 +92,7 @@ public class DefaultPolicyReferenceResolverTest
 		r.policySetRemoved(ps1v1);
 		p = r.resolve(ref);
 		assertSame(ps1v1, p);
-		verify(repository, times(1)).getPolicySet("id", new VersionMatch("1.0.0"), null, null);
+		verify(repository, times(2)).getPolicySet("id", new VersionMatch("1.0.0"), null, null);
 		verifyNoMoreInteractions(repository);
 	}
 }

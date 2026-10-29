@@ -85,6 +85,18 @@ JAVA_HOME="$(jenv prefix 25)" rtk mvn -o -q -pl xacml-jmh -am -DskipTests packag
 - `-prof gc` gives allocation per operation (`gc.alloc.rate.norm`, bytes in
   the benchmark JVM); a result without it says "not reported", never 0.
   Report it for value-class work.
+- Compact object headers (JEP 519; `-XX:+UseCompactObjectHeaders`, a product
+  option of JDK 25, off by default) shrink every object header from 12 to
+  8 bytes. A one-fork smoke of `PdpDecideBenchmark` on Oracle GraalVM 25.0.4
+  with C2 (cycle AK of change optimize-pdp-evaluation, 2026-10-27) allocated
+  10 to 12.5% less per decision with the flag: rsa2008 4,299 to 3,769 B/op,
+  synthetic:1000 `all` 51,163 to 44,787 and `first-deny` 920 to 824, `pip:8`
+  `independent` 10,105 to 8,937; the time per operation did not change
+  beyond its error. The pairs of D12 keep the default headers, so their
+  history stays comparable; measure the flag as a pair of its own, and pass
+  the fork's heap arguments with it, because a command-line `-jvmArgsAppend`
+  replaces the benchmark's own:
+  `-jvmArgsAppend "-Xms2g -Xmx2g -XX:+UseG1GC -XX:+UseCompactObjectHeaders"`.
 
 ## Reporting
 

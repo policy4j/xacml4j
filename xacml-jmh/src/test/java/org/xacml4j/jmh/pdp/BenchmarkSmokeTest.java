@@ -43,6 +43,7 @@ import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 import org.openjdk.jmh.runner.options.VerboseMode;
+import org.xacml4j.jmh.regex.RegexFunctionBenchmark;
 
 /**
  * Spec requirement "Benchmark set": every benchmark method with every
@@ -104,6 +105,58 @@ public class BenchmarkSmokeTest
 		assertThat(allocation.getScore()).isGreaterThan(0.0);
 	}
 
+	/**
+	 * The rules corpus is not a default parameter, so that the default runs stay comparable; it
+	 * runs every case with and without the target index.
+	 */
+	@Test
+	public void rulesCorpusRunsWithAndWithoutTheTargetIndex() throws Exception
+	{
+		ChainedOptionsBuilder options = shortRun()
+				.include("^" + Pattern.quote(PdpDecideBenchmark.class.getName() + ".decide") + "$")
+				.param("store", "in-memory")
+				.param("corpus", "rules:8")
+				.param("request", "all")
+				.param("targetIndex", "false", "true");
+
+		Collection<RunResult> results = new Runner(options.build()).run();
+
+		assertThat(results).hasSize(2);
+		for(RunResult result : results){
+			assertWithMessage("score of %s", key(result.getParams()))
+					.that(Double.isFinite(result.getPrimaryResult().getScore())).isTrue();
+		}
+	}
+
+	/**
+	 * The regex function benchmark of change add-regex-engine-spi has parameters of its own:
+	 * {@code compile} runs for every pattern set, the other methods for every set and input length.
+	 */
+	@Test
+	public void regexFunctionBenchmarkRunsEveryMethodWithEveryDefaultParameterSet() throws Exception
+	{
+		String type = RegexFunctionBenchmark.class.getName();
+
+		Collection<RunResult> results = new Runner(shortRun().include("^" + Pattern.quote(type) + "\\.").build()).run();
+
+		SortedSet<String> actual = new TreeSet<>();
+		for(RunResult result : results){
+			String key = key(result.getParams());
+			assertWithMessage("score of %s", key).that(Double.isFinite(result.getPrimaryResult().getScore())).isTrue();
+			actual.add(key);
+		}
+		SortedSet<String> expected = new TreeSet<>();
+		for(String set : List.of("conformance", "adversarial")){
+			expected.add(type + ".compile patterns=" + set);
+			for(String method : List.of("match", "call", "callMiss")){
+				for(String length : List.of("16", "256", "4096")){
+					expected.add(type + "." + method + " inputLength=" + length + " patterns=" + set);
+				}
+			}
+		}
+		assertThat(actual).containsExactlyElementsIn(expected);
+	}
+
 	/** One 100 ms iteration in this JVM, no warmup, failing on the first benchmark error. */
 	private static ChainedOptionsBuilder shortRun()
 	{
@@ -125,8 +178,10 @@ public class BenchmarkSmokeTest
 				for(String store : STORES){
 					for(String corpus : CORPORA){
 						String params = "corpus=" + corpus
-								+ (type.getKey().equals(PdpDecideBenchmark.class.getName()) ? " request=all" : "")
-								+ " store=" + store;
+								+ (type.getKey().equals(PdpDecideBenchmark.class.getName())
+										? " pipCache=off pipLatencyMicros=0 pipMaxInFlight=32 pipMode=serial request=all" : "")
+								+ " store=" + store
+								+ (type.getKey().equals(PdpDecideBenchmark.class.getName()) ? " targetIndex=false" : "");
 						keys.add(type.getKey() + "." + method + " " + params);
 					}
 				}

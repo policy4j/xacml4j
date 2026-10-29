@@ -25,7 +25,6 @@ package org.xacml4j.v30.types;
 import java.util.List;
 import java.util.Optional;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.net.InternetDomainName;
@@ -162,7 +161,7 @@ public final class DNSName extends Value.SelfValue<DNSName>
 
 	@Override
 	public int hashCode(){
-		return Objects.hashCode(name, portRange);
+		return 31 * (31 + java.util.Objects.hashCode(name)) + java.util.Objects.hashCode(portRange);
 	}
 
 	@Override

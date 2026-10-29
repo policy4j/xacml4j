@@ -117,6 +117,38 @@ public class DecisionFixedCostPdpTest
 	}
 
 	@Test
+	public void resolvedAttributesKeepGroupedDuplicatesAndFloatingPointValues() throws Exception
+	{
+		AttributeDesignatorKey key = AttributeDesignatorKey.builder()
+				.category(CategoryId.SUBJECT_ACCESS).attributeId("urn:xacml4j:test:measurements")
+				.issuer("measurements").dataType(XacmlTypes.DOUBLE).build();
+		BagOfValues values = XacmlTypes.DOUBLE.bagBuilder()
+				.value(2.0, -0.0, Double.NaN, 0.0, 2.0, -0.0, Double.NaN).build();
+		CompositeDecisionRule root = Mockito.mock(CompositeDecisionRule.class);
+		when(root.createContext(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
+		when(root.evaluate(Mockito.any())).thenAnswer(invocation -> {
+			EvaluationContext context = invocation.getArgument(0);
+			context.resolve(key);
+			return Decision.PERMIT;
+		});
+		PolicyInformationPoint pip = Mockito.mock(PolicyInformationPoint.class);
+		when(pip.resolve(Mockito.any(), Mockito.eq(key))).thenReturn(Optional.of(values));
+
+		Result result = pdp(root, pip).decide(RequestContext.builder().build()).getResults().iterator().next();
+
+		assertThat(result.getDecision()).isEqualTo(Decision.PERMIT);
+		assertThat(result.getResolvedAttributes()).hasSize(1);
+		Category resolved = result.getResolvedAttributes().iterator().next();
+		assertThat(resolved.getCategoryId()).isEqualTo(CategoryId.SUBJECT_ACCESS);
+		assertThat(resolved.getEntity().attributes()).hasSize(1);
+		Attribute attribute = resolved.getEntity().attributes().iterator().next();
+		assertThat(attribute.getAttributeId()).isEqualTo(key.getAttributeId());
+		assertThat(attribute.getIssuer()).isEqualTo("measurements");
+		assertThat(attribute.values().stream().map(v -> v.get()).toList())
+				.containsExactly(2.0, 2.0, -0.0, -0.0, Double.NaN, Double.NaN, 0.0).inOrder();
+	}
+
+	@Test
 	public void decisionsOnSeveralThreadsKeepTheirOwnState() throws Exception
 	{
 		CompositeDecisionRule root = Mockito.mock(CompositeDecisionRule.class);

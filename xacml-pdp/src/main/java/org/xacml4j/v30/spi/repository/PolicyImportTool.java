@@ -46,6 +46,11 @@ import com.google.common.base.Supplier;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Closeables;
 
+/**
+ * Imports policies into a repository. A policy is unmarshalled with the functions and combining
+ * algorithms of the repository (change add-regex-engine-spi, design D3), so the regular-expression
+ * engine the repository selected evaluates the regexp-match functions of every policy it imports.
+ */
 public final class PolicyImportTool {
 	private final Map<org.xacml4j.v30.marshal.MediaType, MarshallingProvider> unmarshallers;
 	private final PolicyRepository repository;
@@ -73,7 +78,7 @@ public final class PolicyImportTool {
 			final Supplier<InputStream> policySource)
 			throws SyntaxException, IOException {
 		Optional<Unmarshaller<CompositeDecisionRule>> u = Optional.ofNullable(unmarshallers.get(mediaType))
-				                                  .flatMap(p->p.newPolicyUnmarshaller());
+				.flatMap(p -> p.newPolicyUnmarshaller(repository.getFunctionProvider(), repository.getAlgorithmProvider()));
 		if(u.isPresent()){
 			CompositeDecisionRule r = u.get().unmarshal(policySource.get());
 			repository.add(r);

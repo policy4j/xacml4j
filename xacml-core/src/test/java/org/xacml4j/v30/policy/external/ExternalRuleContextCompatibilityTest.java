@@ -36,9 +36,13 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
@@ -50,6 +54,7 @@ import org.xacml4j.v30.policy.PolicyReferenceResolver;
 import org.xacml4j.v30.policy.PolicySet;
 import org.xacml4j.v30.policy.RootEvaluationContext;
 import org.xacml4j.v30.policy.Rule;
+import org.xacml4j.v30.types.XacmlTypes;
 
 /**
  * A subclass of the public {@link Rule.RuleEvaluationContext} declared outside its package
@@ -61,6 +66,8 @@ import org.xacml4j.v30.policy.Rule;
 public class ExternalRuleContextCompatibilityTest
 {
 	private static final Clock FIXED = Clock.fixed(Instant.EPOCH, ZoneOffset.UTC);
+	private static final AttributeDesignatorKey SUBJECT_ID = AttributeDesignatorKey.builder()
+			.category(CategoryId.SUBJECT_ACCESS).attributeId("urn:test:subject-id").dataType(XacmlTypes.STRING).build();
 
 	@SuppressWarnings("unchecked")
 	private static RootEvaluationContext root()
@@ -112,6 +119,11 @@ public class ExternalRuleContextCompatibilityTest
 			public CompositeDecisionRule getCurrentPolicy() {
 				return overridden;
 			}
+
+			@Override
+			public Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators() {
+				return Map.of(SUBJECT_ID, XacmlTypes.STRING.ofAny("alice").toBag());
+			}
 		};
 
 		EvaluationContext below = custom.createExtIndeterminateEvalContext();
@@ -123,6 +135,11 @@ public class ExternalRuleContextCompatibilityTest
 		assertSame(rule, below.getCurrentRule());
 		assertSame(root.getClock(), policyContext.getClock());
 		assertFalse(policyContext.isValidateFuncParamsAtRuntime());
+		// The presence answer follows the overridden resolved designators, on the context and below it (review R-YZ)
+		assertTrue(custom.hasResolvedDesignators());
+		assertTrue(below.hasResolvedDesignators());
+		assertEquals(custom.getResolvedDesignators(), below.getResolvedDesignators());
+		assertFalse(policyContext.hasResolvedDesignators());
 	}
 
 	@Test

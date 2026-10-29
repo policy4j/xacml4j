@@ -25,6 +25,7 @@ package org.xacml4j.v30;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -33,11 +34,15 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultiset;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.api.Test;
@@ -68,8 +73,22 @@ class BagStorageCompatibilityTest
 						XacmlTypes.BOOLEAN.ofAny(true), XacmlTypes.BOOLEAN.ofAny(false), XacmlTypes.BOOLEAN.ofAny(false))));
 	}
 
+	/** The seed bags cut or repeated to no value, one value, two values, and the sizes around the grouping threshold */
+	@SuppressWarnings("unchecked")
+	static Stream<Arguments> bagsOfTheSmallAndThresholdSizes() {
+		return bags().flatMap(arguments -> {
+			Object[] fixture = arguments.get();
+			List<Value<?>> seed = (List<Value<?>>) fixture[2];
+			return Stream.of(0, 1, 2, 8, 9).map(size -> {
+				List<Value<?>> input = new ArrayList<>(size);
+				for (int i = 0; i < size; i++) input.add(seed.get(i % seed.size()));
+				return Arguments.of(fixture[0] + "-" + size, fixture[1], input);
+			});
+		});
+	}
+
 	@ParameterizedTest(name = "{0}")
-	@MethodSource("bags")
+	@MethodSource({"bags", "bagsOfTheSmallAndThresholdSizes"})
 	void groupedValuesAndHashMatchThePreviousMultiset(String name, ValueType type, List<Value<?>> input) {
 		BagOfValues bag = type.bagBuilder().attributes(input).build();
 		var expected = ImmutableMultiset.copyOf(input);
@@ -81,9 +100,32 @@ class BagStorageCompatibilityTest
 			assertTrue(bag.contains(value));
 			assertEquals(expected.count(value), ((com.google.common.collect.Multiset<?>) bag.values()).count(value));
 		}
-		assertSame(input.get(0), bag.value());
-		assertSame(input.get(0), bag.single().orElseThrow());
+		if (input.isEmpty()) {
+			assertTrue(bag.isEmpty());
+			assertThrows(NoSuchElementException.class, bag::value);
+			assertEquals(Optional.empty(), bag.single());
+		} else {
+			assertSame(input.get(0), bag.value());
+			assertSame(input.get(0), bag.single().orElseThrow());
+		}
 		assertEquals(bag, type.bagBuilder().attributes(input.reversed()).build());
+		assertEquals(bag, type.bagBuilder().attributes(ImmutableList.copyOf(input)).build());
+	}
+
+	@ParameterizedTest(name = "{0}")
+	@MethodSource({"bags", "bagsOfTheSmallAndThresholdSizes"})
+	void roundTripKeepsTheValuesAndTheHash(String name, ValueType type, List<Value<?>> input) throws Exception {
+		BagOfValues expected = type.bagBuilder().attributes(input).build();
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		try (ObjectOutputStream out = new ObjectOutputStream(bytes)) {
+			out.writeObject(expected);
+		}
+		try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()))) {
+			BagOfValues actual = (BagOfValues) in.readObject();
+			assertEquals(expected, actual);
+			assertEquals(expected.stream().toList(), actual.stream().toList());
+			assertEquals(expected.hashCode(), actual.hashCode());
+		}
 	}
 
 	@Test
@@ -168,7 +210,7 @@ class BagStorageCompatibilityTest
 
 	/** The previous-class fixture was compiled from commit 21858796 with Oracle GraalVM JDK 25.0.4. */
 	@ParameterizedTest(name = "{0}")
-	@MethodSource("bags")
+	@MethodSource({"bags", "bagsOfTheSmallAndThresholdSizes"})
 	void previousClassReadsTheCurrentStream(String name, ValueType type, List<Value<?>> input) throws Exception {
 		BagOfValues expected = type.bagBuilder().attributes(input).build();
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();

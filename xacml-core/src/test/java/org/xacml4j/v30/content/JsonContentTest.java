@@ -31,15 +31,22 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.slf4j.LoggerFactory;
+import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeSelectorKey;
+import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.Content;
 import org.xacml4j.v30.PathEvaluationException;
 import org.xacml4j.v30.StatusCodeId;
+import org.xacml4j.v30.types.Entity;
+import org.xacml4j.v30.types.Path;
 import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.truth.Truth8;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.Option;
 
 
 public class JsonContentTest
@@ -174,25 +181,82 @@ public class JsonContentTest
 
     @Test
     public void selectorValueThatDoesNotConvertIsAProcessingError() {
-        assertProcessingError(selector("$.store.book[*].author", XacmlTypes.INTEGER));
-        assertProcessingError(selector("$.store.bicycle", XacmlTypes.STRING));
+        assertStatus(StatusCodeId.STATUS_PROCESSING_ERROR,
+                () -> content.resolve(selector("$.store.book[*].author", XacmlTypes.INTEGER)));
+        assertStatus(StatusCodeId.STATUS_PROCESSING_ERROR,
+                () -> content.resolve(selector("$.store.bicycle", XacmlTypes.STRING)));
     }
 
     @Test
-    public void selectorWithAContextSelectorIsAProcessingError() {
-        assertProcessingError(AttributeSelectorKey.builder()
-                                                  .jpath("$.title")
-                                                  .contextSelectorId(XmlContent.CONTENT_SELECTOR)
-                                                  .dataType(XacmlTypes.STRING)
-                                                  .build());
+    public void contextSelectorPathRunsOnTheValueItSelects() {
+        Truth8.assertThat(entity(XacmlTypes.JPATH.ofAny("$.store.book[2]", CategoryId.RESOURCE))
+                                  .resolve(contextSelector("$.title")))
+              .hasValue(XacmlTypes.STRING.bagBuilder().value("Moby Dick").build());
     }
 
-    private void assertProcessingError(AttributeSelectorKey selector) {
-        PathEvaluationException e = assertThrows(PathEvaluationException.class, () -> content.resolve(selector));
-        assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(StatusCodeId.STATUS_PROCESSING_ERROR);
+    @Test
+    public void contextSelectorThatSelectsNoValueOrMoreThanOneIsASyntaxError() {
+        for (String context : new String[]{"$.store.car", "$.store.book[*]"}) {
+            assertStatus(StatusCodeId.SYNTAX_ERROR,
+                    () -> entity(XacmlTypes.JPATH.ofAny(context, CategoryId.RESOURCE)).resolve(contextSelector("$.title")));
+        }
+    }
+
+    @Test
+    public void contextSelectorWithoutItsAttributeOrInAnotherCategoryIsAProcessingError() {
+        assertStatus(StatusCodeId.STATUS_PROCESSING_ERROR,
+                () -> Entity.builder().content(content).build().resolve(contextSelector("$.title")));
+        assertStatus(StatusCodeId.STATUS_PROCESSING_ERROR,
+                () -> entity(XacmlTypes.JPATH.ofAny("$.store.book[2]", CategoryId.ACTION)).resolve(contextSelector("$.title")));
+    }
+
+    @Test
+    public void selectorOfATypeWithoutStringFormConvertsOnlyASelectedValue() {
+        Content json = JsonContent.of("{\"empty\": null, \"value\": \"x\"}");
+        Truth8.assertThat(json.resolve(selector("$.missing", XacmlTypes.ENTITY))).isEmpty();
+        Truth8.assertThat(json.resolve(selector("$.empty", XacmlTypes.ENTITY))).isEmpty();
+        assertStatus(StatusCodeId.STATUS_PROCESSING_ERROR,
+                () -> json.resolve(selector("$.value", XacmlTypes.ENTITY)));
+    }
+
+    @Test
+    public void selectorsReadValuesWithAPathListConfiguration() {
+        Content paths = JsonContent.of(JSON_DATA, Configuration.defaultConfiguration().addOptions(Option.AS_PATH_LIST));
+        Truth8.assertThat(paths.resolve(selector("$.store.book[*].author", XacmlTypes.STRING)))
+              .hasValue(XacmlTypes.STRING.bagBuilder()
+                                         .value("Nigel Rees", "Evelyn Waugh", "Herman Melville", "J. R. R. Tolkien")
+                                         .build());
+        Truth8.assertThat(entity(paths, XacmlTypes.JPATH.ofAny("$.store.book[2]", CategoryId.RESOURCE))
+                                  .resolve(contextSelector("$.title")))
+              .hasValue(XacmlTypes.STRING.bagBuilder().value("Moby Dick").build());
+    }
+
+    private Entity entity(Path contextPath) {
+        return entity(content, contextPath);
+    }
+
+    private static Entity entity(Content content, Path contextPath) {
+        return Entity.builder()
+                     .content(content)
+                     .attribute(Attribute.builder(XmlContent.CONTENT_SELECTOR).value(contextPath).build())
+                     .build();
+    }
+
+    private static void assertStatus(StatusCodeId status, Executable resolve) {
+        PathEvaluationException e = assertThrows(PathEvaluationException.class, resolve);
+        assertThat(e.getStatus().getStatusCode().getValue()).isEqualTo(status);
     }
 
     private static AttributeSelectorKey selector(String path, ValueType type) {
         return AttributeSelectorKey.builder().jpath(path).dataType(type).build();
+    }
+
+    private static AttributeSelectorKey contextSelector(String path) {
+        return AttributeSelectorKey.builder()
+                                   .category(CategoryId.RESOURCE)
+                                   .jpath(path)
+                                   .contextSelectorId(XmlContent.CONTENT_SELECTOR)
+                                   .dataType(XacmlTypes.STRING)
+                                   .build();
     }
 }

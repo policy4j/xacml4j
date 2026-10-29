@@ -23,7 +23,9 @@ package org.xacml4j.v30.policy.combine.impl;
  */
 
 import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.evaluateIfMatch;
+import static org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithms.supportsIndexedTraversal;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.xacml4j.v30.Decision;
@@ -49,7 +51,9 @@ public class FirstApplicable<D extends DecisionRule> extends BaseDecisionCombini
 	@XacmlRuleDecisionCombiningAlgorithm("urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable")
 	public static <D extends DecisionRule> Decision doCombine(EvaluationContext context, List<D> decisions)
 	{
-		for(D d : decisions){
+		Iterator<D> iterator = supportsIndexedTraversal(decisions) ? null : decisions.iterator();
+		for (int i = 0; iterator == null ? i < decisions.size() : iterator.hasNext(); i++) {
+			D d = iterator == null ? decisions.get(i) : iterator.next();
 			Decision decision = evaluateIfMatch(context, d);
 			if(decision == Decision.DENY){
 				return decision;

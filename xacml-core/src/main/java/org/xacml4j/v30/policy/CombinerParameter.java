@@ -44,7 +44,7 @@ public final class CombinerParameter
 	 * Constructs decision combining parameter
 	 *
 	 * @param name a parameter name
-	 * @param value a parameter value
+	 * @param value an immutable parameter value; custom values must keep equality and hash codes stable
 	 */
 	public CombinerParameter(String name,
 			Value value)

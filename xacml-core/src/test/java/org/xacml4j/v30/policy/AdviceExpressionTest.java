@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,6 +85,44 @@ public class AdviceExpressionTest
 		assertFalse(exp.isApplicable(Decision.INDETERMINATE));
 		assertEquals("test", exp.getId());
 		verifyNoMoreInteractions(context, expression);
+	}
+
+	/** An expression of literal values gives one advice, with its assignments in order, for every decision (cycle AN) */
+	@Test
+	public void literalAssignmentsGiveTheSameAdviceForEveryDecision() throws CoreException
+	{
+		AdviceExpression exp = AdviceExpression.builder("test", Effect.PERMIT)
+				.attribute(attrExp0)
+				.attribute("bag", XacmlTypes.INTEGER.bagOf(XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(3)))
+				.build();
+
+		Advice advice = exp.evaluate(context);
+		assertEquals(advice, exp.evaluate(mock(EvaluationContext.class)));
+		assertEquals(Effect.PERMIT, advice.getFulfillOn());
+		assertEquals(List.of("attributeId0", "bag", "bag"),
+				advice.getAttributes().stream().map(AttributeAssignment::getAttributeId).toList());
+		assertEquals(List.<Object>of(XacmlTypes.INTEGER.ofAny(1), XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(3)),
+				advice.getAttributes().stream().map(a -> (Object)a.getAttribute()).toList());
+		verifyNoMoreInteractions(context, expression);
+	}
+
+	@Test
+	public void evaluatedAssignmentsKeepDistinctValuesInAttributeOrder() throws CoreException
+	{
+		when(expression.evaluate(context)).thenReturn(XacmlTypes.INTEGER.bagOf(
+				XacmlTypes.INTEGER.ofAny(3), XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(3)));
+		AdviceExpression exp = AdviceExpression.builder("test", Effect.PERMIT)
+				.attribute("first", expression)
+				.attribute("last", XacmlTypes.INTEGER.ofAny(4))
+				.attribute("first", XacmlTypes.INTEGER.ofAny(2))
+				.build();
+
+		Advice advice = exp.evaluate(context);
+		assertEquals(Effect.PERMIT, advice.getFulfillOn());
+		assertEquals(List.of("first", "first", "last"),
+				advice.getAttributes().stream().map(AttributeAssignment::getAttributeId).toList());
+		assertEquals(List.<Object>of(XacmlTypes.INTEGER.ofAny(3), XacmlTypes.INTEGER.ofAny(2), XacmlTypes.INTEGER.ofAny(4)),
+				advice.getAttributes().stream().map(a -> (Object)a.getAttribute()).toList());
 	}
 
 	@Test

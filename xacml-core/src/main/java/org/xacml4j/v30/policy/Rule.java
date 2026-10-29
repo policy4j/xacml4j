@@ -37,6 +37,11 @@ import com.google.common.base.Preconditions;
 public class Rule extends BaseDecisionRule implements PolicyElement
 {
 	private final Effect effect;
+	/**
+	 * The hash code once computed; every field that it reads is fixed when the rule is built (cycle AR).
+	 * Hash inputs must remain immutable, including values supplied by trusted extensions.
+	 */
+	private int hashCode;
 
 	private Rule(Builder b){
 		super(b);
@@ -99,12 +104,17 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 
 	@Override
 	public int hashCode() {
-		// (31 + ...) is Arrays.hashCode of the one-element array, without the array (design D22)
-		return super.hashCode() * 31 + (31 + java.util.Objects.hashCode(effect));
+		int h = hashCode;
+		if(h == 0){
+			// (31 + ...) is Arrays.hashCode of the one-element array, without the array (design D22)
+			h = super.hashCode() * 31 + (31 + java.util.Objects.hashCode(effect));
+			hashCode = h;
+		}
+		return h;
 	}
 
 	@Override
-	public final Decision evaluate(EvaluationContext context)
+	final Decision evaluateRule(EvaluationContext context)
 	{
 		if(!isEvaluationContextValid(context)){
 			context.setEvaluationStatusIfAbsent(()->Status.processingError().build());
@@ -118,18 +128,18 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		if(m == MatchResult.NOMATCH){
 			return Decision.NOT_APPLICABLE;
 		}
-		ConditionResult result = (condition == null)?ConditionResult.TRUE:condition.evaluate(context);
+		ConditionResult result = (condition == null)?ConditionResult.TRUE:evaluateCondition(context);
 		if(result == ConditionResult.TRUE){
 			Decision d = effect.toDecision();
-			if(!context.isExtendedIndeterminateEval()){
-				try{
-					evaluateAdvicesAndObligations(context, d);
-				}catch(EvaluationException e){
-					context.setEvaluationStatusIfAbsent(()->Status.processingError()
-					                                              .error(e)
-					                                              .build());
-					return getExtendedIndeterminate();
-				}
+			// Also inside an extended Indeterminate pass: a failing matching obligation or advice
+			// makes the rule Indeterminate (XACML 3.0, section 7.18)
+			try{
+				evaluateAdvicesAndObligations(context, d);
+			}catch(EvaluationException e){
+				context.setEvaluationStatusIfAbsent(()->Status.processingError()
+				                                              .error(e)
+				                                              .build());
+				return getExtendedIndeterminate();
 			}
 			return d;
 		}

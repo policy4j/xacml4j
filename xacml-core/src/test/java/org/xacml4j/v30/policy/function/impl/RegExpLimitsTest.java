@@ -25,18 +25,17 @@ package org.xacml4j.v30.policy.function.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.LongSupplier;
-import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.EvaluationContext;
@@ -44,6 +43,11 @@ import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.policy.function.regex.CompiledRegex;
+import org.xacml4j.v30.policy.function.regex.RegexCompileException;
+import org.xacml4j.v30.policy.function.regex.RegexEngine;
+import org.xacml4j.v30.policy.function.regex.RegexLimits;
+import org.xacml4j.v30.policy.function.regex.RegexProfile;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
@@ -52,7 +56,9 @@ import org.xacml4j.v30.types.XacmlTypes;
  * regular-expression match has a limit on the pattern length, on the input
  * length, and on the time of one match, and the optional pattern cache is
  * bounded. Beyond a limit the function is Indeterminate with status
- * processing-error.
+ * processing-error. The limits are those of the {@code jdk} engine's
+ * {@code legacy} profile (change add-regex-engine-spi, design D7); the rules of
+ * its repetition scanner are in {@code LegacySyntaxTest}.
  */
 public class RegExpLimitsTest
 {
@@ -66,17 +72,18 @@ public class RegExpLimitsTest
 	@Test
 	public void defaultLimits()
 	{
-		assertEquals(10_000, RegExpFunctions.DEFAULT_MAX_PATTERN_LENGTH);
-		assertEquals(100_000, RegExpFunctions.DEFAULT_MAX_INPUT_LENGTH);
-		assertEquals(1_000, RegExpFunctions.DEFAULT_MAX_MATCH_MILLIS);
-		assertEquals(1_000_000, RegExpFunctions.DEFAULT_MAX_REPETITION);
-		assertEquals(256, RegExpFunctions.DEFAULT_CACHE_SIZE);
+		assertEquals(10_000, RegexLimits.DEFAULT_MAX_PATTERN_LENGTH);
+		assertEquals(100_000, RegexLimits.DEFAULT_MAX_INPUT_LENGTH);
+		assertEquals(1_000, RegexLimits.DEFAULT_MAX_MATCH_MILLIS);
+		assertEquals(1_000_000, RegexLimits.DEFAULT_MAX_REPETITION);
+		assertEquals(256, RegexLimits.DEFAULT_CACHE_SIZE);
+		assertEquals(RegexLimits.defaults(), RegExpFunctions.limitsFrom(name -> null));
 	}
 
 	@Test
 	public void matchWithinTheLimitsIsUnchanged()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(10, 10, 1_000);
+		RegexLimits limits = limits(10, 10, 1_000);
 
 		assertTrue(RegExpFunctions.matches("a+b", "xaab", limits));
 		assertFalse(RegExpFunctions.matches("a+b$", "xaabc", limits));
@@ -87,7 +94,7 @@ public class RegExpLimitsTest
 	@Test
 	public void catastrophicBacktrackingIsStoppedByTheTimeLimit()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(100, 100, 50);
+		RegexLimits limits = limits(100, 100, 50);
 
 		long start = System.nanoTime();
 		EvaluationException e = assertTimeoutPreemptively(Duration.ofSeconds(20),
@@ -110,7 +117,7 @@ public class RegExpLimitsTest
 	@Test
 	public void nestedCountedRepetitionsAreBoundedBeforeTheMatch()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(100, 100, 60_000);
+		RegexLimits limits = limits(100, 100, 60_000);
 
 		long start = System.nanoTime();
 		// Without the bound these matches do not return; the timeout turns that into a failure.
@@ -135,7 +142,7 @@ public class RegExpLimitsTest
 	@Test
 	public void repetitionsCanNotBeHiddenFromTheBound()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(100, 100, 60_000);
+		RegexLimits limits = limits(100, 100, 60_000);
 		String[][] hidden = {
 				// "\c[" is one control-character escape, not the start of a class.
 				{"\\c[(?:(?:){2147483647}){2147483647}", "\u001B"},
@@ -157,55 +164,16 @@ public class RegExpLimitsTest
 			}
 		});
 		assertTrue(Duration.ofNanos(System.nanoTime() - start).toMillis() < 2_000);
-
-		assertEquals(1_001_000, RegExpFunctions.repetitionWeight("\\c[(?:(?:){1000}){1001}"));
-		assertEquals(1_001_000, RegExpFunctions.repetitionWeight("(?:(?:){1000})\\Q\\E{1001}"));
-		assertEquals(1_001_000, RegExpFunctions.repetitionWeight("({1000}){1001}"));
-		assertEquals(1_001_000, RegExpFunctions.repetitionWeight("(?:a|{1000}){1001}"));
-		assertEquals(1_001_000, RegExpFunctions.repetitionWeight("(?:(?:){1000}[]a(]{0}){1001}"));
-		assertEquals(1_001_000, RegExpFunctions.repetitionWeight("(?:(?:){1000}[^]a(]{0}){1001}"));
-		assertEquals(1_001_000, RegExpFunctions.repetitionWeight("(?:(?:){1000}[a&&[]b(]]{0}){1001}"));
 	}
 
 	/** rv087 round 2: a "]" directly after "[" is a literal, so the braces here are in the class. */
 	@Test
 	public void bracesInACharacterClassAreNotARepetition()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(100, 100, 60_000);
+		RegexLimits limits = limits(100, 100, 60_000);
 
-		assertEquals(1, RegExpFunctions.repetitionWeight("[]a{1000001}]"));
-		assertEquals(1, RegExpFunctions.repetitionWeight("[^]a{1000001}]"));
-		assertEquals(1, RegExpFunctions.repetitionWeight("[\\]{1000001}]"));
-		assertEquals(1, RegExpFunctions.repetitionWeight("[\\Q]\\E{1000001}]"));
 		assertTrue(RegExpFunctions.matches("[]a{1000001}]", "a", limits));
 		assertTrue(RegExpFunctions.matches("[^]a{1000001}]", "b", limits));
-	}
-
-	/**
-	 * The scanner reads a pattern without quoted text. The pattern
-	 * without quoting must mean the same to java.util.regex as the
-	 * pattern with it.
-	 */
-	@Test
-	public void patternWithoutQuotingMeansTheSame()
-	{
-		String[] patterns = {
-				"a\\Q.\\Eb", "x\\Q\\E{3}", "\\Q1\\E{2}", "[\\Q]\\E]+", "\\Q\\\\E", "\\Qa\\E\\Q(\\E",
-				"\\\\Q", "a\\Q{2}", "\\Q[a\\E]", "\\d\\Q9\\E", "\\Q\u00e9*\\E", "a\\Q\\E", "\\Qa(b\\E\\)"};
-		String[] inputs = {
-				"", "a.b", "axb", "xxx", "xx", "11", "1", "]]", "\\", "a(", "\\Q", "a{2}", "aa", "[a]", "59",
-				"\u00e9*", "a", "a(b)"};
-
-		for(String pattern : patterns){
-			String unquoted = RegExpFunctions.withoutQuoting(pattern);
-			for(String input : inputs){
-				assertEquals(Pattern.compile(pattern).matcher(input).find(),
-						Pattern.compile(unquoted).matcher(input).find(),
-						() -> pattern + " as " + unquoted + " on " + input);
-			}
-		}
-		assertEquals("abc", RegExpFunctions.withoutQuoting("abc"));
-		assertEquals("x{3}", RegExpFunctions.withoutQuoting("x\\Q\\E{3}"));
 	}
 
 	/**
@@ -218,7 +186,7 @@ public class RegExpLimitsTest
 	@Test
 	public void resultThatComesAfterTheTimeLimitIsNotUsed()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(100, 3_000, 1_000);
+		RegexLimits limits = limits(100, 3_000, 1_000);
 		long limitNanos = Duration.ofMillis(1_000).toNanos();
 
 		TestClock onTime = new TestClock(5, 5, 5 + limitNanos);
@@ -254,41 +222,9 @@ public class RegExpLimitsTest
 	@Test
 	public void quantifiersNextToEachOtherDoNotMultiply()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(100, 100, 60_000);
+		RegexLimits limits = limits(100, 100, 60_000);
 
-		assertEquals(1_001, RegExpFunctions.repetitionWeight("(?:){1000}{1001}"));
-		assertEquals(1_001, RegExpFunctions.repetitionWeight("(?:){1000}?{1001}"));
-		assertEquals(3, RegExpFunctions.repetitionWeight("a{2}{3}"));
-		assertEquals(3_000, RegExpFunctions.repetitionWeight("(?:(?:){1000}{2}){3}"));
-		assertTrue(Pattern.compile("(?:){1000}{1001}").matcher("").find());
 		assertTrue(RegExpFunctions.matches("(?:){1000}{1001}", "", limits));
-	}
-
-	/**
-	 * The rules of the scanner, shown on java.util.regex itself by what a
-	 * pattern matches. When a JDK reads one of these patterns in another
-	 * way, this test fails and the scanner has to follow.
-	 */
-	@Test
-	public void scannerRulesAreTheRulesOfJavaUtilRegex()
-	{
-		// A quantifier after a quantifier repeats an empty atom, not "(?:a){2}".
-		assertTrue(Pattern.compile("^(?:a){2}{3}$").matcher("aa").find());
-		assertFalse(Pattern.compile("^(?:a){2}{3}$").matcher("aaaaaa").find());
-		// A quantifier directly after "(" repeats an empty atom; it is not the text "{3}".
-		assertTrue(Pattern.compile("^({3})a$").matcher("a").find());
-		assertFalse(Pattern.compile("^({3})a$").matcher("{3}a").find());
-		// "\c[" is one control-character escape; the "(" after it opens a group.
-		assertTrue(Pattern.compile("^\\c[(a){2}$").matcher("\u001Baa").find());
-		// An empty quote disappears; the quantifier belongs to the group before it.
-		assertTrue(Pattern.compile("^(?:ab)\\Q\\E{2}$").matcher("abab").find());
-		assertFalse(Pattern.compile("^(?:ab)\\Q\\E{2}$").matcher("ab").find());
-		// "]" directly after "[" or "[^" is a literal; the class ends at the next "]".
-		assertTrue(Pattern.compile("^[]a(]{3}$").matcher("]a(").find());
-		assertTrue(Pattern.compile("^[^]a(]{3}$").matcher("xyz").find());
-		assertFalse(Pattern.compile("^[^]a(]{3}$").matcher("x]z").find());
-		// A lone "\E" is not accepted, so it can not stand between a group and its quantifier.
-		assertThrows(java.util.regex.PatternSyntaxException.class, () -> Pattern.compile("(?:a)\\E{2}"));
 	}
 
 	@Test
@@ -300,8 +236,8 @@ public class RegExpLimitsTest
 				prefix + ".maxInputLength", " 5 ",
 				prefix + ".maxMatchMillis", "60000",
 				prefix + ".maxRepetition", "6");
-		RegExpFunctions.Limits configured = RegExpFunctions.Limits.from(properties::get);
-		RegExpFunctions.Limits defaults = RegExpFunctions.Limits.from(name -> null);
+		RegexLimits configured = RegExpFunctions.limitsFrom(properties::get);
+		RegexLimits defaults = RegExpFunctions.limitsFrom(name -> null);
 
 		// Each configured value exactly at its limit, then one beyond it.
 		assertFalse(RegExpFunctions.matches("a{6}", "aaaaa", configured));
@@ -319,10 +255,10 @@ public class RegExpLimitsTest
 
 		assertTrue(RegExpFunctions.matches("abcde", "abcde", defaults));
 		assertLimitExceeded(assertThrows(EvaluationException.class,
-				() -> RegExpFunctions.matches("a".repeat(RegExpFunctions.DEFAULT_MAX_PATTERN_LENGTH + 1), "a", defaults)));
+				() -> RegExpFunctions.matches("a".repeat(RegexLimits.DEFAULT_MAX_PATTERN_LENGTH + 1), "a", defaults)));
 		assertLimitExceeded(assertThrows(EvaluationException.class,
 				() -> RegExpFunctions.matches("a{1000001}", "a", defaults)));
-		long defaultNanos = Duration.ofMillis(RegExpFunctions.DEFAULT_MAX_MATCH_MILLIS).toNanos();
+		long defaultNanos = Duration.ofMillis(RegexLimits.DEFAULT_MAX_MATCH_MILLIS).toNanos();
 		assertTrue(RegExpFunctions.matches("a", "a", defaults, new TestClock(0, 0, defaultNanos)));
 		assertLimitExceeded(assertThrows(EvaluationException.class,
 				() -> RegExpFunctions.matches("a", "a", defaults, new TestClock(0, 0, defaultNanos + 1))));
@@ -336,12 +272,11 @@ public class RegExpLimitsTest
 	@Test
 	public void weightThatDoesNotFitIsBeyondEveryLimit()
 	{
-		RegExpFunctions.Limits largest = new RegExpFunctions.Limits(100, 100, 60_000, Long.MAX_VALUE);
+		RegexLimits largest = RegexLimits.builder().maxPatternLength(100).maxInputLength(100)
+				.maxMatchMillis(60_000).maxRepetition(Long.MAX_VALUE).build();
 		String overflow = "(?:(?:(?:){2147483647}){2147483647}){3}";
 		String commentsMode = "(?x)a";
 
-		assertEquals(Long.MAX_VALUE, RegExpFunctions.repetitionWeight(overflow));
-		assertEquals(Long.MAX_VALUE, RegExpFunctions.repetitionWeight(commentsMode));
 		// Without the bound the first match does not return; the timeout turns that into a failure.
 		assertTimeoutPreemptively(Duration.ofSeconds(20), () -> {
 			assertLimitExceeded(assertThrows(EvaluationException.class,
@@ -361,14 +296,14 @@ public class RegExpLimitsTest
 
 		for(String value : new String[]{"0", "-1", "abc", "", "2147483648"}){
 			IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-					() -> RegExpFunctions.Limits.from(Map.of(name, value)::get), value);
+					() -> RegExpFunctions.limitsFrom(Map.of(name, value)::get), value);
 			assertTrue(e.getMessage().startsWith(name), e::getMessage);
 			e = assertThrows(IllegalArgumentException.class,
 					() -> RegExpFunctions.cacheSize(Map.of(cacheSize, value)::get), value);
 			assertTrue(e.getMessage().startsWith(cacheSize), e::getMessage);
 		}
 		assertEquals(7, RegExpFunctions.cacheSize(Map.of(cacheSize, "7")::get));
-		assertEquals(RegExpFunctions.DEFAULT_CACHE_SIZE, RegExpFunctions.cacheSize(name2 -> null));
+		assertEquals(RegexLimits.DEFAULT_CACHE_SIZE, RegExpFunctions.cacheSize(name2 -> null));
 	}
 
 	/**
@@ -381,70 +316,48 @@ public class RegExpLimitsTest
 	public void largestValuesThatCanBeConfigured()
 	{
 		String prefix = RegExpFunctions.class.getName();
-		String largestCache = String.valueOf(RegExpFunctions.LARGEST_CACHE_SIZE);
-		String largestPattern = String.valueOf(RegExpFunctions.LARGEST_MAX_PATTERN_LENGTH);
+		String largestCache = String.valueOf(RegexLimits.LARGEST_CACHE_SIZE);
+		String largestPattern = String.valueOf(RegexLimits.LARGEST_MAX_PATTERN_LENGTH);
 
-		assertEquals(Integer.MAX_VALUE - 1, RegExpFunctions.LARGEST_CACHE_SIZE);
-		assertEquals(Integer.MAX_VALUE / 8, RegExpFunctions.LARGEST_MAX_PATTERN_LENGTH);
-		assertEquals(RegExpFunctions.LARGEST_CACHE_SIZE,
+		assertEquals(Integer.MAX_VALUE - 1, RegexLimits.LARGEST_CACHE_SIZE);
+		assertEquals(Integer.MAX_VALUE / 8, RegexLimits.LARGEST_MAX_PATTERN_LENGTH);
+		assertEquals(RegexLimits.LARGEST_CACHE_SIZE,
 				RegExpFunctions.cacheSize(Map.of(prefix + ".cacheSize", largestCache)::get));
 		assertThrows(IllegalArgumentException.class,
 				() -> RegExpFunctions.cacheSize(Map.of(prefix + ".cacheSize", "2147483647")::get));
-		assertThrows(IllegalArgumentException.class, () -> new RegExpFunctions.PatternCache(Integer.MAX_VALUE));
-		assertThrows(IllegalArgumentException.class, () -> new RegExpFunctions.PatternCache(0));
-
-		assertNotNull(RegExpFunctions.Limits.from(Map.of(prefix + ".maxPatternLength", largestPattern)::get));
-		assertThrows(IllegalArgumentException.class, () -> RegExpFunctions.Limits.from(
-				Map.of(prefix + ".maxPatternLength", String.valueOf(RegExpFunctions.LARGEST_MAX_PATTERN_LENGTH + 1))::get));
 		assertThrows(IllegalArgumentException.class,
-				() -> new RegExpFunctions.Limits(RegExpFunctions.LARGEST_MAX_PATTERN_LENGTH + 1, 1, 1));
+				() -> RegexLimits.builder().cacheSize(Integer.MAX_VALUE).build());
+
+		assertNotNull(RegExpFunctions.limitsFrom(Map.of(prefix + ".maxPatternLength", largestPattern)::get));
+		assertThrows(IllegalArgumentException.class, () -> RegExpFunctions.limitsFrom(
+				Map.of(prefix + ".maxPatternLength", String.valueOf(RegexLimits.LARGEST_MAX_PATTERN_LENGTH + 1))::get));
+		assertThrows(IllegalArgumentException.class,
+				() -> limits(RegexLimits.LARGEST_MAX_PATTERN_LENGTH + 1, 1, 1));
 		// The other limits take the whole range: no arithmetic is done on them.
-		assertNotNull(RegExpFunctions.Limits.from(Map.of(
+		assertNotNull(RegExpFunctions.limitsFrom(Map.of(
 				prefix + ".maxInputLength", "2147483647",
 				prefix + ".maxMatchMillis", "2147483647",
 				prefix + ".maxRepetition", "9223372036854775807")::get));
 	}
 
-	@Test
-	public void repetitionWeightIsTheLargestProductOfNestedMinimumCounts()
-	{
-		assertEquals(1, RegExpFunctions.repetitionWeight("a+b*c?"));
-		assertEquals(4, RegExpFunctions.repetitionWeight("[0-9]{4}-[0-9]{2}-[0-9]{2}"));
-		assertEquals(1_000_000, RegExpFunctions.repetitionWeight("(?:(?:){1000}){1000}"));
-		assertEquals(6, RegExpFunctions.repetitionWeight("(a{2}){3}|b{5}"));
-		// The minimum counts, not the maximum.
-		assertEquals(2, RegExpFunctions.repetitionWeight("(a{0,1000}){2,9}"));
-		// Braces that are not a quantifier.
-		assertEquals(1, RegExpFunctions.repetitionWeight("\\p{IsBasicLatin}\\x{41}\\{9}[{9}]\\Q{9}\\E"));
-		assertEquals(3, RegExpFunctions.repetitionWeight("\\d{3}"));
-		assertEquals(9, RegExpFunctions.repetitionWeight("[a-z&&[^aeiou]]{9}"));
-		assertEquals(Long.MAX_VALUE,
-				RegExpFunctions.repetitionWeight("(((((){2147483647}){2147483647}){2147483647}){2147483647})"));
-		// Group prefixes are not quantifiers.
-		assertEquals(3, RegExpFunctions.repetitionWeight("(?<year>[0-9]{3})(?=a)(?!b)(?i)"));
-	}
-
 	/**
 	 * In comments mode a "#" hides the rest of a line, so a bracket in a
 	 * comment could hide a quantifier from the scanner. A pattern that
-	 * turns the mode on gets the largest weight and is rejected.
+	 * turns the mode on is rejected.
 	 */
 	@Test
 	public void commentsModeIsRejectedBecauseItCanHideAQuantifier()
 	{
 		String hidden = "(?x)(?:(?:){100000} # [\n){100000}";
 
-		assertEquals(Long.MAX_VALUE, RegExpFunctions.repetitionWeight(hidden));
-		assertEquals(Long.MAX_VALUE, RegExpFunctions.repetitionWeight("(?ix:a)"));
-		assertEquals(1, RegExpFunctions.repetitionWeight("(?i-x:a)"));
 		assertLimitExceeded(assertThrows(EvaluationException.class,
-				() -> RegExpFunctions.matches(hidden, "", new RegExpFunctions.Limits(100, 100, 60_000))));
+				() -> RegExpFunctions.matches(hidden, "", limits(100, 100, 60_000))));
 	}
 
 	@Test
 	public void inputLongerThanTheLimitIsIndeterminate()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(100, 10, 1_000);
+		RegexLimits limits = limits(100, 10, 1_000);
 
 		assertLimitExceeded(assertThrows(EvaluationException.class,
 				() -> RegExpFunctions.matches("a", "01234567890", limits)));
@@ -453,7 +366,7 @@ public class RegExpLimitsTest
 	@Test
 	public void patternLongerThanTheLimitIsIndeterminate()
 	{
-		RegExpFunctions.Limits limits = new RegExpFunctions.Limits(10, 100, 1_000);
+		RegexLimits limits = limits(10, 100, 1_000);
 
 		assertLimitExceeded(assertThrows(EvaluationException.class,
 				() -> RegExpFunctions.matches("01234567890", "a", limits)));
@@ -462,10 +375,13 @@ public class RegExpLimitsTest
 	@Test
 	public void limitsMustBePositive()
 	{
-		assertThrows(IllegalArgumentException.class, () -> new RegExpFunctions.Limits(0, 1, 1));
-		assertThrows(IllegalArgumentException.class, () -> new RegExpFunctions.Limits(1, 0, 1));
-		assertThrows(IllegalArgumentException.class, () -> new RegExpFunctions.Limits(1, 1, 0));
-		assertThrows(IllegalArgumentException.class, () -> new RegExpFunctions.Limits(1, 1, 1, 0));
+		assertThrows(IllegalArgumentException.class, () -> limits(0, 1, 1));
+		assertThrows(IllegalArgumentException.class, () -> limits(1, 0, 1));
+		assertThrows(IllegalArgumentException.class, () -> limits(1, 1, 0));
+		assertThrows(IllegalArgumentException.class, () -> RegexLimits.builder().maxRepetition(0).build());
+		assertThrows(IllegalArgumentException.class, () -> RegexLimits.builder().maxRepeatCount(0).build());
+		assertThrows(IllegalArgumentException.class, () -> RegexLimits.builder().maxProgramSize(0).build());
+		assertThrows(IllegalArgumentException.class, () -> RegexLimits.builder().cacheSize(0).build());
 	}
 
 	@Test
@@ -473,8 +389,8 @@ public class RegExpLimitsTest
 	{
 		FunctionProvider functions = FunctionProviderBuilder.builder().withDefaultFunctions().build();
 		EvaluationContext context = mock(EvaluationContext.class);
-		String tooLong = "a".repeat(RegExpFunctions.DEFAULT_MAX_INPUT_LENGTH + 1);
-		String atTheLimit = "a".repeat(RegExpFunctions.DEFAULT_MAX_INPUT_LENGTH);
+		String tooLong = "a".repeat(RegexLimits.DEFAULT_MAX_INPUT_LENGTH + 1);
+		String atTheLimit = "a".repeat(RegexLimits.DEFAULT_MAX_INPUT_LENGTH);
 
 		EvaluationException e = assertThrows(EvaluationException.class,
 				() -> functions.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match")
@@ -488,21 +404,54 @@ public class RegExpLimitsTest
 						.invoke(context, XacmlTypes.STRING.ofAny("a$"), XacmlTypes.STRING.ofAny(atTheLimit)));
 	}
 
+	/**
+	 * Design D6: compiled patterns are reused through a cache per engine instance of
+	 * {@code cacheSize} entries, the least recently used evicted first; a kept pattern answers
+	 * without compiling again. The eviction order is pinned through decisions in
+	 * {@code RegexCompileOnceTest} of the PDP module; here the cache of one instance keeps a
+	 * pattern that its engine compiles only once.
+	 */
 	@Test
-	public void patternCacheKeepsTheMostRecentlyUsedPatterns()
+	public void compiledPatternsAreReusedPerInstance()
 	{
-		RegExpFunctions.PatternCache cache = new RegExpFunctions.PatternCache(2);
+		RegexEngine once = new RegexEngine(){
+			private final Set<String> compiled = new HashSet<>();
 
-		Pattern a = cache.get("a");
-		cache.get("b");
-		// "a" is used again, so "b" is the least recently used entry.
-		assertSame(a, cache.get("a"));
-		cache.get("c");
+			@Override
+			public String name(){
+				return "once";
+			}
 
-		assertEquals(2, cache.size());
-		assertNotNull(cache.peek("a"));
-		assertNotNull(cache.peek("c"));
-		assertNull(cache.peek("b"));
+			@Override
+			public Set<RegexProfile> profiles(){
+				return Set.of(RegexProfile.LEGACY);
+			}
+
+			@Override
+			public CompiledRegex compile(String pattern, RegexProfile profile, RegexLimits limits){
+				if(!compiled.add(pattern)){
+					throw RegexCompileException.malformed("compiled again");
+				}
+				return (input, budget) -> true;
+			}
+		};
+		RegExpFunctions.Matching matching = new RegExpFunctions.Matching(once, RegexProfile.LEGACY,
+				RegexLimits.builder().cacheSize(2).build());
+
+		assertTrue(matching.matches("a", ""));
+		assertTrue(matching.matches("a", ""));
+		assertTrue(matching.matches("b", ""));
+		assertTrue(matching.matches("a", ""));
+		// Another instance over the same engine compiles the pattern again, and the engine rejects it
+		EvaluationException e = assertThrows(EvaluationException.class, () -> new RegExpFunctions.Matching(once,
+				RegexProfile.LEGACY, RegexLimits.builder().cacheSize(2).build()).matches("a", ""));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, e.getStatus().getStatusCode().getValue());
+	}
+
+	private static RegexLimits limits(int maxPatternLength, int maxInputLength, long maxMatchMillis)
+	{
+		return RegexLimits.builder().maxPatternLength(maxPatternLength).maxInputLength(maxInputLength)
+				.maxMatchMillis(maxMatchMillis).build();
 	}
 
 	/** A clock that gives the listed readings in turn, then the last one again, and counts its reads. */

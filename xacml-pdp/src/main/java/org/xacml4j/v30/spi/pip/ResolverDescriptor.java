@@ -99,7 +99,7 @@ public interface ResolverDescriptor<R>
 		protected String id;
 		protected String name;
 		protected CategoryId categoryId;
-		protected Duration cacheTTL;
+		protected Duration cacheTTL = Duration.ZERO;
 		protected List<Function<ResolverContext, Optional<BagOfValues>>> contextKeysResolutionPlan;
 		protected List<AttributeReferenceKey> contextReferenceKeys;
 

@@ -33,7 +33,10 @@ import org.xacml4j.v30.BagStorage;
  * Declares that a two-argument predicate has the same result as this
  * comparison with the first argument as the literal. The predicate must be
  * side-effect-free and total for valid values. IEEE mode uses primitive double
- * comparison. Only directly bound methods use this declaration.
+ * comparison. Temporal ordering uses the value's typed comparison, including
+ * the fixed UTC default of dates and dateTimes. Time ordering without an
+ * explicit timezone, unsupported values and temporal comparison failures
+ * leave the bag to ordinary evaluation. Only directly bound methods use this declaration.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

@@ -47,6 +47,8 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.XacmlTypes;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * Today's bookkeeping of {@link RootEvaluationContext}, which cycle E of change
  * optimize-pdp-evaluation must keep (design D9, review RVP): the policy id list in id order
@@ -278,5 +280,96 @@ public class RootEvaluationContextCharacterizationTest
 		}finally{
 			pool.shutdownNow();
 		}
+	}
+
+	/** Cycle AU: the responses of a decision keep the order of the first write of each id; a later one merges in its place. */
+	@Test
+	public void responsesKeepTheOrderOfTheFirstWriteOfTheirIdAndMergeInPlace()
+	{
+		RootEvaluationContext context = context();
+		Obligation c = Obligation.builder("c", Effect.PERMIT).attribute("o", XacmlTypes.STRING.ofAny("c")).build();
+		Obligation a = Obligation.builder("a", Effect.PERMIT).attribute("o", XacmlTypes.STRING.ofAny("a1")).build();
+		Obligation b = Obligation.builder("b", Effect.PERMIT).build();
+		Obligation laterA = Obligation.builder("a", Effect.PERMIT).attribute("o", XacmlTypes.STRING.ofAny("a2")).build();
+
+		context.addObligations(Decision.PERMIT, ImmutableList.of(c, a));
+		context.addObligations(Decision.PERMIT, List.of(b, laterA));
+
+		assertThat(context.getMatchingObligations(Decision.PERMIT)).containsExactly(c, a.merge(laterA), b).inOrder();
+		assertThat(context.matchingObligations(Decision.PERMIT)).containsExactly(c, a.merge(laterA), b).inOrder();
+		assertThat(context.matchingObligations(Decision.DENY)).isEmpty();
+		assertThat(context.matchingAdvices(Decision.PERMIT)).isEmpty();
+	}
+
+	/** Cycle AU: a list that its caller changes after giving it does not change the responses; only an immutable list is kept as given. */
+	@Test
+	public void aListChangedAfterItWasGivenDoesNotChangeTheResponses()
+	{
+		RootEvaluationContext context = context();
+		Advice advice = Advice.builder("advice-1", Effect.DENY).build();
+		List<Advice> given = new ArrayList<>(List.of(advice));
+
+		context.addAdvices(Decision.DENY, given);
+		given.set(0, Advice.builder("advice-2", Effect.DENY).build());
+		given.add(Advice.builder("advice-3", Effect.DENY).build());
+
+		assertThat(context.getMatchingAdvices(Decision.DENY)).containsExactly(advice);
+	}
+
+	/** Reviews rv006 to rv010: a kept view removes through its iterator and clears, as the map's values view did, and adds nothing. */
+	@Test
+	public void aKeptViewRemovesThroughItsIteratorAndClearsButAddsNothing()
+	{
+		RootEvaluationContext context = context();
+		java.util.Collection<Obligation> kept = context.getMatchingObligations(Decision.PERMIT);
+		Obligation first = Obligation.builder("obligation-1", Effect.PERMIT).build();
+		Obligation second = Obligation.builder("obligation-2", Effect.PERMIT).build();
+		context.addObligations(Decision.PERMIT, List.of(first, second));
+
+		java.util.Iterator<Obligation> it = kept.iterator();
+		Obligation removed = it.next();
+		it.remove();
+
+		assertThat(context.getMatchingObligations(Decision.PERMIT)).hasSize(1);
+		assertThat(context.getMatchingObligations(Decision.PERMIT)).doesNotContain(removed);
+		org.junit.jupiter.api.Assertions.assertThrows(UnsupportedOperationException.class, () -> kept.add(first));
+		kept.clear();
+		assertThat(kept).isEmpty();
+		assertThat(context.getMatchingObligations(Decision.PERMIT)).isEmpty();
+	}
+
+	/** Design D9: roots with the same responses written in another order are equal and hash alike, as maps by id. */
+	@Test
+	public void rootsWithTheSameResponsesInAnotherOrderAreEqual()
+	{
+		RootEvaluationContext one = context();
+		RootEvaluationContext other = context();
+		Obligation first = Obligation.builder("obligation-1", Effect.DENY).build();
+		Obligation second = Obligation.builder("obligation-2", Effect.DENY).build();
+
+		one.addObligations(Decision.DENY, List.of(first, second));
+		other.addObligations(Decision.DENY, List.of(second));
+		other.addObligations(Decision.DENY, List.of(first));
+
+		assertThat(one).isEqualTo(other);
+		assertThat(one.hashCode()).isEqualTo(other.hashCode());
+	}
+
+	/** Cycle AU: the policy identifier list of a result is the evaluated policies, in id order, one per id. */
+	@Test
+	public void policyIdentifiersAreTheEvaluatedPoliciesInIdOrder()
+	{
+		RootEvaluationContext context = context();
+		CompositeDecisionRuleIDReference a1 = mock(CompositeDecisionRuleIDReference.class);
+		CompositeDecisionRuleIDReference a2 = mock(CompositeDecisionRuleIDReference.class);
+		CompositeDecisionRuleIDReference b = mock(CompositeDecisionRuleIDReference.class);
+
+		context.addEvaluationResult(policy("urn:b", b), Decision.DENY);
+		context.addEvaluationResult(policy("urn:a", a1), Decision.PERMIT);
+		context.addEvaluationResult(policy("urn:a", a2), Decision.DENY);
+
+		assertThat(context.policyIdentifiers()).containsExactly(a2, b).inOrder();
+		assertThat(context.policyIdentifiers()).isInstanceOf(ImmutableList.class);
+		assertThat(context.toString()).contains("evaluatedPolicies={urn:a=");
 	}
 }

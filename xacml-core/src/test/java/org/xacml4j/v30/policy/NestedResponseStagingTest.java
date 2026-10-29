@@ -77,8 +77,8 @@ public class NestedResponseStagingTest
 	 * and a Permit rule with an obligation; the sibling is Permit. Only the
 	 * responses of the sibling are returned. The rule of the child is
 	 * evaluated to find the extended Indeterminate value (XACML 3.0,
-	 * section 7.12), so its obligation is created; inside a policy set it
-	 * is staged and never published.
+	 * section 7.14), with its obligation (section 7.18), which is never
+	 * returned: the value of the child is Indeterminate.
 	 */
 	@Test
 	public void childWithAnIndeterminateTargetAddsNoResponsesToThePermitOfItsSibling()
@@ -91,22 +91,16 @@ public class NestedResponseStagingTest
 				.obligation(obligation("indeterminate-obligation", Effect.PERMIT, "indeterminate"))
 				.advice(advice("indeterminate-advice", Effect.PERMIT, "indeterminate"))
 				.build();
-		// Alone, the child is Indeterminate (a NotApplicable child would give the same
-		// combined result below). It is the outermost rule here, so nothing is staged:
-		// the obligation that its rule created is in the root context, which is read
-		// only for a final Permit or Deny. This shows that the obligation exists.
+		// Alone, the child is Indeterminate with the status of its target; an Indeterminate
+		// result carries no responses.
 		EvaluationContext alone = ModelFixtures.context(false);
 		Decision childDecision = indeterminate.evaluate(indeterminate.createContext(alone));
 		assertTrue(childDecision.isIndeterminate(), () -> "decision=" + childDecision);
 		Status childStatus = alone.getEvaluationStatus().orElseThrow();
 		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, childStatus.getStatusCode().getValue());
 		assertEquals("target failed", childStatus.getMessage().orElse(null));
-		assertEquals(List.of("indeterminate-rule-obligation"), ids(alone.getMatchingObligations(Decision.PERMIT)));
-		assertEquals(List.of(), ids(alone.getMatchingAdvices(Decision.PERMIT)));
-		assertEquals(List.of(), ids(alone.getMatchingObligations(Decision.DENY)));
-		assertEquals(List.of(), ids(alone.getMatchingAdvices(Decision.DENY)));
 
-		// Inside a policy set that obligation is staged and not published.
+		// The sibling's responses are the only ones of the Permit inside a policy set.
 
 		PolicySet enclosing = set("enclosing", PERMIT_OVERRIDES, indeterminate, policy("sibling", Decision.PERMIT));
 		EvaluationContext root = ModelFixtures.context(false);

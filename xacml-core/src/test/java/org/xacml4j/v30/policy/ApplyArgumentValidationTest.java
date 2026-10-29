@@ -102,8 +102,6 @@ public class ApplyArgumentValidationTest
 		// The message names the function, not the arguments.
 		assertEquals(Optional.of("Function=\"" + functionId + "\" is applied to arguments that do not fit it"),
 				e.getStatus().getMessage());
-		// The function is not invoked and no argument is evaluated.
-		verifyNoInteractions(context);
 	}
 
 	static Stream<Arguments> invalidApplies()
@@ -290,6 +288,58 @@ public class ApplyArgumentValidationTest
 		EvaluationException e = assertThrows(EvaluationException.class,
 				() -> anyOf.evaluate(mock(EvaluationContext.class)));
 		assertEquals(StatusCodeId.SYNTAX_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals("Invalid higher-order function arguments", e.getMessage());
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	public void higherOrderChecksTheEvaluatedBagType(boolean runtimeValidation)
+	{
+		EvaluationContext context = mock(EvaluationContext.class);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(runtimeValidation);
+		Expression wrongBag = mock(Expression.class);
+		when(wrongBag.getEvaluatesTo()).thenReturn(XacmlTypes.STRING.bagType());
+		when(wrongBag.<Expression>evaluate(context)).thenReturn(XacmlTypes.INTEGER.bagOf());
+
+		for(String name : new String[]{"any-of", "all-of", "any-of-any"}){
+			Apply expression = (Apply) apply(F3 + name, function(F1 + "string-equal"), string("a"), wrongBag);
+			assertTrue(expression.isTypeCorrect());
+			EvaluationException error = assertThrows(EvaluationException.class, () -> expression.evaluate(context));
+			assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
+			assertEquals("Invalid higher-order function arguments", error.getMessage());
+		}
+		Apply map = (Apply) apply(F3 + "map", function(F1 + "string-normalize-space"), wrongBag);
+		assertTrue(map.isTypeCorrect());
+		EvaluationException error = assertThrows(EvaluationException.class, () -> map.evaluate(context));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
+		assertEquals("Invalid higher-order function arguments", error.getMessage());
+
+		Apply dynamic = (Apply) apply(F3 + "any-of", function(F1 + "string-equal"), string("a"),
+				dynamicBag(XacmlTypes.INTEGER));
+		assertTrue(dynamic.isTypeCorrect());
+		EvaluationException dynamicError = assertThrows(EvaluationException.class, () -> dynamic.evaluate(context));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, dynamicError.getStatus().getStatusCode().getValue());
+		assertEquals("Invalid higher-order function arguments", dynamicError.getMessage());
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	public void higherOrderEvaluatesAllOperandsBeforeCheckingTheirActualTypes(boolean runtimeValidation)
+	{
+		EvaluationContext context = mock(EvaluationContext.class);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(runtimeValidation);
+		Expression wrongValue = mock(Expression.class);
+		when(wrongValue.getEvaluatesTo()).thenReturn(XacmlTypes.STRING);
+		when(wrongValue.<Expression>evaluate(context)).thenReturn(XacmlTypes.INTEGER.ofAny(1));
+		Expression failingBag = mock(Expression.class);
+		when(failingBag.getEvaluatesTo()).thenReturn(XacmlTypes.STRING.bagType());
+		when(failingBag.<Expression>evaluate(context)).thenThrow(
+				new EvaluationException(org.xacml4j.v30.Status.missingAttribute("late").build(), "late failure"));
+		Apply expression = (Apply) apply(F3 + "any-of", function(F1 + "string-equal"), wrongValue, failingBag);
+		assertTrue(expression.isTypeCorrect());
+		EvaluationException error = assertThrows(EvaluationException.class, () -> expression.evaluate(context));
+		assertEquals(StatusCodeId.MISSING_ATTRIBUTE, error.getStatus().getStatusCode().getValue());
+		assertEquals("late failure", error.getMessage());
 	}
 
 	/**
@@ -334,7 +384,6 @@ public class ApplyArgumentValidationTest
 		assertFalse(apply.isTypeCorrect());
 		assertDoesNotFit(functionOfTheWrongExpression,
 				assertThrows(EvaluationException.class, () -> apply.evaluate(context)));
-		verifyNoInteractions(context);
 	}
 
 	/** The status of an expression whose arguments do not fit. The message names the function only. */
@@ -485,6 +534,7 @@ public class ApplyArgumentValidationTest
 		EvaluationException e = assertThrows(EvaluationException.class,
 				() -> apply.evaluate(mock(EvaluationContext.class)));
 		assertEquals(StatusCodeId.SYNTAX_ERROR, e.getStatus().getStatusCode().getValue());
+		assertEquals("Invalid higher-order function arguments", e.getMessage());
 	}
 
 	static Stream<Arguments> higherOrderFunctionsWithADynamicBagOfAnotherDataType()

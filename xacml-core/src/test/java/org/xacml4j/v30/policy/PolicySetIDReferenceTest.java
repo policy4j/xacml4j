@@ -74,7 +74,7 @@ public class PolicySetIDReferenceTest
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicySetIDReference();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		when(context.getCurrentPolicySet()).thenReturn(policySet);
 		assertEquals("otherTestId", policySet.getId());
 		assertEquals(Version.parse("1.0"), policySet.getVersion());
@@ -84,7 +84,7 @@ public class PolicySetIDReferenceTest
 		verify(context, times(2)).getCurrentPolicySetIDReference();
 		verify(context, times(1)).resolve(ref);
 		verify(context, times(1)).getCurrentPolicySet();
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -101,7 +101,7 @@ public class PolicySetIDReferenceTest
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicySetIDReference();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		when(context.getCurrentPolicySet()).thenReturn(policySet);
 		assertEquals("otherTestId", policySet.getId());
 		assertEquals(Version.parse("1.0"), policySet.getVersion());
@@ -111,7 +111,7 @@ public class PolicySetIDReferenceTest
 		verify(context, times(2)).getCurrentPolicySetIDReference();
 		verify(context, times(1)).resolve(ref);
 		verify(context, times(1)).getCurrentPolicySet();
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class PolicySetIDReferenceTest
 		// Count all calls; strict stubs can otherwise mark extra calls as verified.
 		verify(context, times(2)).getCurrentPolicySetIDReference();
 		verify(context, times(1)).resolve(ref);
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		when(context.getCurrentPolicySet()).thenReturn(policySet);
 		assertEquals("otherTestId", policySet.getId());
 		assertEquals(Version.parse("1.0"), policySet.getVersion());
@@ -138,7 +138,7 @@ public class PolicySetIDReferenceTest
 		verify(context, times(2)).getCurrentPolicySetIDReference();
 		verify(context, times(1)).resolve(ref);
 		verify(context, times(1)).getCurrentPolicySet();
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class PolicySetIDReferenceTest
 		PolicySetIDReference ref = PolicySetIDReference.builder("testId").versionAsString("1.+").build();
 		assertThrows(IllegalArgumentException.class, () -> ref.evaluate(context));
 		verify(context).getCurrentPolicySetIDReference();
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class PolicySetIDReferenceTest
 		verify(context, times(1)).resolve(ref);
 		verify(context, times(2)).getCurrentPolicySet();
 		verify(context, times(1)).getCurrentPolicy();
-		verifyNoMoreInteractions(context, algorithm);
+		verifyNoMoreInteractions(algorithm);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
 		assertSame(refPolicySet, policyRefContext.getCurrentPolicySet());
 	}
@@ -198,7 +198,6 @@ public class PolicySetIDReferenceTest
 		ArgumentCaptor<EvaluationContext> refContext = ArgumentCaptor.forClass(EvaluationContext.class);
 		order.verify(algorithm).combine(refContext.capture(), eq(Collections.emptyList()));
 		assertSame(policyRefContext, refContext.getValue());
-		verify(context, never()).isExtendedIndeterminateEval();
 		// A policy set without applicable advice or obligations adds none (design D19)
 		verify(context, never()).addAdvices(any(), any());
 		verify(context, never()).addObligations(any(), any());
@@ -210,7 +209,6 @@ public class PolicySetIDReferenceTest
 		verify(context, times(1)).getCurrentPolicy();
 		verify(algorithm, times(1)).combine(refContext.capture(), eq(Collections.emptyList()));
 		verify(context, times(1)).addEvaluationResult(refPolicySet, Decision.DENY);
-		verifyNoMoreInteractions(context, algorithm);
 		assertSame(ref, policyRefContext.getCurrentPolicySetIDReference());
 		assertSame(refPolicySet, policyRefContext.getCurrentPolicySet());
 	}

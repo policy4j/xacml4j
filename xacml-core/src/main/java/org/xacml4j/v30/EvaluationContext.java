@@ -22,6 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
+import org.xacml4j.v30.spi.observe.DecisionObservation;
 import org.xacml4j.v30.types.Entity;
 
 import java.time.Clock;
@@ -53,6 +54,17 @@ public interface EvaluationContext
 	 */
 	default boolean isExtendedIndeterminateEval(){
 		return false;
+	}
+
+	/**
+	 * Gets the observation of the decision that this context evaluates (design D34). The engine reads it with
+	 * {@link org.xacml4j.v30.policy.RootEvaluationContext#observationOf(EvaluationContext)}.
+	 *
+	 * @return the {@link DecisionObservation}, or {@link DecisionObservation#none()} for a decision that is not
+	 * observed
+	 */
+	default DecisionObservation getDecisionObservation(){
+		return DecisionObservation.none();
 	}
 
 	default Optional<DecisionRule> getCurrentDecisionRule(){
@@ -204,7 +216,9 @@ public interface EvaluationContext
 
 	/**
 	 * Returns a list of all policies which were found
-	 * to be fully applicable during evaluation.
+	 * to be fully applicable during evaluation. The default PDP records them only
+	 * when the request asks for the policy identifier list, or debug logging is on;
+	 * otherwise the collection is empty (design D32 of optimize-pdp-evaluation).
 	 *
 	 * @return a collection of {@link CompositeDecisionRuleIDReference}
 	 */
@@ -323,6 +337,16 @@ public interface EvaluationContext
 	 * @return a map of all resolved designators
 	 */
 	Map<AttributeDesignatorKey, BagOfValues> getResolvedDesignators();
+
+	/**
+	 * Tells whether the information point supplied a designator bag in this context,
+	 * without creating the view of {@link #getResolvedDesignators()} (design D32)
+	 *
+	 * @return {@code true} if at least one designator was resolved by the information point
+	 */
+	default boolean hasResolvedDesignators(){
+		return !getResolvedDesignators().isEmpty();
+	}
 
 	/**
 	 * Gets all resolved selectors in this context

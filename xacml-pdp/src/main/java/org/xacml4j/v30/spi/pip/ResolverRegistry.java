@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.xacml4j.v30.AttributeDesignatorKey;
+import org.xacml4j.v30.AttributeReferenceKey;
 import org.xacml4j.v30.AttributeSelectorKey;
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.CategoryId;
@@ -66,6 +67,18 @@ public interface ResolverRegistry
 	 */
 	Collection<ContentResolverDescriptor> getMatchingContentResolver(
 			EvaluationContext context, AttributeSelectorKey selectorKey);
+
+	/**
+	 * Tells whether this registry knows that no resolver of its supplies a key: no attribute
+	 * resolver of the key's category and attribute, or no content resolver of its category.
+	 * {@code false} by default, which asks the matching resolvers.
+	 *
+	 * @param key a designator or selector key
+	 * @return {@code true} when no resolver supplies the key
+	 */
+	default boolean hasNoResolver(AttributeReferenceKey key){
+		return false;
+	}
 
 
 	/**

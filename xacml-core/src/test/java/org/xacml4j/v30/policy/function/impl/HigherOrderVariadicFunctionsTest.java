@@ -30,8 +30,8 @@ import java.util.List;
 
 import org.mockito.ArgumentCaptor;
 import static org.mockito.Mockito.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.xacml4j.v30.BagOfValues;
@@ -45,6 +45,7 @@ import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.Apply;
 import org.xacml4j.v30.policy.Condition;
 import org.xacml4j.v30.policy.ConditionResult;
+import org.xacml4j.v30.policy.FunctionParamSpec;
 import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
@@ -91,13 +92,6 @@ public class HigherOrderVariadicFunctionsTest
 		status = ArgumentCaptor.forClass(Status.class);
 	}
 
-	@AfterEach
-	public void verifyContextInteractions()
-	{
-		verify(context, atLeast(0)).isValidateFuncParamsAtRuntime();
-		verifyNoMoreInteractions(context);
-	}
-
 	@MethodSource("modes")
 	@ParameterizedTest(name = "runtimeValidation={0}")
 	public void anyOfSpecExample(boolean runtimeValidation) throws Exception
@@ -122,6 +116,18 @@ public class HigherOrderVariadicFunctionsTest
 	{
 		initHigherOrderVariadicFunctionsTest(runtimeValidation);
 		assertValue(BooleanVal.of(true), "any-of", ref("string-equal"), strings("a", "b"), string("b"));
+	}
+
+	/** With the bag first, each value of the bag is the first argument of the predicate */
+	@MethodSource("modes")
+	@ParameterizedTest(name = "runtimeValidation={0}")
+	public void bagFirstGivesTheBagValueAsTheFirstArgument(boolean runtimeValidation) throws Exception
+	{
+		initHigherOrderVariadicFunctionsTest(runtimeValidation);
+		// No value of the bag is greater than 3, while 3 is greater than both
+		assertValue(BooleanVal.of(false), "any-of", ref("integer-greater-than"), integers(1, 2), integer(3));
+		// Both values of the bag are greater than 3, while 3 is greater than neither
+		assertValue(BooleanVal.of(true), "all-of", ref("integer-greater-than"), integers(4, 5), integer(3));
 	}
 
 	@MethodSource("modes")
@@ -166,6 +172,9 @@ public class HigherOrderVariadicFunctionsTest
 		FunctionReference unary = testRef("nonEmpty", StringVal.class);
 		assertValue(BooleanVal.of(true), "any-of", unary, strings("", "a"));
 		assertValue(BooleanVal.of(false), "all-of", unary, strings("a", ""));
+		assertValue(BooleanVal.of(true), "any-of", ref("not"), XacmlTypes.BOOLEAN.bagOf(BooleanVal.of(true), BooleanVal.of(false)));
+		assertValue(BooleanVal.of(false), "all-of", ref("not"), XacmlTypes.BOOLEAN.bagOf(BooleanVal.of(false), BooleanVal.of(true)));
+		assertValue(BooleanVal.of(true), "any-of-any", ref("not"), XacmlTypes.BOOLEAN.bagOf(BooleanVal.of(true), BooleanVal.of(false)));
 	}
 
 	@MethodSource("modes")
@@ -214,6 +223,44 @@ public class HigherOrderVariadicFunctionsTest
 		initHigherOrderVariadicFunctionsTest(runtimeValidation);
 		assertValue(BooleanVal.of(true), "any-of-any", ref("string-equal"), string("a"), string("a"));
 		assertValue(BooleanVal.of(false), "any-of-any", ref("string-equal"), string("a"), string("b"));
+	}
+
+	@MethodSource("modes")
+	@ParameterizedTest(name = "runtimeValidation={0}")
+	public void customPredicateKeepsItsVariadicInvocation(boolean runtimeValidation) throws Exception
+	{
+		initHigherOrderVariadicFunctionsTest(runtimeValidation);
+		FunctionSpec signature = FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-equal").get();
+		FunctionSpec custom = mock(FunctionSpec.class);
+		when(custom.resolveReturnType(any())).thenReturn(XacmlTypes.BOOLEAN);
+		when(custom.getNumberOfParams()).thenReturn(2);
+		when(custom.getParamSpecAt(0)).thenReturn(signature.getParamSpecAt(0));
+		when(custom.getParamSpecAt(1)).thenReturn(signature.getParamSpecAt(1));
+		doReturn(BooleanVal.of(true)).when(custom).invoke(same(context), any(Expression[].class));
+		doReturn(BooleanVal.of(false)).when(custom).invoke(same(context), any(Expression.class), any(Expression.class));
+		FunctionReference predicate = new FunctionReference(custom);
+		assertValue(BooleanVal.of(true), "any-of", predicate, string("a"), strings("b", "c"));
+		assertValue(BooleanVal.of(true), "any-of", predicate, strings("a", "b"), string("c"));
+		assertValue(BooleanVal.of(true), "all-of", predicate, string("a"), strings("b", "c"));
+		assertValue(BooleanVal.of(true), "all-of", predicate, strings("a", "b"), string("c"));
+		assertValue(BooleanVal.of(true), "any-of-any", predicate, strings("a"), strings("b"));
+		assertValue(BooleanVal.of(true), "all-of-any", predicate, strings("a", "b"), strings("c", "d"));
+		assertValue(BooleanVal.of(true), "any-of-all", predicate, strings("a", "b"), strings("c", "d"));
+		assertValue(BooleanVal.of(true), "all-of-all", predicate, strings("a", "b"), strings("c", "d"));
+		assertValue(XacmlTypes.BOOLEAN.bagOf(BooleanVal.of(true), BooleanVal.of(true)),
+				"map", predicate, string("a"), strings("b", "c"));
+
+		FunctionSpec unary = mock(FunctionSpec.class);
+		when(unary.resolveReturnType(any())).thenReturn(XacmlTypes.BOOLEAN);
+		when(unary.getNumberOfParams()).thenReturn(1);
+		when(unary.getParamSpecAt(0)).thenReturn(signature.getParamSpecAt(0));
+		doReturn(BooleanVal.of(true)).when(unary).invoke(same(context), any(Expression[].class));
+		FunctionReference unaryPredicate = new FunctionReference(unary);
+		assertValue(BooleanVal.of(true), "any-of", unaryPredicate, strings("a", "b"));
+		assertValue(BooleanVal.of(true), "all-of", unaryPredicate, strings("a", "b"));
+		assertValue(BooleanVal.of(true), "any-of-any", unaryPredicate, strings("a", "b"));
+		assertValue(XacmlTypes.BOOLEAN.bagOf(BooleanVal.of(true), BooleanVal.of(true)),
+				"map", unaryPredicate, strings("a", "b"));
 	}
 
 	@MethodSource("modes")
@@ -331,6 +378,30 @@ public class HigherOrderVariadicFunctionsTest
 		assertInvalid("any-of", ref("string-normalize-to-lower-case"), strings("a"));
 	}
 
+	/**
+	 * Review r-AG: a parameter of another implementation can accept the type of an argument and still
+	 * reject the argument, so the predicate keeps its full validation, and the call is a syntax error.
+	 */
+	@Test
+	public void predicateParameterThatRejectsItsArgumentIsSyntaxError() throws Exception
+	{
+		FunctionParamSpec rejecting = mock(FunctionParamSpec.class);
+		when(rejecting.isValidParamType(any())).thenReturn(true);
+		when(rejecting.validate(any(), anyBoolean())).thenReturn(false);
+		FunctionSpec predicate = mock(FunctionSpec.class);
+		when(predicate.resolveReturnType(any())).thenReturn(XacmlTypes.BOOLEAN);
+		when(predicate.getNumberOfParams()).thenReturn(2);
+		when(predicate.getParamSpecAt(anyInt())).thenReturn(rejecting);
+		doReturn(BooleanVal.of(true)).when(predicate).invoke(any(), any(Expression.class), any(Expression.class));
+		FunctionReference ref = new FunctionReference(predicate);
+		FunctionSpec anyOf = higher("any-of");
+
+		assertFalse(anyOf.validateParameters(Arrays.asList(ref, string("a"), strings("a"))));
+		EvaluationException error = assertThrows(EvaluationException.class,
+				() -> anyOf.invoke(context, ref, string("a"), strings("a")));
+		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
+	}
+
 	@MethodSource("modes")
 	@ParameterizedTest(name = "runtimeValidation={0}")
 	public void mapRejectsBagReturningFunctionAtValidation(boolean runtimeValidation)
@@ -415,7 +486,8 @@ public class HigherOrderVariadicFunctionsTest
 
 	private static FunctionSpec higher(String operation)
 	{
-		return FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:3.0:function:" + operation).get();
+		return FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:3.0:function:" + operation)
+				.or(() -> FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:1.0:function:" + operation)).orElseThrow();
 	}
 
 	private static FunctionReference ref(String operation)

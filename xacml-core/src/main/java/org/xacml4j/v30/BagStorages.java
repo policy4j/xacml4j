@@ -16,7 +16,7 @@ package org.xacml4j.v30;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
@@ -32,12 +32,28 @@ import java.util.Set;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.DoubleVal;
 import org.xacml4j.v30.types.IntegerVal;
+import org.xacml4j.v30.types.ISO8601Date;
+import org.xacml4j.v30.types.ISO8601DateTime;
+import org.xacml4j.v30.types.ISO8601Time;
 import org.xacml4j.v30.types.Value;
 
 final class BagStorages
 {
 	static final int LINEAR_LOOKUP_LIMIT = 8;
-	enum Kind { VALUES, INTEGERS, DOUBLES, BOOLEANS }
+
+	/** The kinds of storage; a kind holds the values it accepts in their primitive form */
+	enum Kind {
+		VALUES, INTEGERS, DOUBLES, BOOLEANS;
+
+		boolean accepts(Value<?> value) {
+			return switch (this) {
+				case INTEGERS -> value instanceof IntegerVal;
+				case DOUBLES -> value instanceof DoubleVal;
+				case BOOLEANS -> value instanceof BooleanVal;
+				case VALUES -> true;
+			};
+		}
+	}
 
 	private BagStorages() {}
 
@@ -45,9 +61,17 @@ final class BagStorages
 		return new Builder(kind);
 	}
 
+	/**
+	 * Collects the values. A bag of no value or of one value gets a storage without arrays, and
+	 * the values of a larger bag are grouped at {@link #build()} (change optimize-pdp-evaluation,
+	 * cycles X and AF).
+	 */
 	private static final class Builder implements BagStorage.Builder {
 		private final Kind kind;
-		private final Map<Value<?>, Integer> counts = new LinkedHashMap<>();
+		/** The first value, until a second one arrives */
+		private Value<?> first;
+		/** All the values from the second one on, else null */
+		private Value<?>[] values;
 		private boolean specialized = true;
 		private int size;
 
@@ -56,29 +80,117 @@ final class BagStorages
 		@Override
 		public Builder add(Value<?> value) {
 			Objects.requireNonNull(value);
-			counts.merge(value, 1, Math::addExact);
-			size = Math.addExact(size, 1);
-			specialized &= switch (kind) {
-				case INTEGERS -> value instanceof IntegerVal;
-				case DOUBLES -> value instanceof DoubleVal;
-				case BOOLEANS -> value instanceof BooleanVal;
-				case VALUES -> true;
-			};
+			int nextSize = Math.addExact(size, 1);
+			if (size == 0) {
+				first = value;
+			} else {
+				if (values == null) {
+					values = new Value<?>[4];
+					values[0] = first;
+				} else if (nextSize > values.length) {
+					values = Arrays.copyOf(values, Math.max(nextSize, values.length + (values.length >> 1)));
+				}
+				values[size] = value;
+			}
+			size = nextSize;
+			specialized &= kind.accepts(value);
 			return this;
 		}
 
 		@Override
 		public BagStorage build() {
+			if (size == 0) {
+				return Empty.of(kind);
+			}
+			if (size == 1) {
+				return new Single(first);
+			}
+			Value<?>[] distinct;
+			int[] counts;
+			int distinctSize = 0;
+			if (size <= LINEAR_LOOKUP_LIMIT) {
+				distinct = new Value<?>[size];
+				counts = new int[size];
+				for (int i = 0; i < size; i++) {
+					Value<?> value = values[i];
+					int index = 0;
+					while (index < distinctSize && !value.equals(distinct[index])) index++;
+					if (index == distinctSize) distinct[distinctSize++] = value;
+					counts[index]++;
+				}
+			} else {
+				Map<Value<?>, Integer> grouped = new LinkedHashMap<>();
+				for (int i = 0; i < size; i++) grouped.merge(values[i], 1, Math::addExact);
+				distinctSize = grouped.size();
+				distinct = new Value<?>[distinctSize];
+				counts = new int[distinctSize];
+				int index = 0;
+				for (var entry : grouped.entrySet()) {
+					distinct[index] = entry.getKey();
+					counts[index++] = entry.getValue();
+				}
+			}
 			if (!specialized) {
-				return new Values(counts, size);
+				return new Values(distinct, counts, distinctSize, size);
 			}
 			return switch (kind) {
-				case INTEGERS -> new Integers(counts, size);
-				case DOUBLES -> new Doubles(counts, size);
-				case BOOLEANS -> new Booleans(counts);
-				case VALUES -> new Values(counts, size);
+				case INTEGERS -> new Integers(distinct, counts, distinctSize, size);
+				case DOUBLES -> new Doubles(distinct, counts, distinctSize, size);
+				case BOOLEANS -> new Booleans(distinct, counts, distinctSize);
+				case VALUES -> new Values(distinct, counts, distinctSize, size);
 			};
 		}
+	}
+
+	/**
+	 * No value, one storage per kind (cycle AF). It answers as the empty grouped storage of its
+	 * kind did: a typed storage scans nothing for a literal of another class, the general one
+	 * reports no match.
+	 */
+	private static final class Empty implements BagStorage {
+		private static final Empty[] OF_KIND = Arrays.stream(Kind.values()).map(Empty::new).toArray(Empty[]::new);
+		private final Kind kind;
+
+		private Empty(Kind kind) { this.kind = kind; }
+
+		static Empty of(Kind kind) { return OF_KIND[kind.ordinal()]; }
+
+		@Override public int size() { return 0; }
+		@Override public Value<?> valueAt(int index) { throw new IndexOutOfBoundsException(index); }
+		@Override public int distinctSize() { return 0; }
+		@Override public Value<?> distinctValueAt(int index) { throw new IndexOutOfBoundsException(index); }
+		@Override public int distinctCountAt(int index) { throw new IndexOutOfBoundsException(index); }
+		@Override public int multisetHashCode() { return 0; }
+		@Override public int count(Value<?> value) { return 0; }
+		@Override public Scan equal(Value<?> literal) { return kind.accepts(literal) ? Scan.NO_MATCH : Scan.NONE; }
+	}
+
+	/**
+	 * One value, held directly (cycle AF). The defaults of {@link BagStorage} answer for it as
+	 * the grouped storages do for one value: {@code count} and {@code equal} compare with
+	 * {@link Value#equals(Object)}, which is the long, {@code Double.equals}, and boolean
+	 * comparison of the typed storages, and a literal of another class scans nothing.
+	 */
+	private static final class Single implements BagStorage {
+		private final Value<?> value;
+
+		Single(Value<?> value) { this.value = value; }
+
+		@Override public int size() { return 1; }
+		@Override public Value<?> valueAt(int index) {
+			Objects.checkIndex(index, 1);
+			return value;
+		}
+		@Override public int distinctSize() { return 1; }
+		@Override public Value<?> distinctValueAt(int index) {
+			Objects.checkIndex(index, 1);
+			return value;
+		}
+		@Override public int distinctCountAt(int index) {
+			Objects.checkIndex(index, 1);
+			return 1;
+		}
+		@Override public int multisetHashCode() { return value.hashCode() ^ 1; }
 	}
 
 	private abstract static class Grouped implements BagStorage {
@@ -86,15 +198,13 @@ final class BagStorages
 		final int[] offsets;
 		final int hash;
 
-		Grouped(Map<Value<?>, Integer> counts, int size) {
+		Grouped(Value<?>[] distinct, int[] counts, int distinctSize, int size) {
 			this.size = size;
-			this.offsets = new int[counts.size() + 1];
-			int index = 0;
+			this.offsets = new int[distinctSize + 1];
 			int hash = 0;
-			for (var entry : counts.entrySet()) {
-				offsets[index + 1] = offsets[index] + entry.getValue();
-				hash += entry.getKey().hashCode() ^ entry.getValue();
-				index++;
+			for (int i = 0; i < distinctSize; i++) {
+				offsets[i + 1] = offsets[i] + counts[i];
+				hash += distinct[i].hashCode() ^ counts[i];
 			}
 			this.hash = hash;
 		}
@@ -115,13 +225,16 @@ final class BagStorages
 	private static final class Values extends Grouped {
 		private final Value<?>[] values;
 
-		Values(Map<Value<?>, Integer> counts, int size) {
-			super(counts, size);
-			values = new Value<?>[size];
-			int index = 0;
-			for (var entry : counts.entrySet()) {
-				Arrays.fill(values, index, index + entry.getValue(), entry.getKey());
-				index += entry.getValue();
+		Values(Value<?>[] distinct, int[] counts, int distinctSize, int size) {
+			super(distinct, counts, distinctSize, size);
+			if (distinctSize == size) {
+				// Every value once: the distinct values, in order, are the values (cycle AF)
+				values = distinct;
+			} else {
+				values = new Value<?>[size];
+				for (int i = 0; i < distinctSize; i++) {
+					Arrays.fill(values, offsets[i], offsets[i + 1], distinct[i]);
+				}
 			}
 		}
 
@@ -132,14 +245,12 @@ final class BagStorages
 		private final long[] values;
 		private final Value<?> first;
 
-		Integers(Map<Value<?>, Integer> counts, int size) {
-			super(counts, size);
+		Integers(Value<?>[] distinct, int[] counts, int distinctSize, int size) {
+			super(distinct, counts, distinctSize, size);
 			values = new long[size];
-			first = counts.isEmpty() ? null : counts.keySet().iterator().next();
-			int index = 0;
-			for (var entry : counts.entrySet()) {
-				Arrays.fill(values, index, index + entry.getValue(), ((IntegerVal) entry.getKey()).get());
-				index += entry.getValue();
+			first = distinctSize == 0 ? null : distinct[0];
+			for (int i = 0; i < distinctSize; i++) {
+				Arrays.fill(values, offsets[i], offsets[i + 1], ((IntegerVal) distinct[i]).get());
 			}
 		}
 
@@ -171,14 +282,12 @@ final class BagStorages
 		private final Value<?> first;
 		private volatile Set<Long> ieeeValues;
 
-		Doubles(Map<Value<?>, Integer> counts, int size) {
-			super(counts, size);
+		Doubles(Value<?>[] distinct, int[] counts, int distinctSize, int size) {
+			super(distinct, counts, distinctSize, size);
 			values = new double[size];
-			first = counts.isEmpty() ? null : counts.keySet().iterator().next();
-			int index = 0;
-			for (var entry : counts.entrySet()) {
-				Arrays.fill(values, index, index + entry.getValue(), ((DoubleVal) entry.getKey()).get());
-				index += entry.getValue();
+			first = distinctSize == 0 ? null : distinct[0];
+			for (int i = 0; i < distinctSize; i++) {
+				Arrays.fill(values, offsets[i], offsets[i + 1], ((DoubleVal) distinct[i]).get());
 			}
 		}
 
@@ -225,20 +334,19 @@ final class BagStorages
 		private final Value<?> firstValue;
 		private final int hash;
 
-		Booleans(Map<Value<?>, Integer> counts) {
-			var iterator = counts.entrySet().iterator();
-			if (iterator.hasNext()) {
-				var entry = iterator.next();
-				firstValue = entry.getKey();
-				trueFirst = ((BooleanVal) firstValue).get();
-			} else {
-				firstValue = null;
-				trueFirst = false;
-			}
-			trueCount = counts.getOrDefault(BooleanVal.of(true), 0);
-			falseCount = counts.getOrDefault(BooleanVal.of(false), 0);
+		Booleans(Value<?>[] distinct, int[] counts, int distinctSize) {
+			firstValue = distinctSize == 0 ? null : distinct[0];
+			trueFirst = distinctSize != 0 && ((BooleanVal) firstValue).get();
+			int trues = 0;
+			int falses = 0;
 			int computed = 0;
-			for (var entry : counts.entrySet()) computed += entry.getKey().hashCode() ^ entry.getValue();
+			for (int i = 0; i < distinctSize; i++) {
+				if (((BooleanVal) distinct[i]).get()) trues = counts[i];
+				else falses = counts[i];
+				computed += distinct[i].hashCode() ^ counts[i];
+			}
+			trueCount = trues;
+			falseCount = falses;
 			hash = computed;
 		}
 
@@ -272,6 +380,38 @@ final class BagStorages
 
 	static long doubleKey(double value) {
 		return value == 0.0 ? 0L : Double.doubleToLongBits(value);
+	}
+
+	static BagStorage.Scan compareTemporal(BagStorage bag, BagStorage.Comparison comparison, Value<?> literal) {
+		try {
+			if (literal instanceof ISO8601Date date) {
+				return compareTemporal(bag, comparison, date, ISO8601Date.class);
+			}
+			if (literal instanceof ISO8601DateTime dateTime) {
+				return compareTemporal(bag, comparison, dateTime, ISO8601DateTime.class);
+			}
+			if (literal instanceof ISO8601Time time && time.isTimeZoneDefined()) {
+				return compareTemporal(bag, comparison, time, ISO8601Time.class);
+			}
+			return BagStorage.Scan.NONE;
+		} catch (Throwable failure) {
+			return BagStorage.Scan.NONE;
+		}
+	}
+
+	private static <T extends Value<?> & Comparable<T>> BagStorage.Scan compareTemporal(
+			BagStorage bag, BagStorage.Comparison comparison, T literal, Class<T> type) {
+		int size = bag.size();
+		for (int i = 0; i < size; i++) {
+			Value<?> value = bag.valueAt(i);
+			if (value.getClass() != type || value instanceof ISO8601Time time && !time.isTimeZoneDefined()) {
+				return BagStorage.Scan.NONE;
+			}
+		}
+		for (int i = 0; i < size; i++) {
+			if (compare(comparison, literal.compareTo(type.cast(bag.valueAt(i))), 0)) return BagStorage.Scan.MATCH;
+		}
+		return BagStorage.Scan.NO_MATCH;
 	}
 
 	static boolean compare(BagStorage.Comparison comparison, long left, long right) {

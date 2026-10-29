@@ -24,6 +24,7 @@ import java.time.ZoneOffset;
  * #L%
  */
 
+import org.xacml4j.v30.BagStorage.Comparison;
 import org.xacml4j.v30.policy.function.*;
 import org.xacml4j.v30.types.*;
 
@@ -72,6 +73,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(r < 0 || r == 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThan(
@@ -81,6 +83,7 @@ public final class NonNumericComparisonFunctions
 		return BooleanVal.of(a.compareTo(b) > 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThanOrEquals(
@@ -91,6 +94,7 @@ public final class NonNumericComparisonFunctions
 		return BooleanVal.of(r  > 0 || r == 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-less-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThan(
@@ -100,6 +104,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.compareTo(b) < 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:time-less-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThanOrEquals(
@@ -134,6 +139,7 @@ public final class NonNumericComparisonFunctions
 		return BooleanVal.of(timeInCycle <= end);
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThan(
@@ -143,6 +149,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.compareTo(b) > 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThanOrEquals(
@@ -153,6 +160,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(r  > 0 || r == 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-less-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThan(
@@ -162,6 +170,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.compareTo(b) < 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:date-less-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThanOrEquals(
@@ -172,6 +181,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(r  < 0 || r == 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThan(
@@ -181,6 +191,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.compareTo(b) > 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.GREATER_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-greater-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal greaterThanOrEquals(
@@ -191,6 +202,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(r  > 0 || r == 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_THAN)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThan(
@@ -200,6 +212,7 @@ public final class NonNumericComparisonFunctions
 		return XacmlTypes.BOOLEAN.ofAny(a.compareTo(b) < 0);
 	}
 
+	@XacmlFuncBagScan(Comparison.LESS_OR_EQUAL)
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:1.0:function:dateTime-less-than-or-equal")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
 	public static BooleanVal lessThanOrEquals(
