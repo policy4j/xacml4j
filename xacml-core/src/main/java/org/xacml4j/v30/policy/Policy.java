@@ -30,8 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Supplier;
 
 import org.xacml4j.v30.CompositeDecisionRule;
 import org.xacml4j.v30.CompositeDecisionRuleIDReference;
@@ -39,6 +41,7 @@ import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.PolicyElement;
+import org.xacml4j.v30.Status;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.policy.combine.impl.DenyOverridesRuleCombiningAlgorithm;
@@ -358,6 +361,14 @@ public class Policy extends BaseCompositeDecisionRule
 	class PolicyDescendantEvaluationContext extends CompositeRuleEvaluationContext
 	{
 		private final Map<String, ValueExp> varDefEvalResults;
+		/**
+		 * The rule that a built-in combining algorithm of the policy evaluates in this context now, instead
+		 * of in a context of its own; none outside that evaluation. Written by {@link #enterRule} and
+		 * {@link #exitRule()} only (design D47)
+		 */
+		Rule rule;
+		/** The status of that rule's evaluation, apart from the status of this context (design D47) */
+		private Status ruleStatus;
 
 		/**
 		 * Creates policy evaluation context with a given parent context
@@ -370,6 +381,69 @@ public class Policy extends BaseCompositeDecisionRule
 			// rejects an undefined id first (change optimize-pdp-evaluation, D10)
 			this.varDefEvalResults = variableDefinitions.isEmpty() ? Collections.emptyMap()
 					: new HashMap<>(variableDefinitions.size() * 2);
+		}
+
+		/**
+		 * Starts the evaluation of a rule in this context instead of a context of its own, for a built-in
+		 * combining algorithm of the policy (design D47): an engine rule whose context no code of another
+		 * implementation can receive, on the deciding thread of an unobserved decision of the engine's root,
+		 * without validation at runtime, and while no other rule is evaluated here. The rule's status
+		 * starts empty, whatever this context and the rules before it recorded.
+		 *
+		 * @param child a child that the combining algorithm evaluates now
+		 * @return {@code true} when the rule is evaluated in this context until {@link #exitRule()};
+		 * {@code false}, and nothing changed, when it gets a context of its own
+		 */
+		boolean enterRule(DecisionRule child){
+			if(rule != null || !builtInAlgorithm || child.getClass() != Rule.class || !((Rule)child).evaluatesInPolicyContext()
+					|| !(topOf(this) instanceof RootEvaluationContext root) || !root.isDecidingThread()
+					|| root.getDecisionObservation().isEnabled() || root.isValidateFuncParamsAtRuntime()){
+				return false;
+			}
+			rule = (Rule)child;
+			ruleStatus = null;
+			return true;
+		}
+
+		/**
+		 * Ends the evaluation of the rule in this context, also when it failed; the statuses that it set by
+		 * rule, in this context and above stay (design D47)
+		 */
+		void exitRule(){
+			rule = null;
+			ruleStatus = null;
+		}
+
+		/** While a rule is evaluated here, its own status (design D47) */
+		@Override
+		public Optional<Status> getEvaluationStatus(){
+			return rule == null ? super.getEvaluationStatus() : Optional.ofNullable(ruleStatus);
+		}
+
+		@Override
+		public void setEvaluationStatusIfAbsent(Supplier<Status> supplier){
+			if(rule == null){
+				super.setEvaluationStatusIfAbsent(supplier);
+			}else if(ruleStatus == null){
+				setEvaluationStatus(supplier.get());
+			}
+		}
+
+		/**
+		 * While a rule is evaluated here, as the rule's own context did with this one as its parent: the
+		 * rule's status, its status by the rule, and then the status of this context, passed up by the
+		 * policy unless a pass keeps the status that started it (design D47, plan review PR-D47-argon P3-1)
+		 */
+		@Override
+		public void setEvaluationStatus(Status status){
+			Rule evaluated = rule;
+			if(evaluated == null){
+				super.setEvaluationStatus(status);
+				return;
+			}
+			ruleStatus = status;
+			setEvaluationStatus(evaluated, status);
+			setEvaluationStatusOf(Policy.this, status);
 		}
 
 		@Override

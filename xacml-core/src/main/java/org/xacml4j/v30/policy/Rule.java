@@ -23,13 +23,22 @@ package org.xacml4j.v30.policy;
  */
 
 
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Set;
+
+import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Decision;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.MatchResult;
 import org.xacml4j.v30.PolicyElement;
 import org.xacml4j.v30.Status;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
+import org.xacml4j.v30.types.Value;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -37,6 +46,11 @@ import com.google.common.base.Preconditions;
 public class Rule extends BaseDecisionRule implements PolicyElement
 {
 	private final Effect effect;
+	/**
+	 * Whether no code of another implementation can receive the context of this rule, so that a
+	 * built-in combining algorithm may evaluate it in the context of its policy (design D47)
+	 */
+	private final boolean inPolicyContext;
 	/**
 	 * The hash code once computed; every field that it reads is fixed when the rule is built (cycle AR).
 	 * Hash inputs must remain immutable, including values supplied by trusted extensions.
@@ -46,6 +60,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	private Rule(Builder b){
 		super(b);
 		this.effect = b.effect;
+		this.inPolicyContext = new EngineOnly().rule(this);
 	}
 
 	public static Builder builder(String ruleId, Effect effect){
@@ -62,9 +77,9 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	}
 
 	/**
-	 * Implementation returns the same context which was
-	 * passed as parent context. Rule evaluation shares
-	 * a context with a parent policy
+	 * Creates the context of this rule: the given context when it already evaluates this rule, as the
+	 * context of a policy does in which a built-in combining algorithm evaluates it (design D47); else
+	 * a context of its own below the given one
 	 */
 	@Override
 	public EvaluationContext createContext(EvaluationContext context) {
@@ -72,6 +87,11 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 			return context;
 		}
 		return new RuleEvaluationContext(context);
+	}
+
+	/** Whether a built-in combining algorithm may evaluate this rule in the context of its policy (design D47) */
+	final boolean evaluatesInPolicyContext(){
+		return inPolicyContext;
 	}
 
 	@Override
@@ -214,6 +234,118 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	static boolean isOwnContext(DescendantEvaluationContext context){
 		Class<?> type = context.getClass();
 		return type == RuleEvaluationContext.class || type == ExtendedIndeterminateRuleContext.class;
+	}
+
+	/**
+	 * Tells whether no code of another implementation can receive the context of a rule (design D47, plan
+	 * review PR-D47-argon): its target, condition and responses, and the variable definitions that they
+	 * reference, are of the engine's classes; every match predicate, applied function and referenced
+	 * function is a trusted built-in; and every literal is a value of the engine. Any other expression, a
+	 * type assertion or a quantified expression among them, counts as one that can. Each definition is
+	 * walked once, so that a diamond of definitions takes linear time and a cycle ends.
+	 */
+	private static final class EngineOnly
+	{
+		/** The definitions walked so far, by identity; made at the first reference */
+		private Set<VariableDefinition> walked;
+
+		boolean rule(Rule rule){
+			return target(rule.getTarget()) && condition(rule.getCondition())
+					&& responses(rule.adviceExpressions, AdviceExpression.class)
+					&& responses(rule.obligationExpressions, ObligationExpression.class);
+		}
+
+		private boolean target(Target target){
+			if(target == null){
+				return true;
+			}
+			if(target.getClass() != Target.class){
+				return false;
+			}
+			for(MatchAnyOf anyOf : target.getAnyOf()){
+				if(anyOf.getClass() != MatchAnyOf.class){
+					return false;
+				}
+				for(MatchAllOf allOf : anyOf.getAllOf()){
+					if(allOf.getClass() != MatchAllOf.class){
+						return false;
+					}
+					for(Match match : allOf.getMatch()){
+						if(match.getClass() != Match.class || !FunctionSpecBuilder.usesBuiltInInvocation(match.predicate())
+								|| !expression(match.getReference()) || !expression(match.getAttributeValue())){
+							return false;
+						}
+					}
+				}
+			}
+			return true;
+		}
+
+		private boolean condition(Condition condition){
+			return condition == null || condition.getClass() == Condition.class && expression(condition.getExpression());
+		}
+
+		private boolean responses(List<? extends BaseDecisionRuleResponseExpression> responses, Class<?> engineClass){
+			for(BaseDecisionRuleResponseExpression response : responses){
+				if(response.getClass() != engineClass){
+					return false;
+				}
+				for(AttributeAssignmentExpression assignment : response.getAttributeAssignmentExpressions()){
+					if(assignment.getClass() != AttributeAssignmentExpression.class || !expression(assignment.getExpression())){
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+
+		private boolean expression(Expression e){
+			Class<?> type = e.getClass();
+			if(type == AttributeDesignator.class || type == AttributeSelector.class){
+				return true;
+			}
+			if(e instanceof Value<?>){
+				return type.getPackage() == Value.class.getPackage();
+			}
+			if(type == BagOfValues.class){
+				// A higher-order function evaluates each value of a literal bag with the context of the rule
+				BagOfValues bag = (BagOfValues)e;
+				for(int i = 0; i < bag.size(); i++){
+					if(!expression(bag.valueAt(i))){
+						return false;
+					}
+				}
+				return true;
+			}
+			if(type == FunctionReference.class){
+				// A higher-order function calls it with the context of the rule
+				return FunctionSpecBuilder.usesBuiltInInvocation(((FunctionReference)e).function());
+			}
+			if(type == Apply.class){
+				Apply apply = (Apply)e;
+				if(!FunctionSpecBuilder.usesBuiltInInvocation(apply.function())){
+					return false;
+				}
+				for(Expression argument : apply.getArguments()){
+					if(!expression(argument)){
+						return false;
+					}
+				}
+				return true;
+			}
+			if(type == VariableReference.class){
+				VariableDefinition definition = ((VariableReference)e).getDefinition();
+				if(definition.getClass() != VariableDefinition.class){
+					return false;
+				}
+				if(walked == null){
+					walked = Collections.newSetFromMap(new IdentityHashMap<>());
+				}
+				// A definition walked before, or being walked, adds nothing
+				return !walked.add(definition) || expression(definition.getExpression());
+			}
+			return false;
+		}
 	}
 
 	public static class Builder extends BaseDecisionRule.Builder<Builder>

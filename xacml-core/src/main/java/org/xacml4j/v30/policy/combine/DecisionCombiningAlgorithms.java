@@ -57,7 +57,8 @@ public final class DecisionCombiningAlgorithms
 	/**
 	 * Evaluates a child in a context of its own, except that a child whose built-in target the
 	 * request entity decides gets no context when it cannot match, and is not matched again when it
-	 * does (design D41).
+	 * does (design D41), and that a rule of a built-in algorithm whose context no code of another
+	 * implementation can receive is evaluated in the context of its policy (design D47).
 	 *
 	 * @param <D> {@link DecisionRule} subclass
 	 * @param context a parent evaluation context

@@ -74,10 +74,26 @@ public final class TargetBeforeContext
 
 	/**
 	 * Evaluates a child in a context of its own, except that a child whose target cannot match gets
-	 * none, and a child whose target matches is not matched again
+	 * none, a child whose target matches is not matched again, and a rule whose context no code of
+	 * another implementation can receive is evaluated in the context of its policy (design D47)
 	 */
 	public static Decision evaluateIfMatch(EvaluationContext context, DecisionRule child){
 		Optional<MatchResult> known = precheck(context, child);
+		if(known.isPresent() && known.get() == MatchResult.NOMATCH){
+			return root(context).evaluatePrechecked(context, child, known.get());
+		}
+		// After the precheck, which leaves an active rule to its own evaluation
+		if(context instanceof Policy.PolicyDescendantEvaluationContext policy && policy.enterRule(child)){
+			try{
+				return evaluate(context, child, known);
+			}finally{
+				policy.exitRule();
+			}
+		}
+		return evaluate(context, child, known);
+	}
+
+	private static Decision evaluate(EvaluationContext context, DecisionRule child, Optional<MatchResult> known){
 		if(known.isEmpty()) return child.evaluate(child.createContext(context));
 		return root(context).evaluatePrechecked(context, child, known.get());
 	}

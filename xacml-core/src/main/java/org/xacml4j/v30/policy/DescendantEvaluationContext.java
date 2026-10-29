@@ -116,6 +116,20 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 	}
 
 	/**
+	 * Records a status in this context and passes it up as {@link #setEvaluationStatus(Status)} does,
+	 * by the given decision rule of this level: a policy context names its policy while it evaluates one
+	 * of its rules, which is then the current rule (design D47)
+	 */
+	final void setEvaluationStatusOf(DecisionRule level, Status status){
+		this.evaluationStatus = status;
+		if(startsPass() && parent.getEvaluationStatus().isPresent()){
+			return;
+		}
+		parent.setEvaluationStatus(level, status);
+		parent.setEvaluationStatus(status);
+	}
+
+	/**
 	 * Tells whether this context starts an extended Indeterminate pass: it is in one, and its parent
 	 * is not
 	 */
@@ -222,13 +236,17 @@ abstract class DescendantEvaluationContext implements EvaluationContext
 	}
 
 	/**
-	 * Answered by the nearest rule context
+	 * Answered by the nearest rule context, or the nearest policy context that evaluates one of its
+	 * rules itself (design D47)
 	 */
 	@Override
 	public DecisionRule getCurrentRule() {
 		for(EvaluationContext c = this; c != top; c = ((DescendantEvaluationContext)c).parent){
 			if(c instanceof Rule.RuleEvaluationContext r){
 				return r.rule();
+			}
+			if(c instanceof Policy.PolicyDescendantEvaluationContext p && p.rule != null){
+				return p.rule;
 			}
 		}
 		return top.getCurrentRule();
