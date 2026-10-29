@@ -1,0 +1,2 @@
+java -jar <jar> PolicyParseBenchmark -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff results-policy.json
+java -jar <jar> RequestParseBenchmark -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff results-request.json
