@@ -6,7 +6,7 @@ JMH: NOT APPLICABLE for every group (maintainer decision 2026-10-27).
 
 - [ ] 1.1 Research Q2 to Q8 (`research/README.md`), from official docs and release notes
 - [ ] 1.2 Plan review by a lane from another family; resolve findings; check: `openspec validate upgrade-dependencies --strict`; evidence: `evidence/reviews/plan/`
-- [ ] 1.3 Maintainer approval of the versions, the removals, the **BREAKING** logging change, and Open Questions 1 and 2
+- [x] 1.3 Maintainer approval of the versions, the removals, the **BREAKING** logging change, and Open Questions 1 and 2 (approved 2026-10-27, recorded in proposal.md, Approval)
 
 ## 2. Logging: Log4j out, Logback in
 
