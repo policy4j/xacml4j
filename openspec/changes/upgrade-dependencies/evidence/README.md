@@ -39,6 +39,7 @@ output. See docs/ai/OPENSPEC.md "Evidence".
 | `reviews/code/rv001-gates-astra` | gate review, Codex GPT-6 Astra | NTM pane, read-only | REJECT; fixed |
 | `tests/003-offline-upgrades` | removals, auto-service 1.1.1, Hamcrest 3.0 | reactor offline | 8,206 tests, 0 failures; remaining upgrades wait for the mirror |
 | `tests/002-logging-gate` | gate checks | reactor, dependency tree, ban proof, jar listings | 8,206 tests, 0 failures; no Log4j; ban rule fails a log4j-core POM |
+| task 3.1, 2026-10-29 | Guava 33.7.2-jre, Gson 2.15.0 (from the mirror) | `mvn -o clean verify`, JDK 25 | core 7,298, xml 254, json 24, pdp 795, test 99, conformance 1,818 (30 skipped), jmh 225; 0 failures; the shaded benchmark jar only reports duplicate `module-info` entries |
 
 ## Not applicable
 

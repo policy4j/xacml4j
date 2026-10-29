@@ -17,7 +17,7 @@ JMH: NOT APPLICABLE for every group (maintainer decision 2026-10-27).
 
 ## 3. Runtime libraries and removals
 
-- [ ] 3.1 Guava 33.7.2-jre, Gson 2.15.0, auto-service 1.1.1; check: reactor tests (auto-service 1.1.1 done offline, run 003; Guava and Gson wait for the mirror)
+- [x] 3.1 Guava 33.7.2-jre, Gson 2.15.0, auto-service 1.1.1; check: reactor tests (auto-service 1.1.1 done offline, run 003); done 2026-10-29: Guava and Gson from the mirror, offline clean verify green (`evidence/README.md`, run "task 3.1"); Guava is above master's 32.0.0-jre security fix (PR #50)
 - [ ] 3.2 Dropwizard metrics 4.2.40 in `xacml-pdp` only; json-path per Q4; check: `xacml-pdp` and `xacml-core` tests
 - [x] 3.3 Remove the unused managed entries and properties after the two-lane absence check (D6); check: reactor build, POM search record; done: `evidence/tests/003-offline-upgrades`
 - [ ] 3.4 Gate: review, reactor and conformance
