@@ -45,6 +45,9 @@ public final class Result
 
 	/** The status of the results of {@link #ok(Decision)}, immutable and shared (design D22) */
 	private final static Status OK = Status.ok().build();
+	private static final Result PERMIT = ok(Decision.PERMIT).build();
+	private static final Result DENY = ok(Decision.DENY).build();
+	private static final Result NOT_APPLICABLE = ok(Decision.NOT_APPLICABLE).build();
 
 	private final Status status;
 	private final Decision decision;
@@ -105,9 +108,23 @@ public final class Result
 			Collection<Category> includeInResult, Collection<Category> resolvedAttributes,
 			ImmutableList<CompositeDecisionRuleIDReference> policyIdentifiers){
 		Preconditions.checkArgument(!decision.isIndeterminate());
+		if(obligations.isEmpty() && advice.isEmpty() && includeInResult.isEmpty()
+				&& resolvedAttributes.isEmpty() && policyIdentifiers.isEmpty()){
+			return plain(decision);
+		}
 		return new Result(decision, OK, distinctIds(obligations), distinctIds(advice),
 				includedCategories(includeInResult), Preconditions.checkNotNull(policyIdentifiers),
 				byCategory(resolvedAttributes));
+	}
+
+	/** The plain successful results also used by the shared single-result responses (cycle AY). */
+	static Result plain(Decision decision){
+		return switch(decision){
+			case PERMIT -> PERMIT;
+			case DENY -> DENY;
+			case NOT_APPLICABLE -> NOT_APPLICABLE;
+			default -> throw new IllegalArgumentException("Decision must not be Indeterminate");
+		};
 	}
 
 	/**

@@ -30,9 +30,9 @@ import com.google.common.collect.ImmutableList;
 
 public class ResponseContext
 {
-	private static final ResponseContext PERMIT = new ResponseContext(ImmutableList.of(Result.ok(Decision.PERMIT).build()));
-	private static final ResponseContext DENY = new ResponseContext(ImmutableList.of(Result.ok(Decision.DENY).build()));
-	private static final ResponseContext NOT_APPLICABLE = new ResponseContext(ImmutableList.of(Result.ok(Decision.NOT_APPLICABLE).build()));
+	private static final ResponseContext PERMIT = new ResponseContext(ImmutableList.of(Result.plain(Decision.PERMIT)));
+	private static final ResponseContext DENY = new ResponseContext(ImmutableList.of(Result.plain(Decision.DENY)));
+	private static final ResponseContext NOT_APPLICABLE = new ResponseContext(ImmutableList.of(Result.plain(Decision.NOT_APPLICABLE)));
 
 	private final ImmutableList<Result> results;
 

@@ -287,6 +287,23 @@ public class ResultTest
 				Result.of(Decision.INDETERMINATE_P, failed, ImmutableList.of(subject), ImmutableList.of()));
 	}
 
+	@Test
+	public void plainResultsEqualBuiltResultsAndKeepExplicitStatuses()
+	{
+		for(Decision decision : ImmutableList.of(Decision.PERMIT, Decision.DENY, Decision.NOT_APPLICABLE)){
+			Result built = Result.ok(decision).build();
+			Result made = Result.of(decision, ImmutableList.of(), ImmutableList.of(),
+					ImmutableList.of(), ImmutableList.of(), ImmutableList.of());
+			assertEquals(built, made);
+			assertEquals(built.hashCode(), made.hashCode());
+			Status status = Status.processingError().message("unavailable")
+					.error(new IllegalStateException("backend failed")).build();
+			Result failed = Result.of(decision, status, ImmutableList.of(), ImmutableList.of());
+			assertSame(status, failed.getStatus());
+			assertEquals(Result.builder(decision, status).build(), failed);
+		}
+	}
+
 	/** Cycle AU: the responses of a result made without a builder have distinct ids, as the map that held them required. */
 	@Test
 	public void aResultMadeWithoutABuilderRejectsARepeatedId()

@@ -23,11 +23,16 @@ package org.xacml4j.v30.spi.pip;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -78,6 +83,33 @@ public class ResolverContextTest
 		assertEquals(ResolverCacheKey.builder(RESOLVER).key(bag("admin")).build(), call.getCacheKey());
 		assertEquals(ResolverCacheKey.builder(RESOLVER).key(bag("alice"), bag("admin")).build(),
 				ResolverContext.createContext(bothPresent, resolver(USER, ROLE)).getCacheKey());
+	}
+
+	@Test
+	public void aResolvedSingleKeyHasTheBuiltKeysSerializedForm() throws Exception
+	{
+		EvaluationContext context = Mockito.mock(EvaluationContext.class);
+		when(context.resolve(USER)).thenReturn(Optional.of(bag("alice")));
+		ResolverContext call = ResolverContext.createContext(context, resolver(USER));
+		assertEquals(Optional.of(bag("alice")), call.resolveContextRef(USER));
+		ResolverCacheKey built = ResolverCacheKey.builder(RESOLVER).key(bag("alice")).build();
+		byte[] serialized = serialize(call.getCacheKey());
+
+		assertArrayEquals(serialize(built), serialized);
+		try(ObjectInputStream input = new ObjectInputStream(new ByteArrayInputStream(serialized))){
+			ResolverCacheKey loaded = (ResolverCacheKey) input.readObject();
+			assertEquals(built, loaded);
+			assertEquals(built.hashCode(), loaded.hashCode());
+		}
+	}
+
+	private static byte[] serialize(ResolverCacheKey key) throws Exception
+	{
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		try(ObjectOutputStream output = new ObjectOutputStream(bytes)){
+			output.writeObject(key);
+		}
+		return bytes.toByteArray();
 	}
 
 	@Test

@@ -133,8 +133,10 @@ public class Attribute implements Serializable
 
 	@Override
 	public final int hashCode(){
-		return Objects.hashCode(
-				attributeId, issuer, includeInResult, values);
+		int hash = 31 + attributeId.hashCode();
+		hash = 31 * hash + java.util.Objects.hashCode(issuer);
+		hash = 31 * hash + Boolean.hashCode(includeInResult);
+		return 31 * hash + values.hashCode();
 	}
 
 	@Override
@@ -190,8 +192,14 @@ public class Attribute implements Serializable
 
 		public Builder values(Iterable<Value<?>> values){
 			Preconditions.checkNotNull(values);
-			for(Value<?> v : values){
-				valueBuilder.add(v);
+			if(values instanceof BagOfValues bag){
+				for(int i = 0; i < bag.size(); i++){
+					valueBuilder.add(bag.valueAt(i));
+				}
+			}else{
+				for(Value<?> v : values){
+					valueBuilder.add(v);
+				}
 			}
 			return this;
 		}

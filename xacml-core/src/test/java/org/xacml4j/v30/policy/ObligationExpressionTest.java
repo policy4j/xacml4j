@@ -51,6 +51,7 @@ import org.xacml4j.v30.Obligation;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.StringVal;
+import org.xacml4j.v30.types.Value;
 import org.xacml4j.v30.types.XacmlTypes;
 
 
@@ -106,6 +107,30 @@ public class ObligationExpressionTest
 
 	private static List<String> ids(Obligation obligation){
 		return obligation.getAttributes().stream().map(AttributeAssignment::getAttributeId).toList();
+	}
+
+	@Test
+	public void aCustomValueInAMixedExpressionIsEvaluatedForEachContext() throws CoreException
+	{
+		AttributeDesignatorKey key = AttributeDesignatorKey.builder("role").category(CategoryId.SUBJECT_ACCESS)
+				.dataType(XacmlTypes.STRING).build();
+		EvaluationContext other = mock(EvaluationContext.class);
+		when(context.resolve(key)).thenReturn(Optional.of(StringVal.of("first").toBag()));
+		when(other.resolve(key)).thenReturn(Optional.of(StringVal.of("second").toBag()));
+		Value<String> custom = new Value.OtherValue<String>(XacmlTypes.STRING, "unevaluated") {
+			@Override
+			public <T extends Expression> T evaluate(EvaluationContext ctx) throws EvaluationException {
+				return (T) ctx.resolve(key).orElseThrow();
+			}
+		};
+		ObligationExpression exp = ObligationExpression.builder("test", Effect.PERMIT)
+				.attribute("dynamic", AttributeDesignator.builder().key(key).mustBePresent(true).build())
+				.attribute("literal", StringVal.of("fixed"))
+				.attribute("custom", custom)
+				.build();
+
+		assertEquals(List.of(StringVal.of("first"), StringVal.of("fixed"), StringVal.of("first")), values(exp.evaluate(context)));
+		assertEquals(List.of(StringVal.of("second"), StringVal.of("fixed"), StringVal.of("second")), values(exp.evaluate(other)));
 	}
 
 	private static List<Object> values(Obligation obligation){

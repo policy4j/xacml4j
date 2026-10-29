@@ -26,11 +26,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Attribute.Builder;
 import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.DoubleVal;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableSet;
@@ -131,6 +133,37 @@ public class AttributeTest
 		.values(a)
 		.value(XacmlTypes.STRING.ofAny("test2"), XacmlTypes.STRING.ofAny("test3"))
 		.build();
+	}
+
+	@Test
+	public void bagsKeepTheirGroupedOrderAndDuplicatesWhenAddedToAnAttribute()
+	{
+		BagOfValues bag = XacmlTypes.DOUBLE.bagOf(DoubleVal.of(2), DoubleVal.of(-0.0),
+				DoubleVal.of(2), DoubleVal.of(0.0), DoubleVal.of(Double.NaN), DoubleVal.of(Double.NaN));
+		Attribute fromBag = Attribute.builder("values").value(DoubleVal.of(7)).values(bag)
+				.value(DoubleVal.of(8)).build();
+		Attribute fromIterable = Attribute.builder("values").value(DoubleVal.of(7)).values(bag.values())
+				.value(DoubleVal.of(8)).build();
+
+		assertEquals(List.of(DoubleVal.of(7), DoubleVal.of(2), DoubleVal.of(2), DoubleVal.of(-0.0),
+				DoubleVal.of(0.0), DoubleVal.of(Double.NaN), DoubleVal.of(Double.NaN), DoubleVal.of(8)),
+				List.copyOf(fromBag.values()));
+		assertEquals(List.copyOf(fromIterable.values()), List.copyOf(fromBag.values()));
+		assertEquals(fromIterable, fromBag);
+		assertEquals(fromIterable.hashCode(), fromBag.hashCode());
+	}
+
+	@Test
+	public void hashesKeepTheFieldArrayValueWithAndWithoutAnIssuer()
+	{
+		for(boolean include : List.of(false, true)){
+			for(String issuer : List.of("", "issuer")){
+				Attribute attribute = Attribute.builder("test").issuer(issuer).includeInResult(include)
+						.values(values).build();
+				assertEquals(com.google.common.base.Objects.hashCode("test", attribute.getIssuer(), include,
+						List.copyOf(values)), attribute.hashCode());
+			}
+		}
 	}
 
 }

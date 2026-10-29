@@ -152,7 +152,14 @@ public interface ResolverContext
 						resolvedKeys.isEmpty()){
 					this.resolvedKeys = resolveAllContextRefs();
 				}
-				// From the resolved values in their order, without a builder (cycle AL)
+				List<AttributeReferenceKey> keys = getDescriptor().getContextKeyRefs();
+				if(keys.size() == 1){
+					BagOfValues bag = resolvedKeys.get(keys.get(0));
+					if(bag != null){
+						this.cacheKey = ResolverCacheKey.of(getDescriptor().getId(), bag);
+						return cacheKey;
+					}
+				}
 				this.cacheKey = ResolverCacheKey.of(getDescriptor().getId(), resolvedKeys.values());
 			}
 			return cacheKey;

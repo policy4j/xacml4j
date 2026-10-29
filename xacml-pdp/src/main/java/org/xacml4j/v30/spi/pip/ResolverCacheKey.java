@@ -76,6 +76,11 @@ public final class ResolverCacheKey implements Serializable
 		return new ResolverCacheKey(resolverId, keys.toArray(NO_KEYS));
 	}
 
+	static ResolverCacheKey of(String resolverId, BagOfValues key){
+		Preconditions.checkArgument(!Strings.isNullOrEmpty(resolverId));
+		return new ResolverCacheKey(resolverId, new BagOfValues[]{Preconditions.checkNotNull(key)});
+	}
+
 	@Override
 	public int hashCode(){
 		int h = hashCode;
