@@ -2135,6 +2135,84 @@ in batches: the batch's cycles are implemented, tested, and reviewed one by
 one, then one JMH pair compares the commit before the batch with the batch;
 the gain is credited to the batch, and a profiling round follows it.
 
+### D55. Response entities keep their attribute list and build the multimap on demand (draft Gemini Argon, D-AIDX, `research/pr27-argon-attribute-index.md`; approved by the maintainer 2026-10-29, both open questions as recommended)
+
+**Context.** `pip:8 independent` allocates 5,624 B per decision after AY (exact histograms). The PDP
+packages each category of resolved attributes as a response `Category`:
+`Category.builder(c).entity(Entity.builder().attributes(attributes).build()).build()`
+(`DefaultPolicyDecisionPoint.category`). `AttributeIndex.Builder` stages the two attributes through
+Guava's `ImmutableListMultimap.Builder`:
+- builder staging: the builder, a `LinkedHashMap` and its table, entries, an `ArrayList` per id, the
+  arrays of `ImmutableList.copyOf`, and an `ImmutableMap.Builder`, about 536 B (616 B when the
+  builders are not scalar-replaced);
+- the retained multimap graph, about 216 B;
+- the `HashSet` iteration, 48 B.
+
+Nothing reads a response entity by attribute id. The PDP tests, XML and JSON marshalling, and the JMH
+harness iterate `entity.attributes()` only. `Category.includedInResult()` rebuilds a filtered
+category the same way.
+
+**Mechanism.** The D48 pattern on `AttributeIndex`:
+1. `AttributeIndex` gains `private final ImmutableList<Attribute> attributeList`: the attributes
+   grouped by first-seen id, in first-seen order. That is exactly the multimap's `values()`.
+2. A new `AttributeIndex.of(Collection<Attribute>)` snapshots the list (`ImmutableList.copyOf`). A
+   bounded, allocation-free scan (up to eight attributes) checks that equal ids form contiguous runs.
+   If so, it keeps the list and leaves the multimap unbuilt. Otherwise (interleaved ids, more than
+   eight), it builds through `AttributeIndex.Builder` as today. `EMPTY` stays shared.
+3. `AttributeIndex(Builder)` stays eager: request entities are queried by id during `decide`.
+4. **Accessors.**
+   - `attributes()`, `isEmpty()`, `size()`, `contains`, and `getIncludeInResultAttributes()` read the
+     list.
+   - `get(id)`, `attributes(id)`, `containsAttributeId`, `getAttributesIds`, `resolve`, and `toString`
+     build the multimap on first demand.
+   - The hash is computed over the runs, bit for bit equal to the multimap's (`asMap().hashCode()`);
+     `equals` compares the lists as the multimap's `values()` comparison does.
+   - The lazy multimap is published as in D48: a `volatile` field, built from immutable state, with
+     a harmless race and no lock.
+5. `Entity.of(Collection<Attribute>)`, `Entity.of(AttributeIndex)`, `Category.of(CategoryId, Entity)`,
+   and `Category.of(CategoryId, String, Entity)` are static factories. `DefaultPolicyDecisionPoint`
+   and `Category.includedInResult()` use them.
+
+**Soundness.** §5.46 and §5.48 define the result attributes by `IncludeInResult`; §7.3.5 treats a
+retrieved bag as immutable. The list keeps the grouping, order, equality, and hash of the multimap,
+and a keyed lookup builds the same multimap.
+
+**Compatibility.**
+- `AttributeIndex`, `Entity`, and `Category` are final with private fields. No member is removed or
+  narrowed; the builders are unchanged.
+- The new `of` factories are public API additions (open question 1).
+- `Entity` and `Category` keep their serialized fields and `serialVersionUID`s; `AttributeIndex` is
+  not serializable.
+- Marshalling iterates the same elements in the same order.
+
+**Guava 33.7.2.** Argon measured on Guava 31.1, which has no pre-sized multimap builder. The branch
+now has Guava 33.7.2-jre (`upgrade-dependencies` 3.1), which adds `builderWithExpectedKeys(int)` and
+`expectedValuesPerKey(int)`. A pre-sized builder would cut part of the staging. D55 still removes all
+of it plus the retained graph, so the recommendation holds. The byte figures are re-measured on
+Guava 33.7.2 before the build.
+
+**Cost and gate.**
+- `pip:8 independent`: about −728 B/op (5,624 to about 4,896, −12.9%), on Guava 31.1 figures.
+- rsa2008 and `responses`: 0 B; they resolve no PIP attributes.
+- Gate: exact histograms on `pip:8 independent`, `responses`, and `multi-valued`; review by another
+  family; reactor and conformance; the batch's controlled pair.
+
+**Files.** `AttributeIndex.java`, `Entity.java`, `Category.java`, `DefaultPolicyDecisionPoint.java`;
+`AttributeIndexTest.java`, `ResolvedAttributesPdpTest.java`.
+
+**Test plan (outcomes only).**
+- `of` against `builder` for 1, 2, shared-id (several issuers or types), interleaved, and more than
+  eight attributes: the same `attributes()` sequence, `equals` in both directions, `hashCode`, and
+  `toString`, before and after a keyed lookup.
+- Keyed lookups on a lazy index return what a builder-built index returns.
+- `Result.getResolvedAttributes()` and `getIncludeInResultAttributes()` keep the order that
+  `ResolvedAttributesPdpTest` pins.
+
+**Open questions as drafted.**
+1. The `of` factories are public, like `Obligation.of` and `Advice.of`: recommend yes. The three
+   types live in three packages (`v30`, `v30.types`, `v30.pdp` calls them).
+2. `AttributeIndex(Builder)` stays eager; only `of` is lazy: recommend yes.
+
 ## Test Strategy
 
 | Requirement | Tests |
