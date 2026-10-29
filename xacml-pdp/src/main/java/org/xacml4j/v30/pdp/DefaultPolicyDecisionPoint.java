@@ -415,5 +415,6 @@ final class DefaultPolicyDecisionPoint
 
 	@Override
 	public void close(){
+		factory.close();
 	}
 }

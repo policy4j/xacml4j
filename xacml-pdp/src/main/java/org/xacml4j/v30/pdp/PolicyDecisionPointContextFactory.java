@@ -13,7 +13,6 @@ import org.xacml4j.v30.Result;
 import org.xacml4j.v30.XPathVersion;
 import org.xacml4j.v30.content.XPathProvider;
 import org.xacml4j.v30.policy.EvaluationContextHandler;
-import org.xacml4j.v30.policy.PolicyReferenceResolver;
 import org.xacml4j.v30.policy.PreparedPolicySets;
 import org.xacml4j.v30.policy.RootEvaluationContext;
 import org.xacml4j.v30.RequestContext;
@@ -78,6 +77,10 @@ public interface PolicyDecisionPointContextFactory
 		private XPathProvider xpathProvider;
 		private final RootEvaluationContext.Configuration evaluationConfiguration;
 		private final Optional<PreparedPolicySets> prepared;
+		private final PolicyRepository repository;
+		private final DefaultPolicyReferenceResolver policyReferenceResolver;
+		private final Optional<PreparedPolicySetsListener> preparedListener;
+		private boolean closed;
 		private CompositeDecisionRule policyDomain;
 		private RequestContextHandlerChain requestHandlers;
 
@@ -127,18 +130,28 @@ public interface PolicyDecisionPointContextFactory
 			Preconditions.checkArgument(auditor != null);
 			Preconditions.checkArgument(cache != null);
 			this.prepared = prepared;
-			PolicyReferenceResolver policyReferenceResolver = prepared.isPresent()
+			this.repository = repository;
+			this.policyReferenceResolver = prepared.isPresent()
 					? new DefaultPolicyReferenceResolver(repository, false, 1024)
 					: new DefaultPolicyReferenceResolver(repository);
 			this.evaluationConfiguration = new RootEvaluationContext.Configuration(
 					Clock.systemUTC(), Duration.ofSeconds(30), XPathVersion.XPATH1, policyReferenceResolver);
-			prepared.ifPresent(value -> repository.addPolicyRepositoryListener(new PreparedPolicySetsListener(value)));
+			this.preparedListener = prepared.map(PreparedPolicySetsListener::new);
+			preparedListener.ifPresent(repository::addPolicyRepositoryListener);
 			this.pip = pip;
 			this.xpathProvider = xpathProvider;
 			this.policyDomain = policyDomain;
 			this.decisionAuditor = auditor;
 			this.decisionCache = cache;
 			this.requestHandlers = handlerChain;
+		}
+
+		synchronized void close(){
+			if(!closed){
+				preparedListener.ifPresent(repository::removePolicyRepositoryListener);
+				repository.removePolicyRepositoryListener(policyReferenceResolver);
+				closed = true;
+			}
 		}
 
 		/** The correlation identifier of a decide call, formatted when it is read (design D34) */

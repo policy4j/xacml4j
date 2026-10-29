@@ -31,6 +31,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.StatusCodeId;
@@ -52,6 +54,32 @@ import org.xacml4j.v30.types.StringVal;
 public class RegexStatusMatrixTest
 {
 	private static final RegexEngine JDK = new JdkRegexEngine();
+
+	/** XF 1.0 7.6.1 and XSD Appendix F [20]: invalid references and range endpoints are syntax errors. */
+	@ParameterizedTest
+	@CsvSource(delimiter = ';', value = {
+			"[\\1];true", "(a[\\1]);true", "(a)[a-\\1];true", "(a)[\\1];false"})
+	public void classBackReferencesKeepTheirStatusInOrdinaryAndBoundCalls(String pattern, boolean malformed)
+	{
+		FunctionSpec function = FunctionProviderBuilder.builder()
+				.withRegexEngine(JDK, RegexProfile.XF, RegexLimits.defaults()).withDefaultFunctions().build()
+				.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-regexp-match").orElseThrow();
+		EvaluationContext context = mock(EvaluationContext.class);
+		StringVal literal = StringVal.of(pattern);
+		EvaluationException ordinary = assertThrows(EvaluationException.class,
+				() -> function.invoke(context, literal, StringVal.of("aa")));
+		var bound = function.bind(literal).orElseThrow();
+		EvaluationException retained = assertThrows(EvaluationException.class,
+				() -> bound.invoke(context, StringVal.of("aa")));
+
+		StatusCodeId code = malformed ? StatusCodeId.SYNTAX_ERROR : StatusCodeId.STATUS_PROCESSING_ERROR;
+		String message = malformed ? RegExpFunctions.INVALID_PATTERN_MESSAGE
+				: "Regular expression construct back-reference in a character class is not supported by engine xf parser";
+		assertEquals(code, ordinary.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(message), ordinary.getStatus().getMessage());
+		assertEquals(code, retained.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of(message), retained.getStatus().getMessage());
+	}
 
 	/** XACML 3.0 7.19.2 and B.8: a pattern invalid in its profile is a syntax error, with a fixed message */
 	@Test

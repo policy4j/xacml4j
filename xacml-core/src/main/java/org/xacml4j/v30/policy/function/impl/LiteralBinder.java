@@ -1,4 +1,4 @@
-package org.xacml4j.v30.policy.function;
+package org.xacml4j.v30.policy.function.impl;
 
 /*
  * #%L
@@ -36,7 +36,7 @@ import org.xacml4j.v30.types.Value;
  * of static methods binds nothing. A bound call receives an already evaluated operand and may be
  * invoked concurrently.
  */
-public interface LiteralBinder
+interface LiteralBinder
 {
 	/**
 	 * Binds a literal first argument of a call of a function of this provider

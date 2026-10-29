@@ -31,7 +31,6 @@ import org.xacml4j.v30.Status;
 import org.xacml4j.v30.SyntaxException;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.policy.BoundCall;
-import org.xacml4j.v30.policy.function.LiteralBinder;
 import org.xacml4j.v30.policy.function.XacmlEvaluationContextParam;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
@@ -125,6 +124,7 @@ public final class RegExpFunctions
 	private final static RegexLimits LIMITS = limitsFrom(System::getProperty);
 
 	private static final Supplier<Boolean> XF_READY = Suppliers.memoize(() -> {
+		// Prepare the common XF tables outside matching deadlines, including for custom engines.
 		CompiledRegex probe = new JdkRegexEngine().compile("\\d", RegexProfile.XF, RegexLimits.defaults());
 		probe.find("1", RegexBudget.start(1, () -> 0L));
 		return true;
@@ -384,8 +384,7 @@ public final class RegExpFunctions
 			Preconditions.checkArgument(engine.offers(profile),
 					"engine %s does not offer profile %s", engine.name(), profile);
 			if(profile == RegexProfile.XF){
-				org.xacml4j.v30.policy.function.regex.XacmlPattern.prepare();
-				if(engine instanceof JdkRegexEngine) XF_READY.get();
+				XF_READY.get();
 			}
 			this.compiled = CacheBuilder.newBuilder()
 					.maximumSize(limits.cacheSize())

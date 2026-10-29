@@ -72,7 +72,8 @@ public class XacmlPatternTest
 			"a{,2}", "{2}", "}", "]", "[", "[]", "[^]", "[a", "[a-", "[[a]]", "[a]]", "[--z]", "[a-b-c]", "[%--]",
 			"[z-a]", "[a-\\-]", "[\\d-z]", "[a-\\d]", "\\", "a\\", "\\a", "\\e", "\\0", "\\x41", "\\u0041", "\\Qa\\E",
 			"\\A", "\\z", "\\b", "\\B", "\\k<n>", "\\pL", "\\p", "\\p{", "\\p{L", "\\p{}", "\\p{Cs}", "\\p{Greek}",
-			"\\p{IsNoSuchBlock}", "\\p{Is}", "\\p{Is Basic Latin}", "\\1", "(a\\1)", "(a)\\2", "(?:a)", "(?i)a",
+			"\\p{IsNoSuchBlock}", "\\p{Is}", "\\p{Is Basic Latin}", "\\1", "(a\\1)", "(a)\\2", "[\\1]", "(a[\\1])",
+			"(a)[a-\\1]", "(?:a)", "(?i)a",
 			"(?=a)", "(?<n>a)", "(?", "a{99999999999}?*"})
 	public void grammarRejects(String pattern)
 	{

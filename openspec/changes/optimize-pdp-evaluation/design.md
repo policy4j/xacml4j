@@ -1988,6 +1988,133 @@ grouping, order, equality, and hash of today's representation (the AX tests pin 
 2. Keep R4 separate, and leave `merge` as is (it reads `getAttributes()`, so it does not build the
    multimap): recommend yes.
 
+### D49 to D54. CPU of the decision path (draft Codex Sol, P-CPU, `research/pr25-sol-cpu-analysis.md`)
+
+**Maintainer decisions (2026-10-29).**
+- D49, D50, and D51 are approved, each kept only if its controlled pair wins.
+- D52 gets a plan review by another family first, including the bridge names.
+- D53 and D54 wait for a CPU profile of rsa2008 after D47. Then D53 is built if the precheck and
+  rule frames still dominate, and D54 only if cycle ancestry is still material.
+
+**Context.** After batch 7, rsa2008 allocates about 734 B per decision and spends 97.7% of its CPU in
+policy evaluation (P-FIXED3, `research/pr23-astra-fixed3-profile.md`). Its top self-time frames are
+listed below. The shares are from P-FIXED3's profile; the call paths are confirmed in source; the
+caller weights are unverified.
+
+| Frame | Share |
+| --- | ---: |
+| `String.equals` | 7.5% |
+| `TargetBeforeContext.precheck` | 5.8% |
+| `Rule.evaluateRule` | 5.6% |
+| `itable stub` | 4.9% |
+| `HigherOrderFunctions.validateArguments` | 2.2% |
+| `isOwn` | 2.2% |
+| `RegularImmutableMap.get` | 1.6% |
+| `SemanticIdentifier.hashCode` | 1.5% |
+
+The current-policy walk (2.9%) is already removed by cycle AZ.
+
+The RSA inventory shows the data behind them:
+- 22 string-equality target matches over four designator keys;
+- 21 distinct key and literal pairs, 20 of them 41 to 57 characters long;
+- four categories in every one of the 17 requests.
+
+The expected reductions below are unmeasured planning estimates of rsa2008 decide time, and they do
+not add up. Each design is gated by review by another family, the reactor and conformance, and a
+controlled same-JDK pair; a design that loses its pair is removed.
+
+**D49. Hash rejection for long built-in string equality (1 to 3%).**
+- `StringVal` (final) overrides equality.
+- Identity comes first. For two `StringVal`s of equal length, 32 characters or longer, different
+  JDK-cached `String` hashes prove inequality. Otherwise the existing equality runs, with its type
+  check and its fallback for other `OtherValue`s.
+- Equal hashes never prove equality.
+- No new field, cache, or interning; the hash and the serialized form are unchanged.
+- Risk: the hash can cost more than an early mismatch on short, equal, or first-use strings. So the
+  gate adds short, equal, and unequal string benchmarks.
+- Files: `types/StringVal.java`.
+- Tests: long-string hash collisions, Unicode, equal distinct strings, and external `OtherValue`
+  equality.
+
+**D50. Small-request category lookup without hashing (0.5 to 1.5%).**
+- `RequestContext.getEntity` keeps its null check. When the request has at most four categories, it
+  scans the existing immutable category list by index: identifier identity first, then full
+  equality. The first match wins.
+- Larger requests keep the map.
+- No field, allocation, or public API. No request-dependent slot on an interned designator key.
+- Kept: category equality, first-category selection, repeated categories, and request order
+  (§§7.3.4, 7.3.5).
+- Files: `RequestContext.java`.
+- Tests: equal non-identical identifiers, and duplicate categories.
+
+**D51. Built-in bag cardinality without interface dispatch (0.4 to 0.9%).**
+- `BagOfValues` keeps a private transient cardinality for the engine's exact storage classes, read
+  through a package-private `BagStorages` helper. It is set at construction and after `readObject`.
+- A custom storage keeps its delegated `size()`; it is never called at construction.
+- The persistent-field list is unchanged. The object is expected to stay 32 B, which the gate checks.
+- Files: `BagOfValues.java`, `BagStorages.java`.
+- Tests: `BagStorageCompatibilityTest` already covers cardinality, custom storage, and both stream
+  directions.
+
+**D52. Prepared signatures for higher-order call sites (0.5 to 1.5%).**
+- A private call-site plan covers `any-of` and `all-of` with one or two data operands. It requires
+  the canonical built-in operator, a fixed `FunctionReference`, standard immutable parameter
+  metadata, and statically known operand types.
+- The plan evaluates the operands once, in order, and enters the existing higher-order body without
+  repeating the signature walk.
+- A cheap check of the evaluated values takes the checked path with those same values (never
+  evaluating them again).
+- Runtime validation keeps the ordinary route. Direct public calls stay checked.
+- The plan is package-private beside `Apply`. The package boundary needs narrow internal bridges.
+  There is no public proof-carrier type (cycle AW's declined `Apply.CheckedArguments`) and no new
+  `FunctionSpec` SPI method.
+- Files: `Apply`, `FunctionSpecBuilder`, `DefaultFunctionInvocation`, `HigherOrderFunctions`, and one
+  internal plan class. D6 binding and D45 clones are kept.
+- **Plan review PR-D52-argon** (APPROVE WITH CHANGES,
+  `evidence/reviews/plan/pr-D52-argon/report.md`). The build follows these amendments:
+  - **Failure mapping (P2):** the plan evaluates the operands before it enters the function's
+    failure wrapper, as D34's two-stage mapping does. The value check, the prepared body, and the
+    checked fallback run inside `DefaultFunctionInvocation`'s wrapper and `FunctionSpecImpl.failed`,
+    so failures keep the outer `any-of` or `all-of` spec and its observation.
+  - **Static proof (P2):** it is decided through `getEvaluatesTo()`, not an AST class list, so D45's
+    `Shared` clones stay eligible.
+    - The predicate is a `FunctionSpecImpl` with fixed arity, a boolean return type, and value-type
+      parameters.
+    - Every data operand is not a `FunctionReference`, and its type is non-null and not
+      `DynamicType`. `TypeAssertion` does not check the value type for these functions.
+    - Exactly one operand is a bag.
+  - **Runtime check (P2):** `instanceof` plus type equality of the evaluated bag (and scalar). On a
+    mismatch, the checked path runs with the values already evaluated.
+  - **Bridges (P3):** `FunctionReference` is unchanged; its `function()` is already
+    package-private. The prepared helpers of `HigherOrderFunctions` are package-private.
+  - `Apply` keeps 48 B: the plan reference fills existing padding.
+
+**D53. Prepared target admission and rule continuation, after D47 and AZ (1 to 3%).**
+- Precheck plans become immutable, compact tests: the full designator key, the literal, and the
+  proven predicate, in AnyOf, AllOf, and Match order.
+- The root is found once on a participating path. A proven NoMatch of an inline engine child
+  returns NotApplicable directly.
+- For an exact Rule with a proven Match, the rule context comes through D47's lifecycle. Then the
+  real context-validity check runs, and a package-private continuation shares the ordinary
+  condition and response body.
+- Foreign or custom contexts, observed decisions, pins, and reentrant admission keep their paths.
+- No precheck token stays live during condition evaluation. FIX-AI2's validity check stays.
+- Files: `TargetBeforeContext`, `Rule`, and small changes in `BaseDecisionRule` or root admission.
+- Re-profile after D47 and AZ before a stronger target is set.
+
+**D54. One ancestry walk for reference cycles, after D47 and AZ (0.3 to 0.8%).**
+- Cycle detection walks the engine-owned ancestry once and compares each reference owner with the
+  entering reference (full equality). It stops at the first foreign context and continues with the
+  public queries there.
+- No global visited set, cached nearest-reference field, or root state.
+- Kept: §7.15 processing-error for circular and unresolved references.
+- Files: `PolicyIDReference`, `PolicySetIDReference`.
+- Built only if a profile after AZ still shows cycle ancestry as material.
+
+**Local change, no decision needed (after D47).** `PolicySet.Prepared.children` (`PolicySet.java:240`)
+and `Policy.java:215` repeat the built-in algorithm membership check that `builtInAlgorithm` already
+stores at construction. They reuse the stored answer: 0.1 to 0.4%.
+
 ### D12. Every cycle
 
 Characterization or failing test first; then the change; then a JMH pair on

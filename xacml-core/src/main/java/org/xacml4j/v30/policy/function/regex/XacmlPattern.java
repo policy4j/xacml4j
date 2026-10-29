@@ -48,6 +48,10 @@ public final class XacmlPattern
 	/** The largest count of a repetition without one, as {@code *}, {@code +} and {@code {n,}} have */
 	public static final int UNBOUNDED = -1;
 
+	static{
+		UnicodeSets.prepare();
+	}
+
 	private final String source;
 	private final Node root;
 	private final int groups;
@@ -77,11 +81,6 @@ public final class XacmlPattern
 		Parser parser = new Parser(pattern);
 		Node root = parser.parseAll();
 		return new XacmlPattern(pattern, parser, root);
-	}
-
-	/** Loads the shared XF character tables before a match starts its deadline. */
-	public static void prepare(){
-		UnicodeSets.prepare();
 	}
 
 	/** The pattern as it was written */
@@ -241,20 +240,20 @@ public final class XacmlPattern
 
 	/** The code points of one item of a character group */
 	public static CodePointSet codePoints(ClassItem item){
-		if(item instanceof CodePointRange range){
-			return CodePointSet.of(range.lo(), range.hi());
+		if(item instanceof CodePointRange(int lo, int hi)){
+			return CodePointSet.of(lo, hi);
 		}
-		if(item instanceof CategoryEscape category){
-			CodePointSet set = UnicodeSets.category(category.name());
-			return category.complement() ? set.complement() : set;
+		if(item instanceof CategoryEscape(String name, boolean complement)){
+			CodePointSet set = UnicodeSets.category(name);
+			return complement ? set.complement() : set;
 		}
-		if(item instanceof BlockEscape block){
-			CodePointSet set = UnicodeSets.block(block.name())
-					.orElseThrow(() -> new IllegalArgumentException("not a block: " + block.name()));
-			return block.complement() ? set.complement() : set;
+		if(item instanceof BlockEscape(String name, boolean complement)){
+			CodePointSet set = UnicodeSets.block(name)
+					.orElseThrow(() -> new IllegalArgumentException("not a block: " + name));
+			return complement ? set.complement() : set;
 		}
-		if(item instanceof MultiCharEscape escape){
-			return switch(escape.letter()){
+		if(item instanceof MultiCharEscape(char letter)){
+			return switch(letter){
 				case 's' -> UnicodeSets.whitespace();
 				case 'S' -> UnicodeSets.whitespace().complement();
 				case 'i' -> UnicodeSets.nameStartChars();
@@ -265,7 +264,7 @@ public final class XacmlPattern
 				case 'D' -> UnicodeSets.digits().complement();
 				case 'w' -> UnicodeSets.wordChars();
 				case 'W' -> UnicodeSets.wordChars().complement();
-				default -> throw new IllegalArgumentException("not a multi-character escape: " + escape.letter());
+				default -> throw new IllegalArgumentException("not a multi-character escape: " + letter);
 			};
 		}
 		return UnicodeSets.all().minus(CodePointSet.of('\n'));
@@ -497,9 +496,6 @@ public final class XacmlPattern
 			if(c == -1){
 				throw RegexCompileException.malformed("invalid escape at the end of the pattern");
 			}
-			if(c >= '1' && c <= '9'){
-				throw RegexCompileException.unsupported("back-reference in a character class", "xf parser");
-			}
 			at++;
 			switch(c){
 				case 'n' -> { return new CodePointRange('\n', '\n'); }
@@ -606,6 +602,10 @@ public final class XacmlPattern
 				ClassItem item;
 				if(c == '\\'){
 					at++;
+					if(peek() >= '1' && peek() <= '9'){
+						parseBackReference();
+						throw RegexCompileException.unsupported("back-reference in a character class", "xf parser");
+					}
 					item = parseClassEscape(peek());
 				}else{
 					at++;

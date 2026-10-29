@@ -23,6 +23,7 @@ package org.xacml4j.v30;
  */
 
 import java.util.Collection;
+import java.util.Map;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
@@ -36,7 +37,8 @@ import org.xacml4j.v30.types.Value;
 public abstract class DecisionRuleResponse
 {
 	protected final String id;
-	protected final Multimap<String, AttributeAssignment> attributes;
+	protected volatile Multimap<String, AttributeAssignment> attributes;
+	private final ImmutableList<AttributeAssignment> assignmentList;
 
 	/**
 	 * For compatibility with XACML 2.0
@@ -44,26 +46,56 @@ public abstract class DecisionRuleResponse
 	 */
 	private final Effect fulfillOn;
 
-	private final transient int hashCode;
+	private transient int hashCode;
 
 	protected DecisionRuleResponse(
 			Builder<?> b)
 	{
-		this(b.id, b.fullFillOn, ImmutableSetMultimap.copyOf(b.attributes));
+		this.id = b.id;
+		this.fulfillOn = b.fullFillOn;
+		ImmutableSetMultimap<String, AttributeAssignment> values = ImmutableSetMultimap.copyOf(b.attributes);
+		this.attributes = values;
+		this.assignmentList = values.values().asList();
 	}
 
 	DecisionRuleResponse(String id, Effect fulfillOn, Collection<AttributeAssignment> assignments)
 	{
-		this(Preconditions.checkNotNull(id), fulfillOn, attributes(ImmutableList.copyOf(assignments)));
+		this.id = Preconditions.checkNotNull(id);
+		this.fulfillOn = fulfillOn;
+		ImmutableList<AttributeAssignment> values = ImmutableList.copyOf(assignments);
+		if(isNormalized(values)){
+			this.assignmentList = values;
+		}else{
+			ImmutableSetMultimap<String, AttributeAssignment> grouped = attributes(values);
+			this.attributes = grouped;
+			this.assignmentList = grouped.values().asList();
+		}
 	}
 
-	private DecisionRuleResponse(String id, Effect fulfillOn,
-			ImmutableSetMultimap<String, AttributeAssignment> attributes)
+	private static boolean isNormalized(ImmutableList<AttributeAssignment> assignments)
 	{
-		this.id = id;
-		this.attributes = attributes;
-		this.hashCode = 31 * (31 + java.util.Objects.hashCode(id)) + attributes.hashCode();
-		this.fulfillOn = fulfillOn;
+		if(assignments.size() > 8){
+			return false;
+		}
+		int start = 0;
+		for(int i = 0; i < assignments.size(); i++){
+			AttributeAssignment assignment = assignments.get(i);
+			String key = assignment.getAttributeId();
+			if(i > 0 && !key.equals(assignments.get(i - 1).getAttributeId())){
+				for(int j = 0; j < start; j++){
+					if(key.equals(assignments.get(j).getAttributeId())){
+						return false;
+					}
+				}
+				start = i;
+			}
+			for(int j = start; j < i; j++){
+				if(assignment.equals(assignments.get(j))){
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	private static ImmutableSetMultimap<String, AttributeAssignment> attributes(
@@ -84,6 +116,30 @@ public abstract class DecisionRuleResponse
 		return attributes.build();
 	}
 
+	private Multimap<String, AttributeAssignment> attributes()
+	{
+		Multimap<String, AttributeAssignment> values = attributes;
+		if(values == null){
+			values = attributes(assignmentList);
+			attributes = values;
+		}
+		return values;
+	}
+
+	private boolean keysMatchAssignments()
+	{
+		if(attributes == null){
+			return true;
+		}
+		// A subclass builder can supply keys that differ from the assignment ids.
+		for(Map.Entry<String, AttributeAssignment> entry : attributes().entries()){
+			if(!entry.getKey().equals(entry.getValue().getAttributeId())){
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public final String getId(){
 		return id;
 	}
@@ -99,11 +155,11 @@ public abstract class DecisionRuleResponse
 	}
 
 	public final Collection<AttributeAssignment> getAttributes(){
-		return attributes.values();
+		return assignmentList;
 	}
 
 	public final Collection<AttributeAssignment> getAttribute(String attributeId){
-		return this.attributes.get(attributeId);
+		return attributes().get(attributeId);
 	}
 
 	/**
@@ -117,19 +173,39 @@ public abstract class DecisionRuleResponse
 
 	@Override
 	public final int hashCode(){
-		return hashCode;
+		int hash = hashCode;
+		if(hash == 0){
+			int mapHash = 0;
+			if(keysMatchAssignments()){
+				int i = 0;
+				while(i < assignmentList.size()){
+					String key = assignmentList.get(i).getAttributeId();
+					int setHash = 0;
+					do{
+						setHash += assignmentList.get(i++).hashCode();
+					}while(i < assignmentList.size() && key.equals(assignmentList.get(i).getAttributeId()));
+					mapHash += key.hashCode() ^ setHash;
+				}
+			}else{
+				mapHash = attributes().hashCode();
+			}
+			hash = 31 * (31 + java.util.Objects.hashCode(id)) + mapHash;
+			hashCode = hash;
+		}
+		return hash;
 	}
 
 	protected boolean equalsTo(DecisionRuleResponse r) {
-		return id.equals(r.id) &&
-				attributes.equals(r.attributes);
+		return id.equals(r.id) && assignmentList.size() == r.assignmentList.size() &&
+				((assignmentList.equals(r.assignmentList) && keysMatchAssignments() && r.keysMatchAssignments()) ||
+						attributes().equals(r.attributes()));
 	}
 
 	@Override
 	public final String toString(){
 		return MoreObjects.toStringHelper(this)
 		.add("id", id)
-		.add("attributes", attributes)
+		.add("attributes", attributes())
 		.add("fullFillOn", fulfillOn)
 		.toString();
 	}
@@ -155,8 +231,11 @@ public abstract class DecisionRuleResponse
 		public final T from(DecisionRuleResponse r){
 			this.id = r.id;
 			this.fullFillOn = r.fulfillOn;
-			this.attributes.putAll(r.attributes);
-			return getThis();
+			if(!r.keysMatchAssignments()){
+				this.attributes.putAll(r.attributes());
+				return getThis();
+			}
+			return attributes(r.getAttributes());
 		}
 
 		public final T attributes(Iterable<AttributeAssignment> attributes){

@@ -276,6 +276,25 @@ class PreparedPolicySetsPdpTest
 	}
 
 	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	void closingAPdpStopsRepositoryChangesReachingIt(boolean prepared) throws Exception {
+		InMemoryPolicyRepository repository = new InMemoryPolicyRepository("close", FUNCTIONS, ALGORITHMS);
+		setExecutor(repository, Runnable::run);
+		repository.add(policyVersion("1.0", Effect.PERMIT));
+		PolicySet root = set("root", "1.0:first-applicable", List.of(PolicyIDReference.builder("entry").build()));
+		PolicyDecisionPoint closed = pdp(root, repository, prepared);
+		try(PolicyDecisionPoint active = pdp(root, repository, prepared)){
+			assertEquals(Decision.PERMIT, result(closed).getDecision());
+			assertEquals(Decision.PERMIT, result(active).getDecision());
+			closed.close();
+			closed.close();
+			repository.add(policyVersion("2.0", Effect.DENY));
+			assertEquals(Decision.PERMIT, result(closed).getDecision());
+			assertEquals(Decision.DENY, result(active).getDecision());
+		}
+	}
+
+	@ParameterizedTest
 	@MethodSource("repositoryEvents")
 	void repositoryChangesMatchAFreshPdp(String event, boolean asynchronous) throws Exception {
 		InMemoryPolicyRepository repository = new InMemoryPolicyRepository("events", FUNCTIONS, ALGORITHMS);

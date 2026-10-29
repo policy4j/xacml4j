@@ -38,7 +38,6 @@ import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.function.FunctionInvocation;
 import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
-import org.xacml4j.v30.policy.function.LiteralBinder;
 import org.xacml4j.v30.policy.function.XacmlFuncBagScan;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.DoubleVal;
