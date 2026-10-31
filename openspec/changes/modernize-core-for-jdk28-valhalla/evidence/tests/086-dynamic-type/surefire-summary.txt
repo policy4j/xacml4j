@@ -1,0 +1,9 @@
+Run 086, gate on the final tree: clean test of the full reactor, JDK 21, Maven 3.9.6 offline (see command.txt)
+
+xacml-core                 Tests run: 6501, Failures: 0, Errors: 0, Skipped: 2
+xacml-xml                  Tests run: 253, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 195, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 8,009 tests, 0 failures, 0 errors, 18 skipped.

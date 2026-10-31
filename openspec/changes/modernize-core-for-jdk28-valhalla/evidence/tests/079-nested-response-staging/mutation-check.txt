@@ -1,0 +1,13 @@
+Mutation check, JDK 21, 2026-10-07. Test class: NestedResponseStagingTest (5 tests).
+File mutated for the run only: xacml-core/src/main/java/org/xacml4j/v30/policy/BaseCompositeDecisionRule.java.
+After both runs the file was put back; git diff of it is empty.
+
+M1: createExtIndeterminateEvalContext returns the context without StagedResponses
+  Tests run: 5, Failures: 2, Errors: 0
+  enclosedPolicyWhoseObligationFailsIsIndeterminateAndPublishesNothing: obligations for PERMIT ==> expected: <[]> but was: <[failing-rule-obligation]>
+  childWithAnIndeterminateTargetAddsNoResponsesToThePermitOfItsSibling: expected: <[sibling-obligation]> but was: <[indeterminate-rule-obligation, sibling-obligation]>
+
+M2: evaluate uses no StagedResponses (staged = null)
+  Tests run: 5, Failures: 2, Errors: 0
+  ruleResponseForAnotherEffectDoesNotReachTheDecisionOfALaterSibling: expected: <[sibling-obligation]> but was: <[mixed-deny-rule-obligation, sibling-obligation]>
+  enclosedPolicyWhoseObligationFailsIsIndeterminateAndPublishesNothing: obligations for PERMIT ==> expected: <[]> but was: <[failing-rule-obligation]>

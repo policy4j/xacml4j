@@ -1,0 +1,17 @@
+== java -jar (expected failure)
+Unknown store "probe"; known stores: [in-memory, snapshot]
+== java -cp benchmarks.jar:probe-store.jar
+# Fork: 1 of 1
+Benchmark                  (corpus)  (request)  (store)  Mode  Cnt    Score   Error  Units
+PdpDecideBenchmark.decide   rsa2008        all    probe  avgt       107.207          us/op
+== probe-store.jar
+META-INF/
+META-INF/MANIFEST.MF
+META-INF/services/
+META-INF/services/org.xacml4j.jmh.harness.PolicyStore
+org/
+org/xacml4j/
+org/xacml4j/jmh/
+org/xacml4j/jmh/testing/
+org/xacml4j/jmh/testing/ProbeStore.class
+org/xacml4j/jmh/testing/TestStores.class

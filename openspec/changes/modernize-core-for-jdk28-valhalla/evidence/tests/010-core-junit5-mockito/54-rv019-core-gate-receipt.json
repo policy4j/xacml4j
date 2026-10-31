@@ -1,0 +1,850 @@
+{
+  "run": "54",
+  "label": "rv019-core-gate",
+  "workspace": "<repo>",
+  "jdk_versions": [
+    "21.0.6"
+  ],
+  "surefire_report_count": 103,
+  "exit_code": 0,
+  "totals": {
+    "tests": 760,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "classes": [
+    {
+      "class": "org.xacml4j.util.DOMUtilTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.util.ISO8601DurationTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.util.JSONUtilTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.AttributeIndexTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.AttributeTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.CategoryIdTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.ContentTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.EntityTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.ObligationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.WellKnownAttributeIdsTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.content.ContentTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "class": "org.xacml4j.v30.content.JsonContentTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.content.XmlContentTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.AdviceExpressionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.AdviceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ApplyTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.AttributeAssignmentTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.AttributeSelectorTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.AttributesTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.BagOfValuesTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.CombinerParameterTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ConditionTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.DecisionTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchAnyOfTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.MatchTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ObligationExpressionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyDefaultsTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicySetTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.PolicyTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RequestTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.ResultTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RootEvaluationContextTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.RuleTest",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.StatusCodeIdTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.VariableDefinitionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.VariableReferenceTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.VersionMatchTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.VersionTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.XPathTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.ParamTypeSequenceTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+      "tests": 50,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+      "tests": 72,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.AnyURITest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.Base64BinaryTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.BinaryTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.BooleanValTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.DNSNameTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.DoubleValTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.EUI48Test",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.HexTypeTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.IPAddressTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DateTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601TimeTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601YearMonthDurationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.IntegerTypeTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.PathTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.PortRangeTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.RFC822NameTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.StringValTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.TypeCapabilityTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.TypeToStringCapabilityTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.TypeToStringTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "class": "org.xacml4j.v30.types.XacmlTypesTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "failed_tests": [],
+  "production_unchanged": true,
+  "catch_mutant_active_in_scratch": false,
+  "maven_result_lines": [
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s - in org.xacml4j.util.JSONUtilTest",
+    "[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.312 s - in org.xacml4j.util.DOMUtilTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.util.ISO8601DurationTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.CategoryIdTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.AttributeTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s - in org.xacml4j.v30.types.ISO8601DateTest",
+    "[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.021 s - in org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeToStringCapabilityTest",
+    "[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.RFC822NameTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.DoubleValTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.XacmlTypesTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.ISO8601TimeTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 s - in org.xacml4j.v30.types.DNSNameTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601YearMonthDurationTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.BooleanValTest",
+    "[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.043 s - in org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.types.IPAddressTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.BinaryTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.IntegerTypeTest",
+    "[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.428 s - in org.xacml4j.v30.types.ISO8601DurationReviewTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.Base64BinaryTest",
+    "[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.ISO8601DateTimeTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.AnyURITest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.StringValTest",
+    "[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.types.EUI48Test",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.PortRangeTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.PathTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.HexTypeTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeCapabilityTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeToStringTest",
+    "[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.AttributeIndexTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.WellKnownAttributeIdsTest",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s - in org.xacml4j.v30.content.JsonContentTest",
+    "[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.068 s - in org.xacml4j.v30.content.XmlContentTest",
+    "[WARNING] Tests run: 4, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.004 s - in org.xacml4j.v30.content.ContentTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.ObligationTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.EntityTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.ContentTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.065 s - in org.xacml4j.v30.policy.ConditionTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.057 s - in org.xacml4j.v30.policy.MatchAllOfTest",
+    "[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.BagOfValuesTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.VariableReferenceTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.XPathTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.RootEvaluationContextTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.StatusCodeIdTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.DecisionTest",
+    "[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+    "[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+    "[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+    "[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 s - in org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.AdviceTest",
+    "[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.097 s - in org.xacml4j.v30.policy.RuleTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.ApplyTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.CombinerParameterTest",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.TargetTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.AttributeAssignmentTest",
+    "92[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.v30.policy.MatchTest",
+    "[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.ResultTest",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.policy.AttributesTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s - in org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+    "[INFO] Tests run: 72, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.155 s - in org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+    "385[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.101 s - in org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s - in org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.052 s - in org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s - in org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+    "[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.101 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+    "[INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.116 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.042 s - in org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+    "[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.057 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+    "[INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+    "[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.ParamTypeSequenceTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest",
+    "[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.v30.policy.PolicyTest",
+    "[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.MatchAnyOfTest",
+    "[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.RequestTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.PolicyDefaultsTest",
+    "[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s - in org.xacml4j.v30.policy.PolicySetTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AdviceExpressionTest",
+    "[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.PolicyIDReferenceTest",
+    "[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.VersionMatchTest",
+    "[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.VariableDefinitionTest",
+    "[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.AttributeSelectorTest",
+    "[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AttributeDesignatorTest",
+    "[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionTest",
+    "[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.ObligationExpressionTest",
+    "[INFO] Results:",
+    "[WARNING] Tests run: 760, Failures: 0, Errors: 0, Skipped: 2",
+    "[INFO] BUILD SUCCESS"
+  ]
+}

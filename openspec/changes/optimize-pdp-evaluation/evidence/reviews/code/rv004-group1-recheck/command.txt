@@ -1,0 +1,2 @@
+ntm send xacml4j--pdp-jmh-review --pane=3 --file rv012-astra.md
+# report taken between the RV012 markers of the Codex session record; local paths rewritten (scrub.py)

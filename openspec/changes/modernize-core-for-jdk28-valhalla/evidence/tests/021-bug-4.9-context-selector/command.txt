@@ -1,0 +1,54 @@
+Working directory: <lane>
+
+JDK selection/version:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Test first, expected red:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dlicense.skipUpdateLicense=true -Dtest=DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/red.log
+
+Focused green:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dlicense.skipUpdateLicense=true -Dtest=DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/focused-green.log
+
+Entity overload regression:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-core -Dlicense.skipUpdateLicense=true -Dtest=XmlContentTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/entity-overload-green.log
+
+Full conformance gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-conformance-tests -am -Dlicense.skipUpdateLicense=true test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/conformance-gate.log
+
+Count OASIS executions from the gate log:
+rtk python3 -c 'from pathlib import Path; s=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/conformance-gate.log").read_text(); names=["org.xacml4j.v20.RSA2008InteropTest","org.xacml4j.v20.Xacml20ConformanceTest","org.xacml4j.v20.Xacml30ConformanceTest","org.xacml4j.v20.XacmlExampleTest"]; positions=[s.index("Running "+n) for n in names]+[len(s)]; [print(n+": "+str(s[positions[i]:positions[i+1]].count("Executing test="))) for i,n in enumerate(names)]'
+
+Header-byte check against the sibling baseline used Python to extract each edited file's `#%L` through `#L%` block and compare bytes. No Git command was run in the lane.
+
+## rv030 repair
+
+JDK/Maven used for these runs:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Expected-red selector and Match regression tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/rv030-red-pdp.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DurationReviewTest,MatchTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-red-core.log
+
+Expected-red PIP-selector-path test (PDP syntax-error catch temporarily removed, then restored):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest#testPipSuppliedContextSelectorPreservesCardinalitySyntaxError -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/rv030-red-pip-selector.log
+
+Focused green tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601DurationReviewTest,MatchTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-focused-core.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/rv030-focused-pdp.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=TypeToXacml30Test -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-focused-xml.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=JsonEntityMarshallingTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-focused-json.log
+
+Full JDK 21 gates:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-core-gate.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/rv030-pdp-gate.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-xml-gate.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/022-bug-4.10-fractional-seconds/rv030-json-gate.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/rv030-conformance-gate.log
+
+Selector-path catch inventory:
+rtk rg -n 'PathEvaluationException|syntaxError|catch\s*\(' xacml-core/src/main/java/org/xacml4j/v30/policy xacml-pdp/src/main/java/org/xacml4j/v30/pdp
+
+OASIS case counts use the case log marker; RSA and examples totals are their class-level Surefire test counts in the same log:
+rtk python3 -c 'from pathlib import Path; s=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/021-bug-4.9-context-selector/rv030-conformance-gate.log").read_text(errors="replace"); names=["org.xacml4j.v20.RSA2008InteropTest","org.xacml4j.v20.Xacml20ConformanceTest","org.xacml4j.v20.Xacml30ConformanceTest","org.xacml4j.v20.XacmlExampleTest"]; positions=[s.index("Running "+n) for n in names]+[len(s)]; [print(n+": "+str(s[positions[i]:positions[i+1]].count("Executing test=\""))) for i,n in enumerate(names)]'
+
+Header blocks for all eight edited Java files were checked byte-for-byte against the same paths in `<lane>.base` with Python; all matched. No Git command was run in the lane.

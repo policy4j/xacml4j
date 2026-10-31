@@ -1,0 +1,4 @@
+# comparator regression cases (fixtures in a scratch directory)
+bash openspec/changes/upgrade-build-plugins/evidence/tests/001-characterization/compare-generated-test.sh <scratch>/plugins/compare-test
+# the corrected comparison on the generated trees of run 003 (0.15.1 and 0.15.3, built by characterize-v2.sh)
+bash openspec/changes/upgrade-build-plugins/evidence/tests/001-characterization/compare-generated.sh <scratch>/plugins/work-v2/jaxb-0.15.1/xacml-xml-jaxb/target/generated-sources <scratch>/plugins/work-v2/jaxb-0.15.3/xacml-xml-jaxb/target/generated-sources <scratch>/plugins/jaxb-v3.diff

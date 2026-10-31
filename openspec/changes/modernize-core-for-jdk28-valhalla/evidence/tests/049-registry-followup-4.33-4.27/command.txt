@@ -1,0 +1,21 @@
+# Commands run from <lane>. Maven uses the selected JDK 21 prefix.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+# Red: expected canonical double lexical mismatch (-0.0 vs -0.0E0).
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeRegistryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/049-registry-followup-4.33-4.27/part1-red.log
+
+# Red: registry fingerprint, absent-category designator, and ServiceLoader failures.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeRegistryTest,DecisionCombiningAlgorithmRegistryTest,AttributeDesignatorFunctionTest,FunctionProviderServiceLoaderTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/049-registry-followup-4.33-4.27/registry-and-provider-red.log
+
+# Focused green registry tests.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeRegistryTest,DecisionCombiningAlgorithmRegistryTest,AttributeDesignatorFunctionTest,FunctionProviderServiceLoaderTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/049-registry-followup-4.33-4.27/focused-green.log
+
+# Full section 10.2.8 identifier inventory.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=FunctionProviderServiceLoaderTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/049-registry-followup-4.33-4.27/function-inventory-green.log
+
+# Required gates.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-pdp -am clean test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/049-registry-followup-4.33-4.27/core-pdp-clean-test.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/049-registry-followup-4.33-4.27/full-reactor-verify.log
+
+# Surefire XML aggregation used for surefire-summary.txt.
+rtk python3 -c 'import pathlib,xml.etree.ElementTree as E; mods=["xacml-core","xacml-pdp","xacml-xml","xacml-json","xacml-test","xacml-conformance-tests"]; [((lambda xs: print(m,"classes",len(xs),"tests",sum(int(x.get("tests",0)) for x in xs),"failures",sum(int(x.get("failures",0)) for x in xs),"errors",sum(int(x.get("errors",0)) for x in xs),"skipped",sum(int(x.get("skipped",0)) for x in xs)))([E.parse(f).getroot() for f in (pathlib.Path(m)/"target/surefire-reports").glob("TEST-*.xml")])) for m in mods]'

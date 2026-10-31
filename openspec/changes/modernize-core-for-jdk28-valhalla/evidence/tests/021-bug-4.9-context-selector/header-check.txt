@@ -1,0 +1,12 @@
+rv030 repair header comparison: extracted each edited file's `#%L` through `#L%` block as raw bytes and compared with the same path in the read-only sibling `bugs2.base` copy.
+
+* xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeReference.java: identical; block present
+* xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java: identical; block present
+* xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java: identical; block present
+* xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java: identical; block present
+* xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java: identical; block present
+* xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java: identical; block present
+* xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java: identical; block present
+* xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java: identical; block present
+
+The earlier 4.9/4.10 header check remains represented in the preceding evidence record: XmlContent.java, ISO8601Duration.java (header absent in both copies), XmlContentTest.java, and ISO8601DayTimeDurationTest.java matched their baseline headers. No Git command was run in the lane.

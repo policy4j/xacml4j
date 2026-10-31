@@ -1,0 +1,154 @@
+--- a/xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
++++ b/xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
+@@ -35,6 +35,7 @@
+ import javax.xml.datatype.XMLGregorianCalendar;
+ import java.math.BigDecimal;
+ import java.math.BigInteger;
++import java.math.RoundingMode;
+ import java.time.*;
+ import java.time.format.DateTimeFormatter;
+ import java.time.format.DateTimeParseException;
+@@ -224,7 +225,8 @@
+         BigDecimal seconds = (BigDecimal)d.getField(DatatypeConstants.SECONDS);
+         if (seconds != null) {
+             long wholeSeconds = seconds.toBigInteger().longValueExact();
+-            int nanos = seconds.remainder(BigDecimal.ONE).movePointRight(9).intValueExact();
++            int nanos = seconds.remainder(BigDecimal.ONE).movePointRight(9)
++                    .setScale(0, RoundingMode.DOWN).intValueExact();
+             duration = duration != null ? duration.plusSeconds(wholeSeconds).plusNanos(nanos) :
+                     java.time.Duration.ofSeconds(wholeSeconds, nanos);
+         }
+@@ -258,6 +260,9 @@
+             duration = parseAsJDKDuration(v);
+         }
+         BigDecimal seconds = (BigDecimal)duration.getField(DatatypeConstants.SECONDS);
++        if (seconds != null && seconds.remainder(BigDecimal.ONE).signum() == 0) {
++            seconds = new BigDecimal(seconds.toBigInteger());
++        }
+         Duration dayTime = DF_FACTORY.newDuration(duration.getSign() >= 0, null, null,
+                 BigInteger.valueOf(duration.getDays()), BigInteger.valueOf(duration.getHours()),
+                 BigInteger.valueOf(duration.getMinutes()), seconds != null ? seconds : BigDecimal.ZERO);
+--- a/xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java
++++ b/xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java
+@@ -25,6 +25,9 @@
+ import static org.junit.Assert.assertEquals;
+ import static org.junit.Assert.assertFalse;
+ import static org.junit.Assert.assertTrue;
++import static org.easymock.EasyMock.createMock;
++import static org.easymock.EasyMock.expect;
++import static org.easymock.EasyMock.replay;
+ 
+ import java.math.BigDecimal;
+ import java.math.BigInteger;
+@@ -33,9 +36,91 @@
+ import javax.xml.datatype.DatatypeFactory;
+ 
+ import org.junit.Test;
++import org.xacml4j.util.DateTimeDurationUtils;
++import org.xacml4j.v30.EvaluationContext;
++import org.xacml4j.v30.policy.Apply;
++import org.xacml4j.v30.policy.function.FunctionProvider;
++import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+ 
+ public class ISO8601DurationReviewTest
+ {
++    @Test
++    public void integralSecondsDiscardZeroFractionalScale()
++    {
++        for (String seconds : new String[]{"1", "10", "0"}) {
++            for (String sign : new String[]{"", "-"}) {
++                ISO8601DayTimeDuration whole = ISO8601DayTimeDuration.of(sign + "PT" + seconds + "S");
++                ISO8601DayTimeDuration decimal = ISO8601DayTimeDuration.of(sign + "PT" + seconds + ".0S");
++                assertEquals(whole.toXacmlString(), decimal.toXacmlString());
++                assertEquals(0, ((BigDecimal)decimal.duration().getField(DatatypeConstants.SECONDS)).scale());
++                assertEquals(whole, decimal);
++                assertEquals(whole.hashCode(), decimal.hashCode());
++                assertEquals(0, whole.compareTo(decimal));
++            }
++        }
++        assertEquals("P0DT0H0M1S", ISO8601DayTimeDuration.of("PT1.0S").toXacmlString());
++        assertEquals("-P0DT0H0M1S", ISO8601DayTimeDuration.of("-PT1.0S").toXacmlString());
++    }
++
++    @Test
++    public void nonzeroFractionalLexicalFormStaysDecimal()
++    {
++        assertEquals("P0DT0H0M1.5S", ISO8601DayTimeDuration.of("PT1.5S").toXacmlString());
++        assertEquals("-P0DT0H0M1.5S", ISO8601DayTimeDuration.of("-PT1.5S").toXacmlString());
++    }
++
++    @Test
++    public void subNanosecondConversionTruncatesTowardZero() throws Exception
++    {
++        // Packet 1.3i: preserve XML decimal precision; truncate only at the java.time boundary.
++        String[] seconds = {"0.0000000001", "1.0000000019", "0.9999999999"};
++        long[] nanos = {0L, 1_000_000_001L, 999_999_999L};
++        DatatypeFactory factory = DatatypeFactory.newInstance();
++        for (int i = 0; i < seconds.length; i++) {
++            for (boolean negative : new boolean[]{false, true}) {
++                String lexical = (negative ? "-" : "") + "PT" + seconds[i] + "S";
++                ISO8601DayTimeDuration value = ISO8601DayTimeDuration.of(lexical);
++                assertEquals(0, new BigDecimal(seconds[i]).compareTo(
++                        (BigDecimal)value.duration().getField(DatatypeConstants.SECONDS)));
++                java.time.Duration expected = java.time.Duration.ofNanos(negative ? -nanos[i] : nanos[i]);
++                assertEquals(expected, value.toDuration());
++                assertEquals(expected, DateTimeDurationUtils.toISO8601DayTimeDuration(factory.newDuration(lexical)));
++            }
++        }
++    }
++
++    @Test
++    public void subNanosecondArithmeticEvaluatesThroughApply() throws Exception
++    {
++        FunctionProvider functions = FunctionProviderBuilder.builder().withDefaultFunctions().build();
++        String start = "2002-03-22T08:23:47-05:00";
++        String[][] cases = {
++                {"PT0.0000000001S", start, start},
++                {"-PT0.0000000001S", start, start},
++                {"PT1.0000000019S", "2002-03-22T08:23:48.000000001-05:00", "2002-03-22T08:23:45.999999999-05:00"},
++                {"-PT1.0000000019S", "2002-03-22T08:23:45.999999999-05:00", "2002-03-22T08:23:48.000000001-05:00"}
++        };
++        for (boolean validate : new boolean[]{false, true}) {
++            EvaluationContext context = createMock(EvaluationContext.class);
++            expect(context.isValidateFuncParamsAtRuntime()).andStubReturn(validate);
++            replay(context);
++            for (String[] values : cases) {
++                for (String version : new String[]{"3.0", "1.0"}) {
++                    Apply add = Apply.builder(functions.getFunction("urn:oasis:names:tc:xacml:"
++                            + version + ":function:dateTime-add-dayTimeDuration").get())
++                            .param(ISO8601DateTime.of(start), ISO8601DayTimeDuration.of(values[0])).build();
++                    Apply subtract = Apply.builder(functions.getFunction("urn:oasis:names:tc:xacml:"
++                            + version + ":function:dateTime-subtract-dayTimeDuration").get())
++                            .param(ISO8601DateTime.of(start), ISO8601DayTimeDuration.of(values[0])).build();
++                    ISO8601DateTime added = (ISO8601DateTime)add.evaluate(context);
++                    ISO8601DateTime subtracted = (ISO8601DateTime)subtract.evaluate(context);
++                    assertEquals(values[1], added.toXacmlString());
++                    assertEquals(values[2], subtracted.toXacmlString());
++                }
++            }
++        }
++    }
++
+     @Test
+     public void fractionalLexicalRoundTripKeepsDecimalSeconds()
+     {
+--- a/xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java
++++ b/xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java
+@@ -58,7 +58,16 @@
+             {"2002-03-22T08:23:47.250-05:00", "-PT0.001S", "2002-03-22T08:23:47.249-05:00", "2002-03-22T08:23:47.251-05:00"},
+             {"2020-01-31T23:59:59.75-05:00", "PT0.5S", "2020-02-01T00:00:00.25-05:00", "2020-01-31T23:59:59.25-05:00"},
+             {"2002-03-22T08:23:47-05:00", "P1DT2H3M1.5S", "2002-03-23T10:26:48.5-05:00", "2002-03-21T06:20:45.5-05:00"},
+-            {"2002-03-22T08:23:47-05:00", "PT0.000000001S", "2002-03-22T08:23:47.000000001-05:00", "2002-03-22T08:23:46.999999999-05:00"}
++            {"2002-03-22T08:23:47-05:00", "PT0.000000001S", "2002-03-22T08:23:47.000000001-05:00", "2002-03-22T08:23:46.999999999-05:00"},
++            // Conductor decision (packet 1.3i): discard sub-nanosecond magnitude toward zero.
++            {"2002-03-22T08:23:47-05:00", "PT0.0000000001S", "2002-03-22T08:23:47-05:00", "2002-03-22T08:23:47-05:00"},
++            {"2002-03-22T08:23:47-05:00", "-PT0.0000000001S", "2002-03-22T08:23:47-05:00", "2002-03-22T08:23:47-05:00"},
++            {"2002-03-22T08:23:47-05:00", "PT1.0000000019S", "2002-03-22T08:23:48.000000001-05:00", "2002-03-22T08:23:45.999999999-05:00"},
++            {"2002-03-22T08:23:47-05:00", "-PT1.0000000019S", "2002-03-22T08:23:45.999999999-05:00", "2002-03-22T08:23:48.000000001-05:00"},
++            {"2002-03-22T08:23:47-05:00", "PT0.9999999999S", "2002-03-22T08:23:47.999999999-05:00", "2002-03-22T08:23:46.000000001-05:00"},
++            {"2002-03-22T08:23:47-05:00", "-PT0.9999999999S", "2002-03-22T08:23:46.000000001-05:00", "2002-03-22T08:23:47.999999999-05:00"},
++            {"2002-03-22T08:23:47.250-05:00", "PT1.0000000019S", "2002-03-22T08:23:48.250000001-05:00", "2002-03-22T08:23:46.249999999-05:00"},
++            {"2002-03-22T08:23:47.250-05:00", "-PT1.0000000019S", "2002-03-22T08:23:46.249999999-05:00", "2002-03-22T08:23:48.250000001-05:00"}
+         });
+     }
+ 

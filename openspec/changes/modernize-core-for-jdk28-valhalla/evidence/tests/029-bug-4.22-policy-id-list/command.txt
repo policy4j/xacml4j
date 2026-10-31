@@ -1,0 +1,15 @@
+Working directory: <lane>
+
+Red core evaluated-policy test:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=RootEvaluationContextTest test
+
+Direct fixture-driven policy ID checks:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml30ConformanceTest#testIIIG300PolicyIdentifiersIncludeFullyApplicableOppositeEffect,Xacml30ConformanceTest#testIIIG301PolicyIdentifiersMatchExpectedThree -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/029-bug-4.22-policy-id-list/direct-policyid-tests.log
+
+Earlier temporary response-comparison trial (IIIG300 failed expected 2/actual 3; IIIG301 passed):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml30ConformanceTest#testReturnPolicyIdListIIIG300,Xacml30ConformanceTest#testReturnPolicyIdListIIIG301 -Dsurefire.failIfNoSpecifiedTests=false test
+
+Full enabled conformance reactor:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/029-bug-4.22-policy-id-list/full-reactor.log
+
+Read-only verification (no Git in the lane): compare Java license blocks, both vendored trees, and xacml-conformance-tests/src/test/integrity/vendored-fixtures.sha1 byte-for-byte with <lane>.base.

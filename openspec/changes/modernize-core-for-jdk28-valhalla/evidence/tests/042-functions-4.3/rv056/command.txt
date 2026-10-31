@@ -1,0 +1,29 @@
+# rv056 fixes for policy4j-the.4.43 and policy4j-the.4.39
+# Lane: <lane>
+# The lane directory is not a git checkout, so git status was not available here.
+# JDK: java 21.0.6 (Oracle GraalVM 21.0.6+8.1), selected with `jenv prefix 21`.
+# Every Maven command starts with `cd <lane> &&`. Offline. License header rewrite skipped.
+# Beads were not claimed, noted, or closed. The conductor owns them.
+
+# Focused red, then green, are already in this directory:
+#   red.log, red-pdp.log, green.log
+
+# Higher-order evaluation oracle after the status fix.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-core -Dtest=HigherOrderVariadicFunctionsTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv056/higher-order-oracle.log test
+
+# Bare module gate, recorded before the higher-order oracle update.
+# BUILD FAILURE in xacml-core. PDP did not run. Log: module-clean-test.log.
+# Not repeated after the oracle update.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-core,xacml-pdp -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv056/module-clean-test.log clean test
+
+# Module gate with the AnyURI lexical exclusion used by the previous 042 reactor.
+# BUILD SUCCESS. Log: module-clean-test-excluding-anyuri.log.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-core,xacml-pdp -am -Dsurefire.excludes=**/AnyURI*LexicalTest.java -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv056/module-clean-test-excluding-anyuri.log clean test
+
+# Reactor clean verify, same exclusion as verify/command.txt.
+# BUILD FAILURE at xacml-test. Conformance module skipped. Log: reactor-excluding-anyuri.log.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -Dsurefire.excludes=**/AnyURI*LexicalTest.java -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv056/reactor-excluding-anyuri.log clean verify
+
+# Named conformance, because the reactor stopped before xacml-conformance-tests.
+# BUILD SUCCESS. Log: conformance.log.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceTest,Xacml30ConformanceTest,RSA2008InteropTest,XacmlExampleTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv056/conformance.log test

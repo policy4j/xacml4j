@@ -1,0 +1,2 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true clean test
+# absence check: POM declarations (python ElementTree over every pom.xml) and rtk rg over sources, resources, and config outside xacml-proto/, openspec/, target/

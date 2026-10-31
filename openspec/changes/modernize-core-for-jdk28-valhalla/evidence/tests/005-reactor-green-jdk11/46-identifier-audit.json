@@ -1,0 +1,200 @@
+[
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 491,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only",
+    "operation": "dayTimeDuration-one-and-only",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 499,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag-size",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size",
+    "operation": "dayTimeDuration-bag-size",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 507,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-is-in",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in",
+    "operation": "dayTimeDuration-is-in",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 516,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag",
+    "operation": "dayTimeDuration-bag",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 529,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-one-and-only",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only",
+    "operation": "yearMonthDuration-one-and-only",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 538,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag-size",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size",
+    "operation": "yearMonthDuration-bag-size",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 547,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-is-in",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in",
+    "operation": "yearMonthDuration-is-in",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java",
+    "original_line": 557,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag",
+    "operation": "yearMonthDuration-bag",
+    "reference": "Appendix A.3.10; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 585,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-intersection",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection",
+    "operation": "dayTimeDuration-intersection",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 594,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-union",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-union",
+    "operation": "dayTimeDuration-union",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 603,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-subset",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-subset",
+    "operation": "dayTimeDuration-subset",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 612,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-at-least-one-member-of",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of",
+    "operation": "dayTimeDuration-at-least-one-member-of",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 621,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-set-equals",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals",
+    "operation": "dayTimeDuration-set-equals",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 630,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-intersection",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection",
+    "operation": "yearMonthDuration-intersection",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 639,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-union",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union",
+    "operation": "yearMonthDuration-union",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 648,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-subset",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-subset",
+    "operation": "yearMonthDuration-subset",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 657,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-at-least-one-member-of",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of",
+    "operation": "yearMonthDuration-at-least-one-member-of",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java",
+    "original_line": 666,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-set-equals",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals",
+    "operation": "yearMonthDuration-set-equals",
+    "reference": "Appendix A.3.11; Tables 10.2.8/10.2.9",
+    "test_class": "DurationFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java",
+    "original_line": 54,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:any-of",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:any-of",
+    "operation": "any-of",
+    "reference": "Appendix A.3.12/A.4; Table 10.2.9",
+    "test_class": "HigherOrderFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java",
+    "original_line": 72,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:all-of",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:all-of",
+    "operation": "all-of",
+    "reference": "Appendix A.3.12/A.4; Table 10.2.9",
+    "test_class": "HigherOrderFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java",
+    "original_line": 90,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:any-of-any",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:any-of-any",
+    "operation": "any-of-any",
+    "reference": "Appendix A.3.12/A.4; Table 10.2.9",
+    "test_class": "HigherOrderFunctionIdentifierTest"
+  },
+  {
+    "provider": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java",
+    "original_line": 169,
+    "canonical": "urn:oasis:names:tc:xacml:3.0:function:map",
+    "legacy": "urn:oasis:names:tc:xacml:1.0:function:map",
+    "operation": "map",
+    "reference": "Appendix A.3.12/A.4; Table 10.2.9",
+    "test_class": "HigherOrderFunctionIdentifierTest"
+  }
+]

@@ -1,0 +1,2 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dmaven.test.failure.ignore=true -Dsurefire.failIfNoSpecifiedTests=false -Dtest=EmptyBagCharacterizationTest test   (before D14)
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dsurefire.failIfNoSpecifiedTests=false -Dtest=EmptyBagCharacterizationTest,BagOfValuesCharacterizationTest,BagOfValuesTest,AttributeDesignatorTest,AttributeSelectorTest,MatchTest test   (after)

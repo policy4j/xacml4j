@@ -1,0 +1,20 @@
+Red run, JDK 21: MultipleResourcesRepeatedCategoriesLimitTest with the limit declared but not enforced.
+
+[ERROR] Tests run: 11, Failures: 7, Errors: 1, Skipped: 0, Time elapsed: 3.491 s <<< FAILURE! - in org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.limitMustBePositive  Time elapsed: 2.288 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.productOfManyCategoriesDoesNotOverflow  Time elapsed: 0.015 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.limitIsConfigurable  Time elapsed: 0.025 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.indeterminateResultKeepsTheIncludeInResultAttributes  Time elapsed: 0.015 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.moreRepeatsThanTheLimitAreIndeterminate  Time elapsed: 0.012 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.repeatsWithSelectorsAreBoundedAtEachStep  Time elapsed: 0.589 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.productAboveTheLimitIsIndeterminate  Time elapsed: 0.017 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.publicHandlerChainPassesTheLimit  Time elapsed: 0.018 s  <<< FAILURE!
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.indeterminateResultKeepsTheIncludeInResultAttributes:225->assertLimitExceeded:235 expected: <1> but was: <101>
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.limitIsConfigurable:159->assertLimitExceeded:235 expected: <1> but was: <3>
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.limitMustBePositive:167 Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.moreRepeatsThanTheLimitAreIndeterminate:92->assertLimitExceeded:235 expected: <1> but was: <101>
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.productAboveTheLimitIsIndeterminate:118->assertLimitExceeded:235 expected: <1> but was: <121>
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.publicHandlerChainPassesTheLimit:174->assertLimitExceeded:235 expected: <1> but was: <3>
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.repeatsWithSelectorsAreBoundedAtEachStep:205->assertLimitExceeded:235 expected: <1> but was: <12>
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.productOfManyCategoriesDoesNotOverflow:143 » IllegalArgument Cartesian product too large; must have size at most Integer.MAX_VALUE
+[ERROR] Tests run: 11, Failures: 7, Errors: 1, Skipped: 0

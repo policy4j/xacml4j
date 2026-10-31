@@ -1,0 +1,41 @@
+Run 086 (bead policy4j-the.4.61), 2026-10-09. JDK 21 (jenv prefix 21).
+Working tree: integration/modernize-core-jdk28-valhalla at e927c465 plus
+this change.
+
+Maven. Runs 1 and 2 used the Homebrew Maven of that moment (plugins
+resources 3.4.0, jar 3.5.0). At 20:07 local time Homebrew replaced it with
+Maven 3.10.0, which binds maven-resources-plugin 3.5.0. That version is not
+in the local repository, and the configured artifact repository was not
+reachable from then on (connect timed out; Maven Central answered). The
+later runs use the Maven 3.9.6 distribution of the local wrapper cache in
+offline mode: MVN = $HOME/.m2/wrapper/dists/apache-maven-3.9.6-bin/<id>/apache-maven-3.9.6/bin/mvn
+
+1. Red run 1 (red-surefire-summary.txt):
+   mvn -Dlicense.skipUpdateLicense=true -Dmaven.test.failure.ignore=true \
+     -pl xacml-pdp,xacml-xml -am \
+     -Dtest='DynamicTypeTest,ApplyArgumentValidationTest,InvalidApply*Test' \
+     -Dsurefire.failIfNoSpecifiedTests=false test
+2. First full reactor after the implementation, with the first Maven:
+   mvn -Dlicense.skipUpdateLicense=true clean verify
+   7,993 tests, 0 failures, 0 errors, 18 skipped.
+3. Red run 2 (red-2-surefire-summary.txt):
+   $MVN -o -Dlicense.skipUpdateLicense=true -Dmaven.test.failure.ignore=true \
+     -pl xacml-core -Dtest='ApplyArgumentValidationTest' \
+     -Dsurefire.failIfNoSpecifiedTests=false test
+4. Mutation check (mutation-check.txt), per mutation:
+   $MVN -o -Dlicense.skipUpdateLicense=true -Dmaven.test.failure.ignore=true \
+     -pl xacml-pdp,xacml-xml -am \
+     -Dtest='DynamicTypeTest,ApplyArgumentValidationTest,InvalidApply*Test,HigherOrder*Test,AttributeResolutionSafetyNetTest,ApplyTest,DefaultFunctionSpecTest' \
+     -Dsurefire.failIfNoSpecifiedTests=false test
+5. Gate (surefire-summary.txt):
+   $MVN -o -Dlicense.skipUpdateLicense=true clean test
+   8,009 tests, 0 failures, 0 errors, 18 skipped.
+   `clean verify` did not run offline: Maven 3.9.6 binds maven-jar-plugin
+   3.3.0, which is not in the local repository. The gate has every test of
+   the reactor; it does not build the jars.
+6. openspec validate modernize-core-for-jdk28-valhalla --strict
+   Change 'modernize-core-for-jdk28-valhalla' is valid
+7. ast-grep scan xacml-core/src/main xacml-pdp/src/main xacml-xml/src/main
+   no finding
+8. git status --short after the gate: the files of this change only; no
+   license header was rewritten.

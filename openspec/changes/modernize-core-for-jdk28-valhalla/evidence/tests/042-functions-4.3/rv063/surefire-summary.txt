@@ -1,0 +1,42 @@
+# Maven Results sections. Checkout path replaced with <repo>.
+# Full logs: red.log, green.log, module-clean-test-excluding-anyuri.log, conformance.log.
+
+## red.log — focused, before production edits
+
+[ERROR] Tests run: 109, Failures: 9, Errors: 6, Skipped: 12 <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test
+[ERROR] Tests run: 7, Failures: 1, Errors: 0, Skipped: 0 <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[ERROR] Tests run: 116, Failures: 10, Errors: 6, Skipped: 12
+BUILD FAILURE
+
+## green.log — focused, after the edits
+
+[WARNING] Tests run: 109, Failures: 0, Errors: 0, Skipped: 12 - in org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0 - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[WARNING] Tests run: 116, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS
+Total time:  6.713 s
+
+## module-clean-test-excluding-anyuri.log
+
+[WARNING] Tests run: 4576, Failures: 0, Errors: 0, Skipped: 17
+  module: xacml-core
+[INFO] Tests run: 53, Failures: 0, Errors: 0, Skipped: 0
+  module: xacml-xml
+[WARNING] Tests run: 21, Failures: 0, Errors: 0, Skipped: 1
+  module: xacml-json
+[WARNING] Tests run: 79, Failures: 0, Errors: 0, Skipped: 3
+  module: xacml-pdp
+BUILD SUCCESS
+Total time:  16.327 s
+Finished at: 2026-10-02T04:06:06-04:00
+
+## conformance.log
+
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0 - in org.xacml4j.v20.RSA2008InteropTest
+[WARNING] Tests run: 375, Failures: 0, Errors: 0, Skipped: 12 - in org.xacml4j.v20.Xacml20ConformanceTest
+[WARNING] Tests run: 488, Failures: 0, Errors: 0, Skipped: 11 - in org.xacml4j.v20.Xacml30ConformanceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0 - in org.xacml4j.v20.XacmlExampleTest
+[WARNING] Tests run: 882, Failures: 0, Errors: 0, Skipped: 23
+BUILD SUCCESS
+Total time:  8.694 s
+Finished at: 2026-10-02T04:06:56-04:00

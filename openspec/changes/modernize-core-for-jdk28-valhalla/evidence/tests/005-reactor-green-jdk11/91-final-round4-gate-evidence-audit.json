@@ -1,0 +1,48 @@
+{
+  "result": "PASS",
+  "protected_files_unchanged": 3543,
+  "only_project_file_changed": "xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java",
+  "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+  "listener_tests_with_barriers": 4,
+  "stability": {
+    "85-repository-before": {
+      "passed": 26,
+      "failed": 4,
+      "reported_totals": {
+        "tests": 120,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "87-repository-after": {
+      "passed": 30,
+      "failed": 0,
+      "reported_totals": {
+        "tests": 120,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "full_gate_totals": {
+    "88": [
+      936,
+      0,
+      0,
+      9
+    ],
+    "89": [
+      936,
+      0,
+      0,
+      9
+    ]
+  },
+  "conformance_failed_case_ids": [],
+  "existing_exclusions_per_oasis_suite": 30,
+  "evidence_files_checked": 287,
+  "scoped_diff_check": "PASS",
+  "staged_files": 0
+}

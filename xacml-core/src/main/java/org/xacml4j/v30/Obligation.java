@@ -22,9 +22,7 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import com.google.common.base.Objects;
-import com.google.common.base.Preconditions;
-
+import java.util.Collection;
 
 /**
  * In many applications, policies specify actions that MUST be performed,
@@ -42,15 +40,29 @@ import com.google.common.base.Preconditions;
 
  */
 public class Obligation
-	extends BaseDecisionRuleResponse
+	extends DecisionRuleResponse
 {
 	Obligation(Builder b)
 	{
 		super(b);
 	}
 
+	private Obligation(String id, Effect fulfillOn, Collection<AttributeAssignment> attributes){
+		super(id, fulfillOn, attributes);
+	}
+
+	/** Creates an obligation with distinct assignments grouped in first-seen attribute order. */
+	public static Obligation of(String id, Effect fulfillOn, Collection<AttributeAssignment> attributes){
+		return new Obligation(id, fulfillOn, attributes);
+	}
+
 	public static Builder builder(String id, Effect appliesTo){
 		return new Builder(id, appliesTo);
+	}
+
+	public static Builder from(Obligation o){
+		return new Builder(o.getId(), o.getFulfillOn())
+				.attributes(o.getAttributes());
 	}
 
 	public static Builder builder(String id){
@@ -58,32 +70,30 @@ public class Obligation
 	}
 
 
-	/**
-	 * Combines this obligation attributes with a
-	 * given obligation attributes
-	 *
-	 * @param o an obligation
-	 * @return a new obligation instance with combined attributes
-	 */
-	public Obligation merge(Obligation o)
-	{
-		if( o == null){
-			return this;
-		}
-		if(o == this){
-			return this;
-		}
-		Preconditions.checkArgument(getId().equals(o.getId()));
-		// HACK: not sure if we need this check
-		Preconditions.checkArgument(Objects.equal(getFulfillOn(), o.getFulfillOn()));
-		return new Builder(getId(), getFulfillOn())
-		.attributes(getAttributes())
-		.attributes(o.getAttributes())
-		.build();
-	}
 
 	protected boolean equalsTo(Obligation o) {
 		return super.equalsTo(o);
+	}
+
+	@Override
+	public Obligation merge(DecisionRuleResponse a) {
+		if(a == null){
+			return this;
+		}
+		if(a == this){
+			return this;
+		}
+		if(!(a instanceof Obligation)){
+			return this;
+		}
+		if(!(getId().equals(a.getId()))){
+			return this;
+		}
+		Obligation o = Obligation.class.cast(a);
+		return Obligation.from(o)
+				.attributes(getAttributes())
+				.attributes(o.getAttributes())
+				.build();
 	}
 
 	@Override
@@ -91,12 +101,11 @@ public class Obligation
 		if (o == this) {
 			return true;
 		}
-
 		return (o instanceof Obligation)
 				&& ((Obligation)o).equalsTo(this);
 	}
 
-	public static class Builder extends BaseDecisionRuleResponse.Builder<Builder>
+	public static class Builder extends DecisionRuleResponse.Builder<Builder>
 	{
 		private Builder(String id, Effect effect){
 			super(id, effect);

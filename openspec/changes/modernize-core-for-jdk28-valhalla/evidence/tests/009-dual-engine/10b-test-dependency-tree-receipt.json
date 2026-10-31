@@ -1,0 +1,20 @@
+{
+  "log": "10b-test-dependency-tree.log",
+  "build_success": true,
+  "tests_executed": false,
+  "module_counts": {},
+  "totals": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "compiler_diagnostics": [],
+  "reports": {},
+  "jdk_properties": {},
+  "problems": [],
+  "conformance": {},
+  "root_pom_sha256": "3eea70fb4f0ac7a3797ca557a1399a5bb4ae5bc8c7099d37ac0dfc5c2a3c0410",
+  "root_pom_matches_before": false,
+  "probe_present": false
+}

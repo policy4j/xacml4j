@@ -1,0 +1,36 @@
+{
+  "provider": "antigravity_cli",
+  "profile": "policy4j_arch_review_agy",
+  "requested_model": "gemini-3.1-pro-high",
+  "conversation_id": "cdca3d8e-3cb4-4bf8-893e-71c06792f52d",
+  "argv_prefix": [
+    "agy",
+    "--conversation",
+    "cdca3d8e-3cb4-4bf8-893e-71c06792f52d",
+    "--mode",
+    "plan",
+    "--sandbox",
+    "--model",
+    "gemini-3.1-pro-high",
+    "--output-format",
+    "stream-json",
+    "--print-timeout",
+    "180s",
+    "--print"
+  ],
+  "prompt_file": "prompt.txt",
+  "prompt_sha256": "306146adbb615a6cf7eee4aebf241a032fa08c98203c850ec327952e9ef58f89",
+  "packet": [
+    "openspec/changes/add-desktop-deep-research/proposal.md",
+    "openspec/changes/add-desktop-deep-research/research/README.md",
+    "openspec/changes/add-desktop-deep-research/design.md",
+    "openspec/changes/add-desktop-deep-research/tasks.md",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-collection/spec.md",
+    "openspec/changes/add-desktop-deep-research/evidence/README.md",
+    "openspec/changes/add-desktop-deep-research/evidence/reviews/plan/rv001-architecture-claude/report.md",
+    "openspec/changes/add-desktop-deep-research/evidence/reviews/plan/rv001-architecture-claude/disposition.md",
+    "openspec/changes/add-desktop-deep-research/evidence/builds/003-revised-plan-validation/summary.md",
+    "openspec/changes/add-desktop-deep-research/evidence/builds/003-revised-plan-validation/validation.json"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "chunk_id": "7f62b4",
+  "wall_time_seconds": 0.30248175,
+  "exit_code": 0,
+  "original_token_count": 321,
+  "output": "{\n  \"native_examples\": [\n    {\n      \"scheme\": \"https\",\n      \"host\": \"academy.claude.com\",\n      \"path\": \"/courses/claude-101/research-mode-for-deep-dives\"\n    },\n    {\n      \"scheme\": \"https\",\n      \"host\": \"claude.com\",\n      \"path\": \"/blog/research\"\n    },\n    {\n      \"scheme\": \"https\",\n      \"host\": \"privacy.claude.com\",\n      \"path\": \"/en/articles/11186740-does-claude-use-my-location\"\n    },\n    {\n      \"scheme\": \"https\",\n      \"host\": \"privacy.claude.com\",\n      \"path\": \"/en/articles/8114513-business-associate-agreements-baa-for-commercial-customers\"\n    }\n  ],\n  \"copy_examples\": [\n    {\n      \"scheme\": \"https\",\n      \"host\": \"support.claude.com\",\n      \"path\": \"/en/articles/11088861-use-research-on-claude,\"\n    },\n    {\n      \"scheme\": \"https\",\n      \"host\": \"support.claude.com\",\n      \"path\": \"/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research,\"\n    },\n    {\n      \"scheme\": \"https\",\n      \"host\": \"support.claude.com\",\n      \"path\": \"/en/articles/10684626-enable-and-use-web-search,\"\n    },\n    {\n      \"scheme\": \"https\",\n      \"host\": \"support.claude.com\",\n      \"path\": \"/en/articles/16761823-claude-cowork-and-chat-are-one-claude,\"\n    }\n  ],\n  \"copy_citations_matched_by_official_article_id\": 20,\n  \"copy_citation_count\": 20\n}\n"
+}

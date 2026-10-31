@@ -1,0 +1,5 @@
+python3 -I <scratch>/jmhtools/regate.py <repo> <scratch> <maven-3.9.16-bin>   # see the script header; it runs:
+  mvn -B -o -Dlicense.skipUpdateLicense=true clean test            (JDK 25)
+  mvn -B -o -q -DskipTests package; class-file header of one class per module
+  mvn -B -o -q validate                                              (JDK 21, expected to fail)
+  META-INF/services listing per module

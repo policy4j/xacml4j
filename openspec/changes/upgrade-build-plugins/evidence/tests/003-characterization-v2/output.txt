@@ -1,0 +1,10 @@
+== license headers: forced update with 1.7 and 2.7.1
+license 1.7: differing files 1809
+license 2.7.1: differing files 1704
+== JAXB generated sources: 0.15.1 and 0.15.3, version set explicitly
+jaxb 0.15.1: generated
+jaxb 0.15.3: generated
+jaxb: changed lines other than the generator comment and timestamp: 0
+exit 0
+
+[exited with code 0]

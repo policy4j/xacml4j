@@ -1,0 +1,14 @@
+client_model=claude-haiku-5-5
+research_servers=[{"name": "deep-research-mcp", "status": "connected", "source": "user"}, {"name": "deep-research-gemini", "status": "pending", "source": "local"}]
+tool_called=True
+tool_input_keys=['query']
+tool_query="Using only public official OpenAI and Anthropic sources, compare ChatGPT Deep Research and Claude Research: available desktop interfaces, initiation, source control, and report export. Include dated citations."
+tool_result_is_error=True
+tool_result_chars=72
+session_duration_ms=308975
+session_result="FAILED: MCP server \"deep-research-mcp\" tool \"deep_research\" timed out after 300s"
+session_cost_usd=0.010879050000000001
+report_written=openai.report.md
+start=2026-10-10 11:55:20 EDT
+exit=0
+end=2026-10-10 12:00:33 EDT

@@ -1,0 +1,10 @@
+--- before/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java
++++ mutant/xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java
+@@ -94,6 +94,7 @@
+ 		v.add(XacmlTypes.INTEGER.ofAny(10));
+ 		v.add(XacmlTypes.INTEGER.ofAny(20));
+ 		v.add(XacmlTypes.INTEGER.ofAny(30));
++		v.add(XacmlTypes.INTEGER.ofAny(40));
+ 
+ 		when(context.isValidateFuncParamsAtRuntime()).thenReturn(false);
+ 

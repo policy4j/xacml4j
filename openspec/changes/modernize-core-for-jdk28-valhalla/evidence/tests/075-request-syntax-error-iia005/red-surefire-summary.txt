@@ -1,0 +1,13 @@
+Red run, JDK 21: ConformanceRequestSyntaxErrorTest before the harness and manifest change (8 tests: the two negative controls pass, the four mapping rows fail).
+
+[ERROR] Tests run: 8, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.801 s <<< FAILURE! - in org.xacml4j.v20.ConformanceRequestSyntaxErrorTest
+[ERROR] org.xacml4j.v20.ConformanceRequestSyntaxErrorTest.mapsTheRequestSyntaxErrorOfIIA005ToTheExpectedResponse(String)[1]  Time elapsed: 0.688 s  <<< FAILURE!
+[ERROR] org.xacml4j.v20.ConformanceRequestSyntaxErrorTest.mapsTheRequestSyntaxErrorOfIIA005ToTheExpectedResponse(String)[2]  Time elapsed: 0.019 s  <<< FAILURE!
+[ERROR] org.xacml4j.v20.ConformanceRequestSyntaxErrorTest.theMappedResponseMustStillMatchTheExpectedResponse(String)[1]  Time elapsed: 0.01 s  <<< FAILURE!
+[ERROR] org.xacml4j.v20.ConformanceRequestSyntaxErrorTest.theMappedResponseMustStillMatchTheExpectedResponse(String)[2]  Time elapsed: 0.01 s  <<< FAILURE!
+[ERROR]   ConformanceRequestSyntaxErrorTest.mapsTheRequestSyntaxErrorOfIIA005ToTheExpectedResponse:51 Unexpected exception thrown: org.xacml4j.v30.SyntaxException: Request Attribute is missing AttributeId
+[ERROR]   ConformanceRequestSyntaxErrorTest.mapsTheRequestSyntaxErrorOfIIA005ToTheExpectedResponse:51 Unexpected exception thrown: org.xacml4j.v30.SyntaxException: Request Attribute is missing AttributeId
+[ERROR]   ConformanceRequestSyntaxErrorTest.theMappedResponseMustStillMatchTheExpectedResponse:61 Unexpected exception type thrown, expected: <java.lang.AssertionError> but was: <org.xacml4j.v30.SyntaxException>
+[ERROR]   ConformanceRequestSyntaxErrorTest.theMappedResponseMustStillMatchTheExpectedResponse:61 Unexpected exception type thrown, expected: <java.lang.AssertionError> but was: <org.xacml4j.v30.SyntaxException>
+[ERROR] Tests run: 8, Failures: 4, Errors: 0, Skipped: 0
+[ERROR]   mvn <args> -rf :xacml-conformance-tests

@@ -1,0 +1,4 @@
+rtk mvn -o -Dlicense.skipUpdateLicense=true -pl xacml-jmh -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest='org.xacml4j.jmh.**' test
+# mutation: PolicyStoreLoadBenchmark.setUp catch(Throwable) -> catch(RuntimeException | Error), then
+rtk mvn -o -Dlicense.skipUpdateLicense=true -pl xacml-jmh -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest=ReviewGateFixesTest test
+# file restored from a copy afterwards

@@ -1,0 +1,15 @@
+Probe before the fix, JDK 21, 2026-10-08. Each expression was built with Apply.builder(id, provider) and
+evaluated with a mocked evaluation context. The probe test was run once and is not part of the commit.
+In brackets: the root cause of the failure.
+
+integer-add(5) -> value IntegerVal{type=integer, value=5}
+integer-add() -> Indeterminate StatusCodeId{id=processing-error} (NullPointerException)
+string-equal(a) -> Indeterminate StatusCodeId{id=processing-error} (IndexOutOfBoundsException)
+integer-add(a, 1) -> Indeterminate StatusCodeId{id=processing-error} (ArrayStoreException)
+integer-bag-size(string-bag(a, b)) -> value IntegerVal{type=integer, value=2}
+integer-bag(1, a) -> Indeterminate StatusCodeId{id=processing-error} (ArrayStoreException)
+string-equal(a, b, c) -> value BooleanVal{type=boolean, value=false}
+not() -> Indeterminate StatusCodeId{id=processing-error} (IndexOutOfBoundsException)
+
+Three expressions that are not type correct gave a value. The others were Indeterminate by a failure
+inside the invocation, not by a check.

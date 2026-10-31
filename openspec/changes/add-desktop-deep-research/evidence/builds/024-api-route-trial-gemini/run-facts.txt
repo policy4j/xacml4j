@@ -1,0 +1,46 @@
+# Second attempt (the one that made the call)
+client_model=claude-haiku-5-5
+research_servers=[{"name": "deep-research-mcp", "status": "connected", "source": "user"}, {"name": "deep-research-gemini", "status": "connected", "source": "local"}]
+tool_called=True
+tool_input_keys=['query']
+tool_query="Using only public official OpenAI and Anthropic sources, compare ChatGPT Deep Research and Claude Research: available desktop interfaces, initiation, source control, and report export. Include dated citations."
+tool_result_is_error=None
+tool_result_chars=35082
+session_duration_ms=498151
+session_result="DONE"
+session_cost_usd=0.012993699999999999
+envelope=json object with the key result, decoded
+report_chars=34870
+report_written=gemini.report.md
+start=2026-10-10 11:56:12 EDT
+exit=0
+end=2026-10-10 12:04:45 EDT
+
+# Report facts (links are counted before resolving the redirects)
+bytes=34885
+words=4304
+headings=21
+table_rows=12
+links_total=16
+links_unique=8
+links_unique_official=0
+links_unique_other=8
+date_mentions=4
+hosts:
+    8  vertexaisearch.cloud.google.com   (not in the official list)
+
+# First attempt (no call was made)
+client_model=claude-haiku-5-5
+research_servers=[{"name": "deep-research-mcp", "status": "connected", "source": "user"}, {"name": "deep-research-gemini", "status": "pending", "source": "local"}]
+tool_called=False
+tool_input_keys=[]
+tool_query=""
+tool_result_is_error=None
+tool_result_chars=0
+session_duration_ms=12058
+session_result="FAILED: `mcp__deep-research-gemini__deep_research` is still not available. The only deep-research tool that loaded is `mcp__deep-research-mcp__deep_research`, a different server. I did not call it, because that would run a billed research job on a provider you didn't name. Reply if you want me to us"
+session_cost_usd=0.010708690000000003
+
+start=2026-10-10 11:55:20 EDT
+exit=0
+end=2026-10-10 11:55:37 EDT

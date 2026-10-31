@@ -1,0 +1,356 @@
+  ### A. Identity-Sensitive Use Per Candidate Type
+
+  #### 1. Primitive / Core Value Types
+
+  • BooleanVal
+      • Reference == / !=: Package-private singleton constants FALSE and TRUE. Callers use BooleanVal.
+      of(boolean) or BooleanVal.ofAny(). No external == comparisons exist.
+      • Locks / Identity Maps / Weak References: None.
+      • Reflective Mutation: None. Marshalled via TypeToGSon and TypeToString factory methods.
+      • Structural Blockers:
+          • Extends Value.OtherValue<Boolean>, which declares non-final field protected T value; at
+          Value.java:108.
+          • OtherValue extends Value.AbstractValue, which declares instance field private final ValueType
+          type; at Value.java:149. Under JEP 401, a value class cannot extend an abstract class with state.
+
+  • IntegerVal (to become Int64 per D11)
+      • Reference == / !=: Zero instances compared via == in codebase.
+      • Locks / Identity Maps / Weak References: None.
+      • Reflective Mutation: None.
+      • Structural Blockers:
+          • Extends Value.OtherValue<Long> (non-final value at line 108 and superclass AbstractValue.type
+          at line 149).
+          • Wraps boxed java.lang.Long rather than unboxed primitive long.
+
+  • DoubleVal
+      • Reference == / !=: Zero object reference comparisons. Internal primitive == used for
+      POSITIVE_INFINITY / NEGATIVE_INFINITY checks at lines 79 and 82.
+      • Locks / Identity Maps / Weak References: None.
+      • Reflective Mutation: None.
+      • Structural Blockers:
+          • Extends Value.OtherValue<Double> (non-final field at Value.java:108; superclass field at
+          Value.java:149).
+
+  • StringVal
+      • Reference == / !=: Zero object comparisons.
+      • Locks / Identity Maps / Weak References: None.
+      • Reflective Mutation: None.
+      • Structural Blockers:
+          • Extends Value.OtherValue<String> (non-final field at Value.java:108; superclass field at
+          Value.java:149).
+
+  • AnyURI
+      • Reference == / !=: equals(Object o) uses o == this identity shortcut at line 49. Safe under
+      Valhalla substitutability.
+      • Locks / Identity Maps / Weak References: None.
+      • Reflective Mutation: None.
+      • Structural Blockers:
+          • Extends Value.OtherValue<URI> (non-final field at Value.java:108; superclass field at
+          Value.java:149).
+
+  • Binary
+      • Reference == / !=: equals(Object o) uses o == this at line 158.
+      • Locks / Identity Maps / Weak References: None.
+      • Reflective Mutation / Deserialization: Implements Externalizable. readExternal(ObjectInput in)
+      mutates this.value = ByteBuffer.wrap(bytes); at lines 201–205.
+      • Structural Blockers:
+          • Declares non-final field private ByteBuffer value; at Binary.java:48.
+          • ByteBuffer is inherently mutable (position, mark, limit).
+          • readExternal requires reflective field assignment or instance mutability.
+
+  • HexBinary & Base64Binary
+      • Reference == / !=: None.
+      • Locks / Identity Maps / Weak References: None.
+      • Structural Blockers:
+          • Both extend Value.OtherValue<Binary> (non-final field at Value.java:108; superclass field at
+          Value.java:149).
+          • Both wrap Binary, which holds mutable ByteBuffer.
+
+
+  ──────
+  #### 2. Temporal Types
+
+  • ISO8601Date
+      • Identity Use: None. Fields offset and timeZoneDefined are final.
+      • Structural Blockers: Extends Value.OtherValue<LocalDate> (Value.java:108, 149).
+  • ISO8601DateTime
+      • Identity Use: None.
+      • Structural Blockers: Extends Value.OtherValue<OffsetDateTime> (Value.java:108, 149).
+  • ISO8601Time
+      • Identity Use: None. Field timeZoneDefined is final.
+      • Structural Blockers: Extends Value.OtherValue<OffsetTime> (Value.java:108, 149).
+  • ISO8601Duration
+      • Identity Use: equals uses this == o at line 101.
+      • Structural Blockers:
+          • Abstract class with instance fields (cannot be a value class superclass).
+          • Line 16: private Duration duration; is non-final.
+          • Line 17: private transient String formatted; is non-final and mutated lazily in toXacmlString()
+          at lines 114–117.
+          • Extends Value.SelfValue<T> -> Value.AbstractValue (type field).
+          • Wraps javax.xml.datatype.Duration (mutable implementation).
+
+  • ISO8601DayTimeDuration & ISO8601YearMonthDuration
+      • Structural Blockers: Both inherit mutable state and abstract superclass fields from ISO8601Duration.
+
+  ──────
+  #### 3. Special / Network Types
+
+  • RFC822Name
+      • Identity Use: o == this in equals at line 271.
+      • Fields: All declared fields (localPart, domainPart, fqName) are final.
+      • Structural Blockers: Extends Value.SelfValue<RFC822Name> -> AbstractValue.type (Value.java:149).
+  • X500Name
+      • Identity Use: None. Wraps immutable javax.security.auth.x500.X500Principal.
+      • Structural Blockers: Extends Value.OtherValue<X500Principal> (Value.java:108, 149).
+  • IPAddress
+      • Identity Use: o == this in equals at line 211.
+      • Structural Blockers:
+          • Class is not final at IPAddress.java:40.
+          • Extends Value.SelfValue<IPAddress> -> AbstractValue.type.
+          • Contains PortRange, which declares non-final fields lowerBound and upperBound at lines 42–43
+          and implements Externalizable with in-place mutation at lines 271–274.
+
+  • DNSName
+      • Identity Use: o == this in equals at line 152.
+      • Structural Blockers:
+          • Declares non-final fields: private InternetDomainName name; at line 38, and private PortRange
+          portRange; at line 39.
+          • References mutable/Externalizable PortRange.
+          • Extends Value.SelfValue<DNSName> -> AbstractValue.type.
+
+  • Path (implementation PathValue)
+      • Identity Use: o == this in equals at line 143. Fields (path, categoryId, pathType) are final.
+      • Structural Blockers: PathValue extends Value.SelfValue<Path> -> AbstractValue.type (Value.java:149).
+
+  ──────
+  #### 4. Identifiers and Keys
+
+  • CategoryId
+      • Identity Use: Tested via assertSame across 4 sites in CategoryIdTest.java:35-38 to confirm catalog
+      lookup returns canonical constant references.
+      • Reflective Mutation: Uses reflection in SemanticIdentifier.java:122 (Reflections.
+      getDeclaredStaticFields).
+      • Structural Blockers:
+          • Extends SemanticIdentifier, which declares non-final fields protected String id; and protected
+          String abbreviatedId; at lines 53–54.
+          • Declares non-final field private Optional<CategoryId> delegated; at CategoryId.java:65.
+
+  • StatusCodeId
+      • Identity Use: Tested via assertSame(StatusCodeId.OK, c) at StatusCodeIdTest.java:38.
+      • Structural Blockers:
+          • Class is not final at StatusCodeId.java:33.
+          • Extends SemanticIdentifier (non-final fields id and abbreviatedId).
+
+  • EntityId (donor b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/EntityId.java:41)
+      • Class Form: Already a Java record: public record EntityId(@Nonnull Value<?, ?> eid, @Nonnull
+      EntityType type).
+      • Identity Use: Zero.
+      • Structural Blockers: Zero. Extends Record directly; all components are implicitly final. Direct
+      candidate for value record EntityId.
+  • Issuer (donor b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/identifier/Issuer.java:37)
+      • Class Form: Sealed interface permitted to DefaultIssuer: record DefaultIssuer(@Nullable Identifier
+      id) implements Issuer.
+      • Identity Use: Zero. match() delegates to equals().
+      • Structural Blockers: Zero. DefaultIssuer is an immutable record. Direct candidate for value record
+      DefaultIssuer.
+  • AttributeDesignatorKey
+      • Identity Use: o == this in equals at line 100.
+      • Structural Blockers:
+          • Extends AttributeReferenceKey, which declares instance fields category and dataType at lines
+          40–41.
+          • Declares non-final mutable cached field private transient int hashCode = -1; at line 43,
+          mutated lazily at lines 91–94.
+
+  • AttributeSelectorKey
+      • Identity Use: o == this in equals at line 97.
+      • Structural Blockers:
+          • Extends AttributeReferenceKey (superclass instance fields).
+          • All four declared fields are non-final: path (line 41), contextSelectorId (line 42), hashCode
+          (line 43), type (line 44).
+          • Mutates hashCode lazily at lines 87–90.
+
+
+  ──────
+  #### 5. Excluded Categories (Per Design D11 & Task 9.5)
+
+  • Entity & Record: Stateful composites with mutable builders and potential cyclical reference graphs in
+  evaluation trees.
+  • BagOf (BagOfValues): Wraps heap collections (Collection<Value<?>>), iterators, and builder accumulators.
+  • Registries & Providers: BaseFunctionProvider strictly depends on identity semantics: uses Collections.
+  newSetFromMap(new IdentityHashMap<>()) at lines 54, 98, and 99, and computes System.
+  identityHashCode(provider) at line 134.
+  • Factories & Builders: Stateful accumulators (AttributeDesignatorKey.Builder,
+  PolicyDecisionPointBuilder).
+  • Evaluation Contexts: Policy.java:346, PolicySet.java:181, and PolicyIDReference.java:172 rely on
+  reference identity (context.getCurrentPolicy() == this) to prevent recursion loops.
+  ──────
+  ### B. Verdict Per Candidate Type
+
+   Category    │ Type            │ Verdict             │ Primary Blocker / Reason
+  ─────────────┼─────────────────┼─────────────────────┼───────────────────────────────────────────────────
+   Primitives  │ BooleanVal      │ needs design change │ Extends OtherValue (non-final field value at line
+               │                 │                     │ 108; superclass type at line 149)
+   Primitives  │ IntegerVal      │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │ (Int64)         │                     │ superclass type at line 149); boxed Long
+   Primitives  │ DoubleVal       │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │                 │                     │ superclass type at line 149)
+   Primitives  │ StringVal       │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │                 │                     │ superclass type at line 149)
+   Primitives  │ AnyURI          │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │                 │                     │ superclass type at line 149)
+   Primitives  │ HexBinary       │ needs design change │ Extends OtherValue; wraps mutable Binary
+   Primitives  │ Base64Binary    │ needs design change │ Extends OtherValue; wraps mutable Binary
+   Primitives  │ Binary          │ needs design change │ Non-final field at line 48; mutable ByteBuffer;
+               │                 │                     │ Externalizable in-place mutation at line 204
+   Temporals   │ ISO8601Date     │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │                 │                     │ superclass type at line 149)
+   Temporals   │ ISO8601DateTime │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │                 │                     │ superclass type at line 149)
+   Temporals   │ ISO8601Time     │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │                 │                     │ superclass type at line 149)
+   Temporals   │ ISO8601Duration │ needs design change │ Abstract class with state; non-final fields at
+               │                 │                     │ lines 16–17; lazy mutation; mutable Duration
+   Temporals   │ ISO8601DayTimeD │ needs design change │ Extends ISO8601Duration (inherits non-final
+               │ uration         │                     │ fields and lazy mutation)
+   Temporals   │ ISO8601YearMont │ needs design change │ Extends ISO8601Duration (inherits non-final
+               │ hDuration       │                     │ fields and lazy mutation)
+   Network     │ RFC822Name      │ needs design change │ Extends SelfValue -> AbstractValue (instance
+               │                 │                     │ field type at line 149)
+   Network     │ X500Name        │ needs design change │ Extends OtherValue (non-final field at line 108;
+               │                 │                     │ superclass type at line 149)
+   Network     │ IPAddress       │ needs design change │ Class not final at line 40; extends SelfValue;
+               │                 │                     │ references mutable PortRange
+   Network     │ DNSName         │ needs design change │ Non-final fields at lines 38–39; references
+               │                 │                     │ mutable PortRange; extends SelfValue
+   Network     │ Path            │ needs design change │ PathValue extends SelfValue -> AbstractValue
+               │ (PathValue)     │                     │ (instance field type at line 149)
+   Identifiers │ CategoryId      │ needs design change │ Extends SemanticIdentifier (non-final fields at
+               │                 │                     │ lines 53–54); non-final field at line 65;
+               │                 │                     │ assertSame test
+   Identifiers │ StatusCodeId    │ needs design change │ Class not final at line 33; extends
+               │                 │                     │ SemanticIdentifier (non-final fields at lines
+               │                 │                     │ 53–54); assertSame test
+   Identifiers │ EntityId        │ eligible            │ Already a pure immutable record in donor; zero
+               │                 │                     │ identity use; extends Record directly
+   Identifiers │ Issuer          │ eligible            │ DefaultIssuer is an immutable record in donor;
+               │ (DefaultIssuer) │                     │ zero identity use; implements sealed interface
+   Keys        │ AttributeDesign │ needs design change │ Extends AttributeReferenceKey (superclass fields
+               │ atorKey         │                     │ at lines 40–41); mutable cached hash at line 43
+   Keys        │ AttributeSelect │ needs design change │ Extends AttributeReferenceKey; 4 non-final fields
+               │ orKey           │                     │ at lines 41–44; mutable cached hash
+  ──────
+  ### C. Unblocking Fixes for First Family (BooleanVal, IntegerVal)
+
+  #### 1. Unblocking BooleanVal
+
+  • Root Blocker: BooleanVal.java:32 extends Value.OtherValue<Boolean>, inheriting non-final field
+  value` at line 108 and instance field type` at line 149.
+  • Fix:
+      1. Break inheritance from Value.OtherValue and Value.AbstractValue. Implement Value<Boolean> directly.
+      2. Declare BooleanVal as a value record BooleanVal(boolean value) implements Value<Boolean>.
+      3. Change component type from boxed java.lang.Boolean to primitive boolean for unboxed in-memory
+      inlining.
+      4. Implement getEvaluatesTo() as return XacmlTypes.BOOLEAN; without storing an instance field.
+      5. Retain static factories BooleanVal.of(boolean) and BooleanVal.ofAny(Object, Object...), returning
+      canonical TRUE / FALSE or direct instances (which are substitutable under JEP 401).
+
+
+    public value record BooleanVal(boolean value) implements Value<Boolean> {
+        public static final BooleanVal FALSE = new BooleanVal(false);
+        public static final BooleanVal TRUE = new BooleanVal(true);
+
+        public static BooleanVal of(boolean v) {
+            return v ? TRUE : FALSE;
+        }
+
+        public static BooleanVal ofAny(Object v, Object... params) { ... }
+
+        @Override
+        public Boolean get() {
+            return value;
+        }
+
+        public boolean booleanValue() {
+            return value;
+        }
+
+        @Override
+        public ValueType getEvaluatesTo() {
+            return XacmlTypes.BOOLEAN;
+        }
+    }
+
+  #### 2. Unblocking IntegerVal -> Int64 (Design D11, Task 9.3)
+
+  • Root Blocker: IntegerVal.java:36 extends Value.OtherValue<Long>, inheriting non-final field
+  value` at line 108 and superclass field type` at line 149.
+  • Fix:
+      1. Replace IntegerVal class with Int64 record per donor slice 5.4 / design D11.
+      2. Declare Int64 as public value record Int64(long value) implements Value<Long>.
+      3. Store unboxed primitive long value instead of boxed Long.
+      4. Return XacmlTypes.INTEGER directly in getEvaluatesTo().
+      5. Provide an IntegerVal type alias / adapter in xacml-core during the transition phase to avoid
+      breaking external callers before group 9 refactoring lands.
+
+
+    public value record Int64(long value) implements Value<Long>, Comparable<Int64> {
+        public static final Int64 ZERO = new Int64(0L);
+
+        public static Int64 of(long v) {
+            return new Int64(v);
+        }
+
+        public static Int64 of(Number n) {
+            return new Int64(n.longValue());
+        }
+
+        public static Int64 ofAny(Object v, Object... params) { ... }
+
+        @Override
+        public Long get() {
+            return value;
+        }
+
+        public long longValue() {
+            return value;
+        }
+
+        @Override
+        public ValueType getEvaluatesTo() {
+            return XacmlTypes.INTEGER;
+        }
+
+        @Override
+        public int compareTo(Int64 o) {
+            return Long.compare(value, o.value);
+        }
+    }
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, antigravity)
+    Task: 9.1 Value-Class Candidate Identity Audit
+    Workspace: main worktree (strictly read-only)
+
+    Candidate Verdict Summary:
+    - Total Audited: 25 types
+    - Eligible: 2 (EntityId, Issuer/DefaultIssuer from donor)
+    - Needs Design Change: 23 (structural hierarchy/non-final fields, 0 fundamental identity blockers)
+    - Blocked: 0
+
+    Blocking Sites Count:
+    - Superclasses declaring instance fields: 4 sites (Value.AbstractValue:149, AttributeReferenceKey:40-41,
+  SemanticIdentifier:53-54, ISO8601Duration:16-17)
+    - Non-final instance fields: 14 sites (Value.OtherValue:108, Binary:48, PortRange:42-43, DNSName:38-39,
+  ISO8601Duration:16-17, SemanticIdentifier:53-54, CategoryId:65, AttributeDesignatorKey:43,
+  AttributeSelectorKey:41-44)
+    - Non-final class modifiers: 2 sites (IPAddress:40, StatusCodeId:33)
+    - Mutable/cached hash code or string fields: 3 sites (AttributeDesignatorKey:43/91,
+  AttributeSelectorKey:43/87, ISO8601Duration:17/114)
+    - Serialization in-place mutation (Externalizable): 2 sites (Binary:201-205, PortRange:271-274)
+    - In-place mutable wrapped objects: 2 sites (ByteBuffer in Binary, javax.xml Duration in
+  ISO8601Duration)
+    - Explicit identity assertions in tests (assertSame): 5 sites (StatusCodeIdTest:38, CategoryIdTest:35-
+  38)
+    - Total Identified Blocking Sites: 32 code sites + 5 test sites = 37 total sites
+
+    Tool Calls Executed: 38 (session) + 15 (prior) = 53 calls
+

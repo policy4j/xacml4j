@@ -1,0 +1,5 @@
+xacml-jmh/src/main/java/org/xacml4j/jmh/store/SnapshotPolicyRepository.java: SHA256=b585cfa80ea3eff72fe1777ab0ba8dd4b6df9b306dd76b202131c6b8127838ad; compiled copy identical; LGPL header identical
+xacml-jmh/src/main/java/org/xacml4j/jmh/store/SnapshotPolicyStore.java: SHA256=26230a1c1e391871aabb88fb11618e19a658a89f5d687985590ac2072719fbc8; compiled copy identical; LGPL header identical
+Generated PolicyStore descriptor: org.xacml4j.jmh.store.InMemoryPolicyStore, org.xacml4j.jmh.store.SnapshotPolicyStore
+Isolated-copy exclusion confirmed: xacml-jmh/src/test
+Isolated-copy exclusion confirmed: xacml-jmh/src/main/java/org/xacml4j/jmh/pdp

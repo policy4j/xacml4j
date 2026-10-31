@@ -1,0 +1,536 @@
+== 01-registry-characterization-red.log ==
+
+[ERROR] Tests run: 736, Failures: 120, Errors: 0, Skipped: 0, Time elapsed: 1.223 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[INFO] 
+[ERROR] Tests run: 736, Failures: 120, Errors: 0, Skipped: 0
+
+== 02-resumed-registry-and-zone-tests-red.log ==
+
+[ERROR] Tests run: 27, Failures: 7, Errors: 0, Skipped: 0, Time elapsed: 0.366 s <<< FAILURE! - in org.xacml4j.v30.types.ISO8601DateTimeZonePreservationTest
+[ERROR] Tests run: 8, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.034 s <<< FAILURE! - in org.xacml4j.v30.types.ISO8601DateTimeTest
+[ERROR] Tests run: 736, Failures: 120, Errors: 0, Skipped: 0, Time elapsed: 0.978 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   DateTimeArithmeticRegistryTest.arithmeticThroughCanonicalAndLegacyUrns:131 Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>
+[ERROR]   ISO8601DateTimeTest.testFromXacmlStringNoTimeZone:69 expected: <2002-05-30T09:30:10> but was: <2002-05-30T09:30:10Z>
+[ERROR]   ISO8601DateTimeZonePreservationTest.aNegativeYearDoesNotBecomeATimezone:88 expected: <-0001-03-22T09:00:00> but was: <-0001-03-22T09:00:00Z>
+[ERROR]   ISO8601DateTimeZonePreservationTest.factoriesAndArithmeticKeepTheTimezoneOrItsAbsence:60 expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   ISO8601DateTimeZonePreservationTest.factoriesAndArithmeticKeepTheTimezoneOrItsAbsence:60 expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   ISO8601DateTimeZonePreservationTest.factoriesAndArithmeticKeepTheTimezoneOrItsAbsence:60 expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   ISO8601DateTimeZonePreservationTest.factoriesAndArithmeticKeepTheTimezoneOrItsAbsence:60 expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>
+[ERROR]   ISO8601DateTimeZonePreservationTest.javaDurationOverloadsAlsoKeepTheTimezone:81 expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>
+[ERROR]   ISO8601DateTimeZonePreservationTest.javaDurationOverloadsAlsoKeepTheTimezone:81 expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>
+[INFO] 
+[ERROR] Tests run: 771, Failures: 128, Errors: 0, Skipped: 0
+
+== 03-registry-and-zone-tests-green.log ==
+
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.31 s - in org.xacml4j.v30.types.ISO8601DateTimeZonePreservationTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in org.xacml4j.v30.types.ISO8601DateTimeTest
+[INFO] Tests run: 736, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.77 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 771, Failures: 0, Errors: 0, Skipped: 0
+
+== 05-full-reactor-clean-verify.log ==
+
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s - in org.xacml4j.util.JSONUtilTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.276 s - in org.xacml4j.util.DOMUtilTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.util.ISO8601DurationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.CategoryIdTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.AttributeTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s - in org.xacml4j.v30.types.ISO8601DateTest
+[WARNING] Tests run: 3, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.02 s - in org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeToStringCapabilityTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.RFC822NameTest
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.368 s - in org.xacml4j.v30.types.AnyURILexicalTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.DoubleValTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s - in org.xacml4j.v30.types.BooleanLexicalTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.XacmlTypesTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.types.ISO8601TimeTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s - in org.xacml4j.v30.types.DNSNameTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.ISO8601YearMonthDurationTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.BooleanValTest
+[INFO] Tests run: 77, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.115 s - in org.xacml4j.v30.types.TypeRegistryTest
+[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s - in org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.IPAddressTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.BinaryTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.IntegerTypeTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.077 s - in org.xacml4j.v30.types.ISO8601DurationReviewTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.types.ISO8601DateTimeZonePreservationTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.Base64BinaryTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601DateTimeTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TemporalEqualityTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.AnyURITest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.StringValTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.types.EUI48Test
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.types.PortRangeTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.PathTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.HexTypeTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.types.TypeCapabilityTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.types.TypeToStringTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.types.ISO8601DayTimeDurationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.AttributeIndexTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.WellKnownAttributeIdsTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s - in org.xacml4j.v30.content.JsonContentTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.068 s - in org.xacml4j.v30.content.XmlContentTest
+[WARNING] Tests run: 4, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.002 s - in org.xacml4j.v30.content.ContentTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.ObligationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.RequestContextIncludeInResultTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.RequestContextEqualityTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.EntityTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.ContentTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s - in org.xacml4j.v30.policy.ConditionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.MatchAllOfTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.policy.BagOfValuesTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VariableReferenceTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.XPathTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s - in org.xacml4j.v30.policy.RootEvaluationContextTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.StatusCodeIdTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.DecisionTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[INFO] Tests run: 3048, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.505 s - in org.xacml4j.v30.policy.combine.impl.OverrideDecisionTableTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[WARNING] Tests run: 118, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.069 s - in org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.AdviceTest
+[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.088 s - in org.xacml4j.v30.policy.RuleTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.ApplyTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.CombinerParameterTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.TargetTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AttributeAssignmentTest
+92[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s - in org.xacml4j.v30.policy.MatchTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.ResultTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.policy.AttributesTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s - in org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[INFO] Tests run: 736, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.305 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in org.xacml4j.v30.policy.function.impl.SetFunctionTest
+[INFO] Tests run: 72, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.095 s - in org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s - in org.xacml4j.v30.policy.function.impl.StringFunctionLexicalFormTest
+385[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.107 s - in org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s - in org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+138[WARNING] Tests run: 109, Failures: 0, Errors: 0, Skipped: 12, Time elapsed: 0.096 s - in org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test
+138[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s - in org.xacml4j.v30.policy.function.impl.FunctionInvocationStatusTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s - in org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[INFO] Tests run: 505, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.208 s - in org.xacml4j.v30.policy.function.impl.StringFunctionSemanticsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 s - in org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.118 s - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.118 s - in org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.impl.StringEqualIgnoreCaseTest
+[INFO] Tests run: 22, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.048 s - in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest
+[INFO] Tests run: 50, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s - in org.xacml4j.v30.policy.function.FunctionProviderDuplicateIdTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.function.ParamTypeSequenceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest
+[WARNING] Tests run: 239, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 1.528 s - in org.xacml4j.v30.policy.function.FunctionProviderServiceLoaderTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s - in org.xacml4j.v30.policy.PolicyTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.PolicySetIDReferenceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.MatchAnyOfTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.RequestTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.PolicyDefaultsTest
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.01 s - in org.xacml4j.v30.policy.PolicySetTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.AdviceExpressionTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.policy.PolicyIDReferenceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.VersionMatchTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s - in org.xacml4j.v30.policy.VariableDefinitionTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AttributeSelectorTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.policy.AttributeDesignatorTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.ConditionSafetyNetTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.VersionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.policy.ObligationExpressionTest
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5754, Failures: 0, Errors: 0, Skipped: 17
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s - in org.xacml4j.v30.xml.ExpressionBuilderTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.36 s - in org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.03 s - in org.xacml4j.v30.xml.Xacml30RequestContentTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v30.xml.Xacml30RequestReferenceMappingTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.11 s - in org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s - in org.xacml4j.v30.xml.TypeToXacml30Test
+[INFO] Tests run: 85, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.522 s - in org.xacml4j.v30.xml.BooleanAttributeLexicalTest
+[INFO] Tests run: 102, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.897 s - in org.xacml4j.v30.xml.BaseJAXBUnmarshallerSecurityTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s - in org.xacml4j.v30.xml.AnyURIRequestLexicalTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.026 s - in org.xacml4j.v30.xml.BooleanRequestLexicalTest
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.314 s - in org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 s - in org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.019 s - in org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s - in org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 s - in org.xacml4j.v30.marshal.json.AnyURIRequestLexicalTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.209 s - in org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.311 s - in org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s - in org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 s - in org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s - in org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest
+[WARNING] Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.BaseAttributeResolverTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in org.xacml4j.v30.spi.pip.AttributeSetTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.009 s - in org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.032 s - in org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s - in org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s - in org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.07 s - in org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest
+[WARNING] Tests run: 21, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.672 s - in org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s - in org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.049 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest
+77[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 98, Failures: 0, Errors: 0, Skipped: 5
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.406 s - in org.xacml4j.v30.ExpectedAttributeResolverBuilderTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.246 s - in org.xacml4j.v30.Xacml30SamplePolicyTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s - in org.xacml4j.v30.AttributeResolverTestSupportTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.029 s - in org.xacml4j.v30.XacmlPolicyTestSupportTest
+[INFO] Tests run: 64, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 s - in org.xacml4j.v20.Xacml30TestUtilityTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s - in org.xacml4j.v20.Xacml20SamplePolicyTest
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s - in org.xacml4j.v20.Xacml20TestUtilityTest
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.807 s - in org.xacml4j.v20.RSA2008InteropTest
+[WARNING] Tests run: 375, Failures: 0, Errors: 0, Skipped: 9, Time elapsed: 1.199 s - in org.xacml4j.v20.Xacml20ConformanceTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.105 s - in org.xacml4j.v20.ConformanceManifestTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.543 s - in org.xacml4j.v20.VendoredFixtureIntegrityTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s - in org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s - in org.xacml4j.v20.ConformancePolicyImportTest
+[WARNING] Tests run: 488, Failures: 0, Errors: 0, Skipped: 7, Time elapsed: 1.328 s - in org.xacml4j.v20.Xacml30ConformanceTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s - in org.xacml4j.v20.XacmlExampleTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.09 s - in org.xacml4j.v20.ConformanceStaticRejectionTest
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 917, Failures: 0, Errors: 0, Skipped: 16
+
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] 
+[INFO] Xacml4J Project .................................... SUCCESS [  1.191 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [ 10.459 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  1.054 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  3.108 s]
+[INFO] Xacml4J Json based request/response and policy format support SUCCESS [  1.238 s]
+[INFO] Xacml4J PDP ........................................ SUCCESS [  2.771 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SUCCESS [  1.461 s]
+[INFO] Xacml4J Conformance Tests .......................... SUCCESS [  7.995 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  29.362 s
+[INFO] Finished at: 2026-10-02T05:07:45-04:00
+[INFO] ------------------------------------------------------------------------
+
+== Full reactor aggregate ==
+{"tests": 7136, "failures": 0, "errors": 0, "skipped": 39}
+
+== Enabled conformance case receipts (four suite reports only) ==
+{
+  "example": {
+    "PASS": 2,
+    "SKIP": 0,
+    "FAIL": 0,
+    "dispositions": {
+      "executed": 2,
+      "special-harness": 0,
+      "skipped": 0
+    }
+  },
+  "oasis20": {
+    "PASS": 365,
+    "SKIP": 9,
+    "FAIL": 0,
+    "dispositions": {
+      "executed": 361,
+      "special-harness": 4,
+      "skipped": 9
+    }
+  },
+  "oasis30": {
+    "PASS": 480,
+    "SKIP": 7,
+    "FAIL": 0,
+    "dispositions": {
+      "executed": 477,
+      "special-harness": 4,
+      "skipped": 6
+    }
+  },
+  "rsa2008": {
+    "PASS": 17,
+    "SKIP": 0,
+    "FAIL": 0,
+    "dispositions": {
+      "executed": 17,
+      "special-harness": 0,
+      "skipped": 0
+    }
+  }
+}

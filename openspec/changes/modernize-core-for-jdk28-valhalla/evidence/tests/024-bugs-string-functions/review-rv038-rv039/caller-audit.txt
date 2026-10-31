@@ -1,0 +1,57 @@
+# RTK source search: SUPPORTED scoped text inventory
+xacml-core/src/main/java/org/xacml4j/v30/AttributeDesignatorKey.java:25:import org.xacml4j.v30.types.AnyURI;
+xacml-core/src/main/java/org/xacml4j/v30/AttributeDesignatorKey.java:127:		public Builder attributeId(AnyURI id){
+xacml-core/src/main/java/org/xacml4j/v30/AttributeDesignatorKey.java:150:		public Builder issuer(AnyURI issuer){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:39:public final class AnyURI extends Value.AbstractValue<URI>
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:45:    private AnyURI(URI value){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:63:        return o == this || (o instanceof AnyURI && lexical.equals(((AnyURI)o).lexical));
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:71:    static AnyURI ofAny(Object v,
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:73:        if (v instanceof AnyURI) {
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:74:            return (AnyURI)v;
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:98:     * @return {@link AnyURI} defaultProvider
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:100:    static AnyURI of(java.lang.String v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:106:        return new AnyURI(URI.create(v));
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:109:    static AnyURI of(StringVal v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:117:    static AnyURI of(URL v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:123:            return new AnyURI(v.toURI());
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:130:    static AnyURI of(URI v){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:135:        return new AnyURI(v);
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:156:    public AnyURI normalize(){
+xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java:157:        return new AnyURI(get().normalize());
+xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:81:			public AnyURI fromString(java.lang.String v) {
+xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:82:				return AnyURI.of(v);
+xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:87:				AnyURI anyURI = (AnyURI)v;
+xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java:44:		public AnyURI ofAny(Object v, Object... params) {
+xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java:45:			return AnyURI.
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:51:			@XacmlFuncParam(typeId = "http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:70:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:78:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:97:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:105:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:124:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:132:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:158:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:278:	public static StringVal stringFromAnyURI(
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:280:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI v)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:287:	public static AnyURI anyURIFromString(
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java:379:	public static AnyURI anyURIOneAndOnly(
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java:396:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI v,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java:406:			AnyURI...values){
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java:62:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI a,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java:63:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI b)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/RegExpFunctions.java:60:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI input)
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:51:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI attributeId,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:52:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI dataType,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:87:			@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#anyURI") AnyURI dataType,
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:120:	private static ValueType getType(AnyURI typeUri){
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java:127:		return getType((AnyURI)arguments.get(2));
+xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java:8:import org.xacml4j.v30.types.AnyURI;
+xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java:129:		if(v instanceof AnyURI){
+xacml-core/src/main/java/org/xacml4j/v30/CategoryId.java:130:			return getById(((AnyURI)v).get().toString());
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceManifest.java:112:						|| !path.normalize().equals(path) || resource.contains("\\")) {
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/VendoredFixtureIntegrityTest.java:44:				: Paths.get(override).toAbsolutePath().normalize();
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/GenerateVendoredFixtureManifest.java:73:		Path candidate = start.toAbsolutePath().normalize();
+xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/PolicyImportTool.java:100:		Iterator<Path> it = path.normalize().iterator();
+
+# ast-grep Java normalize calls: SUPPORTED syntax only; sources opened to confirm types
+[{"text":"path.normalize()","range":{"byteOffset":{"start":4188,"end":4204},"start":{"line":111,"column":10},"end":{"line":111,"column":26}},"file":"xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceManifest.java","lines":"\t\t\t\t\t\t|| !path.normalize().equals(path) || resource.contains(\"\\\\\")) {","charCount":{"leading":10,"trailing":43},"language":"Java","metaVariables":{"single":{"OBJECT":{"text":"path","range":{"byteOffset":{"start":4188,"end":4192},"start":{"line":111,"column":10},"end":{"line":111,"column":14}}}},"multi":{},"transformed":{}}},{"text":"start.toAbsolutePath().normalize()","range":{"byteOffset":{"start":2616,"end":2650},"start":{"line":72,"column":19},"end":{"line":72,"column":53}},"file":"xacml-conformance-tests/src/test/java/org/xacml4j/v20/GenerateVendoredFixtureManifest.java","lines":"\t\tPath candidate = start.toAbsolutePath().normalize();","charCount":{"leading":19,"trailing":1},"language":"Java","metaVariables":{"single":{"OBJECT":{"text":"start.toAbsolutePath()","range":{"byteOffset":{"start":2616,"end":2638},"start":{"line":72,"column":19},"end":{"line":72,"column":41}}}},"multi":{},"transformed":{}}},{"text":"Paths.get(override).toAbsolutePath().normalize()","range":{"byteOffset":{"start":1433,"end":1481},"start":{"line":43,"column":6},"end":{"line":43,"column":54}},"file":"xacml-conformance-tests/src/test/java/org/xacml4j/v20/VendoredFixtureIntegrityTest.java","lines":"\t\t\t\t: Paths.get(override).toAbsolutePath().normalize();","charCount":{"leading":6,"trailing":1},"language":"Java","metaVariables":{"single":{"OBJECT":{"text":"Paths.get(override).toAbsolutePath()","range":{"byteOffset":{"start":1433,"end":1469},"start":{"line":43,"column":6},"end":{"line":43,"column":42}}}},"multi":{},"transformed":{}}},{"text":"path.normalize()","range":{"byteOffset":{"start":3483,"end":3499},"start":{"line":99,"column":22},"end":{"line":99,"column":38}},"file":"xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/PolicyImportTool.java","lines":"\t\tIterator<Path> it = path.normalize().iterator();","charCount":{"leading":22,"trailing":12},"language":"Java","metaVariables":{"single":{"OBJECT":{"text":"path","range":{"byteOffset":{"start":3483,"end":3487},"start":{"line":99,"column":22},"end":{"line":99,"column":26}}}},"multi":{},"transformed":{}}},{"text":"get().normalize()","range":{"byteOffset":{"start":4288,"end":4305},"start":{"line":156,"column":26},"end":{"line":156,"column":43}},"file":"xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java","lines":"        return new AnyURI(get().normalize());","charCount":{"leading":26,"trailing":2},"language":"Java","metaVariables":{"single":{"OBJECT":{"text":"get()","range":{"byteOffset":{"start":4288,"end":4293},"start":{"line":156,"column":26},"end":{"line":156,"column":31}}}},"multi":{},"transformed":{}}}]

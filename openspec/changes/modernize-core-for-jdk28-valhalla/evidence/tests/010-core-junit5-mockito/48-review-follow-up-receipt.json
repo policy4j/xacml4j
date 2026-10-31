@@ -1,0 +1,101 @@
+{
+  "final_gate": [
+    760,
+    0,
+    0,
+    2
+  ],
+  "initial_unasserted_captors": 40,
+  "current_captor_declarations": 65,
+  "current_unasserted_captors": 0,
+  "cumulative_count_checks": 470,
+  "oracle_mutations": [
+    {
+      "case": "order",
+      "run": "37-mutant-order-red",
+      "result": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "failure": "org.mockito.exceptions.verification.VerificationInOrderFailure",
+      "method": "testAllMatch",
+      "restored_exact_bytes": true,
+      "scope": "Owned test stimulus/collaborator only; no production source was mutated"
+    },
+    {
+      "case": "count",
+      "run": "38-mutant-count-red",
+      "result": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "failure": "org.mockito.exceptions.verification.VerificationInOrderFailure",
+      "method": "testMapWithValidArguments",
+      "restored_exact_bytes": true,
+      "scope": "Owned test stimulus/collaborator only; no production source was mutated"
+    },
+    {
+      "case": "exception_verify",
+      "run": "39-mutant-exception-verify-red",
+      "result": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "failure": "Wanted but not invoked",
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+      "restored_exact_bytes": true,
+      "scope": "Owned test stimulus/collaborator only; no production source was mutated"
+    },
+    {
+      "case": "captured_rule",
+      "run": "40-mutant-captured-rule-red",
+      "result": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "failure": "org.opentest4j.AssertionFailedError",
+      "method": "testExpressionThrowsRuntimeException",
+      "restored_exact_bytes": true,
+      "scope": "Owned test stimulus/collaborator only; no production source was mutated"
+    },
+    {
+      "case": "empty_control",
+      "run": "42-mutant-empty-control-red",
+      "result": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "failure": "org.mockito.exceptions.verification.NoInteractionsWanted",
+      "method": "testParameterVarArgMinAndMaxEquals",
+      "restored_exact_bytes": true,
+      "scope": "Owned test stimulus/collaborator only; no production source was mutated"
+    },
+    {
+      "case": "cache",
+      "run": "46-mutant-cache-exact-count-red",
+      "result": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "failure": "org.mockito.exceptions.verification.TooManyActualInvocations",
+      "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+      "restored_exact_bytes": true,
+      "scope": "Owned test stimulus/collaborator only; no production source was mutated"
+    }
+  ],
+  "initial_cache_mutation_survived": true,
+  "repeated_cache_mutation_failed": true,
+  "no_active_mutation": true
+}

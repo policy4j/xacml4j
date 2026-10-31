@@ -22,35 +22,34 @@ package org.xacml4j.v30;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xacml4j.v30.Attribute.Builder;
-import org.xacml4j.v30.types.IntegerExp;
-import org.xacml4j.v30.types.StringExp;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.DoubleVal;
+import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.collect.ImmutableSet;
 
 
 public class AttributeTest
 {
-	private Collection<AttributeExp> values;
+	private Collection<Value<?>> values;
 
-	@Before
+	@BeforeEach
 	public void init()
 	{
-		this.values = new LinkedList<AttributeExp>();
-		values.add(IntegerExp.of(1));
-		values.add(IntegerExp.of(1));
-		values.add(IntegerExp.of(3));
-		values.add(IntegerExp.of(2));
+		this.values = new LinkedList<>();
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(3));
+		values.add(XacmlTypes.INTEGER.ofAny(2));
 	}
 
 	@Test
@@ -65,9 +64,9 @@ public class AttributeTest
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertEquals(values.size(), attr.values().size());
+		assertTrue(attr.values().containsAll(values));
+		assertTrue(values.containsAll(attr.values()));
 	}
 
 	@Test
@@ -75,22 +74,22 @@ public class AttributeTest
 	{
 		Attribute attr = Attribute
 				.builder("testId")
-				.value(StringExp.of("value1"), StringExp.of("value2"))
+				.value(XacmlTypes.STRING.ofAny("value1"), XacmlTypes.STRING.ofAny("value2"))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals(null, attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
-		assertEquals(2, attr.getValues().size());
-		assertTrue(attr.getValues().contains(StringExp.of("value1")));
-		assertTrue(attr.getValues().contains(StringExp.of("value2")));
+		assertEquals(2, attr.values().size());
+		assertTrue(attr.values().contains(XacmlTypes.STRING.ofAny("value1")));
+		assertTrue(attr.values().contains(XacmlTypes.STRING.ofAny("value2")));
 	}
 
 	@Test
 	public void testCreateWithTheSameValues()
 	{
-		Collection<AttributeExp> values = new LinkedList<AttributeExp>();
-		values.add(IntegerExp.of(1));
-		values.add(IntegerExp.of(1));
+		Collection<Value<?>> values = new LinkedList<>();
+		values.add(XacmlTypes.INTEGER.ofAny(1));
+		values.add(XacmlTypes.INTEGER.ofAny(1));
 		Builder b = Attribute.builder("testId").issuer("testIssuer").includeInResult(true).values(values);
 		Attribute attr = b.build();
 		Attribute attr1 = b.issuer(null).build();
@@ -99,9 +98,9 @@ public class AttributeTest
 		assertEquals("testId", attr.getAttributeId());
 		assertEquals("testIssuer", attr.getIssuer());
 		assertTrue(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertEquals(values.size(), attr.values().size());
+		assertTrue(attr.values().containsAll(values));
+		assertTrue(values.containsAll(attr.values()));
 		assertFalse(attr.equals(attr1));
 		assertFalse(attr.equals(attr2));
 		assertTrue(attr.equals(attr3));
@@ -112,24 +111,59 @@ public class AttributeTest
 	public void testCreateWithIdAndValuesVarArg()
 	{
 		Attribute attr = Attribute.builder("testId")
-				.value(IntegerExp.of(1), IntegerExp.of(2), IntegerExp.of(3), IntegerExp.of(2))
+				.value(
+						XacmlTypes.INTEGER.ofAny(1),
+						XacmlTypes.INTEGER.ofAny(2),
+						XacmlTypes.INTEGER.ofAny(3),
+						XacmlTypes.INTEGER.ofAny(2))
 				.build();
 		assertEquals("testId", attr.getAttributeId());
 		assertNull(attr.getIssuer());
 		assertFalse(attr.isIncludeInResult());
-		assertEquals(values.size(), attr.getValues().size());
-		assertTrue(attr.getValues().containsAll(values));
-		assertTrue(values.containsAll(attr.getValues()));
+		assertEquals(values.size(), attr.values().size());
+		assertTrue(attr.values().containsAll(values));
+		assertTrue(values.containsAll(attr.values()));
 	}
 
 	@Test
 	public void testBuilder()
 	{
-		Iterable<AttributeExp> a = ImmutableSet.<AttributeExp>of(StringExp.of("test1"), StringExp.of("test2"));
+		Iterable<Value<?>> a = ImmutableSet.of(XacmlTypes.STRING.ofAny("test1"), XacmlTypes.STRING.ofAny("test2"));
 		Attribute.builder("testId")
 		.values(a)
-		.value(StringExp.of("test2"), StringExp.of("test3"))
+		.value(XacmlTypes.STRING.ofAny("test2"), XacmlTypes.STRING.ofAny("test3"))
 		.build();
+	}
+
+	@Test
+	public void bagsKeepTheirGroupedOrderAndDuplicatesWhenAddedToAnAttribute()
+	{
+		BagOfValues bag = XacmlTypes.DOUBLE.bagOf(DoubleVal.of(2), DoubleVal.of(-0.0),
+				DoubleVal.of(2), DoubleVal.of(0.0), DoubleVal.of(Double.NaN), DoubleVal.of(Double.NaN));
+		Attribute fromBag = Attribute.builder("values").value(DoubleVal.of(7)).values(bag)
+				.value(DoubleVal.of(8)).build();
+		Attribute fromIterable = Attribute.builder("values").value(DoubleVal.of(7)).values(bag.values())
+				.value(DoubleVal.of(8)).build();
+
+		assertEquals(List.of(DoubleVal.of(7), DoubleVal.of(2), DoubleVal.of(2), DoubleVal.of(-0.0),
+				DoubleVal.of(0.0), DoubleVal.of(Double.NaN), DoubleVal.of(Double.NaN), DoubleVal.of(8)),
+				List.copyOf(fromBag.values()));
+		assertEquals(List.copyOf(fromIterable.values()), List.copyOf(fromBag.values()));
+		assertEquals(fromIterable, fromBag);
+		assertEquals(fromIterable.hashCode(), fromBag.hashCode());
+	}
+
+	@Test
+	public void hashesKeepTheFieldArrayValueWithAndWithoutAnIssuer()
+	{
+		for(boolean include : List.of(false, true)){
+			for(String issuer : List.of("", "issuer")){
+				Attribute attribute = Attribute.builder("test").issuer(issuer).includeInResult(include)
+						.values(values).build();
+				assertEquals(com.google.common.base.Objects.hashCode("test", attribute.getIssuer(), include,
+						List.copyOf(values)), attribute.hashCode());
+			}
+		}
 	}
 
 }

@@ -1,0 +1,6 @@
+# red: on an export of the committed tree (HEAD 9855935a) with only the new test file added
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dmaven.test.failure.ignore=true -Dsurefire.failIfNoSpecifiedTests=false -Dtest=EmptyBagCharacterizationTest test
+# green: the working tree with the round-2 implementation
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dsurefire.failIfNoSpecifiedTests=false -Dtest=XacmlTypesTest,TypeRegistryTest,BagOfValuesCharacterizationTest,BagOfValuesTest,EmptyBagCharacterizationTest,AttributeSelectorTest,AttributeDesignatorTest test
+# rule
+ast-grep test; ast-grep scan

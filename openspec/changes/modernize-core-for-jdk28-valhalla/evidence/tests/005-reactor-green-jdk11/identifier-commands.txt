@@ -1,0 +1,27 @@
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-identifier-tests.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/39-duration-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 39-duration-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-identifier-red.py
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+rtk git apply openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest,BagFunctionsTest,SetFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/40-duration-identifiers-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 40-duration-identifiers-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest,BagFunctionsTest,SetFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/41-duration-identifiers-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 41-duration-identifiers-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/42-reactor-verify-duration-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 42-reactor-verify-duration-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 42
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-conformance-diagnostics.py DiagnoseHigherOrderIdentifiers.java 43-higher-order-registration-diagnostics.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-higher-order-tests.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=HigherOrderFunctionIdentifierTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/44-higher-order-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 44-higher-order-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-higher-order-red.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest,HigherOrderFunctionIdentifierTest,HigherOrderFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/45-higher-order-identifiers-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 45-higher-order-identifiers-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/46-reactor-verify-higher-order-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 46-reactor-verify-higher-order-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 46
+# SetFunctions' ten annotation/alias replacements and import, HigherOrderFunctions' four annotation/alias replacements, and the new tests were applied with the native apply_patch tool; exact changes are in git diff and the captured pre-write source.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/write-identifier-summary.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/audit-final-identifier-evidence.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/audit-final-identifier-evidence.py > openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/47-final-evidence-audit.txt

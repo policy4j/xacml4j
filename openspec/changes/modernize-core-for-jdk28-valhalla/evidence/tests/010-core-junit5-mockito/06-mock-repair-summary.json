@@ -1,0 +1,182 @@
+{
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java": {
+    "expectations": 1,
+    "explicit_verifications": 5,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java": {
+    "expectations": 2,
+    "explicit_verifications": 6,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java": {
+    "expectations": 9,
+    "explicit_verifications": 29,
+    "void_expectations": 2
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java": {
+    "expectations": 9,
+    "explicit_verifications": 28,
+    "void_expectations": 1
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/BagOfValuesTest.java": {
+    "expectations": 0,
+    "explicit_verifications": 2,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/CombinerParameterTest.java": {
+    "expectations": 0,
+    "explicit_verifications": 0,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java": {
+    "expectations": 10,
+    "explicit_verifications": 24,
+    "void_expectations": 2
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java": {
+    "expectations": 12,
+    "explicit_verifications": 24,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java": {
+    "expectations": 10,
+    "explicit_verifications": 20,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java": {
+    "expectations": 7,
+    "explicit_verifications": 12,
+    "void_expectations": 1
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java": {
+    "expectations": 1,
+    "explicit_verifications": 7,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java": {
+    "expectations": 29,
+    "explicit_verifications": 55,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java": {
+    "expectations": 29,
+    "explicit_verifications": 55,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java": {
+    "expectations": 1,
+    "explicit_verifications": 7,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java": {
+    "expectations": 38,
+    "explicit_verifications": 80,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java": {
+    "expectations": 8,
+    "explicit_verifications": 20,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableDefinitionTest.java": {
+    "expectations": 3,
+    "explicit_verifications": 8,
+    "void_expectations": 1
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableReferenceTest.java": {
+    "expectations": 3,
+    "explicit_verifications": 8,
+    "void_expectations": 1
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java": {
+    "expectations": 32,
+    "explicit_verifications": 52,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java": {
+    "expectations": 16,
+    "explicit_verifications": 30,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java": {
+    "expectations": 16,
+    "explicit_verifications": 30,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java": {
+    "expectations": 12,
+    "explicit_verifications": 21,
+    "void_expectations": 1
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java": {
+    "expectations": 25,
+    "explicit_verifications": 37,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java": {
+    "expectations": 30,
+    "explicit_verifications": 48,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java": {
+    "expectations": 10,
+    "explicit_verifications": 20,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java": {
+    "expectations": 0,
+    "explicit_verifications": 8,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java": {
+    "expectations": 4,
+    "explicit_verifications": 12,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java": {
+    "expectations": 1,
+    "explicit_verifications": 5,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java": {
+    "expectations": 18,
+    "explicit_verifications": 30,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java": {
+    "expectations": 20,
+    "explicit_verifications": 40,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java": {
+    "expectations": 6,
+    "explicit_verifications": 18,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java": {
+    "expectations": 11,
+    "explicit_verifications": 53,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java": {
+    "expectations": 0,
+    "explicit_verifications": 6,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java": {
+    "expectations": 0,
+    "explicit_verifications": 14,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java": {
+    "expectations": 11,
+    "explicit_verifications": 21,
+    "void_expectations": 0
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java": {
+    "expectations": 1,
+    "explicit_verifications": 0,
+    "void_expectations": 0
+  }
+}

@@ -1,0 +1,33 @@
+Module: xacml-core
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 494, Failures: 0, Errors: 0, Skipped: 4
+
+Module: xacml-xml
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 29, Failures: 0, Errors: 0, Skipped: 0
+
+Module: xacml-json
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 5, Failures: 0, Errors: 0, Skipped: 1
+
+Reactor result:
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] 
+[INFO] Xacml4J Project .................................... SUCCESS [  0.751 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  3.097 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.246 s]
+[INFO] Xacml XML representation marshallers ............... SUCCESS [  2.007 s]
+[INFO] Xacml4J Json based request/response and policy format support SUCCESS [  0.959 s]
+[INFO] Xacml4J PDP ........................................ FAILURE [  0.162 s]
+[INFO] Xacml4J Policy Unit Test Support ................... SKIPPED
+[INFO] Xacml4J Conformance Tests .......................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+
+Out-of-scope compile blocker:
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[46,29] cannot find symbol
+[ERROR]   symbol:   class PathValue
+[ERROR]   location: package org.xacml4j.v30.types

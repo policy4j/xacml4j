@@ -1,0 +1,1 @@
+rtk git diff --check, scoped to the nine Java files and conformance manifest: exit 0; no output.

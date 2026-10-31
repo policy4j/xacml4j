@@ -1,0 +1,2 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dsurefire.failIfNoSpecifiedTests=false -Dtest=DirectPairCallTest test   (red: before the fixes)
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dsurefire.failIfNoSpecifiedTests=false -Dtest='DirectPairCallTest,FunctionInvocation*Test,MatchTest,*FunctionsTest,*PredicatesTest,JavaMethodToFunctionSpecTest,AnnotationBasedFunctionFactoryTest,LaterDecidingOperandTest' test   (green)

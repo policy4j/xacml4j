@@ -1,0 +1,23 @@
+{
+  "changed_paths": [
+    "docs/ai/TESTING.md",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java"
+  ],
+  "outside_three_test_files": [
+    "docs/ai/TESTING.md"
+  ],
+  "headers_unchanged": {
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java": true
+  },
+  "methods_unchanged": {
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java": true
+  },
+  "production_unchanged": true,
+  "result": "FAIL"
+}

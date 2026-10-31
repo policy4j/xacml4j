@@ -1,0 +1,15 @@
+# Test stores of xacml-jmh, registered as a store in another jar would be.
+org.xacml4j.jmh.testing.TestStores$Probe
+org.xacml4j.jmh.testing.TestStores$Counting
+org.xacml4j.jmh.testing.TestStores$FirstTwin
+org.xacml4j.jmh.testing.TestStores$SecondTwin
+org.xacml4j.jmh.testing.TestStores$Losing
+org.xacml4j.jmh.testing.TestStores$Throwing
+org.xacml4j.jmh.testing.TestStores$StaleLatest
+org.xacml4j.jmh.testing.TestStores$Recording
+org.xacml4j.jmh.testing.TestStores$ThreadConfined
+org.xacml4j.jmh.testing.TestStores$ImportCounting
+org.xacml4j.jmh.testing.TestStores$ImportRefusing
+org.xacml4j.jmh.testing.TestStores$ImportFailing
+org.xacml4j.jmh.testing.TestStores$CloseFailing
+org.xacml4j.jmh.testing.TestStores$Drifting

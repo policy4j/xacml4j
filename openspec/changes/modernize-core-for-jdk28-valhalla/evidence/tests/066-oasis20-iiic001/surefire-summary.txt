@@ -1,0 +1,9 @@
+CONFORMANCE PASS oasis20/IIIC001
+[WARNING] Tests run: 375, Failures: 0, Errors: 0, Skipped: 9, Time elapsed: 2.503 s - in org.xacml4j.v20.Xacml20ConformanceTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.212 s - in org.xacml4j.v20.ConformanceManifestTest
+[INFO] Results:
+[INFO] 
+[WARNING] Tests run: 388, Failures: 0, Errors: 0, Skipped: 9
+[INFO] 
+[WARNING] Tests run: 388, Failures: 0, Errors: 0, Skipped: 9
+[INFO] BUILD SUCCESS

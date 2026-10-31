@@ -1,0 +1,5 @@
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/inspect.swift chatgpt
+Independent Python read of owner-only Claude job/manifest and SHA-256 of report.md
+rtk br show policy4j-971.1.4
+OpenSpec apply/status context and scoped repository status
+No desktop mutation or submission in this disposition run.

@@ -1,0 +1,98 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24249 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 23293 auto-discovered prefixes for remote repository nexus (prefixes-nexus.txt)
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- dependency:3.11.0:properties (default) @ xacml-core ---
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 
+[INFO] --- license:2.7.1:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ xacml-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.16.0:compile (default-compile) @ xacml-core ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 32 resources from src/test/resources to target/test-classes
+[INFO] Copying 5 resources from ../build-support/logback to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.16.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 146 source files with javac [debug release 25] to target/test-classes
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Some input files use unchecked or unsafe operations.
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- surefire:3.6.1:test (default-test) @ xacml-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.xacml4j.v30.policy.function.DirectPairCallTest
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[ERROR] Tests run: 9, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 2.135 s <<< FAILURE! -- in org.xacml4j.v30.policy.function.DirectPairCallTest
+[ERROR] org.xacml4j.v30.policy.function.DirectPairCallTest.pairCallOfABuiltInPredicateAllocatesNothing -- Time elapsed: 0.038 s <<< FAILURE!
+bytes per call
+expected to be less than: 1.0
+but was                 : 72.0
+	at org.xacml4j.v30.policy.function.DirectPairCallTest.measureAllocation(DirectPairCallTest.java:248)
+	at org.xacml4j.v30.policy.function.DirectPairCallTest.pairCallOfABuiltInPredicateAllocatesNothing(DirectPairCallTest.java:219)
+	at [[Reflective call: 2 frames collapsed (<repository url>)]].(:0)
+	at [[Testing framework: 28 frames collapsed (<repository url>)]].(:0)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at [[Testing framework: 9 frames collapsed (<repository url>)]].(:0)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at [[Testing framework: 26 frames collapsed (<repository url>)]].(:0)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.executeWithoutCancellationToken(LauncherAdapter.java:60)
+	at org.apache.maven.surefire.junitplatform.LauncherAdapter.execute(LauncherAdapter.java:52)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:334)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:304)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:251)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:409)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:190)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:547)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:535)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   DirectPairCallTest.pairCallOfABuiltInPredicateAllocatesNothing:219->measureAllocation:248 bytes per call
+expected to be less than: 1.0
+but was                 : 72.0
+[INFO] 
+[ERROR] Tests run: 9, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  7.496 s
+[INFO] Finished at: 2026-10-27T07:31:41-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.6.1:test (default-test) on project xacml-core: There are test failures.
+[ERROR] 
+[ERROR] See <repo>/xacml-core/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

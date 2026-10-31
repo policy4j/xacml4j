@@ -1,0 +1,19 @@
+Working directory: <lane>
+
+Inventory:
+rtk rg -n 'XPathFactory\.newInstance|XPathFactory|newXPath\(' xacml-core/src/main xacml-pdp/src/main xacml-xml/src/main xacml-json/src/main xacml-core/src/test
+rtk rg -n 'setXPathFunctionResolver|setXPathVariableResolver' xacml-core/src/main xacml-pdp/src/main xacml-xml/src/main xacml-json/src/main
+
+Pre-change test runs (both passed on the installed JAXP provider; see summary):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=XmlContentTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/extension-red.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=XmlContentTest,MatchTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/extension-indeterminate-red.log
+
+Post-change focused tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=XmlContentTest,MatchTest,XPathFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/focused-green.log
+
+Required gates:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-pdp -am clean test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/core-pdp-clean-test.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/full-reactor-verify.log
+
+Supplementary focused conformance run after the required full reactor stopped in xacml-xml:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceTest,Xacml30ConformanceTest,RSA2008InteropTest,XacmlExampleTest,ConformanceManifestTest,ConformanceStaticRejectionTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-xpath-secure-processing/conformance-focused.log

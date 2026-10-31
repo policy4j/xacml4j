@@ -1,0 +1,10 @@
+== Phase 4 gate (2026-10-08): clean build, JDK 21, of the tree as committed ==
+
+xacml-core                 Tests run: 6462, Failures: 0, Errors: 0, Skipped: 2
+xacml-xml                  Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 192, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,966 tests, 0 failures, 0 errors, 18 skipped.
+Skipped: 18. 12 are conformance cases with a recorded disposition; 6 are tests that were already ignored on the baseline a8a90d46 (see summary.md).

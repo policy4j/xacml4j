@@ -1,0 +1,169 @@
+{
+  "production_unchanged": true,
+  "classes": {
+    "org.xacml4j.v20.Xacml20TestUtilityTest": {
+      "counts": {
+        "tests": 16,
+        "failures": 14,
+        "errors": 1,
+        "skipped": 0
+      },
+      "problems": [
+        {
+          "test": "missingAndUnexpectedObligationsAreRejected",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "emptyAndAbsentObligationsMatchInBothDirections",
+          "kind": "error",
+          "message": "Cannot invoke \"org.oasis.xacml.v20.jaxb.policy.ObligationsType.getObligation()\" because \"a\" is null"
+        },
+        {
+          "test": "duplicateIdsAndAssignmentOrderUseAllValues",
+          "kind": "failure",
+          "message": "expected: <[second]> but was: <[first]>"
+        },
+        {
+          "test": "assignmentValuesUseTheirDataTypeAndKeepStringCase",
+          "kind": "failure",
+          "message": "expected: <[01]> but was: <[1]>"
+        },
+        {
+          "test": "duplicateMultiplicityCannotReuseOneAssignment",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "statusDetailsCompareDomFieldsRatherThanNodeIdentity",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "individualObligationAlsoChecksIdAndFulfillOn",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "nestedStatusCodesMustMatch",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "responseRejectsEveryObligationFieldDifference(String)[1]",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "responseRejectsEveryObligationFieldDifference(String)[2]",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "responseRejectsEveryObligationFieldDifference(String)[3]",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "responseRejectsEveryObligationFieldDifference(String)[4]",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "responseRejectsEveryObligationFieldDifference(String)[5]",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "responseRejectsEveryObligationFieldDifference(String)[6]",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        },
+        {
+          "test": "responseRejectsEveryObligationFieldDifference(String)[7]",
+          "kind": "failure",
+          "message": "Expected java.lang.AssertionError to be thrown, but nothing was thrown."
+        }
+      ]
+    },
+    "org.xacml4j.v20.Xacml30TestUtilityTest": {
+      "counts": {
+        "tests": 48,
+        "failures": 11,
+        "errors": 1,
+        "skipped": 0
+      },
+      "problems": [
+        {
+          "test": "contentComparesTypeAndDomStructure",
+          "kind": "failure",
+          "message": "expected: java.util.ArrayList@5eccd3b9<[[record: null]]> but was: java.util.ArrayList@4d6f197e<[[record: null]]>"
+        },
+        {
+          "test": "valueBagsAreUnorderedButKeepDuplicatesAndMetadata",
+          "kind": "failure",
+          "message": "expected: <[1]> but was: <[2]>"
+        },
+        {
+          "test": "includedCategoriesAttributesAndValuesAreMultisets",
+          "kind": "failure",
+          "message": "expected: <first-category> but was: <second-category>"
+        },
+        {
+          "test": "obligationAndAdviceAssignmentsAlsoUseTypedValues",
+          "kind": "failure",
+          "message": "expected: <[27.50]> but was: <[27.5]>"
+        },
+        {
+          "test": "absentContentIsSafeAndPresenceIsComparedSymmetrically",
+          "kind": "error",
+          "message": "Cannot invoke \"org.oasis.xacml.v30.jaxb.ContentType.getContent()\" because the return value of \"org.oasis.xacml.v30.jaxb.AttributesType.getContent()\" is null"
+        },
+        {
+          "test": "stringsKeepWhitespaceAndTextChunkBoundariesDoNotMatter",
+          "kind": "failure",
+          "message": "expected: <[ab, c]> but was: <[abc]>"
+        },
+        {
+          "test": "lexicalFormsCompareByDataType(String, String, String)[1]",
+          "kind": "failure",
+          "message": "expected: <[27.50]> but was: <[27.5]>"
+        },
+        {
+          "test": "lexicalFormsCompareByDataType(String, String, String)[2]",
+          "kind": "failure",
+          "message": "expected: <[1E2]> but was: <[100.0]>"
+        },
+        {
+          "test": "lexicalFormsCompareByDataType(String, String, String)[3]",
+          "kind": "failure",
+          "message": "expected: <[1]> but was: <[01]>"
+        },
+        {
+          "test": "lexicalFormsCompareByDataType(String, String, String)[4]",
+          "kind": "failure",
+          "message": "expected: <[-0]> but was: <[0]>"
+        },
+        {
+          "test": "lexicalFormsCompareByDataType(String, String, String)[5]",
+          "kind": "failure",
+          "message": "expected: <[true]> but was: <[1]>"
+        },
+        {
+          "test": "lexicalFormsCompareByDataType(String, String, String)[6]",
+          "kind": "failure",
+          "message": "expected: <[false]> but was: <[0]>"
+        }
+      ]
+    },
+    "org.xacml4j.v30.XacmlPolicyTestSupportTest": {
+      "counts": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "problems": []
+    }
+  }
+}

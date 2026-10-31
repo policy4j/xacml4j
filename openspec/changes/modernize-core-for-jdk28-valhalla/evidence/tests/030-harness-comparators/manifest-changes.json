@@ -1,0 +1,84 @@
+{
+  "changed_rows": [
+    {
+      "suite": "oasis30",
+      "case_id": "IIIA030",
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIIA030",
+        "request_file": "xacml3.0-ct-v.0.4/IIIA030Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIIA030Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIIA030Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIIA030",
+        "request_file": "xacml3.0-ct-v.0.4/IIIA030Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIIA030Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIIA030Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine XML output defect: obligation assignment2 loses XPathCategory resource metadata in Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment)",
+        "bug_id": "BUG-TBD-IIIA030"
+      }
+    },
+    {
+      "suite": "oasis30",
+      "case_id": "IIIA330",
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIIA330",
+        "request_file": "xacml3.0-ct-v.0.4/IIIA330Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIIA330Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIIA330Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIIA330",
+        "request_file": "xacml3.0-ct-v.0.4/IIIA330Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIIA330Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIIA330Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine XML output defect: advice assignment2 loses XPathCategory resource metadata in Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment)",
+        "bug_id": "BUG-TBD-IIIA330"
+      }
+    },
+    {
+      "suite": "oasis30",
+      "case_id": "IIIE302",
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIIE302",
+        "request_file": "xacml3.0-ct-v.0.4/IIIE302Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIIE302Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIIE302Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Harness defect: xacml-test compares included category lists by position; actual subject-first and expected resource-first categories fail despite order-independent XACML category meaning; comparison is outside this lane",
+        "bug_id": "policy4j-the.3.7"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIIE302",
+        "request_file": "xacml3.0-ct-v.0.4/IIIE302Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIIE302Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIIE302Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      }
+    }
+  ],
+  "unchanged_rows": 877,
+  "pending_4_16_rows_byte_content_unchanged": true
+}

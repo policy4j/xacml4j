@@ -1,0 +1,3 @@
+suite,case_id,before,after,cause
+oasis30,IIIA030,skipped,passed,Conductor-reviewed 4.24 XML assignment XPathCategory fix
+oasis30,IIIA330,skipped,passed,Conductor-reviewed 4.24 XML assignment XPathCategory fix

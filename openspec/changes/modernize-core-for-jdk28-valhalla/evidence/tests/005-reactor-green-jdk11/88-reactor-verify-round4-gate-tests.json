@@ -1,0 +1,288 @@
+{
+  "results": {
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest": {
+      "counts": [
+        54,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "mapTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfPreservesEveryBagPosition[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "unaryPredicateNeedsOnlyOneBag[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "emptyBagsHaveIdentityResults[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyAllowsAllPrimitiveOperands[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "variadicPredicateAcceptsMatchingOperandTypes[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfBagFirst[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyMixedCrossProduct[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "missingOperandsAreSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionDuringApplyTypeResolution[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfThreeArgumentPredicate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapBagFirstPreservesOrderAndMultiplicity[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfPreservesEveryBagPosition[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapConcatenateWithPrimitive[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyThreeBags[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnySpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "referencedPredicateTypesAndReturnTypeAreChecked[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "packetBinaryPredicateWithThreeOperandsIsArityError[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionAtValidation[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfPreservesEveryBagPosition[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "unaryPredicateNeedsOnlyOneBag[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "emptyBagsHaveIdentityResults[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyAllowsAllPrimitiveOperands[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "variadicPredicateAcceptsMatchingOperandTypes[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfBagFirst[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyMixedCrossProduct[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "missingOperandsAreSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionDuringApplyTypeResolution[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfThreeArgumentPredicate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapBagFirstPreservesOrderAndMultiplicity[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfPreservesEveryBagPosition[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapConcatenateWithPrimitive[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyThreeBags[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnySpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "referencedPredicateTypesAndReturnTypeAreChecked[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "packetBinaryPredicateWithThreeOperandsIsArityError[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionAtValidation[runtimeValidation=true]",
+          "problems": []
+        }
+      ]
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest": {
+      "counts": [
+        3,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "mixedValuesReachDeclaredExpressionArray",
+          "problems": []
+        },
+        {
+          "name": "mixedSequenceStillChecksMinimumAndExcludesFunctionReferences",
+          "problems": []
+        },
+        {
+          "name": "typedVariadicValidationIsUnchanged",
+          "problems": []
+        }
+      ]
+    },
+    "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest": {
+      "counts": [
+        6,
+        0,
+        0,
+        0
+      ],
+      "tests": [
+        {
+          "name": "testAllOfAll",
+          "problems": []
+        },
+        {
+          "name": "testAllOfAny",
+          "problems": []
+        },
+        {
+          "name": "testAnyOf",
+          "problems": []
+        },
+        {
+          "name": "testMapWithValidArguments",
+          "problems": []
+        },
+        {
+          "name": "testAnyOfAllIIC168",
+          "problems": []
+        },
+        {
+          "name": "testAnyOfAll",
+          "problems": []
+        }
+      ]
+    }
+  },
+  "production_hash": "0949e2ba7da8fb083090a230f823ffcf455a881c96d43552a2cdc5e3a4e75949",
+  "production_matches_before_snapshot": false
+}

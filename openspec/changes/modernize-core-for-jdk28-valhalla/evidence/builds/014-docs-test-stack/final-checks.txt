@@ -1,0 +1,12 @@
+Final diff check: exit 0, no whitespace errors.
+
+Scoped status:
+ M AGENTS.md
+ M docs/ai/TESTING.md
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/014-docs-test-stack/
+Evidence check (exit 0):
+PASS: evidence links resolve, receipts pass, and no home paths are present.
+
+
+The broader shared tree contains earlier migration work. Scope hashes in
+checks.json compare against task start, rather than the branch base.

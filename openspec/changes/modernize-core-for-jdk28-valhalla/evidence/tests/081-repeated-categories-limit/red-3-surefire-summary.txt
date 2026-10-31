@@ -1,0 +1,6 @@
+Red run 3, JDK 21, 2026-10-08: individualRequestsThatSelectNothingAreCounted before the selector steps were counted (review round 1, MEDIUM-1).
+
+[ERROR] Tests run: 23, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.73 s <<< FAILURE! - in org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest
+[ERROR] org.xacml4j.v30.pdp.request.MultipleResourcesRepeatedCategoriesLimitTest.individualRequestsThatSelectNothingAreCounted  Time elapsed: 0.009 s  <<< FAILURE!
+[ERROR]   MultipleResourcesRepeatedCategoriesLimitTest.individualRequestsThatSelectNothingAreCounted:327->assertLimitExceeded:408 expected: <1> but was: <0>
+[ERROR] Tests run: 23, Failures: 1, Errors: 0, Skipped: 0

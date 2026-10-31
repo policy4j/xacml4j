@@ -1,0 +1,10 @@
+{
+  "openspec/changes/add-desktop-deep-research/design.md": "82d8a4c5169e17ea4cd4e1413a4de4aded9364a0a8de42b25099bd31a9158416",
+  "openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md": "a7e6fac5c7587f52bfb6f44201a906c2e98fc284b14814df446ea6169335e1b5",
+  "openspec/changes/add-desktop-deep-research/tasks.md": "4aec3bd1cf04c4cdb5fb5594873637866640c857dcaac3bb7f7bda54cfe6f77f",
+  "openspec/changes/add-desktop-deep-research/evidence/README.md": "10d9d3795031bed7adc5a364dd4d714167aa9e9ef492155eb6630b4958eab05e",
+  "openspec/changes/add-desktop-deep-research/evidence/reviews/plan/rv001-architecture-claude/disposition.md": "5c67dd669cc5b4d60dd89aac2818fa49dc1832c1c2c2fbefa2dd94ae3662c3b0",
+  "openspec/changes/add-desktop-deep-research/evidence/builds/004-binding-plan-validation/summary.md": "2258abd1b60227b013e0d9814047d9de80572a2a9895c09060c6b00b6d3885d3",
+  "openspec/changes/add-desktop-deep-research/evidence/builds/004-binding-plan-validation/validation.json": "4e2952d994979256d6978c2cdb9c2cfbece3378db07235d16d64d495892c2ebf",
+  "openspec/changes/add-desktop-deep-research/evidence/builds/004-binding-plan-validation/mapping-output.json": "f67762521e6ad917c5cb34641d6440354c3c22697d02d9852661c8808ee7729c"
+}

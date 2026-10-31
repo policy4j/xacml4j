@@ -1,0 +1,4 @@
+requirements=8
+scenarios=19
+named_tests=19
+missing_mapping=[]

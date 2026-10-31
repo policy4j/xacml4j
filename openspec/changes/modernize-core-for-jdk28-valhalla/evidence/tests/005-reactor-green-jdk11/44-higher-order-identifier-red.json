@@ -1,0 +1,46 @@
+[
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:any-of]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:any-of"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:any-of]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:any-of> but was:<...asis:names:tc:xacml:[1].0:function:any-of>"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:all-of]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:all-of"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:all-of]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:all-of> but was:<...asis:names:tc:xacml:[1].0:function:all-of>"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:any-of-any]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:any-of-any"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:any-of-any]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:any-of-a...> but was:<...asis:names:tc:xacml:[1].0:function:any-of-a...>"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:map]",
+    "failure": "Missing required function urn:oasis:names:tc:xacml:3.0:function:map"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:map]",
+    "failure": "expected:<...asis:names:tc:xacml:[3].0:function:map> but was:<...asis:names:tc:xacml:[1].0:function:map>"
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:all-of-any]",
+    "failure": null
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:any-of-all]",
+    "failure": null
+  },
+  {
+    "test": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:all-of-all]",
+    "failure": null
+  }
+]

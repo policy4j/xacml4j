@@ -1,0 +1,13 @@
+# run 088, 2026-10-26 (<checkouts> holds the checkouts; <backup> is outside them)
+bash landing-run.sh 1 && bash landing-run.sh 2
+# the maintainer unlocked the signing key (pinentry) when step 3a asked
+bash landing-run.sh 3a && bash landing-run.sh 3b && bash landing-run.sh 4   # 4: STOP (new IDE edits)
+# maintainer: carry them over and finish; steps 4, 7, 8 generalized (see summary.md)
+bash landing-run.sh 4 && bash landing-run.sh 5 && bash landing-run.sh 6
+bash landing-run.sh 7 && bash landing-run.sh 8
+
+# after the landing, in <checkouts>/xacml4j
+JAVA_HOME="$(jenv prefix 21)" "<IntelliJ IDEA>/plugins/maven-plugin/lib/maven3/bin/mvn" \
+  -o -B -Dlicense.skipUpdateLicense=true clean test        # exit 0, surefire-summary.txt
+openspec validate modernize-core-for-jdk28-valhalla --strict   # valid
+openspec validate add-desktop-deep-research --strict           # valid

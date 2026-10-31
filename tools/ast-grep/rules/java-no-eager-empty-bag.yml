@@ -1,0 +1,15 @@
+id: java-no-eager-empty-bag
+language: Java
+severity: error
+message: An empty bag passed to orElse is built even when the bag is present.
+note: |
+  Optional.orElse evaluates its argument on every call. On the decide path that
+  built a new empty bag for every attribute evaluation (change
+  optimize-pdp-evaluation, D14). Use `v.isPresent() ? v.get() : type.emptyBag()`
+  or `orElseGet(type::emptyBag)`.
+files:
+  - "**/src/main/java/**/*.java"
+rule:
+  any:
+    - pattern: $OPT.orElse($TYPE.emptyBag())
+    - pattern: $OPT.orElse($TYPE.bagBuilder().build())

@@ -22,6 +22,8 @@ package org.xacml4j.util;
  * #L%
  */
 
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 
 /**
@@ -44,11 +46,39 @@ public final class Pair <A, B>
 		this.second = second;
 	}
 
-	public A getFirst(){
+	public static <F, S>  Pair<F, S> of(F a, S b) {
+		return new Pair<>(a, b);
+	}
+
+	public A first(){
 		return first;
 	}
 
-	public B getSecond(){
+	public B second(){
 		return second;
+	}
+
+	public String toString(){
+		return MoreObjects.toStringHelper(this)
+				.add("first", first)
+				.add("second", second)
+				.toString();
+	}
+
+	public int hashCode(){
+		return Objects.hashCode(first, second);
+	}
+
+	public boolean equals(Object a){
+		if(this == a){
+			return true;
+		}
+		if(a == null ||
+				!(a instanceof Pair)){
+			return false;
+		}
+		Pair<A, B> pair = (Pair<A, B>)a;
+		return java.util.Objects.equals(first, pair.first) &&
+				java.util.Objects.equals(second, pair.second);
 	}
 }

@@ -1,0 +1,44 @@
+[
+  {
+    "source": "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java",
+    "matches_archived_bytes": true,
+    "git_sha256": "50085e82524e523c4a6759e22198bfd6f0cd10f466c1ac465698cb1f09068997",
+    "archive_sha256": "50085e82524e523c4a6759e22198bfd6f0cd10f466c1ac465698cb1f09068997"
+  },
+  {
+    "source": "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticFunctions.java",
+    "matches_archived_bytes": true,
+    "git_sha256": "f6f05d13fb2209ace4cf4e1ca3feed32aef161631a972d1ca4ece04628fcad47",
+    "archive_sha256": "f6f05d13fb2209ace4cf4e1ca3feed32aef161631a972d1ca4ece04628fcad47"
+  },
+  {
+    "source": "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java",
+    "matches_archived_bytes": true,
+    "git_sha256": "b7fc7d2541ffa77c9d089581bc19741d57006c319d4e391cbc20e6ba0e7f3216",
+    "archive_sha256": "b7fc7d2541ffa77c9d089581bc19741d57006c319d4e391cbc20e6ba0e7f3216"
+  },
+  {
+    "source": "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java",
+    "matches_archived_bytes": true,
+    "git_sha256": "c8789517bc25fc3b7a0cfa38511b89bf3eab6a9959bbcaca45c96305188e4296",
+    "archive_sha256": "c8789517bc25fc3b7a0cfa38511b89bf3eab6a9959bbcaca45c96305188e4296"
+  },
+  {
+    "source": "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Duration.java",
+    "matches_archived_bytes": true,
+    "git_sha256": "d5750be2effcaffaeb306c1f5fba58ad0e69b0d33278da1298cef0fab92703de",
+    "archive_sha256": "d5750be2effcaffaeb306c1f5fba58ad0e69b0d33278da1298cef0fab92703de"
+  },
+  {
+    "source": "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DayTimeDuration.java",
+    "matches_archived_bytes": true,
+    "git_sha256": "8452893a38ee425e2414eef05b8aedcae1ae76eafb38f4338fff7f35b694d28c",
+    "archive_sha256": "8452893a38ee425e2414eef05b8aedcae1ae76eafb38f4338fff7f35b694d28c"
+  },
+  {
+    "source": "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601YearMonthDuration.java",
+    "matches_archived_bytes": true,
+    "git_sha256": "776668baf9d5b91892fb53c7d60bf6a0ac146438f9acd86501b93d0d13799ebe",
+    "archive_sha256": "776668baf9d5b91892fb53c7d60bf6a0ac146438f9acd86501b93d0d13799ebe"
+  }
+]

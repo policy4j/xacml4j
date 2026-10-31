@@ -1,0 +1,28 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Probe before the fix (a test class that was run once and removed)
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true -pl xacml-core \
+  -Dtest=ApplyArgumentProbeTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Design A (reject when the expression is built): full reactor, failures counted
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true clean verify
+
+# Red: the new test class against Apply without the check
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true -pl xacml-core \
+  -Dtest=ApplyArgumentValidationTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Mutation check (M1, M2, M3): change one line, run the classes, put the file back
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-pdp,xacml-xml -am \
+  -Dtest='ApplyArgumentValidationTest,InvalidApply*Test,HigherOrderVariadicFunctionsTest,ApplyTest,AttributeResolutionSafetyNetTest' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Gate: clean full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict
+
+# Review (one shot, redacted packet = prompt + diff; run from a directory that holds only the packet)
+codex exec -s read-only --skip-git-repo-check - < packet.md

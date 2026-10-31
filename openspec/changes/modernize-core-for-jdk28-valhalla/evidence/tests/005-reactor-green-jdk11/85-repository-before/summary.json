@@ -1,0 +1,23 @@
+{
+  "phase": "before",
+  "runs": 30,
+  "passed": 26,
+  "failed": 4,
+  "fresh_reports": 30,
+  "reported_totals": {
+    "tests": 120,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "executed_test_methods": 120,
+  "failure_frequency": {
+    "testAddRemove": 1,
+    "testFindAllPoliciesWithTheSameId": 3
+  },
+  "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+  "java_versions": [
+    "11.0.32.1"
+  ],
+  "compile_diagnostics": []
+}

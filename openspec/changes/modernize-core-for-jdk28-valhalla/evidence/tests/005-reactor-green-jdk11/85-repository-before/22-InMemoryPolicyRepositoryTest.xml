@@ -1,0 +1,60 @@
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest" time="0.254" tests="4" errors="0" skipped="0" failures="1">
+  <testcase name="testAddPolicyWithTheSameIdAndSameVersion" classname="org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest" time="0.238">
+    </testcase>
+  <testcase name="testAddRemove" classname="org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest" time="0.002">
+    </testcase>
+  <testcase name="testOnePolicyDifferentVersion" classname="org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest" time="0.004">
+    </testcase>
+  <testcase name="testFindAllPoliciesWithTheSameId" classname="org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest" time="0.004">
+    <failure message="&#10;  Expectation failure on verify:&#10;    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1" type="java.lang.AssertionError">java.lang.AssertionError: 
+
+  Expectation failure on verify:
+    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1
+	at org.easymock.internal.MocksControl.verify(MocksControl.java:262)
+	at org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest.testFindAllPoliciesWithTheSameId(InMemoryPolicyRepositoryTest.java:219)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+</failure>
+    </testcase>
+</testsuite>

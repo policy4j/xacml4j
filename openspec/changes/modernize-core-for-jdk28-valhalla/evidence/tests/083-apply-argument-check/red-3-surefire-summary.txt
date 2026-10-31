@@ -1,0 +1,26 @@
+Red run 3, JDK 21, 2026-10-08: a type error inside an expression, before it was inherited (review round 2). Failures were not allowed to stop the build.
+
+[ERROR] Tests run: 37, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 1.013 s <<< FAILURE! - in org.xacml4j.v30.policy.ApplyArgumentValidationTest
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.typeErrorBehindADecidingOperandIsNotSkipped  Time elapsed: 0.01 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.expressionThatHoldsATypeErrorHasATypeError  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.typeErrorInAVariableDefinitionIsFoundThroughTheReference  Time elapsed: 0.007 s  <<< FAILURE!
+[ERROR]   ApplyArgumentValidationTest.expressionThatHoldsATypeErrorHasATypeError:182->assertHoldsTypeError:225 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.typeErrorBehindADecidingOperandIsNotSkipped:201->assertHoldsTypeError:225 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.typeErrorInAVariableDefinitionIsFoundThroughTheReference:217->assertHoldsTypeError:225 expected: <false> but was: <true>
+[ERROR] Tests run: 37, Failures: 3, Errors: 0, Skipped: 0
+[ERROR] Tests run: 8, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.926 s <<< FAILURE! - in org.xacml4j.v30.xml.InvalidApplyPolicyUnmarshallerTest
+[ERROR] org.xacml4j.v30.xml.InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate(int, String, String, String, String)[1]  Time elapsed: 0.024 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.xml.InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate(int, String, String, String, String)[2]  Time elapsed: 0.018 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.xml.InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate(int, String, String, String, String)[3]  Time elapsed: 0.017 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.xml.InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate(int, String, String, String, String)[4]  Time elapsed: 0.015 s  <<< FAILURE!
+[ERROR]   InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate:79 expected: <false> but was: <true>
+[ERROR]   InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate:79 expected: <false> but was: <true>
+[ERROR]   InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate:79 expected: <false> but was: <true>
+[ERROR]   InvalidApplyPolicyUnmarshallerTest.policyWithAnApplyThatIsNotTypeCorrectIsLoadedAndIndeterminate:79 expected: <false> but was: <true>
+[ERROR] Tests run: 8, Failures: 4, Errors: 0, Skipped: 0
+[ERROR] Tests run: 9, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.813 s <<< FAILURE! - in org.xacml4j.v30.pdp.InvalidApplyDecisionTest
+[ERROR] org.xacml4j.v30.pdp.InvalidApplyDecisionTest.denyRuleWithAnInvalidExpressionIsIndeterminate(String, Expression)[4]  Time elapsed: 0.02 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.InvalidApplyDecisionTest.permitRuleWithAnInvalidExpressionIsIndeterminate(String, Expression)[4]  Time elapsed: 0.018 s  <<< FAILURE!
+[ERROR]   InvalidApplyDecisionTest.denyRuleWithAnInvalidExpressionIsIndeterminate:82 expected: <INDETERMINATE_D> but was: <DENY>
+[ERROR]   InvalidApplyDecisionTest.permitRuleWithAnInvalidExpressionIsIndeterminate:72 expected: <INDETERMINATE_P> but was: <PERMIT>
+[ERROR] Tests run: 9, Failures: 2, Errors: 0, Skipped: 0

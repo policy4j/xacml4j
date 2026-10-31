@@ -1,0 +1,448 @@
+  ### A. Donor Defects: Shape Mismatches, Unchecked Extractions, and Resolver Failures
+
+  Inspecting the donor branch (b9f114a3) across expression nodes, value interfaces, function
+  specifications, reflection converters, and built-in functions reveals pervasive shape violations, silent
+  truncation of bags via findFirst(), invalid AST node-kind checking, and compilation failures.
+
+   #  │ Donor File : Line   │ Defect Description  │ Scenario / Failing … │ Required Behavior &… │ Severity
+  ────┼─────────────────────┼─────────────────────┼──────────────────────┼──────────────────────┼──────────
+   D1 │ b9f114a3:xacml-core │ Silent Truncation   │ Calling asSingle()   │ Design D7: ValueExpr │ CRITICAL
+      │ /src/main/java/org/ │ in asSingle():      │ on a bag with ≥ 2    │ must provide an      │
+      │ xacml4j/v30/types/V │ asSingle() defaults │ elements (e.g.       │ explicit             │
+      │ alueExpr.java:85-88 │ to                  │ {true, false}).      │ requireExactlyOne()  │
+      │                     │ stream().findFirst( │                      │ operation; first()   │
+      │                     │ ). For a multi-     │                      │ is only permitted    │
+      │                     │ element bag, it     │                      │ where the            │
+      │                     │ returns the first   │                      │ specification        │
+      │                     │ element without     │                      │ explicitly allows    │
+      │                     │ checking            │                      │ it.                  │
+      │                     │ cardinality.        │                      │                      │
+   D2 │ b9f114a3:xacml-core │ Condition Returns   │ 1. Predicate         │ XACML 3.0 §7.9: "In  │ CRITICAL
+      │ /src/main/java/org/ │ FALSE on Empty Bag  │ evaluates to empty   │ the case of an       │
+      │ xacml4j/v30/policy/ │ & Truncates Multi-  │ bag [].2. Predicate  │ Expression that      │
+      │ Condition.java:87-9 │ Bag:                │ evaluates to [true,  │ evaluates to         │
+      │ 1                   │ result.asSingle().m │ false].              │ 'Indeterminate', or  │
+      │                     │ ap(...).orElse(fals │                      │ where the expression │
+      │                     │ e) turns an empty   │                      │ is not a single      │
+      │                     │ sequence into       │                      │ boolean value, the   │
+      │                     │ ConditionResult.FAL │                      │ Condition SHALL      │
+      │                     │ SE, and multi-      │                      │ evaluate to          │
+      │                     │ valued bags into    │                      │ 'Indeterminate'."    │
+      │                     │ the first boolean.  │                      │                      │
+   D3 │ b9f114a3:xacml-core │ Attribute Reference │ Static type          │ XACML 3.0 §7.3.5 &   │ CRITICAL
+      │ /src/main/java/org/ │ Declares Single     │ validation for       │ §7.3.7: Designators  │
+      │ xacml4j/v30/policy/ │ ValueType Instead   │ AttributeDesignator  │ and selectors always │
+      │ AttributeReference. │ of Bag: default     │ and                  │ evaluate to a bag.   │
+      │ java:55-58          │ ValueType<?, ?>     │ AttributeSelector.   │ Design D7:           │
+      │                     │ evaluatesTo() {     │                      │ Designators and      │
+      │                     │ return              │                      │ selectors SHALL      │
+      │                     │ key().valueType();  │                      │ declare              │
+      │                     │ }.                  │                      │ evaluatesTo() ==     │
+      │                     │                     │                      │ valueType().bagType( │
+      │                     │                     │                      │ ).                   │
+   D4 │ b9f114a3:xacml-core │ Apply.evaluatesTo() │ Any <Apply> calling  │ Design D7:           │ CRITICAL
+      │ /src/main/java/org/ │ Restricts Result to │ a bag function (e.g. │ evaluatesTo() on     │
+      │ xacml4j/v30/policy/ │ Single ValueType:   │ string-bag, map,     │ Apply and Expr must  │
+      │ Apply.java:79-82    │ Declared as public  │ xpath-node-match).   │ return               │
+      │                     │ ValueType<?, ?>     │                      │ ValueExprType<?, ?>  │
+      │                     │ evaluatesTo().      │                      │ so both ValueType    │
+      │                     │ Cannot represent    │                      │ and BagOfType are    │
+      │                     │ bag return types.   │                      │ valid result shapes. │
+   D5 │ b9f114a3:xacml-core │ Return Type         │ Dynamic return type  │ XACML 3.0 §A.3.12:   │ HIGH
+      │ /src/main/java/org/ │ Resolvers           │ resolution for bag-  │ map returns a bag.   │
+      │ xacml4j/v30/policy/ │ Constrained to      │ producing higher-    │ Return type          │
+      │ FunctionSpec.java:1 │ Single ValueType:   │ order functions.     │ resolvers must       │
+      │ 37 &                │ resolveReturnType   │                      │ return               │
+      │ FunctionReturnTypeR │ returns             │                      │ ValueExprType<?, ?>. │
+      │ esolver.java:46     │ ValueType<?, ?>     │                      │                      │
+      │                     │ instead of          │                      │                      │
+      │                     │ ValueExprType<?,    │                      │                      │
+      │                     │ ?>.                 │                      │                      │
+   D6 │ b9f114a3:xacml-core │ map Return Type     │ Resolving the return │ XACML 3.0 §A.3.12:   │ CRITICAL
+      │ /src/main/java/org/ │ Resolver Resolves   │ type of              │ map "SHALL return a  │
+      │ xacml4j/v30/policy/ │ to Single Value:    │ urn:oasis:names:tc:x │ bag of type bag of   │
+      │ function/impl/Highe │ MapFunctionResolver │ acml:1.0:function:ma │ t'". Must resolve to │
+      │ rOrderFunctions.jav │ Validator.resolve   │ p.                   │ ref.evaluatesTo().va │
+      │ a:209-211           │ returns             │                      │ lueType().bagType(). │
+      │                     │ ref.evaluatesTo().v │                      │                      │
+      │                     │ alueType() (a       │                      │                      │
+      │                     │ single ValueType).  │                      │                      │
+   D7 │ b9f114a3:xacml-core │ @FuncParamAnyBag    │ Passing an           │ Design D7: Parameter │ CRITICAL
+      │ /src/main/java/org/ │ Rejects Non-Literal │ AttributeDesignator  │ validation must      │
+      │ xacml4j/v30/policy/ │ Bags: Validates     │ to any-of, all-of,   │ inspect              │
+       │ function/FunctionPa │ using               │ map, or bag-size.   │ evaluatesTo()        │
+       │ ramAnyBagSpec.java: │ ExpressionKind.BAG. │                     │ instanceof           │
+       │ 44-46               │ equals(expType).    │                     │ BagOfType, not AST   │
+       │                     │ Rejects             │                     │ node syntax kind.    │
+       │                     │ AttributeDesignator │                     │                      │
+       │                     │ ,                   │                     │                      │
+       │                     │ AttributeSelector,  │                     │                      │
+       │                     │ or <Apply>          │                     │                      │
+       │                     │ returning a bag.    │                     │                      │
+   D8  │ b9f114a3:xacml-core │ @FuncParamAnyValue  │ Passing <Apply      │ Parameter validation │ CRITICAL
+       │ /src/main/java/org/ │ Rejects Sub-        │ FunctionId="...:str │ must inspect         │
+       │ xacml4j/v30/policy/ │ Expressions: Checks │ ing-normalize-      │ evaluatesTo()        │
+       │ function/FunctionPa │ ExpressionKind.SING │ space"> to any-of.  │ instanceof           │
+       │ ramAnyValueSpec.jav │ LE.equals(expType). │                     │ ValueType, not       │
+       │ re/src/main/java/ │ Rejects Sub-       │ FunctionId="...:string-  │ validation must    │
+       │ org/xacml4j/v30/p │ Expressions:       │ normalize-space"> to     │ inspect            │
+       │ olicy/function/Fu │ Checks             │ any-of.                  │ evaluatesTo()      │
+       │                     │ value.              │                     │                      │
+   D9  │ b9f114a3:xacml-core │ Variadic Validation │ Validating any      │ Compares type to     │ CRITICAL
+       │ /src/main/java/org/ │ Compares Type to    │ variadic function   │ expression           │
+       │ xacml4j/v30/policy/ │ Expression:         │ invocation (e.g.    │ (ValueType.equals(Ex │
+       │ function/FunctionPa │ if(!paramType.equal │ concat, integer-    │ pr) is always        │
+       │ ramValueTypeSequenc │ s(exp)) compares a  │ add).               │ false), throwing     │
+       │ eSpec.java:121      │ ValueType to an     │                     │ PolicySyntaxExceptio │
+       │                     │ Expr.               │                     │ n for all valid      │
+       │                     │                     │                     │ variadic parameters. │
+   D10 │ b9f114a3:xacml-core │ Variadic Parameters │ Nested <Apply>      │ AST node kind        │ HIGH
+       │ /src/main/java/org/ │ Reject Sub-         │ passed to variadic  │ checking prevents    │
+       │ xacml4j/v30/policy/ │ Expressions:        │ function (e.g.      │ valid single-value   │
+       │ function/FunctionPa │ isValidParamType    │ concat("a", string- │ sub-expressions from │
+       │ ramValueTypeSequenc │ requires            │ trim(b))).          │ being passed as      │
+       │ eSpec.java:94-96    │ expType.equals(Expr │                     │ variadic arguments.  │
+       │                     │ essionKind.SINGLE). │                     │                      │
+   D11 │ b9f114a3:xacml-core │ Type System         │ Compiling           │ ExpressionKind is an │ CRITICAL
+       │ /src/main/java/org/ │ Conflation /        │ FunctionSpecBuilder │ AST enum, not a      │
+       │ xacml4j/v30/policy/ │ Compilation         │ .java.              │ ValueType or         │
+       │ function/FunctionSp │ Failure:            │                     │ ValueExprType. The   │
+       │ ecBuilder.java:123- │ FunctionSpecBuilder │                     │ builder API must     │
+       │ 125                 │ methods declare     │                     │ accept               │
+       │                     │ parameters as       │                     │ ValueExprType.       │
+       │                     │ ExpressionKind, but │                     │                      │
+       │                     │ pass them to        │                     │                      │
+       │                     │ FunctionParamValueT │                     │                      │
+       │                     │ ypeSpec expecting   │                     │                      │
+       │                     │ ValueType.          │                     │                      │
+   D12 │ b9f114a3:xacml-core │ Resolver Signature  │ Compiling           │ Implementation does  │ CRITICAL
+       │                   │ parameters as      │                          │ ValueExprType.     │
+       │ xacml4j/v30/policy/ │ Compilation         │ nTypeResolver.java. │ interface            │
+       │ function/StaticFunc │ Failure: resolve    │                     │ declaration.         │
+       │ tionReturnTypeResol │ declared returning  │                     │                      │
+       │ ver.java:42         │ ExpressionKind, but │                     │                      │
+       │                     │ FunctionReturnTypeR │                     │                      │
+       │                     │ esolver requires    │                     │                      │
+       │                     │ ValueType<?, ?>.    │                     │                      │
+       │ org/xacml4j/v30/p │ Compilation        │ Resolver.java.           │ interface          │
+       │ olicy/function/St │ Failure: resolve   │                          │ declaration.       │
+       │ aticFunctionRetur │ declared returning │                          │                    │
+       │ nTypeResolver.jav │ ExpressionKind,    │                          │                    │
+       │ a:42              │ but                │                          │                    │
+       │ a:108-115           │ added to the result │                     │ 3.0 §5.40 requires   │
+       │                     │ builder             │                     │ an                   │
+       │                     │ (attr.add(b.build() │                     │ AttributeAssignment  │
+       │                     │ ) is missing).      │                     │ per bag value, not   │
+       │                     │                     │                     │ collapsing into one. │
+       │ org/xacml4j/v30/p │ Attribute          │ rules/policies.          │ 0 attribute        │
+       │ olicy/BaseDecisio │ Assignments:       │                          │ assignments.       │
+       │ nRuleResponseExpr │ b.build() is never │                          │ Furthermore, XACML │
+       │ ession.java:108-1 │ added to the       │                          │ 3.0 §5.40 requires │
+       │ 15                │ result builder     │                          │ an                 │
+       │                   │ (attr.add(b.build( │                          │ AttributeAssignmen │
+       │                   │ )) is missing).    │                          │ t per bag value,   │
+       │                     │ overload.           │                     │                      │
+   D15 │ b9f114a3:xacml-core │ Syntax /            │ Compiling           │ Invalid Java syntax. │ CRITICAL
+   D14 │ b9f114a3:xacml-co │ Syntax /           │ Compiling                │ Invalid Java       │ CRITICAL
+       │ re/src/main/java/ │ Compilation        │ HigherOrderFunctions.jav │ syntax.            │
+       │ org/xacml4j/v30/p │ Failure in match:  │ a.                       │                    │
+       │ olicy/function/im │ Calls              │                          │                    │
+       │ pl/HigherOrderFun │ .asSingle().map(). │                          │                    │
+       │ ctions.java:177   │ orElse(false).     │                          │                    │
+       │                   │ Optional.map has   │                          │                    │
+       │                     │ undeclared variable │                     │                      │
+       │                     │ c.                  │                     │                      │
+   D15 │ b9f114a3:xacml-co │ Syntax /           │ Compiling                │ Invalid Java       │ CRITICAL
+       │ re/src/main/java/ │ Compilation        │ XPathFunctions.java.     │ syntax.            │
+       │ org/xacml4j/v30/p │ Failure in         │                          │                    │
+       │ olicy/function/im │ xpathCount:        │                          │                    │
+       │ pl/XPathFunctions │ Missing semicolon  │                          │                    │
+       │ ions.java:72,134    │ categoryOrEntity    │                     │                      │
+       │                   │ context.resolveCat │                          │                    │
+       │                   │ egory(path.categor │                          │                    │
+       │                   │ yId()) and         │                          │                    │
+       │                   │ references         │                          │                    │
+       │                   │ undeclared         │                          │                    │
+       │                   │ variable c.        │                          │                    │
+   D16 │ b9f114a3:xacml-co │ AttributeDesignato │ Calling attribute-       │ Throws             │ CRITICAL
+       │ re/src/main/java/ │ rFunctions         │ designator with a        │ ClassCastException │
+       │ org/xacml4j/v30/p │ ClassCast &        │ category URI.            │ at runtime; fails  │
+       │ olicy/function/im │ Resolver Errors:   │                          │ compilation at     │
+       │                   │ UriVal. Line 134   │                          │                      │
+       │                   │ declares resolve   │                          │                      │
+       │                   │ returning          │                          │                      │
+       │                   │ ExpressionKind.    │                          │                      │
+   D17 │ b9f114a3:xacml-co │ Compilation Errors │ Compiling                │ BagOfType does not   │ CRITIC
+       │ re/src/main/java/ │ in QuantifiedMap:  │ QuantifiedMap.java.      │ extend               │ AL
+       │ org/xacml4j/v30/p │ Line 48 returns    │                          │ ExpressionKind. In   │
+       │ olicy/QuantifiedM │ BagOfType from     │                          │ BagOfType, method is │
+       │ ap.java:48,59     │ method declared as │                          │ bag(), not           │
+       │                   │ ExpressionKind.    │                          │ builder().           │
+       │                   │ Line 59 calls non- │                          │                      │
+       │                   │ existent           │                          │                      │
+       │                   │ bagType.builder(). │                          │                      │
+   D18 │ b9f114a3:xacml-co │ Null Stubs in      │ Invoking                 │ Null pointer         │ HIGH
+       │ re/src/main/java/ │ QuantifiedSelect:  │ QuantifiedSelect.        │ exceptions when      │
+       │ org/xacml4j/v30/p │ evaluate(),        │                          │ evaluated.           │
+       │ olicy/QuantifiedS │ kind(), and        │                          │                      │
+       │ elect.java:48-60  │ evaluatesTo()      │                          │                      │
+       │                   │ unconditionally    │                          │                      │
+       │                   │ return null;.      │                          │                      │
+   D19 │ b9f114a3:xacml-co │ VariableReference. │ Compiling                │ Incompatible return  │ CRITIC
+       │ re/src/main/java/ │ evaluatesTo()      │ VariableReference.java.  │ type with Expr       │ AL
+       │ org/xacml4j/v30/p │ Returns            │                          │ interface.           │
+       │ olicy/VariableRef │ ExpressionKind:    │                          │                      │
+       │ erence.java:55-58 │ Implements         │                          │                      │
+       │                   │ Expr.evaluatesTo() │                          │                      │
+       │                   │ (which returns     │                          │                      │
+       │                   │ ValueExprType) by  │                          │                      │
+       │                   │ declaring return   │                          │                      │
+       │                   │ type               │                          │                      │
+       │                   │ ExpressionKind.    │                          │                      │
+   D20 │ b9f114a3:xacml-co │ FunctionReference  │ Constructing             │ Dynamic resolvers    │ HIGH
+       │ re/src/main/java/ │ Construction       │ FunctionReference for    │ require arguments to │
+       │ org/xacml4j/v30/p │ Crashes on Dynamic │ map or attribute-        │ resolve; passing     │
+       │ olicy/FunctionRef │ Resolvers: Calls   │ designator.              │ empty list throws    │
+       │ erence.java:56    │ spec.resolveReturn │                          │ IllegalArgumentExcep │
+       │                   │ Type(ImmutableList │                          │ tion at policy load  │
+       │                   │ .of()).            │                          │ time.                │
+   D21 │ b9f114a3:xacml-co │ BagOf.union and    │ Bag operations with      │ XACML 3.0 §A.3.11:   │ CRITIC
+       │ re/src/main/java/ │ intersection       │ duplicate elements (e.g. │ union occurrences    │ AL
+       │ org/xacml4j/v30/t │ Destroy Multiset   │ {1, 1} union {1}).       │ must be the sum of   │
+       │ ypes/BagOf.java:1 │ Multiplicity:      │                          │ occurrences (1 + 2 = │
+       │ 24,139            │ union and          │                          │ 3); intersection     │
+       │                   │ intersection       │                          │ occurrences must be  │
+       │                   │ delegate to        │                          │ the minimum (min(2,  │
+       │                   │ Sets.union and     │                          │ 2) = 2).             │
+       │                   │ Sets.intersection  │                          │ elementSet()         │
+       │                   │ on                 │                          │ collapses duplicates │
+       │                   │ values.elementSet( │                          │ to 1.                │
+       │                   │ ).                 │                          │                      │
+   D22 │ b9f114a3:xacml-co │ Entity ID          │ Entity attribute         │ Silently selects     │ HIGH
+       │ re/src/main/java/ │ Extraction Uses    │ matching entity ID       │ first entity ID      │
+       │ org/xacml4j/v30/t │ Unchecked          │ reference has ≥ 2        │ instead of failing   │
+       │ ypes/Entity.java: │ asSingle():        │ values.                  │ validation or        │
+       │ 61                │ eidRef().flatMap(t │                          │ requiring exactly    │
+       │                   │ his::resolve).flat │                          │ one.                 │
+       │                   │ Map(BagOf::asSingl │                          │                      │
+       │                   │ e).                │                          │                      │
+  ──────
+  ### B. Interactions with Group 4 Fixes and Open Bugs
+
+  1. Bug 4.8 (Variadic Higher-Order Functions, beads policy4j-the.4.8):
+      • Worktree Status: Group 4 updated HigherOrderFunctions to support XACML 3.0 §A.3.12 variadic higher-
+      order signatures for any-of, all-of, and any-of-any, allowing an arbitrary number of arguments where
+      exactly one argument is a bag (at any parameter position).
+      • Donor Conflict: Donor b9f114a3:HigherOrderFunctions.java:44-77 reverted to fixed 2-argument
+      signatures (Value<?, ?> value, BagOf<?, ?> bag). Adopting the donor without preserving Group 4's
+      SingleBagFunctionParametersValidator and AnyOfAnyFunctionParametersValidator breaks XACML 3.0 §A.3.12
+      conformance. The worktree variadic shape must be retained.
+  2. Bug 4.9 (AttributeSelector Singleton Context Node, beads policy4j-the.4.9):
+      • Worktree Status: XACML 3.0 §7.3.7 requires that if ContextSelectorId is present, it MUST resolve to
+      exactly one XML element node. 0 nodes or > 1 node must evaluate to Indeterminate (processing-error).
+      The worktree enforces this via XmlContent and AttributeSelector.
+      • Donor Conflict: Donor b9f114a3:AttributeSelector.java:58-75 and DefaultEvaluationContext perform
+      unchecked node evaluation without validating singleton cardinality. requireExactlyOne() semantics
+      must guard the context node resolution.
+  3. Bug 4.35 (Quantifier Inversion in any-of-all, beads policy4j-the.4.35 / Grok NEW-1):
+      • Worktree Status: Identified in Run 037 audit. XACML 3.0 §A.3.12 defines any-of-all(p, A, B) as: for
+      each element of the second bag B, the predicate is true for at least one element of the first bag A
+      (∀b ∈ B, ∃a ∈ A : p(a, b)).
+      • Donor Conflict: Donor b9f114a3:HigherOrderFunctions.java:132-135 computes a.stream().anyMatch(v ->
+      allOf(..., v, b)), which is ∃a ∈ A, ∀b ∈ B : p(a, b) (inverted quantifier order). The donor
+      implementation fails on {1, 2} vs {1, 2} with integer-equal.
+  4. Bug 4.38 (Numeric Conversions Swapped Annotations, beads policy4j-the.4.38 / Grok NEW-4):
+      • Donor Conflict: b9f114a3:NumericConversionFunctions.java:48-57 swaps the return types: double-to-
+      integer declares return type xs:double, and integer-to-double declares return type xs:integer. When
+      Task 6.1 introduces strict ValueExprType matching, any policy invoking double-to-integer will
+      statically expect xs:double, corrupting the AST type graph. The annotations must be fixed to match
+      XACML 3.0 §A.3.6.
+  5. Bug 4.43 (Syntax-Error Status Code Swallowing, beads policy4j-the.4.43 / Grok NEW-10):
+      • Worktree Status: XACML 3.0 §A.3.9 requires string conversion functions (e.g. boolean-from-
+      string("TRUE"), integer-from-string("abc")) to evaluate to Indeterminate with status code
+      urn:oasis:names:tc:xacml:1.0:status:syntax-error.
+      • Donor Conflict: Donor DefaultFunctionInvocation.java:128 catches all exceptions and wraps them in
+      FunctionInvocationException, which hardcodes status code urn:oasis:names:tc:xacml:1.
+      0:status:processing-error. The invocation wrapper must unwrap and propagate the status code from
+      SyntaxException / EvaluationException.
+  6. Condition Boolean Check (Adversarial Safety-Net Run 036):
+      • Worktree Status: Conductor-confirmed requirement that Condition must enforce both:
+          • Static: predicate.evaluatesTo().equals(BooleanVal.type()) (rejecting bags at load time).
+          • Runtime: If dynamic evaluation yields an empty bag or multiple values, the result must be
+          Indeterminate, not FALSE or first-element extraction.
+      • Donor Conflict: Donor Condition.java:88 does .asSingle().orElse(false), which returns
+      ConditionResult.FALSE on empty bags and uses findFirst() on multi-valued bags. requireExactlyOne() is
+      required here.
+
+  ──────
+  ### C. Safety-Net Test List for Task 6.1
+
+  The 30 test cases below specify the static type rejections and runtime cardinality validations required
+  by Task 6.1 and Design D7.
+
+  #### Static Type Rejections (Policy Construction / Load Time)
+
+   #  │ Test Name                │ Target Expression… │ Input / Condition        │ Expected Rejection
+  ────┼──────────────────────────┼────────────────────┼──────────────────────────┼─────────────────────────
+   1  │ testConditionRejectsBagO │ Condition(Expr)    │ Predicate evaluatesTo()  │ PolicySyntaxException
+      │ fType                    │                    │ ==                       │
+      │                          │                    │ BagOfType.of(BooleanVal. │
+      │                          │                    │ type())                  │
+   2  │ testConditionRejectsNonB │ Condition(Expr)    │ Predicate evaluatesTo()  │ PolicySyntaxException
+      │ ooleanType               │                    │ == StringVal.type()      │
+   3  │ testApplyRejectsBagWhere │ Apply (string-     │ Argument is              │ PolicySyntaxException
+      │ SingleExpected           │ normalize-space)   │ AttributeDesignator      │
+      │                          │                    │ (declares BagOfType)     │
+   4  │ testApplyRejectsSingleWh │ Apply (string-bag- │ Argument is string       │ PolicySyntaxException
+      │ ereBagExpected           │ size)              │ literal                  │
+      │                          │                    │ StringVal.of("a")        │
+   5  │ testApplyAcceptsNestedAp │ Apply (string-     │ Arg 1 is <Apply          │ Validates successfully
+      │ plyReturningSingle       │ equal)             │ FunctionId="...:string-  │
+      │                          │                    │ normalize-space">        │
+   6  │ testApplyAcceptsDesignat │ Apply (any-of)     │ Bag argument is          │ Validates successfully
+      │ orForAnyBag              │                    │ AttributeDesignator      │
+   7  │ testApplyAcceptsNestedAp │ Apply (any-of)     │ Bag argument is <Apply   │ Validates successfully
+      │ plyForAnyBag             │                    │ FunctionId="...:string-  │
+      │                          │                    │ bag">                    │
+   8  │ testVariadicFunctionAcce │ Apply (string-     │ Variadic argument is     │ Validates successfully
+      │ ptsNestedApply           │ concatenate)       │ <Apply                   │
+      │                          │                    │ FunctionId="...:string-  │
+      │                          │                    │ trim">                   │
+   9  │ testVariadicFunctionReje │ Apply (string-     │ Variadic argument is     │ PolicySyntaxException
+      │ ctsBagArgument           │ concatenate)       │ AttributeDesignator      │
+   10 │ testMapFunctionDynamicRe │ Apply (map)        │ Ref: string-normalize-   │ evaluatesTo() ==
+      │ turnTypeIsBag            │                    │ space, Bag:              │ BagOfType(StringVal)
+      │                          │                    │ BagOfType(StringVal)     │
+   11 │ testMapFunctionRejectsNo │ Apply (map)        │ Arg 1 is                 │ PolicySyntaxException
+      │ nFunctionRefFirstArg     │                    │ StringVal.of("not-a-     │
+      │                          │                    │ func")                   │
+   12 │ testMapFunctionRejectsSi │ Apply (map)        │ Arg 2 is single          │ PolicySyntaxException
+      │ ngleSecondArg            │                    │ StringVal                │
+   13 │ testNumericConversionDou │ NumericConversionF │ Signature of double-to-  │ evaluatesTo() ==
+      │ bleToIntegerReturnType   │ unctions           │ integer                  │ Int64.type()
+   14 │ testNumericConversionInt │ NumericConversionF │ Signature of integer-to- │ evaluatesTo() ==
+      │ egerToDoubleReturnType   │ unctions           │ double                   │ DoubleVal.type()
+   15 │ testVariableDefinitionBa │ VariableReference  │ Var expression           │ Ref evaluatesTo() ==
+      │ gTypePropagation         │                    │ evaluatesTo() ==         │ BagOfType(Int64)
+      │                          │                    │ BagOfType(Int64)         │
+
+  #### Runtime Cardinality and Shape Checks (Evaluation Time)
+
+   #  │ Test Name              │ Target Expression / O… │ Runtime Evaluated Sta… │ Expected Result / Stat…
+  ────┼────────────────────────┼────────────────────────┼────────────────────────┼─────────────────────────
+   16 │ testConditionEmptyBagY │ Condition.evaluate     │ Predicate evaluates to │ ConditionResult.INDETER
+      │ ieldsIndeterminate     │                        │ empty bag []           │ MINATE
+   17 │ testConditionMultiBagY │ Condition.evaluate     │ Predicate evaluates to │ ConditionResult.INDETER
+      │ ieldsIndeterminate     │                        │ [true, false]          │ MINATE
+   18 │ testRequireExactlyOneO │ ValueExpr.requireExact │ Single value or bag of │ Returns single value 42
+      │ nSingleton             │ lyOne                  │ 1 element [42]         │
+   19 │ testRequireExactlyOneO │ ValueExpr.requireExact │ Empty bag []           │ EvaluationException
+      │ nEmptyBagThrows        │ lyOne                  │                        │ (processing-error)
+   20 │ testRequireExactlyOneO │ ValueExpr.requireExact │ Bag of 2 elements      │ EvaluationException
+      │ nMultiBagThrows        │ lyOne                  │ ["a", "b"]             │ (processing-error)
+   21 │ testFirstOnSingleton   │ ValueExpr.first        │ Singleton bag          │ Optional.of("alpha")
+      │                        │                        │ ["alpha"]              │
+   22 │ testFirstOnMultiBag    │ ValueExpr.first        │ Multi-element bag      │ Optional.of("alpha")
+      │                        │                        │ ["alpha", "beta"]      │
+   23 │ testFirstOnEmptyBag    │ ValueExpr.first        │ Empty bag []           │ Optional.empty()
+   24 │ testOneAndOnlyOnEmptyB │ BagFunctions.stringOne │ Empty bag []           │ Indeterminate
+      │ agThrows               │ AndOnly                │                        │ (processing-error)
+   25 │ testOneAndOnlyOnMultiB │ BagFunctions.stringOne │ Bag of ["x", "y"]      │ Indeterminate
+      │ agThrows               │ AndOnly                │                        │ (processing-error)
+   26 │ testOneAndOnlyOnSingle │ BagFunctions.stringOne │ Bag of ["x"]           │ Returns StringVal("x")
+      │ tonSucceeds            │ AndOnly                │                        │
+   27 │ testAttributeSelectorM │ AttributeSelector.eval │ ContextSelectorId      │ Indeterminate
+      │ ultiContextNode        │ uate                   │ yields 2 element nodes │ (processing-error)
+   28 │ testAttributeSelectorZ │ AttributeSelector.eval │ ContextSelectorId      │ Indeterminate
+      │ eroContextNode         │ uate                   │ yields 0 element nodes │ (processing-error)
+   29 │ testObligationCreatesS │ ObligationExpression.e │ Expression evaluates   │ Obligation has 3
+      │ eparateAssignments     │ valuate                │ to bag of 3 values     │ AttributeAssignments
+   30 │ testBagUnionPreservesM │ BagOf.union            │ Bag A {1, 1} and Bag B │ Result has 3 elements:
+      │ ultiplicity            │                        │ {1}                    │ {1, 1, 1}
+  ──────
+  FINAL REPORT (policy4j_code_review_agy, claude-3-7-sonnet)
+
+  • Defect Counts: 22 distinct donor defects cataloged (17 CRITICAL, 5 HIGH).
+  • Top 5 Defects:
+      1. ValueExpr.asSingle() uses stream().findFirst() with no cardinality check, causing Condition to
+      return FALSE on empty bags and silently extract the first element of multi-boolean bags (violating
+      XACML 3.0 §7.9).
+      2. AttributeReference.evaluatesTo() returns single ValueType, while runtime evaluation returns BagOf,
+      breaking static-versus-runtime shape coherence (violating XACML 3.0 §7.3.5 / §7.3.7 and Design D7).
+      3. Parameter specs (FunctionParamAnyBagSpec, FunctionParamAnyValueSpec,
+      FunctionParamValueTypeSequenceSpec) validate against AST node kinds (ExpressionKind) rather than
+      ValueExprType, rejecting designators, selectors, and nested <Apply> expressions.
+      4. FunctionParamValueTypeSequenceSpec.java:121 compares !paramType.equals(exp) (ValueType to Expr),
+      causing all variadic function arguments to throw PolicySyntaxException.
+      5. BaseDecisionRuleResponseExpression never adds b.build() to the attribute assignment list, causing
+      all obligations and advice to emit 0 attribute assignments.
+  • Files Opened / Audited:
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ValueExprType.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/BagOfType.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ValueExpr.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/SeqOf.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/BagOf.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Value.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Entity.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/Expr.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/ExpressionKind.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/ExpressionVisitor.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/Condition.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeReference.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeDesignator.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeSelector.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/FunctionSpec.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/FunctionParamSpec.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/FunctionReference.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/VariableDefinition.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/VariableReference.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/EvaluationContext.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/QuantifiedExp.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/QuantifiedForAll.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/QuantifiedMap.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/QuantifiedSelect.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeAssignmentExpression.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/BaseDecisionRuleResponseExpression.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/ObligationExpression.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/AdviceExpression.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionReturnTypeResolver.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/StaticFunctionReturnTypeResolver.
+      java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSpec.java
+      • b9f114a3:xacml-
+      core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamAnyBagSpec.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamAnyValueSpec.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.
+      java
+      • b9f114a3:xacml-
+      core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NumericConversionFunctions.
+      java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringConversionFunctions.
+      java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XPathFunctions.java
+      • b9f114a3:xacml-
+      core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/LogicalFunctions.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/RegExpFunctions.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NumericComparisonFunctions.
+      java
+      • b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java
+      • b9f114a3:xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultExpressionVisitor.java
+      • Worktree: openspec/changes/modernize-core-for-jdk28-valhalla/design.md
+      • Worktree: openspec/changes/modernize-core-for-jdk28-valhalla/tasks.md
+      • Worktree: openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/026-donor-slice-
+      map/summary.md
+      • Worktree: openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/037-function-audit-4.
+      3-grok/grok-report.md
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+  • Tool Calls Used: 33 tool calls.
+

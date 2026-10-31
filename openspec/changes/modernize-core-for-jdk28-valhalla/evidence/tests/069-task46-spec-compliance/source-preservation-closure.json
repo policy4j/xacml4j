@@ -1,0 +1,81 @@
+{
+  "baseline_files": 3753,
+  "unchanged_existing_files": 3735,
+  "changed_existing_files": {
+    "AGENTS.md": {
+      "before": "0e049976dd0c0ecf8edb139da92b097ec40a245538436415d36d783e0eb568e6",
+      "after": "a0e9ab36196e9f5101615369b292a930abd22e6db32fb3fbf3476acd8192f970"
+    },
+    "CLAUDE.md": {
+      "before": "0e049976dd0c0ecf8edb139da92b097ec40a245538436415d36d783e0eb568e6",
+      "after": "a0e9ab36196e9f5101615369b292a930abd22e6db32fb3fbf3476acd8192f970"
+    },
+    "openspec/changes/modernize-core-for-jdk28-valhalla/specs/combining-algorithm-registry/spec.md": {
+      "before": "194bbe7c1a000f13eed23cb9d0ba6d85d7d2bc38a938afefe7c4763bf03be68e",
+      "after": "8fc5dd2a7e3951c6d5bf2d43ee846a30ad473e22ef28cd8fcb7392d18ce4a5ef"
+    },
+    "openspec/changes/modernize-core-for-jdk28-valhalla/specs/function-semantics/spec.md": {
+      "before": "a3c7bcda2a05a6f8329b9271b8274647dc158072f985deb9ed7dcea28121bd93",
+      "after": "97d8afadcee210884b356b05d57119304dfb1e18bd5a16c68bbe75576b70ee9c"
+    },
+    "openspec/changes/modernize-core-for-jdk28-valhalla/tasks.md": {
+      "before": "d34bc9af0d53975cb16595aa615a13f47401a937b5c10890f70a2fc8b8db1aca",
+      "after": "bffa1f7ed1975b9e87b22ac3eb54d6ce98e56ad309fbc110228276fdf9cbd1f4"
+    },
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java": {
+      "before": "d39d24e5b02aa740bfd6263d381406a51e8306e4c2c7601e72e0f9149b6c19c2",
+      "after": "edb91204523c2a4c037f05c423f6fb4640c2f09cd07e4b543dba662e820d5bb3"
+    },
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv": {
+      "before": "19f9bfe8b0dda4bfbffd02fe22af6c4765a75f778580536f0a3b5e61794b67e1",
+      "after": "2569ec32f318ccc414ad1fe2082a6985c532e0e40817ebd56735a9ec262a4b67"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/BaseCompositeDecisionRule.java": {
+      "before": "c9d3566b2f5ef9ede4d13bfa5031935dab06ffd462e8ca49cd7dc1571afa41f1",
+      "after": "7400d0840572e25a0d148e5a692c5a9723f88e7609389acf819c4a9b3a91b08e"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/DefaultXacml30DecisionCombiningAlgorithms.java": {
+      "before": "d6f1b3716063ccd2a297711976149969d0f045725bafdbc0a59b86380f22a273",
+      "after": "68fc53475c779cea108431c0da9b5e8bf924f1a879f1b63f68e16b07025ffd44"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyCombiningAlgorithm.java": {
+      "before": "1e946dd79dd3f4b43738e411f191100af806d27e62c3d91b0f637b0f5f42106c",
+      "after": "6b62b9d52a01a9ff18694dee26287f87b6eb911878fcaaeb390f933886fa9c06"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java": {
+      "before": "89766acaaddf0aa7cf6abddbd8e129d7a57d7c42c1a0fe7a9e16814337750e10",
+      "after": "03486494c25776083f76496c13364fbc3e02229aa341992f5bc5db0e1c4692c9"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java": {
+      "before": "31d4acb660e9f93a43fd4e4a24c4c8c1be6b825d6004e6b1e1a75e03c9d61723",
+      "after": "38ee86d57c6b113b6fd6fde26036a41a298fe826b25617a1ef253724bb824158"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java": {
+      "before": "cb7d63a932cca872f3450e58c87163a307fd54c2d3f328d6a08fe8b33ad8e682",
+      "after": "dd4ffad9f30fd192bd7685856c4e2e8e2f247a2d6bd701b95ea35132deb3220b"
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java": {
+      "before": "0fb0cd4bc98c46c0e27167e1e68014ce6c44bcceceee7c35234f3561ec8defa3",
+      "after": "17885af65b8029786d1db7eca7f70abf96ac4e0adf01e9d2c5db72062e79c585"
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java": {
+      "before": "d57385c6846a4e63c809016de6601130951cbd177d13478fc2c9ba5bc681b3b2",
+      "after": "720dce8fad1cfe5424ec7bc1e5e5d2234cbcec28ef632271a5fd5bb2cd3660c1"
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java": {
+      "before": "74ea5e1b187347b510c9e47a7f0e4beff53f221adc270055c4c07b85229e0367",
+      "after": "a6ba03c940fb51bee1dc4424c0dd5c7722da9557b3eea8d1a55d86ee51a09ed2"
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/ArtimeticFunctionsTest.java": {
+      "before": "ccb1d8c9ad48186abfa4663bc4b000651e8ee053345405d2cc85c70ad1399be6",
+      "after": "3c25948e34bbc2005961f389a991f52ce84cb1f38c2a1538d0cbd2f85488f932"
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/FunctionSafetyNet43Test.java": {
+      "before": "3f239c213507479d399ff1fe2572ce87831c7552e4b539f6663ca630cb6807c8",
+      "after": "b616b869a9cf450c3a964e9201eb754aa008ac937f0f61c06c29b407f368ecd5"
+    }
+  },
+  "vendored_files": 2911,
+  "changed_vendored_files": [],
+  "notes": "Compared after task checkbox and spec wording; original source-preservation.json is pre-closure checkpoint."
+}

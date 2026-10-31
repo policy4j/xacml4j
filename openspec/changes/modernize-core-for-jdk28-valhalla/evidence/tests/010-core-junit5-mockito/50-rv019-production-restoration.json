@@ -1,0 +1,7 @@
+{
+  "worktree_production_sha256": "eb6af6c7524623816b888db79efc1f73fa7a31449d6b6d2e91e6ba39901eddbe",
+  "scratch_production_sha256": "eb6af6c7524623816b888db79efc1f73fa7a31449d6b6d2e91e6ba39901eddbe",
+  "task_start_production_sha256": "eb6af6c7524623816b888db79efc1f73fa7a31449d6b6d2e91e6ba39901eddbe",
+  "scratch_restored_exact_bytes": true,
+  "worktree_production_ever_edited": false
+}

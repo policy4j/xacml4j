@@ -1,0 +1,44 @@
+SUPPORTED: RTK Git plus byte comparison of existing source license headers.
+Existing LGPL headers unchanged: 11/11 tracked XML files.
+New TypeToXacml30Test.java has the LGPL header.
+rtk git diff --check -- xacml-xml/src/main/java xacml-xml/src/test/java: exit 0.
+rtk git diff --quiet a8a90d46 -- xacml-core: exit 0.
+XML source files changed in this lane:
+xacml-xml/src/main/java/org/xacml4j/v30/xml/ExpressionTypeBuilder.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshaller.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshallerTest.java
+xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30ResponseContextUnmarshallerTest.java
+xacml-xml/src/test/java/org/xacml4j/v30/xml/XacmlPolicyUnmarshallerTest.java
+xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java
+
+rtk git status --short (shared tree):
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+ D xacml-json/src/test/resources/policy.json
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/ExpressionTypeBuilder.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30ResponseContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/XacmlPolicyUnmarshallerTest.java
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/004-vendored-fixtures/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java
+
+Other fixture/evidence changes and the JSON policy fixture deletion are outside this lane and were preserved.
+All current text evidence uses repository-relative paths or <repo>.

@@ -1,0 +1,28 @@
+Working directory: <lane>
+
+Red core formatter test:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeToStringTest test
+
+Green focused core formatter and policy-list tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=TypeToStringTest,RootEvaluationContextTest test
+
+Green XML and JSON focused tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml,xacml-json -am -Dtest=Xacml20RequestContextUnmarshallerTest,Xacml30RequestContentTest,TypeToXacml30Test,JsonRequestUnmarshallerTest,JsonEntityMarshallingTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+Temporary direct conformance-fixture diagnostics (failed in the response comparator; methods were removed after recording results):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml30ConformanceTest#testLexicalFixtureIIA022,Xacml30ConformanceTest#testLexicalFixtureIIA024,Xacml30ConformanceTest#testLexicalFixtureIIIA340 -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/027-bug-4.16-lexical-forms/lexical-fixture-tests.log
+
+Full reactor gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/029-bug-4.22-policy-id-list/full-reactor.log
+
+rv037 red test, before DoubleVal.toStringExp delegated to the XACML formatter:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=StringFunctionLexicalFormTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/027-bug-4.16-lexical-forms/rv037-string-functions-red.log
+
+rv037 focused green tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=StringFunctionLexicalFormTest,TypeToStringTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/027-bug-4.16-lexical-forms/rv037-string-functions-green.log
+
+rv037 full module gates:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/027-bug-4.16-lexical-forms/rv037-core-full.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/027-bug-4.16-lexical-forms/rv037-xml.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/027-bug-4.16-lexical-forms/rv037-json.log
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/027-bug-4.16-lexical-forms/rv037-pdp.log

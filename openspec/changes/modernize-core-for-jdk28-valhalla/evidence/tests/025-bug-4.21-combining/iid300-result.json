@@ -1,0 +1,14 @@
+{
+  "suite": "oasis30",
+  "case_id": "IID300",
+  "request_file": "xacml3.0-ct-v.0.4/IID300Request.xml",
+  "policy_files": "xacml3.0-ct-v.0.4/IID300Policy.xml",
+  "expected_response_file": "xacml3.0-ct-v.0.4/IID300Response.xml",
+  "disposition": "executed",
+  "enabled": "true",
+  "reason": "Compare the PDP response with the vendored expected response",
+  "bug_id": "",
+  "outcome": "passed",
+  "exception": "",
+  "message": ""
+}

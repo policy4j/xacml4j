@@ -1,0 +1,21 @@
+Role/model: independent test reviewer, Codex GPT-6 Luna, high effort, agent cod_4
+Bead: policy4j-cwtu.42.14.2; claimed actor ntm-luna-g1
+Worktree: cod_4 unchanged current-main baseline
+Base: 759d90a6c75510d55127d8e22870f9edd985c991
+
+Read-only inspection commands (all run via RTK):
+rtk proxy sed -n '1,240p' ${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/brief.md
+rtk proxy sed -n '1,220p' docs/ai/SWARMS.md
+rtk proxy sed -n '1753,1918p' openspec/changes/optimize-pdp-evaluation/design.md
+rtk proxy sed -n '320,329p' openspec/changes/optimize-pdp-evaluation/tasks.md
+rtk proxy sed -n '1,260p' openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/r-D47-sol/report.md
+rtk proxy sed -n '1,340p' xacml-pdp/src/test/java/org/xacml4j/v30/pdp/RulesInPolicyContextPdpTest.java
+rtk proxy sed -n '270,350p' xacml-core/src/main/java/org/xacml4j/v30/policy/Rule.java
+rtk proxy sed -n '58,135p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+rtk proxy sed -n '100,141p' xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeReference.java
+rtk proxy sed -n '90,125p' xacml-core/src/main/java/org/xacml4j/v30/policy/Condition.java
+rtk rg -n 'Pip|pip|PolicyInformationPoint|resolve\(' xacml-pdp/src/test/java/org/xacml4j/v30/pdp --glob '*Test.java'
+rtk git status --short
+rtk git rev-parse HEAD
+
+No builds, tests, or candidate checkout inspection.

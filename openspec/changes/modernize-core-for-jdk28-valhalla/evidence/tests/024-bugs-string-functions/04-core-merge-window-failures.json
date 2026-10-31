@@ -1,0 +1,74 @@
+{
+  "tests": 4323,
+  "failures": 9,
+  "errors": 2,
+  "skipped": 2,
+  "failures_outside_this_packet": [
+    {
+      "class": "org.xacml4j.v30.policy.MatchTest",
+      "test": "testMatchPreservesContextSelectorSyntaxError",
+      "kind": "failure",
+      "message": "expected: <INDETERMINATE> but was: <NOMATCH>"
+    },
+    {
+      "class": "org.xacml4j.v30.content.XmlContentTest",
+      "test": "testEntitySelectorWithoutContextSelectorUsesDocumentNode",
+      "kind": "error",
+      "message": "md:patient-number/text()"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "test": "testCreateValidDurationViaExplicitCtor",
+      "kind": "failure",
+      "message": "expected: java.math.BigDecimal@51c65a43<0> but was: java.lang.Integer@740dcae3<0>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "test": "testCreateValidDurationFromLexicalRepresentation",
+      "kind": "failure",
+      "message": "expected: java.math.BigDecimal@51c65a43<0> but was: java.lang.Integer@740dcae3<0>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "test": "testAddDurations",
+      "kind": "failure",
+      "message": "expected: java.math.BigDecimal@5f726750<10> but was: java.lang.Integer@4e80a001<10>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "test": "testFromXacmlString",
+      "kind": "failure",
+      "message": "expected: java.math.BigDecimal@51c65a43<0> but was: java.lang.Integer@740dcae3<0>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "test": "testSubstractDurations",
+      "kind": "failure",
+      "message": "expected: java.math.BigDecimal@7455dacb<50> but was: java.lang.Integer@7634f2b<50>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "test": "testNegate",
+      "kind": "failure",
+      "message": "expected: java.math.BigDecimal@51c65a43<0> but was: java.lang.Integer@740dcae3<0>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+      "test": "javaDurationRoundTripKeepsFractionalSeconds",
+      "kind": "failure",
+      "message": "expected: <P0DT0H0M0.5S> but was: <P0DT0H0M0S>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+      "test": "fractionalSecondsAreNotReportedAsZero",
+      "kind": "failure",
+      "message": "PT0.5S ==> expected: <false> but was: <true>"
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+      "test": "javaDurationWholeSecondsUseSafeDecimalScaleAndKeepFractions",
+      "kind": "error",
+      "message": "SECONDS field is negative"
+    }
+  ]
+}

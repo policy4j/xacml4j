@@ -1,0 +1,24 @@
+[ERROR] COMPILATION ERROR : 
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[145,66] cannot find symbol
+  symbol:   method getValueType()
+  location: variable path of type org.xacml4j.v30.types.Path
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[146,49] incompatible types: inference variable T has incompatible bounds
+    equality constraints: org.xacml4j.v30.Category
+    lower bounds: java.lang.Object
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.11.0:compile (default-compile) on project xacml-pdp: Compilation failure: Compilation failure: 
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[145,66] cannot find symbol
+[ERROR]   symbol:   method getValueType()
+[ERROR]   location: variable path of type org.xacml4j.v30.types.Path
+[ERROR] <repo>/xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java:[146,49] incompatible types: inference variable T has incompatible bounds
+[ERROR]     equality constraints: org.xacml4j.v30.Category
+[ERROR]     lower bounds: java.lang.Object
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :xacml-pdp

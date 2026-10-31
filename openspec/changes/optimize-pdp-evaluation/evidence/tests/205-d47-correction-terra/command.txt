@@ -1,0 +1,29 @@
+PROJECT_ROOT = main checkout containing .ntm/
+PACKET = ${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029
+WORKTREE = ${PROJECT_ROOT}/.ntm/worktrees/xacml4j--remaining-g1-20261029/cod_1
+EVIDENCE = openspec/changes/optimize-pdp-evaluation/evidence/tests/205-d47-correction-terra
+
+# Existing candidate, with new designator-function and string-union outcome cases.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/01-focused-red.txt --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=RulesInPolicyContextPdpTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Separate mutation experiment: Rule.EngineOnly Apply returned 0 instead of flags & RUNTIME_VALUE.
+# The original Rule.java was restored, with its prior SHA-256 verified, before the correction.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/02-propagation-mutant-red.txt --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=RulesInPolicyContextPdpTest#runtimeValuesEvaluatedByPredicatesSeeTheRuleContext' -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Corrected candidate and target outcome cases.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/03-focused-green.txt --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=RulesInPolicyContextPdpTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Separate mutation experiment: bypass the target precheck admission guard.
+# TargetBeforeContext.java was then restored byte-for-byte to the focused-green candidate.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/04-unguarded-target-mutant-red.txt --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=RulesInPolicyContextPdpTest#targetPrecheckAndFallbackKeepTheirResponses' -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Clean affected-module gate, without ignoring errors.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/05-modules-clean.txt --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am clean test
+
+# The preceding run stopped at the known ISO8601DateTest month error. Continue through PDP,
+# retaining every failure in the log, rather than describing this command's exit as a green gate.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/06-modules-continue-after-date-error.txt --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -Dmaven.test.failure.ignore=true -pl xacml-pdp -am clean test
+
+rtk git diff --check
+rtk proxy git status --porcelain=v1 --untracked-files=all
+rtk proxy shasum -a 256 xacml-core/src/main/java/org/xacml4j/v30/policy/Rule.java xacml-core/src/main/java/org/xacml4j/v30/policy/TargetBeforeContext.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/RulesInPolicyContextPdpTest.java

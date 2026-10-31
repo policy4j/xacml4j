@@ -1,0 +1,550 @@
+{
+  "result": "RED before 4.5 production changes",
+  "classes": [
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest",
+      "tests": 736,
+      "failures": 120,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[1]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[2]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[3]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[4]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[17]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[18]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[19]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[20]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[33]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[34]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[35]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[36]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[49]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[50]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[51]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[52]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[65]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[66]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[67]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[68]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[81]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[82]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[83]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[84]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[97]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[98]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[99]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[100]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[113]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[114]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[115]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[116]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[129]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[130]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[131]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[132]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[145]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[146]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[147]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[148]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[161]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[162]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[163]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[164]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-21T08:00:00> but was: <2002-03-21T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[177]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[178]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[179]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[180]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-23T08:00:00> but was: <2002-03-23T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[193]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[194]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[195]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[196]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T07:59:58.5> but was: <2002-03-22T07:59:58.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[209]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[210]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[211]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[212]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:01.5> but was: <2002-03-22T08:00:01.5Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[225]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[226]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[227]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[228]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[241]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[242]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[243]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[244]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[257]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[258]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[259]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[260]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[273]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[274]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[275]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[276]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[289]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[290]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[291]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[292]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[305]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[306]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[307]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[308]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2005-02-28T08:00:00> but was: <2005-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[321]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[322]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[323]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[324]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[337]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[338]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[339]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[340]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[353]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[354]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[355]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[356]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2001-01-22T08:00:00> but was: <2001-01-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[369]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[370]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[371]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[372]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-05-22T08:00:00> but was: <2003-05-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[385]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[386]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[387]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[388]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[401]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[402]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[403]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[404]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[417]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[418]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[419]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[420]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2002-02-28T08:00:00> but was: <2002-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[433]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[434]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[435]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[436]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2003-02-28T08:00:00> but was: <2003-02-28T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[449]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[450]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[451]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[452]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2019-01-29T08:00:00> but was: <2019-01-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[465]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[466]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[467]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        },
+        {
+          "name": "arithmeticThroughCanonicalAndLegacyUrns(String, String, String, String, boolean)[468]",
+          "message": "Signed arithmetic, month-end and timezone preservation ==> expected: <2021-03-29T08:00:00> but was: <2021-03-29T08:00:00Z>"
+        }
+      ]
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DateTimeZonePreservationTest",
+      "tests": 27,
+      "failures": 7,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        {
+          "name": "javaDurationOverloadsAlsoKeepTheTimezone(String, String, String, String)[1]",
+          "message": "expected: <2002-03-22T09:00:00> but was: <2002-03-22T09:00:00Z>"
+        },
+        {
+          "name": "javaDurationOverloadsAlsoKeepTheTimezone(String, String, String, String)[2]",
+          "message": "expected: <2002-03-22T07:00:00> but was: <2002-03-22T07:00:00Z>"
+        },
+        {
+          "name": "factoriesAndArithmeticKeepTheTimezoneOrItsAbsence(String, String)[1]",
+          "message": "expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "factoriesAndArithmeticKeepTheTimezoneOrItsAbsence(String, String)[5]",
+          "message": "expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "factoriesAndArithmeticKeepTheTimezoneOrItsAbsence(String, String)[9]",
+          "message": "expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "factoriesAndArithmeticKeepTheTimezoneOrItsAbsence(String, String)[13]",
+          "message": "expected: <2002-03-22T08:00:00> but was: <2002-03-22T08:00:00Z>"
+        },
+        {
+          "name": "aNegativeYearDoesNotBecomeATimezone",
+          "message": "expected: <-0001-03-22T09:00:00> but was: <-0001-03-22T09:00:00Z>"
+        }
+      ]
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+      "tests": 8,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "failed_tests": [
+        {
+          "name": "testFromXacmlStringNoTimeZone",
+          "message": "expected: <2002-05-30T09:30:10> but was: <2002-05-30T09:30:10Z>"
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "tests": 771,
+    "failures": 128,
+    "errors": 0,
+    "skipped": 0
+  }
+}

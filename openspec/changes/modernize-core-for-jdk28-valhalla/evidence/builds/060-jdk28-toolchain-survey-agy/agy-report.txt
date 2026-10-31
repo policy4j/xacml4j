@@ -1,0 +1,268 @@
+  ### Toolchain Survey: Tasks 8.1–8.6 (JDK 28 Build with Preview)
+
+  Change: openspec/changes/modernize-core-for-jdk28-valhalla
+  Role: policy4j_code_review_agy
+  Mode: Read-only survey (no Maven execution, no builds, no edits)
+  ──────
+  ### A. Local JDK 28 Status
+
+  1. jenv versions Output:
+      system
+      1.8
+      1.8.0.431
+      11
+    * 11.0 (set by ~/Projects/Personal/xacml4j-worktrees/policy4j/.java-
+  version)
+      11.0.31
+      17
+      17.0
+      17.0.19
+      21
+      21.0
+      21.0.6
+      23
+      23.0
+      23.0.2
+      25
+      25.0
+      25.0.3
+      27
+      27-jep401ea3
+      28
+      28-ea
+      graalvm64-21.0.6
+      graalvm64-23.0.2
+      graalvm64-25.0.3
+      openjdk64-25.0.3
+      openjdk64-27-jep401ea3
+      openjdk64-28-ea
+      oracle64-1.8.0.431
+      oracle64-25.0.3
+      temurin64-17.0.19
+      zulu64-11.0.31
+
+  2. jenv prefix 28:
+  ~/.local/share/jenv/versions/28
+  3. "$(jenv prefix 28)/bin/java" -version:
+    openjdk version "28-ea" 2027-03-23
+    OpenJDK Runtime Environment Artagon (build 28-ea-jdk-fd9698357bb0)
+    OpenJDK 64-Bit Server VM Artagon (build 28-ea-jdk-fd9698357bb0, mixed mode, sharing)
+
+  4. Build Identity Match:
+      • Pinned Build ID: 28-ea-jdk-fd9698357bb0
+      • Installed Build ID: 28-ea-jdk-fd9698357bb0 (IMPLEMENTOR=Artagon)
+      • Match Confirmed: YES.
+
+  ──────
+  ### B. Current Build Configuration Inventory
+
+  1. Parent POM:
+      • Coordinates: org.sonatype.oss:oss-parent:7 (declared in pom.xml:4-8).
+      • Status: Obsolete Sonatype parent from 2012 containing deprecated HTTP repository bindings and
+      ancient plugin default versions.
+  2. Plugin Inventory Across Reactor:
+      • **Root pom.xml:256-323**:
+          • org.codehaus.mojo:versions-maven-plugin:2.15.0
+          • org.apache.maven.plugins:maven-compiler-plugin:3.11.0
+          • org.apache.maven.plugins:maven-dependency-plugin:3.11.0 (goal properties)
+          • org.apache.maven.plugins:maven-surefire-plugin:3.0.0
+          • org.codehaus.mojo:license-maven-plugin:1.7 (goal update-file-header at process-sources)
+      • **Module pom.xml:24-45**:
+          • org.jvnet.jaxb2.maven2:maven-jaxb2-plugin:0.15.1 (goal generate)
+      • **Module pom.xml:9-16**:
+          • org.apache.maven.plugins:maven-compiler-plugin (version inherited, overrides configuration with
+          <release>21</release>)
+      • Other Modules (xacml-pdp, xacml-json, xacml-xml, xacml-test, xacml-conformance-tests):
+          • No module-level <plugins> blocks; all plugins inherited from root.
+
+  3. Compiler Release & Preview Configuration:
+      • Root pom.xml: <release>21</release> (no <compilerArgs> or --enable-preview).
+      • xacml-core/pom.xml: duplicate <release>21</release>.
+      • Annotation processor path: com.google.auto.service:auto-service:1.0.1 configured in root compiler
+      plugin.
+  4. Surefire argLine & Mockito Agent Setup:
+      • Root property: <argLine></argLine>.
+      • Surefire configuration: <argLine>@{argLine} -javaagent:${org.mockito:mockito-core:jar}</argLine>.
+      • Path resolution: maven-dependency-plugin:3.11.0:properties dynamically resolves org.
+      mockito:mockito-core:jar property for the Surefire JVM argument.
+      • Missing: --enable-preview, -Dnet.bytebuddy.experimental=true.
+  5. JAXB Plugin Configuration (xacml-xml-jaxb):
+      • Coordinates: org.jvnet.jaxb2.maven2:maven-jaxb2-plugin:0.15.1.
+      • Configuration:
+          • <schemaLanguage>XMLSCHEMA</schemaLanguage>
+          • <bindingIncludes><value>xacml.xjb</value></bindingIncludes>
+          • <schemaIncludes><value>*.xsd</value></schemaIncludes>
+          • <schemaExcludes><value>xml.xsd</value></schemaExcludes>
+          • <schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
+      • Dependencies: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3 (compile), com.sun.xml.bind:jaxb-impl:2.
+      3.8 (runtime).
+  6. License Plugin Configuration:
+      • Coordinates: org.codehaus.mojo:license-maven-plugin:1.7.
+      • Property: <license.licenseName>lgpl_v3</license.licenseName>.
+      • Conformance excludes: **/oasis-xacml20-compat-test/*,**/rsa2008-interop/XacmlPolicySet*,
+      **/Example_*/*.
+      • Execution: Bound to process-sources.
+  7. Auto-Service:
+      • Dependency: com.google.auto.service:auto-service:1.0.1.
+  8. Java Version Properties:
+      • No <java.version> or <maven.compiler.release> property defined in <properties>. Release 21 is
+      hardcoded inside plugin configuration XML.
+  9. CI Workflow File (main.yml):
+      • Uses actions/setup-java@v2 with java-version: '8' and distribution: 'adopt'.
+      • Runs mvn -B package --file pom.xml.
+      • Completely obsolete (fails on release 21 and 28).
+
+  ──────
+  ### C. Analysis for Tasks 8.1–8.3: What Must Change, Minimum Versions, and Risks
+
+   Tool / De… │ Current Ve… │ Required Change for JDK 28 │ Minimum Ve… │ Risk Level │ Rationale & Evidence
+  ────────────┼─────────────┼────────────────────────────┼─────────────┼────────────┼──────────────────────
+   Parent POM │ oss-        │ Drop <parent> block        │ N/A         │ LOW        │ Eliminates 2012 HTTP
+              │ parent:7    │ entirely; configure Maven  │             │            │ repositories and
+              │             │ 3.9 prerequisite in root   │             │            │ unpinned plugin
+              │             │ POM.                       │             │            │ defaults.
+   maven-     │ 3.11.0      │ Upgrade plugin version;    │ 3.13.0      │ LOW        │ Passes --release 28
+   compiler-  │             │ set <release>28</release>; │ (candidate  │            │ --enable-preview to
+   plugin     │             │ add <compilerArgs><arg>--  │ 3.14.0)     │            │ JDK 28 javac. Javac
+              │             │ enable-                    │             │            │ itself implements
+              │             │ preview</arg></compilerArg │             │            │ class file 72.
+              │             │ s>; remove duplicate       │             │            │
+              │             │ plugin in xacml-core.      │             │            │
+   maven-     │ 3.0.0       │ Upgrade plugin version;    │ 3.5.2       │ MEDIUM     │ Older Surefire 3.0.0
+   surefire-  │             │ add --enable-preview and - │             │            │ uses outdated ASM
+   plugin     │             │ Dnet.bytebuddy.experimenta │             │            │ that fails when
+              │             │ l=true to argLine.         │             │            │ scanning class file
+              │             │                            │             │            │ 72. Surefire 3.5.2
+              │             │                            │             │            │ includes ASM 9.7+.
+   mockito-   │ 5.24.0      │ Add -                      │ 5.24.0 with │ HIGH       │ UNVERIFIED - needs
+   core /     │ (with       │ Dnet.bytebuddy.experimenta │ experimenta │            │ docs. ByteBuddy
+   ByteBuddy  │ bundled     │ l=true to Surefire         │ l flag      │            │ explicitly validates
+              │ ByteBuddy   │ argLine. Keep Mockito      │             │            │ class file major
+              │ 1.15.x)     │ agent on JVM start.        │             │            │ versions. Class file
+              │             │                            │             │            │ 72 (JDK 28) requires
+              │             │                            │             │            │ the experimental
+              │             │                            │             │            │ flag; if JEP 401
+              │             │                            │             │            │ value class layout
+              │             │                            │             │            │ alters class file
+              │             │                            │             │            │ structure, ByteBuddy
+              │             │                            │             │            │ class redefinition
+              │             │                            │             │            │ could fail.
+   JAXB       │ maven-      │ Replace with modern fork   │ org.jvnet.j │ HIGH       │ UNVERIFIED - needs
+   Plugin     │ jaxb2-plugi │ keeping javax.xml.bind 2.3 │ axb:jaxb-   │            │ docs. 0.15.1 fails
+   (xacml-    │ n:0.15.1    │ namespace                  │ maven-      │            │ on modern JDKs due
+   xml-jaxb)  │             │ (org.jvnet.jaxb:jaxb-      │ plugin:2.0. │            │ to illegal
+              │             │ maven-plugin:2.0.9).       │ 9           │            │ reflective access
+              │             │                            │             │            │ and removed Java EE
+              │             │                            │             │            │ modules. The 2.0.9
+              │             │                            │             │            │ replacement runs on
+              │             │                            │             │            │ modern JDKs but must
+              │             │                            │             │            │ be verified on JDK
+              │             │                            │             │            │ 28 runtime.
+   license-   │ 1.7         │ Upgrade plugin to modern   │ 2.4.0       │ LOW        │ Plugin 1.7 dates to
+   maven-     │             │ version.                   │             │            │ 2014 and has
+   plugin     │             │                            │             │            │ deprecated
+              │             │                            │             │            │ Plexus/runtime
+              │             │                            │             │            │ bindings. 2.4.0
+              │             │                            │             │            │ operates cleanly on
+              │             │                            │             │            │ modern JDKs.
+   auto-      │ 1.0.1       │ Upgrade annotation         │ 1.1.1       │ LOW        │ Uses standard
+   service    │             │ processor.                 │             │            │ javax.annotation.pro
+              │             │                            │             │            │ cessing SPI in
+              │             │                            │             │            │ javac.
+   CI         │ GitHub      │ Replace JDK 8 with step    │ N/A         │ MEDIUM     │ Pinned build is a
+   Workflow   │ Actions     │ downloading pinned Artagon │             │            │ custom Artagon
+              │ with JDK 8  │ build 28-ea-jdk-           │             │            │ distribution; cannot
+              │             │ fd9698357bb0, verify build │             │            │ use generic setup-
+              │             │ id, and run mvn clean      │             │            │ java marketplace
+              │             │ verify.                    │             │            │ action.
+  ──────
+  ### D. Step Order and Gates for Tasks 8.1–8.6
+
+  │ Diagram exceeds terminal width (320 > 109 cols)
+  │ Displayed as code block. Widen terminal to view inline.
+
+    flowchart TD
+        S1["Task 8.1: Pinned Probe<br/>Run standalone probe of JDK 28 with candidate plugins"] --> G1["Gate
+  8.1: Working plugin set recorded in evidence/"]
+        G1 --> S2["Task 8.2: Upgrade POMs<br/>Drop oss-parent:7, upgrade plugins & JAXB plugin (release
+  21)"]
+        S2 --> G2["Gate 8.2: Clean reactor build & test on JDK 21"]
+        G2 --> S3["Task 8.3: Flip to JDK 28 + Preview<br/>release=28, compilerArgs=--enable-preview,
+  surefire argLine flags"]
+        S3 --> G3["Gate 8.3: Clean reactor compilation to class file 72"]
+        G3 --> S4["Task 8.4: Gate Full Reactor & Conformance<br/>All 6,000+ tests green on JDK 28 (no value
+  classes yet)"]
+        S4 --> S5["Task 8.5: Update CI Workflow<br/>Download pinned JDK 28 Artagon build, verify sha/id,
+  run gate"]
+        S5 --> S6["Task 8.6: Update AGENTS.md<br/>Document JDK 28 requirement, flags, and ByteBuddy
+  posture"]
+
+  1. Step 1 (Task 8.1 — Verification Probe on JDK 28):
+      • Probe javac, org.jvnet.jaxb:jaxb-maven-plugin:2.0.9, Surefire 3.5.2, and Mockito/ByteBuddy with -
+      Dnet.bytebuddy.experimental=true using JAVA_HOME="$(jenv prefix 28)".
+      • Gate 8.1: Working versions confirmed and documented in openspec/changes/modernize-core-for-jdk28-
+      valhalla/evidence/builds/056-jdk28-toolchain/.
+  2. Step 2 (Task 8.2 — Upgrade Plugins & Infrastructure on Release 21 Baseline):
+      • Drop oss-parent:7 from root pom.xml.
+      • Upgrade plugins in root pom.xml (maven-compiler-plugin:3.13.0, maven-surefire-plugin:3.5.2,
+      license-maven-plugin:2.4.0, auto-service:1.1.1).
+      • Switch xacml-xml-jaxb/pom.xml to org.jvnet.jaxb:jaxb-maven-plugin:2.0.9.
+      • Keep <release>21</release> temporarily to isolate plugin upgrades from compiler release change.
+      • Gate 8.2: JAVA_HOME="$(jenv prefix 21)" rtk mvn clean test passes 100%.
+  3. Step 3 (Task 8.3 — Enable JDK 28 and Preview Features):
+      • Update <release>28</release> and <compilerArgs><arg>--enable-preview</arg></compilerArgs> in root
+      pom.xml.
+      • Remove redundant <plugin> block in xacml-core/pom.xml.
+      • Update Surefire argLine in root pom.xml to:
+      @{argLine} --enable-preview -javaagent:${org.mockito:mockito-core:jar} -Dnet.bytebuddy.
+      experimental=true.
+      • Gate 8.3: JAVA_HOME="$(jenv prefix 28)" rtk mvn compile compiles all 7 modules without error,
+      emitting class file version 72.
+  4. Step 4 (Task 8.4 — Full Reactor and Conformance Gate on JDK 28):
+      • Run JAVA_HOME="$(jenv prefix 28)" rtk mvn -Dlicense.skipUpdateLicense=true clean test.
+      • Run JAVA_HOME="$(jenv prefix 28)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-
+      tests -am test.
+      • Verify that no value class or value record keywords are present in source.
+      • Gate 8.4: 100% green reactor and conformance test suites (917 conformance tests, 0 failures, 17
+      expected skips).
+  5. Step 5 (Task 8.5 — Modernize CI Workflow):
+      • Rewrite main.yml to provision the pinned JDK 28 Artagon build (28-ea-jdk-fd9698357bb0) and verify
+      build string before running Maven verify.
+      • Gate 8.5: CI workflow configuration syntax valid; verified against local build command.
+  6. Step 6 (Task 8.6 — Update Developer & Agent Documentation):
+      • Update AGENTS.md build instructions: document JDK 28 requirement (28-ea-jdk-fd9698357bb0), --
+      enable-preview, and ByteBuddy experimental flag.
+      • Gate 8.6: Review diff with git diff AGENTS.md.
+
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, gemini-2.5-pro)
+    JDK 28 available: yes (build 28-ea-jdk-fd9698357bb0, matches pinned id exactly)
+    Change list:
+    1. Drop oss-parent:7 from root pom.xml
+    2. Replace maven-jaxb2-plugin:0.15.1 with org.jvnet.jaxb:jaxb-maven-plugin:2.0.9 in xacml-xml-jaxb
+    3. Upgrade maven-compiler-plugin to 3.13.0+ and set <release>28</release> with --enable-preview
+    4. Upgrade maven-surefire-plugin to 3.5.2 and add --enable-preview and -Dnet.bytebuddy.
+  experimental=true to argLine
+    5. Upgrade license-maven-plugin to 2.4.0 and auto-service to 1.1.1
+    6. Replace JDK 8 in .github/workflows/main.yml with pinned JDK 28 Artagon build runner
+    7. Update AGENTS.md build section for JDK 28 and preview
+    Top 5 risks:
+    1. ByteBuddy/Mockito dynamic bytecode generation on class file 72 (JDK 28 preview)
+    2. JAXB XJC code generation compatibility on JDK 28 with jaxb-maven-plugin:2.0.9
+    3. Surefire 3.5.2 ASM test-class scanning compatibility with class file 72
+    4. CI pipeline custom JDK 28 provisioning (pinned Artagon build not in standard setup-java)
+    5. license-maven-plugin header updates on preview source files during process-sources
+    Files opened:
+    - pom.xml
+    - xacml-xml-jaxb/pom.xml
+    - xacml-core/pom.xml
+    - xacml-pdp/pom.xml
+    - xacml-json/pom.xml
+    - xacml-xml/pom.xml
+    - xacml-test/pom.xml
+    - xacml-conformance-tests/pom.xml
+    - .github/workflows/main.yml
+    - openspec/changes/modernize-core-for-jdk28-valhalla/tasks.md
+    - openspec/changes/modernize-core-for-jdk28-valhalla/design.md
+    - AGENTS.md
+    Tool calls used: 18

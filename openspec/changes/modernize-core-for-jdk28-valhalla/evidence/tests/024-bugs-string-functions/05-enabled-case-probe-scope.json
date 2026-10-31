@@ -1,0 +1,407 @@
+{
+  "changes": [
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC300",
+        "request_file": "xacml3.0-ct-v.0.4/IIC300Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC300Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC300Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: string-starts-with applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit",
+        "bug_id": "policy4j-the.4.15"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC300",
+        "request_file": "xacml3.0-ct-v.0.4/IIC300Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC300Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC300Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC300,xacml3.0-ct-v.0.4/IIC300Request.xml,xacml3.0-ct-v.0.4/IIC300Policy.xml,xacml3.0-ct-v.0.4/IIC300Response.xml,skipped,false,Engine defect: string-starts-with applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit,policy4j-the.4.15\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC302",
+        "request_file": "xacml3.0-ct-v.0.4/IIC302Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC302Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC302Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-starts-with; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC302",
+        "request_file": "xacml3.0-ct-v.0.4/IIC302Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC302Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC302Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC302,xacml3.0-ct-v.0.4/IIC302Request.xml,xacml3.0-ct-v.0.4/IIC302Policy.xml,xacml3.0-ct-v.0.4/IIC302Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-starts-with; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC303",
+        "request_file": "xacml3.0-ct-v.0.4/IIC303Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC303Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC303Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-starts-with; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC303",
+        "request_file": "xacml3.0-ct-v.0.4/IIC303Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC303Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC303Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC303,xacml3.0-ct-v.0.4/IIC303Request.xml,xacml3.0-ct-v.0.4/IIC303Policy.xml,xacml3.0-ct-v.0.4/IIC303Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-starts-with; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC310",
+        "request_file": "xacml3.0-ct-v.0.4/IIC310Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC310Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC310Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: string-ends-with applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit",
+        "bug_id": "policy4j-the.4.15"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC310",
+        "request_file": "xacml3.0-ct-v.0.4/IIC310Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC310Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC310Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC310,xacml3.0-ct-v.0.4/IIC310Request.xml,xacml3.0-ct-v.0.4/IIC310Policy.xml,xacml3.0-ct-v.0.4/IIC310Response.xml,skipped,false,Engine defect: string-ends-with applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit,policy4j-the.4.15\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC312",
+        "request_file": "xacml3.0-ct-v.0.4/IIC312Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC312Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC312Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-ends-with; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC312",
+        "request_file": "xacml3.0-ct-v.0.4/IIC312Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC312Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC312Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC312,xacml3.0-ct-v.0.4/IIC312Request.xml,xacml3.0-ct-v.0.4/IIC312Policy.xml,xacml3.0-ct-v.0.4/IIC312Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-ends-with; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC313",
+        "request_file": "xacml3.0-ct-v.0.4/IIC313Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC313Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC313Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-ends-with; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC313",
+        "request_file": "xacml3.0-ct-v.0.4/IIC313Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC313Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC313Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC313,xacml3.0-ct-v.0.4/IIC313Request.xml,xacml3.0-ct-v.0.4/IIC313Policy.xml,xacml3.0-ct-v.0.4/IIC313Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-ends-with; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC320",
+        "request_file": "xacml3.0-ct-v.0.4/IIC320Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC320Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC320Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: string-contains applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit",
+        "bug_id": "policy4j-the.4.15"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC320",
+        "request_file": "xacml3.0-ct-v.0.4/IIC320Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC320Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC320Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC320,xacml3.0-ct-v.0.4/IIC320Request.xml,xacml3.0-ct-v.0.4/IIC320Policy.xml,xacml3.0-ct-v.0.4/IIC320Response.xml,skipped,false,Engine defect: string-contains applies the fixture's search string and candidate in the reverse order; the true condition becomes false and returns NotApplicable instead of Permit,policy4j-the.4.15\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC322",
+        "request_file": "xacml3.0-ct-v.0.4/IIC322Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC322Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC322Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-contains; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC322",
+        "request_file": "xacml3.0-ct-v.0.4/IIC322Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC322Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC322Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC322,xacml3.0-ct-v.0.4/IIC322Request.xml,xacml3.0-ct-v.0.4/IIC322Policy.xml,xacml3.0-ct-v.0.4/IIC322Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-contains; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC323",
+        "request_file": "xacml3.0-ct-v.0.4/IIC323Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC323Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC323Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-contains; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC323",
+        "request_file": "xacml3.0-ct-v.0.4/IIC323Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC323Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC323Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC323,xacml3.0-ct-v.0.4/IIC323Request.xml,xacml3.0-ct-v.0.4/IIC323Policy.xml,xacml3.0-ct-v.0.4/IIC323Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-contains; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC330",
+        "request_file": "xacml3.0-ct-v.0.4/IIC330Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC330Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC330Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC330",
+        "request_file": "xacml3.0-ct-v.0.4/IIC330Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC330Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC330Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC330,xacml3.0-ct-v.0.4/IIC330Request.xml,xacml3.0-ct-v.0.4/IIC330Policy.xml,xacml3.0-ct-v.0.4/IIC330Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC331",
+        "request_file": "xacml3.0-ct-v.0.4/IIC331Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC331Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC331Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC331",
+        "request_file": "xacml3.0-ct-v.0.4/IIC331Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC331Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC331Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC331,xacml3.0-ct-v.0.4/IIC331Request.xml,xacml3.0-ct-v.0.4/IIC331Policy.xml,xacml3.0-ct-v.0.4/IIC331Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC332",
+        "request_file": "xacml3.0-ct-v.0.4/IIC332Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC332Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC332Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC332",
+        "request_file": "xacml3.0-ct-v.0.4/IIC332Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC332Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC332Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC332,xacml3.0-ct-v.0.4/IIC332Request.xml,xacml3.0-ct-v.0.4/IIC332Policy.xml,xacml3.0-ct-v.0.4/IIC332Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:string-substring; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC333",
+        "request_file": "xacml3.0-ct-v.0.4/IIC333Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC333Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC333Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC333",
+        "request_file": "xacml3.0-ct-v.0.4/IIC333Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC333Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC333Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC333,xacml3.0-ct-v.0.4/IIC333Request.xml,xacml3.0-ct-v.0.4/IIC333Policy.xml,xacml3.0-ct-v.0.4/IIC333Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC334",
+        "request_file": "xacml3.0-ct-v.0.4/IIC334Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC334Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC334Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC334",
+        "request_file": "xacml3.0-ct-v.0.4/IIC334Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC334Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC334Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC334,xacml3.0-ct-v.0.4/IIC334Request.xml,xacml3.0-ct-v.0.4/IIC334Policy.xml,xacml3.0-ct-v.0.4/IIC334Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC335",
+        "request_file": "xacml3.0-ct-v.0.4/IIC335Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC335Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC335Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException",
+        "bug_id": "policy4j-the.4.14"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC335",
+        "request_file": "xacml3.0-ct-v.0.4/IIC335Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC335Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC335Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IIC335,xacml3.0-ct-v.0.4/IIC335Request.xml,xacml3.0-ct-v.0.4/IIC335Policy.xml,xacml3.0-ct-v.0.4/IIC335Response.xml,skipped,false,Engine defect: Default function provider cannot resolve urn:oasis:names:tc:xacml:3.0:function:anyURI-substring; policy import fails with PolicySyntaxException,policy4j-the.4.14\n"
+    },
+    {
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IID300",
+        "request_file": "xacml3.0-ct-v.0.4/IID300Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IID300Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IID300Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: 3.0 policy permit-overrides loses the Indeterminate-P plus Deny combination and returns Deny instead of the expected Indeterminate",
+        "bug_id": "policy4j-the.4.21"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IID300",
+        "request_file": "xacml3.0-ct-v.0.4/IID300Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IID300Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IID300Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "original_line": "oasis30,IID300,xacml3.0-ct-v.0.4/IID300Request.xml,xacml3.0-ct-v.0.4/IID300Policy.xml,xacml3.0-ct-v.0.4/IID300Response.xml,skipped,false,Engine defect: 3.0 policy permit-overrides loses the Indeterminate-P plus Deny combination and returns Deny instead of the expected Indeterminate,policy4j-the.4.21\n"
+    }
+  ],
+  "other_manifest_rows_unchanged": true,
+  "before_sha256": "e3f641e2b1a8fbb4ea154c4f20cdc7cbd686edcbbb1aea9403c9f4053241a1dc",
+  "after_sha256": "f77b9788e2d1a278a7d0a72cf3054f4208c1d0fff87107c09a429c040123769b"
+}

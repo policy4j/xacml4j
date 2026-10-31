@@ -1,0 +1,7 @@
+# Durable orchestration: execution tests pass
+
+31 named execution-spec tests pass with zero skips through the production CLI. Only the desktop boundary is injected; command parsing, private files, atomic replacements, fsync, shared ledger/job/desktop locks, process exit, journal recovery and revisions are real. Syntax compilation also passes. Exact source and test hashes are in receipt.json; complete normalized output is retained.
+
+New production code implements stable request/batch mappings, whole submission transactions, source and input intent before entry, independent Send intent, no automatic retry after possible Send, non-activating polls, exact pending interaction guards, positive unsent recovery, caller/signature/context checks, redacted diagnostics and isolated synthetic provenance. Follow-up tests add journal mapping recovery, request-id conflict and uncertain answer reconciliation. A fixture journal initially lacked required private permissions; corrected fixture permissions then passed without weakening production checks.
+
+NativeBoundary deliberately returns NATIVE_BRIDGE_NOT_IMPLEMENTED until task 2.3. Collection currently records preserved failed attempts; the native export and format validator belong to task group 3. Those components and both-provider production acceptance remain UNRUN. No native app, cloud submission, clipboard or private characterization report was changed by these tests. The earlier red receipt retains the prior test hash; the green receipt hashes the refined tests.

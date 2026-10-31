@@ -33,9 +33,9 @@ public interface Expression
 	 * Gets type to which this expression
 	 * evaluates to
 	 *
-	 * @return {@link ValueType}
+	 * @return {@link ValueExpTypeInfo}
 	 */
-	ValueType getEvaluatesTo();
+	ValueExpTypeInfo getEvaluatesTo();
 
 	/**
 	 * Evaluates this expression
@@ -43,12 +43,12 @@ public interface Expression
 	 * @param context an evaluation context
 	 * @return {@link Expression} an expression
 	 * representing evaluation result, usually evaluation result
-	 * is an instance {@link ValueExpression} but in some cases
+	 * is an defaultProvider {@link ValueExp} but in some cases
 	 * expression evaluates to itself
 	 * @throws EvaluationException if an evaluation error
 	 * occurs
 	 */
-	Expression evaluate(
+	<T extends Expression> T evaluate(
 			EvaluationContext context) throws EvaluationException;
 
 	/**

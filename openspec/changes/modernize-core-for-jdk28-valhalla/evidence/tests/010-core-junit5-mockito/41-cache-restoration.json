@@ -1,0 +1,11 @@
+{
+  "case": "cache",
+  "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+  "method": "testEvaluateFailedToResolveReferenceAndReturnNull",
+  "intent": "Simulate an unnecessary second resolver call after cached evaluation; the result remains Indeterminate but no-more-interactions must reject it.",
+  "mutation_boundary": "Owned test stimulus/collaborator only; no production source was mutated",
+  "backup": "41-cache-proof/PolicyIDReferenceTest.java",
+  "original_sha256": "f107ac15dfa527a3d7cb5fde16ca1b54e79cbb4e1921db90eb89c2ce9fc77bb2",
+  "mutant_sha256": "e3769fb46ea0932da29324aa8d05ab5c6a42787f5b6dc2d79876a2f0b690ceed",
+  "restored_exact_bytes": true
+}

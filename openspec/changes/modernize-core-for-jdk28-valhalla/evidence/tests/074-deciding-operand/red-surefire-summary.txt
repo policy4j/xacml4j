@@ -1,0 +1,70 @@
+Red run, JDK 21: LaterDecidingOperandTest before any production change.
+55 rows at that time (the row `n-of 0` without operands was added later).
+
+138[ERROR] Tests run: 55, Failures: 7, Errors: 25, Skipped: 0, Time elapsed: 0.855 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[2]  Time elapsed: 0.012 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[7]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[11]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[12]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[15]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[16]  Time elapsed: 0.008 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[19]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[20]  Time elapsed: 0.004 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[23]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin(String, Expression, Expression, char)[24]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[1]  Time elapsed: 0.003 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[3]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[4]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[5]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[6]  Time elapsed: 0.003 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[8]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[9]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[11]  Time elapsed: 0.002 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[12]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[13]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[14]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[16]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[17]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[19]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[20]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[21]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[23]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[24]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[25]  Time elapsed: 0.001 s  <<< ERROR!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[26]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[27]  Time elapsed: 0 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin(String, int, String, char, int)[28]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:124 evaluations per operand ==> expected: <11> but was: <10>
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:124 evaluations per operand ==> expected: <11> but was: <10>
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:124 evaluations per operand ==> expected: <111> but was: <100>
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:124 evaluations per operand ==> expected: <11> but was: <10>
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:124 evaluations per operand ==> expected: <11> but was: <10>
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:124 evaluations per operand ==> expected: <11> but was: <10>
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:124 evaluations per operand ==> expected: <11> but was: <10>
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.higherOrderFunctionLetsALaterDecidingElementWin:180->assertOutcome:229->lambda$higherOrderFunctionLetsALaterDecidingElementWin$1:180 » FunctionInvocation negative operand
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » FunctionInvocation
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » Evaluation operand failed
+[ERROR]   LaterDecidingOperandTest.logicalFunctionLetsALaterDecidingOperandWin:115->assertOutcome:229->lambda$logicalFunctionLetsALaterDecidingOperandWin$0:115 » FunctionInvocation
+[ERROR] Tests run: 55, Failures: 7, Errors: 25, Skipped: 0
+[ERROR]   mvn <args> -rf :xacml-core

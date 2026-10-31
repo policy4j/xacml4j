@@ -23,7 +23,6 @@ package org.xacml4j.v30;
  */
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
@@ -53,8 +52,8 @@ public class CategoryReference
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-		                  .add("referenceId", referenceId)
-		                  .toString();
+		.add("referenceId", referenceId)
+		.toString();
 	}
 
 	@Override
@@ -89,7 +88,7 @@ public class CategoryReference
 		}
 
 		public Builder from(Category a){
-			return id(a.getId());
+			return id(a.getReferenceId().orElse(null));
 		}
 
 		public CategoryReference build(){

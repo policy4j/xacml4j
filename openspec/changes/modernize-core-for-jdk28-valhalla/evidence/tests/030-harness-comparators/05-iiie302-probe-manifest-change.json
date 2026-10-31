@@ -1,0 +1,12 @@
+{
+  "changes": [
+    {
+      "before_line": "oasis30,IIIE302,xacml3.0-ct-v.0.4/IIIE302Request.xml,xacml3.0-ct-v.0.4/IIIE302Policy.xml,xacml3.0-ct-v.0.4/IIIE302Response.xml,skipped,false,Harness defect: xacml-test compares included category lists by position; actual subject-first and expected resource-first categories fail despite order-independent XACML category meaning; comparison is outside this lane,policy4j-the.3.7\n",
+      "probe_line": "oasis30,IIIE302,xacml3.0-ct-v.0.4/IIIE302Request.xml,xacml3.0-ct-v.0.4/IIIE302Policy.xml,xacml3.0-ct-v.0.4/IIIE302Response.xml,executed,true,Compare the PDP response with the vendored expected response,\n"
+    }
+  ],
+  "other_879_rows_unchanged": true,
+  "before_sha256": "f77b9788e2d1a278a7d0a72cf3054f4208c1d0fff87107c09a429c040123769b",
+  "after_sha256": "6c8d52867e213293e47269b950fc742617760bdc3db58a5e87158d88a9798914",
+  "IIA022_IIA024_IIIA340": "remain disabled; not re-enabled even for this probe"
+}

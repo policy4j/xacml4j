@@ -1,0 +1,39 @@
+id: java-no-eager-empty-bag
+valid:
+  - |
+    class A {
+      Object f(java.util.Optional<Object> v, T type) {
+        return v.isPresent() ? v.get() : type.emptyBag();
+      }
+    }
+  - |
+    class A {
+      Object f(java.util.Optional<Object> v, T type) {
+        return v.orElseGet(type::emptyBag);
+      }
+    }
+  - |
+    class A {
+      Object f(java.util.Optional<Object> v, Object other) {
+        return v.orElse(other);
+      }
+    }
+invalid:
+  - |
+    class A {
+      Object f(java.util.Optional<Object> v, T type) {
+        return v.orElse(type.emptyBag());
+      }
+    }
+  - |
+    class A {
+      Object f(java.util.Optional<Object> v, K key) {
+        return v.orElse(key.getDataType().emptyBag());
+      }
+    }
+  - |
+    class A {
+      Object f(java.util.Optional<Object> v, T type) {
+        return v.orElse(type.bagBuilder().build());
+      }
+    }

@@ -1,0 +1,21 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# The new tests
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-pdp -am \
+  -Dtest='NestedResponseStaging*Test' -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Gate: full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true verify
+
+# Review (one shot, redacted packet = prompt + diff; run from a scratch directory)
+grok --prompt-file packet.md --model grok-4.7 --effort high --permission-mode plan
+
+# Mutation check (round 2): one line of BaseCompositeDecisionRule.java changed, the core test
+# class run, the file put back; twice (M1, M2). See mutation-check.txt.
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-core -am \
+  -Dtest=NestedResponseStagingTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Round 2 gate: clean full reactor
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify

@@ -1,0 +1,10 @@
+ruleDirs:
+  - tools/ast-grep/rules
+
+testConfigs:
+  - testDir: tools/ast-grep/rule-tests
+
+# Project config for the ast-grep CLI (`ast-grep scan`, `ast-grep test`) and
+# the ast-grep MCP server. *.java maps to Java by default, so no
+# languageGlobs entry is needed. ast-grep honors .gitignore, so Maven
+# target/ output stays out of scans unless a caller opts in.

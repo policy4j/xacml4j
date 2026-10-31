@@ -1,0 +1,65 @@
+== Gate (2026-10-08): clean build with the argument check in Apply ==
+
+xacml-core                 Tests run: 6441, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 186, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,939 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6441 holds ApplyArgumentValidationTest (34 tests); xacml-xml 252 holds InvalidApplyPolicyUnmarshallerTest (8); xacml-pdp 186 holds InvalidApplyDecisionTest (7).
+
+== Gate 2 (2026-10-08): clean build after review round 1 ==
+
+xacml-core                 Tests run: 6442, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 186, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,940 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6442 holds ApplyArgumentValidationTest (35 tests); xacml-xml 252 holds InvalidApplyPolicyUnmarshallerTest (8); xacml-pdp 186 holds InvalidApplyDecisionTest (7).
+
+== Gate 3 (2026-10-08): clean build after review round 2 ==
+
+xacml-core                 Tests run: 6444, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 188, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,944 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6444 holds ApplyArgumentValidationTest (37 tests); xacml-xml 252 holds InvalidApplyPolicyUnmarshallerTest (8); xacml-pdp 188 holds InvalidApplyDecisionTest (9).
+
+== Gate 4 (2026-10-08): clean build after review round 3 ==
+
+xacml-core                 Tests run: 6447, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 190, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,949 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6447 holds ApplyArgumentValidationTest (40 tests); xacml-xml 252 holds InvalidApplyPolicyUnmarshallerTest (8); xacml-pdp 190 holds InvalidApplyDecisionTest (11).
+
+== Gate 5 (2026-10-08): clean build of the final design, after review round 4 ==
+
+xacml-core                 Tests run: 6447, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 192, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,951 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6447 holds ApplyArgumentValidationTest (40 tests); xacml-xml 252 holds InvalidApplyPolicyUnmarshallerTest (8); xacml-pdp 192 holds InvalidApplyDecisionTest (13).
+
+== Gate 6 (2026-10-08): clean build of the tree as committed, after review round 5 ==
+
+xacml-core                 Tests run: 6448, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 252, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 192, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,952 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6448 holds ApplyArgumentValidationTest (40 tests) and ApplyTest (3); xacml-xml 252 holds InvalidApplyPolicyUnmarshallerTest (8); xacml-pdp 192 holds InvalidApplyDecisionTest (13).

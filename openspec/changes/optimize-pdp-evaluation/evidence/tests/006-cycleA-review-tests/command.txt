@@ -1,0 +1,1 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest=DefaultEvaluationContextHandlerTest,RequestAttributeMemoPdpTest test

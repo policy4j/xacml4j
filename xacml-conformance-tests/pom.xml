@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.xacml4j</groupId>
 		<artifactId>xacml</artifactId>
-		<version>1.5.0-SNAPSHOT</version>
+		<version>2.0.0-SNAPSHOT</version>
 	</parent>
     <artifactId>xacml-conformance-tests</artifactId>
 	<name>Xacml4J Conformance Tests</name>
@@ -19,6 +19,27 @@
 			<artifactId>xacml-test</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>xacml-xml</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<!-- src/test/resources holds the vendored fixtures (read only); this module's
+		     logback-test.xml lives in src/test/logback instead (upgrade-dependencies D2). -->
+		<testResources>
+			<testResource>
+				<directory>${project.basedir}/src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>${project.basedir}/../build-support/logback</directory>
+			</testResource>
+			<testResource>
+				<directory>${project.basedir}/src/test/logback</directory>
+			</testResource>
+		</testResources>
+	</build>
 
 </project>

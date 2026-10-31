@@ -1,0 +1,31 @@
+{
+  "provider": "antigravity_cli",
+  "profile": ".agents/cao-profiles/policy4j_arch_review_agy.md",
+  "requested_model": "gemini-3.1-pro-high",
+  "argv_prefix": [
+    "agy",
+    "--mode",
+    "plan",
+    "--sandbox",
+    "--model",
+    "gemini-3.1-pro-high",
+    "--output-format",
+    "stream-json",
+    "--print-timeout",
+    "180s",
+    "--print"
+  ],
+  "prompt_file": "prompt.txt",
+  "prompt_sha256": "9ea7e95294f3ab102472353502fc10ec255b8407f03aaebfb0ccd62e35df83a0",
+  "packet": [
+    "AGENTS.md",
+    "docs/ai/OPENSPEC.md",
+    "openspec/changes/add-desktop-deep-research/proposal.md",
+    "openspec/changes/add-desktop-deep-research/research/README.md",
+    "openspec/changes/add-desktop-deep-research/design.md",
+    "openspec/changes/add-desktop-deep-research/tasks.md",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-execution/spec.md",
+    "openspec/changes/add-desktop-deep-research/specs/desktop-research-collection/spec.md",
+    "openspec/changes/add-desktop-deep-research/evidence/README.md"
+  ]
+}

@@ -1,0 +1,31 @@
+rtk proxy openspec validate add-desktop-deep-research --strict --json
+Environment: select existing cached OpenSpec 1.3.1 through PATH for this command only.
+rtk python3 - <<'PY'
+from pathlib import Path
+import hashlib,json,re
+base=Path("openspec/changes/add-desktop-deep-research")
+prior=json.loads((base/"evidence/builds/004-binding-plan-validation/mapping-output.json").read_text())
+index=(base/"evidence/README.md").read_text()
+errors=[]; unchanged=[]
+for path_string,expected in prior["packet_hashes"].items():
+    path=Path(path_string)
+    if path.name=="tasks.md" or path==base/"evidence/README.md": continue
+    if hashlib.sha256(path.read_bytes()).hexdigest()!=expected: errors.append("semantic-input-changed:"+path_string)
+    else: unchanged.append(path_string)
+tasks=(base/"tasks.md").read_text()
+checked=re.findall(r"^- \[x\] (\d+\.\d+) ",tasks,re.M)
+if checked!=["1.1","1.2"]: errors.append("unexpected-completed-tasks")
+implementation=[Path(".agents/skills/desktop-deep-research"),Path(".claude/skills/desktop-deep-research"),Path(".codex/skills/desktop-deep-research"),Path("docs/ai/DESKTOP_RESEARCH.md")]
+for path in implementation:
+    if path.exists() or path.is_symlink(): errors.append("unexpected-implementation:"+str(path))
+for task in checked:
+    if "| "+task+" |" not in index: errors.append("unindexed-completed-task:"+task)
+for run in ("001-local-capabilities","004-binding-plan-validation"):
+    if not (base/"evidence/builds"/run/"summary.md").is_file(): errors.append("missing-run:"+run)
+for run in ("rv001-architecture-claude","rv002-architecture-agy","rv003-corrected-plan-agy","rv004-binding-plan-agy"):
+    path=base/"evidence/reviews/plan"/run
+    if not (path/"summary.md").is_file() or not (path/"report.md").is_file(): errors.append("missing-review:"+run)
+result={"planning_checked_tasks":checked,"unchanged_semantic_inputs":unchanged,"production_files_absent":not any(path.exists() or path.is_symlink() for path in implementation),"provider_research_submissions":0,"reviewer_lanes_terminal":True,"errors":errors,"coverage":"final planning bookkeeping only; full objective pending approval and implementation"}
+print(json.dumps(result,indent=2))
+raise SystemExit(bool(errors))
+PY

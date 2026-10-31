@@ -1,0 +1,7 @@
+NTM waves: policy4j--resume-g4-decisions-20261004-w1 and -w2
+Per-lane packets, model matrix, model-receipts.json and terminal receipts are retained.
+No launch-receipts file was captured; exact historical launch flags are not attested.
+Read-only lane source inspections through native readers and rtk.
+Native MCP Tavily extract/search; DuckDuckGo fetch_content/search; Deep Research deep_research.
+openspec validate modernize-core-for-jdk28-valhalla --strict
+No Maven gate was run by these decision/review lanes.

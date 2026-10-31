@@ -1,0 +1,67 @@
+Paths below are normalized: ${PROJECT_ROOT} is the main checkout and
+${WORKTREE} is .ntm/worktrees/xacml4j--remaining-g1-20261029/cod_3 beneath it.
+The shared runner selects JDK 25 via rtk proxy jenv prefix 25, sets JAVA_HOME,
+and serializes Maven with the packet build.lock. /opt/homebrew/bin/mvn resolves
+to Maven 3.10.0. All logs are unique and normalized by that runner.
+
+The initial sandboxed attempt of command 1 failed before Maven/log creation:
+PermissionError opening ${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/build.lock.
+The same command was rerun with authorized sandbox escalation; each subsequent
+runner invocation also used escalation for that shared lock.
+
+1. Focused red. Tests changed; production byte-identical to reviewed BA.
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/207-d51-fix-astra/01-focused-red.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=BagStorageCompatibilityTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+Result: exit 1; core 154 tests, 57 failures, 0 errors, 0 skipped.
+
+2. Focused green. Production correction applied; same test source as red.
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/207-d51-fix-astra/02-focused-green.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=BagStorageCompatibilityTest -Dsurefire.failIfNoSpecifiedTests=false test
+Result: exit 0; core 154 tests, 0 failures, 0 errors, 0 skipped.
+
+3. Clean affected core/PDP gate, with the explicitly requested failure-ignore flag.
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/207-d51-fix-astra/03-core-pdp-clean.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dmaven.test.failure.ignore=true clean test
+Result: exit 0 because failure-ignore is enabled; 8,592 tests, 0 failures,
+1 known ISO8601DateTest error, 6 skipped. No unexpected failures/errors.
+
+4. Whitespace validation.
+rtk git diff --check -- xacml-core/src/main/java/org/xacml4j/v30/BagOfValues.java xacml-core/src/main/java/org/xacml4j/v30/BagStorages.java xacml-core/src/test/java/org/xacml4j/v30/BagStorageCompatibilityTest.java
+Result: exit 0.
+
+Read-only SHA-256 checks used Python hashlib on all seven BA files, the nine
+D52 source files, and the 7,247-file protected inventory. pre-correction-baseline.json
+defines the digest format. Log module Results and Surefire error entries were
+parsed without executing additional tests. JMH/allocation/timing checks: UNRUN.
+
+D52 test-only follow-up (task 42.19, policy4j-cwtu.42.19.3).
+Only the two assigned tests remain changed. Production mutations below were
+temporary and restored before the final clean green run. Hashes and failing
+cases are in d52-tests-mutation-proof.json.
+
+5. Parameter-guard mutant: replace the single canonical-type guard with
+if (org.xacml4j.v30.types.DynamicType.isDynamic(typed.getParamType())) return false;
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/207-d51-fix-astra/04-d52-param-mutant-red.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am '-Dtest=HigherOrderMetadataCompatibilityTest#metadataChangedDuringEvaluationIsStillASyntaxError' -Dsurefire.failIfNoSpecifiedTests=false clean test
+Result: exit 1; 24 tests, 6 failures, 0 errors/skips. Restore FunctionSpecBuilder
+and verify SHA-256 bda8302758388ee43f6746c04b3b33dbd80174e11f11a0f7fe852c3921b04a12.
+
+6. Binary fallback mutant only: in invokeHigherOrderPair, replace the fallback
+with return (BooleanVal)spec.invokeWithList(context, arguments);
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/207-d51-fix-astra/05-d52-pair-mutant-red.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am '-Dtest=ApplyArgumentValidationTest#higherOrderChecksTheEvaluatedBagType+higherOrderChecksTheEvaluatedScalarAndNullBag' -Dsurefire.failIfNoSpecifiedTests=false test
+Result: exit 1; 4 tests, 2 failures, 0 errors/skips. Restore and verify
+DefaultFunctionInvocation SHA-256 cadc93aa1855de78607c7e8351137fe2715276caba33dd1a43c1ea0855a993e2.
+
+7. Unary fallback mutant only: in invokeHigherOrderSingle, replace the fallback
+with return (BooleanVal)spec.invokeWithList(context, arguments);
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/207-d51-fix-astra/06-d52-unary-mutant-red.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am '-Dtest=ApplyArgumentValidationTest#higherOrderChecksTheEvaluatedScalarAndNullBag' -Dsurefire.failIfNoSpecifiedTests=false test
+Result: exit 1; 2 tests, 1 failure, 0 errors/skips. Restore and verify the same
+DefaultFunctionInvocation hash before green.
+
+8. Final clean green on both full test classes, with approved production bytes.
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/207-d51-fix-astra/07-d52-focused-green.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=HigherOrderMetadataCompatibilityTest,ApplyArgumentValidationTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+Result: exit 0; 160 tests, 0 failures/errors/skips (Apply 68; metadata 92).
+
+9. Scope/whitespace checks.
+rtk git diff --check -- xacml-core/src/test/java/org/xacml4j/v30/policy/function/HigherOrderMetadataCompatibilityTest.java xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java
+rtk proxy shasum -a 256 xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java
+Result: diff check exit 0; both required production hashes match. All 7,248
+protected files have unchanged content digests. Aggregate format for this
+follow-up is sorted path + NUL + hex SHA-256 + newline.
+

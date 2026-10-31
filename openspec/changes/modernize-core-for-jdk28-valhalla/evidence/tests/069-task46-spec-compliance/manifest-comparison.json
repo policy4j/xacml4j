@@ -1,0 +1,113 @@
+{
+  "before_rows": 880,
+  "after_rows": 880,
+  "before_enabled": 864,
+  "after_enabled": 866,
+  "dropped_enabled": [],
+  "added_enabled": [
+    "oasis20/IIC020",
+    "oasis30/IIC020"
+  ],
+  "changed_rows": [
+    {
+      "case": "oasis20/IIC020",
+      "before": {
+        "suite": "oasis20",
+        "case_id": "IIC020",
+        "request_file": "oasis-xacml20-compat-test/IIC020Request.xml",
+        "policy_files": "oasis-xacml20-compat-test/IIC020Policy.xml",
+        "expected_response_file": "oasis-xacml20-compat-test/IIC020Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: integer-divide returns DoubleVal; integer-greater-than-or-equal then fails invocation type matching and returns Indeterminate instead of Permit",
+        "bug_id": "policy4j-the.4.6"
+      },
+      "after": {
+        "suite": "oasis20",
+        "case_id": "IIC020",
+        "request_file": "oasis-xacml20-compat-test/IIC020Request.xml",
+        "policy_files": "oasis-xacml20-compat-test/IIC020Policy.xml",
+        "expected_response_file": "oasis-xacml20-compat-test/IIC020Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      }
+    },
+    {
+      "case": "oasis30/IIC020",
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC020",
+        "request_file": "xacml3.0-ct-v.0.4/IIC020Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC020Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC020Response.xml",
+        "disposition": "skipped",
+        "enabled": "false",
+        "reason": "Engine defect: integer-divide returns DoubleVal; integer-greater-than-or-equal then fails invocation type matching and returns Indeterminate instead of Permit",
+        "bug_id": "policy4j-the.4.6"
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC020",
+        "request_file": "xacml3.0-ct-v.0.4/IIC020Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC020Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC020Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      }
+    },
+    {
+      "case": "oasis30/IIC350",
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC350",
+        "request_file": "xacml3.0-ct-v.0.4/IIC350Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC350Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC350Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC350",
+        "request_file": "xacml3.0-ct-v.0.4/IIC350Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC350Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC350Response.xml",
+        "disposition": "special-harness",
+        "enabled": "true",
+        "reason": "Standards adjudication: XACML 3.0 section A.3.1 IEEE 754 double-equal(NaN;NaN) evaluates to false yielding NotApplicable whereas experimental fixture expects Permit",
+        "bug_id": "policy4j-the.4.6"
+      }
+    },
+    {
+      "case": "oasis30/IIC358",
+      "before": {
+        "suite": "oasis30",
+        "case_id": "IIC358",
+        "request_file": "xacml3.0-ct-v.0.4/IIC358Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC358Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC358Response.xml",
+        "disposition": "executed",
+        "enabled": "true",
+        "reason": "Compare the PDP response with the vendored expected response",
+        "bug_id": ""
+      },
+      "after": {
+        "suite": "oasis30",
+        "case_id": "IIC358",
+        "request_file": "xacml3.0-ct-v.0.4/IIC358Request.xml",
+        "policy_files": "xacml3.0-ct-v.0.4/IIC358Policy.xml",
+        "expected_response_file": "xacml3.0-ct-v.0.4/IIC358Response.xml",
+        "disposition": "special-harness",
+        "enabled": "true",
+        "reason": "Standards adjudication: XACML 3.0 section A.3.1 IEEE 754 double-equal(double-add(NaN;1.0);NaN) evaluates to false yielding NotApplicable whereas experimental fixture expects Permit",
+        "bug_id": "policy4j-the.4.6"
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0.005" tests="12" errors="0" skipped="0" failures="0">
+  <testcase name="subtractNegativeDayTimeDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0.001" />
+  <testcase name="subtractNegativeYearMonthDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="subtractZeroDayTimeDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="addPositiveYearMonthDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="addPositiveDayTimeDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="addZeroDayTimeDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0.001" />
+  <testcase name="addZeroYearMonthDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="subtractPositiveYearMonthDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="addNegativeDayTimeDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="addNegativeYearMonthDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0.001" />
+  <testcase name="subtractPositiveDayTimeDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+  <testcase name="subtractZeroYearMonthDuration" classname="org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest" time="0" />
+</testsuite>

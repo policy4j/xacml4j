@@ -1,0 +1,20 @@
+# HEAD root POM, logging and metrics declarations
+root <dependencies>: org.junit.jupiter:junit-jupiter scope=test
+root <dependencies>: org.mockito:mockito-core scope=test
+root <dependencies>: org.mockito:mockito-junit-jupiter scope=test
+root <dependencies>: org.slf4j:slf4j-api scope=compile (default)
+root <dependencies>: org.apache.logging.log4j:log4j-api scope=compile (default)
+root <dependencies>: org.apache.logging.log4j:log4j-core scope=compile (default)
+root <dependencies>: org.apache.logging.log4j:log4j-slf4j-impl scope=compile (default)
+root <dependencies>: com.codahale.metrics:metrics-core scope=compile (default)
+root <dependencies>: com.google.truth:truth scope=compile (default)
+root <dependencies>: com.google.truth.extensions:truth-java8-extension scope=compile (default)
+root <dependencies>: org.hamcrest:hamcrest-all scope=compile (default)
+property log4j.version = 2.14.0
+property slf4j.version = 1.7.30
+property yammer.metrics.version = 3.0.2
+# log4j configuration files at HEAD
+xacml-conformance-tests/src/test/resources/log4j2-test.xml
+xacml-core/src/test/resources/log4j2-test.xml
+xacml-json/src/test/resources/log4j2-test.xml
+xacml-pdp/src/test/resources/log4j2-test.xml

@@ -1,0 +1,15 @@
+Command: rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py audit
+Exit: 1
+Observed result (summarized): source audit detected seven additional core/PDP changes after the first passing clean gate. The lane's eight files remained byte-identical to gate 05.
+Receipt: compare 05-after-full-gate.json with 06-final-source.json.
+
+Additional changed files:
+xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/DefaultXacml30DecisionCombiningAlgorithms.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionProviderServiceLoaderTest.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java
+xacml-core/src/test/java/org/xacml4j/v30/types/TypeRegistryTest.java
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/AttributeResolutionSafetyNetTest.java
+
+Action: preserved all seven files and reran the complete JDK 21 clean verify as gate 07. That gate passed and changed no source hashes. This lane's patch contains only its eight task files.

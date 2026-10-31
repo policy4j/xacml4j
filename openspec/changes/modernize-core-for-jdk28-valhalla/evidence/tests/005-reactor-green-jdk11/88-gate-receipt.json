@@ -1,0 +1,70 @@
+{
+  "log": "88-reactor-verify-round4-gate.txt",
+  "build_success": true,
+  "totals": [
+    936,
+    0,
+    0,
+    9
+  ],
+  "module_counts": {
+    "xacml": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "xacml-core": [
+      762,
+      0,
+      0,
+      4
+    ],
+    "xacml-xml-jaxb": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "xacml-xml": [
+      34,
+      0,
+      0,
+      0
+    ],
+    "xacml-json": [
+      5,
+      0,
+      0,
+      1
+    ],
+    "xacml-pdp": [
+      74,
+      0,
+      0,
+      4
+    ],
+    "xacml-test": [
+      20,
+      0,
+      0,
+      0
+    ],
+    "xacml-conformance-tests": [
+      41,
+      0,
+      0,
+      0
+    ]
+  },
+  "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+  "fresh_report_modules": [
+    "xacml-conformance-tests",
+    "xacml-core",
+    "xacml-json",
+    "xacml-pdp",
+    "xacml-test",
+    "xacml-xml"
+  ],
+  "conformance_not_run": false
+}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Xacml4J Project
+  %%
+  Copyright (C) 2009 - 2026 Xacml4J.org
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Lesser Public License for more details.
+
+  You should have received a copy of the GNU General Lesser Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/lgpl-3.0.html>.
+  #L%
+  -->
+<!--
+  Shared file appender (change upgrade-dependencies, design D2 and D3): FILE wrapped in
+  ASYNC_FILE, without caller data. System properties (or <property> before the include):
+    xacml4j.log.dir            file directory (default target/logs)
+    xacml4j.log.name           file name without .log (each module sets its own)
+    xacml4j.log.queue          async queue size (default 8192)
+    xacml4j.log.neverBlock     drop events on a full queue instead of blocking (default false)
+  -->
+<included>
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${xacml4j.log.dir:-target/logs}/${xacml4j.log.name:-xacml4j}.log</file>
+		<append>false</append>
+		<encoder>
+			<pattern>%-5level %d{yyyy-MM-dd'T'HH:mm:ss.SSS} [%thread] %logger - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ASYNC_FILE" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>${xacml4j.log.queue:-8192}</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<neverBlock>${xacml4j.log.neverBlock:-false}</neverBlock>
+		<includeCallerData>false</includeCallerData>
+		<!-- 0: at shutdown, wait until every queued event is written (default 1 s; review RVG). -->
+		<maxFlushTime>${xacml4j.log.maxFlushTime:-0}</maxFlushTime>
+		<appender-ref ref="FILE"/>
+	</appender>
+</included>

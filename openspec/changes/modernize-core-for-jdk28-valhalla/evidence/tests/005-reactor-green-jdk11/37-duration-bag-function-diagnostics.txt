@@ -1,0 +1,12 @@
+[[36mDEBUG[m] 2026-10-01 13:08:33,587 [36mFunctionProviderBuilder.lambda$providers$2()[m:(FunctionProviderBuilder.java:159) - Adding FunctionProviderId="org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions" description="XacmlDefaultFunctions"
+dayTimeDuration-one-and-only: 1.0 present=true; 3.0 present=false
+dayTimeDuration-bag-size: 1.0 present=true; 3.0 present=false
+dayTimeDuration-is-in: 1.0 present=true; 3.0 present=false
+dayTimeDuration-bag: 1.0 present=true; 3.0 present=false
+yearMonthDuration-one-and-only: 1.0 present=true; 3.0 present=false
+yearMonthDuration-bag-size: 1.0 present=true; 3.0 present=false
+yearMonthDuration-is-in: 1.0 present=true; 3.0 present=false
+yearMonthDuration-bag: 1.0 present=true; 3.0 present=false
+[[36mDEBUG[m] 2026-10-01 13:08:33,606 [36mFunctionProviderBuilder.lambda$providers$2()[m:(FunctionProviderBuilder.java:159) - Adding FunctionProviderId="org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions" description="XacmlDefaultFunctions"
+IIC150 unchanged fixture import reproduced: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only"
+Missing standard duration bag identifiers confirmed: 8

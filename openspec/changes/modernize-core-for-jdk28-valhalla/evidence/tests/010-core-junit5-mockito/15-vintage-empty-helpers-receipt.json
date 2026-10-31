@@ -1,0 +1,14 @@
+{
+  "log": "15-vintage-empty-helpers.log",
+  "build_success": true,
+  "counts": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "tests_executed": false,
+  "reports": {},
+  "problems": [],
+  "compiler_diagnostics": []
+}

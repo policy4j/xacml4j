@@ -84,7 +84,7 @@
                 DataType="http://www.w3.org/2001/XMLSchema#double">1234</AttributeAssignment>              
             <AttributeAssignment
                 AttributeId="urn:oasis:names:tc:xacml:2.0:test:marshaling:assignment10"
-                DataType="urn:oasis:names:tc:xacml:3.0:data type:entity">assignment10</AttributeAssignment>              
+                DataType="urn:oasis:names:tc:xacml:3.0:data-type:entity">assignment10</AttributeAssignment>
             <AttributeAssignment
                 AttributeId="urn:oasis:names:tc:xacml:2.0:test:marshaling:assignment11"
                 DataType="http://www.w3.org/2001/XMLSchema#hexBinary">73646173</AttributeAssignment>              

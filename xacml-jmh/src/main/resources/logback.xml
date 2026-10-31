@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Logging of the benchmark JVMs: WARN and above to standard error, so that debug logging of
+  the engine never runs while JMH measures (change add-pdp-jmh-benchmarks, D11). Built from
+  the shared console appender of build-support/logback (packed into this jar by the module POM); the
+  async appender never blocks a measured thread: a full queue drops events instead
+  (change upgrade-dependencies, D3).
+  -->
+<configuration>
+	<property name="xacml4j.log.console.target" value="System.err"/>
+	<property name="xacml4j.log.neverBlock" value="true"/>
+	<shutdownHook/>
+	<include resource="xacml4j-console.xml"/>
+
+	<root level="WARN">
+		<appender-ref ref="ASYNC_CONSOLE"/>
+	</root>
+</configuration>

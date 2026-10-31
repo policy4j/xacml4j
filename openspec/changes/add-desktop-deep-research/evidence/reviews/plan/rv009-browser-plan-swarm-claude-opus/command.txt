@@ -1,0 +1,38 @@
+# Swarm review of the browser plan, 2026-10-09. Conductor: the session that
+# wrote the plan. One NTM session, six read-only lanes, from the checkout
+# that holds this change. The same procedure produced rv006 to rv011.
+
+# Preflight
+ntm --version                  # 1.36.0
+ntm personas list              # policy4j_arch_review_* personas present
+uptime                         # load average about 15
+
+# Spawn (NTM_PROJECTS_BASE = parent directory of the checkout)
+ntm spawn xacml4j --label ddr-browser-plan-review \
+  --persona=policy4j_arch_review_codex_astra \
+  --persona=policy4j_arch_review_codex_sol \
+  --persona=policy4j_arch_review_codex_luna \
+  --persona=policy4j_arch_review_claude_opus \
+  --persona=policy4j_arch_review_claude_fable \
+  --grok=1:grok-4.7:xhigh --no-user --safety --verify-boot
+# The session was created with all six agents. The command exited 1 because
+# NTM could not confirm delivery of its own start prompt to the three Codex
+# panes. One model id gave a registry warning and started as requested.
+# NTM's start prompt tells an agent to continue earlier work; panes 0, 4 and
+# 5 were interrupted with Escape before the packets went out.
+
+# Packets, one per pane, each with the role prompt in front
+ntm send xacml4j--ddr-browser-plan-review --pane=<n> \
+  --base-prompt-file .ntm/roles/policy4j_arch_review.md --file packet-<lane>.md
+# pane 0 grok, 1 codex-astra, 2 codex-sol, 3 codex-luna, 4 claude-opus, 5 claude-fable
+# sent 23:32 local time
+
+ntm wait xacml4j--ddr-browser-plan-review --until=idle --timeout=40m
+# Reports: Luna after about 2 minutes, Fable and Sol after about 12, Astra,
+# Opus and Grok after about 14.
+
+# Fan-in. A pane keeps only the last screen of a full-screen CLI, so each
+# report was taken from the CLI's own session record (the last assistant
+# message between the REPORT-BEGIN and REPORT-END lines of that lane).
+git status --short             # only the conductor's files were changed
+ntm kill xacml4j--ddr-browser-plan-review --force

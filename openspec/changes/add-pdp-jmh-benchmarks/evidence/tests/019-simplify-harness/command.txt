@@ -1,0 +1,4 @@
+# JDK 25 (jenv prefix 25), Maven 3.9.16 offline, from the repository root
+rtk mvn -o -q -Dlicense.skipUpdateLicense=true -pl xacml-jmh -am test-compile -DskipTests
+rtk mvn -o -Dlicense.skipUpdateLicense=true -pl xacml-jmh -am -Dsurefire.failIfNoSpecifiedTests=false -Dtest='org.xacml4j.jmh.**' test
+ast-grep scan

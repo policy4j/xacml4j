@@ -1,0 +1,56 @@
+Run from the repository root. Every Maven command passes `-Dlicense.skipUpdateLicense=true` and uses JDK 21.
+
+# Verify Maven's JDK
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+# Compile the test-scope generator and integrity test
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-conformance-tests -am -DskipTests -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/015-fixture-integrity/test-compile.log test-compile
+
+# Generate/refresh the manifest from the current raw fixture bytes
+JAVA_HOME="$(jenv prefix 21)" PATH="$(jenv prefix 21)/bin:$PATH" rtk java -cp xacml-conformance-tests/target/test-classes org.xacml4j.v20.GenerateVendoredFixtureManifest --write
+
+# Integrity test gate
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-conformance-tests -am -Dtest=VendoredFixtureIntegrityTest -Dsurefire.failIfNoSpecifiedTests=false -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/015-fixture-integrity/integrity-test.log test
+
+# Full reactor dependencies plus conformance module, including executed case totals
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-conformance-tests -am -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/015-fixture-integrity/conformance-test.log test
+
+# Independent Git blob-id sample checks (10 entries)
+rtk git hash-object xacml-conformance-tests/src/test/resources/Example_2/record.xsd
+rtk git hash-object xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/ConformanceTests.html
+rtk git hash-object xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIA002Special.txt
+rtk git hash-object xacml-conformance-tests/src/test/resources/rsa2008-interop/XacmlPolicySet-04-N-PPS-PRD-004.xml
+rtk git hash-object xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/ConformanceTests.html
+rtk git hash-object xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIA023Policy.xml
+rtk git hash-object xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIA301Policy.xml
+rtk git hash-object xacml-xml-jaxb/src/main/resources/xsd/xml.xsd
+rtk git hash-object xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+rtk git hash-object xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+
+# Cross-check all restored paths in run 004 against the manifest
+rtk python3 -c 'from pathlib import Path; evidence=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/004-vendored-fixtures/summary.md"); manifest=Path("xacml-conformance-tests/src/test/integrity/vendored-fixtures.sha1"); expected={};
+for line in evidence.read_text().splitlines():
+ if line.startswith("| `xacml-"):
+  cols=[part.strip() for part in line.strip().strip("|").split("|")]; path=cols[0].strip("`"); blob=cols[2].strip("`");
+  if blob != "—": expected[path]=blob
+actual={line.split("\t",1)[1]:line.split("\t",1)[0] for line in manifest.read_text().splitlines()}; mismatches=[(path,blob,actual.get(path)) for path,blob in expected.items() if actual.get(path)!=blob]; print("evidence rows",len(expected),"manifest rows",len(actual),"matched",len(expected)-len(mismatches),"mismatches",mismatches)'
+
+# Mutation proof: copy both fixture sets to a scratch repository root and mutate only the copy
+rtk python3 -c 'from pathlib import Path; import shutil,tempfile; repo=Path.cwd(); scratch=Path(tempfile.mkdtemp(prefix="policy4j-vendored-proof-")); roots=("xacml-conformance-tests/src/test/resources","xacml-xml-jaxb/src/main/resources/xsd");
+for rel in roots: shutil.copytree(repo/rel,scratch/rel)
+fixture=scratch/roots[0]/"Example_2/record.xsd"; data=bytearray(fixture.read_bytes()); data[0]^=1; fixture.write_bytes(data); print(scratch)'
+
+# Expected failure: the message must list the changed path and expected/actual blob ids
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-conformance-tests -am -Dtest=VendoredFixtureIntegrityTest -Dsurefire.failIfNoSpecifiedTests=false -Dvendored.fixture.root=/var/folders/h1/y6_8dl854sj4vkxgj1c0ln_40000gp/T/policy4j-vendored-proof-hf16ubnz -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/015-fixture-integrity/integrity-mutation.log test
+
+# Delete only the task-created temporary fixture copy
+rtk python3 -c 'from pathlib import Path; import shutil; scratch=Path("/var/folders/h1/y6_8dl854sj4vkxgj1c0ln_40000gp/T/policy4j-vendored-proof-hf16ubnz"); assert scratch.name.startswith("policy4j-vendored-proof-"); shutil.rmtree(scratch); print("removed scratch proof copy")'
+
+# Fixture preservation check; at start and end these report the same six existing task 1.5 paths
+rtk git status --short -- xacml-conformance-tests/src/test/resources xacml-xml-jaxb/src/main/resources/xsd
+rtk git diff --name-only -- xacml-conformance-tests/src/test/resources xacml-xml-jaxb/src/main/resources/xsd
+rtk git diff --stat -- xacml-conformance-tests/src/test/resources xacml-xml-jaxb/src/main/resources/xsd
+
+# Check whether the shared documentation file changed before adding the one-line pointer
+rtk git status --short -- docs/ai/TESTING.md
+rtk git diff -- docs/ai/TESTING.md

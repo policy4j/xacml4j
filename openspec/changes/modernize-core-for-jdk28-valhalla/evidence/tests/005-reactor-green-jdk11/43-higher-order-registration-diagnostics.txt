@@ -1,0 +1,7 @@
+[[36mDEBUG[m] 2026-10-01 13:41:22,312 [36mFunctionProviderBuilder.lambda$providers$2()[m:(FunctionProviderBuilder.java:159) - Adding FunctionProviderId="org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions" description="XacmlDefaultFunctions"
+any-of: 1.0 present=true; 3.0 present=false
+all-of: 1.0 present=true; 3.0 present=false
+any-of-any: 1.0 present=true; 3.0 present=false
+map: 1.0 present=true; 3.0 present=false
+[[36mDEBUG[m] 2026-10-01 13:41:22,334 [36mFunctionProviderBuilder.lambda$providers$2()[m:(FunctionProviderBuilder.java:159) - Adding FunctionProviderId="org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions" description="XacmlDefaultFunctions"
+IIC164 unchanged fixture import reproduced: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of"

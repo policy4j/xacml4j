@@ -1,0 +1,12 @@
+## before
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.629 s -- in org.xacml4j.v30.policy.MatchTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s -- in org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest
+[INFO] BUILD SUCCESS
+
+## after
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.038 s -- in org.xacml4j.v30.policy.ApplyTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s -- in org.xacml4j.v30.policy.MatchTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.115 s -- in org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[INFO] BUILD FAILURE

@@ -1,0 +1,327 @@
+  ## A. Donor Combining Defects
+
+   #  │ Donor File : Line │ Defect         │ Scenario        │ Required Behavior (XACML 3.0 / CS01) │ Sev…
+  ────┼───────────────────┼────────────────┼─────────────────┼──────────────────────────────────────┼──────
+   D1 │ b9f114a3:PermitOv │ Inverted       │ Evaluation      │ XACML 3.0 §C.2: "Otherwise, if any   │ HIGH
+      │ errides.java:88-  │ Indeterminate  │ returns         │ decision is 'Indeterminate{P}' and   │
+      │ 97                │ precedence     │ [Indeterminate{ │ another decision is                  │
+      │                   │ (reverts Bug   │ P}, Deny]. Code │ 'Indeterminate{D}' or 'Deny', the    │
+      │                   │ 4.21)           │ evaluates       │ result is 'Indeterminate{DP}'."     │
+      │                   │                 │ atLeastOneIndet │                                     │
+      │                   │                 │ erminateD       │                                     │
+      │                   │                 │ (false), skips  │                                     │
+      │                   │                 │ to if           │                                     │
+      │                   │                 │ (atLeastOneDeny │                                     │
+      │                   │                 │ ), returning    │                                     │
+      │                   │                 │ DENY.           │                                     │
+   D2 │ b9f114a3:OnPermit │ Gross           │ Policy 0        │ Additional Combining Algorithms     │ CRIT
+      │                    │ and broken truth   │ checks if (d0 ==   │ result of the combining      │
+      │ Algorithm.java:73 │ violation:     │ DENY. Code      │ policy evaluates to 'Deny', the      │
+      │ -91               │ non-short-     │ eagerly         │ result of the combining algorithm is │
+      │                   │ circuiting and │ evaluates       │ 'Deny'... Only if the first policy   │
+      │                   │ broken truth   │ Policy 1 (d1),  │ evaluates to 'Permit', the second    │
+      │                   │ table          │ checks if (d0   │ policy is evaluated."                │
+      │                   │                │ == PERMIT)      │                                      │
+      │                   │                │ (false), then   │                                      │
+      │                   │                │ switches on d1  │                                      │
+      │                   │                │ returning       │                                      │
+      │                   │                │ INDETERMINATE_D │                                      │
+      │                   │                │ ,               │                                      │
+      │                   │                │ INDETERMINATE_P │                                      │
+      │                      │                      │ apply-second fails    │ permit-apply-second   │
+      │                   │                │ NOT_APPLICABLE. │                                      │
+      │                   │                │ It never        │                                      │
+      │                   │                │ returns DENY.   │                                      │
+   D3 │ b9f114a3:DefaultX │ OnPermitApplyS │ Invoking PDP    │ Task 6.3 Gate: Combining algorithm   │ HIGH
+      │ acml30CombiningAl │ econd omitted  │ with            │ registry must provide all 23         │
+      │ gorithms.java:41- │ from registry  │ urn:oasis:names │ baseline algorithms plus on-permit-  │
+      │ 76                │                │ :tc:xacml:3.0:p │ apply-second (24 total).             │
+      │                      │                      │                       │ INF/services/org.xacm │
+      │                   │                │ combining-algor │                                      │
+      │                   │                │ ithm:on-permit- │                                      │
+      │                   │                │ apply-second    │                                      │
+      │                   │                │ fails lookup.   │                                      │
+   D4 │ b9f114a3:DefaultX │ Missing        │ DefaultXacml30C │ Bug 4.27 SPI architecture: Providers │ MEDI
+      │ acml30CombiningAl │ @AutoService   │ ombiningAlgorit │ must register via @AutoService to    │ UM
+      │ gorithms.java:39  │ annotation     │ hms lacks       │ generate META-                       │
+      │                   │                │ @AutoService(Co │ INF/services/org.xacml4j.v30.spi.com │
+      │                   │                │ mbiningAlgorith │ bine.CombiningAlgorithmProvider.     │
+      │                      │                      │ Decision.INDETERMINAT │ result in             │
+      │                      │                      │ E without setting     │ Indeterminate{DP}."   │
+      │                      │                      │ context status code.  │ and "If more than one │
+      │                      │                      │                       │ policy is applicable, │
+      │                      │                      │                       │ then the combining    │
+      │                      │                      │                       │ algorithm SHALL       │
+      │                      │                      │                       │ evaluate to           │
+      │ 69                │ code & returns │ policies, or    │ algorithm SHALL result in            │
+      │                   │ plain          │ target          │ Indeterminate{DP}." and "If more     │
+      │                   │ INDETERMINATE  │ evaluation      │ than one policy is applicable, then  │
+      │                   │                │ fails with      │ the combining algorithm SHALL        │
+      │                   │                │ INDETERMINATE.  │ evaluate to 'Indeterminate{DP}' with │
+      │                   │                │ Returns         │ a status code of                     │
+      │                   │                │ Decision.INDETE │ 'urn:oasis:names:tc:xacml:1.0:status │
+      │                   │                │ RMINATE without │ :processing-error'."                 │
+      │                   │                │ setting context │                                      │
+      │                   │                │ status code.    │                                      │
+   D6 │ b9f114a3:LegacyDe │ Indeterminate  │ Child policy    │ XACML 1.0 §C.3: "Otherwise, if any   │ HIGH
+      │ nyOverridesPolicy │ converted      │ returns         │ decision is 'Indeterminate', the     │
+      │ CombineAlgorithm. │ directly to     │ INDETERMINATE.  │ result is 'Indeterminate'."         │
+      │ java:65           │ DENY            │ Code executes   │                                     │
+      │                   │                 │ if              │                                     │
+      │                   │                 │ (d.isIndetermin │                                     │
+      │                   │                 │ ate()) return   │                                     │
+      │                   │                 │ Decision.DENY;. │                                     │
+   D7 │ b9f114a3:LegacyPe │ Inverted Deny / │ Child policies  │ XACML 1.0 §C.5: "2. Otherwise, if   │ HIGH
+      │ rmitOverridesPoli │ Indeterminate   │ return [Deny,   │ any policy evaluates to             │
+      │ cyCombineAlgorith │ precedence      │ Indeterminate]. │ 'Indeterminate', the result is      │
+      │ m.java:70-75      │                 │ Code checks if  │ 'Indeterminate'. 3. Otherwise, if   │
+      │                   │                 │ (atLeastOneDeny │ any policy evaluates to 'Deny', the │
+      │                   │                 │ ) return        │ result is 'Deny'."                  │
+      │                   │                 │ Decision.DENY;  │                                     │
+      │                   │                 │ before          │                                     │
+      │                   │                 │ atLeastOneError │                                     │
+       │ teDecisionRule.java: │ obligation condition │ if(!decision.isIndet │ §7.19: "An           │
+       │ 125                  │                      │ erminate() ||        │ obligation SHALL NOT │
+       │                      │                      │ decision !=          │ be returned if the   │
+       │                      │                      │ Decision.NOT_APPLICA │ evaluation result is │
+       │                      │                      │ BLE) evaluates to    │ 'NotApplicable' or   │
+       │                   │               │ r.             │                                      │
+   D8  │ b9f114a3:BaseComp │ Tautological  │ Condition      │ XACML 3.0 §7.18 / §7.19: "An         │ HIGH
+       │ ositeDecisionRule │ obligation    │ if(!decision.i │ obligation SHALL NOT be returned if  │
+       │ .java:125         │ condition     │ sIndeterminate │ the evaluation result is             │
+       │                   │               │ () || decision │ 'NotApplicable' or 'Indeterminate'." │
+       │                   │               │ !=             │                                      │
+       │                   │               │ Decision.NOT_A │                                      │
+       │                   │               │ PPLICABLE)     │                                      │
+       │                   │               │ evaluates to   │                                      │
+       │                   │               │ true for all   │                                      │
+       │                   │               │ Decision       │                                      │
+       │                   │               │ values         │                                      │
+       │                   │               │ (including     │                                      │
+       │                   │               │ NOT_APPLICABLE │                                      │
+       │                   │               │ and            │                                      │
+       │                   │               │ INDETERMINATE) │                                      │
+       │                   │               │ . Obligation   │                                      │
+       │                   │               │ failure turns  │                                      │
+       │                   │               │ NOT_APPLICABLE │                                      │
+       │                   │               │ into           │                                      │
+       │                   │               │ INDETERMINATE_ │                                      │
+       │                   │               │ DP.            │                                      │
+   D9  │ b9f114a3:Rule.jav │ Eager         │ A non-winning  │ XACML 3.0 §7.18: "Obligation         │ MEDIU
+       │ a:140-147         │ obligation    │ rule's         │ expressions SHALL NOT be evaluated   │ M
+       │                   │ evaluation    │ obligation     │ until the decision of the enclosing  │
+       │                   │ taints        │ throws         │ rule, policy, or policy set has been │
+       │                   │ context on    │ EvaluationExce │ determined. Only obligation          │
+       │                   │ non-winning   │ ption. Rule    │ expressions associated with that     │
+       │                   │ rules         │ returns        │ decision SHALL be evaluated."        │
+       │                   │               │ INDETERMINATE_ │                                      │
+       │                   │               │ D, and         │                                      │
+       │                   │               │ context.setEva │                                      │
+       │                   │               │ luationStatusI │                                      │
+       │                   │               │ fAbsent(...)   │                                      │
+       │                   │               │ stores         │                                      │
+       │                   │               │ processing-    │                                      │
+       │                   │               │ error.         │                                      │
+   D10 │ b9f114a3:DefaultX │ Incomplete    │ Donor renamed  │ Task 6.3 Contract: Consistent rename │ LOW
+       │ acml30CombiningAl │ rename        │ some classes   │ across all combining algorithms to   │
+       │ gorithms.java:46, │ (*CombiningAl │ but retained   │ *Algorithm.                          │
+       │ 55,56,64-75       │ gorithm →     │ *CombineAlgori │                                      │
+       │                   │ *Algorithm)   │ thm on         │                                      │
+       │                   │               │ PermitOverride │                                      │
+       │                   │               │ sRuleCombineAl │                                      │
+       │                   │               │ gorithm,       │                                      │
+       │                   │               │ PermitOverride │                                      │
+       │                   │               │ sPolicyCombine │                                      │
+       │                   │               │ Algorithm,     │                                      │
+       │                   │               │ PermitOverride │                                      │
+       │                   │               │ sPolicyOrdered │                                      │
+       │                   │               │ CombineAlgorit │                                      │
+       │                   │               │ hm, and all 8  │                                      │
+       │                   │               │ Legacy*Combine │                                      │
+       │                   │               │ Algorithm      │                                      │
+       │                   │               │ classes.       │                                      │
+  ──────
+  ## B. Worktree Fixes the Donor Would Undo
+
+  ### 1. Reversion of Bug 4.21 (PermitOverrides)
+
+  • Worktree Source: PermitOverrides.java:88-97:
+    if(atLeastOneIndeterminateP &&
+            (atLeastOneIndeterminateD || atLeastOneDeny)){
+        return Decision.INDETERMINATE_DP;
+    }
+    if(atLeastOneIndeterminateP){
+        return Decision.INDETERMINATE_P;
+    }
+    if(atLeastOneDeny){
+        return Decision.DENY;
+    }
+
+  • Donor Source: b9f114a3:PermitOverrides.java:88-97:
+    if(atLeastOneIndeterminateD &&
+            (atLeastOneIndeterminateP || atLeastOneDeny)){
+        return Decision.INDETERMINATE_DP;
+    }
+    if(atLeastOneDeny){
+        return Decision.DENY;
+    }
+    if(atLeastOneIndeterminateP){
+        return Decision.INDETERMINATE_P;
+    }
+
+  • Consequence: Adopting b9f114a3 reverts the fix for Bug 4.21. Any combination of {Indeterminate{P},
+  Deny} will illegally evaluate to DENY instead of INDETERMINATE_DP.
+
+  ### 2. Test Framework Modernization (JUnit 5 + Mockito 5)
+
+  • The worktree tests (e.g., DenyUnlessPermitTest.java, PermitOverridesTest.java) were modernized to JUnit
+  5 (@ExtendWith(MockitoExtension.class)) and Mockito 5.
+  • The donor branch still uses EasyMock (createControl(), IMocksControl) and JUnit 4 (org.junit.Test,
+  assertEquals). Copying donor tests would re-introduce EasyMock and JUnit 4 dependencies into xacml-core.
+  ──────
+  ## C. Safety-Net Test List for Task 6.3 (30 Rows)
+
+  Behavioral fingerprint covering all 24 registered URNs, Appendix C edge cases, and CS01:
+
+   #  │ Target Combining Algorithm URN │ Sco… │ Input Childr… │ Expec… │ Specification Reference & Purpose
+  ────┼────────────────────────────────┼──────┼───────────────┼────────┼───────────────────────────────────
+   1  │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Permit,      │ INDETE │ XACML 3.0 §C.1; Indeterminate{D}
+      │ ule-combining-algorithm:deny-  │      │ Indeterminate │ RMINAT │ + Permit = Indeterminate{DP}
+      │ overrides                      │      │ {D}]          │ E_DP   │
+   2  │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Permit,      │ DENY   │ XACML 3.0 §C.1; Deny overrides
+      │ ule-combining-algorithm:deny-  │      │ Deny]         │        │ Permit
+      │ overrides                      │      │               │        │
+   3  │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [NotApplicabl │ INDETE │ XACML 3.0 §C.1; Single
+      │ ule-combining-algorithm:deny-  │      │ e,            │ RMINAT │ Indeterminate{P} preserved
+      │ overrides                      │      │ Indeterminate │ E_P    │
+      │                                │      │ {P}]          │        │
+   4  │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Deny,        │ DENY   │ XACML 3.0 §C.1; Short-circuits on
+      │ ule-combining-                 │      │ Indeterminate │        │ first Deny in order
+      │ algorithm:ordered-deny-        │      │ {DP}]         │        │
+      │ overrides                      │      │               │        │
+   5  │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Indeterminat │ INDETE │ XACML 3.0 §C.3; Policy level
+      │ olicy-combining-               │ cy   │ e{D}, Permit] │ RMINAT │ Indeterminate{D} + Permit
+      │ algorithm:deny-overrides       │      │               │ E_DP   │
+   6  │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Permit,      │ INDETE │ XACML 3.0 §C.3; Ordered
+      │ olicy-combining-               │ cy   │ Indeterminate │ RMINAT │ evaluation with Indeterminate{DP}
+      │ algorithm:ordered-deny-        │      │ {DP}]         │ E_DP   │
+      │ overrides                      │      │               │        │
+   7  │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Indeterminat │ INDETE │ XACML 3.0 §C.2; Bug 4.21
+      │ ule-combining-                 │      │ e{P}, Deny]   │ RMINAT │ verification
+      │ algorithm:permit-overrides     │      │               │ E_DP   │
+   8  │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Deny,        │ INDETE │ XACML 3.0 §C.2; Bug 4.21 order-
+      │ ule-combining-                 │      │ Indeterminate │ RMINAT │ independence
+      │ algorithm:permit-overrides     │      │ {P}]          │ E_DP   │
+   9  │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Indeterminat │ INDETE │ XACML 3.0 §C.2; Single
+      │ ule-combining-                 │      │ e{P},         │ RMINAT │ Indeterminate{P} preserved
+      │ algorithm:permit-overrides     │      │ NotApplicable │ E_P    │
+      │                                │      │ ]             │        │
+   10 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Deny,        │ PERMIT │ XACML 3.0 §C.2; Permit overrides
+      │ ule-combining-                 │      │ Permit]       │        │ Deny
+      │ algorithm:permit-overrides     │      │               │        │
+   11 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Permit,      │ PERMIT │ XACML 3.0 §C.2; Ordered short-
+      │ ule-combining-                 │      │ Deny]         │        │ circuit on Permit
+      │ algorithm:ordered-permit-      │      │               │        │
+      │ overrides                      │      │               │        │
+   12 │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Indeterminat │ INDETE │ XACML 3.0 §C.2; Policy level Bug
+      │ olicy-combining-               │ cy   │ e{P}, Deny]   │ RMINAT │ 4.21 check
+      │ algorithm:permit-overrides     │      │               │ E_DP   │
+   13 │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Deny,        │ DENY   │ XACML 3.0 §C.2; Deny over
+      │ olicy-combining-               │ cy   │ Indeterminate │        │ Indeterminate{D}
+      │ algorithm:ordered-permit-      │      │ {D}]          │        │
+      │ overrides                      │      │               │        │
+   14 │ urn:oasis:names:tc:xacml:1.0:r │ Rule │ [NotApplicabl │ DENY   │ XACML 3.0 §C.7; Returns first
+      │ ule-combining-algorithm:first- │      │ e, Deny,      │        │ applicable (Deny)
+      │ applicable                     │      │ Permit]       │        │
+   15 │ urn:oasis:names:tc:xacml:1.0:r │ Rule │ [Indeterminat │ INDETE │ XACML 3.0 §C.7; Indeterminate
+      │ ule-combining-algorithm:first- │      │ e, Permit]    │ RMINAT │ stops evaluation
+      │ applicable                     │      │               │ E      │
+   16 │ urn:oasis:names:tc:xacml:1.0:p │ Poli │ [NotApplicabl │ PERMIT │ XACML 3.0 §C.8; First applicable
+      │ olicy-combining-               │ cy   │ e, Permit,    │        │ policy
+      │ algorithm:first-applicable     │      │ Deny]         │        │
+   17 │ urn:oasis:names:tc:xacml:1.0:p │ Poli │ [NoMatch,     │ NOT_AP │ XACML 3.0 §C.9; No policies match
+      │ olicy-combining-               │ cy   │ NoMatch]      │ PLICAB │ target
+      │ algorithm:only-one-applicable  │      │               │ LE     │
+   18 │ urn:oasis:names:tc:xacml:1.0:p │ Poli │ [Match(Permit │ PERMIT │ XACML 3.0 §C.9; Exactly one match
+      │ olicy-combining-               │ cy   │ ), NoMatch]   │        │ evaluates to Permit
+      │ algorithm:only-one-applicable  │      │               │        │
+   19 │ urn:oasis:names:tc:xacml:1.0:p │ Poli │ [Match,       │ INDETE │ XACML 3.0 §C.9; Status code =
+      │ olicy-combining-               │ cy   │ Match]        │ RMINAT │ processing-error
+      │ algorithm:only-one-applicable  │      │               │ E_DP   │
+   20 │ urn:oasis:names:tc:xacml:1.0:p │ Poli │ [TargetError, │ INDETE │ XACML 3.0 §C.9; Indeterminate
+      │ olicy-combining-               │ cy   │ Match]        │ RMINAT │ target yields Indeterminate{DP}
+      │ algorithm:only-one-applicable  │      │               │ E_DP   │
+   21 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [] (empty)    │ DENY   │ XACML 3.0 §C.4; Default decision
+      │ ule-combining-algorithm:deny-  │      │               │        │ is Deny
+      │ unless-permit                  │      │               │        │
+   22 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Deny,        │ DENY   │ XACML 3.0 §C.4; Indeterminate
+      │ ule-combining-algorithm:deny-  │      │ Indeterminate │        │ converted to Deny
+      │ unless-permit                  │      │ {DP}]         │        │
+   23 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Deny,        │ PERMIT │ XACML 3.0 §C.4; Any Permit yields
+      │ ule-combining-algorithm:deny-  │      │ Permit]       │        │ Permit
+      │ unless-permit                  │      │               │        │
+   24 │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Indeterminat │ DENY   │ XACML 3.0 §C.6; Policy-level
+      │ olicy-combining-               │ cy   │ e{D},         │        │ Deny-unless-permit
+      │ algorithm:deny-unless-permit   │      │ NotApplicable │        │
+      │                                │      │ ]             │        │
+   25 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [] (empty)    │ PERMIT │ XACML 3.0 §C.5; Default decision
+      │ ule-combining-                 │      │               │        │ is Permit
+      │ algorithm:permit-unless-deny   │      │               │        │
+   26 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Permit,      │ PERMIT │ XACML 3.0 §C.5; Indeterminate
+      │ ule-combining-                 │      │ Indeterminate │        │ converted to Permit
+      │ algorithm:permit-unless-deny   │      │ {DP}]         │        │
+   27 │ urn:oasis:names:tc:xacml:3.0:r │ Rule │ [Permit,      │ DENY   │ XACML 3.0 §C.5; Any Deny yields
+      │ ule-combining-                 │      │ Deny]         │        │ Deny
+      │ algorithm:permit-unless-deny   │      │               │        │
+   28 │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Indeterminat │ PERMIT │ XACML 3.0 §C.5; Policy-level
+      │ olicy-combining-               │ cy   │ e{P},         │        │ Permit-unless-deny
+      │ algorithm:permit-unless-deny   │      │ NotApplicable │        │
+      │                                │      │ ]             │        │
+   29 │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Deny,        │ DENY   │ Additional Combining Algorithms
+      │ olicy-combining-algorithm:on-  │ cy   │ Permit]       │        │ CS01 §2.1; Short-circuits
+      │ permit-apply-second            │      │               │        │
+   30 │ urn:oasis:names:tc:xacml:3.0:p │ Poli │ [Permit,      │ DENY   │ Additional Combining Algorithms
+      │ olicy-combining-algorithm:on-  │ cy   │ Deny]         │        │ CS01 §2.1; Returns second
+      │ permit-apply-second            │      │               │        │
+
+  (Note: Legacy 1.0/1.1 algorithms Legacy*Algorithm provide the remaining 8 URNs in the 24-URN set and must
+  be covered by baseline parity tests).
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, gemini-2.5-pro)
+    Defect Counts: 10 total (1 CRITICAL, 6 HIGH, 2 MEDIUM, 1 LOW)
+    Top 5 Defects:
+    1. OnPermitApplySecondPolicyAlgorithm (b9f114a3:73-91): Never returns DENY on Policy 0 DENY; evaluates
+  Policy 1 unconditionally (violates CS01 §2.1).
+    2. PermitOverrides (b9f114a3:88-97): Inverted Indeterminate{P}/Deny precedence returning DENY instead
+  of INDETERMINATE_DP (reverts Bug 4.21).
+    3. BaseCompositeDecisionRule (b9f114a3:125): Tautological condition evaluates obligations on
+  NOT_APPLICABLE and INDETERMINATE (violates XACML 3.0 §7.18).
+    4. OnlyOneApplicablePolicyAlgorithm (b9f114a3:54-69): Omits required processing-error status code and
+  returns plain INDETERMINATE instead of INDETERMINATE_DP (violates §C.9).
+    5. LegacyDenyOverridesPolicyCombineAlgorithm (b9f114a3:65): Unconditionally returns DENY when child
+  policy evaluates to INDETERMINATE (violates XACML 1.0 §C.3).
+    Files Opened:
+    - b9f114a3:xacml-core/.../combine/impl/OnPermitApplySecondPolicyAlgorithm.java
+    - b9f114a3:xacml-core/.../policy/BaseCompositeDecisionRule.java
+    - b9f114a3:xacml-core/.../policy/Rule.java
+    - b9f114a3:xacml-core/.../combine/impl/DenyOverrides.java
+    - b9f114a3:xacml-core/.../combine/impl/PermitOverrides.java
+    - b9f114a3:xacml-core/.../combine/DecisionCombiningAlgorithms.java
+    - b9f114a3:xacml-core/.../combine/impl/OnlyOneApplicablePolicyAlgorithm.java
+    - b9f114a3:xacml-core/.../combine/impl/FirstApplicable.java
+    - b9f114a3:xacml-core/.../combine/impl/DenyUnlessPermit.java
+    - b9f114a3:xacml-core/.../policy/EvaluationContext.java
+    - b9f114a3:xacml-core/.../combine/impl/DefaultXacml30CombiningAlgorithms.java
+    - b9f114a3:xacml-core/.../combine/impl/LegacyDenyOverridesPolicyCombineAlgorithm.java
+    - b9f114a3:xacml-core/.../combine/impl/LegacyDenyOverridesRuleCombineAlgorithm.java
+    - b9f114a3:xacml-core/.../combine/impl/LegacyPermitOverridesPolicyCombineAlgorithm.java
+    - b9f114a3:xacml-core/.../combine/impl/LegacyPermitOverridesRuleCombineAlgorithm.java
+    - b9f114a3:xacml-core/.../combine/impl/DenyOverridesPolicyOrderedAlgorithm.java
+    - a8a90d46:xacml-core/.../combine/impl/DefaultXacml30DecisionCombiningAlgorithms.java
+    - a8a90d46:xacml-core/.../combine/impl/OnPermitApplySecondPolicyCombiningAlgorithm.java
+    - a8a90d46:xacml-core/.../combine/impl/OnPermitApplySecondPolicyTest.java
+    - a8a90d46:xacml-core/.../combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java
+    - worktree:xacml-core/.../combine/impl/PermitOverrides.java
+    - worktree:xacml-core/.../combine/impl/DenyUnlessPermitTest.java
+    Tool Calls Used: 15
+

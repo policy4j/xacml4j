@@ -1,0 +1,107 @@
+Protected files compared with baseline-restoration snapshot: 3340
+ISO8601DateTime matches approved sign-branch-only change: True
+XML mapper matches approved mixed-content-only change: True
+Protected files changed: 0
+Existing owned Java license headers checked: 10
+New Java headers compared with module template: 5
+Changed license headers: 0
+Approved POM matches post-patch snapshot exactly: True
+Current lane files (plus this run directory):
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java
+xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java
+xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+xacml-test/src/test/java/org/xacml4j/v30/ExpectedAttributeResolverBuilderTest.java
+xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolverTest.java
+xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeArithmeticTest.java
+xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestContentTest.java
+xacml-test/pom.xml
+Shared pre-existing XML/resource/JSON changes preserved; newly approved source changes are checked above.
+
+rtk git diff --quiet a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+Exit code: 0
+
+
+rtk git diff --check -- xacml-pdp/src xacml-test/pom.xml xacml-test/src xacml-conformance-tests/src/test/java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+Exit code: 0
+
+
+rtk git apply --reverse --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+Exit code: 0
+
+
+rtk git apply --reverse --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-core-fix.patch
+Exit code: 0
+
+
+rtk git apply --reverse --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+Exit code: 0
+
+
+rtk git apply --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+Exit code: 0
+
+
+rtk git status --short
+Exit code: 0
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+ M xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+ D xacml-json/src/test/resources/policy.json
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+ M xacml-test/pom.xml
+ M xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+ M xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/ExpressionTypeBuilder.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30ResponseContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/XacmlPolicyUnmarshallerTest.java
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/004-vendored-fixtures/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolverTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeArithmeticTest.java
+?? xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java
+?? xacml-test/src/test/java/org/xacml4j/v30/ExpectedAttributeResolverBuilderTest.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestContentTest.java
+
+rtk proxy git diff --name-only -- xacml-pdp/src xacml-test/pom.xml xacml-test/src xacml-conformance-tests/src/test/java
+Exit code: 0
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+xacml-test/pom.xml
+xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java
+
+rtk git diff --cached --name-only
+Exit code: 0
+

@@ -1,0 +1,3 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true clean test   # <release>25</release>, enforcer [25,)
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" mvn -B -o -q -Dlicense.skipUpdateLicense=true validate   # expected to fail
+javap -v <one class per module> ; find <module>/target/classes/META-INF/services

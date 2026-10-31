@@ -1,0 +1,23 @@
+{
+  "branch": "integration/modernize-core-jdk28-valhalla",
+  "head": "befdd116bd11385ac8d007732fa8e4d347af3143",
+  "root_pom_sha256": "3eea70fb4f0ac7a3797ca557a1399a5bb4ae5bc8c7099d37ac0dfc5c2a3c0410",
+  "persistent_project_files_changed_by_task": [
+    "pom.xml"
+  ],
+  "protected_files_checked_unchanged": 4199,
+  "changed_protected_files": [],
+  "new_source_files": [],
+  "temporary_probe_removed": true,
+  "temporary_probe_classes_removed_by_clean": true,
+  "module_poms_unchanged": true,
+  "source_and_fixture_bytes_unchanged": true,
+  "prior_runs_003_005_008_unchanged": true,
+  "fresh_full_gate_reports": 143,
+  "all_full_gate_report_jdks": "21.0.6",
+  "staged_files": [],
+  "root_diff_check": "PASS",
+  "baseline_counts_match": true,
+  "baseline_error_identities_match": true,
+  "conformance_case_sequences_match": true
+}

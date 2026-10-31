@@ -1,0 +1,48 @@
+# 089 history scrub (bead policy4j-the.12), 2026-10-26.
+# Placeholders: <checkouts> repository parent, <backup> backup folder outside
+# the repository, <scratch> session scratch folder. rewrite.py and dbscrub.py
+# are in <backup>: they take every identity value from $HOME at run time, but
+# their rules name the internal hosts, so they are not in the repository.
+
+# 1 checks and backup (working tree clean, no br process, nothing holds the database)
+git status --porcelain                      # empty
+br sync --status                            # Dirty issues: 0, In sync
+git bundle create <backup>/all-refs.bundle --all && git bundle verify <backup>/all-refs.bundle
+git for-each-ref --format='%(refname) %(objectname)' > <backup>/refs-before.txt
+cp -Rp .beads <backup>/beads-dir-copy
+sqlite3 .beads/beads.db ".backup '<backup>/beads-online-backup.db'"   # integrity ok, 903 events, 177 issues
+
+# 2 rewrite in a scratch clone
+git clone --bare --no-local <checkouts>/xacml4j <scratch>/repo.git
+python3 -I rewrite.py <scratch>/repo.git d78d9586 feature_xacml_20 refs/scrub/dry map-dry.txt            # unsigned dry run
+python3 -I rewrite.py <scratch>/repo.git d78d9586 feature_xacml_20 refs/scrub/final map-final.txt --sign
+
+# 3 checks on refs/scrub/final (results in summary.md)
+for c in $(git rev-list d78d9586..refs/scrub/final); do git grep -i -l -E '<account>|<company>|<mirror ids>|<addresses>' $c -- .; done   # no output
+git log --format='%an %ae %cn %ce%n%B' d78d9586..refs/scrub/final | grep -c -i -E '<account>|<company>'                                  # 0
+git diff --name-only feature_xacml_20 refs/scrub/final -- . ':!openspec' ':!.beads'                                                      # empty
+git log --format='%G? %GF' d78d9586..refs/scrub/final | sort | uniq -c                                                                    # 30 G (one key), 5 N
+
+# 4 apply in the checkout
+git fetch <scratch>/repo.git refs/scrub/final:refs/scrub/final
+git merge-base --is-ancestor origin/feature_xacml_20 refs/scrub/final
+git reset --keep refs/scrub/final
+git branch -f integration/modernize-core-jdk28-valhalla 265be3a0
+git update-ref -d refs/scrub/final
+git status --porcelain                      # empty
+
+# 5 tracker
+python3 -I dbscrub.py .beads/beads.db map-final.txt <scratch>/beads-scrubbed.db   # 419 rows changed, integrity ok
+mv .beads/beads.db .beads/beads.db-* .beads/beads.db.fsqlite-migration-state <backup>/live-db-moved/
+cp <scratch>/beads-scrubbed.db .beads/beads.db
+cp .beads/issues.jsonl .beads/beads.base.jsonl
+br sync --import-only                       # 177 skipped (up to date)
+br sync --flush-only --force
+git status --porcelain                      # empty: the export is byte-identical to the committed file
+br config set actor maintainer
+
+# 6 br upgrade (maintainer's instruction): 0.7.4 -> 0.7.6, field no longer exported
+brew upgrade dicklesworthstone/tap/br       # br 0.7.6
+br sync --migrate-source-repo-path          # dry run: equal 177, paths normalized 177, prints plan_sha256
+br sync --migrate-source-repo-path --apply --expect-plan-sha256 <plan_sha256>
+# issues.jsonl: 177 rows, same ids, no source_repo_path, no other field changed

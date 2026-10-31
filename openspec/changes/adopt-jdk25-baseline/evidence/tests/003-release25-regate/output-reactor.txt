@@ -1,0 +1,44 @@
+exit 0
+xacml-core: run 6513, failures 0, errors 0, skipped 2
+xacml-xml: run 253, failures 0, errors 0, skipped 0
+xacml-json: run 24, failures 0, errors 0, skipped 1
+xacml-pdp: run 207, failures 0, errors 0, skipped 3
+xacml-test: run 99, failures 0, errors 0, skipped 0
+xacml-conformance-tests: run 938, failures 0, errors 0, skipped 12
+xacml-jmh: run 196, failures 0, errors 0, skipped 0
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-core ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-core ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-core ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-xml-jaxb ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-xml-jaxb ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-xml-jaxb ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-xml ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-xml ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-xml ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-json ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-json ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-json ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-pdp ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-pdp ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-pdp ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-test ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-test ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-test ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-conformance-tests ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-conformance-tests ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-conformance-tests ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-jmh ---
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-jmh ---
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-jmh ---
+[INFO] BUILD SUCCESS
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.codahale.metrics.Striped64 (file:$HOME/.local/share/maven/repository/com/codahale/metrics/metrics-core/3.0.2/metrics-core-3.0.2.jar)
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.codahale.metrics.Striped64 (file:$HOME/.local/share/maven/repository/com/codahale/metrics/metrics-core/3.0.2/metrics-core-3.0.2.jar)
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.codahale.metrics.Striped64 (file:$HOME/.local/share/maven/repository/com/codahale/metrics/metrics-core/3.0.2/metrics-core-3.0.2.jar)
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by com.codahale.metrics.Striped64 (file:$HOME/.local/share/maven/repository/com/codahale/metrics/metrics-core/3.0.2/metrics-core-3.0.2.jar)
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release

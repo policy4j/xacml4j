@@ -1,0 +1,2 @@
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceTest,ConformanceManifestTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-manifest-audit/01-oasis20-and-manifest-guard.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/064-manifest-audit/collect-evidence.py

@@ -1,0 +1,7 @@
+# Maven 3.9.16 (IntelliJ bundled) first on PATH, offline repository; run through rtk:
+# PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk mvn ...
+# (This run called the same Maven binary directly; the rtk form is the project form from now on.)
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -B -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=CorrelationIdTest -Dsurefire.failIfNoSpecifiedTests=false test
+ast-grep test --update-all    # writes the snapshot of the new rule test
+ast-grep test
+ast-grep scan --rule tools/ast-grep/rules/java-no-random-on-decide-path.yml xacml-pdp/src/main/java

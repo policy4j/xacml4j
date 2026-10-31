@@ -1,0 +1,139 @@
+{
+  "log": "04-startup-agent-red.log",
+  "build_success": false,
+  "tests_executed": true,
+  "module_counts": {
+    "xacml-json": [
+      6,
+      1,
+      0,
+      1
+    ]
+  },
+  "totals": [
+    6,
+    1,
+    0,
+    1
+  ],
+  "compiler_diagnostics": [],
+  "reports": {
+    "xacml-json": {
+      "org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest": {
+        "counts": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "jupiterMocksFinalClassWithStartupAgent",
+            "skipped": false,
+            "problems": [
+              {
+                "module": "xacml-json",
+                "class": "org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest",
+                "method": "jupiterMocksFinalClassWithStartupAgent",
+                "kind": "failure",
+                "type": "org.opentest4j.AssertionFailedError",
+                "message": "Mockito must be loaded as a startup agent on JDK 21 ==> expected: <true> but was: <false>",
+                "easymock_class_proxy": false,
+                "trace": "org.opentest4j.AssertionFailedError: Mockito must be loaded as a startup agent on JDK 21 ==> expected: <true> but was: <false>\n\tat org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n\tat org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n\tat org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)\n\tat org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)\n\tat org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)\n\tat org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest.jupiterMocksFinalClassWithStartupAgent(DualEngineTransitionProbeTest.java:49)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+              }
+            ]
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest": {
+        "counts": [
+          2,
+          0,
+          0,
+          1
+        ],
+        "tests": [
+          {
+            "name": "testEntityMarshall",
+            "skipped": true,
+            "problems": []
+          },
+          {
+            "name": "testEntityAsAttributeValueMarshall",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "testXacmlJsonRequestRoundtrip",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "testMarshal",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "testUnmarshal",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      }
+    }
+  },
+  "jdk_properties": {
+    "xacml-json": {
+      "java.version": "21.0.6",
+      "java.runtime.version": "21.0.6+8-LTS-jvmci-23.1-b55",
+      "java.vm.name": "Java HotSpot(TM) 64-Bit Server VM",
+      "java.vendor": "Oracle Corporation"
+    }
+  },
+  "problems": [
+    {
+      "module": "xacml-json",
+      "class": "org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest",
+      "method": "jupiterMocksFinalClassWithStartupAgent",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "Mockito must be loaded as a startup agent on JDK 21 ==> expected: <true> but was: <false>",
+      "easymock_class_proxy": false,
+      "trace": "org.opentest4j.AssertionFailedError: Mockito must be loaded as a startup agent on JDK 21 ==> expected: <true> but was: <false>\n\tat org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)\n\tat org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)\n\tat org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)\n\tat org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)\n\tat org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)\n\tat org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest.jupiterMocksFinalClassWithStartupAgent(DualEngineTransitionProbeTest.java:49)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+    }
+  ],
+  "conformance": {},
+  "root_pom_sha256": "ee6123ad79074d703801f98460df723ac075b91d4235959e6751914802d6bf9d",
+  "root_pom_matches_before": false,
+  "probe_present": true
+}

@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "ast-grep": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "exec ast-grep-mcp-server --config \"$(git rev-parse --show-toplevel)/sgconfig.yml\""
+      ]
+    },
+    "ripwire": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "exec ripwire \"$(git rev-parse --show-toplevel)\" --mcp"
+      ]
+    }
+  }
+}

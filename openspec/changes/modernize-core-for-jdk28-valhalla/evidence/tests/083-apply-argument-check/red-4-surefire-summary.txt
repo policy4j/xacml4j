@@ -1,0 +1,14 @@
+Red run 4, JDK 21, 2026-10-08: a long chain of variable references, and a known violation next to an argument of unknown type (review round 3). Failures were not allowed to stop the build.
+
+[ERROR] Tests run: 40, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.691 s <<< FAILURE! - in org.xacml4j.v30.policy.ApplyArgumentValidationTest
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.typeErrorIsFoundThroughALongChainOfVariableReferences  Time elapsed: 0.007 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.knownViolationNextToAnArgumentOfUnknownTypeIsATypeError  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR]   ApplyArgumentValidationTest.knownViolationNextToAnArgumentOfUnknownTypeIsATypeError:247->assertHoldsTypeError:278 expected: <false> but was: <true>
+[ERROR]   ApplyArgumentValidationTest.typeErrorIsFoundThroughALongChainOfVariableReferences:233->assertHoldsTypeError:278 expected: <false> but was: <true>
+[ERROR] Tests run: 40, Failures: 2, Errors: 0, Skipped: 0
+[ERROR] Tests run: 11, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.776 s <<< FAILURE! - in org.xacml4j.v30.pdp.InvalidApplyDecisionTest
+[ERROR] org.xacml4j.v30.pdp.InvalidApplyDecisionTest.denyRuleWithAnInvalidExpressionIsIndeterminate(String, Expression)[5]  Time elapsed: 0.028 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.InvalidApplyDecisionTest.permitRuleWithAnInvalidExpressionIsIndeterminate(String, Expression)[5]  Time elapsed: 0.014 s  <<< FAILURE!
+[ERROR]   InvalidApplyDecisionTest.denyRuleWithAnInvalidExpressionIsIndeterminate:84 expected: <INDETERMINATE_D> but was: <DENY>
+[ERROR]   InvalidApplyDecisionTest.permitRuleWithAnInvalidExpressionIsIndeterminate:74 expected: <INDETERMINATE_P> but was: <PERMIT>
+[ERROR] Tests run: 11, Failures: 2, Errors: 0, Skipped: 0

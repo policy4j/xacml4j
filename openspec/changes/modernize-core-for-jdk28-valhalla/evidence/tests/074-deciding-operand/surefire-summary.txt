@@ -1,0 +1,33 @@
+JDK 21 full reactor, `mvn -Dlicense.skipUpdateLicense=true verify` from <repo>.
+
+xacml-core                 Tests run: 6271, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 130, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 927, Failures: 0, Errors: 0, Skipped: 14
+BUILD SUCCESS. Total: 7,695 tests, 0 failures, 0 errors, 24 skipped.
+Baseline (run 071, gate 5): 7,638 tests; conformance 927 with 14 skipped, the same.
+The run also held the round-5 review fix of run 071 (one test in xacml-pdp).
+
+== Gate 2: after the round-1 review (decision-level tests, quantifier test); run 075 also in the tree ==
+
+xacml-core                 Tests run: 6272, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 135, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 935, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,709 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,272 = 6,215 + 57 (LaterDecidingOperandTest); xacml-pdp 135 = 130 + 5 (LaterDecidingOperandPdpTest).
+
+== Gate 3: final tree of this run (tests added in review rounds 2 to 4); runs 075 and 076 also in the tree ==
+
+xacml-core                 Tests run: 6304, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 137, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,745 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,304 holds LaterDecidingOperandTest (67) and ZeroArgumentBagRegistryTest (22, run 076); xacml-pdp 137 holds LaterDecidingOperandPdpTest (7).

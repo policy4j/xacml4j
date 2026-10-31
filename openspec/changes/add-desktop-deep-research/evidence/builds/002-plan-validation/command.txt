@@ -1,0 +1,13 @@
+rtk openspec --version
+rtk openspec validate add-desktop-deep-research --strict
+rtk proxy openspec validate add-desktop-deep-research --strict --json
+rtk python3 -c 'from pathlib import Path; import re; c=Path("openspec/changes/add-desktop-deep-research"); index=(c/"evidence/README.md").read_text(); count=0; missing=[]; reqs=0; tests=set(); parts=list((c/"specs").glob("*/spec.md"));
+for p in parts:
+ s=p.read_text(); reqs+=len(re.findall(r"^### Requirement:",s,re.M)); scenarios=re.split(r"^#### Scenario: ",s,flags=re.M)[1:]; count+=len(scenarios)
+ for part in scenarios:
+  names=re.findall(r"`(test_[a-z0-9_]+)`",part); tests.update(names)
+  if not names: missing.append("unnamed-test:"+part.splitlines()[0])
+  for name in names:
+   if name not in index: missing.append("unmapped:"+name)
+print("requirements="+str(reqs)); print("scenarios="+str(count)); print("named_tests="+str(len(tests))); print("missing_mapping="+str(missing)); raise SystemExit(bool(missing))'
+rtk rg -n '/Users/|/private/tmp/|TODO|TBD|<!--' -g '*.md' openspec/changes/add-desktop-deep-research

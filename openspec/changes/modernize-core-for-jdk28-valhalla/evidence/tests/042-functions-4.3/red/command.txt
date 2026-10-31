@@ -1,0 +1,1 @@
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-core -am -Dtest=FunctionSafetyNet43Test -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/red/surefire.log test

@@ -1,0 +1,10 @@
+Red run 2, JDK 21, 2026-10-08: attribute names that start with xmlns, comments and processing instructions.
+
+[ERROR] Tests run: 24, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 0.113 s <<< FAILURE! - in org.xacml4j.util.DOMUtilEqualityTest
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.commentsAndProcessingInstructionsAreCompared  Time elapsed: 0.005 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[13]  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.util.DOMUtilEqualityTest.differentDocumentsAreNotEqual(String, String, String)[14]  Time elapsed: 0.001 s  <<< FAILURE!
+[ERROR]   DOMUtilEqualityTest.commentsAndProcessingInstructionsAreCompared:139 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:57 expected: <false> but was: <true>
+[ERROR]   DOMUtilEqualityTest.differentDocumentsAreNotEqual:57 expected: <false> but was: <true>
+[ERROR] Tests run: 33, Failures: 3, Errors: 0, Skipped: 0

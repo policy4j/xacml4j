@@ -1,0 +1,153 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "XacmlCoreTypes.proto";
+
+package com.xacml4j.xacml.proto;
+option java_multiple_files = true;
+
+enum PCompositeRuleType
+{
+  POLICY = 0;
+  POLICY_REF = 1;
+  POLICY_SET = 2;
+  POLICY_SET_REF = 3;
+}
+
+message PCompositeDecisionRule
+{
+  PCompositeRuleType type = 1;
+  google.protobuf.Any value = 2;
+}
+
+message PCompositeRuleRef
+{
+  string id = 1;
+  string version = 2;
+  string earliest = 3;
+  string latest = 4;
+}
+
+message PRule
+{
+  string id = 1;
+  PTarget target = 2;
+  PCondition condition = 3;
+  PEffect effect = 4;
+}
+
+message PPolicy
+{
+  string id = 1;
+  PTarget target = 2;
+  repeated PRule rules = 3;
+}
+
+message PPolicySet
+{
+  string id = 1;
+  PTarget target = 2;
+  repeated PCompositeDecisionRule rules = 3;
+}
+
+enum PEffect
+{
+  EFFECT_PERMIT = 0;
+  EFFECT_DENY = 1;
+}
+
+message PMatchAnyOf
+{
+  repeated PMatchAllOf allOf = 1;
+}
+
+message PMatchAllOf
+{
+  repeated PMatch match = 1;
+}
+
+message PMatch
+{
+  PValue value = 1;
+  PAttributeReference reference = 2;
+  PFunctionRef matchFunction = 3;
+}
+
+message PTarget
+{
+  repeated PMatchAnyOf anyOf = 1;
+}
+
+message PCondition
+{
+  PExpression predicate = 1;
+}
+
+enum ExpressionType
+{
+  APPLY_EXP = 0;
+  DESIGNATOR_EXP = 1;
+  SELECTOR_EXP = 2;
+  VARIABLE_REF_EXP = 3;
+  FUNCTION_REF_EXP = 4;
+  VALUE_EXP = 5;
+}
+
+message PExpression
+{
+    ExpressionType type = 1;
+    google.protobuf.Any expression = 2;
+}
+
+message PApply
+{
+  PFunctionRef function = 1;
+  repeated PExpression params = 2;
+}
+
+enum PAttributeReferenceType
+{
+   SELECTOR = 0;
+   DESIGNATOR = 1;
+}
+message PAttributeReference
+{
+  PAttributeReferenceType type = 1;
+  google.protobuf.Any reference = 2;
+}
+
+message PAttributeDesignator
+{
+  string attributeId = 1;
+  string categoryId = 2;
+  PXacmlTypes valueType = 3;
+  string issuer = 4;
+  bool mustBePresent = 5;
+}
+
+enum PPathType
+{
+   JSON_PATH = 0;
+   XML_PATH = 1;
+}
+
+message PAttributeSelector
+{
+  string path = 1;
+  string categoryId = 2;
+  PXacmlTypes valueType = 3;
+  string contextId = 4;
+  bool mustBePresent = 5;
+  PPathType type = 6;
+}
+
+message PVariableRef
+{
+  string variableId = 1;
+}
+
+message PFunctionRef
+{
+  string functionId = 1;
+}
+

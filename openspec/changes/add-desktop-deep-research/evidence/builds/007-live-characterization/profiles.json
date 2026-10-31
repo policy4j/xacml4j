@@ -1,0 +1,41 @@
+{
+  "scope": "characterization only; no production adapter or helper self-test claim",
+  "claude": {
+    "version": "2.19675.0",
+    "bundle_identifier": "com.anthropic.claudefordesktop",
+    "team_identifier": "Q6L2SF6YDW",
+    "characterization_submission_count": 1,
+    "provider_state": "COMPLETED",
+    "collection_state": "COLLECTED",
+    "mode": "Research via native Add menu; selected value observed",
+    "input": "AX set-value; exact content except one removed final newline; separate AXPress Send",
+    "binding": "unique submitted You heading and body with exact marker, signed PID/start session",
+    "sources": "ten connector toggles observed off and Memory off; two unselected MCP attachment menus; documented advanced Research local MCP exclusion",
+    "completion": "unique Research complete, no Stop response, unique bound document card and submitted USER turn",
+    "collection": "bound document Copy produced Markdown; exact twenty cited URLs matched native AXLink targets; native text words and full end markers checked; clipboard restored",
+    "format": "text/markdown",
+    "cited_source_count": 20,
+    "native_link_target_count": 25,
+    "production_profile_status": "NOT_IMPLEMENTED",
+    "limitations": [
+      "hover requires native window hit testing plus in-memory OCR; leaf AX model PARTIAL",
+      "complete source classification must occur before input in production",
+      "standalone Web search switch was not exposed",
+      "Memory restore control was not exposed after submission",
+      "native Download choices were observed but formats and downloads are UNRUN",
+      "compiled helper identity permission checks are UNRUN"
+    ]
+  },
+  "chatgpt": {
+    "version": "26.928.31416",
+    "bundle_identifier": "com.openai.codex",
+    "team_identifier": "2DC432GLL2",
+    "characterization_submission_count": 0,
+    "provider_state": "PREPARED",
+    "collection_state": "NOT_STARTED",
+    "new_window": "one native New window; both prior windows preserved and excluded",
+    "draft_guard": "nonempty twelve-character value matches an existing composer; draft-clear choice pending",
+    "generic_scripting": "PARTIAL; runtime returned zero windows despite AX windows",
+    "production_profile_status": "NO_GO_PENDING_DRAFT_AND_RESEARCH_SOURCE_INPUT_COLLECTION_CHARACTERIZATION"
+  }
+}

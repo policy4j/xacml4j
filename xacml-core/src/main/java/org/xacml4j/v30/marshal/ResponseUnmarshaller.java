@@ -25,11 +25,12 @@ package org.xacml4j.v30.marshal;
 import java.io.IOException;
 
 import org.xacml4j.v30.ResponseContext;
-import org.xacml4j.v30.XacmlSyntaxException;
+import org.xacml4j.v30.SyntaxException;
 
 
-public interface ResponseUnmarshaller
+public interface ResponseUnmarshaller extends
+                                      Unmarshaller<ResponseContext>
 {
 	ResponseContext unmarshal(Object source)
-		throws XacmlSyntaxException, IOException;
+		throws SyntaxException, IOException;
 }

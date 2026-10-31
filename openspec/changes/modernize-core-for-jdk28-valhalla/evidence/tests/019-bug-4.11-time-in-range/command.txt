@@ -1,0 +1,15 @@
+Working directory: <lane>
+JDK version check:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Search for existing time-in-range identifiers in module sources/resources:
+rtk rg -n "urn:oasis:names:tc:xacml:1\.0:function:time-in-range|urn:oasis:names:tc:xacml:2\.0:function:time-in-range" xacml-core/src xacml-pdp/src xacml-xml/src xacml-json/src xacml-conformance-tests/src
+
+Red regression (expected failures before production fix):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-core -Dlicense.skipUpdateLicense=true -Dtest=NonNumericComparisionFunctionTest -Dsurefire.failIfNoSpecifiedTests=false test -l evidence/tests/019-bug-4.11-time-in-range/red.log
+
+Focused green regression:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-core -Dlicense.skipUpdateLicense=true -Dtest=NonNumericComparisionFunctionTest -Dsurefire.failIfNoSpecifiedTests=false test -l evidence/tests/019-bug-4.11-time-in-range/green-focused.log
+
+Requested full core gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-core -Dlicense.skipUpdateLicense=true test -l evidence/tests/019-bug-4.11-time-in-range/surefire-summary.txt

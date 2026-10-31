@@ -1,0 +1,18 @@
+JDK 21: Maven 3.9.16, Java 21.0.6 (GraalVM).
+
+Focused green run:
+org.xacml4j.v30.types.TypeRegistryTest: 63 tests, 0 failures, 0 errors, 0 skipped.
+org.xacml4j.v30.policy.function.FunctionProviderDuplicateIdTest: 6 tests, 0 failures, 0 errors, 0 skipped.
+Total: 69 tests, 0 failures, 0 errors, 0 skipped.
+
+Full clean verify: BUILD SUCCESS, exit 0.
+Conformance Surefire reports:
+Xacml20ConformanceTest: 375 tests, 0 failures, 0 errors, 10 skipped.
+Xacml30ConformanceTest: 488 tests, 0 failures, 0 errors, 7 skipped.
+RSA2008InteropTest: 17 tests, 0 failures, 0 errors, 0 skipped.
+XacmlExampleTest: 2 tests, 0 failures, 0 errors, 0 skipped.
+CONFORMANCE PASS receipts: OASIS 2.0 368; OASIS 3.0 484; RSA 2008 17; examples 2.
+
+Raw logs:
+type-function-duplicates-green.log
+full-reactor-clean-verify.log

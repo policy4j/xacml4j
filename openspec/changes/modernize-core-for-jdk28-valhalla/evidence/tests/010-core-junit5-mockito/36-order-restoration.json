@@ -1,0 +1,11 @@
+{
+  "case": "order",
+  "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+  "method": "testAllMatch",
+  "intent": "Reverse two matching children; the result remains MATCH but the original strict order must fail.",
+  "mutation_boundary": "Owned test stimulus/collaborator only; no production source was mutated",
+  "backup": "36-mutation-backups/TargetTest.java",
+  "original_sha256": "8765191341825563cab4667e28ca0d7696ec3f5c9b8fe479ab12aff41af5706f",
+  "mutant_sha256": "d6b01769bcf062363e800571df3bea3ffadcf08fa85d11a6f7f6a75ba769c594",
+  "restored_exact_bytes": true
+}

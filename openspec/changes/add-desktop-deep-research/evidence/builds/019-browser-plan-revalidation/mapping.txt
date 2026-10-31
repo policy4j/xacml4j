@@ -1,0 +1,16 @@
+Select the surface explicitly: scenarios=4 tests=4 live=1 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Keep the provider reserved until the outcome is known: scenarios=3 tests=3 live=0 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Use a dedicated browser session that the operator signed in: scenarios=6 tests=6 live=1 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Verify the target and the preconditions of each action at activation: scenarios=12 tests=12 live=0 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Run headed or headless under the same guards: scenarios=2 tests=2 live=1 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Bind a browser job to its conversation address: scenarios=4 tests=4 live=2 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Continue a conversation with a follow-up chat turn: scenarios=7 tests=7 live=1 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Keep page content out of output and storage: scenarios=5 tests=5 live=0 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Collect the browser report from the bound conversation: scenarios=4 tests=4 live=2 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Require the operator's acknowledgement of provider terms for live browser operations: scenarios=6 tests=6 live=0 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+Apply the execution rules to every provider on the browser surface: scenarios=7 tests=7 live=1 shall=True index_row=True all_names_in_row=True row_tasks_exist=True
+requirements=11 scenarios=60 named_tests=60 distinct=60 clash_with_other_specs=[]
+tasks_5=5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9,5.10,5.11,5.12,5.13,5.14
+design_decisions=D1,D2,D3,D4,D5,D6,D7,D8,D9,D10,D11,D12,D13,D14,D15
+task_refs_in_design_proposal=5.1,5.2,5.3,5.9,5.10,5.12 all_exist=True
+mapping_issues=none

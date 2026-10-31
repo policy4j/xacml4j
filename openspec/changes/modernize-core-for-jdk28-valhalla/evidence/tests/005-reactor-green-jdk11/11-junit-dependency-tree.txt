@@ -1,0 +1,122 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Xacml4J Project                                                    [pom]
+[INFO] Xacml4J Core Engine Implementation                                 [jar]
+[INFO] Xacml4J XML representation JAXB classes                            [jar]
+[INFO] Xacml XML representation marshallers                               [jar]
+[INFO] Xacml4J Json based request/response and policy format support      [jar]
+[INFO] Xacml4J PDP                                                        [jar]
+[INFO] Xacml4J Policy Unit Test Support                                   [jar]
+[INFO] 
+[INFO] -------------------------< org.xacml4j:xacml >--------------------------
+[INFO] Building Xacml4J Project 2.0.0-SNAPSHOT                            [1/7]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml ---
+[INFO] org.xacml4j:xacml:pom:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT         [2/7]
+[INFO]   from xacml-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-core ---
+[INFO] org.xacml4j:xacml-core:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] ---------------------< org.xacml4j:xacml-xml-jaxb >---------------------
+[INFO] Building Xacml4J XML representation JAXB classes 2.0.0-SNAPSHOT    [3/7]
+[INFO]   from xacml-xml-jaxb/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.7.0:tree (default-cli) @ xacml-xml-jaxb ---
+[INFO] org.xacml4j:xacml-xml-jaxb:jar:2.0.0-SNAPSHOT
+[INFO] \- org.junit.vintage:junit-vintage-engine:jar:5.9.1:test
+[INFO]    \- junit:junit:jar:4.13.2:test
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-xml >------------------------
+[INFO] Building Xacml XML representation marshallers 2.0.0-SNAPSHOT       [4/7]
+[INFO]   from xacml-xml/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Downloading from mirror-snapshots: https://artifactory.example.com/artifactory/libs-snapshots/org/xacml4j/xacml-xml-jaxb/2.0.0-SNAPSHOT/maven-metadata.xml
+[INFO] Downloading from sonatype-nexus-snapshots: https://oss.sonatype.org/content/repositories/snapshots/org/xacml4j/xacml-xml-jaxb/2.0.0-SNAPSHOT/maven-metadata.xml
+[WARNING] Failed to write tracking file '<user-home>/.local/share/maven/repository/org/xacml4j/xacml-xml-jaxb/2.0.0-SNAPSHOT/resolver-status.properties'
+java.nio.file.FileSystemException: <user-home>/.local/share/maven/repository/org/xacml4j/xacml-xml-jaxb/2.0.0-SNAPSHOT/resolver-status.properties: Operation not permitted
+    at sun.nio.fs.UnixException.translateToIOException (UnixException.java:100)
+    at sun.nio.fs.UnixException.rethrowAsIOException (UnixException.java:111)
+    at sun.nio.fs.UnixException.rethrowAsIOException (UnixException.java:116)
+    at sun.nio.fs.UnixFileSystemProvider.newFileChannel (UnixFileSystemProvider.java:182)
+    at java.nio.channels.FileChannel.open (FileChannel.java:292)
+    at java.nio.channels.FileChannel.open (FileChannel.java:345)
+    at org.eclipse.aether.internal.impl.DefaultTrackingFileManager.update (DefaultTrackingFileManager.java:90)
+    at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.write (DefaultUpdateCheckManager.java:529)
+    at org.eclipse.aether.internal.impl.DefaultUpdateCheckManager.touchMetadata (DefaultUpdateCheckManager.java:503)
+    at org.eclipse.aether.internal.impl.DefaultMetadataResolver.resolve (DefaultMetadataResolver.java:364)
+    at org.eclipse.aether.internal.impl.DefaultMetadataResolver.resolveMetadata (DefaultMetadataResolver.java:180)
+    at org.apache.maven.repository.internal.DefaultVersionResolver.resolveVersion (DefaultVersionResolver.java:199)
+    at org.apache.maven.repository.internal.DefaultArtifactDescriptorReader.loadPom (DefaultArtifactDescriptorReader.java:212)
+    at org.apache.maven.repository.internal.DefaultArtifactDescriptorReader.readArtifactDescriptor (DefaultArtifactDescriptorReader.java:183)
+    at org.eclipse.aether.internal.impl.collect.df.DfDependencyCollector.resolveCachedArtifactDescriptor (DfDependencyCollector.java:382)
+    at org.eclipse.aether.internal.impl.collect.df.DfDependencyCollector.getArtifactDescriptorResult (DfDependencyCollector.java:368)
+    at org.eclipse.aether.internal.impl.collect.df.DfDependencyCollector.processDependency (DfDependencyCollector.java:218)
+    at org.eclipse.aether.internal.impl.collect.df.DfDependencyCollector.processDependency (DfDependencyCollector.java:156)
+    at org.eclipse.aether.internal.impl.collect.df.DfDependencyCollector.process (DfDependencyCollector.java:138)
+    at org.eclipse.aether.internal.impl.collect.df.DfDependencyCollector.doCollectDependencies (DfDependencyCollector.java:108)
+    at org.eclipse.aether.internal.impl.collect.DependencyCollectorDelegate.collectDependencies (DependencyCollectorDelegate.java:222)
+    at org.eclipse.aether.internal.impl.collect.DefaultDependencyCollector.collectDependencies (DefaultDependencyCollector.java:87)
+    at org.eclipse.aether.internal.impl.DefaultRepositorySystem.collectDependencies (DefaultRepositorySystem.java:306)
+    at org.apache.maven.project.DefaultProjectDependenciesResolver.resolve (DefaultProjectDependenciesResolver.java:151)
+    at org.apache.maven.lifecycle.internal.LifecycleDependencyResolver.getDependencies (LifecycleDependencyResolver.java:227)
+    at org.apache.maven.lifecycle.internal.LifecycleDependencyResolver.resolveProjectDependencies (LifecycleDependencyResolver.java:136)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.ensureDependenciesAreResolved (MojoExecutor.java:355)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:314)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:212)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:174)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.access$000 (MojoExecutor.java:75)
+    at org.apache.maven.lifecycle.internal.MojoExecutor$1.run (MojoExecutor.java:162)
+    at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute (DefaultMojosExecutionStrategy.java:39)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:159)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:105)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:73)
+    at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:53)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:118)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:261)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:173)
+    at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:101)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:919)
+    at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:285)
+    at org.apache.maven.cli.MavenCli.main (MavenCli.java:207)
+    at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0 (Native Method)
+    at jdk.internal.reflect.NativeMethodAccessorImpl.invoke (NativeMethodAccessorImpl.java:62)
+    at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke (DelegatingMethodAccessorImpl.java:43)
+    at java.lang.reflect.Method.invoke (Method.java:566)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced (Launcher.java:255)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.launch (Launcher.java:201)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode (Launcher.java:362)
+    at org.codehaus.plexus.classworlds.launcher.Launcher.main (Launcher.java:314)
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+[INFO] 
+[INFO] Xacml4J Project .................................... SUCCESS [  0.596 s]
+[INFO] Xacml4J Core Engine Implementation ................. SUCCESS [  0.021 s]
+[INFO] Xacml4J XML representation JAXB classes ............ SUCCESS [  0.020 s]
+[INFO] Xacml XML representation marshallers ............... FAILURE [  0.166 s]
+[INFO] Xacml4J Json based request/response and policy format support SKIPPED
+[INFO] Xacml4J PDP ........................................ SKIPPED
+[INFO] Xacml4J Policy Unit Test Support ................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.929 s
+[INFO] Finished at: 2026-10-01T11:15:36-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] java.nio.file.FileSystemException: <user-home>/.local/share/maven/repository/org/xacml4j/xacml-xml-jaxb/2.0.0-SNAPSHOT/resolver-status.properties: Operation not permitted
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.

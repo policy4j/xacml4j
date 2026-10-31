@@ -1,0 +1,22 @@
+Red run for the round-4 review fix (rv079 round 4), JDK 21.
+Tree: the green tree of gate 5 with the eager `getMessage()` calls put back in
+AttributeReferenceEvaluationException (both factories), AttributeReference.resolveImpl
+(both catch blocks) and DefaultEvaluationContextHandler.failed. The tests are the
+tests of gate 5. Command: see command.txt (red, round 4).
+
+[ERROR] Tests run: 15, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.695 s <<< FAILURE! - in org.xacml4j.v30.policy.AttributeSelectorTest
+[ERROR] org.xacml4j.v30.policy.AttributeSelectorTest.failureWithAThrowingMessageIsStillAProcessingError  Time elapsed: 0.005 s  <<< FAILURE!
+[ERROR]   AttributeSelectorTest.failureWithAThrowingMessageIsStillAProcessingError:447 expected: <org.xacml4j.v30.policy.AttributeSelectorTest$1@<id>> but was: <null>
+[ERROR] Tests run: 15, Failures: 1, Errors: 0, Skipped: 0
+[ERROR] Tests run: 20, Failures: 1, Errors: 0, Skipped: 2, Time elapsed: 0.729 s <<< FAILURE! - in org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest
+[ERROR] org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.resolverFailureWithAThrowingMessageIsStillMapped  Time elapsed: 0.009 s  <<< FAILURE!
+[ERROR] Tests run: 30, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.114 s <<< FAILURE! - in org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest
+[ERROR] org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testSelectorPipFailureWithAThrowingMessageIsStillMapped  Time elapsed: 0.002 s  <<< FAILURE!
+[ERROR] org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.testDesignatorPipFailureWithAThrowingMessageIsStillMapped  Time elapsed: 0.004 s  <<< FAILURE!
+[ERROR]   DefaultEvaluationContextHandlerTest.testDesignatorPipFailureWithAThrowingMessageIsStillMapped:725 Unexpected exception type thrown, expected: <org.xacml4j.v30.AttributeReferenceEvaluationException> but was: <org.xacml4j.v30.EvaluationException>
+[ERROR]   DefaultEvaluationContextHandlerTest.testSelectorPipFailureWithAThrowingMessageIsStillMapped:754 expected: <true> but was: <false>
+[ERROR]   DefaultPolicyInformationPointTest.resolverFailureWithAThrowingMessageIsStillMapped:594->assertResolverFailure:613 expected: <true> but was: <false>
+[ERROR] Tests run: 50, Failures: 3, Errors: 0, Skipped: 2
+
+After the run the four production files were restored; `git diff` had the same
+SHA-256 before the change and after the restore.

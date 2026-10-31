@@ -1,0 +1,121 @@
+Usage: Playwright MCP [options]
+
+Options:
+  -V, --version                         output the version number
+  --allowed-hosts <hosts...>            comma-separated list of hosts this
+                                        server is allowed to serve from.
+                                        Defaults to the host the server is bound
+                                        to. Pass '*' to disable the host check.
+  --allowed-origins <origins>           semicolon-separated list of TRUSTED
+                                        origins to allow the browser to request.
+                                        Default is to allow all.
+                                        Important: *does not* serve as a
+                                        security boundary and *does not* affect
+                                        redirects.
+  --allow-unrestricted-file-access      allow access to files outside of the
+                                        workspace roots. Also allows
+                                        unrestricted access to file:// URLs. By
+                                        default access to file system is
+                                        restricted to workspace root directories
+                                        (or cwd if no roots are configured)
+                                        only, and navigation to file:// URLs is
+                                        blocked.
+  --blocked-origins <origins>           semicolon-separated list of origins to
+                                        block the browser from requesting.
+                                        Blocklist is evaluated before allowlist.
+                                        If used without the allowlist, requests
+                                        not matching the blocklist are still
+                                        allowed.
+                                        Important: *does not* serve as a
+                                        security boundary and *does not* affect
+                                        redirects.
+  --block-service-workers               block service workers
+  --browser <browser>                   browser or chrome channel to use,
+                                        possible values: chrome, firefox,
+                                        webkit, msedge.
+  --caps <caps>                         comma-separated list of additional
+                                        capabilities to enable, possible values:
+                                        vision, pdf, devtools.
+  --cdp-endpoint <endpoint>             CDP endpoint to connect to.
+  --cdp-header <headers...>             CDP headers to send with the connect
+                                        request, multiple can be specified.
+  --cdp-timeout <timeout>               timeout in milliseconds for connecting
+                                        to CDP endpoint, defaults to 30000ms
+  --codegen <lang>                      specify the language to use for code
+                                        generation, possible values:
+                                        "typescript", "none". Default is
+                                        "typescript".
+  --config <path>                       path to the configuration file.
+  --console-level <level>               level of console messages to return:
+                                        "error", "warning", "info", "debug".
+                                        Each level includes the messages of more
+                                        severe levels.
+  --device <device>                     device to emulate, for example: "iPhone
+                                        15"
+  --executable-path <path>              path to the browser executable.
+  --extension                           Connect to a running browser instance
+                                        (Edge/Chrome only). Requires the
+                                        "Playwright Extension" to be installed.
+  --endpoint <endpoint>                 Bound browser endpoint to connect to.
+  --grant-permissions <permissions...>  List of permissions to grant to the
+                                        browser context, for example
+                                        "geolocation", "clipboard-read",
+                                        "clipboard-write".
+  --headless                            run browser in headless mode, headed by
+                                        default
+  --host <host>                         host to bind server to. Default is
+                                        localhost. Use 0.0.0.0 to bind to all
+                                        interfaces.
+  --ignore-https-errors                 ignore https errors
+  --init-page <path...>                 path to TypeScript file to evaluate on
+                                        Playwright page object
+  --init-script <path...>               path to JavaScript file to add as an
+                                        initialization script. The script will
+                                        be evaluated in every page before any of
+                                        the page's scripts. Can be specified
+                                        multiple times.
+  --isolated                            keep the browser profile in memory, do
+                                        not save it to disk.
+  --image-responses <mode>              whether to send image responses to the
+                                        client. Can be "allow" or "omit",
+                                        Defaults to "allow".
+  --no-sandbox                          disable the sandbox for all process
+                                        types that are normally sandboxed.
+  --output-dir <path>                   path to the directory for output files.
+  --output-mode <mode>                  whether to save snapshots, console
+                                        messages, network logs to a file or to
+                                        the standard output. Can be "file" or
+                                        "stdout". Default is "stdout".
+  --port <port>                         port to listen on for SSE transport.
+  --proxy-bypass <bypass>               comma-separated domains to bypass proxy,
+                                        for example
+                                        ".com,chromium.org,.domain.com"
+  --proxy-server <proxy>                specify proxy server, for example
+                                        "http://myproxy:3128" or
+                                        "socks5://myproxy:8080"
+  --sandbox                             enable the sandbox for all process types
+                                        that are normally not sandboxed.
+  --save-session                        Whether to save the Playwright MCP
+                                        session into the output directory.
+  --secrets <path>                      path to a file containing secrets in the
+                                        dotenv format
+  --shared-browser-context              reuse the same browser context between
+                                        all connected HTTP clients.
+  --snapshot-mode <mode>                when taking snapshots for responses,
+                                        specifies the mode to use. Can be "full"
+                                        or "none". Default is "full".
+  --storage-state <path>                path to the storage state file for
+                                        isolated sessions.
+  --test-id-attribute <attribute>       specify the attribute to use for test
+                                        ids, defaults to "data-testid"
+  --timeout-action <timeout>            specify action timeout in milliseconds,
+                                        defaults to 5000ms
+  --timeout-navigation <timeout>        specify navigation timeout in
+                                        milliseconds, defaults to 60000ms
+  --user-agent <ua string>              specify user agent string
+  --user-data-dir <path>                path to the user data directory. If not
+                                        specified, a temporary directory will be
+                                        created.
+  --viewport-size <size>                specify browser viewport size in pixels,
+                                        for example "1280x720"
+  -h, --help                            display help for command

@@ -1,0 +1,7 @@
+# Run 019, 2026-10-09, from the repository root.
+
+rtk proxy openspec validate add-desktop-deep-research --strict     # -> validate.txt
+rtk proxy openspec --version
+
+# mapping.txt: the same standard-library Python check as run 017, on the
+# third version of the plan.

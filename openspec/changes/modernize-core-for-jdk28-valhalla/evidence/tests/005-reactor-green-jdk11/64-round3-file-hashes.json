@@ -1,0 +1,11 @@
+{
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java": "61f22b3dfcd90f400f0baf374fc4b9aa8989006865ea151c45681cac5c547309",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java": "0095947d27dd9b0f075405976aaa510023935d2b9049f9cc7a125ca7d9386e06",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java": "db473c13813c8526a065fc34e0f2f67e579ca3b74291bc623fd755d32fe92ca0",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java": "674ff224d0848d1e0abcd3640b62ec46bb222319b9c50b03ce87c4456f340320",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java": "e4bb1dd13f27c6eb2b46c32daf3a56d288c598772ac1497c7871bd7f54a91af9",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java": "c8e30bb354cbe9b61969ed1602d1621df4f57807beb5be30b53dd1c3a8da6d9b",
+  "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java": "1f2db3cdf1f754a6db39929490d369b3f6e594ec7bae68b80d2fd61207e73e74",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java": "00b4b0ec7ef6a37af5bb16eeb68a0cfdbcc919487282c49ab25b3208bfe7a3ac",
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java": "3965d21ae5363077a9fafde35ffcf72406a064cbe56cb0ec565101f2e962c082"
+}

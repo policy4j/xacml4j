@@ -1,0 +1,1 @@
+oasis20,IIIC001,oasis-xacml20-compat-test/IIIC001Request.xml,oasis-xacml20-compat-test/IIIC001Policy.xml,oasis-xacml20-compat-test/IIIC001Response.xml,skipped,false,Engine defect: 2.0 hierarchy response loses ResourceId urn:root; the XML mapper reads only included resource attributes but this single-resource request does not include them,policy4j-the.4.19

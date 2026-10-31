@@ -1,0 +1,443 @@
+package org.xacml4j.v30;
+
+/*
+ * #%L
+ * Xacml4J Core Engine Implementation
+ * %%
+ * Copyright (C) 2009 - 2014 Xacml4J.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamField;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Spliterator;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultiset;
+import com.google.common.collect.Multiset;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.DynamicType;
+import org.xacml4j.v30.types.ValueType;
+
+/**
+ * XACML defines implicit collections of its data-types.
+ * XACML refers to a collection of values that are of a single data-type as a bag.
+ * Bags of data-types are needed because selections of nodes from an XML resource
+ * or XACML request context may return more than one value.
+ *
+ * The values in a bag are not ordered, and some of the values may be duplicates.
+ * There SHALL be no notion of a bag containing bags, or a bag containing values
+ * of differing types. I.e. a bag in XACML SHALL contain only values that
+ * are of the same data-type.
+ *
+ * @author Giedrius Trumpickas
+ */
+public final class BagOfValues
+		implements ValueExp, Serializable, Iterable<Value<?>>
+{
+	private static final long serialVersionUID = -8197446176793438616L;
+	private static final ObjectStreamField[] serialPersistentFields = {
+			new ObjectStreamField("hashCode", int.class),
+			new ObjectStreamField("type", BagOfValuesType.class),
+			new ObjectStreamField("values", Multiset.class)
+	};
+
+	private transient volatile BagOfValuesType type;
+	private transient volatile BagStorage storage;
+	private transient volatile Multiset<Value<?>> values;
+	private transient volatile int cardinality;
+	private int hashCode;
+	
+	/**
+	 * Constructs bag of attributes.
+	 *
+	 * @param type the bag type
+	 * @param storage the values, as the storage builder of the value type built them
+	 */
+	private BagOfValues(BagOfValuesType type, BagStorage storage){
+		this.type = type;
+		this.cardinality = BagStorages.cardinality(storage);
+		this.storage = storage;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Value<?>> Collection<T> values() {
+		Multiset<Value<?>> result = values;
+		if (result == null) {
+			ImmutableMultiset.Builder<Value<?>> builder = ImmutableMultiset.builder();
+			for (int i = 0; i < storage.distinctSize(); i++) {
+				builder.addCopies(storage.distinctValueAt(i), storage.distinctCountAt(i));
+			}
+			result = builder.build();
+			values = result;
+		}
+		return (Collection<T>) result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Value<?>> Stream<T> stream(){
+		return (Stream<T>) StreamSupport.stream(spliterator(), false);
+	}
+
+	@Override
+	public Iterator<Value<?>> iterator() {
+		return storage.iterator();
+	}
+
+	@Override
+	public Spliterator<Value<?>> spliterator() {
+		return java.util.Spliterators.spliterator(iterator(), size(),
+				Spliterator.ORDERED | Spliterator.IMMUTABLE | Spliterator.NONNULL);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Value<?>> T valueAt(int index) {
+		return (T) storage.valueAt(index);
+	}
+
+	public BagStorage.Scan scanEqual(Value<?> literal) {
+		return storage.equal(literal);
+	}
+
+	public BagStorage.Scan scanDoubles(BagStorage.Comparison comparison, double literal) {
+		return storage.compareDoubles(comparison, literal);
+	}
+
+	public BagStorage.Scan scanIntegers(BagStorage.Comparison comparison, long literal) {
+		return storage.compareIntegers(comparison, literal);
+	}
+
+	public BagStorage.Scan scanTemporal(BagStorage.Comparison comparison, Value<?> literal) {
+		return storage.compareTemporal(comparison, literal);
+	}
+
+	/**
+	 * Gets bag value data type
+	 *
+	 * @return {@link ValueType}
+	 */
+	public ValueType getBagValueType(){
+		return type.getValueType();
+	}
+
+	@Override
+	public BagOfValuesType getEvaluatesTo() {
+		return type;
+	}
+
+	/**
+	 * Gets first attribute value
+	 * in this bag
+	 *
+	 * @return first {@link Value}
+	 * defaultProvider in this bag
+	 * @exception NoSuchElementException if bag is empty
+	 */
+	public <T extends Value<?>> T value(){
+		if (isEmpty()) {
+			throw new NoSuchElementException();
+		}
+		return valueAt(0);
+	}
+
+	public <T extends Value<?>> Optional<T> single() {
+		return isEmpty() ? Optional.empty() : Optional.of(valueAt(0));
+	}
+
+	/**
+	 * Gets number of {@link Value}
+	 * instances in this bag
+	 *
+	 * @return number of attributes
+	 * in this bag
+	 */
+	public int size() {
+		int size = cardinality;
+		if (size == 0) return storage.size();
+		return size > 0 ? size : 0;
+	}
+
+	/**
+	 * Tests if this bag is empty.
+	 *
+	 * @return {@code true} if bag is empty
+	 */
+	public boolean isEmpty(){
+		return size() == 0;
+	}
+
+	/**
+	 * Tests if this bag contains given attribute.
+	 *
+	 * @param attr an attribute
+	 * @return {@code true} if bag contains given attribute
+	 */
+	public boolean contains(Value<?> attr){
+		return count(attr) != 0;
+	}
+
+	private int count(Value<?> value) {
+		return size() <= BagStorages.LINEAR_LOOKUP_LIMIT ? storage.count(value) : ((Multiset<?>) values()).count(value);
+	}
+
+	/**
+	 * Returns a bag of such that it contains all elements of
+	 * all the argument bags all duplicate elements are removed
+	 *
+	 * @param bag an another bag
+	 * @return union of this and given bag without duplicate
+	 * elements
+	 */
+	public BagOfValues union(BagOfValues bag)
+	{
+		Preconditions.checkArgument(type.equals(bag.type));
+		Builder result = type.builder();
+		for (int i = 0; i < storage.distinctSize(); i++) {
+			result.attribute(storage.distinctValueAt(i));
+		}
+		for (int i = 0; i < bag.storage.distinctSize(); i++) {
+			Value<?> value = bag.storage.distinctValueAt(i);
+			if (!contains(value)) result.attribute(value);
+		}
+		return result.build();
+	}
+
+	/**
+	 * Returns a bag of values such that it contains only
+	 * elements that are common between this and given bag
+	 *
+	 * @param bag an another bag
+	 * @return bag which contains common
+	 * elements between this and given bag
+	 */
+	public BagOfValues intersection(BagOfValues bag)
+	{
+		Preconditions.checkArgument(type.equals(bag.type));
+		Builder result = type.builder();
+		for (int i = 0; i < storage.distinctSize(); i++) {
+			Value<?> value = storage.distinctValueAt(i);
+			if (bag.contains(value)) result.attribute(value);
+		}
+		return result.build();
+	}
+
+	/**
+	 * Tests if this bag contains at least on value
+	 * from the given bag
+	 *
+	 * @param bag a bag
+	 * @return {@code true} if this bag contains
+	 * at least one value from the given bag
+	 */
+	public boolean containsAtLeastOneOf(BagOfValues bag)
+	{
+		for(Value<?> v : bag){
+			if(contains(v)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Tests if this bag is subset of given bag.
+	 *
+	 * @param bag a bag
+	 * @return {@code true} if given bag
+	 * is subset if this bag
+	 */
+	public boolean containsAll(BagOfValues bag){
+		Preconditions.checkArgument(type.equals(bag.type));
+		for (int i = 0; i < bag.size(); i++) {
+			if (!contains(bag.valueAt(i))) return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean equals(Object o){
+		if(o == this){
+			return true;
+		}
+		if(!(o instanceof BagOfValues)){
+			return false;
+		}
+		BagOfValues bag = (BagOfValues)o;
+		if (!type.equals(bag.type) || size() != bag.size()
+				|| storage.distinctSize() != bag.storage.distinctSize()) return false;
+		for (int i = 0; i < storage.distinctSize(); i++) {
+			if (storage.distinctCountAt(i) != bag.count(storage.distinctValueAt(i))) return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this).
+		add("DataType", type.getValueType()).
+		add("Values", values()).toString();
+	}
+
+	@Override
+	public int hashCode(){
+		// One read of the cache field: a second read may see 0 again under a data race (review RVH2, JDK-8166842)
+		int h = hashCode;
+		if(h == 0){
+			h = 31 * (31 + storage.multisetHashCode()) + type.hashCode();
+			hashCode = h;
+		}
+		return h;
+	}
+
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		ObjectOutputStream.PutField fields = out.putFields();
+		fields.put("hashCode", hashCode);
+		fields.put("type", type);
+		fields.put("values", values());
+		out.writeFields();
+	}
+
+	@SuppressWarnings("unchecked")
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		ObjectInputStream.GetField fields = in.readFields();
+		BagOfValuesType readType = (BagOfValuesType) fields.get("type", null);
+		Multiset<Value<?>> readValues = (Multiset<Value<?>>) fields.get("values", null);
+		if (readType == null || readValues == null) {
+			throw new InvalidObjectException("Bag is missing its type or values");
+		}
+		BagStorage.Builder builder = readType.getValueType().bagStorageBuilder();
+		for (Value<?> value : readValues) builder.add(value);
+		BagStorage readStorage = builder.build();
+		this.type = readType;
+		this.cardinality = BagStorages.cardinality(readStorage);
+		this.storage = readStorage;
+		this.hashCode = fields.get("hashCode", 0);
+	}
+
+	/**
+	 * A static helper method to retrieve a single
+	 * value from a given bag
+	 *
+	 * @param <T> attribute expression type
+	 * @param v a bag of values
+	 * @return a single value or {@code null}
+	 * if a given bag is {@code null} or empty
+	 */
+	public static Value<?>  value(BagOfValues v){
+		return v.single().orElse(null);
+	}
+
+	@Override
+	public void accept(ExpressionVisitor expv) {
+		BagOfAttributeVisitor v = (BagOfAttributeVisitor) expv;
+		v.visitEnter(this);
+		v.visitLeave(this);
+	}
+
+	public interface BagOfAttributeVisitor extends ExpressionVisitor
+	{
+		default void visitEnter(BagOfValues v){
+			v.accept(this);
+		}
+		default void visitLeave(BagOfValues v){
+			v.accept(this);
+		}
+	}
+
+	private static void assertExpressionType(Value value, BagOfValuesType bagType) {
+		if (!value.getEvaluatesTo().equals(bagType.getValueType())) {
+			throw new IllegalArgumentException(String.format(
+					"Given attribute value=\"%s\" " +
+							"can't be used as a value of bag=\"%s\"", value, bagType));
+		}
+	}
+
+	public static class Builder
+	{
+
+		private BagOfValuesType bagType;
+		private final BagStorage.Builder valuesBuilder;
+
+		public Builder(BagOfValuesType type){
+			this.bagType = Preconditions.checkNotNull(type);
+			// A bag has the data type of its values. The dynamic type is the
+			// type of an expression, never of a value.
+			Preconditions.checkArgument(!DynamicType.isDynamic(type),
+					"A bag can not have the dynamic data type");
+			this.valuesBuilder = type.getValueType().bagStorageBuilder();
+		}
+
+		public Builder(ValueType type){
+			this(Preconditions.checkNotNull(type).bagType());
+		}
+
+
+		public Builder value(Object ...values){
+			for(Object v : values){
+				this.valuesBuilder.add(bagType.getValueType().ofAny(v));
+			}
+			return this;
+		}
+
+		public Builder values(Iterable<Object> values){
+			for(Object v : values){
+				this.valuesBuilder.add(bagType.getValueType().ofAny(v));
+			}
+			return this;
+		}
+
+		public Builder attributes(Iterable<? extends Value<?>> values){
+			// Index loops only over a Guava ImmutableList, which is random access and cannot
+			// change between the two passes: the rule of the combining algorithms (design D30,
+			// review R-UX P3-2). Every other iterable, a JDK random-access list too, iterates.
+			if (values instanceof ImmutableList<? extends Value<?>> list) {
+				for (int i = 0; i < list.size(); i++) assertExpressionType(list.get(i), bagType);
+				for (int i = 0; i < list.size(); i++) this.valuesBuilder.add(list.get(i));
+				return this;
+			}
+			for (Value<?> v : values) {
+				assertExpressionType(v, bagType);
+			}
+			for (Value<?> v : values) this.valuesBuilder.add(v);
+			return this;
+		}
+
+		public Builder attribute(Value<?>...values){
+			for(Value<?> v : values){
+				assertExpressionType(v, bagType);
+				this.valuesBuilder.add(v);
+			}
+			return this;
+		}
+
+		public BagOfValues build(){
+			return new BagOfValues(bagType, valuesBuilder.build());
+		}
+	}
+}

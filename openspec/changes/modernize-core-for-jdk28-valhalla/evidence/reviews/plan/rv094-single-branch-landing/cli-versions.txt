@@ -1,0 +1,12 @@
+$ codex --version
+codex-cli 0.164.0
+$ claude --version
+2.1.310 (Claude Code)
+$ agy --version
+1.4.7
+$ grok --version
+grok 1.0.70 (f50904eaee6c) [stable]
+$ kimi --version
+2.3.1
+$ ntm --version
+ntm version 1.36.0

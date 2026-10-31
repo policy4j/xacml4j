@@ -1,0 +1,566 @@
+--- a/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/conformance-blockers.md
++++ b/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/conformance-blockers.md
+@@ -7,8 +7,8 @@
+ 
+ | Case | Classification | Observed failure | Cause | Manifest status |
+ | --- | --- | --- | --- | --- |
+-| oasis30/IIIA030 | Engine: XML response output | Obligation assignment2 has the expected XPath expression but lacks XPathCategory resource metadata | Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment) copies the typed value's data type/content but drops its extension attributes | skipped, BUG-TBD-IIIA030 |
+-| oasis30/IIIA330 | Engine: XML response output | Advice assignment2 has the expected XPath expression but lacks XPathCategory resource metadata | Same mapper method as IIIA030 | skipped, BUG-TBD-IIIA330 |
++| oasis30/IIIA030 | Engine: XML response output | Obligation assignment2 has the expected XPath expression but lacks XPathCategory resource metadata | Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment) copies the typed value's data type/content but drops its extension attributes | skipped, policy4j-the.4.24 |
++| oasis30/IIIA330 | Engine: XML response output | Advice assignment2 has the expected XPath expression but lacks XPathCategory resource metadata | Same mapper method as IIIA030 | skipped, policy4j-the.4.24 |
+ 
+ Evidence: [09-conformance-gate-cases.json](09-conformance-gate-cases.json) has the
+ failing Surefire receipts. [09-assignment-metadata-probe.json](09-assignment-metadata-probe.json)
+--- a/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
++++ b/xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+@@ -3,7 +3,7 @@
+ oasis20,IIA002,oasis-xacml20-compat-test/IIA002Request.xml,oasis-xacml20-compat-test/IIA002Policy.xml,oasis-xacml20-compat-test/IIA002Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIA003,oasis-xacml20-compat-test/IIA003Request.xml,oasis-xacml20-compat-test/IIA003Policy.xml,oasis-xacml20-compat-test/IIA003Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIA004,oasis-xacml20-compat-test/IIA004Request.xml,oasis-xacml20-compat-test/IIA004Policy.xml,oasis-xacml20-compat-test/IIA004Response.xml,skipped,false,Fixture/spec issue: Deliberately invalid policy omits AttributeId; importer rejects it; IIA004Special.txt permits validation-time rejection but the response-only path cannot evaluate it,policy4j-the.3.9
+-oasis20,IIA005,oasis-xacml20-compat-test/IIA005Request.xml,oasis-xacml20-compat-test/IIA005Policy.xml,oasis-xacml20-compat-test/IIA005Response.xml,skipped,false,Engine defect: Request omits AttributeId; XML mapping throws IllegalArgumentException before the PDP can return the expected syntax-error Indeterminate,policy4j-the.4.17
++oasis20,IIA005,oasis-xacml20-compat-test/IIA005Request.xml,oasis-xacml20-compat-test/IIA005Policy.xml,oasis-xacml20-compat-test/IIA005Response.xml,skipped,false,Request syntax error: Missing AttributeId is rejected with SyntaxException; mapping request syntax errors to a response remains pending decision,policy4j-the.4.17
+ oasis20,IIA006,oasis-xacml20-compat-test/IIA006Request.xml,oasis-xacml20-compat-test/IIA006Policy.xml,oasis-xacml20-compat-test/IIA006Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIA007,oasis-xacml20-compat-test/IIA007Request.xml,oasis-xacml20-compat-test/IIA007Policy.xml,oasis-xacml20-compat-test/IIA007Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis20,IIA008,oasis-xacml20-compat-test/IIA008Request.xml,oasis-xacml20-compat-test/IIA008Policy.xml,oasis-xacml20-compat-test/IIA008Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -377,7 +377,7 @@
+ oasis30,IIA002,xacml3.0-ct-v.0.4/IIA002Request.xml,xacml3.0-ct-v.0.4/IIA002Policy.xml,xacml3.0-ct-v.0.4/IIA002Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA003,xacml3.0-ct-v.0.4/IIA003Request.xml,xacml3.0-ct-v.0.4/IIA003Policy.xml,xacml3.0-ct-v.0.4/IIA003Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA004,xacml3.0-ct-v.0.4/IIA004Request.xml,xacml3.0-ct-v.0.4/IIA004Policy.xml,xacml3.0-ct-v.0.4/IIA004Response.xml,skipped,false,Fixture/spec issue: Deliberately invalid policy omits AttributeId; importer rejects it; IIA004Special.txt permits validation-time rejection but the response-only path cannot evaluate it,policy4j-the.3.9
+-oasis30,IIA005,xacml3.0-ct-v.0.4/IIA005Request.xml,xacml3.0-ct-v.0.4/IIA005Policy.xml,xacml3.0-ct-v.0.4/IIA005Response.xml,skipped,false,Engine defect: Request omits AttributeId; XML mapping throws IllegalArgumentException before the PDP can return the expected syntax-error Indeterminate,policy4j-the.4.17
++oasis30,IIA005,xacml3.0-ct-v.0.4/IIA005Request.xml,xacml3.0-ct-v.0.4/IIA005Policy.xml,xacml3.0-ct-v.0.4/IIA005Response.xml,skipped,false,Request syntax error: Missing AttributeId is rejected with SyntaxException; mapping request syntax errors to a response remains pending decision,policy4j-the.4.17
+ oasis30,IIA006,xacml3.0-ct-v.0.4/IIA006Request.xml,xacml3.0-ct-v.0.4/IIA006Policy.xml,xacml3.0-ct-v.0.4/IIA006Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA007,xacml3.0-ct-v.0.4/IIA007Request.xml,xacml3.0-ct-v.0.4/IIA007Policy.xml,xacml3.0-ct-v.0.4/IIA007Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA008,xacml3.0-ct-v.0.4/IIA008Request.xml,xacml3.0-ct-v.0.4/IIA008Policy.xml,xacml3.0-ct-v.0.4/IIA008Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -394,9 +394,9 @@
+ oasis30,IIA019,xacml3.0-ct-v.0.4/IIA019Request.xml,xacml3.0-ct-v.0.4/IIA019Policy.xml,xacml3.0-ct-v.0.4/IIA019Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA020,xacml3.0-ct-v.0.4/IIA020Request.xml,xacml3.0-ct-v.0.4/IIA020Policy.xml,xacml3.0-ct-v.0.4/IIA020Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA021,xacml3.0-ct-v.0.4/IIA021Request.xml,xacml3.0-ct-v.0.4/IIA021Policy.xml,xacml3.0-ct-v.0.4/IIA021Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis30,IIA022,xacml3.0-ct-v.0.4/IIA022Request.xml,xacml3.0-ct-v.0.4/IIA022Policy.xml,xacml3.0-ct-v.0.4/IIA022Response.xml,skipped,false,Engine defect: Integer response value 56 is serialized as the IntegerVal debug string instead of the XML Schema integer lexical value 56,policy4j-the.4.16
++oasis30,IIA022,xacml3.0-ct-v.0.4/IIA022Request.xml,xacml3.0-ct-v.0.4/IIA022Policy.xml,xacml3.0-ct-v.0.4/IIA022Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIA023,xacml3.0-ct-v.0.4/IIA023Request.xml,xacml3.0-ct-v.0.4/IIA023Policy.xml,xacml3.0-ct-v.0.4/IIA023Response.xml,skipped,false,Fixture/spec issue: Fixture expects Permit but request dateTime 1056-11-05T19:08:12-14:30 uses a timezone beyond the XML Schema maximum -14:00; JAXP rejects -870 minutes,policy4j-the.3.9
+-oasis30,IIA024,xacml3.0-ct-v.0.4/IIA024Request.xml,xacml3.0-ct-v.0.4/IIA024Policy.xml,xacml3.0-ct-v.0.4/IIA024Response.xml,skipped,false,Engine defect: Integer response value 56 is serialized as the IntegerVal debug string instead of the XML Schema integer lexical value 56,policy4j-the.4.16
++oasis30,IIA024,xacml3.0-ct-v.0.4/IIA024Request.xml,xacml3.0-ct-v.0.4/IIA024Policy.xml,xacml3.0-ct-v.0.4/IIA024Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIB001,xacml3.0-ct-v.0.4/IIB001Request.xml,xacml3.0-ct-v.0.4/IIB001Policy.xml,xacml3.0-ct-v.0.4/IIB001Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIB002,xacml3.0-ct-v.0.4/IIB002Request.xml,xacml3.0-ct-v.0.4/IIB002Policy.xml,xacml3.0-ct-v.0.4/IIB002Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIB003,xacml3.0-ct-v.0.4/IIB003Request.xml,xacml3.0-ct-v.0.4/IIB003Policy.xml,xacml3.0-ct-v.0.4/IIB003Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -807,7 +807,7 @@
+ oasis30,IIIA026,xacml3.0-ct-v.0.4/IIIA026Request.xml,xacml3.0-ct-v.0.4/IIIA026Policy.xml,xacml3.0-ct-v.0.4/IIIA026Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIA027,xacml3.0-ct-v.0.4/IIIA027Request.xml,xacml3.0-ct-v.0.4/IIIA027Policy.xml,xacml3.0-ct-v.0.4/IIIA027Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIA028,xacml3.0-ct-v.0.4/IIIA028Request.xml,xacml3.0-ct-v.0.4/IIIA028Policy.xml,xacml3.0-ct-v.0.4/IIIA028Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis30,IIIA030,xacml3.0-ct-v.0.4/IIIA030Request.xml,xacml3.0-ct-v.0.4/IIIA030Policy.xml,xacml3.0-ct-v.0.4/IIIA030Response.xml,skipped,false,Engine XML output defect: obligation assignment2 loses XPathCategory resource metadata in Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment),BUG-TBD-IIIA030
++oasis30,IIIA030,xacml3.0-ct-v.0.4/IIIA030Request.xml,xacml3.0-ct-v.0.4/IIIA030Policy.xml,xacml3.0-ct-v.0.4/IIIA030Response.xml,skipped,false,Engine XML output defect: obligation assignment2 loses XPathCategory resource metadata in Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment),policy4j-the.4.24
+ oasis30,IIIA301,xacml3.0-ct-v.0.4/IIIA301Request.xml,xacml3.0-ct-v.0.4/IIIA301Policy.xml,xacml3.0-ct-v.0.4/IIIA301Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIA302,xacml3.0-ct-v.0.4/IIIA302Request.xml,xacml3.0-ct-v.0.4/IIIA302Policy.xml,xacml3.0-ct-v.0.4/IIIA302Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIA303,xacml3.0-ct-v.0.4/IIIA303Request.xml,xacml3.0-ct-v.0.4/IIIA303Policy.xml,xacml3.0-ct-v.0.4/IIIA303Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -837,14 +837,14 @@
+ oasis30,IIIA327,xacml3.0-ct-v.0.4/IIIA327Request.xml,xacml3.0-ct-v.0.4/IIIA327Policy.xml,xacml3.0-ct-v.0.4/IIIA327Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIA328,xacml3.0-ct-v.0.4/IIIA328Request.xml,xacml3.0-ct-v.0.4/IIIA328Policy.xml,xacml3.0-ct-v.0.4/IIIA328Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIA329,xacml3.0-ct-v.0.4/IIIA329Request.xml,xacml3.0-ct-v.0.4/IIIA329Policy.xml,xacml3.0-ct-v.0.4/IIIA329Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis30,IIIA330,xacml3.0-ct-v.0.4/IIIA330Request.xml,xacml3.0-ct-v.0.4/IIIA330Policy.xml,xacml3.0-ct-v.0.4/IIIA330Response.xml,skipped,false,Engine XML output defect: advice assignment2 loses XPathCategory resource metadata in Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment),BUG-TBD-IIIA330
+-oasis30,IIIA340,xacml3.0-ct-v.0.4/IIIA340Request.xml,xacml3.0-ct-v.0.4/IIIA340Policy.xml,xacml3.0-ct-v.0.4/IIIA340Response.xml,skipped,false,Engine defect: Positive infinity is serialized as Infinity instead of the XML Schema double lexical form INF in included attributes,policy4j-the.4.16
++oasis30,IIIA330,xacml3.0-ct-v.0.4/IIIA330Request.xml,xacml3.0-ct-v.0.4/IIIA330Policy.xml,xacml3.0-ct-v.0.4/IIIA330Response.xml,skipped,false,Engine XML output defect: advice assignment2 loses XPathCategory resource metadata in Xacml30RequestContextFromJaxbToObjectModelMapper.create(AttributeAssignment),policy4j-the.4.24
++oasis30,IIIA340,xacml3.0-ct-v.0.4/IIIA340Request.xml,xacml3.0-ct-v.0.4/IIIA340Policy.xml,xacml3.0-ct-v.0.4/IIIA340Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIC001,xacml3.0-ct-v.0.4/IIIC001Request.xml,xacml3.0-ct-v.0.4/IIIC001Policy.xml,xacml3.0-ct-v.0.4/IIIC001Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIC002,xacml3.0-ct-v.0.4/IIIC002Request.xml,xacml3.0-ct-v.0.4/IIIC002Policy.xml,xacml3.0-ct-v.0.4/IIIC002Response.xml,skipped,false,Engine defect: Configured default multiple-resource chain does not expand hierarchical Children/Descendants scope; expected 3 results but received one; IIICSpecial.txt describes the required resource tree,policy4j-the.4.18
+ oasis30,IIIC003,xacml3.0-ct-v.0.4/IIIC003Request.xml,xacml3.0-ct-v.0.4/IIIC003Policy.xml,xacml3.0-ct-v.0.4/IIIC003Response.xml,skipped,false,Engine defect: Configured default multiple-resource chain does not expand hierarchical Children/Descendants scope; expected 7 results but received one; IIICSpecial.txt describes the required resource tree,policy4j-the.4.18
+-oasis30,IIIE301,xacml3.0-ct-v.0.4/IIIE301Request.xml,xacml3.0-ct-v.0.4/IIIE301Policy.xml,xacml3.0-ct-v.0.4/IIIE301Response.xml,skipped,false,Fixture/spec issue: Draft fixture uses urn:oasis:names:tc:xacml:3.0:multiple:content-selector; engine recognizes the final profile:multiple:content-selector identifier; expected two results but received one,policy4j-the.3.7
++oasis30,IIIE301,xacml3.0-ct-v.0.4/IIIE301Request.xml,xacml3.0-ct-v.0.4/IIIE301Policy.xml,xacml3.0-ct-v.0.4/IIIE301Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIE302,xacml3.0-ct-v.0.4/IIIE302Request.xml,xacml3.0-ct-v.0.4/IIIE302Policy.xml,xacml3.0-ct-v.0.4/IIIE302Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis30,IIIE303,xacml3.0-ct-v.0.4/IIIE303Request.xml,xacml3.0-ct-v.0.4/IIIE303Policy.xml,xacml3.0-ct-v.0.4/IIIE303Response.xml,skipped,false,Engine defect: RequestReference JAXB IDREF resolves to AttributesType; XML request mapper casts it to String and throws ClassCastException before evaluation,policy4j-the.3.7
++oasis30,IIIE303,xacml3.0-ct-v.0.4/IIIE303Request.xml,xacml3.0-ct-v.0.4/IIIE303Policy.xml,xacml3.0-ct-v.0.4/IIIE303Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIF001,xacml3.0-ct-v.0.4/IIIF001Request.xml,xacml3.0-ct-v.0.4/IIIF001Policy.xml,xacml3.0-ct-v.0.4/IIIF001Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIF002,xacml3.0-ct-v.0.4/IIIF002Request.xml,xacml3.0-ct-v.0.4/IIIF002Policy.xml,xacml3.0-ct-v.0.4/IIIF002Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIF003,xacml3.0-ct-v.0.4/IIIF003Request.xml,xacml3.0-ct-v.0.4/IIIF003Policy.xml,xacml3.0-ct-v.0.4/IIIF003Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+@@ -858,8 +858,8 @@
+ oasis30,IIIG004,xacml3.0-ct-v.0.4/IIIG004Request.xml,xacml3.0-ct-v.0.4/IIIG004Policy.xml,xacml3.0-ct-v.0.4/IIIG004Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIG005,xacml3.0-ct-v.0.4/IIIG005Request.xml,xacml3.0-ct-v.0.4/IIIG005Policy.xml,xacml3.0-ct-v.0.4/IIIG005Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ oasis30,IIIG006,xacml3.0-ct-v.0.4/IIIG006Request.xml,xacml3.0-ct-v.0.4/IIIG006Policy.xml,xacml3.0-ct-v.0.4/IIIG006Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+-oasis30,IIIG300,xacml3.0-ct-v.0.4/IIIG300Request.xml,xacml3.0-ct-v.0.4/IIIG300Policy.xml,xacml3.0-ct-v.0.4/IIIG300Response.xml,skipped,false,Engine defect: Returned PolicyIdentifierList contains 5 policy references instead of the expected 2; non-applicable/evaluated reference tracking includes extra policies,policy4j-the.4.22
+-oasis30,IIIG301,xacml3.0-ct-v.0.4/IIIG301Request.xml,xacml3.0-ct-v.0.4/IIIG301Policy.xml,xacml3.0-ct-v.0.4/IIIG301Response.xml,skipped,false,Engine defect: Returned PolicyIdentifierList contains 4 policy references instead of the expected 3; non-applicable/evaluated reference tracking includes extra policies,policy4j-the.4.22
++oasis30,IIIG300,xacml3.0-ct-v.0.4/IIIG300Request.xml,xacml3.0-ct-v.0.4/IIIG300Policy.xml,xacml3.0-ct-v.0.4/IIIG300Response.xml,skipped,false,Fixture/spec adjudication: Fixture expects 2 policy ids; XACML 3.0 Plus Errata 01 section 5.48 lists all fully applicable policies so the engine returns 3,policy4j-the.3.9
++oasis30,IIIG301,xacml3.0-ct-v.0.4/IIIG301Request.xml,xacml3.0-ct-v.0.4/IIIG301Policy.xml,xacml3.0-ct-v.0.4/IIIG301Response.xml,executed,true,Compare the PDP response with the vendored expected response,
+ rsa2008,01-01,rsa2008-interop/XacmlRequest-01-01.xml,rsa2008-interop/XacmlPolicySet-01-top-level.xml;rsa2008-interop/XacmlPolicySet-02a-CDA.xml;rsa2008-interop/XacmlPolicySet-02b-N.xml;rsa2008-interop/XacmlPolicySet-02c-N-PermCollections.xml;rsa2008-interop/XacmlPolicySet-02d-prog-note.xml;rsa2008-interop/XacmlPolicySet-02e-MA.xml;rsa2008-interop/XacmlPolicySet-02f-emergency.xml;rsa2008-interop/XacmlPolicySet-03-N-RPS-med-rec-vrole.xml;rsa2008-interop/XacmlPolicySet-04-N-PPS-PRD-004.xml,rsa2008-interop/XacmlResponse-01-01.xml,executed,true,Compare the PDP response with the vendored expected response,
+ rsa2008,01-02,rsa2008-interop/XacmlRequest-01-02.xml,rsa2008-interop/XacmlPolicySet-01-top-level.xml;rsa2008-interop/XacmlPolicySet-02a-CDA.xml;rsa2008-interop/XacmlPolicySet-02b-N.xml;rsa2008-interop/XacmlPolicySet-02c-N-PermCollections.xml;rsa2008-interop/XacmlPolicySet-02d-prog-note.xml;rsa2008-interop/XacmlPolicySet-02e-MA.xml;rsa2008-interop/XacmlPolicySet-02f-emergency.xml;rsa2008-interop/XacmlPolicySet-03-N-RPS-med-rec-vrole.xml;rsa2008-interop/XacmlPolicySet-04-N-PPS-PRD-004.xml,rsa2008-interop/XacmlResponse-01-02.xml,executed,true,Compare the PDP response with the vendored expected response,
+ rsa2008,01-03,rsa2008-interop/XacmlRequest-01-03.xml,rsa2008-interop/XacmlPolicySet-01-top-level.xml;rsa2008-interop/XacmlPolicySet-02a-CDA.xml;rsa2008-interop/XacmlPolicySet-02b-N.xml;rsa2008-interop/XacmlPolicySet-02c-N-PermCollections.xml;rsa2008-interop/XacmlPolicySet-02d-prog-note.xml;rsa2008-interop/XacmlPolicySet-02e-MA.xml;rsa2008-interop/XacmlPolicySet-02f-emergency.xml;rsa2008-interop/XacmlPolicySet-03-N-RPS-med-rec-vrole.xml;rsa2008-interop/XacmlPolicySet-04-N-PPS-PRD-004.xml,rsa2008-interop/XacmlResponse-01-03.xml,executed,true,Compare the PDP response with the vendored expected response,
+--- a/xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java
+@@ -46,18 +46,37 @@
+ 
+     public static BooleanVal ofAny(Object v, Object ...params){
+         if (v instanceof java.lang.String) {
+-            return java.lang.Boolean.parseBoolean((java.lang.String)v)?
+-                    BooleanVal.TRUE: BooleanVal.FALSE;
++            return fromLexical((java.lang.String)v);
+         }
+         if (v instanceof StringVal) {
+-            return java.lang.Boolean.parseBoolean(((StringVal)v).get()) ?
+-                    BooleanVal.TRUE : BooleanVal.FALSE;
++            return fromLexical(((StringVal)v).get());
+         }
+         if (v instanceof java.lang.Boolean) {
+             return (java.lang.Boolean)v? BooleanVal.TRUE: BooleanVal.FALSE;
+         }
+         throw SyntaxException.invalidAttributeValue(
+                 v, XacmlTypes.BOOLEAN);
++    }
++
++    private static BooleanVal fromLexical(String lexical) {
++        // XML Schema boolean uses whiteSpace=collapse; only XML whitespace is removed.
++        int start = 0;
++        int end = lexical.length();
++        while (start < end && isXmlWhitespace(lexical.charAt(start))) {
++            start++;
++        }
++        while (end > start && isXmlWhitespace(lexical.charAt(end - 1))) {
++            end--;
++        }
++        return switch (lexical.substring(start, end)) {
++            case "true", "1" -> TRUE;
++            case "false", "0" -> FALSE;
++            default -> throw SyntaxException.invalidAttributeValue(lexical, XacmlTypes.BOOLEAN);
++        };
++    }
++
++    private static boolean isXmlWhitespace(char value) {
++        return value == ' ' || value == '\t' || value == '\r' || value == '\n';
+     }
+ 
+     public BooleanVal and(BooleanVal v){
+--- /dev/null
++++ b/xacml-core/src/test/java/org/xacml4j/v30/types/BooleanLexicalTest.java
+@@ -0,0 +1,98 @@
++package org.xacml4j.v30.types;
++
++/*
++ * #%L
++ * Xacml4J Core Engine Implementation
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++
++import java.util.List;
++import java.util.function.Function;
++import java.util.stream.Stream;
++
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.Arguments;
++import org.junit.jupiter.params.provider.MethodSource;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.xacml4j.v30.StatusCodeId;
++import org.xacml4j.v30.SyntaxException;
++
++public class BooleanLexicalTest
++{
++    // XML Schema Part 2 sections 3.2.2 and 4.3.6:
++    // https://www.w3.org/TR/xmlschema-2/#boolean and #rf-whiteSpace.
++    private static Stream<Arguments> legalForms()
++    {
++        return Stream.of(
++                Arguments.of("true", true), Arguments.of("false", false),
++                Arguments.of("1", true), Arguments.of("0", false),
++                Arguments.of(" \t\r\ntrue \t\r\n", true),
++                Arguments.of(" \t\r\nfalse \t\r\n", false),
++                Arguments.of(" \t\r\n1 \t\r\n", true),
++                Arguments.of(" \t\r\n0 \t\r\n", false));
++    }
++
++    private static List<Function<String, BooleanVal>> parsers()
++    {
++        return List.of(lexical -> XacmlTypes.BOOLEAN.ofAny(lexical),
++                lexical -> XacmlTypes.BOOLEAN.ofAny(StringVal.of(lexical)),
++                lexical -> (BooleanVal) TypeToString.forType(XacmlTypes.BOOLEAN).orElseThrow().fromString(lexical));
++    }
++
++    @ParameterizedTest
++    @MethodSource("legalForms")
++    public void factoryAndStringCapabilityAcceptOnlyTheFourForms(String lexical, boolean expected)
++    {
++        BooleanVal canonical = BooleanVal.of(expected);
++        for (Function<String, BooleanVal> parser : parsers()) {
++            BooleanVal actual = parser.apply(lexical);
++            assertEquals(expected, actual.get());
++            assertEquals(canonical, actual);
++            assertEquals(canonical.hashCode(), actual.hashCode());
++            assertEquals(expected ? "true" : "false", actual.toXacmlString());
++            assertEquals(actual, parser.apply(actual.toXacmlString()));
++        }
++    }
++
++    @ParameterizedTest
++    @ValueSource(strings = {"yes", "TRUE", "True", "FALSE", "False", "", " \t\n\r ", "2", "01",
++            "+1", "0.0", "tr ue", "tru\te", "true false", "\u000btrue", "true\f", "\u00a0true", "\u2003true"})
++    public void invalidLexicalFormsAreSyntaxErrors(String lexical)
++    {
++        for (Function<String, BooleanVal> parser : parsers()) {
++            SyntaxException error = assertThrows(SyntaxException.class, () -> parser.apply(lexical));
++            assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
++        }
++    }
++
++    @Test
++    public void nativeBooleansRemainValidAndOtherObjectsRemainInvalid()
++    {
++        assertEquals(BooleanVal.of(true), XacmlTypes.BOOLEAN.ofAny(Boolean.TRUE));
++        assertEquals(BooleanVal.of(false), XacmlTypes.BOOLEAN.ofAny(Boolean.FALSE));
++        for (Object invalid : new Object[]{null, 1, 0}) {
++            SyntaxException error = assertThrows(SyntaxException.class, () -> XacmlTypes.BOOLEAN.ofAny(invalid));
++            assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
++        }
++    }
++}
+--- a/xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java
++++ b/xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java
+@@ -27,6 +27,8 @@
+ import java.util.Optional;
+ 
+ import org.junit.jupiter.api.Test;
++import org.xacml4j.v30.StatusCodeId;
++import org.xacml4j.v30.SyntaxException;
+ import org.xacml4j.v30.BagOfValues;
+ 
+ 
+@@ -44,14 +46,12 @@
+ 	@Test
+ 	public void fromToXacmlString()
+ 	{
+-		BooleanVal v = XacmlTypes.BOOLEAN.ofAny("True");
+-		assertEquals(java.lang.Boolean.TRUE, v.get());
+-		v = XacmlTypes.BOOLEAN.ofAny("TRUE");
+-		assertEquals(java.lang.Boolean.TRUE, v.get());
+-		v = XacmlTypes.BOOLEAN.ofAny("FALSE");
+-		assertEquals(java.lang.Boolean.FALSE, v.get());
+-		v = XacmlTypes.BOOLEAN.ofAny("False");
+-		assertEquals(java.lang.Boolean.FALSE, v.get());
++		// XML Schema Part 2 section 3.2.2 permits lowercase true/false and 1/0 only.
++		for (String lexical : new String[]{"True", "TRUE", "FALSE", "False"}) {
++			SyntaxException error = assertThrows(SyntaxException.class,
++					() -> XacmlTypes.BOOLEAN.ofAny(lexical));
++			assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
++		}
+ 	}
+ 
+ 	@Test
+--- a/xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java
++++ b/xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java
+@@ -22,6 +22,8 @@
+  * #L%
+  */
+ 
++import org.xacml4j.v30.types.BooleanVal;
++
+ import com.google.gson.JsonDeserializationContext;
+ import com.google.gson.JsonElement;
+ import com.google.gson.JsonObject;
+@@ -38,6 +40,9 @@
+ 		JsonPrimitive v = o.getAsJsonPrimitive(memberName);
+ 		if(v == null){
+ 			v = o.getAsJsonPrimitive(memberName.toLowerCase());
++		}
++		if(v != null && v.isString()){
++			return BooleanVal.ofAny(v.getAsString()).get();
+ 		}
+ 		return (v != null)?v.getAsBoolean():defaultValue;
+ 	}
+--- /dev/null
++++ b/xacml-json/src/test/java/org/xacml4j/v30/marshal/json/BooleanRequestLexicalTest.java
+@@ -0,0 +1,155 @@
++package org.xacml4j.v30.marshal.json;
++
++/*
++ * #%L
++ * Xacml4J Gson Integration
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++import java.io.StringReader;
++import java.util.List;
++
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.xacml4j.v30.CategoryId;
++import org.xacml4j.v30.RequestContext;
++import org.xacml4j.v30.StatusCodeId;
++import org.xacml4j.v30.SyntaxException;
++import org.xacml4j.v30.types.BooleanVal;
++import org.xacml4j.v30.types.XacmlTypes;
++
++import com.google.gson.JsonArray;
++import com.google.gson.JsonObject;
++
++public class BooleanRequestLexicalTest
++{
++	// Declared boolean values use XML Schema Part 2 section 3.2.2 and whiteSpace=collapse.
++	@Test
++	public void requestParsesOneAndZeroAsDistinctBooleanValues() throws Exception
++	{
++		assertBooleanValues(unmarshal(request("1", "0")));
++	}
++
++	@Test
++	public void requestCollapsesXmlWhitespaceInTextValues() throws Exception
++	{
++		assertBooleanValues(unmarshal(request(" \t1\r\n ", " \t0\r\n ")));
++	}
++
++	@ParameterizedTest
++	@ValueSource(strings = {"yes", "TRUE"})
++	public void invalidAttributeLexicalFormsAreSyntaxErrors(String lexical)
++	{
++		SyntaxException error = assertThrows(SyntaxException.class, () -> unmarshal(request(lexical, "0")));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
++	}
++
++	@Test
++	public void textFlagsUseTheSameBooleanParser() throws Exception
++	{
++		JsonObject source = request("true", "false");
++		source.addProperty("ReturnPolicyIdList", " \t1\r\n ");
++		source.addProperty("CombinedDecision", "0");
++		attribute(source).addProperty("IncludeInResult", "1");
++		RequestContext actual = unmarshal(source);
++		assertTrue(actual.isReturnPolicyIdList());
++		assertFalse(actual.isCombinedDecision());
++		assertEquals(1, actual.getIncludeInResultAttributes().size());
++		assertBooleanValues(actual);
++	}
++
++	@ParameterizedTest
++	@CsvSource({"ReturnPolicyIdList,yes", "ReturnPolicyIdList,TRUE", "CombinedDecision,yes",
++			"CombinedDecision,TRUE", "IncludeInResult,yes", "IncludeInResult,TRUE"})
++	public void invalidTextFlagsAreSyntaxErrors(String property, String lexical)
++	{
++		JsonObject source = request("true", "false");
++		(property.equals("IncludeInResult") ? attribute(source) : source).addProperty(property, lexical);
++		SyntaxException error = assertThrows(SyntaxException.class, () -> unmarshal(source));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
++	}
++
++	@Test
++	public void nativeJsonBooleansAndAbsentFlagDefaultsArePreserved() throws Exception
++	{
++		JsonObject source = request("true", "false");
++		JsonArray values = new JsonArray();
++		values.add(true);
++		values.add(false);
++		attribute(source).add("Value", values);
++		RequestContext defaults = unmarshal(source);
++		assertFalse(defaults.isReturnPolicyIdList());
++		assertFalse(defaults.isCombinedDecision());
++		assertTrue(defaults.getIncludeInResultAttributes().isEmpty());
++		assertBooleanValues(defaults);
++		source.addProperty("ReturnPolicyIdList", true);
++		source.addProperty("CombinedDecision", false);
++		attribute(source).addProperty("IncludeInResult", true);
++		RequestContext explicit = unmarshal(source);
++		assertTrue(explicit.isReturnPolicyIdList());
++		assertFalse(explicit.isCombinedDecision());
++		assertEquals(1, explicit.getIncludeInResultAttributes().size());
++		assertBooleanValues(explicit);
++	}
++
++	private void assertBooleanValues(RequestContext actual)
++	{
++		assertEquals(List.of(BooleanVal.of(true), BooleanVal.of(false)), List.copyOf(
++				actual.getAttributeValues(CategoryId.RESOURCE, "urn:test:boolean", XacmlTypes.BOOLEAN, null)));
++	}
++
++	private RequestContext unmarshal(JsonObject source) throws Exception
++	{
++		return new JsonRequestContextUnmarshaller().unmarshal(new StringReader(source.toString()));
++	}
++
++	private JsonObject request(String first, String second)
++	{
++		JsonArray values = new JsonArray();
++		values.add(first);
++		values.add(second);
++		JsonObject attribute = new JsonObject();
++		attribute.addProperty("AttributeId", "urn:test:boolean");
++		attribute.addProperty("DataType", XacmlTypes.BOOLEAN.getTypeId());
++		attribute.add("Value", values);
++		JsonArray attributes = new JsonArray();
++		attributes.add(attribute);
++		JsonObject category = new JsonObject();
++		category.addProperty("CategoryId", CategoryId.RESOURCE.getId());
++		category.add("Attribute", attributes);
++		JsonArray categories = new JsonArray();
++		categories.add(category);
++		JsonObject request = new JsonObject();
++		request.add("Category", categories);
++		return request;
++	}
++
++	private JsonObject attribute(JsonObject request)
++	{
++		return request.getAsJsonArray("Category").get(0).getAsJsonObject()
++				.getAsJsonArray("Attribute").get(0).getAsJsonObject();
++	}
++}
+--- a/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
++++ b/xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+@@ -141,25 +141,12 @@
+ 				return expected.equals(actual);
+ 			}
+ 			try {
+-				return Objects.equals(parseValue(type, expected), parseValue(type, actual));
++				return Objects.equals(type.ofAny(expected), type.ofAny(actual));
+ 			} catch (RuntimeException invalid) {
+ 				throw new AssertionError("Invalid lexical attribute value for " + dataType, invalid);
+ 			}
+ 		}
+ 		return sameContent(a, b);
+-	}
+-
+-	private static Object parseValue(ValueType type, String lexical)
+-	{
+-		if (type.equals(XacmlTypes.BOOLEAN)) {
+-			// XML Schema boolean has four lexical forms; Boolean.parseBoolean does not.
+-			return switch (lexical.trim()) {
+-			case "true", "1" -> type.ofAny(Boolean.TRUE);
+-			case "false", "0" -> type.ofAny(Boolean.FALSE);
+-			default -> throw new IllegalArgumentException("Invalid XML Schema boolean");
+-			};
+-		}
+-		return type.ofAny(lexical);
+ 	}
+ 
+ 	static boolean sameContent(List<?> a, List<?> b)
+--- /dev/null
++++ b/xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanRequestLexicalTest.java
+@@ -0,0 +1,94 @@
++package org.xacml4j.v30.xml;
++
++/*
++ * #%L
++ * Xacml4J Core Engine Implementation
++ * %%
++ * Copyright (C) 2009 - 2014 Xacml4J.org
++ * %%
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU Lesser General Public License as
++ * published by the Free Software Foundation, either version 3 of the
++ * License, or (at your option) any later version.
++ * 
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Lesser Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Lesser Public
++ * License along with this program.  If not, see
++ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
++ * #L%
++ */
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertFalse;
++import static org.junit.jupiter.api.Assertions.assertThrows;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++import java.io.ByteArrayInputStream;
++import java.nio.charset.StandardCharsets;
++import java.util.List;
++
++import org.junit.jupiter.params.ParameterizedTest;
++import org.junit.jupiter.params.provider.CsvSource;
++import org.junit.jupiter.params.provider.ValueSource;
++import org.xacml4j.v30.CategoryId;
++import org.xacml4j.v30.RequestContext;
++import org.xacml4j.v30.StatusCodeId;
++import org.xacml4j.v30.SyntaxException;
++import org.xacml4j.v30.types.BooleanVal;
++import org.xacml4j.v30.types.XacmlTypes;
++
++public class BooleanRequestLexicalTest
++{
++	// XML Schema Part 2 section 3.2.2, with whiteSpace=collapse (section 4.3.6).
++	@ParameterizedTest
++	@ValueSource(ints = {20, 30})
++	public void requestParsesOneAndZeroAsDistinctBooleanValues(int version) throws Exception
++	{
++		RequestContext request = unmarshal(version, "1", "0");
++		assertEquals(List.of(BooleanVal.of(true), BooleanVal.of(false)),
++				List.copyOf(request.getAttributeValues(CategoryId.RESOURCE, "urn:test:boolean", XacmlTypes.BOOLEAN, null)));
++		if (version == 30) {
++			assertTrue(request.isReturnPolicyIdList());
++			assertFalse(request.isCombinedDecision());
++		}
++	}
++
++	@ParameterizedTest
++	@ValueSource(ints = {20, 30})
++	public void requestCollapsesXmlWhitespaceAroundBooleanValues(int version) throws Exception
++	{
++		RequestContext request = unmarshal(version, " \t1\r\n ", " \t0\r\n ");
++		assertEquals(List.of(BooleanVal.of(true), BooleanVal.of(false)),
++				List.copyOf(request.getAttributeValues(CategoryId.RESOURCE, "urn:test:boolean", XacmlTypes.BOOLEAN, null)));
++	}
++
++	@ParameterizedTest
++	@CsvSource({"20,yes", "20,TRUE", "30,yes", "30,TRUE"})
++	public void requestRejectsInvalidBooleanWithSyntaxError(int version, String lexical)
++	{
++		SyntaxException error = assertThrows(SyntaxException.class, () -> unmarshal(version, lexical, "0"));
++		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
++	}
++
++	private RequestContext unmarshal(int version, String first, String second) throws Exception
++	{
++		String values = "<AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#boolean\">" + first
++				+ "</AttributeValue><AttributeValue DataType=\"http://www.w3.org/2001/XMLSchema#boolean\">" + second
++				+ "</AttributeValue>";
++		String request = version == 30
++				? "<Request xmlns=\"urn:oasis:names:tc:xacml:3.0:core:schema:wd-17\" ReturnPolicyIdList=\"1\" CombinedDecision=\"0\">"
++						+ "<Attributes Category=\"urn:oasis:names:tc:xacml:3.0:attribute-category:resource\">"
++						+ "<Attribute AttributeId=\"urn:test:boolean\" IncludeInResult=\"false\">" + values
++						+ "</Attribute></Attributes></Request>"
++				: "<Request xmlns=\"urn:oasis:names:tc:xacml:2.0:context:schema:os\"><Subject/>"
++						+ "<Resource><Attribute AttributeId=\"urn:test:boolean\" DataType=\"http://www.w3.org/2001/XMLSchema#boolean\">"
++						+ values + "</Attribute></Resource><Action/><Environment/></Request>";
++		ByteArrayInputStream input = new ByteArrayInputStream(request.getBytes(StandardCharsets.UTF_8));
++		return version == 30 ? new Xacml30RequestContextUnmarshaller().unmarshal(input)
++				: new Xacml20RequestContextUnmarshaller().unmarshal(input);
++	}
++}

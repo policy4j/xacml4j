@@ -1,0 +1,35 @@
+Source: eXtensible Access Control Markup Language (XACML) Version 3.0 Plus Errata 01,
+OASIS Standard incorporating Approved Errata.
+URL: https://docs.oasis-open.org/xacml/3.0/errata01/os/xacml-3.0-core-spec-errata01-os-complete.html
+Fetched: 2026-10-07 (run 074). SHA-256 of the HTML file: d396daed751bc19eb5882fe1e83dacb9bc9f8af1dd54e2e8e4141e717eef9d44
+Text below: the first paragraph of section 7.4 and section 7.19.2 with the HTML tags removed; line breaks are the file's.
+Copyright (c) OASIS Open. Quoted for reference.
+
+7.4 Expression evaluation
+XACML specifies expressions in terms of the elements listed
+below, of which the <Apply> and <Condition> elements recursively compose greater
+expressions. Valid expressions SHALL be type correct, which means that the
+types of each of the elements contained within <Apply>
+elements SHALL agree with the respective argument types of the function that is
+named by the FunctionId attribute. The resultant
+type of the <Apply> element SHALL be the
+resultant type of the function, which MAY be narrowed to a primitive data-type,
+or a bag of a primitive data-type, by
+type-unification. XACML defines an evaluation result of
+"Indeterminate", which is said to be the result of an invalid
+expression, or an operational error occurring during the evaluation of the
+expression.
+
+7.19.2 Syntax and type errors
+If a policy that contains
+invalid syntax is evaluated by the XACML PDP at
+the time a decision request is received, then
+the result of that policy SHALL be
+"Indeterminate" with a StatusCode value
+of "urn:oasis:names:tc:xacml:1.0:status:syntax-error".
+If a policy that contains
+invalid static data-types is evaluated by the XACML PDP
+at the time a decision request is received,
+then the result of that policy SHALL be
+"Indeterminate" with a StatusCode value
+of "urn:oasis:names:tc:xacml:1.0:status:processing-error".

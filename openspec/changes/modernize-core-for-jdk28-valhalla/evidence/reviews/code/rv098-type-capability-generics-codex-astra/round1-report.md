@@ -1,0 +1,20 @@
+FINAL REVIEW (R4, GPT-6-Astra)
+
+**Verdict: REQUEST_CHANGES.** One runtime regression contradicts task 5.6’s behavior-neutral scope.
+
+- **MEDIUM — R4-1: Null lookup now initializes the capability registry.** [TypeToString.java:62](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:62) replaces a lazy lambda with `Types.capabilities::get`. Java evaluates that receiver before `Optional.map` can skip an empty optional. Consequently, `forType((ValueType) null)` now initializes the [registry](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:292) and [constructs service providers](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/main/java/org/xacml4j/v30/TypeCapability.java:80). A failing provider can make this formerly harmless null lookup throw; a provider constructor calling that null lookup reentrantly encounters the still-null registry. **Fix:** restore `.map(t -> Types.capabilities.get(t))`. **Test:** in an isolated classloader, register a counting provider and assert that a null lookup returns empty without constructing it. Runtime reproduction is **UNVERIFIED**; the evaluation-order change is established by source.
+
+- **LOW — R4-2: RFC822Name formatting diverges from the project contract.** [RFC822Name.java:283](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/main/java/org/xacml4j/v30/types/RFC822Name.java:283) uses four spaces among tab-indented statements, contrary to [AGENTS.md:85](<checkouts>/xacml4j-worktrees/policy4j/AGENTS.md:85). **Fix:** restore two tabs and remove the incidental license-header whitespace changes. The [license plugin](<checkouts>/xacml4j-worktrees/policy4j/pom.xml:316) can rewrite those header lines during `process-sources`; its exact output was not tested. **Check:** inspect the whitespace-visible diff; no behavioral test is needed.
+
+Checked:
+
+- Source erasure retains the `Value` return descriptors for `ofAny` and `apply`, and `TypeCapability` bounds still erase to `TypeCapability`. No new unchecked cast appears in the nine-file diff. Precompiled-client linkage and generated bridges remain **UNVERIFIED**.
+- Additional public signature changes include `Value<?>` parameters/results in [TypeToString.java:44](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java:44) and [TypeToXacml30.java:65](<checkouts>/xacml4j-worktrees/policy4j/xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java:65); task 5.6 should name these source-compatibility changes. The root [TypeCapability<T>](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/main/java/org/xacml4j/v30/TypeCapability.java:49) remains unconstrained; helper/factory bounds enforce self-typing.
+- Task 5.7 is unchanged: [ValueType.java:158](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java:158) still passes the one-element array itself.
+- RFC822Name’s final class, normalized fields, fixed datatype, equality comparisons, and hash inputs remain unchanged. The pattern variable preserves symmetry and the `getEvaluatesTo()` comparison.
+
+**Missing contract coverage:** add `GenericTypeApiContractTest` with successful `Function<Object, Value<?>>` assignment and self-typed factory usage, plus compilation rejection of a mismatched factory capability. The inspected [capability test](<checkouts>/xacml4j-worktrees/policy4j/xacml-core/src/test/java/org/xacml4j/v30/types/TypeCapabilityTest.java:36) exercises lookup only.
+
+Verification used file reads, scoped `rtk rg`, and Git inspection. HEAD remained `ad1fcec740908b4b715db9cdeadab3398d294f9f`; all nine diffs matched their initial review contents. No files changed. [Run 087](<checkouts>/xacml4j-worktrees/policy4j/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/087-single-branch-landing-gate/summary.md:30) supplies 8,009 tests, zero failures/errors, 18 skips; it was `clean test`, without packaged jars. No builds, tests, or network calls ran in this lane.
+
+END FINAL REVIEW R4

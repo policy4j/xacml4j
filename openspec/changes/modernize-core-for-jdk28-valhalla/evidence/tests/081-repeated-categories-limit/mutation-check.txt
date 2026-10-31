@@ -1,0 +1,29 @@
+Mutation check of the final code, JDK 21, 2026-10-08. Test class: MultipleResourcesRepeatedCategoriesLimitTest (27 tests).
+Files mutated for one run each: xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesBudgetHandler.java and MultipleResourcesViaRequestReferencesHandler.java.
+After every run the files were put back from a copy; a search for the word "mutation" in the package finds nothing.
+
+M1: the budget does not count the individual requests that go to the PDP (the line `left--;` removed)
+  Tests run: 27, Failures: 3, Errors: 0
+  repeatsTimesSelectorsHaveOneLimit
+  handlerAppendedToTheChainIsInsideTheLimit
+  combinedDecisionBeyondTheLimitIsTheOneIndeterminate
+    (each: the response is still the one Indeterminate, by the count of the results; requestDecision was called more often than the limit allows)
+
+M2: the number of request references is not checked before the expansion (`if(false)`)
+  Tests run: 27, Failures: 1, Errors: 0
+  moreRequestReferencesThanTheLimitAreIndeterminate: no interactions wanted, but requestDecision was called
+    (the response is still the one Indeterminate, after 100 evaluations)
+
+M3: the budget does not count the individual requests that reach the selector step (the line `selectorStepsLeft--;` removed)
+  Tests run: 27, Failures: 1, Errors: 0
+  individualRequestsThatSelectNothingAreCounted: expected: <1> but was: <0>
+
+M4: the results of the response are not counted (`if(false)`)
+  Tests run: 27, Failures: 2, Errors: 0
+  referenceThatDoesNotResolveCountsAsAResult: expected: <1> but was: <5>
+  responseHasNoMoreResultsThanTheLimit: expected: <1> but was: <7>
+
+History. A first check ran on an earlier version (21 tests), which counted the results inside the loop of the
+request-references handler: three mutations, all detected. The reviewer showed that this count was redundant once the
+budget handler counted the results of the response (review round 1, LOW-1). The count in the loop was removed, and the
+check above was run on the code as committed.

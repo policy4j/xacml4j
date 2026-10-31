@@ -1,0 +1,533 @@
+  A. Overlap table: slice (5.1 ... 7.3) | donor files in the slice that the
+     worktree also changed since a8a90d46 | conflict kind (textual,
+     semantic) | which group 1-4 fix is at stake.
+  B. Regression risks: donor hunks that would re-introduce a fixed defect or
+     conflict with a filed bug's fix (for example, a donor AnyUri/UriVal that
+     normalizes, a donor ISO8601Time/Duration that differs from the 4.10/4.11
+     fix, donor string functions with the old argument order, donor
+     permit-overrides). Cite donor file:line (rtk git show b9f114a3:<path>)
+     and worktree file:line.
+  C. Recommended order of 5.1-7.3 and of the in-flight/filed bugs relative to
+     them (fix before 5.x, or fold into 6.6 etc.), with one line of reason each.
+  Keep each table under 40 rows; group trivial files. FINAL REPORT
+  (policy4j_code_review_agy, <model>): counts, top 5 regression risks, files
+  opened.
+
+▸ Thought for 3s, 584 tokens
+  I'm thinking through how to approach this.
+● Bash(rtk git diff a8a90d46 --name-status -- xacml-core xacml-pdp xacml-json xacml-xml)
+● Bash(rtk git diff a8a90d46 --name-status -- xacml-core xacml-pdp xacml-json xacml-xml | head -n 60)
+● Bash(rtk git diff a8a90d46 --name-status -- xacml-core/src/main)
+● Bash(rtk git diff a8a90d46 --name-status -- xacml-pdp/src/main xacml-json/src/main xacml-xml/src/main)
+● Read(~/Projects/Personal/xacml4j-worktrees/p...e/builds/026-donor-slice-map/summary.md) (ctrl+o to expand)
+
+▸ Thought for 4s, 678 tokens
+  Run 026 linked the donor branch to specific tasks. Since then, uncommitted changes were made to the work...
+
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...la/evidence/builds/026-donor-slice-map/summary.md)
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...la/evidence/builds/026-donor-slice-map/summary.md)
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...la/evidence/builds/026-donor-slice-map/summary.md)
+● Read(~/Projects/Personal/xacml4j-worktrees/policy4j/op...la/evidence/builds/026-donor-slice-map/summary.md)
+● Read(~/Projects/Personal/xacml4j-worktrees/p...e/builds/026-donor-slice-map/summary.md) (ctrl+o to expand)
+▸ Thought for 5s, 1.7k tokens
+  These file paths reveal modifications within core policy evaluation, functions, and data types related t...
+
+● Bash(rtk git diff a8a90d46 --name-status -- xacml-core/src/test) (ctrl+o to expand)
+
+▸ Thought for 4s, 924 tokens
+  The migration to JUnit 5 Jupiter and Mockito 5 in Groups 2 and 3 suggests a potential scope change or fe...
+
+● Bash(rtk git diff a8a90d46 -- xacml-
+core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunction...)
+● Bash(rtk git show b9f114a3:xacml-
+core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.j...)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/imp...) (ctrl+o to
+expand)
+
+▸ Thought for 7s, 439 tokens
+  Identified a probable bug in the string function implementations. The argument order appears inverted fo...
+
+● Bash(rtk git diff a8a90d46 -- xacml-
+core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides...)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl...) (ctrl+o to
+expand)
+
+▸ Thought for 4s, 570 tokens
+  Examining the code, the decision logic appears to prioritize indeterminate decisions related to DenyOver...
+
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java xacml-
+core/src...)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.jav...) (ctrl+o to
+expand)
+
+▸ Thought for 3s, 328 tokens
+  The `toXacmlString()` method in the donor code directly uses `value.toString()`, resulting in incorrect...
+
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java)
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUt...) (ctrl+o to
+expand)
+
+▸ Thought for 3s, 502 tokens
+  Analyzing `DateTimeDurationUtils.java` to understand how durations are determined to be zero. The `isZer...
+
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/UriVal.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Value.java)
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.ja...) (ctrl+o to
+expand)
+
+▸ Thought for 3s, 331 tokens
+  The code uses `Boolean.parseBoolean(v)`. This implies that XML Schema lexical forms `"1"` and `"0"` are...
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent....) (ctrl+o to
+expand)
+
+▸ Thought for 5s, 335 tokens
+  The `evaluateToNode` call in the donor code appears problematic because it bypasses the singleton check...
+● Bash(rtk git diff a8a90d46 -- xacml-
+core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFun...)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/imp...) (ctrl+o to
+expand)
+
+▸ Thought for 3s, 515 tokens
+  Analyzing the available functions within the donor, the focus is on how they handle comparisons between...
+
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java
+x...)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluati...) (ctrl+o to
+expand)
+
+▸ Thought for 3s, 313 tokens
+  The donor code unconditionally stores every policy in `evaluatedPolicies`, irrespective of the decision...
+
+● Bash(rtk git diff a8a90d46 -- xacml-
+json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer....)
+● Bash(rtk git show b9f114a3:xacml-
+json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer.jav...)
+● Bash(rtk git diff a8a90d46 -- xacml-
+pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyReposit...)
+● Bash(rtk git diff a8a90d46 -- xacml-
+xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshalle...)
+● Bash(rtk git diff a8a90d46 -- xacml-
+xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller...)
+● Bash(rtk git diff a8a90d46 -- xacml-
+pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPat...)
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/policy/Attribute...) (ctrl+o to
+expand)
+
+▸ Thought for 2s, 244 tokens
+  A potential logic bug exists in a decision rule where an incorrect operator was used, leading to incorre...
+
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/policy/function/...) (ctrl+o to
+expand)
+▸ Thought for 7s, 244 tokens
+  Inspecting several Java files related to policy functions and invocation to understand recent changes. S...
+
+● Bash(rtk git diff a8a90d46 -- xacml-
+core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.j...)
+● Bash(rtk git diff a8a90d46 -- xacml-
+core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.j...)
+● Bash(rtk git diff a8a90d46 -- xacml-
+core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctio...)
+● Bash(rtk git diff a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java xacml-
+core/s...)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Duration.java) (ctrl+o to expand)
+
+▸ Thought for 4s, 508 tokens
+  The code defines `seconds()` as `@Unsigned int`. Further inspection reveals the implementation handles t...
+
+● Bash(rtk rg "4\.(2[6-9]|3[0-3])" openspec/changes/modernize-core-for-jdk28-valhalla) (ctrl+o to expand)
+
+▸ Thought for 5s, 465 tokens
+  Examining the listed bugs, it appears there are several issues impacting type and function registration,...
+
+● Bash(rtk git diff a8a90d46 -- xacml-
+core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredic...)
+● Bash(rtk git show b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/imp...) (ctrl+o to
+expand)
+
+▸ Thought for 4s, 950 tokens
+  The `equalsIgnoreCase` function performs a case-sensitive comparison due to its reliance on the underlyi...
+● Bash(rtk git diff a8a90d46 --name-only -- xacml-core xacml-pdp xacml-json xacml-xml) (ctrl+o to expand)
+
+▸ Thought for 42s
+  Examined the new `model` and `schemas` packages, noting the introduction of potential donor defects like...
+  ### Group 5–7 Slice Map Refresh Against Group 1–4 Fixes
+
+  This read-only planning analysis refreshes the Group 5–7 donor slice map (summary.md) against all bug
+  fixes landed in Groups 1–4, in-flight work, and newly filed bugs (policy4j-the.4.26 through
+  policy4j-the.4.33).
+  ──────
+  ### A. Overlap Table (Slices 5.1–7.3 vs Worktree Changes since a8a90d46)
+
+   Slice │ Donor Files Overlapping Worktree C… │ Conflict Kind       │ Group 1–4 Fix / Defect at Stake
+  ───────┼──────────────────────────────────────┼─────────────────┼────────────────────────────────────────
+   5.1   │ CategoryIdTest.java                  │ Textual /       │ Tasks 2.1–2.7: JUnit 5 Jupiter
+         │                                      │ Framework       │ migration in worktree vs JUnit 4 in
+         │                                     │                     │ donor.
+   5.2   │ TypeToString.java                   │ Semantic & Textual  │ Bug 4.16: Worktree delegates to
+         │                                     │                     │ .toXacmlString() for DoubleVal,
+         │                                     │                     │ IntegerVal, X500Name.
+   5.2   │ UriVal.java (replaces AnyURI.java)  │ Semantic            │ rv038 / AnyURI: Donor .normalize()
+         │                                     │                     │ destroys URI lexical forms and
+         │                                     │                     │ relative paths.
+   5.2   │ TypeToStringTest.java,              │ Semantic & Textual  │ Bug 4.16 / rv038: Round-trip matrix
+         │ AnyURITest.java                     │                     │ and JUnit 5 migration.
+   5.3   │ BooleanVal.java                     │ Semantic & Textual  │ Bug 4.25: Strict XML Schema boolean
+         │                                     │                     │ lexical parsing ("true", "1",
+         │                                     │                     │ "false", "0").
+   5.3   │ DoubleVal.java                      │ Semantic & Textual  │ Bug 4.16: Canonical XACML string
+         │                                     │                     │ formatting (INF, -INF, NaN).
+   5.3   │ Primitives.java, XacmlTypes.java    │ Semantic            │ Bug 4.26 / Task 4.4: Type registry
+         │                                     │                     │ duplicate IDs and alias resolution
+         │                                     │                     │ pinning.
+   5.3   │ BooleanValTest.java,                │ Semantic & Textual  │ Bugs 4.16, 4.25, 4.26: Lexical form
+         │ DoubleValTest.java,                 │                     │ verification and JUnit 5 migration.
+         │ XacmlTypesTest.java                 │                     │
+   5.4   │ Int64.java, UInt32.java,            │ Semantic            │ Bug 4.26 / Task 5.4: Multiple
+         │ UInt64.java                         │                     │ owners of xs:integer; Int64 must be
+         │                                     │                     │ sole owner.
+   5.4   │ Int64.java, IntegerArithmetics.java │ Semantic            │ Task 5.4: Overflow wrapping in
+         │                                     │                     │ add(), product identity 0L, lax
+         │                                     │                     │ string lexing.
+   6.1   │ AttributeAssignmentExpression.java  │ Semantic            │ Bug 4.24: XPathCategory on
+         │                                     │                     │ attribute assignments and category
+         │                                     │                     │ URN mapping.
+   6.1   │ AdviceExpressionTest.java,          │ Textual / Framework │ Tasks 2.1–2.7: JUnit 5 Jupiter
+         │ ObligationExpressionTest.java       │                     │ migration in worktree vs JUnit 4 in
+         │                                     │                     │ donor.
+   6.2   │ StringFunctions.java                │ Semantic & Textual  │ Bugs 4.15 & 4.14: Inverted
+         │                                     │                     │ starts/ends/contains arg order;
+         │                                     │                     │ missing 3.0 functions.
+   6.2   │ HigherOrderFunctions.java           │ Semantic & Textual  │ Bug 4.8: Variadic arguments (any-
+         │                                     │                     │ of, all-of, map), 3.0 URNs, syntax
+         │                                     │                     │ errors.
+   6.2   │ FunctionParamValueTypeSequenceSpec. │ Semantic & Textual  │ Bug 4.8: Vararg parameter specs
+         │ java, FunctionSpecBuilder.java      │                     │ (anyValuesVarArg) for higher-order
+         │                                     │                     │ functions.
+   6.2   │ DefaultFunctionInvocation.java,     │ Semantic & Textual  │ Bug 4.8: Reflection invocations
+         │ JavaMethodToFunctionSpecConverter.j │                     │ with dynamic vararg component
+         │ ava                                 │                     │ types.
+   6.2   │ NonNumericComparisonFunctions.java  │ Semantic & Textual  │ Bug 4.11: time-in-range canonical
+         │                                     │                     │ 2.0 URN and 24h timezone range
+         │                                     │                     │ calculations.
+   6.2   │ BagFunctions.java,                  │ Semantic & Textual  │ Bug 4.11: Canonical 3.0 URNs for
+         │ SetFunctions.java                   │                     │ dayTimeDuration-* &
+         │                                     │                     │ yearMonthDuration-*.
+   6.2   │ EqualityPredicates.java             │ Semantic            │ Bugs 4.28 (temporal tz), 4.29
+         │                                     │                     │ (double NaN), 4.30 (string-equal-
+         │                                     │                     │ ignore-case case bug).
+   6.2   │ AttributeDesignatorFunctions.java   │ Semantic            │ Bug 4.33: Processing error on
+         │                                     │                     │ absent category before checking
+         │                                     │                     │ mustBePresent.
+   6.3   │ PermitOverrides.java                │ Semantic & Textual  │ Bug 4.21: Extended Indeterminate
+         │                                     │                     │ evaluation order (Indeterminate{P}
+         │                                     │                     │ vs Deny).
+   6.3   │ DefaultXacml30CombiningAlgorithms.j │ Semantic            │ Bug 4.27: Combining algorithm
+         │ ava,                                │                     │ provider missing ServiceLoader
+         │ CombiningAlgorithmProvider.java     │                     │ registration.
+   6.3   │ Combine tests                       │ Textual & Semantic  │ Bug 4.21 test cases and JUnit 5
+         │ (PermitOverridesTest.java, etc.)    │                     │ migration.
+   6.4   │ None (ValueStream.java, SeqOf.java) │ None                │ Independent query views (Design
+         │                                     │                     │ D9); zero worktree overlap.
+   6.5   │ XmlContent.java                     │ Semantic & Textual  │ Bug 4.9: XPath ContextSelectorId
+         │                                     │                     │ singleton element node validation
+         │                                     │                     │ (§7.3.7).
+   6.5   │ RootEvaluationContext.java          │ Semantic & Textual  │ Bug 4.22: Policy identifier list
+         │                                     │                     │ filtering (§5.46; exclude
+         │                                     │                     │ NotApplicable/Indeterminate).
+   6.5   │ BaseCompositeDecisionRule.java,     │ Semantic & Textual  │ Engine evaluation fixes: && vs `
+         │ AttributeReference.java             │                     │
+   6.5   │ AttributeSelector.java              │ Semantic            │ Bug 4.32: Selector evaluation
+         │                                     │                     │ precedence and error status when
+         │                                     │                     │ MustBePresent=false.
+   6.5   │ DefaultEvaluationContextHandler.jav │ Semantic & Textual  │ Bug 4.22: Selector resolution &
+         │ a                                   │                     │ caching; rethrow syntax errors
+         │                                     │                     │ without swallow.
+   6.5   │ MultipleResourcesViaXPathExpression │ Semantic & Textual  │ Integration: Path value type and
+         │ Handler.java                        │                     │ entity.attributes() iterator.
+   6.5   │ AbstractPolicyRepository.java       │ Semantic & Textual  │ Bug 4.13: notifyPolicySetRemoved
+         │                                     │                     │ calls policySetRemoved (donor
+         │                                     │                     │ called Added).
+   6.5   │ AttributeDeserializer.java (JSON)   │ Semantic & Textual  │ Bug 4.17: Missing AttributeId
+         │                                     │                     │ throws
+         │                                     │                     │ JsonParseException(SyntaxException)
+         │                                     │                     │ .
+   6.5   │ ExpressionTypeBuilder.java (XML)    │ Semantic & Textual  │ Bug 4.17: Access
+         │                                     │                     │ v.getEvaluatesTo().getValueType().g
+         │                                     │                     │ etTypeId().
+   6.5   │ Xacml20RequestContextUnmarshaller.j │ Semantic & Textual  │ Bugs 4.17 & 4.19: Missing
+         │ ava,                                │                     │ AttributeId check; preserve 2.0
+         │ Xacml20ResponseContextMarshaller.ja │                     │ Result/@ResourceId.
+         │ va                                  │                     │
+   6.5   │ Xacml30RequestContextFromJaxbToObje │ Semantic & Textual  │ Bug 4.17: Missing AttributeId
+         │ ctModelMapper.java                  │                     │ check; filter whitespace-only
+         │                                     │                     │ Content strings.
+   6.6   │ ISO8601Time.java                    │ Semantic & Textual  │ Bug 4.11 / rv027: timeZoneDefined
+         │                                     │                     │ flag; format unzoned times with
+         │                                     │                     │ ISO_LOCAL_TIME.
+   6.6   │ DateTimeDurationUtils.java          │ Semantic & Textual  │ Bug 4.10: Fractional seconds up to
+         │                                     │                     │ nanoseconds; isZero checks
+         │                                     │                     │ BigDecimal seconds.
+   6.6   │ Duration.java (replaces             │ Semantic & Textual  │ Bug 4.10: Worktree getSeconds()
+         │ ISO8601Duration.java)               │                     │ returns BigDecimal; donor uses
+         │                                     │                     │ @Unsigned int.
+   6.6   │ ISO8601DateTime.java,               │ Semantic & Textual  │ Bugs 4.10 & 4.31: Delegate to
+         │ ISO8601Date.java                    │                     │ toPeriod() and toDuration();
+         │                                     │                     │ preserve fractions.
+   7.1   │ None (model/*)                      │ Semantic            │ Task 7.1 donor defects:
+         │                                     │                     │ AttributesSchema:101,
+         │                                     │                     │ EntitySchema:51, Entity equals.
+   7.2   │ None (schemas/*)                    │ None                │ Independent catalog; zero worktree
+         │                                     │                     │ overlap.
+   7.3   │ AttributeIndexTest.java,            │ Textual / Framework │ Legacy deletions; must verify zero
+         │ WellKnownAttributeIdsTest.java      │                     │ references remain in worktree
+         │                                     │                     │ before removal.
+  ──────
+  ### B. Detailed Regression Risks (Donor Hunks vs Worktree Fixes)
+
+  1. String Functions Argument Order & Missing 3.0 Functions (Bugs 4.15 & 4.14)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.
+      java:66, 84, 102 (return a.startsWith(b);, a.endsWith(b);, a.contains(b);). Donor completely omits
+      anyURI-starts-with, anyURI-ends-with, anyURI-contains, string-substring, and anyURI-substring. Line
+      186 also has a compilation typo (Primitives.IS8601Date.of(v);).
+      • Worktree:
+      xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java:63, 90, 117
+      (return b.startsWith(a);, b.endsWith(a);, b.contains(a);). 3.0 functions implemented with full
+      Unicode code-point slicing in lines 65–167.
+      • Risk: Merging donor's StringFunctions will immediately re-invert string matching arguments (failing
+      all conformance tests expecting XACML §A.3.9 semantics) and delete the five newly added 3.0 functions.
+  2. Permit-Overrides Extended Indeterminate Combining Algorithm (Bug 4.21)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.
+      java:86–92. Donor checks if (atLeastOneDeny) return Decision.DENY; BEFORE checking if
+      (atLeastOneIndeterminateP).
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java:88–99.
+      • Risk: Per XACML 3.0 Appendix C.1, if both Deny and Indeterminate{P} occur, the result must be
+      Indeterminate{DP}. If only Indeterminate{P} occurs, it takes precedence over lower-precedence results.
+      Donor evaluates Deny first, producing DENY instead of INDETERMINATE_DP or INDETERMINATE_P.
+  3. DoubleVal Lexical Forms & IEEE 754 Equality (Bugs 4.16 & 4.29)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java:62 (return value.
+      toString();). Produces "Infinity", "-Infinity". In EqualityPredicates.java:55, eq calls Java Double.
+      equals, where NaN == NaN is true and +0.0 == -0.0 is false.
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java:74–85. Canonical XACML/XML
+      Schema §3.2.5 mapping: Double.isNaN -> "NaN", POSITIVE_INFINITY -> "INF", NEGATIVE_INFINITY -> "-INF".
+      • Risk: Merging donor breaks XML and JSON response marshalling of floating point infinities/NaN and
+      violates IEEE 754 equality rules mandated by XACML §A.3.5.
+  4. ISO8601Time Formatting and Unzoned UTC Contamination (Bug 4.11 / rv027)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java:84, 104. Unzoned
+      times are offset to UTC and always formatted with DateTimeFormatter.ISO_TIME, producing 23:00:00Z.
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java:45–50, 89–91, 122–124.
+      Tracks timeZoneDefined and formats with ISO_LOCAL_TIME when unzoned.
+      • Risk: Adding a spurious Z to unzoned times causes time-in-range evaluations at non-UTC timezones
+      (e.g. GMT-08:00) to invert decision results after marshalling round-trips.
+  5. DateTimeDurationUtils & Duration Sub-Second Truncation (Bug 4.10 & Bug 4.31)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java:66–72, 191–205
+      and b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Duration.java:98, 185, 192, 203. Seconds
+      represented as int seconds() / @Unsigned int. Lines 185 and 192 contain copy-paste bugs checking
+      duration().getYears() instead of months/days.
+      • Worktree:
+      xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java:77–83, 226–233, 302–321. Uses
+      BigDecimal seconds and nano arithmetic; ISO8601Duration.java:57–63 returns BigDecimal.
+      • Risk: Donor truncates sub-second durations to whole seconds, causing high-precision temporal
+      arithmetic to fail and corrupting duration zero checks.
+  6. XPath ContextSelectorId Singleton Node Requirement (Bug 4.9)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java:173. Uses
+      xPathProvider.evaluateToNode(path.getPath(), contextNode) without cardinality checks.
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java:215–220. Strict
+      validation: if contextNodes == null || contextNodes.getLength() != 1, throws PathEvaluationException
+      with syntax error status.
+      • Risk: Violates XACML 3.0 §7.3.7; multi-node context selectors will silently evaluate using the
+      first node rather than failing with Indeterminate.
+  7. BooleanVal Lax String Lexing (Bug 4.25)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java:61–64. Calls
+      Boolean.parseBoolean(v).
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java:49, 61–75. Collapses XML
+      whitespace and accepts only "true", "1", "false", "0", throwing SyntaxException on any invalid token.
+      • Risk: Donor treats "1" and "0" as false (valid in XML Schema), and treats invalid gibberish ("foo",
+      "invalid") as false rather than syntax errors.
+  8. PolicyIdentifierList Inclusion Filter (Bug 4.22)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java:163–166.
+      Puts every policy unconditionally: this.evaluatedPolicies.put(policy.getId(), policy).
+      • Worktree: xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java:202–204.
+      Filters: if (!result.isIndeterminate() && result != Decision.NOT_APPLICABLE).
+      • Risk: Violates XACML 3.0 §5.46 by emitting non-applicable and indeterminate policies in
+      PolicyIdentifierList.
+  9. Missing AttributeId Syntax Error Propagation (Bug 4.17 & Bug 4.19)
+      • Donor: b9f114a3:xacml-json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer.java:56.
+      Uses Guava checkArgument(attrId != null) throwing IllegalArgumentException.
+      • Worktree: xacml-json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer.java:59–62.
+      Throws JsonParseException(new SyntaxException(...)) on null or empty attribute ID. Similar syntax
+      error validations in XML unmarshallers (Xacml20RequestContextUnmarshaller.java:249,
+      Xacml30RequestContextFromJaxbToObjectModelMapper.java:502).
+      • Risk: Throws 500 internal errors instead of returning standard XACML urn:oasis:names:tc:xacml:1.
+      0:status:syntax-error responses.
+  10. Lossy UriVal Normalization (rv038 / AnyURI)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/UriVal.java:95. Uses return of(URI.
+      create(v).normalize());.
+      • Worktree: Preserves raw lexical URI representation; toXacmlString() outputs literal input.
+      • Risk: Calling .normalize() removes ./, resolves relative segments, and strips trailing slashes,
+      breaking round-trip equality against conformance test fixtures.
+  11. Higher-Order Functions Variadic Support & Syntax Error (Bug 4.8)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.
+      java:46–144. Fixed 2-argument arity; line 144 contains invalid Java syntax: .asSingle().map().
+      orElse(false).
+      • Worktree:
+      xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java:68, 106, 186,
+       205–245. Full variadic evaluation support for any-of, all-of, any-of-any, and map.
+      • Risk: Prevents compilation (syntax error in donor) and breaks XACML 3.0 variadic higher-order
+      function calls.
+  12. EqualityPredicates Case Sensitivity & Contextual Timezone (Bugs 4.28, 4.29, 4.30)
+      • Donor: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.
+      java:108–115. string-equal-ignore-case delegates to _eq(a, b) doing case-sensitive match. Temporal
+      equality does not normalize against the evaluation context timezone.
+      • Risk: Causes string-equal-ignore-case to fail on mixed-case strings and produces non-conforming
+      date/time equality when one operand lacks a timezone.
+
+  ──────
+  ### C. Recommended Order and Phasing (Slices 5.1–7.3 and In-Flight/Filed Bugs)
+
+   Step / Phase │ Scope                       │ Placement                   │ 1-Line Rationale
+  ──────────────┼─────────────────────────────┼─────────────────────────────┼──────────────────────────────
+   Step 1       │ Task 5.1 (Identifiers &     │ Execute first               │ Self-contained leaf package
+                │ URN8141)                    │                             │ (identifier.*, URN8141) with
+                │                             │                             │ backward-compatibility root
+                │                             │                             │ adapters.
+   Step 2       │ Task 5.2 (Value & BagOf     │ Execute second; fold in     │ Introduces Value/BagOf core
+                │ Rename, UriVal)             │ rv038                       │ types; fold rv038 into
+                │                             │                             │ UriVal to prevent lossy
+                │                             │                             │ .normalize().
+   Step 3       │ Task 5.3 (Primitives Facade │ Execute third; fold in 4.25 │ Introduces Primitives; fold
+                │ & Registry)                 │ & 4.26                      │ 4.25
+                │                             │                             │ (BooleanVal.fromLexical) and
+                │                             │                             │ 4.26 (deduplicate registry
+                │                             │                             │ IDs) directly into the
+                │                             │                             │ facade.
+   Step 4       │ Task 5.4 (Numeric Semantics │ Execute fourth; fold in     │ Establishes Int64 as sole
+                │ & Int64)                    │ 4.16 & 4.26                 │ owner of xs:integer; fix
+                │                             │                             │ donor overflow wrapping,
+                │                             │                             │ product identity 1L, and
+                │                             │                             │ keep 4.16 string formatting.
+   Step 5       │ Task 6.1 (Expression AST &  │ Execute fifth               │ Introduces ValueExprType and
+                │ ValueExprType)              │                             │ AST result descriptors
+                │                             │                             │ needed before rewriting
+                │                             │                             │ function/combine signatures.
+   Step 6       │ Task 6.3 (Combining         │ Execute sixth; fold in 4.21 │ Disjoint from functions;
+                │ Algorithms)                 │ & 4.27                      │ preserve 4.21 extended
+                │                             │                             │ Indeterminate logic in
+                │                             │                             │ PermitOverrides and add 4.27
+                │                             │                             │ ServiceLoader registration.
+   Step 7       │ Task 6.4 (SeqOf &           │ Execute seventh             │ Introduces non-Stream
+                │ ValueStream Views)          │                             │ Iterable + .stream() query
+                │                             │                             │ views (Design D9); fully
+                │                             │                             │ disjoint from functions and
+                │                             │                             │ AST.
+   Step 8       │ Task 6.6 (Date, Time,       │ Execute eighth; fold in     │ Disjoint value types;
+                │ Duration Types)             │ 4.10, 4.11, 4.31            │ preserve 4.11 unzoned
+                │                             │                             │ timeZoneDefined and 4.10
+                │                             │                             │ nanosecond BigDecimal
+                │                             │                             │ duration arithmetic; resolve
+                │                             │                             │ 4.31 duration formatting.
+   Step 9       │ Task 6.2 (Standard          │ Execute ninth; fold in 4.8, │ Rewrites 56 function
+                │ Functions SPI & Impl)       │ 4.14, 4.15, 4.28, 4.29,     │ classes; preserve 4.15 arg
+                │                             │ 4.30, 4.33                  │ order, 4.14 3.0 functions,
+                │                             │                             │ 4.8 variadics, and resolve
+                │                             │                             │ 4.28 (tz eq), 4.29 (double
+                │                             │                             │ eq), 4.30 (case eq), 4.33
+                │                             │                             │ (absent category).
+   Step 10      │ Task 6.5a (Core Policy      │ Execute tenth (Lane 1);     │ Replaces old policy AST with
+                │ Model & Evaluation)         │ fold in 4.9, 4.22, 4.32     │ Entity/Record; preserve 4.9
+                │                             │                             │ context-selector singleton
+                │                             │                             │ check, 4.22 policy ID list
+                │                             │                             │ filtering, and resolve 4.32.
+   Step 11      │ Task 6.5b (PDP Runtime &    │ Execute tenth (Lane 2);     │ Migrates PDP evaluation
+                │ PIP SPI)                    │ fold in 4.13                │ context handlers and PIP;
+                │                             │                             │ preserve 4.13
+                │                             │                             │ AbstractPolicyRepository
+                │                             │                             │ removal listener event.
+   Step 12      │ Task 6.5c (XML & JSON       │ Execute tenth (Lane 3);     │ Rewrites marshallers for
+                │ Marshalling)                │ fold in 4.17, 4.19, 4.24    │ Entity/Record; preserve 4.17
+                │                             │                             │ missing AttributeId syntax
+                │                             │                             │ error, 4.19 2.0
+                │                             │                             │ Result/@ResourceId, and 4.24
+                │                             │                             │ XPathCategory.
+   Step 13      │ Task 7.1 (AccessModel &     │ Execute eleventh            │ Introduces
+                │ Schema Framework)           │                             │ org.xacml4j.v30.model.*
+                │                             │                             │ after repairing donor
+                │                             │                             │ defects
+                │                             │                             │ (AttributesSchema:101,
+                │                             │                             │ EntitySchema:51, Entity
+                │                             │                             │ equals/hashCode).
+   Step 14      │ Task 7.2 (Standard Schemas  │ Execute twelfth             │ Introduces standard
+                │ Catalog)                    │                             │ category/attribute schemas
+                │                             │                             │ in
+                │                             │                             │ org.xacml4j.v30.schemas.*.
+   Step 15      │ Task 7.3 (Legacy Type       │ Execute thirteenth (Final   │ Delete AttributeContainer,
+                │ Deletions)                  │ Gate)                       │ AttributeIndex, Category,
+                │                             │                             │ CategoryReference,
+                │                             │                             │ WellKnownAttributeIds only
+                │                             │                             │ after rtk rg confirms 0
+                │                             │                             │ remaining callers.
+  ──────
+  ### FINAL REPORT (policy4j_code_review_agy, antigravity)
+
+  • Total Donor Files Mapped: 493 files (+17,510 / -14,080 lines across 13 slices).
+  • Files Overlapping Worktree Changes: 38 source files in src/main + 60 test classes migrated to JUnit 5
+  Jupiter.
+  • Total Defect Fixes & Bugs Reconciled: 16 (Fixed: 4.8, 4.9, 4.10, 4.11, 4.13, 4.14, 4.15, 4.16, 4.17, 4.
+  21, 4.22; In-flight: 4.19, 4.24, 4.25, rv038; Filed: 4.26, 4.27, 4.28, 4.29, 4.30, 4.31, 4.32, 4.33).
+  • Top 5 Regression Risks:
+      1. StringFunctions.java argument order reversal (Bug 4.15) and loss of five XACML 3.0 string/URI
+      functions (Bug 4.14).
+      2. PermitOverrides.java extended Indeterminate logic returning DENY instead of INDETERMINATE_DP /
+      INDETERMINATE_P (Bug 4.21).
+      3. DoubleVal.java and TypeToString.java outputting "Infinity" instead of canonical "INF"/"-INF"/"NaN"
+      (Bug 4.16) and NaN == NaN in EqualityPredicates (Bug 4.29).
+      4. ISO8601Time.java formatting unzoned times with trailing Z and corrupting timezone-dependent
+      evaluations (Bug 4.11 / rv027).
+      5. DateTimeDurationUtils.java and Duration.java truncating fractional seconds to integer precision
+      and using broken duration field getters (Bug 4.10 & Bug 4.31).
+  • Files Opened During Analysis:
+      • openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/026-donor-slice-map/summary.md
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/DoubleVal.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java
+      • xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/UriVal.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/Value.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java
+      • xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java
+      • xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+      • xacml-json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer.java
+      • xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/AbstractPolicyRepository.java
+      • xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java
+      • xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java
+      • xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+      • xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/AttributeReference.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/BaseCompositeDecisionRule.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisonFunctions.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.
+      java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Duration.java
+      • xacml-core/src/main/java/org/xacml4j/v30/types/Duration.java
+      • xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java
+
+
+ How's the CLI experience so far? Help us improve:
+ [1] Good  [2] Fine  [3] Bad  [0] Skip
+
+? for shortcuts                                                                        Gemini 3.8 Flash · high

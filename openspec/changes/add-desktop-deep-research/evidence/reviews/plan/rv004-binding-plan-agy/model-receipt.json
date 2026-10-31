@@ -1,0 +1,16 @@
+{
+  "requested_provider": "antigravity_cli",
+  "requested_profile": "policy4j_arch_review_agy",
+  "requested_model": "gemini-3.1-pro-high",
+  "observed_model": "gemini-3.1-pro-high",
+  "requested_mode": "plan",
+  "requested_sandbox": true,
+  "advertised_permission_mode": "always-proceed",
+  "expanded_commands": [
+    {
+      "name": "plan",
+      "type": "system"
+    }
+  ],
+  "coverage": "runtime identity and narrow document review only"
+}

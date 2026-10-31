@@ -1,0 +1,2 @@
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify
+openspec validate modernize-core-for-jdk28-valhalla --strict

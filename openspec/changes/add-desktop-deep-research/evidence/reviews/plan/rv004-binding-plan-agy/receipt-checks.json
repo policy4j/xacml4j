@@ -1,0 +1,16 @@
+{
+  "terminal_status": "SUCCESS",
+  "marker_exact": true,
+  "step_type_counts": {
+    "user_input": 1,
+    "system_message": 1,
+    "agent_response": 103
+  },
+  "packet_unchanged": true,
+  "prompt_sha256": "3fda7b01f7b883c1b42a69ef8495142f1e5282517d8527dfe08dd30b0c8715f8",
+  "native_exit": {
+    "exit_code": 0,
+    "terminal": true,
+    "coordinator_deadline_exceeded": false
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "evidence_files_checked": 41,
+  "no_home_or_checkout_paths": true,
+  "required_evidence_present": true,
+  "protected_files_unchanged": 4199,
+  "root_pom_lines": {
+    "<junit.version>": 31,
+    "<mockito.version>": 32,
+    "<artifactId>junit-jupiter</artifactId>": 91,
+    "<artifactId>mockito-core</artifactId>": 96,
+    "<artifactId>mockito-junit-jupiter</artifactId>": 102,
+    "<artifactId>junit-bom</artifactId>": 152,
+    "<artifactId>maven-dependency-plugin</artifactId>": 312,
+    "<artifactId>maven-surefire-plugin</artifactId>": 324,
+    "<argLine>@{argLine}": 327
+  }
+}

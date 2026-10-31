@@ -1,0 +1,8 @@
+PASS: LOW map resolution red 63/2/0/0 -> green 63/0/0/0; both aliases/runtime modes
+PASS: exact syntax-error validation and processing-error invocation/Condition assertions
+BLOCKER: full gates 78 875/2/0/9 and 80 875/1/0/9 fail at PDP listener verification
+NOT RUN: test-support/conformance skipped; stale downstream reports excluded
+PASS: repository source/test match a8a90d46; race inference/proposal recorded; patch unapplied
+PASS: 3542 protected files unchanged; two authorized changes; headers and all loops preserved
+PASS: policy4j-the.4.12 deferred unchanged; scope diff clean; no staged changes
+PASS: JDK 11 receipts, raw failures, exact commands and normalized summaries recorded

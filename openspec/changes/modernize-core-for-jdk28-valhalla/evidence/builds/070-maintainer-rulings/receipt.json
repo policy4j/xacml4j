@@ -1,0 +1,12 @@
+{
+"date": "2026-10-07",
+"source": "maintainer answer to a multiple-choice question in a Claude Code session",
+"question": "Run 061 lists 18 pending decisions with a swarm recommendation for each. How do you want to rule?",
+"options_offered": ["Accept all recommendations", "Go through them one by one", "Defer"],
+"answer": "Accept all recommendations",
+"change": "modernize-core-for-jdk28-valhalla",
+"decision_source": "evidence/builds/061-pending-decisions/summary.md",
+"already_ruled_2026_10_04": ["D1", "D2", "D10"],
+"accepted_as_recommended": ["D3", "D4", "D5", "D6", "D7", "D8", "D9", "D11", "D12", "D13", "D14", "D15", "D16", "D17", "D18"],
+"authorizes_code_changes_in_this_run": false
+}

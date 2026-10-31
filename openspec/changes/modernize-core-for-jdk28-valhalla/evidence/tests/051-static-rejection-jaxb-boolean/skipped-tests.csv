@@ -1,0 +1,34 @@
+module,class,test,reason
+xacml-core,org.xacml4j.v30.content.ContentTest,testXmlBase64,public void org.xacml4j.v30.content.ContentTest.testXmlBase64() is @Disabled
+xacml-core,org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest,resolvesOnPermitApplySecondProfileIdentifier,Task 4.6: on-permit-apply-second is a CS01 profile algorithm whose profile semantics are not implemented yet
+xacml-core,org.xacml4j.v30.policy.function.FunctionProviderServiceLoaderTest,stringFromIdentifierResolves(String),policy4j-the.4.37: correct XACML 3.0 string-from-* identifiers are being repaired
+xacml-core,org.xacml4j.v30.policy.function.FunctionProviderServiceLoaderTest,xacml20RegexIdentifierResolves(String),policy4j-the.4.36: XACML 2.0 regexp-match identifiers are being repaired
+xacml-core,org.xacml4j.v30.types.TypeRegistryTest,duplicateTypeIdentifierFailsRegistration,policy4j-the.4.26: duplicate type identifiers must fail registration instead of retaining the first type
+xacml-core,org.xacml4j.v30.types.TypeRegistryTest,duplicateFunctionIdentifierFailsRegistration,policy4j-the.4.26: duplicate function identifiers must fail registration instead of retaining the first function
+xacml-core,org.xacml4j.v30.types.TypeRegistryTest,"anyUriUsesCanonicalLexicalForm(String, String)",policy4j-the.4.15: AnyURI lexical normalization remains under repair
+xacml-core,org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest,testXPathTransformationWithFunctions,public void org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest.testXPathTransformationWithFunctions() is @Disabled
+xacml-json,org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest,testEntityMarshall,public void org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest.testEntityMarshall() throws java.lang.Exception is @Disabled
+xacml-pdp,org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest,resolverFailureMustBeIndeterminateWithProcessingErrorWhenNotMustBePresent,policy4j-the.4.34: resolver retrieval failures with MustBePresent=false must fail closed as processing-error
+xacml-pdp,org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest,attributeDesignatorFunctionRequiredMissingAttributeIsIndeterminateForCategoryAndEntity,policy4j-the.4.43: function invocation must preserve the missing-attribute status of attribute-designator failures
+xacml-pdp,org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest,attributeDesignatorFunctionWithAbsentCategoryAndMustBePresentYieldsMissingAttribute,policy4j-the.4.43: absent category with MustBePresent=true must produce missing-attribute; the function invocation wrapper still reports processing-error (4.33 itself is fixed)
+xacml-pdp,org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest,resolverFailureMustBeIndeterminateWithProcessingErrorWhenMustBePresent,policy4j-the.4.34: resolver retrieval failures with MustBePresent=true must fail closed as processing-error
+xacml-pdp,org.xacml4j.v30.spi.pip.BaseAttributeResolverTest,testMBeanInvocationStats,public void org.xacml4j.v30.spi.pip.BaseAttributeResolverTest.testMBeanInvocationStats() throws java.lang.Exception is @Disabled
+xacml-pdp,org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest,testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet,public void org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.testFound2MatchingResolversWithDifferentIssuersFirstResolverResolvesToEmptySet() throws java.lang.Exception is @Disabled
+xacml-pdp,org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest,testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable,public void org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.testAttributeResolutionWhenMatchingAttributeResolverFoundResolverResultsIsNotCachable() throws java.lang.Exception is @Disabled
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[5],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[94],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[359],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[360],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[361],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[369],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[370],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[371],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[372],
+xacml-conformance-tests,org.xacml4j.v20.Xacml20ConformanceTest,testConformance(Case)[373],
+xacml-conformance-tests,org.xacml4j.v20.Xacml30ConformanceTest,testConformance(Case)[5],
+xacml-conformance-tests,org.xacml4j.v20.Xacml30ConformanceTest,testConformance(Case)[23],
+xacml-conformance-tests,org.xacml4j.v20.Xacml30ConformanceTest,testConformance(Case)[99],
+xacml-conformance-tests,org.xacml4j.v20.Xacml30ConformanceTest,testConformance(Case)[369],
+xacml-conformance-tests,org.xacml4j.v20.Xacml30ConformanceTest,testConformance(Case)[468],
+xacml-conformance-tests,org.xacml4j.v20.Xacml30ConformanceTest,testConformance(Case)[469],
+xacml-conformance-tests,org.xacml4j.v20.Xacml30ConformanceTest,testConformance(Case)[486],

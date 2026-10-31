@@ -1,0 +1,29 @@
+**Verdict:** `APPROVE` (0 findings `P1`–`P3`)
+
+Codex Terra's fixes in `PATCH-FIX-IDX.diff` cleanly resolve both `R-IDX-argon` findings (`P2-1` per-decision allocation in `TargetIndex.candidates` and `P3-1` `DecisionObserver.childrenSelected` javadoc). Saved to [`REPORT-R-IDX2-argon.md`](`.ntm/worktrees/xacml4j--batch2/agyx_1/REPORT-R-IDX2-argon.md`).
+
+---
+
+### Verification Summary (`SUPPORTED`)
+
+#### 1. Equivalence Across All Request Cases ([`TargetIndex.java:77-125`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`))
+- **Missing entity or throwing lookup ([`TargetIndex.java:81-87`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)):** When `context.resolveEntity(ref.getCategory())` returns `Optional.empty()` or throws `RuntimeException | Error`, `candidates` returns `children`, matching the previous `flatMap` fallback without allocating a lambda.
+- **Missing bag ([`TargetIndex.java:84,88`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)):** When `entity.orElseThrow().resolve(ref)` returns `Optional.empty()`, `candidates` returns `children`.
+- **Empty bag ([`TargetIndex.java:71,90`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)):** When `bag.isEmpty()`, `candidates` returns the precomputed `anyChildren = candidatesFor(this.any)`, which is identical to running 0 loop iterations on `(BitSet)any.clone()`.
+- **Non-string value ([`TargetIndex.java:93,103`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)):** Both the `bag.size() == 1` fast path and the multi-value `BitSet` loop check `if(!(value instanceof StringVal string)) return children;`, preserving the exact fallback to full linear evaluation.
+- **Single unknown value ([`TargetIndex.java:94-95`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)):** When `positions.get(string.get()) == null`, `candidates` returns `anyChildren` directly without cloning `any` or touching `singleValueCandidates`.
+- **Single known value & duplicate target literals ([`TargetIndex.java:96-98,112-125`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)):** `candidatesFor(indexes)` clones `any`, sets each index in `indexes` into the `BitSet` (which deduplicates any repeated child position from duplicate literals in a single target and merges with `any`), and builds an `ImmutableList<T>` in ascending child index order (`selected.nextSetBit`).
+- **Multi-value bag & duplicate request literals ([`TargetIndex.java:100-109`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)):** Indexed loops over `bag.valueAt(i)` and `found.get(j)` avoid both the `BagOfValues` iterator and the `found.forEach(selected::set)` `Consumer` allocation while setting the exact same `BitSet` bits.
+
+#### 2. Concurrency and Memory Bounds ([`TargetIndex.java:57,64,70-71,94-98`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`))
+- **Bounded keys:** `singleValueCandidates` is consulted and populated only after `positions.get(string.get()) != null` ([`TargetIndex.java:94-98`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)), so untrusted/unknown request literals can never enter the map; its key set is bounded by `positions.keySet()` (the static policy literals of that `PolicySet` or `Policy`).
+- **Bounded retained lists:** Caching is skipped when `anyChildren.size() > MAX_CACHED_ANY` (`8`, [`TargetIndex.java:57,96`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)), bounding the number of always-selected child references duplicated across cached literal lists.
+- **Thread safety across decisions and generations:** `this.any` is defensively cloned in the constructor ([`TargetIndex.java:70`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/policy/TargetIndex.java`)) and never mutated; `anyChildren` and every list stored in `singleValueCandidates` (`ConcurrentHashMap`) are immutable (`ImmutableList`), making concurrent reads and `computeIfAbsent` publication safe across threads and scoped to the lifetime of the owning `TargetIndex`.
+
+#### 3. Outcome-Oriented Tests ([`TargetIndexPdpTest.java:189-234`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/TargetIndexPdpTest.java`))
+- [`repeatedAndMultiValueRequestsKeepResponseOrder`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/TargetIndexPdpTest.java`) exercises both `alwaysCount = 2` ($\le 8$, cached single-value path) and `alwaysCount = 9` ($> 8$, uncached `candidatesFor(indexes)` path), duplicate policy literals, interleaved always-selected children, unknown values, multi-value bags with duplicates, empty bags, and repeated single-value hits, asserting outcomes via `assertResponse`.
+- [`firstApplicableKeepsIndexedAndAlwaysCandidateOrder`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-pdp/src/test/java/org/xacml4j/v30/pdp/TargetIndexPdpTest.java`) verifies that `first-applicable` preserves the relative order of indexed candidates before and after an unindexed (`always`) child.
+
+#### 4. Style and Javadoc ([`DecisionObserver.java:211-216`](`.ntm/worktrees/xacml4j--batch2/agyx_1/xacml-core/src/main/java/org/xacml4j/v30/spi/observe/DecisionObserver.java`))
+- `DecisionObserver.childrenSelected` javadoc now documents both `PolicySet` and `Policy` as well as prepared or indexed candidate lists (`R-IDX` `P3-1`).
+- Formatting, tab indentation, and conventions match the surrounding codebase.

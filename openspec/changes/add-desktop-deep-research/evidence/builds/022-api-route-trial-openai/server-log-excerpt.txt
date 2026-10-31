@@ -1,0 +1,10 @@
+# Excerpt of the research server's log for this call, 2026-10-10.
+# The response identifier is shortened. Routine session lines are left out.
+9:INFO:deep_research_mcp.mcp_server:Configuration loaded successfully. Model: gpt-5.5-pro
+23370:INFO:deep_research_mcp.agent:Research task started: resp_0731bd59...
+23422:INFO:mcp.server.lowlevel.server:Request 4 cancelled - duplicate response suppressed
+polls_of_the_provider_task=11
+
+# Status tool afterwards, same server:
+#   research_status(<this task>)            -> "status: failed", created 2026-10-10 10:49:41 EDT
+#   research_status(<task of 2026-10-08>)   -> "status: failed"; that call had also been ended by the client

@@ -1,0 +1,9 @@
+{
+  "exit_code": 1,
+  "tests": 5,
+  "failures": 3,
+  "errors": 0,
+  "skips": 0,
+  "meaning": "IIC350 and IIC358 Permit rather than NotApplicable; IIC020 disabled",
+  "xml": "harness-red-TEST-NaNFixtureAdjudicationTest.xml"
+}

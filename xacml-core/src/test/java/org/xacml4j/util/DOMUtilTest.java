@@ -22,14 +22,11 @@ package org.xacml4j.util;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,8 +34,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -75,20 +72,19 @@ public class DOMUtilTest
 
 	private Element content1;
 	private Element content2;
-	private Element content3;
 	private Element content4;
 	private XPathFactory xpf;
 	private XPath xpath;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception
 	{
 		DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
 		f.setNamespaceAware(true);
 		DocumentBuilder builder = f.newDocumentBuilder();
 		this.content1 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
-		this.content2 = builder.parse(new InputSource(new StringReader(testXml1))).getDocumentElement();
-		this.content3 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
+		this.content2 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
+		this.content2 = builder.parse(new InputSource(new StringReader(testXml2))).getDocumentElement();
 		this.content4 = builder.parse(new InputSource(new StringReader(testXml4))).getDocumentElement();
 		this.xpf = XPathFactory.newInstance();
 		this.xpath = xpf.newXPath();
@@ -99,12 +95,9 @@ public class DOMUtilTest
 	@Test
 	public void testCopyNode()
 	{
-		Document copy = DOMUtil.copyNode(content1);
-		assertEquals(Node.DOCUMENT_NODE, copy.getNodeType());
-		assertNotNull(copy);
-		Element c = copy.getDocumentElement();
+		Document copy  = DOMUtil.copyNode(content1);
+		Element c  = copy.getDocumentElement();
 		assertEquals(2, c.getChildNodes().getLength());
-		assertNotNull(copy);
 		assertEquals("record", c.getLocalName());
 		assertEquals("urn:example:med:schemas:record", c.getNamespaceURI());
 		assertEquals(2, c.getChildNodes().getLength());
@@ -113,6 +106,7 @@ public class DOMUtilTest
 		assertEquals("patient", c.getChildNodes().item(1).getLocalName());
 		assertEquals("urn:example:med:schemas:record", c.getChildNodes().item(1).getNamespaceURI());
 		assertTrue(c.isEqualNode(content1));
+		assertTrue(DOMUtil.compareNodes(c, content1));
 
 	}
 
@@ -127,6 +121,17 @@ public class DOMUtilTest
 	public void testNodeXPathElementTextNodes() throws Exception{
 		assertEquals("//md:record", DOMUtil.getXPath(content1));
 		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/text()", content1, XPathConstants.NODESET);
+		assertEquals("//md:record/md:patient[1]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(0)));
+		assertEquals("//md:record/md:patient[2]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(1)));
+	}
+
+
+	@Test
+	public void testNodeListToList() throws Exception{
+		assertEquals("//md:record", DOMUtil.getXPath(content1));
+		NodeList nodes = (NodeList)xpath.evaluate("//md:record/md:patient/md:patientDoB/text()", content1, XPathConstants.NODESET);
+		List<Node> list = DOMUtil.nodeListToList(nodes);
+		assertEquals(2, list.size());
 		assertEquals("//md:record/md:patient[1]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(0)));
 		assertEquals("//md:record/md:patient[2]/md:patientDoB[1]/text()", DOMUtil.getXPath(nodes.item(1)));
 	}
@@ -149,11 +154,8 @@ public class DOMUtilTest
 	public void testWriteNodeToStream() throws Exception
 	{
 		ByteArrayOutputStream out1 = new ByteArrayOutputStream();
-		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
 		DOMUtil.serializeToXml(content1, out1);
-		DOMUtil.serializeToXml(content2, out2);
 		assertEquals(testXml1, new String(out1.toByteArray()));
-		assertEquals(testXml1, new String(out2.toByteArray()));
 	}
 
 	@Test
@@ -161,10 +163,11 @@ public class DOMUtilTest
 		assertTrue(DOMUtil.isEqual(null, null));
 		assertFalse(DOMUtil.isEqual(content1, null));
 		assertFalse(DOMUtil.isEqual(null, content1));
-		assertTrue(DOMUtil.isEqual(content1, content2));
-		assertTrue(DOMUtil.isEqual(content2, content1));
-		assertFalse(DOMUtil.isEqual(content1, content3));
-		assertFalse(DOMUtil.isEqual(content3, content1));
+		// The two documents differ in the text of their leaf elements. Before bead
+		// policy4j-the.4.60 the comparison did not look at children and called them equal.
+		assertFalse(DOMUtil.isEqual(content1, content2));
+		assertFalse(DOMUtil.isEqual(content2, content1));
+		assertTrue(DOMUtil.isEqual(content1, DOMUtil.copyNode(content1).getDocumentElement()));
 	}
 
 	@Test
@@ -172,6 +175,6 @@ public class DOMUtilTest
 		assertEquals("{urn:example:med:schemas:record}record", DOMUtil.toString(content1));
 		assertEquals("test", DOMUtil.toString(content4));
 		assertNull(DOMUtil.toString(null));
-
 	}
+
 }

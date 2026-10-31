@@ -1,0 +1,141 @@
+[INFO] Scanning for projects...
+[INFO] Loaded 24249 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 23293 auto-discovered prefixes for remote repository nexus (prefixes-nexus.txt)
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (enforce-maven) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireMavenVersion passed
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (enforce-java-25) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.version.RequireJavaVersion passed
+[INFO] 
+[INFO] --- enforcer:3.6.3:enforce (ban-log4j) @ xacml-core ---
+[INFO] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies passed
+[INFO] 
+[INFO] --- dependency:3.11.0:properties (default) @ xacml-core ---
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 
+[INFO] --- license:2.7.1:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.5.0:resources (default-resources) @ xacml-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.16.0:compile (default-compile) @ xacml-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 252 source files with javac [debug release 25] to target/classes
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/content/XPathProvider.java: Some input files use or override a deprecated API.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/content/XPathProvider.java: Recompile with -Xlint:deprecation for details.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java: Some input files use unchecked or unsafe operations.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.5.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 32 resources from src/test/resources to target/test-classes
+[INFO] Copying 5 resources from ../build-support/logback to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.16.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 150 source files with javac [debug release 25] to target/test-classes
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Some input files use unchecked or unsafe operations.
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- surefire:3.6.1:test (default-test) @ xacml-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.xacml4j.v30.policy.MatchAllOfTest
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.513 s -- in org.xacml4j.v30.policy.MatchAllOfTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.CombiningListTypesCharacterizationTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.259 s -- in org.xacml4j.v30.policy.combine.impl.CombiningListTypesCharacterizationTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondDecisionTableTest
+[INFO] Tests run: 289, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.256 s -- in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondDecisionTableTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in org.xacml4j.v30.policy.combine.impl.FirstApplicableTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in org.xacml4j.v30.policy.combine.impl.PermitOverridesTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in org.xacml4j.v30.policy.combine.impl.DenyOverridesTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.022 s -- in org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest
+[INFO] Running org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s -- in org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest
+[INFO] Running org.xacml4j.v30.policy.TargetTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in org.xacml4j.v30.policy.TargetTest
+[INFO] Running org.xacml4j.v30.policy.function.DirectPairCallTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.283 s -- in org.xacml4j.v30.policy.function.DirectPairCallTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in org.xacml4j.v30.policy.function.impl.BagFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[INFO] Tests run: 33, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.025 s -- in org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.111 s -- in org.xacml4j.v30.policy.function.impl.XPathFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 s -- in org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+WARN  08:49:47.072 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.074 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.089 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.090 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.097 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.097 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.099 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.099 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:all-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:all-of" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.099 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of-any" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of-any" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.100 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.100 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.100 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:all-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:all-of" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.100 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of-any" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of-any" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.100 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" parameter="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" at="1" - invalid parameter
+WARN  08:49:47.101 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.102 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.102 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.102 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.106 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:all-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:all-of" - failed additional validation
+WARN  08:49:47.106 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:all-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:all-of" - failed additional validation
+WARN  08:49:47.114 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.114 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:map" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:map" - failed additional validation
+WARN  08:49:47.115 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:all-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:all-of" - failed additional validation
+WARN  08:49:47.116 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:all-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:all-of" - failed additional validation
+WARN  08:49:47.119 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.119 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.119 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.120 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.120 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.120 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of" - failed additional validation
+WARN  08:49:47.121 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of-any" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of-any" - failed additional validation
+WARN  08:49:47.121 [main] org.xacml4j.v30.policy.Apply - Function="urn:oasis:names:tc:xacml:3.0:function:any-of-any" is applied to arguments that do not fit it. The expression will evaluate to Indeterminate: Invalid XACML functionId="urn:oasis:names:tc:xacml:3.0:function:any-of-any" - failed additional validation
+[INFO] Tests run: 54, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s -- in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.010 s -- in org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest
+[INFO] Running org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest
+[INFO] Tests run: 67, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.054 s -- in org.xacml4j.v30.policy.function.impl.LaterDecidingOperandTest
+[INFO] Running org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s -- in org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest
+[INFO] Running org.xacml4j.v30.policy.MatchAnyOfTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in org.xacml4j.v30.policy.MatchAnyOfTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 587, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  9.792 s
+[INFO] Finished at: 2026-10-27T08:49:47-04:00
+[INFO] ------------------------------------------------------------------------

@@ -1,0 +1,37 @@
+Checkout path below is written as <repo>.
+Source log: verify/reactor-excluding-anyuri.log
+JDK 21.0.6. Command in command.txt. Finished 2026-10-02T02:36:47-04:00. Total time 22.328 s.
+
+xacml-core Results:
+[WARNING] Tests run: 4546, Failures: 0, Errors: 0, Skipped: 17
+
+xacml-xml Results:
+[INFO] Tests run: 53, Failures: 0, Errors: 0, Skipped: 0
+
+xacml-json Results:
+[WARNING] Tests run: 21, Failures: 0, Errors: 0, Skipped: 1
+
+xacml-pdp Results:
+[WARNING] Tests run: 77, Failures: 0, Errors: 0, Skipped: 3
+
+xacml-test Results:
+[ERROR] Failures:
+[ERROR]   Xacml30TestUtilityTest.differentUriSpellingsRemainRejected:66 Expected java.lang.AssertionError to be thrown, but nothing was thrown.
+[ERROR]   Xacml30TestUtilityTest.differentUriSpellingsRemainRejected:66 Expected java.lang.AssertionError to be thrown, but nothing was thrown.
+[ERROR]   Xacml30TestUtilityTest.doubleOracleAcceptsSignedZeroAndNan:76 Attribute values differ ==> expected: <true> but was: <false>
+[ERROR]   Xacml30TestUtilityTest.doubleOracleAcceptsSignedZeroAndNan:76 Attribute values differ ==> expected: <true> but was: <false>
+[ERROR]   XacmlPolicyTestSupportTest.differentFulfillOnIsRejected:59 Expected java.lang.AssertionError to be thrown, but nothing was thrown.
+[ERROR] Tests run: 97, Failures: 5, Errors: 0, Skipped: 0
+
+Reactor Summary for Xacml4J Project 2.0.0-SNAPSHOT:
+Xacml4J Project .................................... SUCCESS
+Xacml4J Core Engine Implementation ................. SUCCESS
+Xacml4J XML representation JAXB classes ............ SUCCESS
+Xacml XML representation marshallers ............... SUCCESS
+Xacml4J Json based request/response and policy format support SUCCESS
+Xacml4J PDP ........................................ SUCCESS
+Xacml4J Policy Unit Test Support ................... FAILURE
+Xacml4J Conformance Tests .......................... SKIPPED
+BUILD FAILURE
+Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.0.0:test (default-test) on project xacml-test: There are test failures.
+Surefire reports: <repo>/xacml-test/target/surefire-reports

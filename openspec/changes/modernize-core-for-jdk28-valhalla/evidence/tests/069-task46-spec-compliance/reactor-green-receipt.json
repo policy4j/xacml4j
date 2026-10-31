@@ -1,0 +1,1674 @@
+{
+  "command": "JAVA_HOME=<JDK21> rtk mvn -Dlicense.skipUpdateLicense=true clean verify",
+  "exit_code": 0,
+  "modules": {
+    "xacml-core": {
+      "tests": 6197,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 10
+    },
+    "xacml-xml": {
+      "tests": 244,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-json": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "xacml-pdp": {
+      "tests": 98,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 5
+    },
+    "xacml-test": {
+      "tests": 99,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-conformance-tests": {
+      "tests": 927,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 14
+    }
+  },
+  "suites": [
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.util.DOMUtilTest.xml",
+      "name": "org.xacml4j.util.DOMUtilTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.util.ISO8601DurationTest.xml",
+      "name": "org.xacml4j.util.ISO8601DurationTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.util.JSONUtilTest.xml",
+      "name": "org.xacml4j.util.JSONUtilTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.AttributeIndexTest.xml",
+      "name": "org.xacml4j.v30.AttributeIndexTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.AttributeTest.xml",
+      "name": "org.xacml4j.v30.AttributeTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.CategoryIdTest.xml",
+      "name": "org.xacml4j.v30.CategoryIdTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.ContentTest.xml",
+      "name": "org.xacml4j.v30.ContentTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.EntityTest.xml",
+      "name": "org.xacml4j.v30.EntityTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.ObligationTest.xml",
+      "name": "org.xacml4j.v30.ObligationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.RequestContextEqualityTest.xml",
+      "name": "org.xacml4j.v30.RequestContextEqualityTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.RequestContextIncludeInResultTest.xml",
+      "name": "org.xacml4j.v30.RequestContextIncludeInResultTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.WellKnownAttributeIdsTest.xml",
+      "name": "org.xacml4j.v30.WellKnownAttributeIdsTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.content.ContentTest.xml",
+      "name": "org.xacml4j.v30.content.ContentTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.content.JsonContentTest.xml",
+      "name": "org.xacml4j.v30.content.JsonContentTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.content.XmlContentTest.xml",
+      "name": "org.xacml4j.v30.content.XmlContentTest",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.AdviceExpressionTest.xml",
+      "name": "org.xacml4j.v30.policy.AdviceExpressionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.AdviceTest.xml",
+      "name": "org.xacml4j.v30.policy.AdviceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.ApplyTest.xml",
+      "name": "org.xacml4j.v30.policy.ApplyTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.AttributeAssignmentTest.xml",
+      "name": "org.xacml4j.v30.policy.AttributeAssignmentTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.AttributeDesignatorTest.xml",
+      "name": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.AttributeSelectorTest.xml",
+      "name": "org.xacml4j.v30.policy.AttributeSelectorTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.AttributesTest.xml",
+      "name": "org.xacml4j.v30.policy.AttributesTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.BagOfValuesTest.xml",
+      "name": "org.xacml4j.v30.policy.BagOfValuesTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.CombinerParameterTest.xml",
+      "name": "org.xacml4j.v30.policy.CombinerParameterTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.ConditionSafetyNetTest.xml",
+      "name": "org.xacml4j.v30.policy.ConditionSafetyNetTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.ConditionTest.xml",
+      "name": "org.xacml4j.v30.policy.ConditionTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.DecisionTest.xml",
+      "name": "org.xacml4j.v30.policy.DecisionTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.MatchAllOfTest.xml",
+      "name": "org.xacml4j.v30.policy.MatchAllOfTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.MatchAnyOfTest.xml",
+      "name": "org.xacml4j.v30.policy.MatchAnyOfTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.MatchTest.xml",
+      "name": "org.xacml4j.v30.policy.MatchTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.ObligationExpressionTest.xml",
+      "name": "org.xacml4j.v30.policy.ObligationExpressionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.PolicyDefaultsTest.xml",
+      "name": "org.xacml4j.v30.policy.PolicyDefaultsTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.PolicyIDReferenceTest.xml",
+      "name": "org.xacml4j.v30.policy.PolicyIDReferenceTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.PolicySetIDReferenceTest.xml",
+      "name": "org.xacml4j.v30.policy.PolicySetIDReferenceTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.PolicySetTest.xml",
+      "name": "org.xacml4j.v30.policy.PolicySetTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.PolicyTest.xml",
+      "name": "org.xacml4j.v30.policy.PolicyTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.RequestTest.xml",
+      "name": "org.xacml4j.v30.policy.RequestTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.ResultTest.xml",
+      "name": "org.xacml4j.v30.policy.ResultTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.RootEvaluationContextTest.xml",
+      "name": "org.xacml4j.v30.policy.RootEvaluationContextTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.RuleTest.xml",
+      "name": "org.xacml4j.v30.policy.RuleTest",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.StatusCodeIdTest.xml",
+      "name": "org.xacml4j.v30.policy.StatusCodeIdTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.TargetTest.xml",
+      "name": "org.xacml4j.v30.policy.TargetTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.VariableDefinitionTest.xml",
+      "name": "org.xacml4j.v30.policy.VariableDefinitionTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.VariableReferenceTest.xml",
+      "name": "org.xacml4j.v30.policy.VariableReferenceTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.VersionMatchTest.xml",
+      "name": "org.xacml4j.v30.policy.VersionMatchTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.VersionTest.xml",
+      "name": "org.xacml4j.v30.policy.VersionTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.XPathTest.xml",
+      "name": "org.xacml4j.v30.policy.XPathTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.AnnotatedDecisionCombiningAlgorithmProviderFactoryTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest",
+      "tests": 125,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.DenyOverridesTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.DenyOverridesTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.DenyUnlessPermitTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.FirstApplicableTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.FirstApplicableTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondDecisionTableTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondDecisionTableTest",
+      "tests": 289,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.OnPermitApplySecondPolicyTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.OnlyOneApplicablePolicyCombiningAlgorithmTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.OverrideDecisionTableTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.OverrideDecisionTableTest",
+      "tests": 3048,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.PermitOverridesTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.PermitOverridesTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest.xml",
+      "name": "org.xacml4j.v30.policy.combine.impl.PermitUnlessDenyTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.FunctionProviderDuplicateIdTest.xml",
+      "name": "org.xacml4j.v30.policy.function.FunctionProviderDuplicateIdTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.FunctionProviderServiceLoaderTest.xml",
+      "name": "org.xacml4j.v30.policy.function.FunctionProviderServiceLoaderTest",
+      "tests": 239,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.FunctionSpecBuilderTest.xml",
+      "name": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest.xml",
+      "name": "org.xacml4j.v30.policy.function.ParamSingleTypeSpecTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.ParamTypeSequenceTest.xml",
+      "name": "org.xacml4j.v30.policy.function.ParamTypeSequenceTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.AnnotationBasedFunctionFactoryTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+      "tests": 33,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.BagFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.BagFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticBoundaryTest",
+      "tests": 50,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest",
+      "tests": 736,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.DateTimeValueArithmeticFunctionTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.DefaultFunctionFunctionInvocationTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.DefaultFunctionSpecTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.DoubleBagSetEqualityTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.DoubleBagSetEqualityTest",
+      "tests": 108,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.DurationFunctionIdentifierTest",
+      "tests": 72,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.FunctionInvocationStatusTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.FunctionInvocationStatusTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test",
+      "tests": 109,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionIdentifierTest",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicFunctionsTest",
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.JavaMethodToFunctionSpecTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.LogicalFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.NonNumericComparisionFunctionTest",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.NumericComparisonFunctionTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.RegularExpressionFunctionsTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.SetFunctionTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.SetFunctionTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.SpecialMatchFunctionsTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.StringEqualIgnoreCaseTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.StringEqualIgnoreCaseTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.StringFunctionLexicalFormTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.StringFunctionLexicalFormTest",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.StringFunctionSemanticsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.StringFunctionSemanticsTest",
+      "tests": 505,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.policy.function.impl.XPathFunctionsTest.xml",
+      "name": "org.xacml4j.v30.policy.function.impl.XPathFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.AnyURILexicalTest.xml",
+      "name": "org.xacml4j.v30.types.AnyURILexicalTest",
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.AnyURITest.xml",
+      "name": "org.xacml4j.v30.types.AnyURITest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.Base64BinaryTest.xml",
+      "name": "org.xacml4j.v30.types.Base64BinaryTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.BinaryTest.xml",
+      "name": "org.xacml4j.v30.types.BinaryTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.BooleanLexicalTest.xml",
+      "name": "org.xacml4j.v30.types.BooleanLexicalTest",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.BooleanValTest.xml",
+      "name": "org.xacml4j.v30.types.BooleanValTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.DNSNameTest.xml",
+      "name": "org.xacml4j.v30.types.DNSNameTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.DoubleValTest.xml",
+      "name": "org.xacml4j.v30.types.DoubleValTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.EUI48Test.xml",
+      "name": "org.xacml4j.v30.types.EUI48Test",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.HexTypeTest.xml",
+      "name": "org.xacml4j.v30.types.HexTypeTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.IPAddressTest.xml",
+      "name": "org.xacml4j.v30.types.IPAddressTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601DateTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601DateTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601DateTimeArithmeticTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601DateTimeTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601DateTimeZonePreservationTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601DateTimeZonePreservationTest",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601DayTimeDurationTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601DayTimeDurationTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601DurationReviewTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601DurationReviewTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest",
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601TimeTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601TimeTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.ISO8601YearMonthDurationTest.xml",
+      "name": "org.xacml4j.v30.types.ISO8601YearMonthDurationTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.IntegerTypeTest.xml",
+      "name": "org.xacml4j.v30.types.IntegerTypeTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.PathTest.xml",
+      "name": "org.xacml4j.v30.types.PathTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.PortRangeTest.xml",
+      "name": "org.xacml4j.v30.types.PortRangeTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.RFC822NameTest.xml",
+      "name": "org.xacml4j.v30.types.RFC822NameTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.StringValTest.xml",
+      "name": "org.xacml4j.v30.types.StringValTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.TemporalEqualityTest.xml",
+      "name": "org.xacml4j.v30.types.TemporalEqualityTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.TypeCapabilityTest.xml",
+      "name": "org.xacml4j.v30.types.TypeCapabilityTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.TypeRegistryTest.xml",
+      "name": "org.xacml4j.v30.types.TypeRegistryTest",
+      "tests": 77,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.TypeToStringCapabilityTest.xml",
+      "name": "org.xacml4j.v30.types.TypeToStringCapabilityTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.TypeToStringTest.xml",
+      "name": "org.xacml4j.v30.types.TypeToStringTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest.xml",
+      "name": "org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "module": "xacml-core",
+      "file": "TEST-org.xacml4j.v30.types.XacmlTypesTest.xml",
+      "name": "org.xacml4j.v30.types.XacmlTypesTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.AnyURIRequestLexicalTest.xml",
+      "name": "org.xacml4j.v30.xml.AnyURIRequestLexicalTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.BaseJAXBUnmarshallerSecurityTest.xml",
+      "name": "org.xacml4j.v30.xml.BaseJAXBUnmarshallerSecurityTest",
+      "tests": 102,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.BooleanAttributeLexicalTest.xml",
+      "name": "org.xacml4j.v30.xml.BooleanAttributeLexicalTest",
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.BooleanRequestLexicalTest.xml",
+      "name": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.ExpressionBuilderTest.xml",
+      "name": "org.xacml4j.v30.xml.ExpressionBuilderTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.TypeToXacml30Test.xml",
+      "name": "org.xacml4j.v30.xml.TypeToXacml30Test",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest.xml",
+      "name": "org.xacml4j.v30.xml.Xacml20RequestContextUnmarshallerTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest.xml",
+      "name": "org.xacml4j.v30.xml.Xacml20ResponseContextMarshallerTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest.xml",
+      "name": "org.xacml4j.v30.xml.Xacml20ResponseContextUnmarshallerTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.Xacml30RequestContentTest.xml",
+      "name": "org.xacml4j.v30.xml.Xacml30RequestContentTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.Xacml30RequestReferenceMappingTest.xml",
+      "name": "org.xacml4j.v30.xml.Xacml30RequestReferenceMappingTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest.xml",
+      "name": "org.xacml4j.v30.xml.Xacml30ResponseContextUnmarshallerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-xml",
+      "file": "TEST-org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest.xml",
+      "name": "org.xacml4j.v30.xml.XacmlPolicyUnmarshallerTest",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-json",
+      "file": "TEST-org.xacml4j.v30.marshal.json.AnyURIRequestLexicalTest.xml",
+      "name": "org.xacml4j.v30.marshal.json.AnyURIRequestLexicalTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-json",
+      "file": "TEST-org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest.xml",
+      "name": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-json",
+      "file": "TEST-org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest.xml",
+      "name": "org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "module": "xacml-json",
+      "file": "TEST-org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest.xml",
+      "name": "org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-json",
+      "file": "TEST-org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest.xml",
+      "name": "org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-json",
+      "file": "TEST-org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest.xml",
+      "name": "org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest.xml",
+      "name": "org.xacml4j.util.DefaultFunctionFunctionInvocationFactoryTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest.xml",
+      "name": "org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest",
+      "tests": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest.xml",
+      "name": "org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest.xml",
+      "name": "org.xacml4j.v30.pdp.DefaultPolicyDecisionPointTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest.xml",
+      "name": "org.xacml4j.v30.pdp.request.MultipleResourcesHandlerTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest.xml",
+      "name": "org.xacml4j.v30.pdp.request.MultipleResourcesViaRepeatingAttributesHandlerTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest.xml",
+      "name": "org.xacml4j.v30.pdp.request.MultipleResourcesViaRequestReferencesHandlerTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest.xml",
+      "name": "org.xacml4j.v30.pdp.request.MultipleResourcesViaXacmlXPathHandlerTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest.xml",
+      "name": "org.xacml4j.v30.spi.pdp.RequestContextHandlerChainTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.AnnotatedResolverFactoryTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.AttributeResolverDescriptorTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.AttributeSetTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.AttributeSetTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.BaseAttributeResolverTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.BaseAttributeResolverTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.ContentResolverDescriptorTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.DefaultPolicyInformationPointTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.DefaultResolverRegistryTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest.xml",
+      "name": "org.xacml4j.v30.spi.pip.ResolverRegistryBuilderTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest.xml",
+      "name": "org.xacml4j.v30.spi.repository.DefaultPolicyReferenceResolverTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-pdp",
+      "file": "TEST-org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest.xml",
+      "name": "org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-test",
+      "file": "TEST-org.xacml4j.v20.Xacml20SamplePolicyTest.xml",
+      "name": "org.xacml4j.v20.Xacml20SamplePolicyTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-test",
+      "file": "TEST-org.xacml4j.v20.Xacml20TestUtilityTest.xml",
+      "name": "org.xacml4j.v20.Xacml20TestUtilityTest",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-test",
+      "file": "TEST-org.xacml4j.v20.Xacml30TestUtilityTest.xml",
+      "name": "org.xacml4j.v20.Xacml30TestUtilityTest",
+      "tests": 64,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-test",
+      "file": "TEST-org.xacml4j.v30.AttributeResolverTestSupportTest.xml",
+      "name": "org.xacml4j.v30.AttributeResolverTestSupportTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-test",
+      "file": "TEST-org.xacml4j.v30.ExpectedAttributeResolverBuilderTest.xml",
+      "name": "org.xacml4j.v30.ExpectedAttributeResolverBuilderTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-test",
+      "file": "TEST-org.xacml4j.v30.Xacml30SamplePolicyTest.xml",
+      "name": "org.xacml4j.v30.Xacml30SamplePolicyTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-test",
+      "file": "TEST-org.xacml4j.v30.XacmlPolicyTestSupportTest.xml",
+      "name": "org.xacml4j.v30.XacmlPolicyTestSupportTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.ConformanceManifestTest.xml",
+      "name": "org.xacml4j.v20.ConformanceManifestTest",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.ConformancePolicyImportTest.xml",
+      "name": "org.xacml4j.v20.ConformancePolicyImportTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.ConformanceStaticRejectionTest.xml",
+      "name": "org.xacml4j.v20.ConformanceStaticRejectionTest",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.NaNFixtureAdjudicationTest.xml",
+      "name": "org.xacml4j.v20.NaNFixtureAdjudicationTest",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.RSA2008InteropTest.xml",
+      "name": "org.xacml4j.v20.RSA2008InteropTest",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.VendoredFixtureIntegrityTest.xml",
+      "name": "org.xacml4j.v20.VendoredFixtureIntegrityTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest.xml",
+      "name": "org.xacml4j.v20.Xacml20ConformanceAttributeResolverTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.Xacml20ConformanceTest.xml",
+      "name": "org.xacml4j.v20.Xacml20ConformanceTest",
+      "tests": 375,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 8
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.Xacml30ConformanceTest.xml",
+      "name": "org.xacml4j.v20.Xacml30ConformanceTest",
+      "tests": 488,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 6
+    },
+    {
+      "module": "xacml-conformance-tests",
+      "file": "TEST-org.xacml4j.v20.XacmlExampleTest.xml",
+      "name": "org.xacml4j.v20.XacmlExampleTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "totals": {
+    "tests": 7589,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 30
+  },
+  "suite_count": 178,
+  "frozen_source_hashes": {
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/ArithmeticFunctions.java": "03486494c25776083f76496c13364fbc3e02229aa341992f5bc5db0e1c4692c9",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/EqualityPredicates.java": "dd4ffad9f30fd192bd7685856c4e2e8e2f247a2d6bd701b95ea35132deb3220b",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java": "38ee86d57c6b113b6fd6fde26036a41a298fe826b25617a1ef253724bb824158",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java": "17885af65b8029786d1db7eca7f70abf96ac4e0adf01e9d2c5db72062e79c585",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/ArtimeticFunctionsTest.java": "3c25948e34bbc2005961f389a991f52ce84cb1f38c2a1538d0cbd2f85488f932",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/FunctionSafetyNet43Test.java": "b616b869a9cf450c3a964e9201eb754aa008ac937f0f61c06c29b407f368ecd5",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DoubleBagSetEqualityTest.java": "080e5e0715fbf0690e0b1ffc9cc1e8b1266760572883f394f177b6e07338ed08",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java": "edb91204523c2a4c037f05c423f6fb4640c2f09cd07e4b543dba662e820d5bb3",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/NaNFixtureAdjudicationTest.java": "d8f9f2db66aed4abc7f9ed25f474d92f64b273550808d4ea9121e8f0c5d50b4a",
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv": "2569ec32f318ccc414ad1fe2082a6985c532e0e40817ebd56735a9ec262a4b67",
+    "openspec/changes/modernize-core-for-jdk28-valhalla/specs/function-semantics/spec.md": "97d8afadcee210884b356b05d57119304dfb1e18bd5a16c68bbe75576b70ee9c",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/BaseCompositeDecisionRule.java": "7400d0840572e25a0d148e5a692c5a9723f88e7609389acf819c4a9b3a91b08e",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/DefaultXacml30DecisionCombiningAlgorithms.java": "68fc53475c779cea108431c0da9b5e8bf924f1a879f1b63f68e16b07025ffd44",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyCombiningAlgorithm.java": "6b62b9d52a01a9ff18694dee26287f87b6eb911878fcaaeb390f933886fa9c06",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java": "720dce8fad1cfe5424ec7bc1e5e5d2234cbcec28ef632271a5fd5bb2cd3660c1",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondDecisionTableTest.java": "f7738469f2a91c981c0548ead7173ae160086ff0530aaf5e2e6f27b0388fdf27",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java": "a6ba03c940fb51bee1dc4424c0dd5c7722da9557b3eea8d1a55d86ee51a09ed2",
+    "openspec/changes/modernize-core-for-jdk28-valhalla/specs/combining-algorithm-registry/spec.md": "12beb7a7299ce931e565284520cc797ea3723462928ac3537ffd0602b499cd6c"
+  },
+  "hash_matches_after_gate": true
+}

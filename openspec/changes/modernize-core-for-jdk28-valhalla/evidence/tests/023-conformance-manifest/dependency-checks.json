@@ -1,0 +1,54 @@
+{
+  "objenesis": {
+    "projects_checked": 8,
+    "project_results": {
+      "xacml": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ],
+      "xacml-core": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ],
+      "xacml-xml-jaxb": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ],
+      "xacml-xml": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ],
+      "xacml-json": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ],
+      "xacml-pdp": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ],
+      "xacml-test": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ],
+      "xacml-conformance-tests": [
+        "[INFO] \\- org.mockito:mockito-core:jar:5.24.0:test",
+        "[INFO]    \\- org.objenesis:objenesis:jar:3.3:test"
+      ]
+    },
+    "result": "only beneath mockito-core"
+  },
+  "legacy": {
+    "projects_checked": 8,
+    "project_results": {
+      "xacml": [],
+      "xacml-core": [],
+      "xacml-xml-jaxb": [],
+      "xacml-xml": [],
+      "xacml-json": [],
+      "xacml-pdp": [],
+      "xacml-test": [],
+      "xacml-conformance-tests": []
+    },
+    "result": "empty in every project"
+  }
+}

@@ -1,0 +1,311 @@
+{
+  "xacml-core": {
+    "counts": {
+      "tests": 32,
+      "failures": 22,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.types.BooleanLexicalTest": {
+        "tests": 27,
+        "failures": 21,
+        "errors": 0,
+        "skipped": 0
+      },
+      "org.xacml4j.v30.types.BooleanValTest": {
+        "tests": 5,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[1]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[2]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[3]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[4]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[5]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[6]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[7]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[8]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[9]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[10]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[11]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[12]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[13]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[14]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[15]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[16]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[17]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "invalidLexicalFormsAreSyntaxErrors(String)[18]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "factoryAndStringCapabilityAcceptOnlyTheFourForms(String, boolean)[3]",
+        "kind": "failure",
+        "message": "expected: <true> but was: <false>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "factoryAndStringCapabilityAcceptOnlyTheFourForms(String, boolean)[5]",
+        "kind": "failure",
+        "message": "expected: <true> but was: <false>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanLexicalTest",
+        "test": "factoryAndStringCapabilityAcceptOnlyTheFourForms(String, boolean)[7]",
+        "kind": "failure",
+        "message": "expected: <true> but was: <false>"
+      },
+      {
+        "class": "org.xacml4j.v30.types.BooleanValTest",
+        "test": "fromToXacmlString",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      }
+    ],
+    "disabled": []
+  },
+  "xacml-xml": {
+    "counts": {
+      "tests": 8,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.xml.BooleanRequestLexicalTest": {
+        "tests": 8,
+        "failures": 8,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestRejectsInvalidBooleanWithSyntaxError(int, String)[1]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestRejectsInvalidBooleanWithSyntaxError(int, String)[2]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestRejectsInvalidBooleanWithSyntaxError(int, String)[3]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestRejectsInvalidBooleanWithSyntaxError(int, String)[4]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestCollapsesXmlWhitespaceAroundBooleanValues(int)[1]",
+        "kind": "failure",
+        "message": "expected: <[BooleanVal{type=boolean, value=true}, BooleanVal{type=boolean, value=false}]> but was: <[BooleanVal{type=boolean, value=false}, BooleanVal{type=boolean, value=false}]>"
+      },
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestCollapsesXmlWhitespaceAroundBooleanValues(int)[2]",
+        "kind": "failure",
+        "message": "expected: <[BooleanVal{type=boolean, value=true}, BooleanVal{type=boolean, value=false}]> but was: <[BooleanVal{type=boolean, value=false}, BooleanVal{type=boolean, value=false}]>"
+      },
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestParsesOneAndZeroAsDistinctBooleanValues(int)[1]",
+        "kind": "failure",
+        "message": "expected: <[BooleanVal{type=boolean, value=true}, BooleanVal{type=boolean, value=false}]> but was: <[BooleanVal{type=boolean, value=false}, BooleanVal{type=boolean, value=false}]>"
+      },
+      {
+        "class": "org.xacml4j.v30.xml.BooleanRequestLexicalTest",
+        "test": "requestParsesOneAndZeroAsDistinctBooleanValues(int)[2]",
+        "kind": "failure",
+        "message": "expected: <[BooleanVal{type=boolean, value=true}, BooleanVal{type=boolean, value=false}]> but was: <[BooleanVal{type=boolean, value=false}, BooleanVal{type=boolean, value=false}]>"
+      }
+    ],
+    "disabled": []
+  },
+  "xacml-json": {
+    "counts": {
+      "tests": 12,
+      "failures": 11,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest": {
+        "tests": 12,
+        "failures": 11,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": [
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "requestCollapsesXmlWhitespaceInTextValues",
+        "kind": "failure",
+        "message": "expected: <[BooleanVal{type=boolean, value=true}, BooleanVal{type=boolean, value=false}]> but was: <[BooleanVal{type=boolean, value=false}, BooleanVal{type=boolean, value=false}]>"
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "textFlagsUseTheSameBooleanParser",
+        "kind": "failure",
+        "message": "expected: <true> but was: <false>"
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidTextFlagsAreSyntaxErrors(String, String)[1]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidTextFlagsAreSyntaxErrors(String, String)[2]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidTextFlagsAreSyntaxErrors(String, String)[3]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidTextFlagsAreSyntaxErrors(String, String)[4]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidTextFlagsAreSyntaxErrors(String, String)[5]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidTextFlagsAreSyntaxErrors(String, String)[6]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "requestParsesOneAndZeroAsDistinctBooleanValues",
+        "kind": "failure",
+        "message": "expected: <[BooleanVal{type=boolean, value=true}, BooleanVal{type=boolean, value=false}]> but was: <[BooleanVal{type=boolean, value=false}, BooleanVal{type=boolean, value=false}]>"
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidAttributeLexicalFormsAreSyntaxErrors(String)[1]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      },
+      {
+        "class": "org.xacml4j.v30.marshal.json.BooleanRequestLexicalTest",
+        "test": "invalidAttributeLexicalFormsAreSyntaxErrors(String)[2]",
+        "kind": "failure",
+        "message": "Expected org.xacml4j.v30.SyntaxException to be thrown, but nothing was thrown."
+      }
+    ],
+    "disabled": []
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "xacml-core": {
+    "java.version": "11.0.32.1",
+    "java.runtime.version": "11.0.32.1+1-LTS",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vendor": "Azul Systems, Inc."
+  },
+  "xacml-xml": {
+    "java.version": "11.0.32.1",
+    "java.runtime.version": "11.0.32.1+1-LTS",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vendor": "Azul Systems, Inc."
+  },
+  "xacml-json": {
+    "java.version": "11.0.32.1",
+    "java.runtime.version": "11.0.32.1+1-LTS",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vendor": "Azul Systems, Inc."
+  },
+  "xacml-pdp": {
+    "java.version": "11.0.32.1",
+    "java.runtime.version": "11.0.32.1+1-LTS",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vendor": "Azul Systems, Inc."
+  },
+  "xacml-test": {
+    "java.version": "11.0.32.1",
+    "java.runtime.version": "11.0.32.1+1-LTS",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vendor": "Azul Systems, Inc."
+  },
+  "xacml-conformance-tests": {
+    "java.version": "11.0.32.1",
+    "java.runtime.version": "11.0.32.1+1-LTS",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vendor": "Azul Systems, Inc."
+  }
+}

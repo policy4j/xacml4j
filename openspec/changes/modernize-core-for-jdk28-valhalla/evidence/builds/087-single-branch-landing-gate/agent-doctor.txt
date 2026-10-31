@@ -1,0 +1,13 @@
+$ scripts/agent-doctor.sh
+PASS ast-grep: rule tests and project scan
+PASS ripwire: doctor 7/7
+PASS tgrep: index present, updated 9h ago, canary matched, mode snapshot (refresh: tgrep index . | live: tgrep serve .)
+WARN tgrep: 313 files are newer than the snapshot index; indexed searches do not see their changes (run: tgrep index .)
+[mcp:doctor] serena (transport=http version=local)
+PASS project root: <checkouts>/xacml4j-worktrees/policy4j
+PASS port 9409
+PASS serena command: <home>/.local/bin/serena
+FAIL direct route not ready: http://127.0.0.1:9409/mcp
+serena: 1 check(s) failed.
+FAIL serena: transport doctor failed (start with: mcp.sh -m serena start)
+exit=1

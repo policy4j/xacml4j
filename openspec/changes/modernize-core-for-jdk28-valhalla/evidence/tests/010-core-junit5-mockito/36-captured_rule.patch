@@ -1,0 +1,11 @@
+--- before/xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java
++++ mutant/xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java
+@@ -99,7 +99,7 @@
+ 
+ 		ArgumentCaptor<Status> statusCapture = ArgumentCaptor.forClass(Status.class);
+ 		ArgumentCaptor<Rule> ruleCapture = ArgumentCaptor.forClass(Rule.class);
+-		when(context.getCurrentRule()).thenReturn(rule);
++		when(context.getCurrentRule()).thenReturn(Rule.builder("wrong-rule", org.xacml4j.v30.Effect.DENY).build());
+ 		doNothing().when(context).setEvaluationStatus(ruleCapture.capture(), statusCapture.capture());
+ 
+ 		InOrder order = inOrder(exp, context);

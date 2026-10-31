@@ -1,0 +1,27 @@
+{
+  "modified_since_packet_start": [
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+    "xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java",
+    "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+    "xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java",
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java"
+  ],
+  "added_since_packet_start": [
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml20TestUtilityTest.java",
+    "xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java"
+  ],
+  "removed": [],
+  "all_other_module_sources_unchanged": true,
+  "protected_fixture_and_xsd_files_unchanged": 2911,
+  "poms_unchanged": 8,
+  "license_headers_identical_or_copied_from_module_template": {
+    "xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java": true,
+    "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java": true,
+    "xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java": true,
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java": true,
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml20TestUtilityTest.java": true,
+    "xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java": true
+  },
+  "no_source_or_pom_change_during_final_clean_verify": true,
+  "current_bytes_match_final_gate_snapshot": true
+}

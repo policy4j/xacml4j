@@ -1,0 +1,2 @@
+agy --mode plan --sandbox --model gemini-3.1-pro-high --output-format stream-json --print-timeout 180s --print "<literal contents of prompt.txt>"
+The inline prompt argument is retained as prompt.txt; its original hash is in invocation.json. Paths in retained text are normalized.

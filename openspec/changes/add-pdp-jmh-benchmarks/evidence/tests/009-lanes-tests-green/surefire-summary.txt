@@ -1,0 +1,21 @@
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.204 s -- in org.xacml4j.jmh.corpus.Rsa2008CorpusTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.085 s -- in org.xacml4j.jmh.corpus.SyntheticCorpusTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.155 s -- in org.xacml4j.jmh.corpus.DirectoryCorpusTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in org.xacml4j.jmh.harness.PolicySourceTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.178 s -- in org.xacml4j.jmh.harness.ReferenceCacheCharacterizationTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in org.xacml4j.jmh.harness.SelectionTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in org.xacml4j.jmh.harness.PolicyCorpusTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.027 s -- in org.xacml4j.jmh.harness.PolicyCorporaTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.018 s -- in org.xacml4j.jmh.harness.PolicyStoresTest
+[INFO] Tests run: 28, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in org.xacml4j.jmh.harness.CorpusRequestTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in org.xacml4j.jmh.harness.RulesTest
+[INFO] Tests run: 27, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.334 s -- in org.xacml4j.jmh.harness.PdpFixtureTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.251 s -- in org.xacml4j.jmh.harness.LookupQueryTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.194 s -- in org.xacml4j.jmh.pdp.PdpDecideBenchmarkTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.206 s -- in org.xacml4j.jmh.pdp.PolicyStoreLoadBenchmarkTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.080 s -- in org.xacml4j.jmh.pdp.PolicyStoreLookupBenchmarkTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.583 s -- in org.xacml4j.jmh.pdp.BenchmarkSmokeTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.056 s -- in org.xacml4j.jmh.store.SnapshotPolicyRepositoryTest
+[INFO] Tests run: 165, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  11.637 s

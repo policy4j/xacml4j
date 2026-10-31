@@ -1,0 +1,63 @@
+RV209-ASTRA-1 / cod_2 / policy4j-cwtu.42.21
+
+Commands ran in the cod_2 worktree. Paths below use the same symbolic roots as
+the shared runner's normalized raw logs:
+  ${PROJECT_ROOT}: main xacml4j checkout
+  ${WORKTREE}: .ntm/worktrees/xacml4j--remaining-g1-20261029/cod_2 under PROJECT_ROOT
+The runner selected Oracle JDK 25.0.4. No raw system Maven was invoked.
+
+Before editing the test:
+rtk python3 openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/capture-state.py before
+
+After adding the four tests, before correcting production:
+rtk python3 openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/capture-state.py red-ready
+rtk git diff --check
+
+Focused red, current D55 candidate; exit 1, expected retention assertion failure:
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/focused-red-d55-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=AttributeIndexTest#designatorAliasesStayBoundedAcrossCategories -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+After the correction:
+rtk python3 openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/capture-state.py green-ready
+rtk git diff --check
+
+Focused green; exit 0, 27 tests, zero failures/errors/skips:
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/focused-green-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am -Dtest=AttributeIndexTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+Module gate; exit 0 under the authorized known-error allowance:
+rtk proxy python3 "${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029/run-build.py" --worktree "${WORKTREE}" --log "${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/module-gate-known-date-error-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dmaven.test.failure.ignore=true clean test
+  xacml-core: 7383 tests, 0 failures, 1 known ISO8601DateTest error, 2 skipped
+  xacml-xml:   254 tests, 0 failures, 0 errors, 0 skipped
+  xacml-json:   24 tests, 0 failures, 0 errors, 1 skipped
+  xacml-pdp:   816 tests, 0 failures, 0 errors, 3 skipped
+  total:     8477 tests, 0 failures, 1 known error, 6 skipped
+  Error: ISO8601DateTest.testCreateFromCalendar:59: Invalid date 'SEPTEMBER 31'
+
+Static checks; both exit 0 with no output:
+ast-grep scan xacml-core/src/main/java/org/xacml4j/v30/AttributeIndex.java xacml-core/src/test/java/org/xacml4j/v30/AttributeIndexTest.java
+rtk git diff --check
+
+After the module gate:
+rtk python3 openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/capture-state.py final
+
+Evidence verification and manifest generation (no builds or source edits):
+rtk python3 openspec/changes/optimize-pdp-evaluation/evidence/tests/206-rv209-sol/finalize-evidence.py
+
+Post-build and final working-tree inspection:
+rtk git status --short
+
+Performance, JMH, histograms and byte figures: UNRUN.
+
+SHA-256, owned source and test files:
+
+| Path | SHA-256 |
+| --- | --- |
+| `xacml-core/src/main/java/org/xacml4j/v30/AttributeIndex.java` | `56011bd4f9a92114948c57b96bf5dddbd6d05b8ae03c54c138ff23b1f40289ee` |
+| `xacml-core/src/test/java/org/xacml4j/v30/AttributeIndexTest.java` | `477e874791c045b10232bbaa1b809809576cb57ca0cff92a03e94a04aa1d5453` |
+
+SHA-256, raw build logs:
+
+| Log | SHA-256 |
+| --- | --- |
+| `focused-red-d55-maven310-clean.log` | `b990db30cb4c8bc6e27be92931f35fa6c6c5ff3aadb06366b754555e58243753` |
+| `focused-green-maven310-clean.log` | `055bd20965e1e1d81ec202e200bed3a9e306b6b3e91134eac36bf9bcad0ca6c8` |
+| `module-gate-known-date-error-maven310-clean.log` | `76909d1324f3dd6990d186403674171da481714b0c5617eae1930136c87858d9` |

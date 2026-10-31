@@ -1,0 +1,5 @@
+22:52:35.898 WARN  AbstractPolicyRepository - Policy with id="policy" and version="Version{version=1.1}" already exist in this repository
+22:52:35.901 WARN  AbstractPolicyRepository - PolicySet with id="set" and version="Version{version=1.1}" already exist in this repository
+22:52:35.901 WARN  InMemoryRepositoryCharacterization - CHARACTERIZATION PASS: 25 checks; unknown-id exceptions are the known defect, not desired snapshot behavior
+
+exit_code=0

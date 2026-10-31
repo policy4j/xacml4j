@@ -1,0 +1,31 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red 1: the new test class with the limit declared but not enforced
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-pdp -am \
+  -Dtest=MultipleResourcesRepeatedCategoriesLimitTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Red 2: the same class, before the budget handler counted the results
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am \
+  -Dtest=MultipleResourcesRepeatedCategoriesLimitTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Green: all multiple-resources tests and the handler chain tests
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am \
+  -Dtest='MultipleResources*Test,*RequestContextHandler*Test' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Mutation check (M1, M2, M3): change one line, run the class, put the file back
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am \
+  -Dtest=MultipleResourcesRepeatedCategoriesLimitTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Gate: clean full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict
+
+# Review (one shot, redacted packet = prompt + diff; run from a directory that holds only the packet)
+kimi -p "<packet>" --output-format text

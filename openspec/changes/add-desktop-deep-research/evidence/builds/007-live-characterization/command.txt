@@ -1,0 +1,26 @@
+Native Swift interpreter probes, in this directory; paths below are project-relative.
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/inspect.swift claude
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/inspect.swift chatgpt
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/select-claude-chat.swift select-chat
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/select-claude-chat.swift new-chat
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/select-claude-chat.swift open-tools
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/select-claude-chat.swift select-research
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/select-claude-chat.swift open-connectors
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/new-chatgpt-window.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/hover-claude-connectors.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/disable-claude-connectors.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/ocr-claude-controls.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/prepare-claude-prompt.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/verify-claude-owned-draft.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/scroll-claude-connectors.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/inspect-claude-source-children.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/hover-claude-source-submenu.swift 10
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/send-claude-sample.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/observe-claude-sample.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/bind-claude-sample.swift
+rtk proxy swift openspec/changes/add-desktop-deep-research/evidence/builds/007-live-characterization/read-claude-status.swift
+
+Fixed user-scoped ledger/job/desktop flock locks; receipts fsynced before input/Send.
+No prompt bytes in command-line arguments or terminal logs.
+Native Tavily search/extract: public official Claude/MCP documentation only.
+Failures and partial coverage are retained in summary.md; no production test claim.

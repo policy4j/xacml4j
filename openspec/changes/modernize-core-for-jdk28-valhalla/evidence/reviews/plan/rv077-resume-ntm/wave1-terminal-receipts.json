@@ -1,0 +1,45 @@
+{
+  "captured_at": "2026-10-04T16:06:00Z",
+  "receipts": [
+    {
+      "lane": "claude_opus_5_5",
+      "session": "policy4j--resume-g4-decisions-20261004-w1",
+      "pane": "%860",
+      "marker": "DONE_CLAUDE_OPUS_5_5_20261004",
+      "terminal_marker_observed": true,
+      "terminal_excerpt": "  DONE_CLAUDE_OPUS_5_5_20261004",
+      "report": "lanes/claude_opus_5_5/report.md",
+      "requested_model": "claude-opus-5-5"
+    },
+    {
+      "lane": "claude_fable_5_1",
+      "session": "policy4j--resume-g4-decisions-20261004-w1",
+      "pane": "%861",
+      "marker": "DONE_CLAUDE_FABLE_5_1_20261004",
+      "terminal_marker_observed": true,
+      "terminal_excerpt": "  DONE_CLAUDE_FABLE_5_1_20261004",
+      "report": "lanes/claude_fable_5_1/report.md",
+      "requested_model": "claude-fable-5-1"
+    },
+    {
+      "lane": "codex_sol_6_1",
+      "session": "policy4j--resume-g4-decisions-20261004-w1",
+      "pane": "%862",
+      "marker": "DONE_CODEX_SOL_6_1_20261004",
+      "terminal_marker_observed": true,
+      "terminal_excerpt": "    DONE_CODEX_SOL_6_1_20261004\n  DONE_CODEX_SOL_6_1_20261004",
+      "report": "lanes/codex_sol_6_1/report.md",
+      "requested_model": "gpt-6.1-sol"
+    },
+    {
+      "lane": "codex_astra",
+      "session": "policy4j--resume-g4-decisions-20261004-w1",
+      "pane": "%863",
+      "marker": "DONE_CODEX_ASTRA_20261004",
+      "terminal_marker_observed": true,
+      "terminal_excerpt": "    DONE_CODEX_ASTRA_20261004",
+      "report": "lanes/codex_astra/report.md",
+      "requested_model": "gpt-6-astra"
+    }
+  ]
+}

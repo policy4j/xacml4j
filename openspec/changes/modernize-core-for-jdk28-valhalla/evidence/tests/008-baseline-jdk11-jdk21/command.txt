@@ -1,0 +1,28 @@
+# JDK 11 runtime and before-change full reactor baseline
+JAVA_HOME="$(jenv prefix 11)" java -version
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/008-baseline-jdk11-jdk21/jdk11-before.log
+rtk git status --short
+
+# Compiler configuration was changed to release 21 in pom.xml and xacml-core/pom.xml.
+# The JDK 11 before-change baseline was not clean; no clean before-state rerun is possible now.
+
+# Expected JDK 11 compile failure after the release change, now with a clean reactor
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/008-baseline-jdk11-jdk21/jdk11-after-release21.log
+rtk git status --short
+
+# JDK 21 version and full clean reactor run (JAVA_HOME selects the JDK used by Maven)
+rtk proxy "$(jenv prefix 21)/bin/java" -version
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true clean verify -Dmaven.test.failure.ignore=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/008-baseline-jdk11-jdk21/jdk21-after-release21.log
+rtk git status --short
+
+# Extract module totals from Maven log and current Surefire XML reports; retain every JDK 21 error method.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/008-baseline-jdk11-jdk21/summarize_surefire.py
+
+# Verify Java 21 class-file version (major 65) for main/test outputs in every module where they exist.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/008-baseline-jdk11-jdk21/verify_bytecode.py
+
+# Verify fresh javac release-21 compilation, Surefire totals, OASIS execution count, and reactor result.
+rtk rg -n -- "Compiling [0-9]+ source files with javac \\[debug release 21\\]|Tests run: [0-9]+, Failures: [0-9]+, Errors: [0-9]+, Skipped: [0-9]+$|Executing test=|BUILD SUCCESS" openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/008-baseline-jdk11-jdk21/jdk21-after-release21.log
+
+# Inspect the expected clean post-change JDK 11 compile diagnostic.
+rtk rg -n "BUILD (SUCCESS|FAILURE)|release version 21 not supported|\\[ERROR\\]" openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/008-baseline-jdk11-jdk21/jdk11-after-release21.log

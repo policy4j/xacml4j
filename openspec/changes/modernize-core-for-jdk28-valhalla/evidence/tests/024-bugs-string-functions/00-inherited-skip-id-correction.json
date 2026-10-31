@@ -1,0 +1,7 @@
+{
+  "file": "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/inherited-skip-dispositions.csv",
+  "placeholders_replaced": 14,
+  "other_fields_unchanged": true,
+  "before_sha256": "81a94a7f6a64397b1b28f9f69a1d985c33bf404b5753be885a8fba2f3d41138b",
+  "after_sha256": "d86929012f2ced55004a43e58c61c928a1baf9163def8ef2f8467786be2dd938"
+}

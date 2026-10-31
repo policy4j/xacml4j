@@ -1,0 +1,4 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true clean test
+mvn -B -o dependency:tree -Dincludes=org.apache.logging.log4j,ch.qos.logback,org.slf4j
+mvn -B -o -q -f <scratch copy>/pom.xml -pl xacml-core validate   # scratch xacml-core/pom.xml adds log4j-core 2.14.0
+mvn -B -o -q -DskipTests package ; jar listings (python zipfile)

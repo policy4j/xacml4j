@@ -1,0 +1,66 @@
+schema: policy4j-spec-driven
+
+# Compact snapshot for generated OpenSpec instructions. The OpenSpec CLI does
+# not follow links, so the stable constraints are repeated here. AGENTS.md
+# stays the project contract; docs/ai/*.md hold the procedures. Max 50 KB.
+context: |
+  xacml4j is a Java implementation of the OASIS XACML 2.0 and 3.0
+  specifications: policy model, value types, functions, combining
+  algorithms, a policy decision point (PDP), and XML and JSON marshalling.
+  AGENTS.md (CLAUDE.md links to it) is the project contract. Procedures:
+  docs/ai/OPENSPEC.md (this workflow and evidence), docs/ai/BEADS.md (br
+  issues), docs/ai/SWARMS.md (CAO and NTM swarms), docs/ai/TESTING.md,
+  docs/ai/BENCHMARKS.md (JMH).
+
+  Build: Maven reactor of xacml-core, xacml-pdp, xacml-json, xacml-xml,
+  xacml-xml-jaxb (XJC-generated, never hand-edited), xacml-test, and
+  xacml-conformance-tests. Always pass -Dlicense.skipUpdateLicense=true.
+  Select the JDK per run with JAVA_HOME="$(jenv prefix <version>)"; the
+  build targets JDK 25 (release 25) and is moving to JDK 28 early access with Valhalla (JEP 401
+  value classes, --enable-preview).
+  Tests: JUnit 4 + EasyMock today, migrating to JUnit 5 (Jupiter) +
+  Mockito; Truth and Hamcrest stay. The OASIS XACML 2.0/3.0 and RSA 2008
+  conformance suites are the acceptance gate for behavior.
+  Never edit vendored fixtures and schemas
+  (xacml-conformance-tests/src/test/resources/**,
+  xacml-xml-jaxb/src/main/resources/xsd/**).
+
+  Workflow: propose, validate --strict, get maintainer approval, create the
+  beads epic, then apply one task group at a time with a failing or
+  characterization test first. Every task group ends with review, test,
+  conformance, and JMH-decision gates whose proof is indexed in the change's
+  evidence/README.md. Multi-agent work uses the project CAO profiles
+  (.agents/cao-profiles/, policy4j_<category>_<variant>) or NTM sessions;
+  flagship models own decisions and final review verdicts.
+  Agents never stage, commit, or push unless the maintainer asks. Use
+  repository-relative paths in every artifact; never a user home or
+  checkout path, never secrets.
+
+rules:
+  proposal:
+    - Inspect openspec/specs/ and the live source before naming capabilities or APIs.
+    - State the verification that proves the change done (tests, conformance suites, JMH, JDK).
+    - Mark breaking public API, artifact, or JDK-requirement changes with **BREAKING**.
+    - Name git, dependency, or JDK changes that need the maintainer's approval.
+  research:
+    - Record Status REQUIRED or NOT REQUIRED with a reason; the file is always present.
+    - Cite XACML 2.0/3.0 section numbers, JEP numbers, and official docs with retrieval dates.
+    - Index every swarm research lane, including failed ones, with profile, model, and status.
+  specs:
+    - Every requirement has at least one "#### Scenario:" with GIVEN/WHEN/THEN bullets.
+    - Cite the XACML section for standard behavior; make Indeterminate, NotApplicable, empty-bag, type-error, and boundary outcomes explicit.
+    - Each scenario must be checkable by a named unit test or conformance case.
+  design:
+    - Number decisions D1..Dn with alternatives and rationale.
+    - Include Test Strategy, Benchmark Plan (JMH applicable or not, with reason), and Execution Plan (swarm lanes with file ownership).
+    - For public API, type-system, or rename work, list the code intelligence checks that prove completeness.
+  tasks:
+    - Each task is one session of work, maps to beads issue <epic>.X.Y, and names its check.
+    - Behavioral groups start with a failing or characterization test.
+    - Every substantive group ends with a gate task (review, tests, conformance, JMH decision, docs) naming evidence paths.
+    - Keep conformance fixtures read-only; a task that needs a fixture change asks the maintainer.
+  evidence:
+    - Map every requirement/scenario and every gate task to an indexed run.
+    - Evidence is a reference, not a recording. Cite tests and JMH or JCStress benchmarks by repository-relative path and test case, and specifications or external resources by link.
+    - One directory per run with summary.md and command.txt; never overwrite a run. Do not commit logs, reports, JMH JSON, receipts, snapshots, or copies of source.
+    - Record failed or empty review lanes with the reason; write NOT APPLICABLE with a reason instead of inventing proof.

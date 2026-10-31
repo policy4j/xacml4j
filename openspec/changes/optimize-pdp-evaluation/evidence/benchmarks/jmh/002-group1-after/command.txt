@@ -1,0 +1,2 @@
+# runner: run-measurements.sh (scratch); 002-group1-after of the back-to-back pair
+"$(jenv prefix 21)/bin/java" -jar <jar> PdpDecideBenchmark -p store=in-memory -p corpus=rsa2008,synthetic:100 -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff <run>/results-decide.json -o <run>/jmh-decide.log

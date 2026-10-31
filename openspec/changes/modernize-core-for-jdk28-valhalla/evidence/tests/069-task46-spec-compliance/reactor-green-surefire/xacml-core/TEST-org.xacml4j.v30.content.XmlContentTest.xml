@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="org.xacml4j.v30.content.XmlContentTest" time="0.078" tests="17" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="21"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core/target/test-classes:$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core/target/classes:$HOME/.local/share/maven/repository/com/google/guava/guava/31.1-jre/guava-31.1-jre.jar:$HOME/.local/share/maven/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:$HOME/.local/share/maven/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:$HOME/.local/share/maven/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:$HOME/.local/share/maven/repository/org/checkerframework/checker-qual/3.12.0/checker-qual-3.12.0.jar:$HOME/.local/share/maven/repository/com/google/errorprone/error_prone_annotations/2.11.0/error_prone_annotations-2.11.0.jar:$HOME/.local/share/maven/repository/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar:$HOME/.local/share/maven/repository/com/google/auto/service/auto-service/1.0.1/auto-service-1.0.1.jar:$HOME/.local/share/maven/repository/com/google/auto/service/auto-service-annotations/1.0.1/auto-service-annotations-1.0.1.jar:$HOME/.local/share/maven/repository/com/google/auto/auto-common/1.2/auto-common-1.2.jar:$HOME/.local/share/maven/repository/com/jayway/jsonpath/json-path/2.8.0/json-path-2.8.0.jar:$HOME/.local/share/maven/repository/net/minidev/json-smart/2.4.10/json-smart-2.4.10.jar:$HOME/.local/share/maven/repository/net/minidev/accessors-smart/2.4.9/accessors-smart-2.4.9.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter/5.14.4/junit-jupiter-5.14.4.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter-api/5.14.4/junit-jupiter-api-5.14.4.jar:$HOME/.local/share/maven/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:$HOME/.local/share/maven/repository/org/junit/platform/junit-platform-commons/1.14.4/junit-platform-commons-1.14.4.jar:$HOME/.local/share/maven/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter-params/5.14.4/junit-jupiter-params-5.14.4.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter-engine/5.14.4/junit-jupiter-engine-5.14.4.jar:$HOME/.local/share/maven/repository/org/junit/platform/junit-platform-engine/1.14.4/junit-platform-engine-1.14.4.jar:$HOME/.local/share/maven/repository/org/mockito/mockito-core/5.24.0/mockito-core-5.24.0.jar:$HOME/.local/share/maven/repository/net/bytebuddy/byte-buddy/1.17.7/byte-buddy-1.17.7.jar:$HOME/.local/share/maven/repository/net/bytebuddy/byte-buddy-agent/1.17.7/byte-buddy-agent-1.17.7.jar:$HOME/.local/share/maven/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:$HOME/.local/share/maven/repository/org/mockito/mockito-junit-jupiter/5.24.0/mockito-junit-jupiter-5.24.0.jar:$HOME/.local/share/maven/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar:$HOME/.local/share/maven/repository/org/apache/logging/log4j/log4j-api/2.14.0/log4j-api-2.14.0.jar:$HOME/.local/share/maven/repository/org/apache/logging/log4j/log4j-core/2.14.0/log4j-core-2.14.0.jar:$HOME/.local/share/maven/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.0/log4j-slf4j-impl-2.14.0.jar:$HOME/.local/share/maven/repository/com/codahale/metrics/metrics-core/3.0.2/metrics-core-3.0.2.jar:$HOME/.local/share/maven/repository/com/google/truth/truth/1.1.5/truth-1.1.5.jar:$HOME/.local/share/maven/repository/com/google/auto/value/auto-value-annotations/1.10.1/auto-value-annotations-1.10.1.jar:$HOME/.local/share/maven/repository/org/ow2/asm/asm/9.5/asm-9.5.jar:$HOME/.local/share/maven/repository/com/google/truth/extensions/truth-java8-extension/1.1.5/truth-java8-extension-1.1.5.jar:$HOME/.local/share/maven/repository/org/hamcrest/hamcrest-all/1.3/hamcrest-all-1.3.jar:"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="license.skipUpdateLicense" value="true"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="America/New_York"/>
+    <property name="com.sun.org.apache.xml.internal.dtm.DTMManager" value="com.sun.org.apache.xml.internal.dtm.ref.DTMManagerDefault"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="21"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/graalvm-21.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core/target/surefire/surefirebooter-20261004133008694_3.jar $HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core/target/surefire 2026-10-04T13-30-08_635-jvmRun1 surefire-20261004133008694_1tmp surefire_0-20261004133008694_2tmp"/>
+    <property name="http.nonProxyHosts" value="REDACTED"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core/target/test-classes:$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core/target/classes:$HOME/.local/share/maven/repository/com/google/guava/guava/31.1-jre/guava-31.1-jre.jar:$HOME/.local/share/maven/repository/com/google/guava/failureaccess/1.0.1/failureaccess-1.0.1.jar:$HOME/.local/share/maven/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:$HOME/.local/share/maven/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:$HOME/.local/share/maven/repository/org/checkerframework/checker-qual/3.12.0/checker-qual-3.12.0.jar:$HOME/.local/share/maven/repository/com/google/errorprone/error_prone_annotations/2.11.0/error_prone_annotations-2.11.0.jar:$HOME/.local/share/maven/repository/com/google/j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar:$HOME/.local/share/maven/repository/com/google/auto/service/auto-service/1.0.1/auto-service-1.0.1.jar:$HOME/.local/share/maven/repository/com/google/auto/service/auto-service-annotations/1.0.1/auto-service-annotations-1.0.1.jar:$HOME/.local/share/maven/repository/com/google/auto/auto-common/1.2/auto-common-1.2.jar:$HOME/.local/share/maven/repository/com/jayway/jsonpath/json-path/2.8.0/json-path-2.8.0.jar:$HOME/.local/share/maven/repository/net/minidev/json-smart/2.4.10/json-smart-2.4.10.jar:$HOME/.local/share/maven/repository/net/minidev/accessors-smart/2.4.9/accessors-smart-2.4.9.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter/5.14.4/junit-jupiter-5.14.4.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter-api/5.14.4/junit-jupiter-api-5.14.4.jar:$HOME/.local/share/maven/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:$HOME/.local/share/maven/repository/org/junit/platform/junit-platform-commons/1.14.4/junit-platform-commons-1.14.4.jar:$HOME/.local/share/maven/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter-params/5.14.4/junit-jupiter-params-5.14.4.jar:$HOME/.local/share/maven/repository/org/junit/jupiter/junit-jupiter-engine/5.14.4/junit-jupiter-engine-5.14.4.jar:$HOME/.local/share/maven/repository/org/junit/platform/junit-platform-engine/1.14.4/junit-platform-engine-1.14.4.jar:$HOME/.local/share/maven/repository/org/mockito/mockito-core/5.24.0/mockito-core-5.24.0.jar:$HOME/.local/share/maven/repository/net/bytebuddy/byte-buddy/1.17.7/byte-buddy-1.17.7.jar:$HOME/.local/share/maven/repository/net/bytebuddy/byte-buddy-agent/1.17.7/byte-buddy-agent-1.17.7.jar:$HOME/.local/share/maven/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:$HOME/.local/share/maven/repository/org/mockito/mockito-junit-jupiter/5.24.0/mockito-junit-jupiter-5.24.0.jar:$HOME/.local/share/maven/repository/org/slf4j/slf4j-api/1.7.30/slf4j-api-1.7.30.jar:$HOME/.local/share/maven/repository/org/apache/logging/log4j/log4j-api/2.14.0/log4j-api-2.14.0.jar:$HOME/.local/share/maven/repository/org/apache/logging/log4j/log4j-core/2.14.0/log4j-core-2.14.0.jar:$HOME/.local/share/maven/repository/org/apache/logging/log4j/log4j-slf4j-impl/2.14.0/log4j-slf4j-impl-2.14.0.jar:$HOME/.local/share/maven/repository/com/codahale/metrics/metrics-core/3.0.2/metrics-core-3.0.2.jar:$HOME/.local/share/maven/repository/com/google/truth/truth/1.1.5/truth-1.1.5.jar:$HOME/.local/share/maven/repository/com/google/auto/value/auto-value-annotations/1.10.1/auto-value-annotations-1.10.1.jar:$HOME/.local/share/maven/repository/org/ow2/asm/asm/9.5/asm-9.5.jar:$HOME/.local/share/maven/repository/com/google/truth/extensions/truth-java8-extension/1.1.5/truth-java8-extension-1.1.5.jar:$HOME/.local/share/maven/repository/org/hamcrest/hamcrest-all/1.3/hamcrest-all-1.3.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="$HOME"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2025-01-21"/>
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/graalvm-21.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="jdk.internal.vm.ci.enabled" value="true"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core/target/surefire/surefirebooter-20261004133008694_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="REDACTED"/>
+    <property name="java.runtime.version" value="21.0.6+8-LTS-jvmci-23.1-b55"/>
+    <property name="user.name" value="maintainer"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="26.6.1"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Oracle GraalVM 21.0.6+8.1"/>
+    <property name="localRepository" value="$HOME/.local/share/maven/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="/var/folders/h1/y6_8dl854sj4vkxgj1c0ln_40000gp/T/"/>
+    <property name="java.version" value="21.0.6"/>
+    <property name="user.dir" value="$HOME/Projects/Personal/xacml4j-worktrees/policy4j/xacml-core"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="$HOME/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="21.0.6+8-LTS-jvmci-23.1-b55"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="REDACTED"/>
+    <property name="java.class.version" value="65.0"/>
+  </properties>
+  <testcase name="testXPathFactoryEnablesSecureProcessing" classname="org.xacml4j.v30.content.XmlContentTest" time="0.011">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,968 &amp#27;[36mXPathProvider.lambda$static$0()&amp#27;[m:(XPathProvider.java:205) - Creating new XPath instance for thread id="1" name="main"
+]]></system-out>
+  </testcase>
+  <testcase name="testXPathExtensionFunctionIsRejected" classname="org.xacml4j.v30.content.XmlContentTest" time="0.011">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,976 &amp#27;[36mXmlContent.evaluateToString()&amp#27;[m:(XmlContent.java:324) - Evaluating path=java:java.lang.Math.abs(-1)
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,976 &amp#27;[36mXPathProvider.evaluateToString()&amp#27;[m:(XPathProvider.java:136) - EvaluateToString XPath="java:java.lang.Math.abs(-1)"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,976 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="java" for namespaceURI="http://xml.apache.org/xalan/java"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,979 &amp#27;[36mXPathProvider.evaluateToString()&amp#27;[m:(XPathProvider.java:148) - java:java.lang.Math.abs(-1)
+100[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,979 &amp#27;[36mXmlContent.evaluateToString()&amp#27;[m:(XmlContent.java:333) - java:java.lang.Math.abs(-1)
+81]]></system-out>
+  </testcase>
+  <testcase name="testEntityXPathSyntaxError" classname="org.xacml4j.v30.content.XmlContentTest" time="0.006">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,984 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:195) - Evaluating selector=[!!!org.xacml4j.v30.AttributeSelectorKey@602298b=>java.lang.NullPointerException:Cannot invoke "org.xacml4j.v30.CategoryId.getAbbreviatedId()" because the return value of "org.xacml4j.v30.AttributeSelectorKey.getCategory()" is null!!!]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,984 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="/md:record[?]/md:patient/md:patient-number/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,984 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,984 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,984 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,985 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:239) - /md:record[?]/md:patient/md:patient-number/text()
+81]]></system-out>
+  </testcase>
+  <testcase name="testWithContentEscaping" classname="org.xacml4j.v30.content.XmlContentTest" time="0.006"/>
+  <testcase name="testEntitySelectorWithoutContextSelectorUsesDocumentNode" classname="org.xacml4j.v30.content.XmlContentTest" time="0.003">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,994 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:195) - Evaluating selector=[!!!org.xacml4j.v30.AttributeSelectorKey@2712e8f4=>java.lang.NullPointerException:Cannot invoke "org.xacml4j.v30.CategoryId.getAbbreviatedId()" because the return value of "org.xacml4j.v30.AttributeSelectorKey.getCategory()" is null!!!]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,994 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="md:patient-number/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,994 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,994 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="0" nodes
+]]></system-out>
+  </testcase>
+  <testcase name="testEvaluateToNodeListFromSelfContainedDocument" classname="org.xacml4j.v30.content.XmlContentTest" time="0.004">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,996 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:name
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,996 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:name"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,996 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="2" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="1" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:name" result="[[md:name: null], [md:name: null]]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:hospital_info/md:name
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:hospital_info/md:name"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,997 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:hospital_info/md:name" result="[[md:name: null]]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:patient_info/md:name
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:patient_info/md:name"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:10,998 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:patient_info/md:name" result="[[md:name: null]]"
+]]></system-out>
+  </testcase>
+  <testcase name="testTestXml1" classname="org.xacml4j.v30.content.XmlContentTest" time="0.004">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,001 &amp#27;[36mXmlContent.evaluateToString()&amp#27;[m:(XmlContent.java:324) - Evaluating path=//md:record/md:patient[1]/md:patientDoB[1]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,001 &amp#27;[36mXPathProvider.evaluateToString()&amp#27;[m:(XPathProvider.java:136) - EvaluateToString XPath="//md:record/md:patient[1]/md:patientDoB[1]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,001 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,001 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,001 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mXPathProvider.evaluateToString()&amp#27;[m:(XPathProvider.java:143) - EvaluateToString XPath="//md:record/md:patient[1]/md:patientDoB[1]" result="1992-03-21"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mXmlContent.evaluateToString()&amp#27;[m:(XmlContent.java:329) - Evaluation of path="//md:record/md:patient[1]/md:patientDoB[1]" result="Optional[1992-03-21]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mXmlContent.evaluateToNodePathList()&amp#27;[m:(XmlContent.java:279) - Evaluating path=//md:record/md:patient[1]/md:patientDoB[1]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:record/md:patient[1]/md:patientDoB[1]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,002 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,003 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{urn:example:med:schemas:record}patientDoB" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,003 &amp#27;[36mXmlContent.evaluateToNodePathList()&amp#27;[m:(XmlContent.java:287) - Evaluation of path="//md:record/md:patient[1]/md:patientDoB[1]" result="[//md:record/md:patient[1]/md:patientDoB[1]]"
+]]></system-out>
+  </testcase>
+  <testcase name="testXpathEvaluation" classname="org.xacml4j.v30.content.XmlContentTest" time="0.004">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,005 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:record
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,005 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,005 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,005 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,005 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{http://www.medico.com/schemas/record}record" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:record" result="[[md:record: null]]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:record/md:patient
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:record/md:patient"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="2" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="1" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:record/md:patient" result="[[md:patient: null], [md:patient: null]]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//*[local-name()='record'][namespace-uri()='urn:example:med:schemas:record']
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,006 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//*[local-name()='record'][namespace-uri()='urn:example:med:schemas:record']"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,007 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,007 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{urn:example:med:schemas:record}record" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,007 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//*[local-name()='record'][namespace-uri()='urn:example:med:schemas:record']" result="[[md:record: null]]"
+]]></system-out>
+  </testcase>
+  <testcase name="testEntityXPathCorrectTypeString" classname="org.xacml4j.v30.content.XmlContentTest" time="0.003">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,009 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:195) - Evaluating selector=[!!!org.xacml4j.v30.AttributeSelectorKey@44084713=>java.lang.NullPointerException:Cannot invoke "org.xacml4j.v30.CategoryId.getAbbreviatedId()" because the return value of "org.xacml4j.v30.AttributeSelectorKey.getCategory()" is null!!!]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,009 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,009 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,009 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,009 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,010 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="2" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,010 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="Text" domNodeType="3"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,010 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="1" domType="Text" domNodeType="3"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,010 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:228) - Found="2" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,010 &amp#27;[36mXmlContent.convertNodeToXacml()&amp#27;[m:(XmlContent.java:454) - Node of domType="Text" converted attribute="StringVal{type=string, value=555555}"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,010 &amp#27;[36mXmlContent.convertNodeToXacml()&amp#27;[m:(XmlContent.java:454) - Node of domType="Text" converted attribute="StringVal{type=string, value=11111}"
+]]></system-out>
+  </testcase>
+  <testcase name="testEntityXPathCorrectType" classname="org.xacml4j.v30.content.XmlContentTest" time="0.004">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:195) - Evaluating selector=[!!!org.xacml4j.v30.AttributeSelectorKey@5a39e554=>java.lang.NullPointerException:Cannot invoke "org.xacml4j.v30.CategoryId.getAbbreviatedId()" because the return value of "org.xacml4j.v30.AttributeSelectorKey.getCategory()" is null!!!]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="/md:record/md:patient/md:patient-number/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="2" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="Text" domNodeType="3"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="1" domType="Text" domNodeType="3"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:228) - Found="2" nodes via xpath="/md:record/md:patient/md:patient-number/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXmlContent.convertNodeToXacml()&amp#27;[m:(XmlContent.java:454) - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=555555}"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,014 &amp#27;[36mXmlContent.convertNodeToXacml()&amp#27;[m:(XmlContent.java:454) - Node of domType="Text" converted attribute="IntegerVal{type=integer, value=11111}"
+]]></system-out>
+  </testcase>
+  <testcase name="testEvaluateToNodePathList" classname="org.xacml4j.v30.content.XmlContentTest" time="0.002">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXmlContent.evaluateToNodePathList()&amp#27;[m:(XmlContent.java:279) - Evaluating path=//md:record/md:patient
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:record/md:patient"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="2" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="1" domType="{urn:example:med:schemas:record}patient" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXmlContent.evaluateToNodePathList()&amp#27;[m:(XmlContent.java:287) - Evaluation of path="//md:record/md:patient" result="[//md:record/md:patient[1], //md:record/md:patient[2]]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXmlContent.evaluateToNodePathList()&amp#27;[m:(XmlContent.java:279) - Evaluating path=//md:record/md:pati
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:record/md:pati"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,016 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,017 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="0" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,017 &amp#27;[36mXmlContent.evaluateToNodePathList()&amp#27;[m:(XmlContent.java:287) - Evaluation of path="//md:record/md:pati" result="[]"
+]]></system-out>
+  </testcase>
+  <testcase name="testXPathReturnUnsupportedNodeType" classname="org.xacml4j.v30.content.XmlContentTest" time="0.003">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,019 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:195) - Evaluating selector=[!!!org.xacml4j.v30.AttributeSelectorKey@278fe428=>java.lang.NullPointerException:Cannot invoke "org.xacml4j.v30.CategoryId.getAbbreviatedId()" because the return value of "org.xacml4j.v30.AttributeSelectorKey.getCategory()" is null!!!]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,019 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="/md:record/"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,019 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,020 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:239) - /md:record/
+81]]></system-out>
+  </testcase>
+  <testcase name="testEvaluateToNodeListFromContainedContent" classname="org.xacml4j.v30.content.XmlContentTest" time="0.003">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,021 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:name
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,021 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:name"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,021 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="2" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="1" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:name" result="[[md:name: null], [md:name: null]]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:hospital_info/md:name
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:hospital_info/md:name"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:hospital_info/md:name" result="[[md:name: null]]"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:255) - Evaluating path=//md:patient_info/md:name
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:patient_info/md:name"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,022 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="{http://www.medico.com/schemas/record}name" domNodeType="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,023 &amp#27;[36mXmlContent.evaluateToNodeSet()&amp#27;[m:(XmlContent.java:262) - Evaluation of path="//md:patient_info/md:name" result="[[md:name: null]]"
+]]></system-out>
+  </testcase>
+  <testcase name="testEvaluateToNodePath" classname="org.xacml4j.v30.content.XmlContentTest" time="0.003">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,025 &amp#27;[36mXmlContent.evaluateToNodePath()&amp#27;[m:(XmlContent.java:302) - Evaluating path=//md:record/md:patient
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,025 &amp#27;[36mXPathProvider.evaluateToNode()&amp#27;[m:(XPathProvider.java:73) - EvaluateToNode XPath="//md:record/md:patient"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,025 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,025 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="urn:example:med:schemas:record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,026 &amp#27;[36mXPathProvider.evaluateToNode()&amp#27;[m:(XPathProvider.java:80) - Xpath=com.sun.org.apache.xpath.internal.jaxp.XPathExpressionImpl@42cc5460 result node name="{urn:example:med:schemas:record}patient" node type="1"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,026 &amp#27;[36mXmlContent.evaluateToNodePath()&amp#27;[m:(XmlContent.java:308) - Evaluation of path="//md:record/md:patient" result="Optional[//md:record/md:patient[1]]"
+]]></system-out>
+  </testcase>
+  <testcase name="testEquals" classname="org.xacml4j.v30.content.XmlContentTest" time="0.003"/>
+  <testcase name="testEntityXPathCorrectTypeString4" classname="org.xacml4j.v30.content.XmlContentTest" time="0.002">
+    <system-out><![CDATA[[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:195) - Evaluating selector=[!!!org.xacml4j.v30.AttributeSelectorKey@205159dc=>java.lang.NullPointerException:Cannot invoke "org.xacml4j.v30.CategoryId.getAbbreviatedId()" because the return value of "org.xacml4j.v30.AttributeSelectorKey.getCategory()" is null!!!]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="//md:record/md:patient_info/md:health_insurance/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="Text" domNodeType="3"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:228) - Found="1" nodes via xpath="//md:record/md:patient_info/md:health_insurance/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXmlContent.convertNodeToXacml()&amp#27;[m:(XmlContent.java:454) - Node of domType="Text" converted attribute="StringVal{type=string, value=123456}"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:195) - Evaluating selector=[!!!org.xacml4j.v30.AttributeSelectorKey@43c0c13a=>java.lang.NullPointerException:Cannot invoke "org.xacml4j.v30.CategoryId.getAbbreviatedId()" because the return value of "org.xacml4j.v30.AttributeSelectorKey.getCategory()" is null!!!]
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:102) - EvaluateToNodeSet XPath="./md:record/md:patient_info/md:health_insurance/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mNodeNamespaceContext.getNamespaceURI()&amp#27;[m:(NodeNamespaceContext.java:57) - Namespace prefix="md" for namespaceURI="http://www.medico.com/schemas/record"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:109) - Evaluation result has="1" nodes
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXPathProvider.evaluateToNodeSet()&amp#27;[m:(XPathProvider.java:114) - Result at index="0" domType="Text" domNodeType="3"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXmlContent.getAttributeValues()&amp#27;[m:(XmlContent.java:228) - Found="1" nodes via xpath="./md:record/md:patient_info/md:health_insurance/text()"
+[&amp#27;[36mDEBUG&amp#27;[m] 2026-10-04 13:30:11,031 &amp#27;[36mXmlContent.convertNodeToXacml()&amp#27;[m:(XmlContent.java:454) - Node of domType="Text" converted attribute="StringVal{type=string, value=123456}"
+]]></system-out>
+  </testcase>
+  <testcase name="testWithContentNoProlog" classname="org.xacml4j.v30.content.XmlContentTest" time="0.004"/>
+</testsuite>

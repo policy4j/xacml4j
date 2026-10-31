@@ -1,0 +1,453 @@
+{
+  "xacml-core": {
+    "xacml-core/src/test/java/org/xacml4j/util/DOMUtilTest.java": {
+      "Test": 9
+    },
+    "xacml-core/src/test/java/org/xacml4j/util/ISO8601DurationTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/util/JSONUtilTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/AttributeIndexTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/AttributeTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/CategoryIdTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/ContentTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/EntityTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/ObligationTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/WellKnownAttributeIdsTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/content/ContentTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/content/JsonContentTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/content/XmlContentTest.java": {
+      "Test": 14
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeAssignmentTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java": {
+      "Test": 9
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java": {
+      "Test": 9
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributesTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/BagOfValuesTest.java": {
+      "Test": 11
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/CombinerParameterTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/DecisionTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyDefaultsTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java": {
+      "Test": 12
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java": {
+      "Test": 14
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java": {
+      "Test": 14
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RequestTest.java": {
+      "Test": 8
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ResultTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java": {
+      "Test": 23
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/StatusCodeIdTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableDefinitionTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableReferenceTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VersionMatchTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VersionTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/XPathTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java": {
+      "Test": 11
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java": {
+      "Test": 8
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java": {
+      "Test": 8
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java": {
+      "Test": 10
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java": {
+      "Test": 11
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/ParamSingleTypeSpecTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/ParamTypeSequenceTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/ArtimeticFunctionsTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/BagFunctionsTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticBoundaryTest.java": {
+      "ParameterizedTest": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeValueArithmeticFunctionTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java": {
+      "Test": 10
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java": {
+      "ParameterizedTest": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java": {
+      "ParameterizedTest": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java": {
+      "ParameterizedTest": 27
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NumericComparisonFunctionTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/SetFunctionTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/SpecialMatchFunctionsTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/AnyURITest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/Base64BinaryTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/BinaryTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java": {
+      "Test": 5
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/DNSNameTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/DoubleValTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/EUI48Test.java": {
+      "Test": 11
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/HexTypeTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/IPAddressTest.java": {
+      "Test": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeArithmeticTest.java": {
+      "Test": 12
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java": {
+      "Test": 8
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DayTimeDurationTest.java": {
+      "Test": 9
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java": {
+      "Test": 9
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java": {
+      "ParameterizedTest": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601TimeTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601YearMonthDurationTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/IntegerTypeTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/PathTest.java": {
+      "Test": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/PortRangeTest.java": {
+      "Test": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/RFC822NameTest.java": {
+      "Test": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/StringValTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeCapabilityTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeToStringCapabilityTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeToStringTest.java": {
+      "Test": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/Xacml20XPathTo30TransformerTest.java": {
+      "Test": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/XacmlTypesTest.java": {
+      "Test": 2
+    }
+  },
+  "xacml-pdp": {
+    "xacml-pdp/src/test/java/org/xacml4j/util/DefaultFunctionFunctionInvocationFactoryTest.java": {
+      "Test": 2
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/util/FunctionInvocationBenchmark.java": {
+      "Test": 2
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java": {
+      "Test": 18
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPointTest.java": {
+      "Test": 2
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesHandlerTest.java": {
+      "Test": 6
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRepeatingAttributesHandlerTest.java": {
+      "Test": 3
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaRequestReferencesHandlerTest.java": {
+      "Test": 3
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java": {
+      "Test": 6
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pdp/RequestContextHandlerChainTest.java": {
+      "Test": 2
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AnnotatedResolverFactoryTest.java": {
+      "Test": 6
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeResolverDescriptorTest.java": {
+      "Test": 3
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/AttributeSetTest.java": {
+      "Test": 3
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/BaseAttributeResolverTest.java": {
+      "Test": 1
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ContentResolverDescriptorTest.java": {
+      "Test": 1
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultPolicyInformationPointTest.java": {
+      "Test": 5
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/DefaultResolverRegistryTest.java": {
+      "Test": 5
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/pip/ResolverRegistryBuilderTest.java": {
+      "Test": 1
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/DefaultPolicyReferenceResolverTest.java": {
+      "Test": 2
+    },
+    "xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java": {
+      "Test": 4
+    }
+  },
+  "xacml-xml-jaxb": {},
+  "xacml-xml": {
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/ExpressionBuilderTest.java": {
+      "Test": 1
+    },
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java": {
+      "Test": 3
+    },
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshallerTest.java": {
+      "Test": 6
+    },
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshallerTest.java": {
+      "Test": 1
+    },
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshallerTest.java": {
+      "Test": 1
+    },
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestContentTest.java": {
+      "Test": 5
+    },
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30ResponseContextUnmarshallerTest.java": {
+      "Test": 1
+    },
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/XacmlPolicyUnmarshallerTest.java": {
+      "Test": 16
+    }
+  },
+  "xacml-json": {
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java": {
+      "Test": 2
+    },
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonRequestUnmarshallerTest.java": {
+      "Test": 1
+    },
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonResponseContextMarshallerTest.java": {
+      "Test": 1
+    },
+    "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonResponseContextUnmarshallerTest.java": {
+      "Test": 1
+    }
+  },
+  "xacml-test": {
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml20SamplePolicyTest.java": {
+      "Test": 1
+    },
+    "xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java": {
+      "Test": 14
+    },
+    "xacml-test/src/test/java/org/xacml4j/v30/AttributeResolverTestSupportTest.java": {
+      "Test": 1
+    },
+    "xacml-test/src/test/java/org/xacml4j/v30/ExpectedAttributeResolverBuilderTest.java": {
+      "Test": 2
+    },
+    "xacml-test/src/test/java/org/xacml4j/v30/Xacml30SamplePolicyTest.java": {
+      "Test": 2
+    }
+  },
+  "xacml-conformance-tests": {
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/RSA2008InteropTest.java": {
+      "Test": 17
+    },
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/RSA2008PerformanceTestCase.java": {
+      "Test": 1
+    },
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/VendoredFixtureIntegrityTest.java": {
+      "Test": 1
+    },
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolverTest.java": {
+      "Test": 2
+    },
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java": {
+      "Test": 10
+    },
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java": {
+      "Test": 10
+    },
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/XacmlExampleTest.java": {
+      "Test": 2
+    }
+  }
+}

@@ -1,0 +1,38 @@
+JDK: Oracle Java 21.0.6; Maven 3.9.16
+
+Pre-fix DefaultEvaluationContextHandlerTest red run: 18 tests, 2 failures, 0 errors, 0 skips. Both rewritten cardinality tests expected EvaluationException but no exception was thrown.
+Post-fix DefaultEvaluationContextHandlerTest: 18 tests, 0 failures, 0 errors, 0 skips.
+Post-fix XmlContentTest in focused core run: 15 tests, 0 failures, 0 errors, 0 skips.
+
+Full conformance reactor:
+  xacml-core: 763 tests, 0 failures, 0 errors, 2 skips
+  conformance module Surefire: 42 tests, 0 failures, 0 errors, 0 skips
+  OASIS 2.0: 347 cases executed, all passed
+  OASIS 3.0: 347 cases executed, all passed
+  RSA 2008: 17 cases, all passed
+  examples: 2 cases, all passed
+  Maven result: BUILD SUCCESS
+
+rv030 repair final gates (JDK 21.0.6, Maven 3.9.16):
+  xacml-core: 765 tests, 0 failures, 0 errors, 2 skips
+  xacml-xml: 35 tests, 0 failures, 0 errors, 0 skips
+  xacml-json: 6 tests, 0 failures, 0 errors, 1 skip
+  xacml-pdp: 75 tests, 0 failures, 0 errors, 3 skips
+  xacml-test: 20 tests, 0 failures, 0 errors, 0 skips
+  xacml-conformance-tests: 42 tests, 0 failures, 0 errors, 0 skips
+  OASIS 2.0: 347 executed cases, all pass
+  OASIS 3.0: 347 executed cases, all pass
+  RSA 2008: 17 executed cases, all pass
+  examples: 2 executed cases, all pass
+  Maven result: BUILD SUCCESS
+
+rv030 expected-red runs:
+  AttributeSelector cardinality direct path: 19 tests, 1 failure (syntax-error was swallowed)
+  PIP-supplied selector path with syntax-error catch temporarily removed: 1 test, 1 failure (result was an empty bag)
+  Core Match/duration set: 15 tests, 1 failure (NOMATCH), 1 error (StringIndexOutOfBoundsException)
+
+rv030 focused green runs:
+  core Match/duration set: 15 tests, 0 failures, 0 errors
+  PDP context-handler set before final PIP test: 19 tests, 0 failures, 0 errors
+  XML TypeToXacml30Test: 4 tests, 0 failures, 0 errors
+  JSON JsonEntityMarshallingTest: 3 tests, 0 failures, 0 errors, 1 existing disabled test

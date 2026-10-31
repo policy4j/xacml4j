@@ -1,0 +1,1143 @@
+{
+  "plugin": "org.openrewrite.maven:rewrite-maven-plugin:6.46.1",
+  "recipes": "org.openrewrite.recipe:rewrite-testing-frameworks:3.44.0",
+  "paths": {
+    "xacml-core/src/test/java/org/xacml4j/util/JSONUtilTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/util/ISO8601DurationTest.java": {
+      "added": 4,
+      "removed": 25,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/util/DOMUtilTest.java": {
+      "added": 4,
+      "removed": 7,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601TimeTest.java": {
+      "added": 24,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DayTimeDurationTest.java": {
+      "added": 6,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java": {
+      "added": 38,
+      "removed": 15,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeArithmeticTest.java": {
+      "added": 25,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java": {
+      "added": 29,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeToStringTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeToStringCapabilityTest.java": {
+      "added": 23,
+      "removed": 1,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601YearMonthDurationTest.java": {
+      "added": 5,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/DoubleValTest.java": {
+      "added": 2,
+      "removed": 4,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/StringValTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/IPAddressTest.java": {
+      "added": 2,
+      "removed": 25,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java": {
+      "added": 31,
+      "removed": 7,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/DNSNameTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/PortRangeTest.java": {
+      "added": 2,
+      "removed": 4,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/PathTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/Base64BinaryTest.java": {
+      "added": 6,
+      "removed": 6,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/Xacml20XPathTo30TransformerTest.java": {
+      "added": 4,
+      "removed": 4,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/IntegerTypeTest.java": {
+      "added": 2,
+      "removed": 4,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeCapabilityTest.java": {
+      "added": 24,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java": {
+      "added": 2,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/EUI48Test.java": {
+      "added": 128,
+      "removed": 132,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 55,
+      "assertions_added_lexical": 55
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java": {
+      "added": 6,
+      "removed": 10,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/AnyURITest.java": {
+      "added": 24,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/XacmlTypesTest.java": {
+      "added": 25,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/BinaryTest.java": {
+      "added": 5,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/RFC822NameTest.java": {
+      "added": 5,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/HexTypeTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/AttributeIndexTest.java": {
+      "added": 2,
+      "removed": 1,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/ObligationTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/content/JsonContentTest.java": {
+      "added": 21,
+      "removed": 15,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 1,
+      "assertions_added_lexical": 4
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/content/XmlContentTest.java": {
+      "added": 27,
+      "removed": 26,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 1,
+      "assertions_added_lexical": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/content/ContentTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/AttributeTest.java": {
+      "added": 4,
+      "removed": 7,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/EntityTest.java": {
+      "added": 4,
+      "removed": 7,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/CategoryIdTest.java": {
+      "added": 3,
+      "removed": 6,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/ContentTest.java": {
+      "added": 1,
+      "removed": 1,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/WellKnownAttributeIdsTest.java": {
+      "added": 26,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java": {
+      "added": 52,
+      "removed": 84,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitOverridesTest.java": {
+      "added": 61,
+      "removed": 67,
+      "removed_verification_lines": [
+        "verify(r1);",
+        "verify(r1);",
+        "verify(r1);"
+      ],
+      "added_verification_lines": [
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);",
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);",
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);"
+      ],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnlyOneApplicablePolicyCombiningAlgorithmTest.java": {
+      "added": 57,
+      "removed": 64,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java": {
+      "added": 58,
+      "removed": 77,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/FirstApplicableTest.java": {
+      "added": 38,
+      "removed": 46,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyUnlessPermitTest.java": {
+      "added": 45,
+      "removed": 46,
+      "removed_verification_lines": [
+        "verify(r1);",
+        "verify(r1);",
+        "verify(r1);",
+        "verify(r1);",
+        "verify(r1);",
+        "verify(r1);"
+      ],
+      "added_verification_lines": [
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);",
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);",
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);",
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);",
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);",
+        "Mockito.verify(r1).createContext(context);",
+        "Mockito.verify(r1).evaluate(context);"
+      ],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java": {
+      "added": 26,
+      "removed": 33,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java": {
+      "added": 23,
+      "removed": 32,
+      "removed_verification_lines": [
+        "mockCtl.verify();",
+        "mockCtl.verify();",
+        "mockCtl.verify();",
+        "mockCtl.verify();",
+        "mockCtl.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.java": {
+      "added": 16,
+      "removed": 14,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/StatusCodeIdTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/BagOfValuesTest.java": {
+      "added": 14,
+      "removed": 17,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java": {
+      "added": 33,
+      "removed": 49,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VersionMatchTest.java": {
+      "added": 8,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java": {
+      "added": 55,
+      "removed": 104,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributesTest.java": {
+      "added": 4,
+      "removed": 6,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java": {
+      "added": 32,
+      "removed": 49,
+      "removed_verification_lines": [
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/XPathTest.java": {
+      "added": 26,
+      "removed": 4,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RequestTest.java": {
+      "added": 13,
+      "removed": 14,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableDefinitionTest.java": {
+      "added": 12,
+      "removed": 15,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/CombinerParameterTest.java": {
+      "added": 6,
+      "removed": 10,
+      "removed_verification_lines": [
+        "ctl.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceTest.java": {
+      "added": 14,
+      "removed": 14,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VersionTest.java": {
+      "added": 8,
+      "removed": 8,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeAssignmentTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/DecisionTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java": {
+      "added": 6,
+      "removed": 10,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/BagFunctionsTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java": {
+      "added": 13,
+      "removed": 18,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java": {
+      "added": 14,
+      "removed": 34,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java": {
+      "added": 21,
+      "removed": 24,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 2,
+      "assertions_added_lexical": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java": {
+      "added": 45,
+      "removed": 16,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/ArtimeticFunctionsTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NonNumericComparisionFunctionTest.java": {
+      "added": 7,
+      "removed": 11,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java": {
+      "added": 64,
+      "removed": 76,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java": {
+      "added": 10,
+      "removed": 14,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/TestFunctions.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java": {
+      "added": 21,
+      "removed": 24,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 2,
+      "assertions_added_lexical": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java": {
+      "added": 7,
+      "removed": 21,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java": {
+      "added": 125,
+      "removed": 79,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 2,
+      "assertions_added_lexical": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java": {
+      "added": 33,
+      "removed": 33,
+      "removed_verification_lines": [
+        "verify(context);",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);"
+      ],
+      "added_verification_lines": [
+        "verify(context).isValidateFuncParamsAtRuntime();",
+        "verify(context).resolveEntity(xpath.getCategory().orElse(null));",
+        "verify(context).isValidateFuncParamsAtRuntime();",
+        "verify(context).resolveEntity(CategoryId.RESOURCE);",
+        "verify(context).resolveEntity(xpath.getCategory().orElse(null));",
+        "verify(context).isValidateFuncParamsAtRuntime();",
+        "verify(context).resolveContent(xpath0.getCategory().orElse(null), Content.Type.XML_UTF8);",
+        "verify(context).resolveContent(xpath1.getCategory().orElse(null), Content.Type.XML_UTF8);",
+        "verify(context).isValidateFuncParamsAtRuntime();",
+        "verify(context).resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8);",
+        "verify(context).resolveContent(CategoryId.RESOURCE, Content.Type.XML_UTF8);"
+      ],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java": {
+      "added": 40,
+      "removed": 48,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/TestInstanceFunctions.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/SpecialMatchFunctionsTest.java": {
+      "added": 5,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticBoundaryTest.java": {
+      "added": 34,
+      "removed": 14,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeValueArithmeticFunctionTest.java": {
+      "added": 5,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java": {
+      "added": 35,
+      "removed": 66,
+      "removed_verification_lines": [
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "verify(context);"
+      ],
+      "added_verification_lines": [
+        "verify(context);"
+      ],
+      "assertions_removed_lexical": 1,
+      "assertions_added_lexical": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/SetFunctionTest.java": {
+      "added": 4,
+      "removed": 6,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/NumericComparisonFunctionTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/ParamTypeSequenceTest.java": {
+      "added": 5,
+      "removed": 5,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/ParamSingleTypeSpecTest.java": {
+      "added": 3,
+      "removed": 3,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java": {
+      "added": 61,
+      "removed": 53,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 7
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java": {
+      "added": 29,
+      "removed": 35,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java": {
+      "added": 46,
+      "removed": 76,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java": {
+      "added": 12,
+      "removed": 18,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java": {
+      "added": 10,
+      "removed": 16,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java": {
+      "added": 25,
+      "removed": 28,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java": {
+      "added": 37,
+      "removed": 56,
+      "removed_verification_lines": [
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ResultTest.java": {
+      "added": 27,
+      "removed": 4,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java": {
+      "added": 46,
+      "removed": 76,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java": {
+      "added": 33,
+      "removed": 49,
+      "removed_verification_lines": [
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();",
+        "ctl.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/VariableReferenceTest.java": {
+      "added": 12,
+      "removed": 16,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java": {
+      "added": 66,
+      "removed": 76,
+      "removed_verification_lines": [
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);"
+      ],
+      "added_verification_lines": [
+        "Mockito.verify(context).resolve(argThat(c));",
+        "Mockito.verify(context).resolve(argThat(c));",
+        "verify(context);",
+        "Mockito.verify(context).resolve(argThat(c));",
+        "verify(context);",
+        "Mockito.verify(context).resolve(argThat(c));"
+      ],
+      "assertions_removed_lexical": 3,
+      "assertions_added_lexical": 6
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java": {
+      "added": 77,
+      "removed": 86,
+      "removed_verification_lines": [
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "control.verify();",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);",
+        "verify(context);"
+      ],
+      "added_verification_lines": [
+        "Mockito.verify(context).resolve(argThat(c));",
+        "Mockito.verify(context).resolve(argThat(c));",
+        "Mockito.verify(context).resolve(argThat(c));",
+        "verify(context);",
+        "verify(context);"
+      ],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 3
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java": {
+      "added": 25,
+      "removed": 23,
+      "removed_verification_lines": [
+        "verify(function);",
+        "verify(function);"
+      ],
+      "added_verification_lines": [
+        "verify(function);",
+        "verify(function);"
+      ],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 2
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyDefaultsTest.java": {
+      "added": 2,
+      "removed": 2,
+      "removed_verification_lines": [],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 0
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java": {
+      "added": 66,
+      "removed": 111,
+      "removed_verification_lines": [
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();",
+        "c.verify();"
+      ],
+      "added_verification_lines": [],
+      "assertions_removed_lexical": 0,
+      "assertions_added_lexical": 1
+    }
+  },
+  "files": 105,
+  "all_paths_in_scope": true,
+  "working_tree_unchanged": true,
+  "added_lines": 2225,
+  "removed_lines": 2382,
+  "verification_lines_removed": 210,
+  "verification_lines_added": 43
+}

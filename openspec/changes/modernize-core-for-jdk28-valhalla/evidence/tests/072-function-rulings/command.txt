@@ -1,0 +1,14 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red, then green, per group of tests
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -pl xacml-core -Dtest='FunctionSafetyNet43Test' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# All core tests
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-core test
+
+# Gate: full reactor with conformance (shared with run 071, gate 2)
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true verify
+
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict

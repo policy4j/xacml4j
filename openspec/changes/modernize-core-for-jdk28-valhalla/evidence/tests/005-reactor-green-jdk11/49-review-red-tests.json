@@ -1,0 +1,297 @@
+{
+  "org.xacml4j.v30.types.ISO8601FractionalDateTimeArithmeticTest": {
+    "counts": [
+      30,
+      30,
+      0,
+      0
+    ],
+    "tests": [
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:48[.5]-05:00> but was:<2002-03-22T08:23:48[]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[5.5]-05:00> but was:<2002-03-22T08:23:4[6]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:47[.5]-05:00> but was:<2002-03-22T08:23:47[]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[6.5]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:47[.001]-05:00> but was:<2002-03-22T08:23:47[]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[6.999]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[5.5]-05:00> but was:<2002-03-22T08:23:4[6]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:48[.5]-05:00> but was:<2002-03-22T08:23:48[]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[6.5]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:47[.5]-05:00> but was:<2002-03-22T08:23:47[]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[6.999]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, -PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:47[.001]-05:00> but was:<2002-03-22T08:23:47[]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:48.[7]5-05:00> but was:<2002-03-22T08:23:48.[2]5-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[5.7]5-05:00> but was:<2002-03-22T08:23:4[6.2]5-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:47.[7]5-05:00> but was:<2002-03-22T08:23:47.[2]5-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[6.7]5-05:00> but was:<2002-03-22T08:23:4[7.2]5-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<...02-03-22T08:23:47.25[1]-05:00> but was:<...02-03-22T08:23:47.25[]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<...002-03-22T08:23:47.2[49]-05:00> but was:<...002-03-22T08:23:47.2[5]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[5.7]5-05:00> but was:<2002-03-22T08:23:4[6.2]5-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:48.[7]5-05:00> but was:<2002-03-22T08:23:48.[2]5-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[6.7]5-05:00> but was:<2002-03-22T08:23:4[7.2]5-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:47.[7]5-05:00> but was:<2002-03-22T08:23:47.[2]5-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<...002-03-22T08:23:47.2[49]-05:00> but was:<...002-03-22T08:23:47.2[5]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47.250-05:00, -PT0.001S]",
+        "result": "FAIL",
+        "failure": "expected:<...02-03-22T08:23:47.25[1]-05:00> but was:<...02-03-22T08:23:47.25[]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2020-01-31T23:59:59.75-05:00, PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2020-0[2-01T00:00:00.2]5-05:00> but was:<2020-0[1-31T23:59:59.7]5-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2020-01-31T23:59:59.75-05:00, PT0.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2020-01-31T23:59:59.[2]5-05:00> but was:<2020-01-31T23:59:59.[7]5-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, P1DT2H3M1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-23T10:26:48[.5]-05:00> but was:<2002-03-23T10:26:48[]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, P1DT2H3M1.5S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-21T06:20:4[5.5]-05:00> but was:<2002-03-21T06:20:4[6]-05:00>"
+      },
+      {
+        "test": "addPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.000000001S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:47[.000000001]-05:00> but was:<2002-03-22T08:23:47[]-05:00>"
+      },
+      {
+        "test": "subtractPreservesFractionalSeconds[2002-03-22T08:23:47-05:00, PT0.000000001S]",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:4[6.999999999]-05:00> but was:<2002-03-22T08:23:4[7]-05:00>"
+      }
+    ]
+  },
+  "org.xacml4j.v30.types.ISO8601DurationReviewTest": {
+    "counts": [
+      5,
+      5,
+      0,
+      0
+    ],
+    "tests": [
+      {
+        "test": "fractionalEqualityAndComparisonKeepSubsecondDifferences",
+        "result": "FAIL",
+        "failure": null
+      },
+      {
+        "test": "fractionalLexicalRoundTripKeepsDecimalSeconds",
+        "result": "FAIL",
+        "failure": "expected:<0> but was:<1>"
+      },
+      {
+        "test": "javaDurationConversionKeepsFractionAndSign",
+        "result": "FAIL",
+        "failure": "expected:<PT1.5S> but was:<PT1S>"
+      },
+      {
+        "test": "fractionalXmlDurationReachesDateTimeArithmetic",
+        "result": "FAIL",
+        "failure": "expected:<2002-03-22T08:23:48[.5]-05:00> but was:<2002-03-22T08:23:48[]-05:00>"
+      },
+      {
+        "test": "programmaticFourteenMonthsAreCountedOnce",
+        "result": "FAIL",
+        "failure": "expected:<14> but was:<26>"
+      }
+    ]
+  },
+  "org.xacml4j.v30.pdp.DefaultEvaluationContextHandlerTest": {
+    "counts": [
+      18,
+      1,
+      0,
+      0
+    ],
+    "tests": [
+      {
+        "test": "testRelativePathWithoutContextSelectorUsesDocumentNode",
+        "result": "FAIL",
+        "failure": "expected:<BagOfValues{DataType=integer, Values=[]}> but was:<BagOfValues{DataType=integer, Values=[IntegerVal{type=integer, value=555555}]}>"
+      },
+      {
+        "test": "testSelectorFallsBackToEntityValueFromPipAndCachesResult",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testTwoNodeContextSelectorCurrentlyUsesFirstNode",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testDesignatorResolveAttributeIsNotInRequest",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testDesignatorResolveAttributeIsNotInRequestPIPThrowsRuntimeException",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentIsNotInRequestXPathReturnsNonEmptyNodeSet",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetResolutionScopeRequest",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testDesignatorPreservesIssuerAndDuplicateValuesAndGetEntityReturnsEntity",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testZeroNodeContextSelectorCurrentlyFallsBackToDocument",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentIsNotInRequestPIPThrowsRuntimeException",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testRelativePathWithExplicitContextSelectorUsesSelectedNode",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndNodeFailsConvertionToDate",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentInRequestExistXPathReturnsEmptySet",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentIsInRequestXPathReturnsNonEmptySetAndCorrectNodeTypeAndNodeFailsConvertionToDate",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testSelectorResolveContentIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testExplicitMissingContextSelectorIsRejected",
+        "result": "PASS",
+        "failure": null
+      },
+      {
+        "test": "testDesignatorResolveAttributeIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute",
+        "result": "PASS",
+        "failure": null
+      }
+    ]
+  }
+}

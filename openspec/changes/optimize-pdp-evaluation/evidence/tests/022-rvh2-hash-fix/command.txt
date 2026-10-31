@@ -1,0 +1,1 @@
+rtk mvn -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dsurefire.failIfNoSpecifiedTests=false -Dtest='EmptyBagCharacterizationTest,BagOfValues*Test' test

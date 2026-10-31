@@ -1,0 +1,14 @@
+id: java-no-console-output
+language: Java
+severity: warning
+message: Library code must log through SLF4J, not the console.
+note: |
+  Use an org.slf4j.Logger. System.out, System.err, and printStackTrace()
+  bypass the logging configuration of the application that embeds xacml4j.
+files:
+  - "**/src/main/java/**/*.java"
+rule:
+  any:
+    - pattern: System.out.$METHOD($$$ARGS)
+    - pattern: System.err.$METHOD($$$ARGS)
+    - pattern: $EXC.printStackTrace()

@@ -1,0 +1,36 @@
+JDK: Maven reports Java 21.0.6, Oracle GraalVM; see command.txt.
+
+Latest full gates:
+module                    tests  failures  errors  skipped
+xacml-core                 4328       0       0        2
+xacml-xml                    42       0       0        0
+xacml-pdp                    77       0       0        3
+xacml-json                    7       0       0        1
+xacml-conformance-tests     901       0       0       28
+
+Final logs: review-core-final.log, review-xml-final.log, review-pdp-full.log,
+review-json-full.log, review-conformance.log. The conformance counts and case
+markers are with the restored manifest: oasis20=362, oasis30=471,
+rsa2008=17, example=2. IIIE301 and IIIE303 remain manifest-skipped.
+
+Review red runs:
+- review-core-red.log: RequestContextEqualityTest, 4 tests, 2 failures:
+  requests differing by entity or XML ID compared equal.
+- review-xml-red.log: Xacml20RequestContextUnmarshallerTest, 7 tests,
+  1 failure for XACML 2.0 scope resource-id inclusion; and
+  Xacml30RequestReferenceMappingTest, 5 tests, 1 failure because duplicate
+  Attributes xml:id surfaced as IllegalArgumentException rather than
+  SyntaxException. The AttributesType ID and missing-ID mapping cases passed.
+
+Focused green runs: review-core-green.log (4/4) and review-xml-green.log
+(12/12 across the two XML test classes). The final XML scope test asserts
+that the XACML 2.0 response marshaller emits ResourceId="urn:root".
+
+An earlier run with IIIE301 and IIIE303 temporarily enabled is retained in
+conformance-final.log: 901 tests, 0 assertion failures, 2 errors, 25 skips.
+Both errors are the known absent-Content NPE in
+Xacml30TestUtility.assertAttributesType (test-support harness), after the
+production mapping assertions. This packet says not to fix that harness;
+the current full conformance run therefore uses the restored manifest and
+does not count those two cases as verified.
+

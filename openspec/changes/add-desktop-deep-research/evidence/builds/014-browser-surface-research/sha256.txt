@@ -1,0 +1,5 @@
+# SHA-256 of the text of each large fetched file, as returned by the GitHub MCP file fetch
+# (first line of each copy is the tool's status line). Copies are not stored in the repository.
+673931b09af9fa94f483108ac3a7d0005e0a7e7d7d5f08b70bbee651f93b6bb8  pwmcp/README.raw.txt
+5677549f185b07e00df3dd16ca08e8236613e451ed29e7011ed3091aeec51515  oracle/browser-mode.raw.txt
+f7d0619308e844577276570b09d354c3ed2caf45d3b8a18e7b4bdad741d7db11  agent-browser/README.raw.txt

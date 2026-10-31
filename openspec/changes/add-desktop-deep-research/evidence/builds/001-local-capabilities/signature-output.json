@@ -1,0 +1,37 @@
+{
+  "chatgpt": {
+    "signing_metadata": [
+      "Identifier=com.openai.codex",
+      "TeamIdentifier=2DC432GLL2"
+    ],
+    "full_signature_validated": false,
+    "url_schemes": [
+      "codex",
+      "http",
+      "https"
+    ],
+    "scripting_dictionary": true,
+    "services_count": 0,
+    "dictionary_observations": {
+      "window_class_declared": true,
+      "tab_class_declared": true,
+      "url_property_declared": true,
+      "execute_command_declared": true,
+      "research_term_present": false,
+      "runtime_tested": false
+    }
+  },
+  "claude": {
+    "signing_metadata": [
+      "Identifier=com.anthropic.claudefordesktop",
+      "TeamIdentifier=Q6L2SF6YDW"
+    ],
+    "full_signature_validated": false,
+    "url_schemes": [
+      "claude",
+      "msauth.com.anthropic.claudefordesktop"
+    ],
+    "scripting_dictionary": false,
+    "services_count": 0
+  }
+}

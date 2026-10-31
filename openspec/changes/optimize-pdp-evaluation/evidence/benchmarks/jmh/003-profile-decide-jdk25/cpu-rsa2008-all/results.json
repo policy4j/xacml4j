@@ -1,0 +1,90 @@
+[
+    {
+        "jmhVersion" : "1.37",
+        "benchmark" : "org.xacml4j.jmh.pdp.PdpDecideBenchmark.decide",
+        "mode" : "avgt",
+        "threads" : 1,
+        "forks" : 1,
+        "jvm" : "/Library/Java/JavaVirtualMachines/graalvm-25.jdk/Contents/Home/bin/java",
+        "jvmArgs" : [
+            "-XX:-UseJVMCICompiler",
+            "-Xms2g",
+            "-Xmx2g",
+            "-XX:+UseG1GC"
+        ],
+        "jdkVersion" : "25.0.4",
+        "vmName" : "Java HotSpot(TM) 64-Bit Server VM",
+        "vmVersion" : "25.0.4+7-LTS-jvmci-b01",
+        "warmupIterations" : 5,
+        "warmupTime" : "1 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 5,
+        "measurementTime" : "2 s",
+        "measurementBatchSize" : 1,
+        "params" : {
+            "corpus" : "rsa2008",
+            "request" : "all",
+            "store" : "in-memory"
+        },
+        "primaryMetric" : {
+            "score" : 17.986667669312645,
+            "scoreError" : 1.7743496096601066,
+            "scoreConfidence" : [
+                16.21231805965254,
+                19.76101727897275
+            ],
+            "scorePercentiles" : {
+                "0.0" : 17.62498719412581,
+                "50.0" : 17.676787762518412,
+                "90.0" : 18.58713423892439,
+                "95.0" : 18.58713423892439,
+                "99.0" : 18.58713423892439,
+                "99.9" : 18.58713423892439,
+                "99.99" : 18.58713423892439,
+                "99.999" : 18.58713423892439,
+                "99.9999" : 18.58713423892439,
+                "100.0" : 18.58713423892439
+            },
+            "scoreUnit" : "us/op",
+            "rawData" : [
+                [
+                    18.58713423892439,
+                    17.62498719412581,
+                    17.66207917389887,
+                    17.676787762518412,
+                    18.38234997709574
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+            "async" : {
+                "score" : "NaN",
+                "scoreError" : "NaN",
+                "scoreConfidence" : [
+                    "NaN",
+                    "NaN"
+                ],
+                "scorePercentiles" : {
+                    "0.0" : "NaN",
+                    "50.0" : "NaN",
+                    "90.0" : "NaN",
+                    "95.0" : "NaN",
+                    "99.0" : "NaN",
+                    "99.9" : "NaN",
+                    "99.99" : "NaN",
+                    "99.999" : "NaN",
+                    "99.9999" : "NaN",
+                    "100.0" : "NaN"
+                },
+                "scoreUnit" : "---",
+                "rawData" : [
+                    [
+                        "NaN"
+                    ]
+                ]
+            }
+        }
+    }
+]
+
+

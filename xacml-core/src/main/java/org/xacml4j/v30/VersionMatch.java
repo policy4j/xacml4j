@@ -58,12 +58,12 @@ public class VersionMatch
     public VersionMatch(String versionMatchPattern)
     {
     	if(Strings.isNullOrEmpty(versionMatchPattern)){
-    		throw new XacmlSyntaxException("Version can't be null or empty");
+    		throw new SyntaxException("Version can't be null or empty");
     	}
     	if(!VERSION_PATTERN.matcher(versionMatchPattern).matches()){
-    		throw new XacmlSyntaxException(
-				    "Given version match=\"%s\" should match regular expression=\"%s\"",
-        		    versionMatchPattern, PATTERN_STRING);
+    		throw new SyntaxException(
+				    String.format("Given version match=\"%s\" should match regular expression=\"%s\"",
+        		    versionMatchPattern, PATTERN_STRING));
     	}
         this.pattern = versionMatchPattern;
         this.compiledPattern = Pattern.compile(convertVersionMatchToJavaRE(versionMatchPattern));
@@ -111,7 +111,7 @@ public class VersionMatch
      * @see VersionMatch#VersionMatch(String)
      *
      * @param pattern a version match constraint
-     * @return {@link VersionMatch} instance
+     * @return {@link VersionMatch} defaultProvider
      * @exception IllegalArgumentException if a given version
      * match constraint can not be parsed
      */

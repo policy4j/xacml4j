@@ -1,0 +1,35 @@
+rtk proxy openspec validate add-desktop-deep-research --strict --json
+Environment: select the existing cached OpenSpec 1.3.1 executable through PATH for this command only; no install or global configuration change.
+rtk python3 - <<'PY'
+from pathlib import Path
+import re, json, hashlib
+base=Path("openspec/changes/add-desktop-deep-research")
+index=(base/"evidence/README.md").read_text()
+counts={"requirements":0,"scenarios":0,"named_tests":0}
+errors=[]
+tests=set()
+for path in sorted((base/"specs").glob("*/spec.md")):
+    text=path.read_text()
+    counts["requirements"]+=len(re.findall(r"^### Requirement:",text,re.M))
+    scenarios=re.split(r"^#### Scenario: ",text,flags=re.M)[1:]
+    counts["scenarios"]+=len(scenarios)
+    for block in scenarios:
+        names=re.findall(r"`(test_[a-z0-9_]+)`",block)
+        if len(names)!=1: errors.append("scenario-test-count:"+block.splitlines()[0])
+        for keyword in ("GIVEN","WHEN","THEN"):
+            if "**"+keyword+"**" not in block: errors.append(keyword+":"+block.splitlines()[0])
+        for name in names:
+            if name in tests: errors.append("duplicate:"+name)
+            tests.add(name)
+            if "`"+name+"`" not in index: errors.append("unmapped:"+name)
+counts["named_tests"]=len(tests)
+files=[base/"proposal.md",base/"research/README.md",base/"design.md",base/"tasks.md",base/"evidence/README.md",*sorted((base/"specs").glob("*/spec.md"))]
+for path in files:
+    text=path.read_text()
+    if str(Path.home()) in text or "/var/folders/" in text: errors.append("private-path:"+str(path))
+    for number,line in enumerate(text.splitlines(),1):
+        if line.rstrip()!=line: errors.append("trailing-whitespace:"+str(path)+":"+str(number))
+result={"counts":counts,"missing_or_invalid":errors,"coverage":"structural planning only; all implementation/live checks UNRUN","packet_hashes":{str(path):hashlib.sha256(path.read_bytes()).hexdigest() for path in files}}
+print(json.dumps(result,indent=2))
+raise SystemExit(bool(errors))
+PY

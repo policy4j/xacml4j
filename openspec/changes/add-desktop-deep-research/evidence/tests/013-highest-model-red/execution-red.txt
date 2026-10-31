@@ -1,0 +1,471 @@
+test_authorized_plan_can_start_research (test_execution.ExecutionContract.test_authorized_plan_can_start_research) ... ok
+test_batch_preserves_per_provider_outcomes (test_execution.ExecutionContract.test_batch_preserves_per_provider_outcomes) ... ok
+test_batch_rerun_resumes_without_resubmission (test_execution.ExecutionContract.test_batch_rerun_resumes_without_resubmission) ... ok
+test_bridge_guard_schema_and_modal_handling (test_execution.ExecutionContract.test_bridge_guard_schema_and_modal_handling) ... ok
+test_concurrent_job_updates_keep_state (test_execution.ExecutionContract.test_concurrent_job_updates_keep_state) ... ok
+test_crash_after_send_requires_reconciliation (test_execution.ExecutionContract.test_crash_after_send_requires_reconciliation) ... ok
+test_default_diagnostics_redact_unrelated_data (test_execution.ExecutionContract.test_default_diagnostics_redact_unrelated_data) ... ok
+test_desktop_lock_serializes_processes (test_execution.ExecutionContract.test_desktop_lock_serializes_processes) ... ok
+test_doctor_reports_observed_capabilities (test_execution.ExecutionContract.test_doctor_reports_observed_capabilities) ... ok
+test_focus_change_preserves_draft_and_stops_input (test_execution.ExecutionContract.test_focus_change_preserves_draft_and_stops_input) ... ok
+test_highest_research_model_verified_before_input (test_execution.ExecutionContract.test_highest_research_model_verified_before_input) ... 
+  test_highest_research_model_verified_before_input (test_execution.ExecutionContract.test_highest_research_model_verified_before_input) (provider='claude') ... FAIL
+  test_highest_research_model_verified_before_input (test_execution.ExecutionContract.test_highest_research_model_verified_before_input) (provider='chatgpt') ... FAIL
+test_intent_and_multiline_entry_guard_send (test_execution.ExecutionContract.test_intent_and_multiline_entry_guard_send) ... ok
+test_missing_or_ambiguous_rebind_preserves_state (test_execution.ExecutionContract.test_missing_or_ambiguous_rebind_preserves_state) ... ok
+test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) ... 
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'selected_model': 'fixture-low'}) ... FAIL
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'selection_verified': False}) ... FAIL
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'verified_before_input': False}) ... FAIL
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'choices_complete': False}) ... FAIL
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'selected_model': 'fixture-low'}) ... FAIL
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'selection_verified': False}) ... FAIL
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'verified_before_input': False}) ... FAIL
+  test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'choices_complete': False}) ... FAIL
+test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) ... 
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='missing-evidence') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unsupported-selection') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='partial-choices') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='partial-ranking') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unknown-ranking') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='uncharacterized-version') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='wrong-provider-ranking') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unverified-selection') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unverified-after-mode') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='lower-model') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='auto-label') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='no-enabled-compatible-model') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unranked-enabled-model') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='missing-evidence') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unsupported-selection') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='partial-choices') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='partial-ranking') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unknown-ranking') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='uncharacterized-version') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='wrong-provider-ranking') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unverified-selection') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unverified-after-mode') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='lower-model') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='auto-label') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='no-enabled-compatible-model') ... FAIL
+  test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unranked-enabled-model') ... FAIL
+test_mutation_deferred_while_user_active (test_execution.ExecutionContract.test_mutation_deferred_while_user_active) ... ok
+test_pre_send_binding_bootstrap_and_upgrade (test_execution.ExecutionContract.test_pre_send_binding_bootstrap_and_upgrade) ... ok
+test_provider_uncertainty_blocks_across_checkouts (test_execution.ExecutionContract.test_provider_uncertainty_blocks_across_checkouts) ... ok
+test_public_source_selection_is_in_receipt (test_execution.ExecutionContract.test_public_source_selection_is_in_receipt) ... ok
+test_quota_state_does_not_resubmit (test_execution.ExecutionContract.test_quota_state_does_not_resubmit) ... ok
+test_source_selection_side_effects_restored (test_execution.ExecutionContract.test_source_selection_side_effects_restored) ... ok
+test_start_blocks_on_unconstrainable_private_source (test_execution.ExecutionContract.test_start_blocks_on_unconstrainable_private_source) ... ok
+test_start_blocks_when_source_scope_unverifiable (test_execution.ExecutionContract.test_start_blocks_when_source_scope_unverifiable) ... ok
+test_start_blocks_without_research_readiness (test_execution.ExecutionContract.test_start_blocks_without_research_readiness) ... ok
+test_start_requires_observed_receipt (test_execution.ExecutionContract.test_start_requires_observed_receipt) ... ok
+test_start_retry_after_killed_start_does_not_resubmit (test_execution.ExecutionContract.test_start_retry_after_killed_start_does_not_resubmit) ... ok
+test_synthetic_receipts_are_rejected_by_live_audit (test_execution.ExecutionContract.test_synthetic_receipts_are_rejected_by_live_audit) ... ok
+test_target_trust_version_and_caller_isolation (test_execution.ExecutionContract.test_target_trust_version_and_caller_isolation) ... ok
+test_transaction_lock_is_cross_checkout_and_temp_independent (test_execution.ExecutionContract.test_transaction_lock_is_cross_checkout_and_temp_independent) ... ok
+test_transition_table_and_command_ownership (test_execution.ExecutionContract.test_transition_table_and_command_ownership) ... ok
+test_unresolved_question_or_plan_scope_stops (test_execution.ExecutionContract.test_unresolved_question_or_plan_scope_stops) ... ok
+test_wait_polling_never_activates (test_execution.ExecutionContract.test_wait_polling_never_activates) ... ok
+test_wait_timeout_preserves_job_and_resume_does_not_submit (test_execution.ExecutionContract.test_wait_timeout_preserves_job_and_resume_does_not_submit) ... ok
+test_wrong_conversation_blocks_mutation_and_collection (test_execution.ExecutionContract.test_wrong_conversation_blocks_mutation_and_collection) ... ok
+
+======================================================================
+FAIL: test_highest_research_model_verified_before_input (test_execution.ExecutionContract.test_highest_research_model_verified_before_input) (provider='claude')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 281, in test_highest_research_model_verified_before_input
+    self.assertEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 3 != 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-RS6AYS7D9X32S"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-RS6AYS7D9X32S", "observation": {"outcome": "UNOBSERVABLE", "reason": "DESKTOP_BOUNDARY_LOST", "timestamp": 1791147628.5562031}, "prompt_possibly_sent": false, "provider": "claude", "provider_state": "DRAFTING", "reason": null, "restoration_pending": true, "revision": 5}
+
+
+======================================================================
+FAIL: test_highest_research_model_verified_before_input (test_execution.ExecutionContract.test_highest_research_model_verified_before_input) (provider='chatgpt')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 281, in test_highest_research_model_verified_before_input
+    self.assertEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 3 != 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-QVQL66VA29PTJ"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-QVQL66VA29PTJ", "observation": {"outcome": "UNOBSERVABLE", "reason": "DESKTOP_BOUNDARY_LOST", "timestamp": 1791147628.582303}, "prompt_possibly_sent": false, "provider": "chatgpt", "provider_state": "DRAFTING", "reason": null, "restoration_pending": true, "revision": 5}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'selected_model': 'fixture-low'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-94ENH7SX35NBZ"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-94ENH7SX35NBZ", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.735862}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'selection_verified': False})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-BXKEK52FT7DST"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-BXKEK52FT7DST", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.767379}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'verified_before_input': False})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-3RDZRBU8TUMQK"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-3RDZRBU8TUMQK", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.798083}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='claude', change={'choices_complete': False})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-AFMHR4UMXFQN7"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-AFMHR4UMXFQN7", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.8420238}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'selected_model': 'fixture-low'})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-62DM6Z5VY9PRM"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-62DM6Z5VY9PRM", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.879814}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'selection_verified': False})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-BCCHJ78VGFNWD"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-BCCHJ78VGFNWD", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.919996}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'verified_before_input': False})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-Y3J6P2TSQRDRB"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-Y3J6P2TSQRDRB", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.9554691}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_change_before_input_blocks_submission (test_execution.ExecutionContract.test_model_change_before_input_blocks_submission) (provider='chatgpt', change={'choices_complete': False})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 358, in test_model_change_before_input_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-5HQ787XGT68TX"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-5HQ787XGT68TX", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147628.999767}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='missing-evidence')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-2ZN3H2QPU2UU5"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-2ZN3H2QPU2UU5", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.051971}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unsupported-selection')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-88RUJ5QZB4SQ2"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-88RUJ5QZB4SQ2", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.091917}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='partial-choices')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-GK69E8GT5NNZF"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-GK69E8GT5NNZF", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.17278}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='partial-ranking')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-RKU385SH4NFM2"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-RKU385SH4NFM2", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.216916}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unknown-ranking')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-PUHZXKAEGK392"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-PUHZXKAEGK392", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.251812}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='uncharacterized-version')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-772THHZ7G9UCD"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-772THHZ7G9UCD", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.2952452}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='wrong-provider-ranking')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-FDXBR5NLC33KL"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-FDXBR5NLC33KL", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.3285701}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unverified-selection')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-A6Q79SHAABXZH"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-A6Q79SHAABXZH", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.383399}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unverified-after-mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-PEPWBLR9PAE35"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-PEPWBLR9PAE35", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.454171}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='lower-model')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-5C87PM46PSFLL"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-5C87PM46PSFLL", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.494459}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='auto-label')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-D6C3EY9M3EBJC"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-D6C3EY9M3EBJC", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.5309389}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='no-enabled-compatible-model')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-PCVRVVXMP6BCU"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-PCVRVVXMP6BCU", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.5652711}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='claude', case='unranked-enabled-model')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "claude-DRC-DBB6MXTFUNHT9"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "claude-DRC-DBB6MXTFUNHT9", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.604884}, "prompt_possibly_sent": true, "provider": "claude", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='missing-evidence')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-Z84LZB9K2QWMH"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-Z84LZB9K2QWMH", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.656574}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unsupported-selection')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-R6L3Q8QKUZHMG"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-R6L3Q8QKUZHMG", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.699202}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='partial-choices')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-4XF9VYA56TQR8"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-4XF9VYA56TQR8", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.736418}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='partial-ranking')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-STQRRUKKATTYD"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-STQRRUKKATTYD", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.782974}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unknown-ranking')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-SD95Q5YPYRGAH"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-SD95Q5YPYRGAH", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.8341289}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='uncharacterized-version')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-MT5KTQ48FRZ9F"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-MT5KTQ48FRZ9F", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.871417}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='wrong-provider-ranking')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-BKJAP52Q7PBBE"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-BKJAP52Q7PBBE", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.930418}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unverified-selection')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-XCY28JNPLRV5C"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-XCY28JNPLRV5C", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147629.976388}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unverified-after-mode')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-CU9LCG5X9Q3PS"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-CU9LCG5X9Q3PS", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147630.0128582}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='lower-model')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-YYQQQQQAVQAKD"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-YYQQQQQAVQAKD", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147630.052974}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='auto-label')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-JM55NZKK59VBQ"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-JM55NZKK59VBQ", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147630.107481}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='no-enabled-compatible-model')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-CQKRLBSZYZVDY"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-CQKRLBSZYZVDY", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147630.175091}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+======================================================================
+FAIL: test_model_unavailable_or_unverifiable_blocks_submission (test_execution.ExecutionContract.test_model_unavailable_or_unverifiable_blocks_submission) (provider='chatgpt', case='unranked-enabled-model')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "<repo>/.agents/skills/desktop-deep-research/tests/test_execution.py", line 327, in test_model_unavailable_or_unverifiable_blocks_submission
+    self.assertNotEqual(code, 0, output)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+AssertionError: 0 == 0 : {"allocated": true, "boundary": "synthetic", "job_id": "chatgpt-DRC-B5SWVZHDDNW8A"}
+{"boundary": "synthetic", "collection_state": "NOT_STARTED", "job_id": "chatgpt-DRC-B5SWVZHDDNW8A", "observation": {"outcome": "SUPPORTED", "reason": null, "timestamp": 1791147630.2749188}, "prompt_possibly_sent": true, "provider": "chatgpt", "provider_state": "COMPLETED", "reason": null, "restoration_pending": true, "revision": 8}
+
+
+----------------------------------------------------------------------
+Ran 34 tests in 3.616s
+
+FAILED (failures=36)

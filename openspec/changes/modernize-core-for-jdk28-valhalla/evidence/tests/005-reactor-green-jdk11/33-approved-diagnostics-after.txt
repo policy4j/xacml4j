@@ -1,0 +1,17 @@
+IIC104 expected subtraction: 2002-03-17T06:23:47-05:00
+IIC104 actual subtraction: 2002-03-17T06:23:47-05:00
+IIIF001 JAXB content category: urn:oasis:names:tc:xacml:3.0:attribute-category:resource
+IIIF001 JAXB content part: java.lang.String; whitespace=true
+IIIF001 JAXB content part: com.sun.org.apache.xerces.internal.dom.ElementNSImpl
+IIIF001 JAXB content part: java.lang.String; whitespace=true
+IIIF001 production resource content present: true
+IIIG006 JAXB content category: urn:oasis:names:tc:xacml:3.0:attribute-category:resource
+IIIG006 JAXB content part: java.lang.String; whitespace=true
+IIIG006 JAXB content part: com.sun.org.apache.xerces.internal.dom.ElementNSImpl
+IIIG006 JAXB content part: java.lang.String; whitespace=true
+IIIG006 production resource content present: true
+IIA001 expected policy identifiers absent: true
+Empty Permit actual policy identifier count: 0
+IIA001 expected obligations absent: true
+Empty Permit actual obligation count: 0
+IIA001 equivalent response comparison: PASS

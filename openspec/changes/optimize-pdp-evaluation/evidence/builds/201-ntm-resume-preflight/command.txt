@@ -1,0 +1,19 @@
+# Run from PROJECT_ROOT, the xacml4j main checkout; CHECKOUTS is its parent.
+# Machine-local roots in runtime commands are normalized to these symbols.
+NTM_PROJECTS_BASE="$CHECKOUTS" rtk proxy ntm list --json
+rtk proxy git worktree list --porcelain
+rtk proxy agy models
+# Read the local Codex model inventory and compare the requested model IDs.
+# Create group 42 and tasks 42.1 through 42.21 from tasks.md, then claim each lane issue.
+rtk proxy br sync --flush-only
+NTM_PROJECTS_BASE="$CHECKOUTS" rtk proxy ntm spawn xacml4j --label remaining-g1-20261029 --cod=1:gpt-6.1-terra:max --cod=1:gpt-6.1-sol:max --cod=1:gpt-6-astra:max --cod=1:gpt-6-luna:high --agyx=1:gemini-4-argon-high --worktrees --verify-boot --safety --no-cass-context --no-recovery
+# Initial launcher exit: 1. Inspect the specific session's pane PIDs and direct children before recovery.
+rtk proxy ntm status xacml4j--remaining-g1-20261029 --json
+rtk proxy tmux list-panes -t xacml4j--remaining-g1-20261029 -F '#{pane_id} #{pane_pid} #{pane_current_command} #{pane_current_path} #{pane_dead}'
+rtk proxy ps -axo pid=,ppid=,comm=
+# Restart only the five verified empty agent panes, in their own existing worktrees, using ntm-agent-mode.
+# Read startup headers to verify actual models and efforts; confirm the Argon project trust prompt.
+# Dispatch terra.md, sol.md, astra.md, luna.md, argon.md from the ignored runtime packet directory:
+NTM_PROJECTS_BASE="$CHECKOUTS" rtk proxy ntm send xacml4j--remaining-g1-20261029 --pane=<verified-pane> --file "$PROJECT_ROOT/.ntm/packets/remaining-g1-20261029/<lane>.md" --prefix '<runtime packet directory>' --no-cass-check --no-cass --json
+# Parse the shared build wrapper with Python compile(); no wrapper build run occurred in this preflight.
+rtk proxy python3 .ntm/packets/remaining-g1-20261029/run-build.py --worktree . --log openspec/changes/optimize-pdp-evaluation/evidence/builds/201-ntm-resume-preflight/toolchain.log -- -o -Dlicense.skipUpdateLicense=true --version

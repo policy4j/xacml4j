@@ -1,0 +1,79 @@
+Beads: epic `policy4j-971`; task X.Y is issue `policy4j-971.X.Y`.
+Gate: `rtk python3 -m unittest discover -s .agents/skills/desktop-deep-research/tests -v`;
+Swift helper compilation and `doctor --self-test`; provider live checks;
+`rtk openspec validate add-desktop-deep-research --strict`.
+Maven/module/conformance/JMH gates: NOT APPLICABLE; no Java behavior or build changes.
+
+Maintainer go-ahead is recorded in `evidence/final/006-maintainer-approval/`.
+Every checked task must have
+indexed evidence. Future task issues are created in this order before claiming.
+Paths ending at a review lane name are parents; every actual review uses a
+fresh `rvNNN-<scope>-<lane>` subdirectory. `<next>` means the next unused run
+number, assigned when the run starts.
+
+## 1. Capability research and plan
+
+- [x] 1.1 Inspect local automation and write the proposal, research, specs, design, tasks, and evidence index; check: redacted local probes, independent plan review, and strict validation; evidence: `evidence/builds/001-local-capabilities/`, `evidence/builds/002-plan-validation/`, `evidence/builds/003-revised-plan-validation/`, `evidence/builds/004-binding-plan-validation/`.
+- [x] 1.2 Gate: independent architecture and privacy review of the plan, resolve findings, check scenario/test mapping and docs consistency, record module/conformance/JMH non-applicability; evidence: `evidence/reviews/plan/`.
+- [x] 1.3 Obtain and record maintainer approval of this reviewed plan before implementation; retain the two prompt templates, budget of two public submissions per provider, attended dedicated windows and operator-only macOS permission grants; check: explicit approval receipt in `evidence/final/006-maintainer-approval/`.
+- [x] 1.4 After approval, characterize both signed app/version interfaces with non-submitting discovery and at most one public Research submission per provider; record locator/input/source/completion/export observations, window/caller isolation and profile go/no-go. Derive later fixtures from these observations; check: characterization receipt and remaining acceptance budget; evidence: `evidence/builds/007-live-characterization/`, `evidence/builds/008-characterization-disposition/`. Claude conditional go; ChatGPT no-go with protected draft. Both-provider production acceptance remains required.
+
+## 2. Job execution and native desktop control
+
+- [x] 2.1 Write failing production-entrypoint tests for every execution scenario and transition row, including source scope, draft binding bootstrap/upgrade and conversation rebinding, stable request/batch ids, cross-checkout ledger/transaction locks, concurrent state updates, target/caller trust, helper guards/filtering, input intent/truncation, non-activating waits, and provenance; check: 31 named execution-spec tests, all NOT_IMPLEMENTED red with zero skips; evidence: `evidence/tests/009-execution-red/`.
+- [x] 2.2 Implement the standard-library orchestrator, atomic job receipts, private run directories, user-scoped desktop lock, and resumable commands; check: 31 execution tests pass with synthetic desktop only; evidence: `evidence/tests/010-execution-green/`.
+- [ ] 2.3 Implement and compile the macOS bridge and characterized provider adapters; check signed app/window/job preconditions, mode/source and highest-available-model guards, native input methods, transaction ownership, non-activating observations and closed-schema filtering. Current steering adds three named model tests (red before implementation), exact selected-model receipts and honest separation from provider-managed research engines; check: `doctor --self-test`, helper preflight, named model tests and recorded characterization fixtures; evidence: `evidence/builds/011-native-bridge/` and the fresh model-steering/model-test runs.
+- [ ] 2.4 Gate: independent code/security review, all execution tests, helper self-tests/readiness, docs/spec consistency; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/reviews/code/`, `evidence/tests/<next>-execution-gate/`.
+
+## 3. Report collection and reusable skill
+
+- [ ] 3.1 Write failing production-entrypoint tests for every collection scenario, including partial observation, foreign clipboard writes, exact public link provenance, attempt-preserving retries, reports outside skill discovery, escaped index data, cropped opt-in captures, file/hash integrity, and unsafe paths; check: named collection-spec tests; evidence: `evidence/tests/<next>-collection-red/`.
+- [ ] 3.2 Implement report-specific native exports and Copy/extraction, source preservation, independent file validation, hashes, and the local index; check: collection tests; evidence: `evidence/tests/<next>-collection-green/`.
+- [ ] 3.3 Write the canonical skill, provider references, three synthetic evaluation prompts/assertions, relative discovery link and `docs/ai/DESKTOP_RESEARCH.md`; document trust boundaries, secondary-source status, clipboard effects, local report/cache/lock ownership and rollback; check: exactly one skill per requested CLI and link/reference resolution; evidence: `evidence/tests/<next>-skill-discovery/`.
+- [ ] 3.4 Gate: independent code/security/test review, full script tests, skill evaluations with baseline counterparts, and docs/spec consistency; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/reviews/`, `evidence/tests/<next>-collection-skill-gate/`.
+
+## 4. Live acceptance and close out
+
+- [ ] 4.1 Run the one authorized ChatGPT acceptance question through the production batch workflow; verify public sources, mode, binding, uncertain-send reconciliation, non-activating expired wait, same-job resume/window rebind, completion, citations, saved report and actual exports; check live named scenarios and one submitted-user-turn match; evidence: `evidence/tests/<next>-chatgpt-live/`.
+- [ ] 4.2 Run the one authorized Claude acceptance question through that production batch; verify public sources, mode, binding, uncertain-send reconciliation, non-activating expired wait, same-job resume/window rebind, completion, exact citations and actual saved format; check live named scenarios and one submitted-user-turn match; evidence: `evidence/tests/<next>-claude-live/`.
+- [ ] 4.3 Gate: independently inspect both reports, sources, manifests, hashes, per-provider outcomes, and duplicate-submission counts; check: both-provider live acceptance, the browser acceptance runs of task 5.14, and final review; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/final/<next>-live-acceptance/`, `evidence/reviews/final/`.
+- [ ] 4.4 Run strict OpenSpec validation and the requirement-to-task-to-test-to-evidence completion audit; check every explicit requirement of the three specs and preserve unresolved live blockers; evidence: `evidence/final/<next>-completion-audit/`.
+- [ ] 4.5 Close completed Beads children and epic only after the full objective passes; run `rtk br sync --flush-only`; check: Beads closure receipts. No stage, commit, push, branch switch, or archive is authorized.
+
+## 5. Browser surface and conversation context
+
+Added 2026-10-09 at the maintainer's request. Design D9 to D15; capability
+`browser-research-session`. Order and waits:
+
+- Tasks 5.3 to 5.14 wait for the approval of 5.2.
+- No provider page is opened before the gate of 5.9 has passed and the
+  operator has given the acknowledgement of D14.
+- Task 5.11 waits for the collection validator of task 3.2. Task 5.12 waits
+  for the skill and documents of task 3.3. Nothing in group 5 waits for
+  the desktop bridge of task 2.3.
+- Tasks 5.5 and 2.3 both change the orchestrator and are not worked at the
+  same time.
+- Tasks 4.1 and 4.2 wait for the maintainer's answer in 5.2 on the terms
+  question for the desktop surface. Tasks 4.3, 4.4 and 4.5 wait for 5.14.
+- By the maintainer's decisions of 2026-10-10
+  (`evidence/final/021-browser-decisions/`) Gemini leaves the browser
+  surface; the plan text is revised for that with the next plan version.
+- A trial of the providers' programmatic routes was started on 2026-10-10
+  and taken out by the maintainer the same day
+  (`evidence/final/028-api-trial-withdrawn/`). It is not a task or a test
+  of this change, and the terms answer of 5.2 does not wait for it.
+
+- [ ] 5.1 Research open-source browser drivers, existing research automations, official API routes and the providers' terms with the research MCP tools; extend the proposal, research, design, the `browser-research-session` spec, tasks and the evidence index; check: strict validation, requirement-to-test mapping, and plan reviews by other model families with every finding dispositioned and the revised plan confirmed by a reviewer; evidence: `evidence/builds/014-browser-surface-research/` to `evidence/builds/020-browser-plan-revalidation/` and `evidence/reviews/plan/rv005-browser-plan-codex/` to `evidence/reviews/plan/rv012-browser-plan-confirm-codex/`.
+- [ ] 5.2 Obtain and record the maintainer's decisions on the browser plan: scripted bridge on the Playwright library or an agent that drives Playwright MCP directly (D10); the two cuts of D13; the terms risk per provider, biometric acknowledgement and what replaces it without biometrics (D14); the desktop surface under the same terms question (D14); a dedicated Google account for Gemini (D11); the live budget; whether a browser run counts toward the two-provider objective; whether separate decision records are wanted (D15); check: explicit approval receipt; evidence: `evidence/final/021-browser-decisions/` (partial: driver, cuts, Gemini, budget and the rule for computers without biometrics are decided; terms, desktop surface, objective and decision records are open) and `evidence/final/<next>-browser-approval/`.
+- [ ] 5.3 Establish the driver's provenance and launch contract: lock file for `playwright-core` with its dependency closure and registry integrity values, installation from the lock file with install scripts disabled, a verified Node binary, the fixed launch environment. Show on a local fixture profile, with no provider involved: a persistent context on the system browser, headed and headless; that a sign-in made in a window without a driver is readable by the driven browser once the two keychain switches are removed; that downloads are denied unless armed; that a locator with two matches fails; that a headed start, an observation and a browser restart leave another active application in front; check: the installed tree matches the lock file and each property has a passing fixture check; evidence: `evidence/builds/<next>-browser-driver-lock/`.
+- [ ] 5.4 Write failing production-entrypoint tests for every scenario of `browser-research-session` with a synthetic browser boundary and a synthetic authentication boundary; check: all named tests of the spec fail as not implemented with zero skips, and the existing execution tests still pass; evidence: `evidence/tests/<next>-browser-red/`.
+- [ ] 5.5 Implement in the orchestrator: the surface field, the reservation rule and the request tuple with tests for both surfaces, browser target evidence, conversation-address binding and rebind, `follow-up` child jobs with their stated exceptions, memory and earlier chats as private sources, the gated-operation list, the headless rule, the profile lock without waiting, and closed output and storage; check: the named tests pass with the synthetic boundaries; evidence: `evidence/tests/<next>-browser-green/`.
+- [ ] 5.6 Implement the driver script and the bridge: the closed protocol, the launch contract, page ownership, the preconditions of each action, the region rule with strict locators, entry without submission, the armed download, fixed reason codes for driver errors, no file written by the driver, and `structural` fixture pages including every hostile page of D12; check: `doctor --local`, `doctor --surface browser --self-test`, and a headless fixture run stamped `fixture`; evidence: `evidence/builds/<next>-browser-bridge/`.
+- [ ] 5.7 Implement the acknowledgement and the sign-in preparation: `acknowledge-terms` with biometric authentication through its own small compiled helper, the plain receipt bound to the account on first use, the thirty-day period, `withdraw-terms`, the Gemini dedicated-account statement, and `login` with the profile settings of D11 and the backup exclusion; check: the helper compiles and its self-test passes; the acknowledgement tests run with the real helper on this machine, including a cancelled authentication; evidence: `evidence/builds/<next>-browser-acknowledgement/`.
+- [ ] 5.8 Implement characterization by probes: the reviewed vocabulary file, the probe command that returns counts, uniqueness, ancestor roles and enabled state only, and the seed regions; check: the probe test against fixture pages that hold conversation titles and report text; evidence: `evidence/builds/<next>-browser-probes/`.
+- [ ] 5.9 Gate before any provider page: independent code and security review of the driver script, the bridge, the launch contract, the acknowledgement and the probes; all script tests; structural fixture run; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/reviews/code/`, `evidence/tests/<next>-browser-bridge-gate/`.
+- [ ] 5.10 With the operator present and the acknowledgement given, sign in to the dedicated profiles and characterize the three web interfaces by probes: non-submitting discovery first, then at most one public research submission per provider. Record per provider the signed-in probe, the application regions, mode, model and source controls, how memory and earlier-chat reference are shown, the conversation address pattern, plan and clarification states, the completion predicate, the composer's normal form, the report surface and exports, and behavior after the page closes. Then, as a step of its own and without any input, one headless observation of that job's page, which alone can record headless as allowed. The operator reads each first result before an agent. Produce reviewed interface profiles and a go/no-go per provider; check: characterization receipt and remaining budget; evidence: `evidence/builds/<next>-browser-characterization/`.
+- [ ] 5.11 Add the reviewed interface profiles and `profile` fixture pages, and implement browser collection on top of the collection validator of task 3.2: the armed single download with a generated name, extraction of the bound answer with link targets, answers of child jobs, and the rule for exports that write to the provider account; check: the browser collection tests, the collection tests of group 3, and the fixture run with both kinds of pages; evidence: `evidence/tests/<next>-browser-collection/`.
+- [ ] 5.12 Document the browser surface in the skill, the provider references and `docs/ai/DESKTOP_RESEARCH.md` of task 3.3: surfaces, sign-in, the acknowledgement and what it is not, trusted components, what is stored and what the calling agent can read, follow-up turns, the other routes, rollback of profiles; check: link and reference resolution, docs/spec consistency; evidence: `evidence/tests/<next>-browser-docs/`.
+- [ ] 5.13 Gate: independent code, security and test review of profiles, collection and documentation; all script tests; fixture run; docs/spec consistency; module/conformance/JMH NOT APPLICABLE; evidence: `evidence/reviews/code/`, `evidence/tests/<next>-browser-gate/`.
+- [ ] 5.14 Run the authorized browser acceptance question per provider through the production workflow: verified surface, model, public sources with memory shown off, address binding, expired wait, browser restart and rebind, completion, collection with citations, and one follow-up turn; check the live scenarios of `browser-research-session` and one submitted-user-turn match per job; evidence: `evidence/tests/<next>-browser-live/`.

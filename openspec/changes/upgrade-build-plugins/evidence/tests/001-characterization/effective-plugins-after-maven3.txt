@@ -1,0 +1,13 @@
+license-maven-plugin 2.7.1
+maven-clean-plugin 3.5.0
+maven-compiler-plugin 3.16.0
+maven-dependency-plugin 3.11.0
+maven-deploy-plugin 3.2.0
+maven-enforcer-plugin 3.6.3
+maven-install-plugin 3.2.0
+maven-jar-plugin 3.5.1
+maven-jaxb2-plugin 0.15.3
+maven-resources-plugin 3.5.0
+maven-site-plugin 3.22.0
+maven-surefire-plugin 3.6.1
+versions-maven-plugin 2.23.0

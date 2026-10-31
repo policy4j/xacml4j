@@ -1,0 +1,26 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red: the new test class, production code unchanged
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -pl xacml-core -am -Dtest=LaterDecidingOperandTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Focused green
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -pl xacml-core -am \
+  -Dtest='LaterDecidingOperandTest,LogicalFunctionsTest,HigherOrder*Test,FunctionSafetyNet43Test,JavaMethodToFunctionSpecTest,DefaultFunction*Test,AnnotationBasedFunctionFactoryTest' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Gate: full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true verify
+
+# Normative text (official OASIS copy)
+curl -sS -L -o xacml30-errata01-complete.html \
+  https://docs.oasis-open.org/xacml/3.0/errata01/os/xacml-3.0-core-spec-errata01-os-complete.html
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict
+
+# Reviews (one shot, redacted packet = prompt + diff; run from a scratch directory)
+codex exec -s read-only --skip-git-repo-check - < packet.md
+grok --prompt-file packet.md --model grok-4.7 --effort high --permission-mode plan

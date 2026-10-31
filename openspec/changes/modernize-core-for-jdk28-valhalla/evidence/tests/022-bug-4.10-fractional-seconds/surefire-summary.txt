@@ -1,0 +1,32 @@
+JDK: Oracle Java 21.0.6; Maven 3.9.16
+
+Pre-fix ISO8601DurationReviewTest red run: 11 tests, 2 failures, 0 errors. PT0.5S round trip became P0DT0H0M0S, and isZero returned true.
+Post-fix focused set (ISO8601DurationReviewTest, ISO8601DayTimeDurationTest, XmlContentTest): 35 tests, 0 failures, 0 errors, 0 skips.
+Full xacml-core gate: 763 tests, 0 failures, 0 errors, 2 skips; BUILD SUCCESS.
+
+Conformance reactor (run for bug 4.9 after the combined source changes): xacml-core 763 tests, 0 failures, 0 errors, 2 skips; conformance module 42 Surefire tests, 0 failures, 0 errors, 0 skips; BUILD SUCCESS.
+OASIS 2.0 347/347; OASIS 3.0 347/347; RSA 2008 17/17; examples 2/2. No case changed or failed.
+
+rv030 repair final gates (JDK 21.0.6, Maven 3.9.16):
+  xacml-core: 765 tests, 0 failures, 0 errors, 2 skips
+  xacml-xml: 35 tests, 0 failures, 0 errors, 0 skips
+  xacml-json: 6 tests, 0 failures, 0 errors, 1 skip
+  xacml-pdp: 75 tests, 0 failures, 0 errors, 3 skips
+  xacml-test: 20 tests, 0 failures, 0 errors, 0 skips
+  xacml-conformance-tests: 42 tests, 0 failures, 0 errors, 0 skips
+  OASIS 2.0: 347 executed cases, all pass
+  OASIS 3.0: 347 executed cases, all pass
+  RSA 2008: 17 executed cases, all pass
+  examples: 2 executed cases, all pass
+  Maven result: BUILD SUCCESS
+
+rv030 expected-red runs:
+  AttributeSelector cardinality direct path: 19 tests, 1 failure (syntax-error was swallowed)
+  PIP-supplied selector path with syntax-error catch temporarily removed: 1 test, 1 failure (result was an empty bag)
+  Core Match/duration set: 15 tests, 1 failure (NOMATCH), 1 error (StringIndexOutOfBoundsException)
+
+rv030 focused green runs:
+  core Match/duration set: 15 tests, 0 failures, 0 errors
+  PDP context-handler set before final PIP test: 19 tests, 0 failures, 0 errors
+  XML TypeToXacml30Test: 4 tests, 0 failures, 0 errors
+  JSON JsonEntityMarshallingTest: 3 tests, 0 failures, 0 errors, 1 existing disabled test

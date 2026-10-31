@@ -1,0 +1,117 @@
+{
+  "log": "05-dual-engine-green.log",
+  "build_success": true,
+  "tests_executed": true,
+  "module_counts": {
+    "xacml-json": [
+      6,
+      0,
+      0,
+      1
+    ]
+  },
+  "totals": [
+    6,
+    0,
+    0,
+    1
+  ],
+  "compiler_diagnostics": [],
+  "reports": {
+    "xacml-json": {
+      "org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "jupiterMocksFinalClassWithStartupAgent",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonEntityMarshallingTest": {
+        "counts": [
+          2,
+          0,
+          0,
+          1
+        ],
+        "tests": [
+          {
+            "name": "testEntityMarshall",
+            "skipped": true,
+            "problems": []
+          },
+          {
+            "name": "testEntityAsAttributeValueMarshall",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonRequestUnmarshallerTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "testXacmlJsonRequestRoundtrip",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonResponseContextMarshallerTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "testMarshal",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      },
+      "org.xacml4j.v30.marshal.json.JsonResponseContextUnmarshallerTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "testUnmarshal",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      }
+    }
+  },
+  "jdk_properties": {
+    "xacml-json": {
+      "java.version": "21.0.6",
+      "java.runtime.version": "21.0.6+8-LTS-jvmci-23.1-b55",
+      "java.vm.name": "Java HotSpot(TM) 64-Bit Server VM",
+      "java.vendor": "Oracle Corporation"
+    }
+  },
+  "problems": [],
+  "conformance": {},
+  "root_pom_sha256": "3eea70fb4f0ac7a3797ca557a1399a5bb4ae5bc8c7099d37ac0dfc5c2a3c0410",
+  "root_pom_matches_before": false,
+  "probe_present": true
+}

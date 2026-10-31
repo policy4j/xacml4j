@@ -1,0 +1,2 @@
+rtk proxy python3 -m unittest discover -s .agents/skills/desktop-deep-research/tests -p test_execution.py -v
+Python compile() on production source bytes; no GUI.

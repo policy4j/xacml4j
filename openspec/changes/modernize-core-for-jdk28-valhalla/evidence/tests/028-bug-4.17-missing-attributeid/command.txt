@@ -1,0 +1,13 @@
+Working directory: <lane>
+
+Red XML request tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml,xacml-json -am -Dtest=Xacml20RequestContextUnmarshallerTest,Xacml30RequestContentTest,JsonRequestUnmarshallerTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+Red JSON request test with the original IllegalArgumentException path:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-json -am -Dtest=JsonRequestUnmarshallerTest#missingAttributeIdIsReportedAsSyntaxError -Dsurefire.failIfNoSpecifiedTests=false test
+
+Green XML and JSON request tests:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml,xacml-json -am -Dtest=Xacml20RequestContextUnmarshallerTest,Xacml30RequestContentTest,TypeToXacml30Test,JsonRequestUnmarshallerTest,JsonEntityMarshallingTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+Full enabled conformance reactor:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/029-bug-4.22-policy-id-list/full-reactor.log

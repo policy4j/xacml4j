@@ -1,0 +1,26 @@
+JDK: Java 21.0.6 (Oracle GraalVM), Maven 3.9.16
+
+Integrity-only gate:
+  xacml-conformance-tests: 1 test, 0 failures, 0 errors, 0 skipped
+  Result: BUILD SUCCESS
+
+Full reactor gate (-pl xacml-conformance-tests -am test):
+  xacml-core:                 760 tests, 0 failures, 0 errors, 2 skipped
+  xacml-xml-jaxb:               no Surefire test report
+  xacml-pdp:                   74 tests, 0 failures, 0 errors, 4 skipped
+  xacml-xml:                   34 tests, 0 failures, 0 errors, 0 skipped
+  xacml-json:                   5 tests, 0 failures, 0 errors, 1 skipped
+  xacml-test:                  20 tests, 0 failures, 0 errors, 0 skipped
+  xacml-conformance-tests:     42 tests, 0 failures, 0 errors, 0 skipped
+  Result: BUILD SUCCESS
+
+Conformance runner case output in the full run:
+  OASIS 2.0: 347 cases
+  OASIS 3.0: 347 cases
+  RSA 2008:   17 cases
+  Examples:    2 cases
+  Integrity:   1 test, 0 failures, 0 errors, 0 skipped
+
+Mutation proof (expected test failure, scratch copy only):
+  1 test, 1 failure, 0 errors, 0 skipped
+  CHANGED xacml-conformance-tests/src/test/resources/Example_2/record.xsd expected=e960681d8cdbded7093fbcf074a450286e0c82ac actual=5518169f6a11b6cb4e57a7cd74ddf7e159e5403a

@@ -23,10 +23,10 @@ package org.xacml4j.v30.marshal.json;
  */
 
 import java.lang.reflect.Type;
+import java.util.Optional;
 
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCode;
-import org.xacml4j.v30.StatusDetail;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -45,20 +45,21 @@ public class StatusAdapter implements JsonSerializer<Status>, JsonDeserializer<S
 	public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject o = json.getAsJsonObject();
-		StatusDetail detail = null;
 		String statusMessage = GsonUtil.getAsString(o, STATUS_MESSAGE_PROPERTY, null);
 		StatusCode code = context.deserialize(o.get(STATUS_CODE_PROPERTY), StatusCode.class);
 		return Status
 				.builder(code)
 				.message(statusMessage)
-				.detail(detail)
 				.build();
 	}
 
 	@Override
 	public JsonElement serialize(Status src, Type typeOfSrc, JsonSerializationContext context) {
 		JsonObject o = new JsonObject();
-		o.addProperty(STATUS_MESSAGE_PROPERTY, src.getMessage());
+		Optional<String> m = src.getMessage();
+		if(m.isPresent()){
+			o.addProperty(STATUS_MESSAGE_PROPERTY, m.get());
+		}
 		// TODO: serialize status detail
 		o.add(STATUS_CODE_PROPERTY, context.serialize(src.getStatusCode()));
 		return o;

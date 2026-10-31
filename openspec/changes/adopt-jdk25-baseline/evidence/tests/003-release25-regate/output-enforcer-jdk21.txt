@@ -1,0 +1,3 @@
+exit 1
+[ERROR] Rule 0: org.apache.maven.enforcer.rules.version.RequireJavaVersion failed with message:
+[ERROR] Detected JDK /Library/Java/JavaVirtualMachines/graalvm-21.jdk/Contents/Home is version 21.0.6 which is not in the allowed range [25,).

@@ -1,0 +1,11 @@
+{
+  "case": "empty_control",
+  "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+  "method": "testParameterVarArgMinAndMaxEquals",
+  "intent": "Insert an unexpected invocation before the expected builder exception; the replacement for the empty control verification must reject it.",
+  "mutation_boundary": "Owned test stimulus/collaborator only; no production source was mutated",
+  "backup": "36-mutation-backups/function/FunctionSpecBuilderTest.java",
+  "original_sha256": "9d564155551566a477da476fb3a273e1239cc89788589ac91d4a397db4fca3a6",
+  "mutant_sha256": "d83705d9e7d8d99630cf929fd17a19e2177547a28d0ceb8185a9722a071c5412",
+  "restored_exact_bytes": true
+}

@@ -1,0 +1,54 @@
+{
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/CombinerParameterTest.java": {
+    "46": "trailing whitespace",
+    "54": "trailing whitespace"
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java": {
+    "81": "trailing whitespace",
+    "84": "trailing whitespace"
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java": {
+    "250": "space before tab in indent",
+    "251": "space before tab in indent",
+    "252": "space before tab in indent",
+    "253": "space before tab in indent"
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java": {
+    "164": "trailing whitespace",
+    "169": "trailing whitespace",
+    "190": "trailing whitespace",
+    "207": "trailing whitespace",
+    "213": "trailing whitespace",
+    "232": "trailing whitespace",
+    "238": "trailing whitespace",
+    "255": "trailing whitespace",
+    "261": "trailing whitespace"
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java": {
+    "109": "trailing whitespace",
+    "112": "trailing whitespace",
+    "121": "trailing whitespace",
+    "125": "trailing whitespace",
+    "144": "trailing whitespace",
+    "145": "trailing whitespace",
+    "149": "trailing whitespace",
+    "150": "trailing whitespace",
+    "154": "trailing whitespace",
+    "155": "trailing whitespace",
+    "177": "trailing whitespace",
+    "180": "trailing whitespace",
+    "189": "trailing whitespace",
+    "192": "trailing whitespace",
+    "210": "trailing whitespace",
+    "215": "trailing whitespace",
+    "219": "trailing whitespace",
+    "225": "trailing whitespace",
+    "230": "trailing whitespace"
+  },
+  "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java": {
+    "80": "trailing whitespace",
+    "81": "trailing whitespace",
+    "93": "trailing whitespace",
+    "94": "trailing whitespace"
+  }
+}

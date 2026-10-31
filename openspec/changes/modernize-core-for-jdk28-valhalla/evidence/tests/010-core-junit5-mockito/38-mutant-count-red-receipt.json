@@ -1,0 +1,41 @@
+{
+  "log": "38-mutant-count-red.log",
+  "build_success": false,
+  "counts": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest": {
+      "counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMapWithValidArguments",
+          "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest",
+      "method": "testMapWithValidArguments",
+      "kind": "failure",
+      "type": "org.mockito.exceptions.verification.VerificationInOrderFailure",
+      "message": "\nVerification in order failure:\nevaluationContext.isValidateFuncParamsAtRuntime();\nWanted 4 times:\n-> at org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest.testMapWithValidArguments(HigherOrderFunctionsTest.java:104)\nBut was 5 times:\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n\n",
+      "trace": "org.mockito.exceptions.verification.VerificationInOrderFailure: \n\nVerification in order failure:\nevaluationContext.isValidateFuncParamsAtRuntime();\nWanted 4 times:\n-> at org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest.testMapWithValidArguments(HigherOrderFunctionsTest.java:104)\nBut was 5 times:\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:367)\n\n\n\tat org.xacml4j.v30.policy.function.impl.HigherOrderFunctionsTest.testMapWithValidArguments(HigherOrderFunctionsTest.java:104)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+    }
+  ],
+  "compiler_diagnostics": []
+}

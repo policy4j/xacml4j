@@ -1,0 +1,26 @@
+{
+  "exit_code": 1,
+  "reports": [
+    {
+      "name": "org.xacml4j.v30.policy.function.impl.ArtimeticFunctionsTest",
+      "tests": "35",
+      "failures": "22",
+      "errors": "1",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.function.impl.DoubleBagSetEqualityTest",
+      "tests": "108",
+      "failures": "36",
+      "errors": "1",
+      "skipped": "0"
+    },
+    {
+      "name": "org.xacml4j.v30.policy.function.impl.FunctionSafetyNet43Test",
+      "tests": "109",
+      "failures": "5",
+      "errors": "0",
+      "skipped": "7"
+    }
+  ]
+}

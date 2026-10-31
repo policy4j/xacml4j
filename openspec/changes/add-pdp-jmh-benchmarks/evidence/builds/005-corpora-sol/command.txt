@@ -1,0 +1,38 @@
+Read and validate:
+rtk openspec status --change add-pdp-jmh-benchmarks --json
+rtk proxy openspec instructions apply --change add-pdp-jmh-benchmarks --json
+rtk openspec validate add-pdp-jmh-benchmarks --strict
+
+Claim (the first command exits 4 because of the serial dependency):
+rtk br update policy4j-ba4s.3.3 --claim --actor policy4j_implementer_codex_sol
+rtk br update --help
+rtk br update policy4j-ba4s.3.3 --claim --force --actor policy4j_implementer_codex_sol --append-notes 'Parallel corpora lane authorized by the group 3 task packet; owns corpus/SyntheticCorpus.java and Synthetic helpers only.'
+rtk br update policy4j-ba4s.3.4 --claim --force --actor policy4j_implementer_codex_sol --append-notes 'Parallel corpora lane authorized by the group 3 task packet; owns corpus/DirectoryCorpus.java and Directory helpers only.'
+
+Private copy (run before the red compile and again before the green compile):
+rtk proxy rsync -a --delete --exclude=.git --exclude=target --exclude=openspec --exclude=.beads --exclude=.aws --exclude=.env --exclude='.env.*' --exclude=.mcp.json --exclude=.codex --exclude=.claude --exclude=.grok --exclude=.agents --exclude=.ntm --exclude=.serena --exclude=.tgrep --exclude=.idea --exclude=node_modules --exclude=xacml-jmh/src/main/java/org/xacml4j/jmh/pdp --exclude='xacml-jmh/src/main/java/org/xacml4j/jmh/store/Snapshot*' --exclude=xacml-jmh/src/test ./ "$TMPDIR/xacml4j-corpora/"
+
+The throwaway CorporaCompilationProbeTest.java was created only in the private copy with apply_patch. It declares three tests, but this lane compiles them only.
+
+RED and GREEN (same command, neither runs tests):
+PATH="$HOME/Applications/IntelliJ IDEA.app/Contents/plugins/maven-plugin/lib/maven3/bin:$PATH" JAVA_HOME="$(rtk proxy jenv prefix 21)" rtk mvn -B -o -q -Dlicense.skipUpdateLicense=true -f "$TMPDIR/xacml4j-corpora/pom.xml" -pl xacml-jmh -am test-compile
+
+Toolchain:
+PATH="$HOME/Applications/IntelliJ IDEA.app/Contents/plugins/maven-plugin/lib/maven3/bin:$PATH" JAVA_HOME="$(rtk proxy jenv prefix 21)" rtk mvn -version
+
+Generated registration:
+rtk proxy sed -n '1,100p' "$TMPDIR/xacml4j-corpora/xacml-jmh/target/classes/META-INF/services/org.xacml4j.jmh.harness.PolicyCorpusProvider"
+
+Whitespace and protected paths:
+rtk git diff --no-index --check /dev/null xacml-jmh/src/main/java/org/xacml4j/jmh/corpus/SyntheticCorpus.java
+rtk git diff --no-index --check /dev/null xacml-jmh/src/main/java/org/xacml4j/jmh/corpus/DirectoryCorpus.java
+rtk git status --porcelain -- xacml-conformance-tests/src/test/resources xacml-xml-jaxb/src/main/resources/xsd
+
+Source assertions (the throwaway variables are retained here to reproduce the exact executed command):
+rtk proxy python3 -c 'from pathlib import Path; import hashlib; base=Path("xacml-jmh/src/main/java/org/xacml4j/jmh"); spine=(base/"corpus/Rsa2008Corpus.java").read_text(); license=spine[spine.index("/*"):spine.index(" */")+3]; shared=[]; target=Path(__import__("os").environ["TMPDIR"])/"xacml4j-corpora"/base; probe=target.parents[6]/"src/test" if False else None
+for name in ("SyntheticCorpus.java", "DirectoryCorpus.java"):
+ p=base/"corpus"/name; b=p.read_bytes(); text=b.decode(); assert text.startswith("package org.xacml4j.jmh.corpus;\n\n"+license); assert "@AutoService(PolicyCorpusProvider.class)" in text; assert "return null" not in text; assert "System.out" not in text and "System.err" not in text; assert b==(target/"corpus"/name).read_bytes(); print(str(p)+" sha256="+hashlib.sha256(b).hexdigest()+"; header, registration annotation, null/console checks, copy bytes: PASS")'
+
+Tracking (tasks left in progress; no task checkbox or issue closure):
+rtk br update policy4j-ba4s.3.3 policy4j-ba4s.3.4 --actor policy4j_implementer_codex_sol --append-notes 'Implementation and private-copy test-compile complete; evidence/builds/005-corpora-sol under openspec/changes/add-pdp-jmh-benchmarks. No tests executed; conductor owns runtime gate, task checkboxes, and closure.'
+rtk br sync --flush-only

@@ -1,0 +1,13 @@
+--- before/xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java
++++ mutant/xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java
+@@ -61,8 +61,8 @@
+ 		MatchAnyOf m1 = ModelFixtures.anyOf(m1Expression);
+ 		Expression m2Expression = ModelFixtures.reference();
+ 		MatchAnyOf m2 = ModelFixtures.anyOf(m2Expression);
+-		matches.add(m1);
+-		matches.add(m2);
++		matches.add(m2);
++		matches.add(m1);
+ 		ArgumentCaptor<EvaluationContext> c1 = ArgumentCaptor.forClass(EvaluationContext.class);
+ 		ArgumentCaptor<EvaluationContext> c2 = ArgumentCaptor.forClass(EvaluationContext.class);
+ 		when(m1Expression.evaluate(c1.capture())).thenReturn(ModelFixtures.matchValues(MatchResult.MATCH));

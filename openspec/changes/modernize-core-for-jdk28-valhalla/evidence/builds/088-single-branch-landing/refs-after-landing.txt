@@ -1,0 +1,42 @@
+$ git log --format="%h %G? %s" -3
+265be3a0 G Tighten the generic bounds of ValueType.ofAny and TypeCapability (policy4j-the.5.6)
+3255af26 G Land the integration line as feature_xacml_20 (D1, task 10.1)
+ad1fcec7 G Correct the code-intelligence guidance and warn on a stale tgrep index
+$ git rev-parse feature_xacml_20 integration/modernize-core-jdk28-valhalla archive/feature_xacml_20-2026-10-24^{commit} wip/feature_xacml_20-donor origin/feature_xacml_20
+265be3a0b7236fd5a07c934d83572ec87fe6f7ca
+265be3a0b7236fd5a07c934d83572ec87fe6f7ca
+a0ec46838420052332f4e0495b10f54d437633f3
+b9f114a3d05964cc1ac4d5eb66053bfc9d66d61e
+d78d95869c8dd6f6274e693e25dfe4982f87751e
+$ git tag -v archive/feature_xacml_20-2026-10-24 (signature line)
+Good signature
+$ git merge-base --is-ancestor origin/feature_xacml_20 feature_xacml_20
+exit=0
+$ git worktree list
+<checkouts>/xacml4j 265be3a0 [feature_xacml_20]
+$ git status --short (after the landing, before this run was written)
+ M .beads/issues.jsonl
+ M .serena/project.yml
+ M openspec/changes/add-desktop-deep-research/design.md
+ M openspec/changes/add-desktop-deep-research/evidence/README.md
+ M openspec/changes/add-desktop-deep-research/proposal.md
+ M openspec/changes/add-desktop-deep-research/tasks.md
+ M xacml-core/src/main/java/org/xacml4j/v30/AttributeIndex.java
+ M xacml-core/src/main/java/org/xacml4j/v30/BagOfValuesType.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/RFC822Name.java
+ M xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java
+?? openspec/changes/add-desktop-deep-research/evidence/builds/022-api-route-trial-openai/
+?? openspec/changes/add-desktop-deep-research/evidence/builds/023-api-route-trial-openai-headless/
+?? openspec/changes/add-desktop-deep-research/evidence/builds/024-api-route-trial-gemini/
+?? openspec/changes/add-desktop-deep-research/evidence/builds/025-api-route-trial-openai-stdio/
+?? openspec/changes/add-desktop-deep-research/evidence/builds/026-api-route-trial-openai-gpt55/
+?? openspec/changes/add-desktop-deep-research/evidence/builds/027-api-report-claim-check/
+?? openspec/changes/add-desktop-deep-research/evidence/final/021-browser-decisions/
+?? openspec/changes/add-desktop-deep-research/evidence/final/028-api-trial-withdrawn/
+$ ignored *.log under openspec
+146
+$ carried worktree edits
+xacml-core/src/main/java/org/xacml4j/v30/AttributeIndex.java
+xacml-core/src/main/java/org/xacml4j/v30/BagOfValuesType.java
+xacml-core/src/main/java/org/xacml4j/v30/types/RFC822Name.java
+xacml-json/src/test/java/org/xacml4j/v30/marshal/json/JsonEntityMarshallingTest.java

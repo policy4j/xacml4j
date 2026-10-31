@@ -1,0 +1,32 @@
+JDK 21 full reactor, mvn -Dlicense.skipUpdateLicense=true verify from <repo>. Run 078 (bead the.4.51) also in the tree.
+
+xacml-core                 Tests run: 6319, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,774 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,319 holds NestedResponseStagingTest (5 tests); xacml-pdp 151 holds NestedResponseStagingPdpTest (1 test).
+
+== Gate 2: clean build (clean verify); run 078 (bead the.4.51) also in the tree ==
+
+xacml-core                 Tests run: 6320, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,775 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,320; xacml-pdp 151.
+
+== Gate 3: clean build after review round 1 (assertions added; no production change) ==
+
+xacml-core                 Tests run: 6326, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,781 tests, 0 failures, 0 errors, 22 skipped.
+xacml-core 6,326; xacml-pdp 151. Run 078 (bead the.4.51) also in the tree.

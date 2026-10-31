@@ -1,0 +1,21 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Gate: clean full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify
+
+# No license header churn, no stray file
+rtk git status --short
+
+# Disabled tests that are left, and where they come from
+rtk rg -n "@Disabled" --glob '*.java' xacml-core/src/test xacml-pdp/src/test xacml-json/src/test xacml-xml/src/test xacml-test/src
+git show a8a90d46:<path of each test> | rg -n "@Ignore"
+
+# Conformance manifest: rows per suite, disposition and enabled flag (a short Python script over the CSV)
+xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+
+# Open beads of phase 4
+rtk br list --status open
+rtk br list --status in_progress
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict

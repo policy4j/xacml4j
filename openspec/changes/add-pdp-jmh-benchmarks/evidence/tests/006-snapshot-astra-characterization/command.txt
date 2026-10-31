@@ -1,0 +1,17 @@
+rtk proxy rsync -a --delete --exclude=.git --exclude=target --exclude=openspec --exclude=.beads --exclude=.aws --exclude='.env*' --exclude=.mcp.json --exclude=.codex --exclude=.claude --exclude=.serena --exclude=.tgrep --exclude=.idea --exclude=.ntm --exclude=.agents --exclude=.grok --exclude=.kimi --exclude=xacml-jmh/src/main/java/org/xacml4j/jmh/pdp --exclude='xacml-jmh/src/main/java/org/xacml4j/jmh/corpus/Synthetic*' --exclude='xacml-jmh/src/main/java/org/xacml4j/jmh/corpus/Directory*' --exclude=xacml-jmh/src/test ./ "$TMPDIR/xacml4j-snapshot-astra/"
+
+PATH="$HOME/Applications/IntelliJ IDEA.app/Contents/plugins/maven-plugin/lib/maven3/bin:$PATH" JAVA_HOME="$(rtk proxy jenv prefix 21)" rtk mvn -B -o -q -Dlicense.skipUpdateLicense=true -f "$TMPDIR/xacml4j-snapshot-astra/pom.xml" -pl xacml-jmh -am test-compile dependency:build-classpath -Dmdep.outputFile=target/snapshot-astra-classpath.txt
+
+rtk proxy python3 -c 'import os,pathlib,subprocess,sys
+root=pathlib.Path.cwd()
+copy=pathlib.Path(os.environ["TMPDIR"])/"xacml4j-snapshot-astra"
+run=root/"openspec/changes/add-pdp-jmh-benchmarks/evidence/tests/006-snapshot-astra-characterization"
+jdk=subprocess.check_output(["rtk","proxy","jenv","prefix","21"],text=True).strip()
+modules=["xacml-jmh","xacml-pdp","xacml-xml","xacml-xml-jaxb","xacml-core"]
+classpath=os.pathsep.join([str(copy/m/"target/classes") for m in modules]+[(copy/"xacml-jmh/target/snapshot-astra-classpath.txt").read_text().strip()])
+result=subprocess.run(["rtk","proxy",str(pathlib.Path(jdk)/"bin/java"),"-cp",classpath,str(run/"InMemoryRepositoryCharacterization.java")],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+output=result.stdout.replace(str(root),"<repo>").replace(str(copy),"<isolated-copy>").replace(str(pathlib.Path.home()),"<home>")
+(run/"output.txt").write_text(output+"\nexit_code="+str(result.returncode)+"\n")
+print(output)
+print("exit_code="+str(result.returncode))
+sys.exit(result.returncode)'

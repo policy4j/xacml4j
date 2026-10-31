@@ -1,0 +1,50 @@
+{
+  "modules": {
+    "xacml-core": {
+      "tests": 5755,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 17
+    },
+    "xacml-test": {
+      "tests": 99,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-xml": {
+      "tests": 244,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-conformance-tests": {
+      "tests": 917,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 16
+    },
+    "xacml-json": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "xacml-pdp": {
+      "tests": 98,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 5
+    }
+  },
+  "total": {
+    "tests": 7137,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 39
+  },
+  "surefire_reports": 175,
+  "source_files_changed": [],
+  "build_markers": [],
+  "failed_tests": []
+}

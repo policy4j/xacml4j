@@ -10,25 +10,22 @@ package org.xacml4j.v30.types;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
-import org.xacml4j.v30.AttributeExp;
-import org.xacml4j.v30.BagOfAttributeExp;
+import org.junit.jupiter.api.Test;
+import org.xacml4j.v30.BagOfValues;
 
 
 public class IntegerTypeTest
@@ -36,34 +33,36 @@ public class IntegerTypeTest
 	@Test
 	public void testCreate()
 	{
-		AttributeExp v0 = IntegerExp.of((short)2);
-		AttributeExp v1 = IntegerExp.of((byte)2);
-		AttributeExp v2 = IntegerExp.of(2);
-		AttributeExp v3 = IntegerExp.of(2l);
+		Value v0 = XacmlTypes.INTEGER.ofAny((short)2);
+		Value v1 = XacmlTypes.INTEGER.ofAny((byte)2);
+		Value v2 = XacmlTypes.INTEGER.ofAny(2);
+		Value v3 = XacmlTypes.INTEGER.ofAny(2l);
 		assertEquals(v3, v0);
 		assertEquals(v3, v1);
 		assertEquals(v3, v2);
 	}
 
+
 	@Test
 	public void testEquals()
 	{
-		IntegerExp v0 = IntegerExp.of(3l);
-		IntegerExp v1 = IntegerExp.of(2l);
-		IntegerExp v2 = IntegerExp.of(3l);
+		assertEquals(XacmlTypes.INTEGER, XacmlTypes.INTEGER);
+		Value v0 = XacmlTypes.INTEGER.ofAny(3L);
+		Value v1 = XacmlTypes.INTEGER.ofAny(2L);
+		Value v2 = XacmlTypes.INTEGER.ofAny(3L);
 		assertEquals(v0, v2);
 		assertFalse(v1.equals(v2));
 	}
-	
-	
+
+
 	@Test
 	public void testBag()
 	{
-		IntegerExp v0 = IntegerExp.of(3l);
-		BagOfAttributeExp bag = IntegerExp.bag().value(1, 4).attribute(v0).build();
-		assertTrue(bag.contains(IntegerExp.of(3l)));
-		assertTrue(bag.contains(IntegerExp.of(1)));
-		assertTrue(bag.contains(IntegerExp.of(4)));
-		assertEquals(IntegerExp.emptyBag(), IntegerExp.emptyBag());
+		IntegerVal v0 = XacmlTypes.INTEGER.ofAny(3l);
+		BagOfValues bag = XacmlTypes.INTEGER.bagBuilder().value(1, 4).attribute(v0).build();
+		assertTrue(bag.contains(XacmlTypes.INTEGER.ofAny(3l)));
+		assertTrue(bag.contains(XacmlTypes.INTEGER.ofAny(1)));
+		assertTrue(bag.contains(XacmlTypes.INTEGER.ofAny(4)));
+		assertEquals(XacmlTypes.INTEGER.emptyBag(), XacmlTypes.INTEGER.emptyBag());
 	}
 }

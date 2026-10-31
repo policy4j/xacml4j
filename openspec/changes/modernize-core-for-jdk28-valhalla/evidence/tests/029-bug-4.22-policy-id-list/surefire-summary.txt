@@ -1,0 +1,11 @@
+Full JDK 21 reactor (raw output: full-reactor.log):
+xacml-core: 767 tests, 0 failures, 0 errors, 2 skipped
+xacml-pdp: 75 tests, 0 failures, 0 errors, 3 skipped
+xacml-xml: 38 tests, 0 failures, 0 errors, 0 skipped
+xacml-json: 8 tests, 0 failures, 0 errors, 1 skipped
+xacml-test: 20 tests, 0 failures, 0 errors, 0 skipped
+xacml-conformance-tests: 44 test methods, 0 failures, 0 errors, 0 skipped
+
+Conformance case log entries: OASIS 2.0 = 347, OASIS 3.0 = 347. Surefire RSA2008InteropTest: 17 tests; XacmlExampleTest: 2 tests. Total case counts are unchanged for the enabled suites.
+
+Direct fixture-driven ID checks: 2 tests, 0 failures, 0 errors, 0 skipped. The separate temporary response comparison exposed IIIG300's 2-expected/3-actual mismatch; IIIG301 passed.

@@ -1,0 +1,35 @@
+## red: round-1 tree (before the rv009 fix), validator test
+[ERROR] Tests run: 8, Failures: 1, Errors: 0, Skipped: 0, <<< FAILURE! -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[ERROR] org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest.responseViewsKeptBeforeTheFirstWriteSeeLaterWrites -- <<< FAILURE!
+[ERROR] Tests run: 11, Failures: 1, Errors: 0, Skipped: 0, <<< FAILURE! -- in org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest
+[ERROR] org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest.validatorListIsNotChangedByTheCall -- <<< FAILURE!
+[INFO] BUILD SUCCESS
+
+## red: round-1 tree, response view tests
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.RootEvaluationContextTest
+[ERROR] Tests run: 9, Failures: 2, Errors: 0, Skipped: 0, <<< FAILURE! -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[ERROR] org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest.responseViewsKeptBeforeTheFirstWriteSeeLaterWrites -- <<< FAILURE!
+[ERROR] org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest.keptViewRemovesOnlyTheTestedResponse -- <<< FAILURE!
+[INFO] BUILD SUCCESS
+
+## before D
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest
+[INFO] BUILD SUCCESS
+
+## before E
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.RootEvaluationContextTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[INFO] BUILD SUCCESS
+
+## after (function tests)
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.MatchTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.function.FunctionInvocationCharacterizationTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.function.FunctionSpecBuilderTest
+[INFO] BUILD SUCCESS
+
+## after (root context tests)
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.RootEvaluationContextTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, -- in org.xacml4j.v30.policy.RootEvaluationContextCharacterizationTest
+[INFO] BUILD SUCCESS
+

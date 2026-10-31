@@ -1,0 +1,43 @@
+Run 086, mutation check on the final main code (2026-10-09).
+
+Each mutation was applied to the working tree, the focused tests were run,
+and the files were put back from a copy. Afterwards no file held a mutation
+(search for the marker "mutation M": no match).
+
+Tests of each run (xacml-core, xacml-xml, xacml-pdp): DynamicTypeTest,
+ApplyArgumentValidationTest, InvalidApply*Test, HigherOrder*Test,
+AttributeResolutionSafetyNetTest, ApplyTest, DefaultFunctionSpecTest.
+
+M1  DynamicType.isConsistent is plain equality
+    17 failing rows. DynamicTypeTest.consistency (2 rows);
+    dynamicBagIsAcceptedWhereABagFitsAndCheckedAtEvaluation; PDP:
+    ruleWithADynamicBagOfTheRightDataTypeGivesItsEffect is Indeterminate{P},
+    not Permit; XML: policyWithADesignatorFunctionWhoseDataTypeIsAnExpressionIsEvaluated.
+M2  Apply puts no TypeAssertion around an argument of dynamic type
+    7 failing rows. integer-bag-size on a dynamic bag of strings gives a
+    value again (dynamicBagIsAcceptedWhereABagFitsAndCheckedAtEvaluation);
+    PDP: a Permit rule with integer-equal(integer-bag-size(bag of strings), 0)
+    gives Permit, and the Deny rule Deny, where Indeterminate is expected.
+M3  all-of-any, any-of-all, all-of-all do not check their evaluated bags
+    3 failing rows: each function gives a value for the predicate
+    string-equal and a first bag that is an empty bag of integers. In the
+    first run of this check 2 rows failed: any-of-all still failed through
+    the check of the any-of that it calls for each value of the second bag.
+    A case with an empty second bag was added, and M3 was run again.
+M4  the resolver of the designator functions needs a literal again
+    23 failing rows (the code before this run).
+M5  all-of-any, any-of-all, all-of-all have no validator
+    6 failing rows: the three functions with a bag of another data type are
+    type correct again, and so is each of them with a reference to a
+    designator function as its predicate.
+M6  a function without parameters accepts arguments (validateParametersAndThrow)
+    1 failing row: functionWithoutParametersTakesNoArguments.
+M7  a dynamic argument is checked against the parameter of its own index
+    4 failing rows: IndexOutOfBounds when the expression is built, for every
+    function whose dynamic argument belongs to the variadic parameter.
+M8  a function without parameters accepts arguments (validateParameters)
+    1 failing row: functionWithoutParametersTakesNoArguments.
+
+After the runs one test was added, dynamicValueIsCheckedWhenItIsEvaluated
+(a single value of dynamic type from an extension function). It was run
+alone under M1 and M2 and fails under both.

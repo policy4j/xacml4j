@@ -1,0 +1,290 @@
+[
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/content/JsonContentTest.java",
+    "method": "testJsonEvaluateToNodeSetAmdNodePathListWithInvalidPath",
+    "expected": "PathEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/content/JsonContentTest.java",
+    "method": "testJsonEvaluateToNodeSetAmdNodePathListInvalidPath",
+    "expected": "PathEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/content/JsonContentTest.java",
+    "method": "testInvalidInvalidPath",
+    "expected": "PathEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/content/XmlContentTest.java",
+    "method": "testEntityXPathSyntaxError",
+    "expected": "PathEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/content/XmlContentTest.java",
+    "method": "testXPathReturnUnsupportedNodeType",
+    "expected": "PathEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceTest.java",
+    "method": "testImmutability2",
+    "expected": "UnsupportedOperationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java",
+    "method": "testApplyEvaluationFunctionThrowsRuntimeException",
+    "expected": "EvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java",
+    "method": "testApplyEvaluationFunctionThrowsFunctionInvocationException",
+    "expected": "FunctionInvocationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+    "expected": "AttributeReferenceEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+    "expected": "AttributeReferenceEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+    "expected": "AttributeReferenceEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+    "expected": "AttributeReferenceEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+    "expected": "AttributeReferenceEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+    "expected": "AttributeReferenceEvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/BagOfValuesTest.java",
+    "method": "testCreateWithDifferentAttributeTypes",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testCreateWithExpWhichReturnsNonBooleanValue",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+    "method": "testAttributeAssignmentThrowsEvaluationException",
+    "expected": "EvaluationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+    "method": "testPolicyIDResolutionViaWrongEvaluationContext",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+    "method": "testPolicyIDResolutionViaWrongEvaluationContext",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RequestTest.java",
+    "method": "testGetOnlyAttributesMultipleInstancesOfTheSameCategory",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VersionMatchTest.java",
+    "method": "testCreateWithSubsquentialTwoTimes",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VersionTest.java",
+    "method": "testNegativeComponent",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/VersionTest.java",
+    "method": "testUnparseableVersion",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.java",
+    "method": "doTest1",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.java",
+    "method": "doTest2Params1",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/AnnotatedDecisionCombiningAlgorithmProviderFactoryTest.java",
+    "method": "doTest2Params2",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testAddMultipleVarArg",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testAddVarArgAfterDefaultValue",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testAddOptionalAfterVarArg1",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testAddOptionalAfterVarArg2",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testAddParamWithDefaultValueAndOptionalFalse",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testParameterAfterVaragParam",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+    "method": "testParameterVarArgMinAndMaxEquals",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+    "method": "testInvokeInvocationThrowsRuntimeException",
+    "expected": "FunctionInvocationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testInvokeSpecFailsWithInvocationException",
+    "expected": "FunctionInvocationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testInvokeSpecFailsWithRuntimeException",
+    "expected": "FunctionInvocationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+    "method": "testOptionalParameterWithDefaultValueAndVarArg",
+    "expected": "FunctionInvocationException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java",
+    "method": "missingXacmlFuncAnnotation",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java",
+    "method": "missingReturnTypeDeclaration1",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java",
+    "method": "returnsVoid",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java",
+    "method": "returnsNonXacmlExpression",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java",
+    "method": "returnTypeDeclarationExistButWrongMethodReturnType1",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecTest.java",
+    "method": "returnTypeDeclarationExistButWrongMethodReturnType2",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+    "method": "testNOfFunctionInderterminate",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/types/Base64BinaryTest.java",
+    "method": "testIncorrectlyBase64EncodedString",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java",
+    "method": "testFromXacmlStringJustDate",
+    "expected": "DateTimeParseException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java",
+    "method": "testFromXacmlStringJustDate",
+    "expected": "SyntaxException",
+    "checked": true
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/types/RFC822NameTest.java",
+    "method": "parseInvalidName",
+    "expected": "IllegalArgumentException",
+    "checked": true
+  }
+]

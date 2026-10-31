@@ -1,0 +1,5 @@
+Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+Maven home: /opt/homebrew/Cellar/maven/3.9.16/libexec
+Java version: 21.0.6, vendor: Oracle Corporation, runtime: /Library/Java/JavaVirtualMachines/graalvm-21.jdk/Contents/Home
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "26.6.1", arch: "aarch64", family: "mac"

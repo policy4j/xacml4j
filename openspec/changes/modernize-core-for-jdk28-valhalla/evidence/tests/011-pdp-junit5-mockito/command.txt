@@ -1,0 +1,102 @@
+# OpenRewrite dry run (plugin 6.22.1, rewrite-testing-frameworks 3.20.0)
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp org.openrewrite.maven:rewrite-maven-plugin:6.22.1:dryRun -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.20.0 -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/rewrite-dry-run.log
+
+# OpenRewrite real run
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp org.openrewrite.maven:rewrite-maven-plugin:6.22.1:run -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.20.0 -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/rewrite-run.log
+
+# JDK 21 baseline before migration
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -Dmaven.test.failure.ignore=true -pl xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/baseline-before.log
+
+# Focused request handler check (12 tests)
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=MultipleResourcesViaRepeatingAttributesHandlerTest,MultipleResourcesViaRequestReferencesHandlerTest,MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false -Dlicense.skipUpdateLicense=true test
+
+# Latest full reactor test; failure-ignore permits reporting all upstream core class-mock errors
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/pdp-run-final.log test
+
+# Scoped legacy JUnit/EasyMock/control/reset scan
+rtk rg -n 'org\.easymock|org\.junit\.(Test|Assert|Before|After)|createControl|createStrictControl|reset\(' xacml-pdp/src/test
+
+# Surefire per-class extraction
+rtk python3 -c 'import glob,xml.etree.ElementTree as E; fs=glob.glob("xacml-pdp/target/surefire-reports/TEST-*.xml"); rows=[]; [rows.append((E.parse(f).getroot().attrib.get("name"),int(E.parse(f).getroot().attrib.get("tests","0")),int(E.parse(f).getroot().attrib.get("failures","0")),int(E.parse(f).getroot().attrib.get("errors","0")),int(E.parse(f).getroot().attrib.get("skipped","0")))) for f in fs]; [print("%s %s %s %s %s"%r) for r in sorted(rows)]; print("TOTAL",*[sum(r[i] for r in rows) for i in range(1,5)])'
+
+# Repair pass focused gate (run after restoring all temporary mutations)
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=DefaultPolicyReferenceResolverTest,DefaultEvaluationContextHandlerTest,DefaultPolicyInformationPointTest,AnnotatedResolverFactoryTest,DefaultResolverRegistryTest,ResolverRegistryBuilderTest,RequestContextHandlerChainTest,MultipleResourcesViaXacmlXPathHandlerTest,DefaultPolicyDecisionPointTest,InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/repair-focused.log test
+
+# Mutation check 1: a new second getPolicy result must break the identity/cache assertion
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=DefaultPolicyReferenceResolverTest#testResolvePolicyIDReference -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/mutation-policy-reference.log test
+
+# Mutation check 2: temporarily replace Optional.ofNullable(selectorCache.get(ref)) with Optional.<BagOfValues>empty() in DefaultEvaluationContextHandler.java
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/mutation-selector-cache.log test
+
+# Mutation check 3: temporarily change the re-entrant PIP verify from times(1) to times(2)
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest#testDesignatorResolveAttributeIsNotInRequestPIPCallsHandlerToResolveTheSameAttribute -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/mutation-reentrant-pip-count.log test
+
+# Mutation check 6a: temporarily change the expected second resolver context key to expectedKey0
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=AnnotatedResolverFactoryTest#testParseAttributeResolverWithKeys -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/mutation-annotated-keys.log test
+
+# Mutation check 6b: temporarily add context.getEvaluationContext().getClock() in resolve2
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=AnnotatedResolverFactoryTest#testParseAttributeResolverWithoutKeysWithContext -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/mutation-annotated-no-interactions.log test
+
+# Historical probe: a temporary setEvaluationStatus verification observed no interaction and was removed
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest#testSelectorResolveContentIsInRequestXPathReturnsUnsupportedNodeType -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/mutation-path-status.log test
+
+# Corrected item 7: verify the three exception oracles and pre-throw callback interactions
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/repair-path-exceptions.log test
+
+# Final complete reactor gate after all temporary mutations were reverted
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-pdp -am -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/011-pdp-junit5-mockito/pdp-run-repair.log test
+
+# JDK actually used by Maven
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+# Current source annotation count
+rtk python3 -c 'from pathlib import Path; root=Path("xacml-pdp/src/test/java"); files=list(root.rglob("*.java")); print("source files",len(files),"@Test",sum(p.read_text(errors="replace").count("@Test") for p in files),"@Disabled",sum(p.read_text(errors="replace").count("@Disabled") for p in files))'
+
+# Header byte comparison against the read-only .base source tree
+rtk python3 -c 'from pathlib import Path; lane=Path("<lane>/xacml-pdp/src/test"); base=Path("<lane-base>/xacml-pdp/src/test"); header=lambda b: b[b.rfind(b"/*",b.index(b"package "),b.index(b"#%L")):b.index(b"*/",b.index(b"#%L"))+2] if b"#%L" in b else None; checked=[]; bad=[]; [(checked.append(str(p.relative_to(base))),bad.append(str(p.relative_to(base))) if not (lane/p.relative_to(base)).exists() or header((lane/p.relative_to(base)).read_bytes())!=header(p.read_bytes()) else None) for p in base.rglob("*.java") if header(p.read_bytes()) is not None]; print("headers checked",len(checked),"mismatches",bad)'
+
+# Legacy test framework import/API scan (exit 1 means no matches)
+rtk rg -n 'org\.easymock|org\.junit\.(Test|Assert|Before|After)|createControl|createStrictControl|reset\(' xacml-pdp/src/test
+
+# Confirm the temporary cache mutation and all other main-source state are restored to .base
+rtk python3 -c 'from pathlib import Path; import hashlib; lane=Path("xacml-pdp/src/main"); base=Path("<lane-base>/xacml-pdp/src/main"); changed=[str(p.relative_to(lane)) for p in lane.rglob("*") if p.is_file() and (not (base/p.relative_to(lane)).exists() or hashlib.sha256(p.read_bytes()).digest()!=hashlib.sha256((base/p.relative_to(lane)).read_bytes()).digest())]; print("main source changes vs .base:",changed)'
+
+# Compare JUnit method/skip annotation source counts in lane and read-only baseline
+rtk python3 -c 'from pathlib import Path
+lane=Path("xacml-pdp/src/test/java"); base=Path("<lane-base>/xacml-pdp/src/test/java")
+for label,root in (("lane",lane),("base",base)):
+ files=list(root.rglob("*.java")); print(label,"@Test",sum(p.read_text(errors="replace").count("@Test") for p in files),"skip annotations",sum(p.read_text(errors="replace").count("@Ignore")+p.read_text(errors="replace").count("@Disabled") for p in files))
+ for name in ("TestObject.java","InMemoryPolicyRepositoryTest.java"):
+  p=next(root.rglob(name)); s=p.read_text(errors="replace"); print(label,name,"@Test",s.count("@Test"),"@Ignore",s.count("@Ignore"),"@Disabled",s.count("@Disabled"))'
+
+# Header check comparing the exact LGPL block after package in all baseline test files
+rtk python3 -c 'from pathlib import Path
+lane=Path("<lane>/xacml-pdp/src/test")
+base=Path("<lane-base>/xacml-pdp/src/test")
+def header(data):
+ try:
+  p=data.index(b"package "); start=data.index(b"\n",p)+1; marker=data.index(b"#%L",start); a=data.rfind(b"/*",start,marker); end=data.index(b"*/",marker)+2; return data[a:end]
+ except ValueError: return None
+checked=[]; mismatches=[]
+for src in base.rglob("*.java"):
+ old=header(src.read_bytes())
+ if old is None: continue
+ rel=src.relative_to(base); cur=lane/rel; checked.append(str(rel))
+ if not cur.exists() or header(cur.read_bytes())!=old: mismatches.append(str(rel))
+print("baseline header files checked:",len(checked)); print("mismatches:",mismatches)'
+
+# Header check comparing the exact LGPL block after package in all baseline test files
+rtk python3 -c 'from pathlib import Path
+lane=Path("<lane>/xacml-pdp/src/test")
+base=Path("<lane-base>/xacml-pdp/src/test")
+def header(data):
+ try:
+  p=data.index(b"package "); start=data.index(b"\n",p)+1; marker=data.index(b"#%L",start); a=data.rfind(b"/*",start,marker); end=data.index(b"*/",marker)+2; return data[a:end]
+ except ValueError: return None
+checked=[]; mismatches=[]
+for src in base.rglob("*.java"):
+ old=header(src.read_bytes())
+ if old is None: continue
+ rel=src.relative_to(base); cur=lane/rel; checked.append(str(rel))
+ if not cur.exists() or header(cur.read_bytes())!=old: mismatches.append(str(rel))
+print("baseline header files checked:",len(checked)); print("mismatches:",mismatches)'

@@ -1,0 +1,12 @@
+Main worktree, read-only baseline type list:
+rtk git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java
+
+Lane test gate (run after final test edits):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/034-registry-tests/core-registry-tests.log
+
+Evidence inspection commands:
+rtk rg -c 'Arguments\.of\(' xacml-core/src/test/java/org/xacml4j/v30/types/TypeRegistryTest.java xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java
+rtk rg -n 'Tests run: 4410|TypeRegistryTest|DecisionCombiningAlgorithmRegistryTest|FunctionProviderServiceLoaderTest|BUILD SUCCESS' openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/034-registry-tests/core-registry-tests.log
+rtk rg -n '<skipped' xacml-core/target/surefire-reports/TEST-org.xacml4j.v30.content.ContentTest.xml xacml-core/target/surefire-reports/TEST-org.xacml4j.v30.types.Xacml20XPathTo30TransformerTest.xml xacml-core/target/surefire-reports/TEST-org.xacml4j.v30.types.TypeRegistryTest.xml xacml-core/target/surefire-reports/TEST-org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest.xml
+rtk rg -n 'AutoService\(DecisionCombiningAlgorithmProvider|implements DecisionCombiningAlgorithmProvider|AutoService\(MarshallingProvider|AutoService\(FunctionProvider|class Xacm.*MarshallingProvider' xacml-core/src/main/java xacml-xml/src/main/java
+rtk rg --files xacml-core/target/classes/META-INF/services

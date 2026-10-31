@@ -1,0 +1,27 @@
+JDK: selected with JAVA_HOME="$(jenv prefix 21)" for all recorded Maven runs.
+
+Pre-change focused runs:
+- XmlContentTest: 16 tests, 0 failures, 0 errors, 0 skips.
+- XmlContentTest + MatchTest: 20 tests, 0 failures, 0 errors, 0 skips.
+- Note: these were not red; the default JAXP provider rejected the extension function before the explicit setting was added.
+
+Post-change focused run:
+- xacml-core XmlContentTest + MatchTest + XPathFunctionsTest: 26 tests, 0 failures, 0 errors, 0 skips.
+
+Required clean core/pdp reactor run:
+- xacml-core: 4,987 tests, 0 failures, 0 errors, 17 skips.
+- xacml-xml: stopped reactor with 5 failures, 0 errors, 0 skips in BaseJAXBUnmarshallerSecurityTest.programmaticDomAttributesStillUseStrictBooleanParsing; all five cases fail with NullPointerException in AttributesImpl.getValue via BooleanAttributeValidationFilter.validate.
+- xacml-pdp: not reached.
+
+Full reactor verify:
+- Stopped at the same five xacml-xml failures; conformance was not reached.
+
+Supplementary focused conformance run:
+- OASIS 2.0: 375 tests, 0 failures, 0 errors, 10 skips.
+- OASIS 3.0: 488 tests, 0 failures, 0 errors, 7 skips.
+- RSA 2008: 17 tests, 0 failures, 0 errors, 0 skips.
+- Examples: 2 tests, 0 failures, 0 errors, 0 skips.
+- ConformanceManifestTest: 13 tests, 0 failures, 0 errors, 0 skips.
+- ConformanceStaticRejectionTest: 16 tests, 0 failures, 0 errors, 0 skips.
+
+The supplementary conformance invocation does not constitute a successful full-reactor verify.

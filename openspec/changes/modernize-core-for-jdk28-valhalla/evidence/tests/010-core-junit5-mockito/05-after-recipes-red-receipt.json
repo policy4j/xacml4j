@@ -1,0 +1,615 @@
+{
+  "log": "05-after-recipes-red.log",
+  "build_success": false,
+  "counts": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "tests_executed": false,
+  "reports": {},
+  "problems": [],
+  "compiler_diagnostics": [
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java",
+      "line": "58",
+      "column": "26",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java",
+      "line": "60",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AdviceExpressionTest.java",
+      "line": "68",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "107",
+      "column": "38",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "109",
+      "column": "53",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "128",
+      "column": "38",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "146",
+      "column": "38",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "151",
+      "column": "49",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "163",
+      "column": "38",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "168",
+      "column": "49",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "181",
+      "column": "46",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "196",
+      "column": "38",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "202",
+      "column": "49",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "215",
+      "column": "46",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "230",
+      "column": "38",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "235",
+      "column": "49",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "59",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "60",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "80",
+      "column": "50",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "line": "83",
+      "column": "61",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/CombinerParameterTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "114",
+      "column": "37",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "115",
+      "column": "37",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "55",
+      "column": "23",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "56",
+      "column": "35",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "57",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "58",
+      "column": "36",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "74",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "76",
+      "column": "45",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "90",
+      "column": "45",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+      "line": "90",
+      "column": "67",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAllOfTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchAnyOfTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+      "line": "109",
+      "column": "56",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+      "line": "55",
+      "column": "26",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+      "line": "56",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ObligationExpressionTest.java",
+      "line": "62",
+      "column": "64",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RootEvaluationContextTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/RuleTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "105",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "106",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "114",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "115",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "116",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "121",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "129",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "130",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "134",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "141",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "142",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "143",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "51",
+      "column": "26",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "52",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "57",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "58",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "63",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "64",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "80",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "81",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "82",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "88",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "89",
+      "column": "31",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "97",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "98",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+      "line": "99",
+      "column": "40",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "100",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "52",
+      "column": "26",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "55",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "67",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "68",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "69",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "86",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/DenyOverridesTest.java",
+      "line": "87",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OnPermitApplySecondPolicyTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/PermitUnlessDenyTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java",
+      "line": "69",
+      "column": "26",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java",
+      "line": "70",
+      "column": "39",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java",
+      "line": "28",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java",
+      "line": "93",
+      "column": "45",
+      "message": "method argThat in class org.mockito.Mockito cannot be applied to given types;"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java",
+      "line": "94",
+      "column": "17",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LogicalFunctionsTest.java",
+      "line": "26",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/RegularExpressionFunctionsTest.java",
+      "line": "25",
+      "column": "1",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "121",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "134",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "158",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "173",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    }
+  ]
+}

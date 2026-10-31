@@ -28,14 +28,15 @@ import java.io.Reader;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryReference;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.marshal.RequestUnmarshaller;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.RequestReference;
-import org.xacml4j.v30.XacmlSyntaxException;
-import org.xacml4j.v30.marshal.RequestUnmarshaller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 
 public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 	private final Gson json;
@@ -49,13 +50,21 @@ public class JsonRequestContextUnmarshaller implements RequestUnmarshaller {
 				.registerTypeAdapter(CategoryReference.class, new AttributesReferenceAdapter()).create();
 	}
 
+
 	@Override
-	public RequestContext unmarshal(Object source) throws XacmlSyntaxException, IOException {
-		if (source instanceof Reader) {
-			return json.fromJson((Reader) source, RequestContext.class);
-		}
-		if (source instanceof JsonElement) {
-			return json.fromJson((JsonElement) source, RequestContext.class);
+	public RequestContext unmarshal(Object source) throws SyntaxException, IOException {
+		try {
+			if (source instanceof Reader) {
+				return json.fromJson((Reader) source, RequestContext.class);
+			}
+			if (source instanceof JsonElement) {
+				return json.fromJson((JsonElement) source, RequestContext.class);
+			}
+		} catch (JsonParseException e) {
+			if (e.getCause() instanceof SyntaxException) {
+				throw (SyntaxException)e.getCause();
+			}
+			throw e;
 		}
 		return null;
 	}

@@ -1,0 +1,41 @@
+{
+  "log": "42-mutant-empty-control-red.log",
+  "build_success": false,
+  "counts": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest": {
+      "counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testParameterVarArgMinAndMaxEquals",
+          "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [
+    {
+      "class": "org.xacml4j.v30.policy.function.FunctionSpecBuilderTest",
+      "method": "testParameterVarArgMinAndMaxEquals",
+      "kind": "failure",
+      "type": "org.mockito.exceptions.verification.NoInteractionsWanted",
+      "message": "\nNo interactions wanted here:\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilderTest.testParameterVarArgMinAndMaxEquals(FunctionSpecBuilderTest.java:177)\nBut found this interaction on mock 'functionInvocation':\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilderTest.testParameterVarArgMinAndMaxEquals(FunctionSpecBuilderTest.java:175)\nActually, above is the only interaction with this mock.",
+      "trace": "org.mockito.exceptions.verification.NoInteractionsWanted: \n\nNo interactions wanted here:\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilderTest.testParameterVarArgMinAndMaxEquals(FunctionSpecBuilderTest.java:177)\nBut found this interaction on mock 'functionInvocation':\n-> at org.xacml4j.v30.policy.function.FunctionSpecBuilderTest.testParameterVarArgMinAndMaxEquals(FunctionSpecBuilderTest.java:175)\nActually, above is the only interaction with this mock.\n\tat org.xacml4j.v30.policy.function.FunctionSpecBuilderTest.testParameterVarArgMinAndMaxEquals(FunctionSpecBuilderTest.java:177)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+    }
+  ],
+  "compiler_diagnostics": []
+}

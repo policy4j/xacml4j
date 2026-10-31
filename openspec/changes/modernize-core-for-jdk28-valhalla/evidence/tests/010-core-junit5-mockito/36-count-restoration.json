@@ -1,0 +1,11 @@
+{
+  "case": "count",
+  "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionsTest.java",
+  "method": "testMapWithValidArguments",
+  "intent": "Add a fourth input without removing any expected member; times(4) must reject the fifth flag call.",
+  "mutation_boundary": "Owned test stimulus/collaborator only; no production source was mutated",
+  "backup": "36-mutation-backups/function/impl/HigherOrderFunctionsTest.java",
+  "original_sha256": "ecf932b4c63ddf8bb5919d73737b32ab18a9a3f42c106c4df578f79a6f07f70c",
+  "mutant_sha256": "e3b5e1ba55053da22b181b720d4abbb4c57266642eaefc5843751d08476bf151",
+  "restored_exact_bytes": true
+}

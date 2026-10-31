@@ -1,0 +1,3 @@
+bash openspec/changes/upgrade-build-plugins/evidence/tests/001-characterization/compare-generated-test.sh <scratch>/plugins/compare-test
+bash openspec/changes/upgrade-build-plugins/evidence/tests/001-characterization/compare-generated.sh <scratch>/plugins/work-v2/jaxb-0.15.1/xacml-xml-jaxb/target/generated-sources <scratch>/plugins/work-v2/jaxb-0.15.3/xacml-xml-jaxb/target/generated-sources <scratch>/plugins/jaxb-v4.diff
+# red check: the run 004 comparator (scratch copy without the N3 line) against two one-file trees whose data.bin differs after a NUL byte

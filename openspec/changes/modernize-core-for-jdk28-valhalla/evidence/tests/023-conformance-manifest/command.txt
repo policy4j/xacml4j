@@ -1,0 +1,44 @@
+Commands executed from <repo>; all Maven invocations were plain commands without pipes or shell separators.
+
+Read AGENTS.md; docs/ai/TESTING.md; docs/ai/OPENSPEC.md Apply loop; proposal/design/tasks; conformance-coverage spec; Luna's 007 draft; the relevant fixture Special.txt and repository instructions.
+Memory quick pass: scoped MEMORY.md search; no workspace facts were accepted without local checks.
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py snapshot
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=ConformanceManifestTest,ConformancePolicyImportTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/01-guard-import-red.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py generate
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=ConformanceManifestTest,ConformancePolicyImportTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/02-guard-import-green.log test
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceTest,Xacml30ConformanceTest,RSA2008InteropTest,XacmlExampleTest,ConformanceManifestTest,ConformancePolicyImportTest,VendoredFixtureIntegrityTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/03-all-cases-probe.log test
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceTest,Xacml30ConformanceTest,RSA2008InteropTest,XacmlExampleTest,ConformanceManifestTest,ConformancePolicyImportTest,VendoredFixtureIntegrityTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/04-all-cases-probe.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/results.py 04
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=ConformanceManifestTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/05-dependencies-guard-red.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py generate
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceTest,Xacml30ConformanceTest,RSA2008InteropTest,XacmlExampleTest,ConformanceManifestTest,ConformancePolicyImportTest,VendoredFixtureIntegrityTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/06-all-cases-after-harness-fixes.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/results.py 06
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=ConformanceManifestTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/07-nested-inventory-guard-red.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/classify.py
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/08-jdk21-conformance-gate.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/results.py 08
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/09-jdk21-clean-verify.log clean verify
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/results.py 09
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -Dscope=test -Dincludes=org.objenesis:objenesis -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/10-objenesis-test-tree.log dependency:tree
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -Dscope=test "-Dincludes=junit:junit,org.junit.vintage:*,org.easymock:*" -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/11-legacy-test-tree.log dependency:tree
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -Dscope=test -Dincludes=org.objenesis:objenesis -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/12-objenesis-tree-retry.log dependency:tree
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -Dscope=test "-Dincludes=junit:junit,org.junit.vintage:*,org.easymock:*" -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/13-legacy-tree-retry.log dependency:tree
+# Tree attempts 10/11 hit sandbox metadata-cache write denial; 12/13 reran with native escalation and both passed.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -version
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/classify.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py final
+# The first final audit detected eight concurrent outside-lane source edits. They were preserved; fixtures/POMs stayed unchanged.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py gate-start
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/15-jdk21-final-clean-verify.log clean verify
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py gate-end
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/results.py 15
+ast-grep run --lang java --pattern 'ConformanceManifest.cases($SUITE)' --json xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/RSA2008InteropTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/XacmlExampleTest.java
+rtk rg -n 'i < testCount|skipTests\.add|addAllPolicies|LOG\.info\("Could not load' xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java
+rtk git diff --check -- xacml-conformance-tests/src/test/java
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py final
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/write-evidence.py
+rtk git status --short
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/audit.py gate-end
+
+External specification check: native Tavily extract of https://www.w3.org/TR/xmlschema-2/#dateTime-timezones (dateTime timezone range).

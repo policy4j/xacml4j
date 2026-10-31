@@ -1,0 +1,11 @@
+# Run from the repository root.
+
+# Rewrite the reason column of 12 adjudicated rows (script kept outside the
+# repository; it changes no id, path, disposition, enabled flag, or bug id).
+rtk git diff --stat -- xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+
+# The manifest tests and the conformance suites run in the full gate
+# (tests/071-resolver-failure-fail-closed, gate 2).
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true verify
+
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict

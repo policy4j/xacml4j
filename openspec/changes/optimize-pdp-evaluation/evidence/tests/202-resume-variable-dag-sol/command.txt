@@ -1,0 +1,69 @@
+Run from the cod_2 worktree root. Paths below are repository-relative or
+symbolic bindings to the same absolute paths supplied to the runner.
+The shared runner selects JDK 25 with jenv and serializes every Maven run.
+The confirmed runs explicitly select Maven 3.10; no raw mvn invocation.
+
+WORKTREE="$PWD"
+PACKET="$WORKTREE/../../../packets/remaining-g1-20261029"
+EVIDENCE="$WORKTREE/openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol"
+
+# Original and definitive-red source/protected-path snapshots:
+rtk proxy python3 "$EVIDENCE/capture-state.py" before
+rtk proxy python3 "$EVIDENCE/capture-state.py" pre-correction
+rtk proxy python3 "$EVIDENCE/capture-state.py" red-ready
+
+# Baseline outcomes: 6 pass, characterization before production correction.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/baseline-outcomes-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=NestedResponseStagingPdpTest#sharedVariableDag*+customDefinitionAfter*+customAlgorithmsKeepAllChildren*' -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Initial probe included 2 setup reads: 1 test / 1 failure / 0 errors / 0 skipped.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/red-traversal-probe-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=NestedResponseStagingPdpTest#responseCapabilityTraversalProbeReadsSharedDefinitionOncePerWalk' -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Definitive isolated RED: expected 1, actual 4096 leaf reads, production unchanged.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/red-traversal-isolated-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=NestedResponseStagingPdpTest#responseCapabilityTraversalProbeReadsSharedDefinitionOncePerWalk' -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Apply the owned production correction; then focused GREEN: 20 / 0 / 0 / 0.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/green-focused-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=NestedResponseStagingPdpTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Affected module GREEN: core 7357/2 skips, XML 254/0, JSON 24/1, PDP 814/3.
+# Total 8449 tests; zero failures/errors; six skipped.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/module-gate-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am clean test
+
+# Read-only/static checks executed during implementation:
+scripts/agent-doctor.sh ripwire
+ripwire . --for='ResponseWriters variable definition DAG response staging prepared children builtInAlgorithm' --exclude=/evidence/ --legend=compact
+ripwire . --impact=ResponseWriters.java:canWrite --exclude=/evidence/ --legend=compact
+ast-grep scan xacml-core/src/main/java/org/xacml4j/v30/policy/ResponseWriters.java xacml-core/src/main/java/org/xacml4j/v30/policy/Policy.java xacml-core/src/main/java/org/xacml4j/v30/policy/PolicySet.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/NestedResponseStagingPdpTest.java
+rtk openspec validate optimize-pdp-evaluation --strict
+rtk git diff --check
+
+# Finalization only: no additional builds or tests.
+rtk git status --short
+rtk git diff -- xacml-core/src/main/java/org/xacml4j/v30/policy/ResponseWriters.java xacml-core/src/main/java/org/xacml4j/v30/policy/Policy.java xacml-core/src/main/java/org/xacml4j/v30/policy/PolicySet.java
+rtk proxy python3 "$EVIDENCE/capture-state.py" final
+
+# Historical failed infrastructure/compiler attempts, retained only for audit.
+# DO NOT rerun: conductor superseded the old default Maven/settings path.
+# First sandbox invocation failed opening the shared lock; Maven did not start.
+# Escalated old-default attempt: dependency resolution failure, baseline-outcomes.log.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/baseline-outcomes.log" -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=NestedResponseStagingPdpTest#sharedVariableDag*+customDefinitionAfter*+customAlgorithmsKeepAllChildren*' -Dsurefire.failIfNoSpecifiedTests=false test
+# Old-settings attempt: test compilation failure, before meaningful baseline.
+# The temporary offline-settings.xml was removed.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/baseline-outcomes-offline-settings.log" -- -o -s openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/offline-settings.xml -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=NestedResponseStagingPdpTest#sharedVariableDag*+customDefinitionAfter*+customAlgorithmsKeepAllChildren*' -Dsurefire.failIfNoSpecifiedTests=false test
+# The later baseline-outcomes-characterization.log old-settings approval was
+# canceled before execution; there is no log and no test result for that request.
+
+# Performance/JMH: UNRUN. Independent review, combined reactor and conformance
+# remain conductor gates. No stage, commit, task tick, issue closure or branch change.
+
+# SHA-256 of owned files and retained raw outputs:
+1780fa60f86fa433d9fef565ab1ca76a69879c4e7ac1455098096ae2feec4042  xacml-core/src/main/java/org/xacml4j/v30/policy/ResponseWriters.java
+8b7afdbb6cfbed64489a4994e3a691c60104aadd0422ce281783f7c78d287953  xacml-core/src/main/java/org/xacml4j/v30/policy/Policy.java
+02e5e984a195c1021939a971694381c6ad17eb0c3bb41044d921c75f254cabda  xacml-core/src/main/java/org/xacml4j/v30/policy/PolicySet.java
+fe3380aed3aea8e95b72975a15f0af3fc4bb4561c3a3f48fe1a2d4e3612b4219  xacml-pdp/src/test/java/org/xacml4j/v30/pdp/NestedResponseStagingPdpTest.java
+8581f749eee7de5103b33c82b8c9acbc2a9a0a37c75fcb6a3a6ff18f65d9cfd2  openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/baseline-outcomes.log
+a9338d4070c21586189b091c24631ada7c2de893292842a2be1f26b9e637b6ef  openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/baseline-outcomes-offline-settings.log
+49baec45619adc01e70d41eb113398dd61147ba1ab937523c72e26f0211a045a  openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/baseline-outcomes-maven310-clean.log
+99a82b5bbae0f44eb00a926d314fd369793cd0e2bc4817146cae81bae40ac2c1  openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/red-traversal-probe-maven310-clean.log
+2c579c5ea88f211c8203663f09e5aa5bdc7df6484f7ef1fce6e992f8f80cd966  openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/red-traversal-isolated-maven310-clean.log
+802e7e059da5e199ed5c9ee504192a79ce523a66a1f7b9a53aba705294cf27bf  openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/green-focused-maven310-clean.log
+8109e48790bf08de9b80125e018e3bbcfce1608cbd5ebd1066edacb3288f01f9  openspec/changes/optimize-pdp-evaluation/evidence/tests/202-resume-variable-dag-sol/module-gate-maven310-clean.log

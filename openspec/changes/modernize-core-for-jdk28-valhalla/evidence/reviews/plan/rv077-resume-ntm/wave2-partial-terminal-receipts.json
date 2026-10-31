@@ -1,0 +1,18 @@
+[
+  {
+    "lane": "agy_gemini_pro_3_1",
+    "pane": "%864",
+    "session": "policy4j--resume-g4-decisions-20261004-w2",
+    "marker": "DONE_AGY_GEMINI_PRO_3_1_20261004",
+    "terminal_marker_observed": true,
+    "report": "lanes/agy_gemini_pro_3_1/report.md"
+  },
+  {
+    "lane": "grok_4_6",
+    "pane": "%866",
+    "session": "policy4j--resume-g4-decisions-20261004-w2",
+    "marker": "DONE_GROK_4_6_20261004",
+    "terminal_marker_observed": true,
+    "report": "lanes/grok_4_6/report.md"
+  }
+]

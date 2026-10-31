@@ -1,0 +1,33 @@
+ChatGPT CFBundleShortVersionString: 26.928.31416
+ChatGPT CFBundleIdentifier: com.openai.codex
+Claude CFBundleShortVersionString: 2.19675.0
+Claude CFBundleIdentifier: com.anthropic.claudefordesktop
+accessibility_trusted=true
+screen_recording_granted=true
+rtk open -a ChatGPT: exit 0
+com.openai.codex: windows_result=0 windows=2 nodes=18 truncated=false roles=[AXButton: 3, AXGroup: 13, AXWindow: 2] controls=[]
+claude_activate=true
+claude_enhanced_ax=-25208
+com.anthropic.claudefordesktop: windows_result=0 windows=1 nodes=11 truncated=false roles=[AXGroup: 9, AXWindow: 1, AXWebArea: 1] controls=[]
+First ScreenCaptureKit attempt: CGS_REQUIRE_INIT assertion, exit 134
+Corrected ScreenCaptureKit attempt:
+com.openai.codex: window_count=2 allowlisted_visible_labels=["New chat"]
+com.anthropic.claudefordesktop: no_visible_window
+Corrected attempt: exit 0
+Supplemental all-window inventory:
+com.openai.codex: windows=13 visible=2 eligible=3
+com.anthropic.claudefordesktop: windows=12 visible=0 eligible=4
+Supplemental inventory: exit 0
+Claude minimized-window follow-up:
+claude_activate_all=true
+claude_window_query=0 count=1
+window_minimized_query=0 minimized=true
+window_raise=0
+claude_visible_eligible_windows=1
+claude_allowlisted_visible_labels=[]
+claude_window_query=0 count=1
+claude_unminimize=0
+claude_raise=0
+claude_activate_all=true
+claude_restored_ax_result=0 nodes=148 truncated=false roles=[AXWindow: 1, AXTextArea: 1, AXWebArea: 2, AXCheckBox: 1, AXRadioGroup: 1, AXStaticText: 19, AXPopUpButton: 12, AXGroup: 80, AXHeading: 1, AXSplitter: 1, AXRadioButton: 7, AXImage: 2, AXButton: 18, AXTabGroup: 2] allowlisted_controls=["Claude", "Code", "Send"]
+claude_restore_original_minimized_state=0

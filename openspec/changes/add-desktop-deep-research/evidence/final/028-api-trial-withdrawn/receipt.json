@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-10",
+  "change": "add-desktop-deep-research",
+  "task": "5.2",
+  "source": "maintainer's messages in the current conversation, sent while the conductor was working",
+  "text": "Remove API route from tests",
+  "following_message": "Also google search should work also",
+  "following_message_meaning_settled": false,
+  "effect": {
+    "task_5_15": "removed from tasks.md; issue closed as withdrawn",
+    "terms_question": "open; no longer waits for a trial",
+    "further_api_research_calls_for_this_change": 0,
+    "runs_kept_as_record": ["builds/022", "builds/023", "builds/024", "builds/025", "builds/026", "builds/027"]
+  },
+  "approval_to_build_browser_surface": false
+}

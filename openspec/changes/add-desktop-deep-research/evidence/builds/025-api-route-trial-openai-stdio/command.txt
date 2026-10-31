@@ -1,0 +1,28 @@
+# Run 025, 2026-10-10, from the repository root. $T is a scratch directory
+# outside the repository; $M is the path of the maintainer's MCP controller.
+
+# Server: the controller's stdio profile deep-research-openai-5-5 with the
+# model set to the one of the earlier attempts, added at local scope with a
+# per-server timeout of two hours.
+mcp.sh -m deep-research-openai-5-5 doctor
+mcp.sh -m deep-research-openai-5-5 warm
+rtk proxy claude mcp add-json deep-research-openai-stdio \
+  '{"type":"stdio","command":"$M","args":["-m","deep-research-openai-5-5","exec"],
+    "env":{"MCP_DEEP_RESEARCH_OPENAI_5_5_MODEL":"gpt-5.5-pro"},"timeout":7200000}'
+
+# The call: one headless client session with one allowed research tool.
+# prompt-openai-stdio.txt tells the session to call
+# mcp__deep-research-openai-stdio__deep_research once with the query, to
+# call nothing else and not to retry.
+CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT=7200000 MCP_TOOL_TIMEOUT=7200000 \
+MAX_MCP_OUTPUT_TOKENS=200000 MCP_TIMEOUT=120000 MCP_CONNECTION_NONBLOCKING=0 \
+MCP_CONNECT_TIMEOUT_MS=90000 \
+rtk proxy claude -p --model haiku --output-format stream-json --verbose \
+  --allowedTools "mcp__deep-research-openai-stdio__deep_research" "ToolSearch" \
+  < "$T/prompt-openai-stdio.txt" > "$T/openai3.stream.jsonl" 2> "$T/openai3.stderr.txt"
+
+# Query: the same as in builds/022-api-route-trial-openai/command.txt.
+
+# Afterwards: standard-library Python on the saved stream; the organization
+# identifier in the provider's error text is replaced before anything is
+# stored here.

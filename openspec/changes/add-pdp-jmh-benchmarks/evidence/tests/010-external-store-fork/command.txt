@@ -1,0 +1,4 @@
+# probe-store.jar: ProbeStore and TestStores classes from xacml-jmh/target/test-classes, plus a services file naming ProbeStore
+jar cf probe-store.jar -C <content> .
+java -jar xacml-jmh/target/benchmarks.jar PdpDecideBenchmark -p store=probe -p corpus=rsa2008 -f 1 -wi 0 -i 1 -r 200ms -foe true
+java -cp xacml-jmh/target/benchmarks.jar:probe-store.jar org.openjdk.jmh.Main PdpDecideBenchmark -p store=probe -p corpus=rsa2008 -f 1 -wi 0 -i 1 -r 200ms -foe true -rf json -rff results.json

@@ -1,0 +1,7 @@
+xacml-json/src/main/java/org/xacml4j/v30/marshal/json/RequestContextAdapter.java:55:		boolean returnPolicyIdList = GsonUtil.getAsBoolean(o, RETURN_POLICY_ID_LIST_PROPERTY, false);
+xacml-json/src/main/java/org/xacml4j/v30/marshal/json/RequestContextAdapter.java:56:		boolean combinedDecision = GsonUtil.getAsBoolean(o, COMBINED_DECISION_PROPERTY, false);
+xacml-json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer.java:64:		boolean inclInRes = GsonUtil.getAsBoolean(o, INCLUDE_IN_RESULT_PROPERTY, false);
+xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java:38:	public static boolean getAsBoolean(JsonObject o, String memberName, boolean defaultValue)
+xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java:47:		return (v != null)?v.getAsBoolean():defaultValue;
+xacml-core/src/main/java/org/xacml4j/v30/WellKnownAttributeIds.java:130:            .map(v->Boolean.parseBoolean(v)).orElse(false);
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/RegExpFunctions.java:122:	private final static java.lang.Boolean CACHE_REGXP = java.lang.Boolean.parseBoolean(

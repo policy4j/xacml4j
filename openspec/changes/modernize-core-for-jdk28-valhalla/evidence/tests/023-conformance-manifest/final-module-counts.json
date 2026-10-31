@@ -1,0 +1,58 @@
+{
+  "modules": {
+    "root (pom)": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-core": {
+      "tests": 765,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    "xacml-xml-jaxb": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-xml": {
+      "tests": 35,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-json": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "xacml-pdp": {
+      "tests": 74,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3
+    },
+    "xacml-test": {
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "xacml-conformance-tests": {
+      "tests": 901,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 44
+    }
+  },
+  "total": {
+    "tests": 1801,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 50
+  }
+}

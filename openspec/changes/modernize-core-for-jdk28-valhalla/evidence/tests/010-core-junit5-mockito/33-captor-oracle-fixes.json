@@ -1,0 +1,242 @@
+[
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+    "captor": "status",
+    "added_assertion": "assertEquals(StatusCodeId.MISSING_ATTRIBUTE, status.getValue().get().getStatusCode().getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyOptional",
+    "captor": "status",
+    "added_assertion": "assertEquals(StatusCodeId.MISSING_ATTRIBUTE, status.getValue().get().getStatusCode().getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueAttributeDoesExist",
+    "captor": "c",
+    "added_assertion": "assertEquals(builder.build(), c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+    "captor": "c",
+    "added_assertion": "assertEquals(builder.build(), c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseAttributeDoesNotExistAndContextHandlerReturnsNull",
+    "captor": "c",
+    "added_assertion": "assertEquals(builder.build(), c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+    "captor": "c",
+    "added_assertion": "assertEquals(builder.build(), c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException",
+    "captor": "c",
+    "added_assertion": "assertEquals(builder.build(), c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+    "captor": "c",
+    "added_assertion": "assertEquals(builder.build(), c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+    "method": "testMustBePresentFalseContextHandlerThrowsRuntimeException",
+    "captor": "c",
+    "added_assertion": "assertEquals(builder.build(), c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndReturnsEmptyBag",
+    "captor": "c",
+    "added_assertion": "assertEquals(refKey, c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+    "captor": "c",
+    "added_assertion": "assertEquals(refKey, c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndReturnsEmptyOptional",
+    "captor": "status",
+    "added_assertion": "assertEquals(org.xacml4j.v30.StatusCodeId.MISSING_ATTRIBUTE, status.getValue().get().getStatusCode().getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+    "captor": "c",
+    "added_assertion": "assertEquals(refKey, c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeSelectorTest.java",
+    "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+    "captor": "c",
+    "added_assertion": "assertEquals(refKey, c.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ConditionTest.java",
+    "method": "testExpressionThrowsRuntimeException",
+    "captor": "ruleCapture",
+    "added_assertion": "assertSame(rule, ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/MatchTest.java",
+    "method": "testMatchEvaluationFailedToResolveAttributeException",
+    "captor": "ruleCapture",
+    "added_assertion": "assertSame(rule, ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+    "captor": "contextCapture",
+    "added_assertion": "assertTrue(contextCapture.getValue().isExtendedIndeterminateEval()); assertSame(policy, contextCapture.getValue().getCurrentPolicySet());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicySetTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.emptyList(), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+    "captor": "contextCapture",
+    "added_assertion": "assertTrue(contextCapture.getValue().isExtendedIndeterminateEval()); assertSame(policy, contextCapture.getValue().getCurrentPolicy());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithmResultIsDeny",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsPermit",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyTest.java",
+    "method": "testEvaluateTargetMatchConditionTrueCombiningAlgorithResultIsIndeterminate",
+    "captor": "ruleCapture",
+    "added_assertion": "assertEquals(java.util.Collections.singletonList(rule), ruleCapture.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testAllMatch",
+    "captor": "c1",
+    "added_assertion": "assertSame(context, c1.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testAllMatch",
+    "captor": "c2",
+    "added_assertion": "assertSame(context, c2.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstMatchSecondIsNoMatch",
+    "captor": "c1",
+    "added_assertion": "assertSame(context, c1.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstMatchSecondIsNoMatch",
+    "captor": "c2",
+    "added_assertion": "assertSame(context, c2.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstMatchAndSecondIsIndeterminate",
+    "captor": "c1",
+    "added_assertion": "assertSame(context, c1.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstMatchAndSecondIsIndeterminate",
+    "captor": "c2",
+    "added_assertion": "assertSame(context, c2.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstIsNoMatch",
+    "captor": "c1",
+    "added_assertion": "assertSame(context, c1.getValue());"
+  },
+  {
+    "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/TargetTest.java",
+    "method": "testFirstIsIndeterminate",
+    "captor": "c1",
+    "added_assertion": "assertSame(context, c1.getValue());"
+  }
+]

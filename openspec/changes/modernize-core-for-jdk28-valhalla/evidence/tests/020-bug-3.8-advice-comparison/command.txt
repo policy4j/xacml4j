@@ -1,0 +1,31 @@
+Working directory for all commands: <lane>
+
+JDK check:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -version
+
+Test first (expected red):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-test -am -Dlicense.skipUpdateLicense=true -Dtest=Xacml30TestUtilityTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/red.log
+
+Focused comparator tests after implementation:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-test -am -Dlicense.skipUpdateLicense=true -Dtest=Xacml30TestUtilityTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/focused-green.log
+
+Full xacml-test gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-test -am -Dlicense.skipUpdateLicense=true test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/xacml-test-gate.log
+
+Conformance gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-conformance-tests -am -Dlicense.skipUpdateLicense=true test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/conformance-gate.log
+
+Count suite executions from the conformance log:
+rtk python3 -c 'from pathlib import Path; s=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/conformance-gate.log").read_text(); marks=["Running org.xacml4j.v20.RSA2008InteropTest","Running org.xacml4j.v20.Xacml20ConformanceTest","Running org.xacml4j.v20.Xacml30ConformanceTest","Running org.xacml4j.v20.XacmlExampleTest"]; p=[s.index(m) for m in marks]+[len(s)]; print("\n".join(marks[i]+": "+str(s[p[i]:p[i+1]].count("Executing test=")) for i in range(len(marks))))'
+
+rv028 red run before changing the comparator:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-test -am -Dlicense.skipUpdateLicense=true -Dtest=Xacml30TestUtilityTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/red-rv028.log
+
+rv028 focused green after changing the comparator:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-test -am -Dlicense.skipUpdateLicense=true -Dtest=Xacml30TestUtilityTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/green-rv028-focused.log
+
+rv028 conformance reactor:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-conformance-tests -am -Dlicense.skipUpdateLicense=true test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/conformance-rv028.log
+
+rv028 conformance case totals, Surefire totals, and Java header checks:
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/020-bug-3.8-advice-comparison/summarize_conformance.py

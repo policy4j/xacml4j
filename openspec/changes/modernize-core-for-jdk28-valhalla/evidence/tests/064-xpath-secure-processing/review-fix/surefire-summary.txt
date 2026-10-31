@@ -1,0 +1,11 @@
+JDK: 21, selected with JAVA_HOME="$(jenv prefix 21)".
+
+Mutation proof (`secure-processing-flag-removed.log`):
+- XmlContentTest.testXPathFactoryEnablesSecureProcessing: 1 test, 1 failure, 0 errors, 0 skips. Assertion: expected true but was false.
+
+Restored focused test (`secure-processing-flag-restored.log`):
+- XmlContentTest.testXPathFactoryEnablesSecureProcessing: 1 test, 0 failures, 0 errors, 0 skips.
+
+Requested clean core gate (`core-clean-test.log`):
+- Reactor total: 5,755 tests, 0 failures, 0 errors, 17 skips.
+- xacml-core engine module: SUCCESS.

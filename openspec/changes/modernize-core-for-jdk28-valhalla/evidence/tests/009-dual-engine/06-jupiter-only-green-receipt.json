@@ -1,0 +1,52 @@
+{
+  "log": "06-jupiter-only-green.log",
+  "build_success": true,
+  "tests_executed": true,
+  "module_counts": {
+    "xacml-json": [
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "totals": [
+    1,
+    0,
+    0,
+    0
+  ],
+  "compiler_diagnostics": [],
+  "reports": {
+    "xacml-json": {
+      "org.xacml4j.v30.marshal.json.DualEngineTransitionProbeTest": {
+        "counts": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "tests": [
+          {
+            "name": "jupiterMocksFinalClassWithStartupAgent",
+            "skipped": false,
+            "problems": []
+          }
+        ]
+      }
+    }
+  },
+  "jdk_properties": {
+    "xacml-json": {
+      "java.version": "21.0.6",
+      "java.runtime.version": "21.0.6+8-LTS-jvmci-23.1-b55",
+      "java.vm.name": "Java HotSpot(TM) 64-Bit Server VM",
+      "java.vendor": "Oracle Corporation"
+    }
+  },
+  "problems": [],
+  "conformance": {},
+  "root_pom_sha256": "3eea70fb4f0ac7a3797ca557a1399a5bb4ae5bc8c7099d37ac0dfc5c2a3c0410",
+  "root_pom_matches_before": false,
+  "probe_present": true
+}

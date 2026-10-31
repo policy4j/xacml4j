@@ -1,0 +1,49 @@
+# rv038/rv039 + rv042/rv044 commands, from <repo>; JDK 21.
+# Red traversals use failure.ignore only to collect downstream failures. Final gates do not ignore failures.
+# First run 05/06 logger targets had no parent directory; run 06 was repeated unchanged with the directory present.
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-xml,xacml-json,xacml-test -am -Dtest=AnyURILexicalTest,AnyURIRequestLexicalTest,Xacml30TestUtilityTest,XacmlPolicyTestSupportTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/01-review-tests-red.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-xml,xacml-json,xacml-test -am -Dtest=AnyURILexicalTest,AnyURIRequestLexicalTest,Xacml30TestUtilityTest,XacmlPolicyTestSupportTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/02-review-tests-red.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-xml,xacml-json,xacml-test -am -Dtest=AnyURILexicalTest,AnyURIRequestLexicalTest,Xacml30TestUtilityTest,XacmlPolicyTestSupportTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/03-review-tests-red.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core,xacml-xml,xacml-json,xacml-test -am -Dtest=AnyURILexicalTest,AnyURIRequestLexicalTest,Xacml30TestUtilityTest,XacmlPolicyTestSupportTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/04-review-tests-green.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/05-conformance-gate.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=XacmlPolicyTestSupportTest,Xacml30SamplePolicyTest,Xacml20SamplePolicyTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/06-omitted-fulfill-on-red.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=XacmlPolicyTestSupportTest,Xacml30SamplePolicyTest,Xacml20SamplePolicyTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/06-omitted-fulfill-on-red.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=XacmlPolicyTestSupportTest,Xacml30SamplePolicyTest,Xacml20SamplePolicyTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/07-omitted-fulfill-on-green.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/08-conformance-gate.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/09-conformance-merged-lane-gate.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/10-conformance-merged-lane-gate.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/review-rv042-rv044/11-full-reactor-clean-verify.log clean verify
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -version
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py initial
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py snapshot 03-red-source-hashes
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py modules 08-conformance-gate-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py cases 08-conformance-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py snapshot 08-after-conductor-merge
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py modules 09-merged-lane-gate-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py cases 09-merged-lane-case-results
+# The last case receipt action correctly rejected run 09: manifest loading failed before enumeration.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py modules 10-merged-lane-gate-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py cases 10-merged-lane-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py snapshot 11-before-full-gate
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py snapshot 11-after-full-gate
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py modules 11-full-reactor-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py cases 11-final-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py focused 11-uri-final lexical
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/review-rv038-rv039/capture-evidence.py focused 11-comparator-final comparator
+rtk git status --short
+rtk git diff --check -- xacml-core/src/main/java/org/xacml4j/v30/types/AnyURI.java xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java xacml-core/src/test/java/org/xacml4j/v30/types/AnyURILexicalTest.java xacml-xml/src/test/java/org/xacml4j/v30/xml/AnyURIRequestLexicalTest.java xacml-json/src/test/java/org/xacml4j/v30/marshal/json/AnyURIRequestLexicalTest.java xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java xacml-test/src/main/java/org/xacml4j/v30/XacmlPolicyTestSupport.java xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java xacml-test/src/test/java/org/xacml4j/v30/XacmlPolicyTestSupportTest.java xacml-conformance-tests/src/test/manifest/conformance-manifest.csv

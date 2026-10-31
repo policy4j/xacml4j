@@ -1,0 +1,3 @@
+exit 1
+[ERROR] Rule 0: org.apache.maven.enforcer.rules.dependency.BannedDependencies failed with message:
+[ERROR]    org.apache.logging.log4j:log4j-core:jar:2.14.0 <--- banned via the exclude/include list

@@ -1,0 +1,3 @@
+# the staged tree of the harness simplification commit, exported and built from scratch
+git write-tree; git archive <tree> | tar -x -C <scratch>/verify4
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 25)" mvn -B -o -Dlicense.skipUpdateLicense=true clean test

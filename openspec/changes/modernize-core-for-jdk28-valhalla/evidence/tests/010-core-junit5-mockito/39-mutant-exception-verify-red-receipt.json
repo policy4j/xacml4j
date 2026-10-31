@@ -1,0 +1,41 @@
+{
+  "log": "39-mutant-exception-verify-red.log",
+  "build_success": false,
+  "counts": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.AttributeDesignatorTest": {
+      "counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+          "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [
+    {
+      "class": "org.xacml4j.v30.policy.AttributeDesignatorTest",
+      "method": "testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag",
+      "kind": "failure",
+      "type": "Wanted but not invoked",
+      "message": "\nWanted but not invoked:\nevaluationContext.resolve(\n    <Capturing argument: AttributeDesignatorKey>\n);\n-> at org.xacml4j.v30.policy.AttributeDesignatorTest.testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag(AttributeDesignatorTest.java:91)\nActually, there were zero interactions with this mock.\n",
+      "trace": "Wanted but not invoked:\nevaluationContext.resolve(\n    <Capturing argument: AttributeDesignatorKey>\n);\n-> at org.xacml4j.v30.policy.AttributeDesignatorTest.testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag(AttributeDesignatorTest.java:91)\nActually, there were zero interactions with this mock.\n\n\tat org.xacml4j.v30.policy.AttributeDesignatorTest.testMustBePresentTrueAttributeDoesNotExistAndContextHandlerReturnsEmptyBag(AttributeDesignatorTest.java:91)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+    }
+  ],
+  "compiler_diagnostics": []
+}

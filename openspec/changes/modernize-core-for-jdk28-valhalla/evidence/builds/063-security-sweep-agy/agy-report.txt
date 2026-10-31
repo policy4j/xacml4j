@@ -1,0 +1,244 @@
+  ## Read-Only Security Sweep: XML/JSON Input and Evaluation Paths
+
+  ### 1. XML Parsing Factories & Loaders
+
+  (Note: BaseJAXBUnmarshaller is excluded from this report per task instructions.)
+
+   Path       │ File:Line          │ Factory / Parser   │ Security Features … │ Ver… │ Attack / Risk
+  ────────────┼────────────────────┼────────────────────┼─────────────────────┼──────┼─────────────────────
+   xacml-core │ DOMUtil.java:82-10 │ DocumentBuilderFac │ FEATURE_SECURE_PROC │ SAFE │ None. Fully
+              │ 9                  │ tory               │ ESSING (true),      │      │ hardened against
+              │                    │                    │ ACCESS_EXTERNAL_DTD │      │ XXE, external
+              │                    │                    │ (""),               │      │ entity resolution,
+              │                    │                    │ ACCESS_EXTERNAL_SCH │      │ external DTD fetch,
+              │                    │                    │ EMA (""), disallow- │      │ and Billion Laughs.
+              │                    │                    │ doctype-decl        │      │
+              │                    │                    │ (true), external-   │      │
+              │                    │                    │ general-entities    │      │
+              │                    │                    │ (false), external-  │      │
+              │                    │                    │ parameter-entities  │      │
+              │                     │                 │ load-external-dtd    │      │
+              │                     │                 │ (false),             │      │
+              │                     │                 │ XIncludeAware        │      │
+              │                     │                 │ (false),             │      │
+              │                    │                    │ (false),            │      │
+              │                    │                    │ ExpandEntityReferen │      │
+              │                    │                    │ ces (false)         │      │
+   xacml-core │ DOMUtil.java:81    │ TransformerFactory │ Default             │ SAFE │ None in current
+              │                    │                    │ configuration (no   │      │ usage. Used
+              │                    │                    │ explicit            │      │ strictly for
+              │                    │                    │ attributes/features │      │ identity
+              │                    │                    │ ).                  │      │ transformation
+              │                    │                    │                     │      │ (newTransformer()
+              │                    │                    │                     │      │ with no stylesheet)
+              │                    │                    │                     │      │ to serialize in-
+              │                    │                    │                     │      │ memory DOM nodes
+              │                    │                    │                     │      │ (DOMSource ->
+              │                    │                    │                     │      │ StreamResult).
+              │                    │                    │                     │      │ Cannot parse
+              │                    │                    │                     │      │ stylesheets or
+              │                    │                    │                     │      │ trigger XSLT
+              │                    │                    │                     │      │ extension
+              │                    │                    │                     │      │ functions.
+   xacml-core │ XPathProvider.java │ XPathFactory       │ Default             │ UNSA │ CPU exhaustion via
+              │ :205               │                    │ configuration. No   │ FE   │ complex/pathologica
+              │                    │                    │ explicit            │ (MED │ l XPath
+              │                    │                    │ FEATURE_SECURE_PROC │ IUM) │ expressions.
+              │                    │                    │ ESSING, no          │      │
+              │                    │                    │ function/variable   │      │
+              │                    │                    │ resolver, no        │      │
+              │                    │                    │ evaluation limits.  │      │
+   xacml-core │ XmlContent.java:99 │ XmlContent.fromStr │ Delegates directly  │ SAFE │ Reuses
+              │ -105               │ ing/fromStream     │ to                  │      │ DOMUtil.documentBui
+              │                    │                    │ DOMUtil.parseXml.   │      │ lderFactory with
+              │                    │                    │                     │      │ full XXE
+              │                    │                    │                     │      │ protections.
+   xacml-core │ Xacml20XPathTo30Tr │ N/A                │ Pure string         │ SAFE │ No XML parsing.
+              │ ansformer.java:47  │                    │ manipulation        │      │
+              │                    │                    │ (StringBuilder).    │      │
+              │ ontextFromJaxbT │ mapping         │ String content parsed via    │      │ DOMUtil parser.
+              │ oObjectModelMap │                 │ Content.fromString ->        │      │ (Functional
+              │ per.java:475-49 │                 │ DOMUtil.parseXml.            │      │ defect: base64-
+              │ 1               │                 │                              │      │ encoded XML
+              │                 │                 │                              │      │ content is not
+              │                 │                 │                              │      │ decoded before
+              │                 │                 │                              │      │ passing to
+              │                 │                 │                              │      │ XmlContent.of,
+              │                 │                 │                              │      │ throwing
+              │                 │                 │                              │      │ SyntaxException
+              │                 │                 │                              │      │ rather than
+              │                 │                 │                              │      │ exposing a
+              │                 │                 │                              │      │ vulnerability).
+   xacml-test │ Xacml20TestUtil │ JAXBContext.cre │ Direct call to               │ UNSA │ XXE if ever used
+              │ ity.java:145,   │ ateUnmarshaller │ context.createUnmarshaller() │ FE   │ on untrusted
+              │ Xacml30TestUtil │ ()              │ .unmarshal(in) without       │ (LOW │ response XML
+              │ ity.java:318    │                 │ secure SAX/StAX wrapper.     │ )    │ (test fixture
+              │                 │                 │                              │      │ helper only).
+  ──────
+  ### 2. XPath Evaluation on Request Content
+
+  • Request vs Policy Origin:
+      • Request-origin XPath: In MultipleResourcesViaXPathExpressionHandler.java:131-153, the attribute
+      urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector (and its draft alias) of type XPath is
+      supplied directly by untrusted client requests.
+      • Policy functions: XPathFunctions.java:55-160 (xpath-node-count, xpath-node-equal, xpath-node-match)
+      evaluate XPath expressions which can also come from request attributes via AttributeDesignator.
+  • Extension Functions / Resolvers:
+      • No custom XPathFunctionResolver or XPathVariableResolver is registered.
+      • In JDK 11+, extension functions without a provider configured fail with TransformerException:
+      Attempting to call an extension function [], but an extension provider is not set.
+  • Evaluation & Complexity Limits:
+      • No limits exist on execution time, recursion, or matched node count.
+      • In MultipleResourcesViaXPathExpressionHandler.java:92-105, matched paths across categories are
+      combined via Sets.cartesianProduct(all). An untrusted client supplying //* on an XML document across
+      multiple categories causes Cartesian product explosion (e.g., 100 × 100 × 100 = 1, 000, 000
+      individual PDP request evaluations), causing severe denial of service.
+
+  ──────
+  ### 3. JSON (Gson) Input Handling
+
+  • Polymorphic Class Instantiation: SAFE. Type adapters (CategoryAdapter, AttributeDeserializer,
+  TypeToGSon) deserialize into fixed domain models. Data types are validated against the known XacmlTypes
+  registry. No arbitrary reflection or class loading (Class.forName) exists.
+  • Unbounded Recursion Depth: SAFE. Standard Gson reader depth limits apply.
+  • Huge Numbers / Parsing Cost: SAFE. IntegerVal uses Long.parseLong(v) and DoubleVal uses Double.
+  parseDouble(v). Neither uses BigInteger/BigDecimal for general numeric attribute values, avoiding
+  quadratic BigInteger parsing DoS.
+  • Base64 Content Parsing: SAFE. Content strings decoded from JSON delegate to DOMUtil.parseXml which
+  enforces the fully hardened XML parser.
+  ──────
+  ### 4. Regular Expressions (ReDoS & Caching)
+
+  • ReDoS Vulnerability: In RegExpFunctions.java:135, Pattern.compile(jdk).matcher(value).find() is invoked
+  with java.util.regex's backtracking NFA. If a policy matches request input against a vulnerable pattern
+  (or if the regex is supplied from a request attribute), pathological patterns like (a+)+$ cause
+  exponential catastrophic backtracking, locking evaluation threads indefinitely.
+  • Unbounded Cache Growth: In RegExpFunctions.java:125-142, if cacheRegExps is set to true, REGEXP_CACHE
+  is an unbounded ThreadLocal<Map<String, Pattern>> backed by new HashMap<>(). Dynamic regex patterns cause
+  memory to grow indefinitely without eviction, leading to an OutOfMemoryError.
+  ──────
+  ### 5. Java Serialization
+
+  • Externalizable / Serializable Types: Binary.java, EUI48.java, and PortRange.java.
+  • ObjectInputStream Usage: SAFE. There is zero usage of ObjectInputStream across the entire codebase. No
+  untrusted data input path deserializes Java serialized objects.
+  ──────
+  ### Details for UNSAFE Items
+
+  #### 1. Multiple Resources Cartesian Product Explosion via User-Supplied XPath
+
+  • Severity: HIGH
+  • File:Line: MultipleResourcesViaXPathExpressionHandler.java:92-105, 151-160
+  • Attack Input: A request containing an XML <Content> with multiple elements (e.g., 50 elements) and an
+  attribute urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector with value //* across 3 or 4
+  categories.
+  • Smallest Fix: Enforce a maximum Cartesian product bound (e.g. if (cartesian.size() >
+  MAX_EXPANDED_REQUESTS) throw new RequestSyntaxException(...)) and bound paths.size() returned by
+  evaluateToNodePathList.
+  • Test: Add a test in MultipleResourcesViaXacmlXPathHandlerTest passing //* on a document with multiple
+  elements across categories, verifying rejection when Cartesian size exceeds the limit.
+
+  #### 2. Regular Expression Catastrophic Backtracking (ReDoS)
+
+  • Severity: MEDIUM
+  • File:Line: RegExpFunctions.java:130-145
+  • Attack Input: Regex (a+)+$ evaluated against input string "aaaaaaaaaaaaaaaaaaaaaaaaaaaa!".
+  • Smallest Fix: Wrap CharSequence in a timeout/step-counting wrapper or enforce a reasonable length limit
+  on the matched input string.
+  • Test: Unit test invoking RegExpFunctions.matches("(a+)+$", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa!") ensuring it
+  terminates/times out within a bounded duration.
+
+  #### 3. Unbounded ThreadLocal Regex Cache Memory Leak
+
+  • Severity: MEDIUM (when cacheRegExps=true)
+  • File:Line: RegExpFunctions.java:125-142
+  • Attack Input: Sending requests with distinct regex pattern values when system property -Dorg.xacml4j.
+  v30.policy.function.impl.RegExpFunctions.cacheRegExps=true is enabled.
+  • Smallest Fix: Replace new HashMap<>() with a bounded LRU cache (e.g. new LinkedHashMap<String,
+  Pattern>(16, 0.75f, true) { protected boolean removeEldestEntry(Map.Entry eldest) { return size() > 500;
+  } }).
+  • Test: Unit test compiling 1,000 unique patterns with cacheRegExps=true, verifying the cache size does
+  not exceed the bound.
+
+  #### 4. Missing FEATURE_SECURE_PROCESSING on XPathFactory
+
+  • Severity: MEDIUM
+  • File:Line: XPathProvider.java:201-205
+  • Attack Input: Deeply nested or pathological XPath expressions in policy selectors or requests.
+  • Smallest Fix:
+    XPathFactory factory = XPathFactory.newInstance();
+    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+    return factory;
+
+  • Test: Assert XPathProvider.defaultProvider() factory has FEATURE_SECURE_PROCESSING set to true.
+
+  #### 5. Raw JAXB Unmarshalling in Test Utilities
+
+  • Severity: LOW (Test support utility, not production PDP runtime)
+  • File:Line: Xacml20TestUtility.java:145, Xacml30TestUtility.java:318
+  • Attack Input: An XML file with external entity definition passed to getResponse(path).
+  • Smallest Fix: Route through Xacml20ResponseContextUnmarshaller / Xacml30ResponseContextUnmarshaller
+  rather than calling context.createUnmarshaller().unmarshal(in) directly.
+  • Test: Provide XML with <!DOCTYPE ... ENTITY xxe ...> to Xacml30TestUtility.getResponse, expecting
+  parser rejection.
+  ──────
+  ### FINAL REPORT (policy4j_code_review_agy, gemini-2.5-pro)
+
+   Path                                                                               │ Verdict │ Severity
+  ────────────────────────────────────────────────────────────────────────────────────┼─────────┼──────────
+   xacml-core/src/main/java/org/xacml4j/util/DOMUtil.java (documentBuilderFactory)    │ SAFE    │ N/A
+   xacml-core/src/main/java/org/xacml4j/util/DOMUtil.java (transformerFactory)        │ SAFE    │ N/A
+   xacml-core/src/main/java/org/xacml4j/v30/content/XmlContent.java                   │ SAFE    │ N/A
+   xacml-core/src/main/java/org/xacml4j/v30/types/Xacml20XPathTo30Transformer.java    │ SAFE    │ N/A
+   xacml-pdp/src/main/java/org/xacml4j/v30/spi/repository/PolicyImportTool.java       │ SAFE    │ N/A
+   xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java │ SAFE    │ N/A
+   xacml-                                                                             │ SAFE    │ N/A
+   xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMa │         │
+   pper.java                                                                          │         │
+   xacml-                                                                             │ SAFE    │ N/A
+   json/src/main/java/org/xacml4j/v30/marshal/json/JsonRequestContextUnmarshaller.jav │         │
+   a                                                                                  │         │
+   xacml-json/src/main/java/org/xacml4j/v30/marshal/json/CategoryAdapter.java         │ SAFE    │ N/A
+   xacml-json/src/main/java/org/xacml4j/v30/marshal/json/AttributeDeserializer.java   │ SAFE    │ N/A
+   xacml-json/src/main/java/org/xacml4j/v30/marshal/json/TypeToGSon.java              │ SAFE    │ N/A
+   xacml-core/src/main/java/org/xacml4j/v30/types/PortRange.java (readExternal)       │ SAFE    │ N/A
+   xacml-                                                                             │ UNSAFE  │ HIGH
+   pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionH │         │
+   andler.java                                                                        │         │
+   xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/RegExpFunctions.java │ UNSAFE  │ MEDIUM
+   (ReDoS & unbounded cache)                                                          │         │
+   xacml-core/src/main/java/org/xacml4j/v30/content/XPathProvider.java (missing FSP & │ UNSAFE  │ MEDIUM
+   evaluation limits)                                                                 │         │
+   xacml-test/src/main/java/org/xacml4j/v20/Xacml20TestUtility.java                   │ UNSAFE  │ LOW
+   xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java                   │ UNSAFE  │ LOW
+
+  Files opened:
+
+  • DOMUtil.java
+  • DOMUtilTest.java
+  • XmlContent.java
+  • JsonContent.java
+  • XPathProvider.java
+  • Content.java
+  • ContentTest.java
+  • Xacml20XPathTo30Transformer.java
+  • Entity.java
+  • IntegerVal.java
+  • DoubleVal.java
+  • PortRange.java
+  • TypeToString.java
+  • XPathFunctions.java
+  • RegExpFunctions.java
+  • PolicyImportTool.java
+  • MultipleResourcesViaXPathExpressionHandler.java
+  • XacmlPolicyUnmarshaller.java
+  • Xacml20RequestContextUnmarshaller.java
+  • Xacml30RequestContextFromJaxbToObjectModelMapper.java
+  • JsonRequestContextUnmarshaller.java
+  • CategoryAdapter.java
+  • AttributeDeserializer.java
+  • TypeToGSon.java
+  • Xacml20TestUtility.java
+  • Xacml30TestUtility.java
+
+  Tool calls used:

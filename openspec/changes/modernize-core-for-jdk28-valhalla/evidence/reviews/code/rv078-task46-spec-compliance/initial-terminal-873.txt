@@ -1,0 +1,41 @@
+Welcome to fish, the friendly interactiv
+e shell
+Type help for instructions on how to use
+ fish
+
+…n/modernize-c… *1 !217 ?86   11.0.32.1
+❮ cd '$HOME
+/Projects/Personal/xacml4j-worktrees/po
+licy4j' && NTM_SPAWN_ORDER=2 NTM_SPAWN_T
+OTAL=3 NTM_SPAWN_BATCH_ID='spawn-2026100
+
+  - Receipts agree: RED 252/63/2/7; GREEN 250/0/0/7; harness RED 5/3.
+  - GREEN covers three classes, inside a run that exited 1 on combining RED. No full xacml-core or reactor run
+    followed.
+  - GREEN receipts carry no source hashes. Scoped files' mtimes (latest 12:55:43) precede the receipt
+    (12:59:05): consistent, not proof.
+  - Three expectedResponse30* tests post-date harness RED (12:41:58 against 12:37:54) and have never run.
+    Desk-checked only.
+  - IIC020 in both suites and the IIC350/358 rows are not executed yet.
+  - IIC351–355 and IIC359 desk-checked: IEEE equality does not change their expected decisions.
+  - Standards text was not re-fetched. I relied on the decision record and rv077.
+
+  Verification run
+
+  rtk proxy shasum -a 256 twice; scoped rtk git status and rtk git diff HEAD; rtk rg; rtk proxy jq comparing
+  manifest-before.json with the CSV; file reads. No builds, tests, network or writes.
+
+  Residual risk
+
+  - The integer-divide return-type change rejects policies that fed its result to double functions.
+  - Overflow, union of three or more bags, and O(n·m) double scans are untested.
+  - Whole-engine compliance is not claimed.
+
+  DONE_REVIEW_OPUS_20261004
+
+✻ Worked for 12m 26s · done 1:15 PM
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯ 
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⏸ manual mode on · ? for shortcuts · ← 3 agents

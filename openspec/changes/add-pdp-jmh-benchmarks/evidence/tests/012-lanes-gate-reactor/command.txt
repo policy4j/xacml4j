@@ -1,0 +1,3 @@
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -o clean test
+rtk git status --porcelain -- xacml-conformance-tests     # empty
+ast-grep scan xacml-jmh/src/main xacml-pdp/src/main         # exit 0, no finding

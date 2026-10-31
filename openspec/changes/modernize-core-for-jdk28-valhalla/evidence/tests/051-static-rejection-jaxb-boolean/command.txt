@@ -1,0 +1,60 @@
+# Run from <repo>. No install, commit, br, task ticks, or issue closure.
+# Before edits: source hashes and existing reports (historical receipts, not a fresh baseline run).
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py initial
+
+# Tests first. Initial test setup mistakes are retained in these receipts.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=BooleanAttributeLexicalTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/01-boolean-red.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py modules 01-boolean-red BooleanAttributeLexicalTest
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=ConformanceStaticRejectionTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/02-harness-red.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py modules 02-harness-red ConformanceStaticRejectionTest
+
+# Corrected test setup, production still unchanged. Ignore failures ONLY to collect both red suites.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=BooleanAttributeLexicalTest,ConformanceStaticRejectionTest -Dsurefire.failIfNoSpecifiedTests=false -Dmaven.test.failure.ignore=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/03-focused-red.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py modules 03-focused-red BooleanAttributeLexicalTest,ConformanceStaticRejectionTest
+
+# Small fixes, then both focused suites green.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=BooleanAttributeLexicalTest,ConformanceStaticRejectionTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/04-focused-green.log test
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py modules 04-focused-green BooleanAttributeLexicalTest,ConformanceStaticRejectionTest
+
+# Enable only the four requested manifest rows; full clean gate with no failure-ignore flag.
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -version
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py snapshot 05-before-full-gate
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/05-full-reactor-clean-verify.log clean verify
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py modules 05-full-gate
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py cases 05-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py snapshot 05-after-full-gate
+
+# Final source/header/outcome audit, path redaction, and diff checks.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py audit
+rtk git diff --check
+# Whole-tree check reports existing whitespace in ExpressionTypeBuilder.java:96; that file is unchanged by this packet.
+rtk git diff --check -- xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java xacml-conformance-tests/src/test/manifest/conformance-manifest.csv xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromJaxbToObjectModelMapper.java
+ast-grep run --lang java --pattern 'BooleanVal.ofAny($ARG)' xacml-xml/src/main/java/org/xacml4j/v30/xml/BooleanAttributeValidationFilter.java
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py sanitize
+rtk git status --short
+rtk rg -n '/Users/|<user>|/home/' openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean -g '*.log' -g '*.json' -g '*.csv' -m 1
+# The user-id literal in this search is redacted as <user>.
+
+# Evidence rendering and final checks.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/render-evidence.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py snapshot 06-final-source
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py audit
+
+# Final audit detected seven concurrent core/PDP changes after gate 05 (exit 1).
+# Preserve those files; rerun the current full reactor before reporting.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py snapshot 07-before-full-gate
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/07-full-reactor-clean-verify.log clean verify
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py modules 07-full-gate
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py cases 07-case-results
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py snapshot 07-after-full-gate
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py audit
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py sanitize
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/render-evidence.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py snapshot 08-final-source
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean/capture-evidence.py audit
+rtk rg -n '/Users/|/home/' openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/051-static-rejection-jaxb-boolean -g '*.log' -g '*.json' -g '*.csv' -m 1
+
+# Native documentation tools (no shell wrapper):
+# Context7 resolve_library_id: Eclipse JAXB RI (no relevant result), then JAXB -> /jakartaee/jaxb-api.
+# Context7 query_docs: custom boolean conversion / validation events; SAX UnmarshallerHandler and XML sources.
+# Tavily extract: https://www.w3.org/TR/xmlschema-2/#boolean (lexical space and XML whitespace).

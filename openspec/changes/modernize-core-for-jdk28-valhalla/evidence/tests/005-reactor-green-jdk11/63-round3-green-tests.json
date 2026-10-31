@@ -1,0 +1,677 @@
+{
+  "results": [
+    {
+      "class": "HigherOrderVariadicFunctionsTest",
+      "tests": 52,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "mapTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfPreservesEveryBagPosition[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "unaryPredicateNeedsOnlyOneBag[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "emptyBagsHaveIdentityResults[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyAllowsAllPrimitiveOperands[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "variadicPredicateAcceptsMatchingOperandTypes[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfBagFirst[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyMixedCrossProduct[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "missingOperandsAreSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfThreeArgumentPredicate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapBagFirstPreservesOrderAndMultiplicity[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfPreservesEveryBagPosition[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapConcatenateWithPrimitive[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyThreeBags[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "allOfSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnySpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "referencedPredicateTypesAndReturnTypeAreChecked[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "packetBinaryPredicateWithThreeOperandsIsArityError[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "anyOfSpecExample[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionAtValidation[runtimeValidation=false]",
+          "problems": []
+        },
+        {
+          "name": "mapTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfPreservesEveryBagPosition[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "unaryPredicateNeedsOnlyOneBag[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "emptyBagsHaveIdentityResults[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyAllowsAllPrimitiveOperands[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "variadicPredicateAcceptsMatchingOperandTypes[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfBagFirst[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyMixedCrossProduct[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "missingOperandsAreSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfThreeArgumentPredicate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapBagFirstPreservesOrderAndMultiplicity[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfPreservesEveryBagPosition[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapConcatenateWithPrimitive[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnyThreeBags[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapNoBagIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfTwoBagsIsSyntaxErrorAndIndeterminate[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "allOfSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfAnySpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "referencedPredicateTypesAndReturnTypeAreChecked[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "packetBinaryPredicateWithThreeOperandsIsArityError[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "anyOfSpecExample[runtimeValidation=true]",
+          "problems": []
+        },
+        {
+          "name": "mapRejectsBagReturningFunctionAtValidation[runtimeValidation=true]",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "class": "HigherOrderVariadicInvocationTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "mixedValuesReachDeclaredExpressionArray",
+          "problems": []
+        },
+        {
+          "name": "mixedSequenceStillChecksMinimumAndExcludesFunctionReferences",
+          "problems": []
+        },
+        {
+          "name": "typedVariadicValidationIsUnchanged",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "class": "DurationFunctionIdentifierTest",
+      "tests": 72,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-set-equals]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:dayTimeDuration-set-equals]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:dayTimeDuration-set-equals]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-one-and-only]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag-size]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-is-in]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-bag]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-intersection]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-union]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-subset]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-at-least-one-member-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-set-equals]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:yearMonthDuration-set-equals]",
+          "problems": []
+        },
+        {
+          "name": "resolvesStandardAndLegacyNamesToSameFunction[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:yearMonthDuration-set-equals]",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "class": "HigherOrderFunctionIdentifierTest",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:any-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:any-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:any-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:any-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:all-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:all-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:all-of]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:all-of]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:any-of-any]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:any-of-any]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:any-of-any]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:any-of-any]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:3.0:function:map]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:3.0:function:map]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:map]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:map]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:all-of-any]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:all-of-any]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:any-of-all]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:any-of-all]",
+          "problems": []
+        },
+        {
+          "name": "evaluatesStandardAndLegacyNamesIdentically[urn:oasis:names:tc:xacml:1.0:function:all-of-all]",
+          "problems": []
+        },
+        {
+          "name": "resolvesEveryStandardHigherOrderName[urn:oasis:names:tc:xacml:1.0:function:all-of-all]",
+          "problems": []
+        }
+      ]
+    },
+    {
+      "class": "HigherOrderFunctionsTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        {
+          "name": "testAllOfAll",
+          "problems": []
+        },
+        {
+          "name": "testAllOfAny",
+          "problems": []
+        },
+        {
+          "name": "testAnyOf",
+          "problems": []
+        },
+        {
+          "name": "testMapWithValidArguments",
+          "problems": []
+        },
+        {
+          "name": "testAnyOfAllIIC168",
+          "problems": []
+        },
+        {
+          "name": "testAnyOfAll",
+          "problems": []
+        }
+      ]
+    }
+  ],
+  "production_hashes": {
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java": "61f22b3dfcd90f400f0baf374fc4b9aa8989006865ea151c45681cac5c547309",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java": "674ff224d0848d1e0abcd3640b62ec46bb222319b9c50b03ce87c4456f340320",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java": "e4bb1dd13f27c6eb2b46c32daf3a56d288c598772ac1497c7871bd7f54a91af9",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java": "c8e30bb354cbe9b61969ed1602d1621df4f57807beb5be30b53dd1c3a8da6d9b",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java": "1f2db3cdf1f754a6db39929490d369b3f6e594ec7bae68b80d2fd61207e73e74"
+  },
+  "production_matches_before_snapshot": false
+}

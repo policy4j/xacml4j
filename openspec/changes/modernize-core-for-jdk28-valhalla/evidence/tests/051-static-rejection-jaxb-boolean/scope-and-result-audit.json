@@ -1,0 +1,188 @@
+{
+  "source_files_changed": [
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceStaticRejectionTest.java",
+    "xacml-conformance-tests/src/test/manifest/conformance-manifest.csv",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/BooleanAttributeValidationFilter.java",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromJaxbToObjectModelMapper.java",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanAttributeLexicalTest.java"
+  ],
+  "concurrent_source_changes": [
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/DefaultXacml30DecisionCombiningAlgorithms.java",
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctions.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/combine/DecisionCombiningAlgorithmRegistryTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionProviderServiceLoaderTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AttributeDesignatorFunctionTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/TypeRegistryTest.java",
+    "xacml-pdp/src/test/java/org/xacml4j/v30/pdp/AttributeResolutionSafetyNetTest.java"
+  ],
+  "final_gate": "07",
+  "build_source_changes": [],
+  "headers": {
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceCaseRunner.java": "existing header byte-identical",
+    "xacml-conformance-tests/src/test/java/org/xacml4j/v20/ConformanceStaticRejectionTest.java": "new file uses module LGPL header",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java": "existing header byte-identical",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/BooleanAttributeValidationFilter.java": "new file uses module LGPL header",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java": "existing header byte-identical",
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromJaxbToObjectModelMapper.java": "existing header byte-identical",
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanAttributeLexicalTest.java": "new file uses module LGPL header"
+  },
+  "per_class_count_changes": {
+    "xacml-core": {
+      "org.xacml4j.v30.policy.ConditionSafetyNetTest": {
+        "existing_report": null,
+        "fresh_gate": {
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "org.xacml4j.v30.policy.combine.DecisionCombiningAlgorithmRegistryTest": {
+        "existing_report": {
+          "tests": 24,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1
+        },
+        "fresh_gate": {
+          "tests": 25,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 1
+        }
+      },
+      "org.xacml4j.v30.policy.function.FunctionProviderServiceLoaderTest": {
+        "existing_report": {
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "fresh_gate": {
+          "tests": 239,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 2
+        }
+      },
+      "org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctionTest": {
+        "existing_report": {
+          "tests": 2,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        "fresh_gate": {
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "org.xacml4j.v30.types.TypeRegistryTest": {
+        "existing_report": {
+          "tests": 62,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 2
+        },
+        "fresh_gate": {
+          "tests": 74,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 3
+        }
+      }
+    },
+    "xacml-xml": {
+      "org.xacml4j.v30.xml.BooleanAttributeLexicalTest": {
+        "existing_report": null,
+        "fresh_gate": {
+          "tests": 85,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      }
+    },
+    "xacml-pdp": {
+      "org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest": {
+        "existing_report": null,
+        "fresh_gate": {
+          "tests": 21,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 4
+        }
+      }
+    },
+    "xacml-conformance-tests": {
+      "org.xacml4j.v20.ConformanceStaticRejectionTest": {
+        "existing_report": null,
+        "fresh_gate": {
+          "tests": 16,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      },
+      "org.xacml4j.v20.Xacml20ConformanceTest": {
+        "existing_report": {
+          "tests": 375,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 12
+        },
+        "fresh_gate": {
+          "tests": 375,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 10
+        }
+      },
+      "org.xacml4j.v20.Xacml30ConformanceTest": {
+        "existing_report": {
+          "tests": 488,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 9
+        },
+        "fresh_gate": {
+          "tests": 488,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 7
+        }
+      }
+    }
+  },
+  "case_outcome_changes": [
+    {
+      "case": "oasis20/IIA004",
+      "before": "skipped",
+      "after": "passed",
+      "rejection": "CONFORMANCE REJECTION oasis20/IIA004: org.xacml4j.v30.SyntaxException: Policy AttributeDesignator is missing AttributeId"
+    },
+    {
+      "case": "oasis20/IIC012",
+      "before": "skipped",
+      "after": "passed",
+      "rejection": "CONFORMANCE REJECTION oasis20/IIC012: org.xacml4j.v30.SyntaxException: Condition expects an expression with=\"boolean\" return value, but got expression with return value type=\"integer\""
+    },
+    {
+      "case": "oasis30/IIA004",
+      "before": "skipped",
+      "after": "passed",
+      "rejection": "CONFORMANCE REJECTION oasis30/IIA004: org.xacml4j.v30.SyntaxException: Policy AttributeDesignator is missing AttributeId"
+    },
+    {
+      "case": "oasis30/IIC012",
+      "before": "skipped",
+      "after": "passed",
+      "rejection": "CONFORMANCE REJECTION oasis30/IIC012: java.lang.IllegalArgumentException: Condition expects an expression with=\"boolean\" return value, but got expression with return value type=\"integer\""
+    }
+  ]
+}

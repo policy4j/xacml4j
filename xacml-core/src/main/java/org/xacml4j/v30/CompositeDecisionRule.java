@@ -29,12 +29,11 @@ package org.xacml4j.v30;
  */
 public interface CompositeDecisionRule extends DecisionRule
 {
-
 	/**
 	 * Gets a {@link CompositeDecisionRuleIDReference}
 	 * to this composite decision rule
 	 *
-	 * @return {@link CompositeDecisionRuleIDReference} instance
+	 * @return {@link CompositeDecisionRuleIDReference} defaultProvider
 	 * pointing to this composite decision rule
 	 */
 	CompositeDecisionRuleIDReference getReference();

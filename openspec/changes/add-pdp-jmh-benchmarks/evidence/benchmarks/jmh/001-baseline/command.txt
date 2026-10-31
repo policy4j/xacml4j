@@ -1,0 +1,4 @@
+# both commands of the Benchmark Plan (design), jar from mvn -B -o -q -pl xacml-jmh -am -DskipTests package
+"$(jenv prefix 21)/bin/java" -jar xacml-jmh/target/benchmarks.jar -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff <run>/results-default.json -o <run>/jmh-default.log
+"$(jenv prefix 21)/bin/java" -jar xacml-jmh/target/benchmarks.jar PdpDecideBenchmark -p store=in-memory -p corpus=synthetic:10,synthetic:1000 -p request=first-permit,first-deny,middle-permit,middle-deny,last-permit,last-deny,unknown-notapplicable -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true -rf json -rff <run>/results-scaling.json -o <run>/jmh-scaling.log
+# runner: run-measurements.sh (scratch), after the group 1 pair of optimize-pdp-evaluation; env: env_record.py

@@ -1,0 +1,512 @@
+[
+  {
+    "iteration": 1,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/01.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 2,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/02.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 3,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/03.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 4,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/04.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 5,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/05.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 6,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/06.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 7,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/07.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 8,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/08.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 9,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/09.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 10,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/10.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 11,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/11.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 12,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/12.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 13,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/13.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 14,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/14.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 15,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/15.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 16,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/16.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 17,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/17.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 18,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/18.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 19,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/19.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 20,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/20.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 21,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/21.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 22,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/22.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 23,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/23.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 24,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/24.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 25,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/25.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 26,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/26.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 27,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/27.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 28,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/28.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 29,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/29.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 30,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/87-repository-after/30.txt",
+    "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  }
+]

@@ -1,0 +1,386 @@
+package org.xacml4j.v30.policy.function.impl;
+
+/*
+ * #%L
+ * Xacml4J Core Engine Implementation
+ * %%
+ * Copyright (C) 2009 - 2014 Xacml4J.org
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Lesser Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Lesser Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/lgpl-3.0.html>.
+ * #L%
+ */
+
+import static org.easymock.EasyMock.capture;
+import static org.easymock.EasyMock.createNiceMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import org.easymock.Capture;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.EvaluationContext;
+import org.xacml4j.v30.EvaluationException;
+import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.Status;
+import org.xacml4j.v30.SyntaxException;
+import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.policy.Apply;
+import org.xacml4j.v30.policy.Condition;
+import org.xacml4j.v30.policy.ConditionResult;
+import org.xacml4j.v30.policy.FunctionReference;
+import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.function.FunctionInvocationFactory;
+import org.xacml4j.v30.policy.function.FunctionProvider;
+import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.policy.function.XacmlFuncParam;
+import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
+import org.xacml4j.v30.policy.function.XacmlFuncSpec;
+import org.xacml4j.v30.types.BooleanVal;
+import org.xacml4j.v30.types.StringVal;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.XacmlTypes;
+
+/**
+ * XACML 3.0 A.3.12: substitute the one bag in its original argument position;
+ * any-of-any takes the cross product of every bag. All calls use Apply and
+ * the default provider with runtime parameter checking both disabled/enabled.
+ * https://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html
+ */
+@RunWith(Parameterized.class)
+public class HigherOrderVariadicFunctionsTest
+{
+	private static final FunctionProvider FUNCTIONS =
+			FunctionProviderBuilder.builder().withDefaultFunctions().build();
+	private final boolean runtimeValidation;
+	private EvaluationContext context;
+	private Capture<Status> status;
+
+	public HigherOrderVariadicFunctionsTest(boolean runtimeValidation)
+	{
+		this.runtimeValidation = runtimeValidation;
+	}
+
+	@Parameterized.Parameters(name="runtimeValidation={0}")
+	public static Collection<Object[]> modes()
+	{
+		return Arrays.asList(new Object[]{false}, new Object[]{true});
+	}
+
+	@Before
+	public void context()
+	{
+		context = createNiceMock(EvaluationContext.class);
+		expect(context.isValidateFuncParamsAtRuntime()).andStubReturn(runtimeValidation);
+		status = Capture.newInstance();
+		context.setEvaluationStatus(capture(status));
+		expectLastCall().anyTimes();
+		replay(context);
+	}
+
+	@Test
+	public void anyOfSpecExample() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of", ref("string-equal"), string("Paul"),
+				strings("John", "Paul", "George", "Ringo"));
+	}
+
+	@Test
+	public void anyOfThreeArgumentPredicate() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of", orderedStrings(), string("prefix"),
+				string("suffix"), strings("other", "match"));
+	}
+
+	@Test
+	public void anyOfBagFirst() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of", ref("string-equal"), strings("a", "b"), string("b"));
+	}
+
+	@Test
+	public void anyOfPreservesEveryBagPosition() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of", orderedStrings(), strings("other", "prefix"),
+				string("suffix"), string("match"));
+		assertValue(BooleanVal.of(true), "any-of", orderedStrings(), string("prefix"),
+				strings("other", "suffix"), string("match"));
+		assertValue(BooleanVal.of(false), "any-of", orderedStrings(), string("suffix"),
+				string("prefix"), strings("match"));
+	}
+
+	@Test
+	public void allOfSpecExample() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "all-of", ref("integer-greater-than"), integer(10), integers(9, 3, 4, 2));
+	}
+
+	@Test
+	public void allOfPreservesEveryBagPosition() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "all-of", orderedStrings(), strings("prefix", "prefix"),
+				string("suffix"), string("match"));
+		assertValue(BooleanVal.of(true), "all-of", orderedStrings(), string("prefix"),
+				strings("suffix", "suffix"), string("match"));
+		assertValue(BooleanVal.of(false), "all-of", orderedStrings(), string("prefix"),
+				string("suffix"), strings("match", "other"));
+	}
+
+	@Test
+	public void unaryPredicateNeedsOnlyOneBag() throws Exception
+	{
+		FunctionReference unary = testRef("nonEmpty", StringVal.class);
+		assertValue(BooleanVal.of(true), "any-of", unary, strings("", "a"));
+		assertValue(BooleanVal.of(false), "all-of", unary, strings("a", ""));
+	}
+
+	@Test
+	public void variadicPredicateAcceptsMatchingOperandTypes() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of", ref("and"), BooleanVal.of(true),
+				XacmlTypes.BOOLEAN.bagOf(BooleanVal.of(false), BooleanVal.of(true)), BooleanVal.of(true));
+	}
+
+	@Test
+	public void anyOfAnySpecExample() throws Exception
+	{
+		// The normative example has two bags, not a primitive plus two bags.
+		assertValue(BooleanVal.of(true), "any-of-any", ref("string-equal"),
+				strings("Ringo", "Mary"), strings("John", "Paul", "George", "Ringo"));
+	}
+
+	@Test
+	public void anyOfAnyMixedCrossProduct() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of-any", orderedStrings(), string("prefix"),
+				strings("other", "suffix"), strings("other", "match"));
+		assertValue(BooleanVal.of(false), "any-of-any", orderedStrings(), string("prefix"),
+				strings("suffix"), strings("other"));
+	}
+
+	@Test
+	public void anyOfAnyThreeBags() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of-any", orderedStrings(), strings("other", "prefix"),
+				strings("other", "suffix"), strings("other", "match"));
+	}
+
+	@Test
+	public void anyOfAnyAllowsAllPrimitiveOperands() throws Exception
+	{
+		assertValue(BooleanVal.of(true), "any-of-any", ref("string-equal"), string("a"), string("a"));
+		assertValue(BooleanVal.of(false), "any-of-any", ref("string-equal"), string("a"), string("b"));
+	}
+
+	@Test
+	public void mapSpecExample() throws Exception
+	{
+		assertValue(strings("hello", "world!"), "map", ref("string-normalize-to-lower-case"), strings("Hello", "World!"));
+	}
+
+	@Test
+	public void mapConcatenateWithPrimitive() throws Exception
+	{
+		assertValue(strings("Hello A", "Hello B"), "map", ref("string-concatenate", "2.0"),
+				string("Hello "), strings("A", "B"));
+	}
+
+	@Test
+	public void mapBagFirstPreservesOrderAndMultiplicity() throws Exception
+	{
+		assertValue(strings("A!", "A!", "B!"), "map", ref("string-concatenate", "2.0"),
+				strings("A", "A", "B"), string("!"));
+	}
+
+	@Test
+	public void emptyBagsHaveIdentityResults() throws Exception
+	{
+		assertValue(BooleanVal.of(false), "any-of", ref("string-equal"), string("a"), strings());
+		assertValue(BooleanVal.of(true), "all-of", ref("string-equal"), string("a"), strings());
+		assertValue(BooleanVal.of(false), "any-of-any", ref("string-equal"), strings(), strings("a"));
+		assertValue(strings(), "map", ref("string-normalize-to-lower-case"), strings());
+	}
+
+	@Test
+	public void anyOfNoBagIsSyntaxErrorAndIndeterminate() throws Exception
+	{
+		assertInvalid("any-of", ref("string-equal"), string("a"), string("a"));
+	}
+
+	@Test
+	public void allOfNoBagIsSyntaxErrorAndIndeterminate() throws Exception
+	{
+		assertInvalid("all-of", ref("string-equal"), string("a"), string("a"));
+	}
+
+	@Test
+	public void mapNoBagIsSyntaxErrorAndIndeterminate() throws Exception
+	{
+		assertInvalid("map", ref("string-normalize-to-lower-case"), string("a"));
+	}
+
+	@Test
+	public void anyOfTwoBagsIsSyntaxErrorAndIndeterminate() throws Exception
+	{
+		assertInvalid("any-of", ref("string-equal"), strings("a"), strings("a"));
+	}
+
+	@Test
+	public void allOfTwoBagsIsSyntaxErrorAndIndeterminate() throws Exception
+	{
+		assertInvalid("all-of", ref("string-equal"), strings("a"), strings("a"));
+	}
+
+	@Test
+	public void mapTwoBagsIsSyntaxErrorAndIndeterminate() throws Exception
+	{
+		assertInvalid("map", ref("string-concatenate", "2.0"), strings("a"), strings("b"));
+	}
+
+	@Test
+	public void missingOperandsAreSyntaxErrorAndIndeterminate() throws Exception
+	{
+		assertInvalid("any-of", ref("string-equal"));
+		assertInvalid("all-of", ref("string-equal"));
+		assertInvalid("any-of-any", ref("string-equal"));
+		assertInvalid("map", ref("string-normalize-to-lower-case"));
+	}
+
+	@Test
+	public void packetBinaryPredicateWithThreeOperandsIsArityError() throws Exception
+	{
+		assertInvalid("any-of-any", ref("string-equal"), string("Ringo"),
+				strings("John", "Paul"), strings("George", "Ringo"));
+	}
+
+	@Test
+	public void referencedPredicateTypesAndReturnTypeAreChecked() throws Exception
+	{
+		assertInvalid("any-of", ref("string-equal"), integer(1), strings("a"));
+		assertInvalid("any-of", ref("string-equal"), string("a"), integers());
+		assertInvalid("any-of", ref("string-normalize-to-lower-case"), strings("a"));
+	}
+
+	@Test
+	public void mapRejectsBagReturningFunctionAtValidation()
+	{
+		FunctionSpec spec = higher("map");
+		List<Expression> arguments = Arrays.asList(ref("string-bag"), strings("a"));
+		assertFalse(spec.validateParameters(arguments));
+		assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(arguments));
+	}
+
+	private void assertValue(ValueExp expected, String operation, Expression... arguments) throws Exception
+	{
+		FunctionSpec spec = higher(operation);
+		spec.validateParametersAndThrow(Arrays.asList(arguments));
+		Apply apply = Apply.builder(spec).param(arguments).build();
+		assertEquals(expected.getEvaluatesTo(), apply.getEvaluatesTo());
+		assertEquals(expected, apply.evaluate(context));
+	}
+
+	private void assertInvalid(String operation, Expression... arguments) throws Exception
+	{
+		FunctionSpec spec = higher(operation);
+		List<Expression> params = Arrays.asList(arguments);
+		assertFalse("Invalid parameters accepted for " + operation, spec.validateParameters(params));
+		assertThrows(SyntaxException.class, () -> spec.validateParametersAndThrow(params));
+		Apply apply = Apply.builder(spec).param(arguments).build();
+		assertThrows(EvaluationException.class, () -> apply.evaluate(context));
+		Expression predicate = operation.equals("map")
+				? Apply.builder(FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:1.0:function:string-is-in").get())
+						.param(string("a"), apply).build() : apply;
+		assertEquals(ConditionResult.INDETERMINATE, new Condition(predicate).evaluate(context));
+		assertTrue("Indeterminate must carry an evaluation status", status.hasCaptured());
+	}
+
+	private static FunctionSpec higher(String operation)
+	{
+		return FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:3.0:function:" + operation).get();
+	}
+
+	private static FunctionReference ref(String operation)
+	{
+		return ref(operation, "1.0");
+	}
+
+	private static FunctionReference ref(String operation, String version)
+	{
+		return new FunctionReference(FUNCTIONS.getFunction("urn:oasis:names:tc:xacml:" + version + ":function:" + operation).get());
+	}
+
+	private static StringVal string(String value)
+	{
+		return StringVal.of(value);
+	}
+
+	private static Value integer(long value)
+	{
+		return XacmlTypes.INTEGER.ofAny(value);
+	}
+
+	private static BagOfValues strings(String... values)
+	{
+		return XacmlTypes.STRING.bagBuilder().value((Object[]) values).build();
+	}
+
+	private static BagOfValues integers(Integer... values)
+	{
+		return XacmlTypes.INTEGER.bagBuilder().value((Object[]) values).build();
+	}
+
+	private static FunctionReference orderedStrings() throws Exception
+	{
+		return testRef("orderedStrings", StringVal.class, StringVal.class, StringVal.class);
+	}
+
+	private static FunctionReference testRef(String name, Class<?>... types) throws Exception
+	{
+		return new FunctionReference(new JavaMethodToFunctionSpecConverter(FunctionInvocationFactory.defaultFactory())
+				.createFunctionSpec(Predicates.class.getMethod(name, types)));
+	}
+
+	public static class Predicates
+	{
+		@XacmlFuncSpec(id="urn:xacml4j:test:ordered-strings")
+		@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+		public static BooleanVal orderedStrings(
+				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal prefix,
+				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal suffix,
+				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal element)
+		{
+			return BooleanVal.of(prefix.get().equals("prefix") && suffix.get().equals("suffix") && element.get().equals("match"));
+		}
+
+		@XacmlFuncSpec(id="urn:xacml4j:test:non-empty")
+		@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")
+		public static BooleanVal nonEmpty(
+				@XacmlFuncParam(typeId="http://www.w3.org/2001/XMLSchema#string") StringVal value)
+		{
+			return BooleanVal.of(!value.get().isEmpty());
+		}
+	}
+}

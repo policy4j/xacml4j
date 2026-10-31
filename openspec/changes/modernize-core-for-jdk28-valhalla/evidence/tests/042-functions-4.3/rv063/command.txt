@@ -1,0 +1,19 @@
+# 042 rv063 fixes for review rv063 (4.38, 4.41, 4.40)
+# Lane: <lane>
+# The lane directory is not a git checkout, so git status was not available here.
+# JDK: java 21.0.6 (Oracle GraalVM 21.0.6+8.1), selected with `jenv prefix 21`.
+# Every Maven command starts with `cd <lane> &&`. Offline. License header rewrite skipped.
+# Beads were not claimed, noted, or closed. The conductor owns them.
+
+# Focused red, before production edits. Log: red.log.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-core -Dtest=FunctionSafetyNet43Test,RegularExpressionFunctionsTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv063/red.log test
+
+# Focused green, after the three production edits. Log: green.log.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-core -Dtest=FunctionSafetyNet43Test,RegularExpressionFunctionsTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv063/green.log test
+
+# Module gate. AnyURI lexical exclusion, same pattern as rv056.
+# BUILD SUCCESS. Log: module-clean-test-excluding-anyuri.log.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-core,xacml-pdp -am -Dsurefire.excludes=**/AnyURI*LexicalTest.java -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv063/module-clean-test-excluding-anyuri.log clean test
+
+# Named conformance suites. BUILD SUCCESS. Log: conformance.log.
+cd <lane> && JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -o -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceTest,Xacml30ConformanceTest,RSA2008InteropTest,XacmlExampleTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/042-functions-4.3/rv063/conformance.log test

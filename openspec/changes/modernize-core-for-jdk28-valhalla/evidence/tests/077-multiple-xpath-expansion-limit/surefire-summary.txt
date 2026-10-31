@@ -1,0 +1,21 @@
+JDK 21 full reactor, mvn -Dlicense.skipUpdateLicense=true verify from <repo>. Final tree of run 077; run 078 (bead the.4.51) also in the tree.
+
+xacml-core                 Tests run: 6312, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 149, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,765 tests, 0 failures, 0 errors, 22 skipped.
+xacml-pdp 149 holds MultipleResourcesXPathExpansionLimitTest (12 tests). Conformance 937 with 12 skipped, unchanged.
+
+== Gate 2: final tree of run 077 (one more test after the reviews); runs 078 and 079 also in the tree ==
+
+xacml-core                 Tests run: 6319, Failures: 0, Errors: 0, Skipped: 6
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,774 tests, 0 failures, 0 errors, 22 skipped.
+xacml-pdp 151 holds MultipleResourcesXPathExpansionLimitTest (13 tests).

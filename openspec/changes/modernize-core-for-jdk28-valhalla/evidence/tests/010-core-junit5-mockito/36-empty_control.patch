@@ -1,0 +1,14 @@
+--- before/xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java
++++ mutant/xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java
+@@ -169,9 +169,10 @@
+ 	}
+ 
+ 	@Test
+-	public void testParameterVarArgMinAndMaxEquals()
++	public void testParameterVarArgMinAndMaxEquals() throws Exception
+ 	{
+ 		FunctionSpecBuilder b = FunctionSpecBuilder.builder("testFunc");
++		impl.invoke(specSameTypeArgs, null, new Expression[0]);
+ 		assertThrows(IllegalArgumentException.class, () -> b.varArg(XacmlTypes.INTEGER, 3, 3).param(XacmlTypes.INTEGER));
+ 		verifyNoMoreInteractions(impl);
+ 	}

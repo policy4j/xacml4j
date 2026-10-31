@@ -1,0 +1,129 @@
+[
+  {
+    "file": "xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java",
+    "baseline": "a8a90d46",
+    "baseline_line": 58,
+    "current_line": 58,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java",
+    "snippet": [
+      "\tfinal static String MULTIPLE_CONTENT_SELECTOR = \"urn:oasis:names:tc:xacml:3.0:profile:multiple:content-selector\";"
+    ]
+  },
+  {
+    "file": "xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE301Request.xml",
+    "baseline": "a8a90d46",
+    "baseline_line": 65,
+    "current_line": 65,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE301Request.xml",
+    "snippet": [
+      "    <Attribute IncludeInResult=\"true\" AttributeId=\"urn:oasis:names:tc:xacml:3.0:multiple:content-selector\">"
+    ]
+  },
+  {
+    "file": "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+    "baseline": "a8a90d46",
+    "baseline_line": 83,
+    "current_line": 83,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+    "snippet": [
+      "\tpublic static void assertAttributesType(List<AttributesType> a, List<AttributesType> b){",
+      "\t\tassertEquals(a.size(), b.size());",
+      "\t\tfor(int i = 0; i < a.size(); i++){",
+      "\t\t\tAttributesType a1 = a.get(i);",
+      "\t\t\tAttributesType b1 = b.get(i);",
+      "\t\t\tassertEquals(a1.getCategory(), b1.getCategory());",
+      "\t\t\tassertEquals(a1.getId(), b1.getId());",
+      "\t\t\tassertAttributeType(a1.getAttribute(), b1.getAttribute());",
+      "\t\t\tassertEquals(a1.getContent().getContent(), b1.getContent().getContent());",
+      "\t\t}",
+      "\t}"
+    ]
+  },
+  {
+    "file": "xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+    "baseline": "a8a90d46",
+    "baseline_line": 74,
+    "current_line": 74,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java",
+    "snippet": [
+      "\tpublic static void assertResults(ResultType a, ResultType b)",
+      "\t{",
+      "\t\tassertEquals(a.getDecision(), b.getDecision());",
+      "\t\tassertPolicyIdentifierList(a.getPolicyIdentifierList(), b.getPolicyIdentifierList());",
+      "\t\tassertAttributesType(a.getAttributes(), b.getAttributes());",
+      "\t\tassertStatus(a.getStatus(), b.getStatus());",
+      "\t\tassertObligations(a.getObligations(), b.getObligations());",
+      "\t}",
+      ""
+    ]
+  },
+  {
+    "file": "xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java",
+    "baseline": "a8a90d46",
+    "baseline_line": 489,
+    "current_line": 491,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java",
+    "snippet": [
+      "\tprivate RequestReference create(RequestReferenceType m)",
+      "\t{",
+      "\t\tRequestReference.Builder b = RequestReference.builder();",
+      "\t\tfor(AttributesReferenceType r : m.getAttributesReference()){",
+      "\t\t\tb.reference((String)r.getReferenceId());",
+      "\t\t}",
+      "\t\treturn b.build();",
+      "\t}"
+    ]
+  },
+  {
+    "file": "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java",
+    "baseline": "a8a90d46",
+    "baseline_line": 291,
+    "current_line": 296,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java",
+    "snippet": [
+      "    public static Duration toXmlDayTimeDuration(java.time.Duration d) {",
+      "        return DF_FACTORY.newDurationDayTime(!d.isNegative(), Long.valueOf(d.toDaysPart()).intValue(), d.toHoursPart(), d.toMinutesPart(), d.toSecondsPart());",
+      "    }"
+    ]
+  },
+  {
+    "file": "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java",
+    "baseline": "a8a90d46",
+    "baseline_line": 74,
+    "current_line": 74,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java",
+    "snippet": [
+      "    public static boolean isZero(Duration d){",
+      "        assert DF_FACTORY != null;",
+      "        return isUndefinedOrZero(d.getYears()) &&",
+      "                isUndefinedOrZero(d.getMonths()) &&",
+      "                isUndefinedOrZero(d.getDays()) &&",
+      "                isUndefinedOrZero(d.getHours()) &&",
+      "                isUndefinedOrZero(d.getMinutes()) &&",
+      "                isUndefinedOrZero(d.getSeconds());",
+      "",
+      "    }",
+      ""
+    ]
+  },
+  {
+    "file": "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Duration.java",
+    "baseline": "a8a90d46",
+    "baseline_line": 59,
+    "current_line": 59,
+    "snippet_unchanged": true,
+    "command": "rtk proxy git show a8a90d46:xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Duration.java",
+    "snippet": [
+      "    public final int getSeconds() {",
+      "        return duration.getSeconds() == DatatypeConstants.FIELD_UNDEFINED?0:duration.getSeconds();",
+      "    }"
+    ]
+  }
+]

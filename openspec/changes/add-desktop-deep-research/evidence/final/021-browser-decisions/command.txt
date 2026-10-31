@@ -1,0 +1,10 @@
+Conversation receipt; no shell command supplies the maintainer's decisions.
+
+The conductor gave a written guide to the five questions the maintainer
+named (order, options, a recommendation for each), then put eight questions
+in two rounds through the client's question dialog. Each question was
+single choice with a free-text alternative. `receipt.json` holds every
+question, the options shown and the selected answer.
+
+The API call that the sixth answer authorizes is run
+`builds/022-api-route-trial-openai/`.

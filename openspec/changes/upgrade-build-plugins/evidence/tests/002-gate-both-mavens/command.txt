@@ -1,0 +1,6 @@
+# <maven-3.9.16> is IntelliJ's bundled Maven; Maven 3.10.0 is the Homebrew `mvn`.
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B clean test       # online, through the configured mirror
+PATH="<maven-3.9.16>/bin:$PATH" JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -o clean test
+JAVA_HOME="$(jenv prefix 21)" rtk proxy mvn -B -o clean test                                     # Maven 3.10.0
+rtk git status --porcelain -- . ':!openspec' ':!.beads'
+# rtk proxy keeps the full log; rtk mvn condenses it, also into a file.

@@ -1,0 +1,10 @@
+--- before/xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java
++++ mutant/xacml-core/src/test/java/org/xacml4j/v30/policy/PolicyIDReferenceTest.java
+@@ -100,6 +100,7 @@
+ 		order.verify(context).resolve(ref);
+ 		verifyNoMoreInteractions(context, algorithm);
+ 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));
++		context.resolve(ref);
+ 		order.verify(context).getCurrentPolicy();
+ 		verifyNoMoreInteractions(context, algorithm);
+ 		assertEquals(Decision.INDETERMINATE, ref.evaluate(policyRefContext));

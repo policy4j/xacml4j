@@ -1,0 +1,36 @@
+# Independent Code Review Commands and Inspection Provenance (rv201-value-type-single-array-argon)
+
+Reviewer: Agy Gemini 4 Argon High (agent agyx_1, actor ntm-argon-g1)
+Packet: .ntm/packets/remaining-g1-20261029/argon-review-value-type.md (plain review packet; no separate persona/profile)
+Beads issue: policy4j-the.5.7.1 (parent task: policy4j-the.5.7, OpenSpec task 5.7 in openspec/changes/modernize-core-for-jdk28-valhalla)
+Author under review: Codex GPT-6 Luna high (cod_4 worktree, base commit 759d90a6c75510d55127d8e22870f9edd985c991)
+Baseline worktree (agyx_1) HEAD: 759d90a6c75510d55127d8e22870f9edd985c991
+
+## Read-Only Inspection Commands Executed by Reviewer
+
+1. Manifest, candidate, live cod_4, and baseline (759d90a6) SHA-256 verification:
+   rtk python3 -c '<sha256 comparison across .ntm/packets/remaining-g1-20261029/value-type-manifest.json, .ntm/packets/remaining-g1-20261029/value-type-candidate/, cod_4 worktree, and agyx_1 759d90a6 baseline>'
+
+2. Call-site and implementation search in baseline tree:
+   rtk rg -n '(\.apply\(|Function<Object,\s*Value)' xacml-core xacml-pdp xacml-json xacml-xml xacml-test
+   rtk rg -n 'implements\s+.*ValueType' xacml-core xacml-pdp xacml-json xacml-xml xacml-test
+
+3. Beads task metadata inspection (read-only):
+   rtk br show policy4j-the.5.7.1 --json
+
+4. Direct file reads (native read_file):
+   - .ntm/packets/remaining-g1-20261029/argon-review-value-type.md
+   - .ntm/packets/remaining-g1-20261029/value-type-manifest.json
+   - .ntm/packets/remaining-g1-20261029/value-type-candidate/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java
+   - .ntm/packets/remaining-g1-20261029/value-type-candidate/xacml-core/src/test/java/org/xacml4j/v30/types/ValueTypeApplyTest.java
+   - cod_4: xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java
+   - cod_4: xacml-core/src/test/java/org/xacml4j/v30/types/ValueTypeApplyTest.java
+   - cod_4: openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/201-value-type-single-array/{summary.md,command.txt,candidate-ready.json,focused-red-mvn310-clean.log,focused-green-mvn310-clean.log,core-suite-green-mvn310-clean.log}
+   - baseline (759d90a6): xacml-core/src/main/java/org/xacml4j/v30/types/{ValueType.java,XacmlTypes.java,StringVal.java,IntegerVal.java,BooleanVal.java,Path.java,DynamicType.java}
+   - baseline (759d90a6): openspec/changes/modernize-core-for-jdk28-valhalla/{proposal.md,design.md,tasks.md}
+
+## Unrun Gates
+
+- Reviewer builds and test executions: UNRUN (strictly read-only review lane).
+- Full reactor test suite and conformance suite (xacml-conformance-tests): UNRUN (owned by conductor post-review gate).
+- JMH benchmarks: UNRUN / NOT APPLICABLE (correctness fix for an input that previously threw SyntaxException; no speedup claim).

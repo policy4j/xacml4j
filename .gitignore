@@ -13,20 +13,19 @@
 /xacml-core/target
 /xacml-core/xacml-core.iml
 
-# /xacml-spring/
-/xacml-spring/target
-/xacml-spring/.classpath
-/xacml-spring/.project
-/xacml-spring/.settings
-/xacml-spring/.springBeans
-/xacml-spring/xacml-spring.iml
-
 # /xacml-test/
 /xacml-test/.project
 /xacml-test/.classpath
 /xacml-test/.settings
 /xacml-test/target
 /xacml-test/xacml-test.iml
+
+# /xacml-pdp/
+/xacml-pdp/.classpath
+/xacml-pdp/.project
+/xacml-pdp/target
+/xacml-pdp/.settings
+/xacml-pdp/xacml-pdp.iml
 
 # /xacml-json/
 /xacml-json/.classpath
@@ -35,9 +34,40 @@
 /xacml-json/.settings
 /xacml-json/xacml-json.iml
 
+# /xacml-xml/
+/xacml-xml/.classpath
+/xacml-xml/.project
+/xacml-xml/target
+/xacml-xml/.settings
+/xacml-xml/xacml-json.iml
+
+# /xacml-xml-jaxb/
+/xacml-xml-jaxb/.classpath
+/xacml-xml-jaxb/.project
+/xacml-xml-jaxb/target
+/xacml-xml-jaxb/.settings
+/xacml-xml-jaxb/xacml-json.iml
+
 # /xacml-conformance-tests/
 /xacml-conformance-tests/.classpath
 /xacml-conformance-tests/.project
 /xacml-conformance-tests/target
 /xacml-conformance-tests/.settings
 /xacml-conformance-tests/xacml-conformance-tests.iml
+
+# /xacml-jmh/
+/xacml-jmh/target
+
+.java-version
+/target/
+
+# Agent tooling (local state). `.serena/.gitignore` keeps only project.yml.
+/.tgrep/
+/outputs/
+# br doctor per-run artifacts
+.doctor/
+# Python bytecode of evidence scripts (it holds the absolute path of the script)
+__pycache__/
+
+# Flame graphs are generated views of the committed collapsed stacks (collapsed-*.csv.gz); kept local
+openspec/changes/*/evidence/**/flame-*.html

@@ -1,0 +1,50 @@
+{
+  "edited_existing_files": [
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java"
+  ],
+  "new_test_files": [
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticRegistryTest.java",
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeZonePreservationTest.java"
+  ],
+  "headers_preserved_or_copied": {
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticRegistryTest.java": true,
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeZonePreservationTest.java": true
+  },
+  "dateTime_comparison_equals_and_hash_unchanged": true,
+  "initial_scoped_source_hashes": {
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java": {
+      "initial_sha256": "dfa2cae59408713e1f953e1f9ff5a79b6ff984c21703e6037888fbc9483eae8f",
+      "final_sha256": "dfa2cae59408713e1f953e1f9ff5a79b6ff984c21703e6037888fbc9483eae8f",
+      "unchanged_since_task_start": true
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java": {
+      "initial_sha256": "3cd71e52ec4f83d06e74890976149d5ebbe29932daad06125f79c2119d1a1257",
+      "final_sha256": "645e09165b15f5521b060d2a00ada05e06c05c7efeecc23ecaeaf21ff488e954",
+      "unchanged_since_task_start": false
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticFunctions.java": {
+      "initial_sha256": "f6f05d13fb2209ace4cf4e1ca3feed32aef161631a972d1ca4ece04628fcad47",
+      "final_sha256": "f6f05d13fb2209ace4cf4e1ca3feed32aef161631a972d1ca4ece04628fcad47",
+      "unchanged_since_task_start": true
+    },
+    "xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java": {
+      "initial_sha256": "5efa637d8f69854bd202d62f4017bd51ecf9ddbf9f6ae7692cbc868c99e59609",
+      "final_sha256": "5efa637d8f69854bd202d62f4017bd51ecf9ddbf9f6ae7692cbc868c99e59609",
+      "unchanged_since_task_start": true
+    },
+    "xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Time.java": {
+      "initial_sha256": "e0ef880984842cc4cab1eb88b04fb5d7f6e755f5aa0513f8d8cdb7ddaceb8c7c",
+      "final_sha256": "2033a8a733468684b65f8f5da9179f6ad01134568f57f7da95f4039afe95c502",
+      "unchanged_since_task_start": false
+    },
+    "xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeTest.java": {
+      "initial_sha256": "5445ebf37fee64ec1d4c2a00429ac7db8d60eb048b03f79b63f0db8ed4241fe9",
+      "final_sha256": "38b37746b88041de6b656a16cf5fb25d64ca3e780bc78cce491dc92fafd0c277",
+      "unchanged_since_task_start": false
+    }
+  },
+  "notes": "Other-lane changes before the final gate are preserved; 550 gate inputs remained stable throughout the gate."
+}

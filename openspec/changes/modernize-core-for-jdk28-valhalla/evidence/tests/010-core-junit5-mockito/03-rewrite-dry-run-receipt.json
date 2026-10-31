@@ -1,0 +1,14 @@
+{
+  "log": "03-rewrite-dry-run.log",
+  "build_success": false,
+  "counts": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "tests_executed": false,
+  "reports": {},
+  "problems": [],
+  "compiler_diagnostics": []
+}

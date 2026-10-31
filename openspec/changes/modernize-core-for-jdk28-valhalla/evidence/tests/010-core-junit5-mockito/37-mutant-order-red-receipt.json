@@ -1,0 +1,41 @@
+{
+  "log": "37-mutant-order-red.log",
+  "build_success": false,
+  "counts": [
+    1,
+    1,
+    0,
+    0
+  ],
+  "tests_executed": true,
+  "reports": {
+    "org.xacml4j.v30.policy.TargetTest": {
+      "counts": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "methods": [
+        {
+          "method": "testAllMatch",
+          "class": "org.xacml4j.v30.policy.TargetTest",
+          "skip_reason": null,
+          "skipped": false
+        }
+      ],
+      "jdk": "21.0.6+8-LTS-jvmci-23.1-b55"
+    }
+  },
+  "problems": [
+    {
+      "class": "org.xacml4j.v30.policy.TargetTest",
+      "method": "testAllMatch",
+      "kind": "failure",
+      "type": "org.mockito.exceptions.verification.VerificationInOrderFailure",
+      "message": "\nVerification in order failure\nWanted but not invoked:\nexpression.evaluate(\n    <Capturing argument: EvaluationContext>\n);\n-> at org.xacml4j.v30.policy.TargetTest.testAllMatch(TargetTest.java:74)\nWanted anywhere AFTER following interaction:\nexpression.evaluate(\n    RootEvaluationContext{defaultXPathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116, contextHandler=EvaluationContextHandler$MockitoMock$nlQBJ0tp, resolver=PolicyReferenceResolver$MockitoMock$ONQR2hOm, clock=SystemClock[Z], validateFuncParamsAtRuntime=false, evaluationStatus=null, combinedDecisionCacheTTL=PT0S, extendedIndeterminateEval=false, denyAdvices={}, denyObligations={}, permitAdvices={}, permitObligations={}, evaluatedPolicies={}}\n);\n-> at org.xacml4j.v30.policy.ModelFixtures$ExpressionReference.evaluate(ModelFixtures.java:147)\n",
+      "trace": "org.mockito.exceptions.verification.VerificationInOrderFailure: \n\nVerification in order failure\nWanted but not invoked:\nexpression.evaluate(\n    <Capturing argument: EvaluationContext>\n);\n-> at org.xacml4j.v30.policy.TargetTest.testAllMatch(TargetTest.java:74)\nWanted anywhere AFTER following interaction:\nexpression.evaluate(\n    RootEvaluationContext{defaultXPathVersion=http://www.w3.org/TR/1999/Rec-xpath-19991116, contextHandler=EvaluationContextHandler$MockitoMock$nlQBJ0tp, resolver=PolicyReferenceResolver$MockitoMock$ONQR2hOm, clock=SystemClock[Z], validateFuncParamsAtRuntime=false, evaluationStatus=null, combinedDecisionCacheTTL=PT0S, extendedIndeterminateEval=false, denyAdvices={}, denyObligations={}, permitAdvices={}, permitObligations={}, evaluatedPolicies={}}\n);\n-> at org.xacml4j.v30.policy.ModelFixtures$ExpressionReference.evaluate(ModelFixtures.java:147)\n\n\tat org.xacml4j.v30.policy.TargetTest.testAllMatch(TargetTest.java:74)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n\tat java.base/java.util.ArrayList.forEach(ArrayList.java:1596)\n"
+    }
+  ],
+  "compiler_diagnostics": []
+}

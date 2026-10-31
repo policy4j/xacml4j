@@ -1,0 +1,186 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< org.xacml4j:xacml-core >-----------------------
+[INFO] Building Xacml4J Core Engine Implementation 2.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ xacml-core ---
+[INFO] 
+[INFO] --- license:1.7:update-file-header (default) @ xacml-core ---
+[INFO] skip flag is on, will skip goal.
+[INFO] 
+[INFO] --- resources:3.4.0:resources (default-resources) @ xacml-core ---
+[INFO] skip non existing resourceDirectory <repo>/xacml-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ xacml-core ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 249 source files with javac [debug target 10] to target/classes
+[WARNING] bootstrap class path not set in conjunction with -source 10
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java: <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java uses or overrides a deprecated API.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java: Recompile with -Xlint:deprecation for details.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java: Some input files use unchecked or unsafe operations.
+[INFO] <repo>/xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ xacml-core ---
+[INFO] Copying 31 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ xacml-core ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 106 source files with javac [debug target 10] to target/test-classes
+[WARNING] bootstrap class path not set in conjunction with -source 10
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Some input files use or override a deprecated API.
+[INFO] <repo>/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ xacml-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+[DEBUG] 2026-10-01 15:02:47,399 FunctionSpecBuilder.normalizeVariadicParameters():(FunctionSpecBuilder.java:573) - Formal variadic param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" actual param value=StringVal{type=string, value=prefix}
+[DEBUG] 2026-10-01 15:02:47,401 FunctionSpecBuilder$FunctionSpecImpl.validateParametersAndThrow():(FunctionSpecBuilder.java:411) - Function="urn:xacml4j:test:mixed-values" normalized parameters="[StringVal{type=string, value=prefix}, BagOfValues{DataType=string, Values=[StringVal{type=string, value=a}]}, StringVal{type=string, value=suffix}]"
+[DEBUG] 2026-10-01 15:02:47,427 FunctionSpecBuilder.normalizeVariadicParameters():(FunctionSpecBuilder.java:573) - Formal variadic param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" actual param value=StringVal{type=string, value=prefix}
+[DEBUG] 2026-10-01 15:02:47,427 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:366) - functionId=urn:xacml4j:test:mixed-values normalizedArgs=[StringVal{type=string, value=prefix}, BagOfValues{DataType=string, Values=[StringVal{type=string, value=a}]}, StringVal{type=string, value=suffix}]
+[DEBUG] 2026-10-01 15:02:47,427 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:380) - Invoking function="urn:xacml4j:test:mixed-values" with length=3 params="[StringVal{type=string, value=prefix}, BagOfValues{DataType=string, Values=[StringVal{type=string, value=a}]}, StringVal{type=string, value=suffix}]"
+[DEBUG] 2026-10-01 15:02:47,427 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:384) - Function="urn:xacml4j:test:mixed-values" params="[StringVal{type=string, value=prefix}, BagOfValues{DataType=string, Values=[StringVal{type=string, value=a}]}, StringVal{type=string, value=suffix}]"
+[DEBUG] 2026-10-01 15:02:47,427 DefaultFunctionInvocation.invoke():(DefaultFunctionInvocation.java:101) - Number of variadic parameters="3" to copy from index=0
+[DEBUG] 2026-10-01 15:02:47,430 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:393) - Failed to invoke function
+127[DEBUG] 2026-10-01 15:02:47,435 FunctionSpecBuilder.normalizeVariadicParameters():(FunctionSpecBuilder.java:573) - Formal variadic param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" actual param value=null
+[DEBUG] 2026-10-01 15:02:47,435 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:451) - Function="urn:xacml4j:test:mixed-values" normalized parameters="[null]"
+[DEBUG] 2026-10-01 15:02:47,435 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:456) - Validating param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}"
+[DEBUG] 2026-10-01 15:02:47,436 FunctionSpecBuilder.normalizeVariadicParameters():(FunctionSpecBuilder.java:573) - Formal variadic param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" actual param value=null
+[DEBUG] 2026-10-01 15:02:47,436 FunctionSpecBuilder$FunctionSpecImpl.validateParametersAndThrow():(FunctionSpecBuilder.java:411) - Function="urn:xacml4j:test:mixed-values" normalized parameters="[null]"
+[DEBUG] 2026-10-01 15:02:47,443 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.ArithmeticFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,447 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.BagFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,459 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.DateTimeArithmeticFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,460 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.EqualityPredicates instance=null
+[DEBUG] 2026-10-01 15:02:47,462 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.LogicalFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,463 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.NonNumericComparisonFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,465 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.RegExpFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,467 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.NumericConversionFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,467 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.NumericComparisonFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,468 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.SetFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,473 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.SpecialMatchFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,473 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.StringConversionFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,474 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.StringFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,475 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.XPathFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,477 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.HigherOrderFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,482 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,495 FunctionProviderBuilder.lambda$providers$2():(FunctionProviderBuilder.java:159) - Adding FunctionProviderId="org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions" description="XacmlDefaultFunctions"
+[DEBUG] 2026-10-01 15:02:47,496 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.ArithmeticFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,496 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.BagFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,499 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.DateTimeArithmeticFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,499 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.EqualityPredicates instance=null
+[DEBUG] 2026-10-01 15:02:47,500 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.LogicalFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,500 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.NonNumericComparisonFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,501 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.RegExpFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,501 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.NumericConversionFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,501 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.NumericComparisonFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,502 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.SetFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,505 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.SpecialMatchFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,505 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.StringConversionFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,506 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.StringFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,507 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.XPathFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,507 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.HigherOrderFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,508 AnnotationBasedFunctionProvider.findFunctions():(AnnotationBasedFunctionProvider.java:78) - function class=class org.xacml4j.v30.policy.function.impl.AttributeDesignatorFunctions instance=null
+[DEBUG] 2026-10-01 15:02:47,508 FunctionProviderBuilder.lambda$providers$2():(FunctionProviderBuilder.java:159) - Adding FunctionProviderId="org.xacml4j.v30.policy.function.impl.XacmlDefaultFunctions" description="XacmlDefaultFunctions"
+[DEBUG] 2026-10-01 15:02:47,521 FunctionSpecBuilder.normalizeVariadicParameters():(FunctionSpecBuilder.java:573) - Formal variadic param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}" actual param value=FunctionReference{function=FunctionSpecImpl{functionId=urn:oasis:names:tc:xacml:1.0:function:string-equal, evaluateParams=false, params=[FunctionParamValueTypeSpec{type=string, optional=false, defaultValue=Optional.empty, variadic=false}, FunctionParamValueTypeSpec{type=string, optional=false, defaultValue=Optional.empty, variadic=false}]}}
+[DEBUG] 2026-10-01 15:02:47,521 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:451) - Function="urn:xacml4j:test:mixed-values" normalized parameters="[FunctionReference{function=FunctionSpecImpl{functionId=urn:oasis:names:tc:xacml:1.0:function:string-equal, evaluateParams=false, params=[FunctionParamValueTypeSpec{type=string, optional=false, defaultValue=Optional.empty, variadic=false}, FunctionParamValueTypeSpec{type=string, optional=false, defaultValue=Optional.empty, variadic=false}]}}]"
+[DEBUG] 2026-10-01 15:02:47,521 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:456) - Validating param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=null}"
+[DEBUG] 2026-10-01 15:02:47,523 FunctionSpecBuilder.normalizeVariadicParameters():(FunctionSpecBuilder.java:573) - Formal variadic param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=string}" actual param value=StringVal{type=string, value=a}
+[DEBUG] 2026-10-01 15:02:47,523 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:451) - Function="urn:xacml4j:test:typed-strings" normalized parameters="[StringVal{type=string, value=a}, IntegerVal{type=integer, value=1}]"
+[DEBUG] 2026-10-01 15:02:47,523 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:456) - Validating param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=string}"
+[DEBUG] 2026-10-01 15:02:47,523 FunctionSpecBuilder.normalizeVariadicParameters():(FunctionSpecBuilder.java:573) - Formal variadic param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=string}" actual param value=StringVal{type=string, value=a}
+[DEBUG] 2026-10-01 15:02:47,524 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:366) - functionId=urn:xacml4j:test:typed-strings normalizedArgs=[StringVal{type=string, value=a}, StringVal{type=string, value=b}]
+[DEBUG] 2026-10-01 15:02:47,524 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:369) - Validating functionId="urn:xacml4j:test:typed-strings" parameters="[FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=string}]"
+[DEBUG] 2026-10-01 15:02:47,524 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:451) - Function="urn:xacml4j:test:typed-strings" normalized parameters="[StringVal{type=string, value=a}, StringVal{type=string, value=b}]"
+[DEBUG] 2026-10-01 15:02:47,524 FunctionSpecBuilder$FunctionSpecImpl.doValidateNormalizedParameters():(FunctionSpecBuilder.java:456) - Validating param="FunctionParamValueTypeSequenceSpec{min=1, max=2147483647, type=string}"
+[DEBUG] 2026-10-01 15:02:47,524 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:380) - Invoking function="urn:xacml4j:test:typed-strings" with length=2 params="[StringVal{type=string, value=a}, StringVal{type=string, value=b}]"
+[DEBUG] 2026-10-01 15:02:47,525 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:384) - Function="urn:xacml4j:test:typed-strings" params="[StringVal{type=string, value=a}, StringVal{type=string, value=b}]"
+[DEBUG] 2026-10-01 15:02:47,525 DefaultFunctionInvocation.invoke():(DefaultFunctionInvocation.java:101) - Number of variadic parameters="2" to copy from index=0
+[DEBUG] 2026-10-01 15:02:47,525 DefaultFunctionInvocation.invoke():(DefaultFunctionInvocation.java:112) - VarArg param size=2 value=[StringVal{type=string, value=a}, StringVal{type=string, value=b}]
+[DEBUG] 2026-10-01 15:02:47,525 DefaultFunctionInvocation.invoke():(DefaultFunctionInvocation.java:120) - Params=[[StringVal{type=string, value=a}, StringVal{type=string, value=b}]]
+[DEBUG] 2026-10-01 15:02:47,525 FunctionInvocationFactory.doInvoke():(FunctionInvocationFactory.java:70) - invocation instance=null params=[[StringVal{type=string, value=a}, StringVal{type=string, value=b}]]
+[DEBUG] 2026-10-01 15:02:47,525 FunctionSpecBuilder$FunctionSpecImpl.invokeWithList():(FunctionSpecBuilder.java:387) - Function="urn:xacml4j:test:typed-strings" invocation result="BooleanVal{type=boolean, value=true}"
+[ERROR] Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.405 s <<< FAILURE! - in org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest
+[ERROR] org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest.mixedValuesReachDeclaredExpressionArray  Time elapsed: 0.307 s  <<< ERROR!
+org.xacml4j.v30.policy.FunctionInvocationException
+	at org.xacml4j.v30.policy.function.impl.DefaultFunctionInvocation.invoke(DefaultFunctionInvocation.java:127)
+	at org.xacml4j.v30.policy.function.FunctionSpecBuilder$FunctionSpecImpl.invokeWithList(FunctionSpecBuilder.java:385)
+	at org.xacml4j.v30.policy.FunctionSpec.invoke(FunctionSpec.java:145)
+	at org.xacml4j.v30.policy.Apply.evaluate(Apply.java:119)
+	at org.xacml4j.v30.policy.function.impl.HigherOrderVariadicInvocationTest.mixedValuesReachDeclaredExpressionArray(HigherOrderVariadicInvocationTest.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:115)
+	at org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)
+	at org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)
+	at org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Caused by: java.lang.ArrayStoreException: org.xacml4j.v30.BagOfValues
+	at org.xacml4j.v30.policy.function.impl.DefaultFunctionInvocation.copyInto(DefaultFunctionInvocation.java:146)
+	at org.xacml4j.v30.policy.function.impl.DefaultFunctionInvocation.invoke(DefaultFunctionInvocation.java:110)
+	... 46 more
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   HigherOrderVariadicInvocationTest.mixedValuesReachDeclaredExpressionArray:61 » FunctionInvocation
+[INFO] 
+[ERROR] Tests run: 3, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.162 s
+[INFO] Finished at: 2026-10-01T15:02:47-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.0.0:test (default-test) on project xacml-core: 
+[ERROR] 
+[ERROR] Please refer to <repo>/xacml-core/target/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

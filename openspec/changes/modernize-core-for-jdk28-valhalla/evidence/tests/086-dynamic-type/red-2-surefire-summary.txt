@@ -1,0 +1,6 @@
+Run 086, red run 2: the tests that the audit of the use sites added, before the fix of FunctionSpecBuilder
+
+[ERROR] Tests run: 61, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.986 s <<< FAILURE! - in org.xacml4j.v30.policy.ApplyArgumentValidationTest
+[ERROR] org.xacml4j.v30.policy.ApplyArgumentValidationTest.functionWithoutParametersTakesNoArguments  Time elapsed: 0.018 s  <<< FAILURE!
+[ERROR]   ApplyArgumentValidationTest.functionWithoutParametersTakesNoArguments:554->assertHoldsTypeError:325 expected: <false> but was: <true>
+[ERROR] Tests run: 61, Failures: 1, Errors: 0, Skipped: 0

@@ -1,0 +1,16 @@
+# Run 018, 2026-10-09. Read-only. No server and no browser was started.
+
+# Package under test: the globally installed @playwright/mcp 0.0.73
+npm root -g                       # location of the package
+shasum -a 256 <package>/node_modules/playwright-core/lib/coreBundle.js
+
+# Searches in that bundle (fixed patterns; see findings.txt for the lines)
+grep -n  download listener, download handler, output file prefix
+grep -n  console log file object and append calls
+grep -o  PLAYWRIGHT_MCP_ variable names; init page variable; require of the init page
+grep -n  evaluate tool schema
+grep -n  default launch switches for the password store and the keychain
+grep -n  ignoreDefaultArgs and acceptDownloads in the protocol validators; strict-mode message
+
+# Library documentation
+context7 query-docs  /microsoft/playwright  "launchPersistentContext with channel chrome and headless option, ignoreDefaultArgs to remove default switches, acceptDownloads default, and waiting for a download event tied to a click"

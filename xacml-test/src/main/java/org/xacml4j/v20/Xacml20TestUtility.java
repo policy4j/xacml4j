@@ -22,27 +22,27 @@ package org.xacml4j.v20;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 
 import org.oasis.xacml.v20.jaxb.context.ResponseType;
 import org.oasis.xacml.v20.jaxb.context.ResultType;
+import org.oasis.xacml.v20.jaxb.context.StatusCodeType;
 import org.oasis.xacml.v20.jaxb.context.StatusType;
 import org.oasis.xacml.v20.jaxb.policy.AttributeAssignmentType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationType;
 import org.oasis.xacml.v20.jaxb.policy.ObligationsType;
 import org.xacml4j.v30.RequestContext;
-import org.xacml4j.v30.marshal.jaxb.JAXBContextUtil;
-import org.xacml4j.v30.marshal.jaxb.Xacml20RequestContextUnmarshaller;
+import org.xacml4j.v30.xml.JAXBUtils;
+import org.xacml4j.v30.xml.Xacml20RequestContextUnmarshaller;
 
 import com.google.common.base.Supplier;
 import com.google.common.io.Closeables;
@@ -50,7 +50,7 @@ import com.google.common.io.Closeables;
 
 public class Xacml20TestUtility
 {
-	private static final JAXBContext context = JAXBContextUtil.getInstance();
+	private static final JAXBContext context = JAXBUtils.getInstance();
 	private static final Xacml20RequestContextUnmarshaller requestUnmarshaller = new Xacml20RequestContextUnmarshaller();
 
 	/** Private constructor for utility class */
@@ -75,71 +75,64 @@ public class Xacml20TestUtility
 
 	public static void assertStatus(StatusType a, StatusType b)
 	{
-		assertEquals(a.getStatusCode().getValue(), b.getStatusCode().getValue());
+		if (a == null || b == null) {
+			assertEquals(a, b, "Status presence differs");
+			return;
+		}
+		assertStatusCode(a.getStatusCode(), b.getStatusCode());
+		assertTrue(Xacml30TestUtility.sameContent(
+				a.getStatusDetail() == null ? List.of() : a.getStatusDetail().getAny(),
+				b.getStatusDetail() == null ? List.of() : b.getStatusDetail().getAny()), "Status details differ");
+	}
+
+	private static void assertStatusCode(StatusCodeType a, StatusCodeType b)
+	{
+		if (a == null || b == null) {
+			assertEquals(a, b, "Status code presence differs");
+			return;
+		}
+		assertEquals(a.getValue(), b.getValue());
+		assertStatusCode(a.getStatusCode(), b.getStatusCode());
 	}
 
 	public static void assertObligations(ObligationsType a, ObligationsType b)
 	{
-		if(a == null && b == null){
-			return;
-		}
-		List<ObligationType> oa = a.getObligation();
-		List<ObligationType> ob = a.getObligation();
-		assertEquals(oa.size(), ob.size());
-		Map<String , ObligationType> aMap = toObligationMap(oa);
-		Map<String , ObligationType> bMap = toObligationMap(ob);
-
-		assertTrue(aMap.keySet().containsAll(bMap.keySet()));
-		assertTrue(bMap.keySet().containsAll(aMap.keySet()));
-
-		for(String obligationId : aMap.keySet()){
-			ObligationType obligationA = aMap.get(obligationId);
-			ObligationType obligationB = bMap.get(obligationId);
-			assertObligation(obligationA, obligationB);
-		}
+		List<ObligationType> oa = a == null ? List.of() : a.getObligation();
+		List<ObligationType> ob = b == null ? List.of() : b.getObligation();
+		assertTrue(Xacml30TestUtility.sameMultiset(oa, ob, Xacml20TestUtility::sameObligation), "Obligations differ");
 	}
 
 	public static void assertObligation(ObligationType a, ObligationType b)
 	{
-		List<AttributeAssignmentType> aAttr = a.getAttributeAssignment();
-		List<AttributeAssignmentType> bAttr = b.getAttributeAssignment();
-		assertEquals(aAttr.size(), bAttr.size());
-		Map<String, AttributeAssignmentType> aMap = toAttributeAssignmentMap(aAttr);
-		Map<String, AttributeAssignmentType> bMap = toAttributeAssignmentMap(bAttr);
-		assertTrue(aMap.keySet().containsAll(bMap.keySet()));
-		assertTrue(bMap.keySet().containsAll(aMap.keySet()));
-		for(String attributeId : aMap.keySet()){
-			AttributeAssignmentType attrA = aMap.get(attributeId);
-			AttributeAssignmentType attrB = bMap.get(attributeId);
-			assertAttributeAssignment(attrA, attrB);
-		}
+		assertEquals(a.getObligationId(), b.getObligationId());
+		assertEquals(a.getFulfillOn(), b.getFulfillOn());
+		assertTrue(Xacml30TestUtility.sameMultiset(a.getAttributeAssignment(), b.getAttributeAssignment(),
+				Xacml20TestUtility::sameAttributeAssignment), "Obligation assignments differ");
 	}
 
 	public static void assertAttributeAssignment(AttributeAssignmentType a, AttributeAssignmentType b)
 	{
 		assertEquals(a.getAttributeId(), b.getAttributeId());
 		assertEquals(a.getDataType(), b.getDataType());
-		assertEquals(a.getContent(), b.getContent());
+		assertEquals(a.getOtherAttributes(), b.getOtherAttributes());
+		assertTrue(Xacml30TestUtility.sameValueContent(a.getDataType(), a.getContent(), b.getContent()),
+				"Assignment values differ");
 	}
 
-	private static Map<String, ObligationType> toObligationMap(
-			List<ObligationType> obligations)
+	private static boolean sameObligation(ObligationType a, ObligationType b)
 	{
-		Map<String, ObligationType> map = new LinkedHashMap<String, ObligationType>();
-		for(ObligationType o : obligations){
-			map.put(o.getObligationId(), o);
-		}
-		return map;
+		return Objects.equals(a.getObligationId(), b.getObligationId())
+				&& Objects.equals(a.getFulfillOn(), b.getFulfillOn())
+				&& Xacml30TestUtility.sameMultiset(a.getAttributeAssignment(), b.getAttributeAssignment(),
+						Xacml20TestUtility::sameAttributeAssignment);
 	}
 
-	private static Map<String, AttributeAssignmentType> toAttributeAssignmentMap(
-			List<AttributeAssignmentType> attributes)
+	private static boolean sameAttributeAssignment(AttributeAssignmentType a, AttributeAssignmentType b)
 	{
-		Map<String, AttributeAssignmentType> map = new LinkedHashMap<String, AttributeAssignmentType>();
-		for(AttributeAssignmentType a : attributes){
-			map.put(a.getAttributeId(), a);
-		}
-		return map;
+		return Objects.equals(a.getAttributeId(), b.getAttributeId())
+				&& Objects.equals(a.getDataType(), b.getDataType())
+				&& Objects.equals(a.getOtherAttributes(), b.getOtherAttributes())
+				&& Xacml30TestUtility.sameValueContent(a.getDataType(), a.getContent(), b.getContent());
 	}
 
 	@SuppressWarnings("unchecked")

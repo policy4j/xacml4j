@@ -1,0 +1,13 @@
+{
+  "source_hashes_checked_during_gate": 548,
+  "source_files_changed_during_gate": [],
+  "existing_header_unchanged": true,
+  "new_test_header_matches": true,
+  "production_files_changed_by_this_fix": [
+    "xacml-xml/src/main/java/org/xacml4j/v30/xml/BaseJAXBUnmarshaller.java"
+  ],
+  "new_test_files": [
+    "xacml-xml/src/test/java/org/xacml4j/v30/xml/BaseJAXBUnmarshallerSecurityTest.java"
+  ],
+  "manifest_sha256": "be4b25dabe9185ff213255461ba05e36a7fa93b2251b10923bba5ea1796cab08"
+}

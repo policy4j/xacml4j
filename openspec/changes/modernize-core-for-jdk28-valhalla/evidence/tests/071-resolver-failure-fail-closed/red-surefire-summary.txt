@@ -1,0 +1,13 @@
+Red run: tests changed to the ruled behavior, production code unchanged.
+Module xacml-pdp, class org.xacml4j.v30.pdp.AttributeResolutionSafetyNetTest.
+
+Tests run: 23, Failures: 7, Errors: 0, Skipped: 0 <<< FAILURE!
+
+Failed tests (expected value from the assertion message):
+resolverFailureMustBeIndeterminateWithProcessingErrorWhenNotMustBePresent    expected: INDETERMINATE_P
+denyRuleStaysIndeterminateWhenItsResolverFails                               expected: INDETERMINATE_D
+designatorResultIsBagAndPdpReportsDecisionAndStatus[5]                       expected: INDETERMINATE_P
+designatorResultIsBagAndPdpReportsDecisionAndStatus[6]                       expected: StatusCodeId{id=processing-error}
+selectorResolverFailureIsProcessingErrorWhenNotMustBePresent                 expected: INDETERMINATE_P
+resolverFailureMustBeIndeterminateWithProcessingErrorWhenMustBePresent       expected: StatusCodeId{id=processing-error}
+selectorResolverFailureCallsTheSelectorOverload                              expected: StatusCodeId{id=processing-error}

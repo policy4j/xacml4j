@@ -1,0 +1,540 @@
+[
+  {
+    "iteration": 1,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/01.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 2,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/02.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 3,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/03.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 4,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/04.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 5,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/05.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 6,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/06.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 7,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/07.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 8,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/08.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 9,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/09.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 10,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/10.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 11,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/11.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 12,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/12.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 13,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/13.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 14,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/14.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 15,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/15.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 16,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/16.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 17,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/17.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 18,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/18.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 19,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/19.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 20,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/20.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 1,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "test": "testAddRemove",
+        "kind": "failure",
+        "message": "\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyRemoved(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=1.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1",
+        "text": "java.lang.AssertionError: \n\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyRemoved(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=1.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1\n\tat org.easymock.internal.MocksControl.verify(MocksControl.java:262)\n\tat org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest.testAddRemove(InMemoryPolicyRepositoryTest.java:166)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:566)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)\n\tat org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)\n\tat org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)\n\tat org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)\n\tat org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)\n\tat org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)\n\tat org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)\n\tat org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)\n\tat org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)\n"
+      }
+    ],
+    "java_version": "11.0.32.1",
+    "passed": false,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 21,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/21.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 1,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "test": "testFindAllPoliciesWithTheSameId",
+        "kind": "failure",
+        "message": "\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1",
+        "text": "java.lang.AssertionError: \n\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1\n\tat org.easymock.internal.MocksControl.verify(MocksControl.java:262)\n\tat org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest.testFindAllPoliciesWithTheSameId(InMemoryPolicyRepositoryTest.java:219)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:566)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)\n\tat org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)\n\tat org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)\n\tat org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)\n\tat org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)\n\tat org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)\n\tat org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)\n\tat org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)\n\tat org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)\n"
+      }
+    ],
+    "java_version": "11.0.32.1",
+    "passed": false,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 22,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/22.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 1,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "test": "testFindAllPoliciesWithTheSameId",
+        "kind": "failure",
+        "message": "\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1",
+        "text": "java.lang.AssertionError: \n\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1\n\tat org.easymock.internal.MocksControl.verify(MocksControl.java:262)\n\tat org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest.testFindAllPoliciesWithTheSameId(InMemoryPolicyRepositoryTest.java:219)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:566)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)\n\tat org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)\n\tat org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)\n\tat org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)\n\tat org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)\n\tat org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)\n\tat org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)\n\tat org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)\n\tat org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)\n"
+      }
+    ],
+    "java_version": "11.0.32.1",
+    "passed": false,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 23,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/23.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 24,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/24.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 25,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/25.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 1,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [
+      {
+        "test": "testFindAllPoliciesWithTheSameId",
+        "kind": "failure",
+        "message": "\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1",
+        "text": "java.lang.AssertionError: \n\n  Expectation failure on verify:\n    PolicyRepositoryListener.policyAdded(Policy{id=id1, description=null, target=null, condition=null, adviceExp=[], obligationExp=[], version=Version{version=2.0.1}, issuer=null, maxDelegationDepth=null, combinerParameters={}, variableDefinitions={}, policyDefaults=null, rules=[], combiningAlgorithm=EasyMock for interface org.xacml4j.v30.policy.DecisionCombiningAlgorithm, ruleCombiningParameters={}}): expected: 1, actual: 1\n\tat org.easymock.internal.MocksControl.verify(MocksControl.java:262)\n\tat org.xacml4j.v30.spi.repository.InMemoryPolicyRepositoryTest.testFindAllPoliciesWithTheSameId(InMemoryPolicyRepositoryTest.java:219)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\n\tat java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\n\tat java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:566)\n\tat org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)\n\tat org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)\n\tat org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)\n\tat org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)\n\tat org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)\n\tat org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)\n\tat org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:115)\n\tat org.junit.vintage.engine.execution.RunnerExecutor.execute(RunnerExecutor.java:42)\n\tat org.junit.vintage.engine.VintageTestEngine.executeAllChildren(VintageTestEngine.java:80)\n\tat org.junit.vintage.engine.VintageTestEngine.execute(VintageTestEngine.java:72)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:147)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:127)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:90)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:55)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:102)\n\tat org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:54)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)\n\tat org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)\n\tat org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)\n\tat org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:50)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)\n\tat org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)\n\tat org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)\n\tat org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)\n\tat org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)\n\tat org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)\n"
+      }
+    ],
+    "java_version": "11.0.32.1",
+    "passed": false,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 26,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/26.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 27,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/27.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 28,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/28.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 29,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/29.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  },
+  {
+    "iteration": 30,
+    "command": "rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=InMemoryPolicyRepositoryTest -Dsurefire.failIfNoSpecifiedTests=false test -l <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/85-repository-before/30.txt",
+    "source_sha256": "5b970c76c7db3c97f36579aea687fd2d035c07dfc53efc8acd9d468bcfa4f10f",
+    "exit_code": 0,
+    "fresh_report": true,
+    "counts": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "failures": [],
+    "java_version": "11.0.32.1",
+    "passed": true,
+    "compile_diagnostics": []
+  }
+]

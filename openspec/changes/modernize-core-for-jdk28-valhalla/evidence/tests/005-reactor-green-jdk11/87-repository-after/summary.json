@@ -1,0 +1,20 @@
+{
+  "phase": "after",
+  "runs": 30,
+  "passed": 30,
+  "failed": 0,
+  "fresh_reports": 30,
+  "reported_totals": {
+    "tests": 120,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "executed_test_methods": 120,
+  "failure_frequency": {},
+  "source_sha256": "6519feec2e7ea745c98ae6c73368ab59196fd6bbe4a439d1ae853f0f5ec5b29a",
+  "java_versions": [
+    "11.0.32.1"
+  ],
+  "compile_diagnostics": []
+}

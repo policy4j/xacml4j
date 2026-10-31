@@ -1,0 +1,99 @@
+Read-only inventory commands. All searches were scoped to test sources except the noted `xacml-test/src/main/java` and POM reads. No Maven command was run.
+
+## Snapshot and task context
+
+rtk git status --short --branch
+rtk git rev-parse HEAD
+rtk rg -n -A45 '^### D4\.' openspec/changes/modernize-core-for-jdk28-valhalla/design.md
+rtk proxy sed -n '1,80p' xacml-test/pom.xml
+rtk rg -n 'org\.junit|junit' xacml-test/src/main/java xacml-test/pom.xml
+
+## Test source files and method annotations
+
+rtk rg -o --no-filename -g '*.java' '@Test' xacml-core/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' '@Test' xacml-core/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' '@Test' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test' xacml-xml/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' '@Test' xacml-xml/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test' xacml-json/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' '@Test' xacml-json/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test' xacml-test/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' '@Test' xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test' xacml-conformance-tests/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' '@Test' xacml-conformance-tests/src/test/java | rtk wc -l
+ast-grep run --lang java --pattern '@Test' xacml-xml/src/test/java
+ast-grep run --lang java --pattern '@Test' xacml-conformance-tests/src/test/java
+rtk rg -n 'extends TestCase|junit\.framework\.TestCase|public void test[A-Z]' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+
+## JUnit 4 feature counts and file searches
+
+rtk rg -o --no-filename -g '*.java' '@(Before|After|BeforeClass|AfterClass)\b' xacml-core/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@(Before|After|BeforeClass|AfterClass)\b' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@(Before|After|BeforeClass|AfterClass)\b' xacml-xml/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@(Before|After|BeforeClass|AfterClass)\b' xacml-json/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@(Before|After|BeforeClass|AfterClass)\b' xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@(Before|After|BeforeClass|AfterClass)\b' xacml-conformance-tests/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Ignore\b' xacml-core/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Ignore\b' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Ignore\b' xacml-xml/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Ignore\b' xacml-json/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Ignore\b' xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Ignore\b' xacml-conformance-tests/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test\s*\(\s*expected\s*=' xacml-core/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test\s*\(\s*expected\s*=' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test\s*\(\s*expected\s*=' xacml-xml/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test\s*\(\s*expected\s*=' xacml-json/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test\s*\(\s*expected\s*=' xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@Test\s*\(\s*expected\s*=' xacml-conformance-tests/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@(Rule|ClassRule)\b|ExpectedException|TemporaryFolder' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+rtk rg -o --no-filename -g '*.java' '@RunWith|Parameterized' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+rtk rg -l -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-core/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-xml/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-json/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-test/src/test/java | rtk wc -l
+rtk rg -l -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-conformance-tests/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '@(Before|After|BeforeClass|AfterClass)\b' xacml-test/src/main/java | rtk wc -l
+rtk rg -l -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-test/src/main/java | rtk wc -l
+
+## EasyMock usage counts and type inventory
+
+rtk rg -o --no-filename -g '*.java' '\bcreateMock\s*\(' xacml-core/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bcreateMock\s*\(' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bcreateStrictMock\s*\(' xacml-core/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bcreateStrictMock\s*\(' xacml-pdp/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bcreateStrictMock\s*\(' xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bcreateNiceMock\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bcreateStrictControl\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bIMocksControl\b' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bCapture\s*<' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bexpect\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename '\.andThrow\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename '\.andAnswer\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename '\.andStubReturn\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\breplay\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename -g '*.java' '\bverify\s*\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java | rtk wc -l
+rtk rg -o --no-filename --replace '$2' -g '*.java' '(createMock|createStrictMock|createNiceMock)\(([A-Za-z0-9_$.]+)\.class' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-conformance-tests/src/test/java | rtk sort -u
+rtk rg -n -g '*.java' '(class|interface|record|enum) (Policy|PolicySet|Rule|Condition|Target|Match|MatchAnyOf|MatchAllOf|AttributeAssignmentExpression|AttributeDesignator|Value|EvaluationContext|Expression|FunctionSpec|FunctionInvocation|DecisionCombiningAlgorithm|DecisionRule|CompositeDecisionRule|EvaluationContextHandler|PolicyReferenceResolver|PolicyToPlatformFunctionInvocation|FunctionReturnTypeResolver|PolicyDecisionPointContext|RequestContextCallback|PolicyInformationPoint|PolicyDecisionCache|PolicyDecisionAuditor|XPathProvider|RequestContextHandler|PolicyInformationPointCacheProvider|Function|ResolverContext|ResolverRegistry|PolicyRepository|DecisionCombiningAlgorithmProvider|FunctionProvider|PolicyRepositoryListener|PolicyUnmarshaller)([[:space:]<{]|$)' xacml-core/src/main/java xacml-pdp/src/main/java
+rtk rg -n '(createMock|createStrictMock|createNiceMock)\((AttributeAssignmentExpression|AttributeDesignator|Condition|Match|MatchAllOf|MatchAnyOf|Policy|PolicySet|Rule|Target|Value)\.class' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-conformance-tests/src/test/java
+rtk rg -l -g '*.java' 'createStrictMock\(|createStrictControl\(' xacml-core/src/test/java xacml-pdp/src/test/java xacml-test/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-conformance-tests/src/test/java
+
+## Truth, Hamcrest, and framework-bearing file lists
+
+rtk rg -l --sort path -g '*.java' 'com\.google\.common\.truth|Truth\.' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+rtk rg -l --sort path -g '*.java' 'org\.hamcrest|org\.junit\.Assert\.assertThat|Matchers\.' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+rtk rg -l --sort path -g '*.java' 'static\s+org\.junit\.Assert\.' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+rtk rg -l --sort path -g '*.java' 'org\.junit|junit' xacml-test/src/main/java
+rtk rg -l --sort path -g '*.java' 'org\.easymock|EasyMock\.|IMocksControl|Capture\s*<' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+rtk rg -l --sort path -g '*.java' '@(Before|After|BeforeClass|AfterClass|Ignore|Rule|ClassRule)\b|@Test\s*\(\s*expected\s*=|ExpectedException|TemporaryFolder' xacml-core/src/test/java xacml-pdp/src/test/java xacml-xml/src/test/java xacml-json/src/test/java xacml-test/src/test/java xacml-conformance-tests/src/test/java
+
+## Complete `@Test` file lists and final review
+
+rtk proxy rg -l --sort path -g '*.java' '@Test' xacml-core/src/test/java >> openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/summary.md
+rtk proxy rg -l --sort path -g '*.java' '@Test' xacml-pdp/src/test/java >> openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/summary.md
+rtk proxy rg -l --sort path -g '*.java' '@Test' xacml-xml/src/test/java >> openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/summary.md
+rtk proxy rg -l --sort path -g '*.java' '@Test' xacml-json/src/test/java >> openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/summary.md
+rtk proxy rg -l --sort path -g '*.java' '@Test' xacml-test/src/test/java >> openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/summary.md
+rtk proxy rg -l --sort path -g '*.java' '@Test' xacml-conformance-tests/src/test/java >> openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/summary.md
+rtk git status --short

@@ -1,0 +1,10 @@
+ M xacml-core/src/main/java/org/xacml4j/v30/types/BooleanVal.java
+ M xacml-core/src/test/java/org/xacml4j/v30/types/BooleanValTest.java
+ M xacml-json/src/main/java/org/xacml4j/v30/marshal/json/GsonUtil.java
+ M xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/030-harness-comparators/conformance-blockers.md
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/035-boolean-lexical/
+?? xacml-conformance-tests/src/test/manifest/conformance-manifest.csv
+?? xacml-core/src/test/java/org/xacml4j/v30/types/BooleanLexicalTest.java
+?? xacml-json/src/test/java/org/xacml4j/v30/marshal/json/BooleanRequestLexicalTest.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/BooleanRequestLexicalTest.java

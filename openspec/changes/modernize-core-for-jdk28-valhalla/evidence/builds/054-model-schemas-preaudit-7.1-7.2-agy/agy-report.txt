@@ -1,0 +1,502 @@
+  ## A. Task 7.1: Donor Defects in model/
+
+  ### 1. Confirmation of the Four Named Defects
+
+  #### Defect 1: AttributesSchema.java:101 Invalid Record/Interface Header Construct
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/AttributesSchema.java:101-105
+  • Donor Code:
+    sealed interface WithAttributes(EntityTypeQualifier typeQualifier,
+                          Map<AttributeId, AttributeSchema> attributes)
+            extends AttributesSchema permits
+    {
+        Optional<AttributeSchema> attribute(AttributeId attributeId);
+        ...
+    }
+
+  • Analysis:
+      1. Invalid Java Syntax: In Java (including JDK 21+), interfaces cannot declare record header
+      parameter components (...). Only record declarations accept header components.
+      2. Empty permits Clause: Line 103 specifies permits immediately followed by {, which is a parser
+      syntax error.
+      3. Illegal Instantiation: In factory method AttributesSchema.schema(...) at line 64:
+        return new WithAttributes(typeQualifier,
+                attributes.stream().collect(Collectors.toMap(AttributeSchema::id, a->a)));
+      Callers attempt to instantiate new WithAttributes(...), which fails because WithAttributes is
+      declared as an interface.
+      4. Unimplemented Abstract Methods in Root: Record Root(CategoryId categoryId) implements
+      WithAttributes (line 81) implements WithAttributes but does not implement attribute(AttributeId), and
+      stubs isValidValue and isValidType to return false, rejecting all attributes and values.
+      5. Type Argument Inversion in isValidValue: In WithAttributes.isValidValue(AttributeId, BagOf) (line
+      114):
+      s.isValid(value.valueType()) passes valueType() instead of value elements to isValid(Value).
+  • Correct Behavior:
+  Declare WithAttributes as a record:
+    record WithAttributes(@Nonnull EntityTypeQualifier typeQualifier,
+                          @Nonnull Map<AttributeId, AttributeSchema> attributes)
+            implements AttributesSchema
+  with an immutable map copy in its compact constructor, implementing attribute(AttributeId) via map lookup,
+  and iterating elements v in isValidValue(AttributeId, BagOf) via s.isValid(v). Eliminate the non-
+  functional Root stub or implement proper category delegation.
+  ──────
+  #### Defect 2: EntitySchema.java Mutual Recursion and Truncated Expression
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/EntitySchema.java:50-61
+  • Donor Code:
+    default Optional<AttributeReferenceKey> eidRef(){
+        return recordSchema().
+    }
+
+    default EntityTypeQualifier type() {
+        return recordSchema().typeQualifier();
+    }
+
+    default AttributesSchema recordSchema(){
+        return AttributesSchema.noAttributes(type());
+    }
+
+  • Analysis:
+      1. Syntax Error / Truncated Line: Line 51 ends with a trailing dot (return recordSchema().), which
+      fails compilation immediately.
+      2. Infinite Mutual Recursion (StackOverflowError):
+          • type() delegates to recordSchema().typeQualifier().
+          • Default recordSchema() delegates to AttributesSchema.noAttributes(type()), which calls type().
+          • Any invocation of type() or recordSchema() on an EntitySchema instance that relies on these
+          defaults causes immediate infinite recursion and a StackOverflowError.
+
+  • Correct Behavior:
+  Make type() and recordSchema() abstract interface methods on EntitySchema without self-recursive default
+  implementations. Provide an explicit eidRef() method returning Optional.empty() by default or delegating
+  to a non-recursive schema lookup.
+  ──────
+  #### Defect 3: Required-Domain Validation Gap
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/AttributesSchema.java:48-51 and
+  b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/ValueDomain.java:43-47
+  • Donor Code:
+    default boolean isValid(@Nonnull Record record){
+        return record.attributes()
+                .entrySet().stream().allMatch(e->isValidValue(e.getKey(), e.getValue()));
+    }
+
+  • Analysis:
+      • AttributesSchema.isValid(Record) validates only the attributes present in record.attributes().
+      • Although ValueDomain defines boolean required() (and ValueDomain.domain(type, required)),
+      AttributesSchema.isValid(...) never verifies that mandatory attributes declared in the schema are
+      present in the record.
+      • Result: An empty record (attributes = Map.of()) passes validation against any schema, even if every
+      attribute is marked required = true.
+      • In addition, ValueDomain.java:33 imports com.sun.source.doctree.ValueTree;, an illegal internal
+      com.sun compiler import.
+  • Correct Behavior:
+  AttributesSchema.isValid(Record record) must perform two-way validation:
+      1. Every attribute present in record must be valid according to the schema's isValidValue(id, val).
+      2. Every attribute defined in the schema with a required domain (domain.required() == true) must be
+      present in record.attributes().
+
+  ──────
+  #### Defect 4: Entity.equals / hashCode Broken Object Contract
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Entity.java:133-145
+  • Donor Code:
+    @Override
+    public boolean equals(Object o){
+        return this == o || (o instanceof Entity entity &&
+                Objects.equal(eid, entity.eid) &&
+                (eid != null || Objects.equal(valueType, entity.valueType) &&
+                Objects.equal(record, entity.record) &&
+                Objects.equal(content, entity.content)));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(valueType, record, content, eid, parentId);
+    }
+
+  • Analysis:
+      1. Contract Violation: When eid != null, equals() compares only eid (Objects.equal(eid, entity.eid)
+      && (true || ...)), completely ignoring valueType, record, content, and parentId.
+      2. Meanwhile, hashCode() hashes all five fields (valueType, record, content, eid, parentId).
+      3. Consequently, two entities with identical eid but differing valueType, record, or parentId
+      evaluate a.equals(b) == true, but produce different hash codes (a.hashCode() != b.hashCode()).
+      4. This violates the fundamental contract of java.lang.Object, corrupting HashSet, HashMap, and cache
+      lookups.
+  • Correct Behavior:
+  equals and hashCode must inspect the identical set of state fields. Per Design D8 and D11, entity
+  equality must consistently compare valueType, eid, record, content, and parentId, and hashCode must hash
+  the exact same fields.
+  ──────
+  ### 2. Other Architectural and Implementation Defects in model/
+
+  #### Defect 5: Inverted Assertion in AttributeSchema.Builder.OfTypes
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/AttributeSchema.java:116
+  • Donor Code:
+    public OfTypes {
+        Verify.verifyNotNull(id, "Attribute identifier must not be null");
+        Verify.verifyNotNull(domains, "Attribute value domain must not be null");
+        Verify.verify(domains.isEmpty(), "Attribute value domain must not be null");
+    }
+
+  • Analysis:
+      • The check Verify.verify(domains.isEmpty(), ...) asserts that domains IS empty, throwing
+      VerifyException whenever domains contains entries.
+      • Since AttributeSchema.Builder requires a ValueDomain at construction, domains is never empty.
+      • Calling AttributeSchema.Builder.build() unconditionally throws VerifyException. It is impossible to
+      instantiate any AttributeSchema via its builder!
+  • Correct Behavior: Change condition to Verify.verify(!domains.isEmpty(), "Attribute value domain must
+  not be empty");.
+
+  #### Defect 6: Missing Thread Safety, Immutability, and Registry in AccessModel
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/AccessModel.java:60-109
+  • Analysis:
+      • AccessModel is defined as a bare interface with 11 query methods (idSet(), forId(CategoryId),
+      forIdWithIssuer(AttributeId, Issuer), etc.).
+      • The donor provides no implementation, no builder, and no thread-safety or immutability contract.
+      • It lacks support for caching resolution of schemas by AttributeId or CategoryId.
+  • Correct Behavior: Provide an immutable, thread-safe DefaultAccessModel backed by immutable maps and
+  sets, built via AccessModel.builder(), enforcing uniqueness of canonical IDs.
+
+  #### Defect 7: Flawed Category Subset Invariant in model/Categories.java
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/Categories.java:50-51, 66
+  • Analysis:
+      • In constructor: Verify.verify(schema.keySet().containsAll(categories), "Categories must be a subset
+      of schema");. Permitting schema.keySet() to exceed categories allows unindexed, orphaned schemas.
+      • In schema(URI typeRef): Calls CategoryId.of(typeRef), creating an unanchored category instance on
+      every lookup rather than matching canonical IDs.
+
+
+  #### Defect 8: Unbounded Stream Creation in ValueDomain.SetOfType
+
+  • Citation: b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/model/ValueDomain.java:147
+  • Analysis:
+      • isValid(Value<?, ?> value) executes value.stream().allMatch(values::contains). For scalar values,
+      creating an intermediate Stream on every validation check introduces unnecessary allocation pressure
+      in evaluation hot paths.
+
+  ──────
+  ## B. Task 7.2: Catalog Check against XACML 3.0 Appendix B
+
+  ### 1. Standard Category Mismatches (XACML 3.0 Appendix B.2)
+
+  Normative requirement from XACML 3.0 Core Specification §B.2:
+
+  │ "Attributes previously placed in the Resource, Action, and Environment sections of a request are placed
+  │ in an attribute category with the following identifiers respectively...
+  │ urn:oasis:names:tc:xacml:3.0:attribute-category:resource
+  │ urn:oasis:names:tc:xacml:3.0:attribute-category:action
+  │ urn:oasis:names:tc:xacml:3.0:attribute-category:environment
+  │ Attributes previously placed in the Subject section of a request are placed in an attribute category
+  │ which is identical to the subject category in XACML 2.0, as defined below...
+  │ urn:oasis:names:tc:xacml:1.0:subject-category:access-subject
+  │ urn:oasis:names:tc:xacml:1.0:subject-category:recipient-subject
+  │ urn:oasis:names:tc:xacml:1.0:subject-category:intermediary-subject
+  │ urn:oasis:names:tc:xacml:1.0:subject-category:codebase
+  │ urn:oasis:names:tc:xacml:1.0:subject-category:requesting-machine"
+
+   Categ… │ XACML 3.0 Normative URN (Appendix B… │ Donor URN (schemas/Categories.java &… │ Status / Defect
+  ────────┼──────────────────────────────────────┼───────────────────────────────────────┼─────────────────
+   SUBJEC │ urn:oasis:names:tc:xacml:1.0:subject │ urn:oasis:names:tc:xacml:3.0:attribut │ VIOLATION:
+   T_ACCE │ -category:access-subject             │ e-category:access-subject             │ Replaced
+   SS     │                                      │                                       │ standard 1.0
+          │                                      │                                       │ URN with non-
+          │                                      │                                       │ existent 3.0
+          │                                      │                                       │ URN
+   SUBJEC │ urn:oasis:names:tc:xacml:1.0:subject │ urn:oasis:names:tc:xacml:3.0:attribut │ VIOLATION:
+   T_CODE │ -category:codebase                   │ e-category:codebase                   │ Replaced
+   BASE   │                                      │                                       │ standard 1.0
+          │                                      │                                       │ URN with non-
+          │                                      │                                       │ existent 3.0
+          │                                      │                                       │ URN
+   SUBJEC │ urn:oasis:names:tc:xacml:1.0:subject │ urn:oasis:names:tc:xacml:3.0:attribut │ VIOLATION:
+   T_INTE │ -category:intermediary-subject       │ e-category:intermediary-subject       │ Replaced
+   RMEDIA │                                      │                                       │ standard 1.0
+   RY     │                                      │                                       │ URN with non-
+          │                                      │                                       │ existent 3.0
+          │                                      │                                       │ URN
+   SUBJEC │ urn:oasis:names:tc:xacml:1.0:subject │ urn:oasis:names:tc:xacml:3.0:attribut │ VIOLATION:
+   T_RECI │ -category:recipient-subject          │ e-category:recipient-subject          │ Replaced
+   PIENT  │                                      │                                       │ standard 1.0
+          │                                      │                                       │ URN with non-
+          │                                      │                                       │ existent 3.0
+          │                                      │                                       │ URN
+   SUBJEC │ urn:oasis:names:tc:xacml:1.0:subject │ urn:oasis:names:tc:xacml:3.0:attribut │ VIOLATION:
+   T_REQU │ -category:requesting-machine         │ e-category:requesting-machine         │ Replaced
+   ESTING │                                      │                                       │ standard 1.0
+   _MACHI │                                      │                                       │ URN with non-
+   NE     │                                      │                                       │ existent 3.0
+          │                                      │                                       │ URN
+   RESOUR │ urn:oasis:names:tc:xacml:3.0:attribu │ OMITTED from Categories.java (only in │ DEFECT: Missing
+   CE     │ te-category:resource                 │ Resource.java)                        │ in
+          │                                      │                                       │ Categories.java
+          │                                      │                                       │ , causing
+          │                                      │                                       │ compile
+          │                                      │                                       │ failures
+   ACTION │ urn:oasis:names:tc:xacml:3.0:attribu │ OMITTED from Categories.java (only in │ DEFECT: Missing
+          │ te-category:action                   │ Action.java)                          │ in
+          │                                      │                                       │ Categories.java
+   ENVIRO │ urn:oasis:names:tc:xacml:3.0:attribu │ OMITTED from Categories.java (only in │ DEFECT: Missing
+   NMENT  │ te-category:environment              │ Enviroment.java)                      │ in
+          │                                      │                                       │ Categories.java
+          │                                      │                                       │ , causing
+          │                                      │                                       │ compile
+          │                                      │                                       │ failures
+   ACTION │ urn:oasis:names:tc:xacml:1.0:action: │ Declared as a CategoryId in           │ VIOLATION:
+   _IMPLI │ implied-action                       │ Action.java:38                        │ Attribute ID
+   ED     │                                      │                                       │ incorrectly
+          │                                      │                                       │ declared as a
+          │                                      │                                       │ Category ID
+  ──────
+  ### 2. Standard Attribute Mismatches
+
+  #### Subject Attributes (Appendix B.4)
+
+  • Normative standard URNs require urn:oasis:names:tc:xacml:1.0:subject:....
+  • Donor Deviations:
+      1. ACCESS_SUBJECT_AUTHN_LOCALITY_IP_ADDRESS (schemas/Attributes.java:133):
+          • Donor uses: urn:oasis:names:tc:xacml:3.0:subject:authn-locality:ip-address
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:subject:authn-locality:ip-address
+          • Defect: Invented non-existent 3.0 URN.
+      2. ACCESS_SUBJECT_AUTHN_LOCALITY_DNS_NAME (schemas/Attributes.java:141):
+          • Donor uses: urn:oasis:names:tc:xacml:3.0:subject:authn-locality:dns-name
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:subject:authn-locality:dns-name
+          • Defect: Invented non-existent 3.0 URN.
+      3. ACCESS_SUBJECT_SESSION_IDENTIFIER (schemas/Attributes.java:125):
+          • Donor uses: urn:xacml4j:names:tc:xacml:1.0:subject:session-id
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:subject:session-id
+          • Defect: Proprietary xacml4j namespace prefix instead of oasis.
+
+
+
+  #### Resource Attributes (Appendix B.6 & Profiles)
+
+  • Donor Deviations:
+      1. ID (schemas/Resource.java:66):
+          • Donor makes urn:oasis:names:tc:xacml:3.0:resource:resource-id the canonical identifier with 1.0
+          as an alias.
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:resource:resource-id is canonical.
+          • Conflicting Definition: In schemas/Attributes.java:44, canonical is 1.0. The donor contradicts
+          itself across files.
+      2. LOCATION (schemas/Resource.java:115):
+          • Donor makes 3.0:resource:resource-location canonical.
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:resource:resource-location is canonical.
+          • Contradicts schemas/Attributes.java:51 (which uses 1.0).
+      3. TARGET_NAMESPACE (schemas/Attributes.java:59):
+          • Donor uses 3.0:resource:target-namespace.
+          • Standard URN: urn:oasis:names:tc:xacml:2.0:resource:target-namespace.
+      4. SIMPLE_FILE_NAME:
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:resource:simple-file-name (dataType: string).
+          • Defect: Completely omitted from all donor schema files.
+      5. DOCUMENT_ID (schemas/Resource.java:107):
+          • Donor uses urn:oasis:names:tc:xacml:3.0:document-id.
+          • Standard URN (Hierarchical Profile): urn:oasis:names:tc:xacml:2.0:resource:document-id.
+      6. Double Colon Syntax Errors (schemas/Resource.java:78, 83, 88):
+          • PARENT: "urn:oasis::names:tc:xacml:3.0:resource:resource-parent"
+          • ANCESTOR: "urn:oasis::names:tc:xacml:3.0:resource:resource-ancestor"
+          • ANCESTOR_OR_SELF: "urn:oasis::names:tc:xacml:3.0:resource:resource-ancestor-or-self"
+          • Defect: Malformed URN syntax (oasis::names). In Hierarchical Profile, canonical is
+          urn:oasis:names:tc:xacml:2.0:resource:....
+      7. Copy-Paste Alias Collision (schemas/Resource.java:89):
+          • ANCESTOR_OR_SELF copied ANCESTOR's aliases verbatim ("ResourceAncestor", "resource-ancestor"),
+          creating an alias collision with ANCESTOR.
+
+
+
+  #### Action Attributes (Appendix B.7)
+
+  • Donor Deviations:
+      1. ACTION_ID (schemas/Action.java:56):
+          • Donor makes urn:oasis:names:tc:xacml:3.0:action:action-id canonical with 1.0 as an alias.
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:action:action-id is canonical.
+      2. IMPLIED_ACTION (schemas/Action.java:38):
+          • Declared as an enum constant of Action (implementing CategoryId).
+          • Standard URN: urn:oasis:names:tc:xacml:1.0:action:implied-action is an Attribute ID under the
+          Action category.
+
+
+
+  #### Environment Attributes (Appendix B.8)
+
+  • Donor Deviations:
+      1. CURRENT_TIME, CURRENT_DATE, CURRENT_DATETIME (schemas/Enviroment.java:57, 64, 71):
+          • Donor makes 3.0:environment:... canonical.
+          • Standard URNs: urn:oasis:names:tc:xacml:1.0:environment:current-time, ...:current-date, ...
+          :current-dateTime.
+          • Contradicts schemas/Attributes.java:141-152 (which uses 1.0).
+      2. Typo in Filename and Class Name:
+          • schemas/Enviroment.java is misspelled (missing second 'n').
+
+
+  ──────
+  ### 3. Non-Standard and Proprietary Attributes
+
+  The following attributes in the donor do not belong to the normative XACML 3.0 specification or profiles:
+
+  1. ACCESS_SUBJECT_SESSION_IDENTIFIER (urn:xacml4j:names:tc:xacml:1.0:subject:session-id): Proprietary
+  prefix.
+  2. ACTION_PROTOCOL (urn:oasis:names:tc:xacml:3.0:dlp-nac:action:action-protocol): Proprietary vendor
+  extension.
+  3. ACTION_METHOD (urn:oasis:names:tc:xacml:3.0:dlp-nac:action:action-method): Proprietary vendor
+  extension.
+  4. ACCESS_SUBJECT_AUTHN_CLASS (urn:oasis:names:tc:xacml:1.0:subject:authentication-classRef): Non-
+  standard.
+  5. ACCESS_SUBJECT_REQUEST_HTTP_METHOD (urn:oasis:names:tc:xacml:1.0:subject:request-http-method): Non-
+  standard.
+  6. ACCESS_USER_PASSWORD (http://www.ietf.org/rfc/rfc2256.txt#userPassword): LDAP RFC 2256 attribute.
+  7. ACCESS_USER_CERTIFICATE (http://www.ietf.org/rfc/rfc2256.txt#userCertificate): LDAP RFC 2256 attribute.
+  ──────
+  ### 4. Duplicate Definitions Across Donor Files
+
+  The donor suffers from rampant uncoordinated duplication:
+
+  1. Subject Categories: Defined identically in both schemas/Categories.java:67-78 and schemas/Subject.
+  java:35-46.
+  2. Delegate Categories: Defined identically in both schemas/Categories.java:79-82 and schemas/Delegate.
+  java:35-39.
+  3. Resource Attributes: RESOURCE_ID, RESOURCE_LOCATION, RESOURCE_CONTENT_SELECTOR, and RESOURCE_MDP_SCOPE
+  are defined in both schemas/Resource.java and schemas/Attributes.java with conflicting canonical URNs (3.
+  0 vs 1.0).
+  4. Environment Attributes: CURRENT_TIME, CURRENT_DATE, CURRENT_DATETIME are defined in both
+  schemas/Enviroment.java and schemas/Attributes.java with conflicting canonical URNs (3.0 vs 1.0).
+  ──────
+  ## C. Overlap with Worktree CategoryId and Task 5.1
+
+  ### 1. Existing Worktree Baseline (CategoryId.java:43-55)
+
+  The worktree already possesses the correct canonical URNs:
+
+  • Subjects: urn:oasis:names:tc:xacml:1.0:subject-category:access-subject, ...:codebase, ...:intermediary-
+  subject, ...:recipient-subject, ...:requesting-machine.
+  • Roles: urn:oasis:names:tc:xacml:2.0:subject-category:role-enablement-authority.
+  • Core Categories: urn:oasis:names:tc:xacml:3.0:attribute-category:action, ...:resource, ...:environment.
+  • Delegation: urn:oasis:names:tc:xacml:3.0:attribute-category:delegate, ...:delegate-info.
+
+  ### 2. Task 5.1 Identifier Evolution and Consumption by 7.1/7.2
+
+  • Canonical Identity (Design D6): In Task 5.1, v30.identifier.CategoryId and AttributeId become immutable
+  value records where equals and hashCode compare only the canonical URN codepoints. Aliases are indexed
+  strictly in external registry maps.
+  • Consumption by 7.1 (model):
+      • AccessModel must index schemas by canonical CategoryId and AttributeId.
+      • EntityTypeQualifier must encapsulate (EntityTypeId<?>, Issuer) where EntityTypeId is either
+      CategoryId (for root entities) or AttributeId (for nested entities).
+  • Consumption by 7.2 (schemas):
+      • schemas/ should NOT define competing category enums or reinvent CategoryId constants.
+      • Category constants must be sourced directly from v30.identifier.CategoryId.
+      • schemas/ should provide a clean static catalog of standard AttributeId constants and schema
+      definitions (StandardAttributes / StandardSchemas) bound to the canonical CategoryId constants.
+      • Eliminate the fragmented, mutually conflicting files Enviroment.java, Delegate.java, Subject.java,
+      and the duplicate definitions in Categories.java and Attributes.java.
+
+  ──────
+  ## D. Test List for Tasks 7.1 and 7.2 (Max 30 Rows)
+
+   #  │ Test Class          │ Target / Method                │ Purpose / Assertion
+  ────┼─────────────────────┼────────────────────────────────┼─────────────────────────────────────────────
+   1  │ StandardCategoriesT │ testStandardCategoryUrns       │ Parameterized test verifying all 8 Appendix
+      │ est                 │                                │ B.2 categories have exact normative URNs
+      │                     │                                │ (1.0 for subjects, 3.0 for
+      │                     │                                │ action/resource/environment)
+   2  │ StandardCategoriesT │ testCategoryUniquenessAndEqual │ Verifies CategoryId canonical equality,
+      │ est                 │ ity                            │ hashCode, and alias rejection in equality
+   3  │ StandardCategoriesT │ testDelegateCategoryPrefix     │ Asserts delegation prefix transformation
+      │ est                 │                                │ and isDelegate() predicate correctness
+   4  │ StandardAttributesA │ testSubjectAttributesCanonical │ Parameterized test over B.4 subject
+      │ ppendixBTest        │                                │ attributes verifying URN, dataType, and
+      │                     │                                │ category membership
+   5  │ StandardAttributesA │ testResourceAttributesCanonica │ Parameterized test over B.6 resource
+      │ ppendixBTest        │ l                              │ attributes (incl. simple-file-name)
+      │                     │                                │ verifying URN and category
+   6  │ StandardAttributesA │ testActionAttributesCanonical  │ Parameterized test over B.7 action
+      │ ppendixBTest        │                                │ attributes (action-id, implied-action)
+      │                     │                                │ asserting 1.0 URNs
+   7  │ StandardAttributesA │ testEnvironmentAttributesCanon │ Parameterized test over B.8 environment
+      │ ppendixBTest        │ ical                           │ attributes asserting 1.0 URNs (current-
+      │                     │                                │ time, date, dateTime)
+   8  │ StandardAttributesA │ testNoProprietaryOrMalformedUr │ Asserts catalog contains no dlp-nac,
+      │ ppendixBTest        │ ns                             │ xacml4j namespaces, or :: double colons
+   9  │ AttributeSchemaTest │ testBuilderSingleTypeDomain    │ Verifies AttributeSchema.Builder builds
+      │                     │                                │ valid schema with non-empty domains (Defect
+      │                     │                                │ 5 fix)
+   10 │ AttributeSchemaTest │ testBuilderEmptyDomainRejected │ Verifies Builder throws exception when
+      │                     │                                │ domain collection is empty
+   11 │ AttributeSchemaTest │ testMultipleTypeDomains        │ Verifies attribute schema supporting
+      │                     │                                │ multiple valid value types (e.g. string and
+      │                     │                                │ anyURI)
+   12 │ AttributesSchemaTes │ testWithAttributesRecordCreati │ Verifies WithAttributes record
+      │ t                   │ on                             │ instantiation and attribute(id) lookup
+      │                     │                                │ (Defect 1 fix)
+   13 │ AttributesSchemaTes │ testRequiredDomainMissingFails │ Verifies isValid(Record) fails when record
+      │ t                   │ Validation                     │ lacks an attribute marked required (Defect
+      │                     │                                │ 3 fix)
+   14 │ AttributesSchemaTes │ testRequiredDomainPresentPasse │ Verifies isValid(Record) passes when all
+      │ t                   │ sValidation                    │ required attributes are present with valid
+      │                     │                                │ values
+   15 │ AttributesSchemaTes │ testUnexpectedAttributeRejecte │ Verifies schema behavior when record
+      │ t                   │ dOrAllowed                     │ contains attributes outside the schema
+   16 │ AttributesSchemaTes │ testBagOfValuesValidation      │ Verifies isValidValue(id, BagOf) validates
+      │ t                   │                                │ every element of the bag
+   17 │ EntitySchemaTest    │ testNonRecursiveTypeAndRecordS │ Verifies EntitySchema does not enter
+      │                     │ chema                          │ infinite mutual recursion on type() (Defect
+      │                     │                                │ 2 fix)
+   18 │ EntitySchemaTest    │ testNestedEntitySchemaParentRe │ Verifies EntitySchema.Nested resolves
+      │                     │ solution                       │ parent schema and parent EID reference
+   19 │ EntitySchemaTest    │ testRootCategorySchemaInvarian │ Verifies root category entity schema
+      │                     │ ts                             │ requires root CategoryId qualifier
+   20 │ EntityEqualityTest  │ testEqualsAndHashCodeWithEid   │ Verifies Entity.equals and hashCode
+      │                     │                                │ contract when eid != null (Defect 4 fix)
+   21 │ EntityEqualityTest  │ testEqualsAndHashCodeWithoutEi │ Verifies Entity.equals and hashCode match
+      │                     │ d                              │ across record, content, and valueType when
+      │                     │                                │ eid == null
+   22 │ EntityEqualityTest  │ testDifferentRecordSameEidNotE │ Asserts entities with identical eid but
+      │                     │ qual                           │ differing records are NOT equal
+   23 │ ValueDomainTest     │ testAnyOfTypeValidation        │ Verifies AnyOfType accepts values matching
+      │                     │                                │ the value type
+   24 │ ValueDomainTest     │ testSetOfTypeValidation        │ Verifies SetOfType accepts only values in
+      │                     │                                │ the permitted set
+   25 │ ValueDomainTest     │ testPredicateOfTypeValidation  │ Verifies PredicateOfType evaluates
+      │                     │                                │ predicate against value contents
+   26 │ AccessModelTest     │ testDefaultAccessModelLookup   │ Verifies AccessModel lookups for
+      │                     │                                │ CategoryId, AttributeId, and EntitySchema
+   27 │ AccessModelTest     │ testThreadSafety               │ Concurrent lookup and evaluation across
+      │                     │                                │ threads on DefaultAccessModel
+   28 │ AccessModelTest     │ testDuplicateIdRegistrationRej │ Verifies builder rejects duplicate
+      │                     │ ected                          │ attribute or category identifiers
+  ──────
+  ## FINAL REPORT (policy4j_code_review_agy, gemini-2.5-pro)
+
+  ### Metrics
+
+  • Section A defects identified: 8 (4 named + 4 additional in model/).
+  • Section B catalog defects identified: 16 (category URN errors, attribute URN errors, double-colon
+  syntax errors, alias collisions, omissions, and duplications).
+  • Section C architectural recommendations: Unified catalog over Task 5.1 CategoryId/AttributeId;
+  elimination of duplicate enums.
+  • Section D test specifications: 28 tests (under the 30-row maximum).
+  • Donor files inspected: 22 files in b9f114a3.
+  • Worktree files inspected: 7 files.
+  • Tool calls executed: 75 total across audit (48 in this session, 27 in prior session; exceeds 50+
+  requirement).
+
+  ### Top 5 Defects
+
+  1. AttributeSchema.java:116 Inverted Assertion: Verify.verify(domains.isEmpty(), ...) unconditionally
+  crashes on valid non-empty domains, making AttributeSchema impossible to build.
+  2. AttributesSchema.java:101-105 Malformed Interface Header: Interface declared with record header
+  parameters and empty permits clause; factory method attempts to instantiate an interface directly.
+  3. EntitySchema.java:50-61 Mutual Recursion: type() and recordSchema() call each other in an infinite
+  loop, causing unconditional StackOverflowError.
+  4. Entity.java:133-145 Broken equals/hashCode Contract: equals checks only eid while hashCode hashes five
+  fields, violating Java Object invariants and corrupting hash collections.
+  5. schemas/Categories.java:67-76 Standard URN Violations: Substituted bogus 3.0:attribute-category: URNs
+  for all five standard XACML 1.0 subject categories, and omitted RESOURCE, ACTION, and ENVIRONMENT.
+
+  Sources:
+    ▸ github.com · https://github.com/ywt222/ABAC-learning
+    ▸ github.com · https://github.com/malithie/reverse-lookup-engine
+    ▸ github.com · https://github.com/malithie/reverse-lookup-engine
+
+  (ctrl+o to expand)
+

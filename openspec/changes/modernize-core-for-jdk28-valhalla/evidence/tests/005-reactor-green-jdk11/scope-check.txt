@@ -1,0 +1,123 @@
+Round 4 gate: 3543 protected source/POM/resource/run003 files compared; changed: 0
+Only the conductor-approved InMemoryPolicyRepositoryTest.java changed in this packet
+All four original test bodies, mock expectations, assertions and c.verify calls preserved; bounded completion barriers added
+One forwarding helper; all four listener methods forward before counting down; no sleep or production threading edit
+License header unchanged; tabs retained; scoped diff --check passes
+All 2906 vendored conformance resources and 14 run003 evidence files unchanged
+Conformance sources, loop bounds and 30 exclusions per suite unchanged
+Deferred first-error semantics (policy4j-the.4.12), core/XML/date arithmetic, accepted aliases and POM edits unchanged
+Source hash unchanged throughout all 30 after runs and both full gates
+Only one authorized project file changed in this packet:
+xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+Full continued lane project-file inventory (33):
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java
+xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java
+xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java
+xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+xacml-test/src/test/java/org/xacml4j/v30/ExpectedAttributeResolverBuilderTest.java
+xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java
+xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolverTest.java
+xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeArithmeticTest.java
+xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestContentTest.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticBoundaryTest.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java
+xacml-test/pom.xml
+xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
+xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java
+xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java
+xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+
+rtk git diff --check -- xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+Exit code: 0
+
+
+rtk git branch --show-current
+Exit code: 0
+integration/modernize-core-jdk28-valhalla
+
+rtk git rev-parse HEAD
+Exit code: 0
+befdd116bd11385ac8d007732fa8e4d347af3143
+
+rtk git status --short
+Exit code: 0
+ M xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_1.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_2.xml
+ M xacml-conformance-tests/src/test/resources/Example_2/Rule_3.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF002Request.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIF007Policy.xml
+ M xacml-conformance-tests/src/test/resources/oasis-xacml20-compat-test/IIIG006Policy.xml
+ M xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSequenceSpec.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/JavaMethodToFunctionSpecConverter.java
+ M xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+ M xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+ D xacml-json/src/test/resources/policy.json
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java
+ M xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java
+ M xacml-pdp/src/test/java/org/xacml4j/v30/spi/repository/InMemoryPolicyRepositoryTest.java
+ M xacml-test/pom.xml
+ M xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java
+ M xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/ExpressionTypeBuilder.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/TypeToXacml30.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20PolicyFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextMarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml20ResponseContextUnmarshaller.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30PolicyFromObjectModelToJaxbMapper.java
+ M xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml20RequestContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30ResponseContextUnmarshallerTest.java
+ M xacml-xml/src/test/java/org/xacml4j/v30/xml/XacmlPolicyUnmarshallerTest.java
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/004-vendored-fixtures/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/006-test-stack-inventory/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/builds/007-conformance-manifest-draft/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/reviews/
+?? openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/
+?? xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolverTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DateTimeArithmeticBoundaryTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DurationFunctionIdentifierTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctionIdentifierTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTimeArithmeticTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DurationReviewTest.java
+?? xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601FractionalDateTimeArithmeticTest.java
+?? xacml-test/src/test/java/org/xacml4j/v20/Xacml30TestUtilityTest.java
+?? xacml-test/src/test/java/org/xacml4j/v30/ExpectedAttributeResolverBuilderTest.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/TypeToXacml30Test.java
+?? xacml-xml/src/test/java/org/xacml4j/v30/xml/Xacml30RequestContentTest.java
+
+rtk git diff --cached --name-only
+Exit code: 0
+
+
+Prior global diff warning at ExpressionTypeBuilder.java:96 is unchanged other-lane whitespace.
+No commit, br, task tick, issue closure, or evidence-index edit.

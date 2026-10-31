@@ -1,0 +1,32 @@
+{
+  "result": "GREEN after 4.5 timezone preservation",
+  "classes": [
+    {
+      "class": "org.xacml4j.v30.policy.function.impl.DateTimeArithmeticRegistryTest",
+      "tests": 736,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DateTimeZonePreservationTest",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "class": "org.xacml4j.v30.types.ISO8601DateTimeTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "totals": {
+    "tests": 771,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

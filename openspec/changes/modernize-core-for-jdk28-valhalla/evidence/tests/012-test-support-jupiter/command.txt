@@ -1,0 +1,8 @@
+Successful scoped rewrite dry run (the actual command used the placeholders shown):
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -o -s <settings> -Duser.home=<lane>/.rewrite-user -pl xacml-test -am -Drewrite.exclusions='pom.xml,xacml-core/**,xacml-xml-jaxb/**,xacml-xml/**,xacml-json/**,xacml-pdp/**,xacml-conformance-tests/**' org.openrewrite.maven:rewrite-maven-plugin:6.22.1:dryRun -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.20.0 -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/012-test-support-jupiter/rewrite-dry-run-scoped.log
+
+Successful scoped rewrite run:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -o -s <settings> -Duser.home=<lane>/.rewrite-user -pl xacml-test -am -Drewrite.exclusions='pom.xml,xacml-core/**,xacml-xml-jaxb/**,xacml-xml/**,xacml-json/**,xacml-pdp/**,xacml-conformance-tests/**' org.openrewrite.maven:rewrite-maven-plugin:6.22.1:run -Drewrite.activeRecipes=org.openrewrite.java.testing.junit5.JUnit4to5Migration,org.openrewrite.java.testing.easymock.EasyMockToMockito -Drewrite.recipeArtifactCoordinates=org.openrewrite.recipe:rewrite-testing-frameworks:3.20.0 -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/012-test-support-jupiter/rewrite-run.log
+
+JDK 21 reactor gate:
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -pl xacml-test -am -Dmaven.test.failure.ignore=true -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/012-test-support-jupiter/jdk21-test.log test

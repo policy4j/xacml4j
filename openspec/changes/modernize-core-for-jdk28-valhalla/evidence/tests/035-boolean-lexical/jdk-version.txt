@@ -1,0 +1,5 @@
+Apache Maven 3.9.16 (2bdd9fddda4b155ebf8000e807eb73fd829a51d5)
+Maven home: <maven-home>
+Java version: 21.0.6, vendor: Oracle Corporation, runtime: <jdk21>
+Default locale: en_US, platform encoding: UTF-8
+OS name: "mac os x", version: "26.6.1", arch: "aarch64", family: "mac"

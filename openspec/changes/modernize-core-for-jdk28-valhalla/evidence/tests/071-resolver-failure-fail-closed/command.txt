@@ -1,0 +1,30 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red: tests changed first, production code unchanged
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -q -Dlicense.skipUpdateLicense=true \
+  -pl xacml-pdp -am -Dtest=AttributeResolutionSafetyNetTest \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Focused green
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -pl xacml-core,xacml-pdp -am test
+
+# Gate: full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true verify
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict
+
+# License-header churn check
+rtk git status --short
+
+# Red, round 4 (rv079): the eager getMessage() calls put back in the four
+# production files, the tests of gate 5; the files restored afterwards
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-pdp -am \
+  -Dtest='DefaultEvaluationContextHandlerTest,DefaultPolicyInformationPointTest,AttributeSelectorTest' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Reviews (one shot, redacted packet = prompt + `git diff`; run from a scratch directory)
+codex exec -s read-only --skip-git-repo-check - < packet.md
+grok --prompt-file packet.md --model grok-4.7 --effort high --permission-mode plan

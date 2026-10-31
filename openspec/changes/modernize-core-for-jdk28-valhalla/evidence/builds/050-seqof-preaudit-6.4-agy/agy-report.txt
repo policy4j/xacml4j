@@ -1,0 +1,331 @@
+  ## A. Donor Defects: Types Implementing java.util.stream.Stream
+
+  In donor commit b9f114a3, the author attempted to turn domain values, bags, and request attributes
+  directly into java.util.stream.Stream implementations. This breaks the fundamental contracts of both the
+  Java Stream API and domain entity models.
+
+  ### 1. Inventory of Donor Types Extending or Implementing Stream
+
+   Type              │ Kind             │ Donor File:Line                │ Extends / Implements
+  ───────────────────┼──────────────────┼────────────────────────────────┼─────────────────────────────────
+   ValueStream       │ interface        │ b9f114a3:xacml-                │ Stream<Value<?, ?>>,
+                     │                  │ core/src/main/java/org/xacml4j │ Iterable<Value<?, ?>>
+                     │                  │ /v30/ValueStream.java:37       │
+   ValueStreamOfType │ interface        │ b9f114a3:xacml-                │ Stream<VT>, Iterable<VT>
+                     │                  │ core/src/main/java/org/xacml4j │
+                     │                  │ /v30/ValueStreamOfType.java:42 │
+   ValueExpr         │ sealed interface │ b9f114a3:xacml-                │ Expr, ValueStreamOfType<V, VT>
+                     │                  │ core/src/main/java/org/xacml4j │ (transitively Stream<VT>)
+                     │                  │ /v30/types/ValueExpr.java:41   │
+   SeqOf             │ sealed interface │ b9f114a3:xacml-                │ ValueExpr<V, VT>, Stream<VT>
+                     │                  │ core/src/main/java/org/xacml4j │
+                     │                  │ /v30/types/SeqOf.java:39       │
+   BagOf             │ record           │ b9f114a3:xacml-                │ SeqOf<V, VT> (transitively
+                     │                  │ core/src/main/java/org/xacml4j │ Stream<VT>)
+                     │                  │ /v30/types/BagOf.java:55       │
+   Value             │ sealed interface │ b9f114a3:xacml-                │ SeqOf<V, VT> (transitively
+                     │                  │ core/src/main/java/org/xacml4j │ Stream<VT>)
+                     │                  │ /v30/types/Value.java:39       │
+   Attribute         │ record           │ b9f114a3:xacml-                │ ValueStream (transitively
+                     │                  │ core/src/main/java/org/xacml4j │ Stream<Value<?, ?>>)
+                     │                  │ /v30/Attribute.java:51         │
+
+  ### 2. What Breaks When a Bag is Iterated Twice
+
+  • Stream Contract vs. Iterable Contract Collision:
+      • java.util.stream.Stream is strictly single-use. Javadoc states:
+      "A stream should be operated on (invoking an intermediate or terminal stream operation) only once. A
+      stream implementation may throw IllegalStateException if it detects that the stream is being reused."
+      • Iterable<T> guarantees that iterator() can be invoked repeatedly to yield independent iterations.
+      • In ValueStreamOfType.java:232:
+        @Nonnull
+        @Override
+        default Iterator<VT> iterator() {
+            return stream().iterator();
+        }
+      If stream() is backed by an actual pipeline or wrapped stream, the first iteration consumes the
+      stream; the second iteration immediately throws IllegalStateException: stream has already been
+      operated upon or closed.
+      • Conversely, if stream() returns a fresh stream each time (e.g. BagOf.stream() returning values.
+      stream()), the instance masquerades as a Stream but violates standard stream semantics (terminal
+      operations do not exhaust the instance). Passing BagOf to methods expecting Stream<VT> causes
+      unexpected behavior if the receiver assumes pipeline exhaustion.
+  • Type Information Loss on Stream Operations:
+      • In ValueStreamOfType.java:47-83, methods like filter(), map(), and limit() return standard JDK
+      Stream<VT> or Stream<R>.
+      • The moment a caller invokes bag.filter(...), the result ceases to be a SeqOf, BagOf, or
+      ValueStreamOfType—all domain methods (valueType(), asBag(), asSet()) and multiset semantics vanish
+      into a generic JDK stream.
+
+
+  ### 3. equals and hashCode on Stream-Backed Types
+
+  • java.util.stream.Stream intentionally defines identity equality only. Comparing streams via .equals()
+  is an anti-pattern flagged by static analysis (e.g. ErrorProne StreamEquals, SonarQube S3958).
+  • BagOf is a record holding Multiset<VT> values. Its equals() compares multiset contents.
+  • Value implements SeqOf (and thus Stream), but its equals() compares underlying scalar values (LocalDate,
+  Long, etc.).
+  • ValueStream and ValueStreamOfType declare no equals/hashCode, falling back to Object reference identity.
+  • When domain collections implement Stream, callers holding a Stream<VT> reference who call .equals() or
+  store it in a HashSet/HashMap encounter either reference identity or broken symmetry.
+
+  ### 4. Bag Multiplicity and Cardinality Violations
+
+  • XACML bags are multisets (duplicates must be preserved for bag size, designator resolution, and bag
+  functions).
+  • In b9f114a3:SeqOf.java:47-50:
+    @Nonnull
+    @Override
+    default Optional<VT> asSingle() {
+        return findFirst();
+    }
+  asSingle() calls findFirst(). If a bag contains multiple elements (e.g. ["A", "B"]), asSingle() silently
+  discards all elements after the first and returns "A".
+  • This violates XACML 3.0 §A.3.5 / §7.3.5 and Design D7: single-value resolution requires
+  requireExactlyOne(). If a bag has more than one value, it must evaluate to Indeterminate, not silently
+  truncate.
+
+  ### 5. Laziness Leaks (Late Exceptions and Context Capture)
+
+  • In policy evaluation, evaluate(EvaluationContext context) is synchronous and bound to the lifecycle of
+  a rule or policy.
+  • If attribute resolvers, selectors, or designators evaluate to lazy streams rather than materialized
+  query views:
+      1. Delayed Exceptions: PIP attribute resolution errors (EvaluationException) are thrown when terminal
+      operations run (e.g. inside higher-order functions or during response marshalling) rather than within
+      evaluate().
+      2. Context Escapes: The EvaluationContext may have already exited, and its MDC logging context
+      cleaned (DefaultPolicyDecisionPoint.java:154 MDCSupport.cleanXacmlRequestId()), leaving downstream
+      stream traversal without execution context.
+
+
+  ### 6. Thread Safety
+
+  • Stream instances are stateful and not thread-safe. Sharing a stream-implementing BagOf across
+  concurrent rule evaluations causes ConcurrentModificationException or pipeline corruption.
+  • In contrast, immutable multiset query views are completely thread-safe.
+
+  ### 7. Broken Utility Implementations in Donor
+
+  • b9f114a3:xacml-core/.../util/Streams.java:63:
+    public static <T> Stream<T> extractTypeFromAny(Class<T> type, Object[] params){
+        ...
+        for(Object p : params){
+            if(p instanceof Iterator<?>){ stream = Streams.concat(stream, extractType(type,
+  (Iterator<?>)p)); }
+            if(p instanceof Iterable<?>){ stream = Streams.concat(stream, extractType(type,
+  (Iterable<?>)p)); }
+            if(p instanceof Stream<?>){ stream = Streams.concat(stream, extractType(type, (Stream<?>)p)); }
+        }
+        return extractType(type, Arrays.stream(params)); // BUG: discards concatenated 'stream'!
+    }
+  Line 63 completely discards the accumulated stream variable and returns Arrays.stream(params).
+  • b9f114a3:xacml-core/.../policy/function/impl/XPathFunctions.java:66-67:
+  Line 66 is missing a semicolon (context.resolveCategory(...)) and line 67 references undeclared variable
+  c. Does not compile.
+  ──────
+  ## B. The Worktree Side
+
+  ### 1. Current BagOfValues Structure (worktree:BagOfValues.java:57-145)
+
+  • Does NOT implement java.util.stream.Stream.
+  • Implements ValueExp, Serializable.
+  • Internal state: private final Multiset<Value<?>> values; (immutable multiset).
+  • Exposes:
+      • <T extends Value<?>> Stream<T> stream(): explicit factory returning a fresh stream.
+      • <T extends Value<?>> Collection<T> values(): collection view.
+      • int size(), boolean isEmpty(), boolean contains(Value<?> attr).
+      • <T extends Value<?>> T value(): extracts first value (throws NoSuchElementException if empty).
+      • <T extends Value<?>> Optional<T> single(): optional single value.
+      • Set operations: union(), intersection(), containsAll(), containsAtLeastOneOf().
+
+
+  ### 2. AttributeStream Pattern (b9f114a3:AttributeStream.java:38-103)
+
+  Design D9 explicitly cites AttributeStream as the model for query views:
+
+  • An independent interface representing a query view over attributes.
+  • Does NOT extend Stream.
+  • Methods:
+      • Stream<Attribute> stream();
+      • Stream<Attribute> stream(AttributeId id);
+      • default Stream<Attribute> stream(AttributeId id, Issuer issuer)
+      • default Stream<Value<?, ?>> values(AttributeId id, ...)
+      • default Optional<BagOf<?, ?>> resolve(...)
+      • default BagOf<?, ?> bag(...)
+      • default Optional<Value<?, ?>> value(...)
+      • default Optional<Attribute> first(...)
+
+
+  ### 3. ValueStream Occurrences Across Modules
+
+   Module                  │ Occurrences in Curren… │ Occurrences in Donor b… │ Notes
+  ─────────────────────────┼────────────────────────┼─────────────────────────┼────────────────────────────
+   xacml-core              │ 0                      │ 7 files (definitions +  │ Does not exist in
+                           │                        │ Attribute + ValueExpr)  │ worktree; donor introduced
+                           │                        │                         │ ValueStream.java and
+                           │                        │                         │ ValueStreamOfType.java
+   xacml-pdp               │ 0                      │ 0                       │ None
+   xacml-xml               │ 0                      │ 0                       │ None
+   xacml-json              │ 0                      │ 0                       │ None
+   xacml-test              │ 0                      │ 0                       │ None
+   xacml-conformance-tests │ 0                      │ 0                       │ None
+
+  BagOfValues occurrences in current worktree:
+
+  • xacml-core: 439 references
+  • xacml-pdp: 86 references
+  • xacml-test: 9 references
+  • xacml-conformance-tests: 7 references
+  • Total: 541 references across the repository.
+
+  ### 4. Call Sites Relying on Stream Directly Needing .stream() Call After 6.4
+
+  In donor code, because Attribute and ValueExpr implemented Stream, several call sites invoked stream
+  methods directly without calling .stream():
+
+  1. b9f114a3:xacml-core/.../AttributeStream.java:50:
+    // Donor:
+    .flatMap(a -> a.filter(v -> v.isOfType(dataType)));
+    // Fix for 6.4:
+    .flatMap(a -> a.stream().filter(v -> v.isOfType(dataType)));
+
+  2. b9f114a3:xacml-core/.../MultiRequestContext.java:237:
+    // Donor:
+    e.attributes().filter(filter).findFirst()
+    // Fix for 6.4:
+    e.attributes().stream().filter(filter).findFirst()
+
+  3. b9f114a3:xacml-core/.../types/ValueExpr.java:64, 71, 79:
+    // Donor: calls this.stream().distinct() internally in default methods.
+    // Fix for 6.4: ValueExpr provides explicit stream() method; asSet() and asBag() call stream().
+
+  ──────
+  ## C. Plan for Task 6.4
+
+  ### 1. Minimal Query-View API (SeqOf<V, VT> / BagOf<V, VT>)
+
+  SeqOf<V, VT> must stop extending java.util.stream.Stream. It becomes a lightweight query view over an
+  immutable multiset of typed values:
+
+    public sealed interface SeqOf<V, VT extends Value<V, VT>>
+            extends ValueExpr<V, VT>, Iterable<VT>
+            permits BagOf, Value
+    {
+        /** Returns a fresh, independent Stream over elements */
+        @Nonnull
+        Stream<VT> stream();
+
+        /** Iterator support for enhanced for-loops: for (VT v : seq) */
+        @Nonnull
+        @Override
+        Iterator<VT> iterator();
+
+        /** Number of elements in sequence (with multiplicity) */
+        int size();
+
+        /** True if sequence contains no elements */
+        boolean isEmpty();
+
+        /** True if sequence contains the specified value */
+        boolean contains(VT value);
+
+        /** Resolves singleton; throws if size != 1 (Task 6.1 / D7) */
+        @Nonnull
+        VT requireExactlyOne() throws EvaluationException;
+
+        /** Returns first element if present, or empty (where permitted by spec) */
+        @Nonnull
+        Optional<VT> first();
+
+        /** Materializes as an immutable BagOf */
+        @Nonnull
+        BagOf<V, VT> asBag();
+    }
+
+  ### 2. Retirement / Replacement of ValueStream and ValueStreamOfType
+
+  • Drop ValueStreamOfType.java and ValueStream.java's inheritance from Stream<T>.
+  • Remove the 40+ proxy delegation methods to Stream.
+  • Make Attribute implement Iterable<Value<?, ?>> and provide Stream<Value<?, ?>> stream() and
+  Collection<Value<?, ?>> values().
+
+  ### 3. Migration Order with Task 5.2 Bridge Types (from Run 043)
+
+  1. Prerequisite (Task 5.2): BagOfValues bridges to BagOf, ValueExp bridges to ValueExpr, BagOfValuesType
+  bridges to BagOfType. The reactor builds and passes with bridge adapters.
+  2. Task 6.4 Implementation:
+      • Sever SeqOf and ValueExpr from java.util.stream.Stream.
+      • Update SeqOf to extend Iterable<VT>.
+      • Update Attribute to stop implementing Stream.
+      • Update call sites (AttributeStream.java:50, MultiRequestContext.java:237) to add .stream().
+      • Fix Streams.extractTypeFromAny concatenation bug.
+  3. Subsequent (Task 6.1 / 6.5): Replace single() / value() calls with requireExactlyOne() across function
+  evaluation and attribute resolution.
+  ──────
+  ## D. Test List for Task 6.4 (20 Rows)
+
+   #   │ Test Name                   │ Targ… │ Scenario Tested              │ Expected Behavior
+  ─────┼─────────────────────────────┼───────┼──────────────────────────────┼──────────────────────────────
+   T01 │ testSeqOfIterateMultipleTim │ SeqOf │ Iterate over bag using       │ Succeeds without
+       │ es                          │ /     │ enhanced for-loop twice      │ IllegalStateException
+       │                             │ BagOf │                              │
+   T02 │ testSeqOfStreamProducesFres │ SeqOf │ Call bag.stream() twice      │ Returns two distinct, active
+       │ hStream                     │ /     │                              │ Stream instances
+       │                             │ BagOf │                              │
+   T03 │ testTerminalOpDoesNotExhaus │ SeqOf │ Call bag.stream().count(),   │ Bag remains fully readable
+       │ tBag                        │ /     │ then iterate bag             │
+       │                             │ BagOf │                              │
+   T04 │ testBagOfMultisetPreservesD │ BagOf │ Create bag from ["a", "a",   │ size() == 3, contains 2 "a"s
+       │ uplicates                   │       │ "b"]                         │
+   T05 │ testBagOfEqualityMultisetOr │ BagOf │ BagOf(["a", "b"]) equals     │ Returns true, identical
+       │ derIndependent              │       │ BagOf(["b", "a"])            │ hashCodes
+   T06 │ testBagOfEqualityDifferentM │ BagOf │ BagOf(["a", "a"]) equals     │ Returns false
+       │ ultiplicity                 │       │ BagOf(["a"])                 │
+   T07 │ testBagOfDoesNotEqualArbitr │ BagOf │ bag.equals(bag.stream())     │ Returns false without
+       │ aryStream                   │       │                              │ exception
+   T08 │ testRequireExactlyOneOnSing │ SeqOf │ BagOf(["a"]).requireExactlyO │ Returns "a"
+       │ leton                       │       │ ne()                         │
+   T09 │ testRequireExactlyOneOnEmpt │ SeqOf │ BagOf([]).requireExactlyOne( │ Throws EvaluationException
+       │ yThrows                     │       │ )                            │
+   T10 │ testRequireExactlyOneOnMult │ SeqOf │ BagOf(["a",                  │ Throws EvaluationException
+       │ iThrows                     │       │ "b"]).requireExactlyOne()    │ (multiplicity check)
+   T11 │ testFirstOnNonEmpty         │ SeqOf │ BagOf(["a", "b"]).first()    │ Returns Optional.of("a")
+   T12 │ testFirstOnEmpty            │ SeqOf │ BagOf([]).first()            │ Returns Optional.empty()
+   T13 │ testAttributeQueryViewItera │ Attri │ Iterate attribute via for    │ Iterates all values without
+       │ tion                        │ bute  │ (Value v : attribute)        │ stream creation
+   T14 │ testAttributeStreamExplicit │ Attri │ Call                         │ Returns filtered stream
+       │                             │ bute  │ attribute.stream().filter(.. │
+       │                             │       │ .)                           │
+   T15 │ testSynchronousEvaluationNo │ Attri │ evaluate(context) returns    │ Context is not retained by
+       │ LeakedContext               │ buteD │ materialized BagOf           │ returned bag
+       │                             │ esign │                              │
+       │                             │ ator  │                              │
+   T16 │ testBagOfUnionRemovesDuplic │ BagOf │ Union of [1, 2, 3] and [2,   │ Result has size 4
+       │ ates                        │       │ 3, 4]                        │ (duplicates collapsed per
+       │                             │       │                              │ A.3.11)
+   T17 │ testBagOfIntersectionCommon │ BagOf │ Intersection of [1, 2, 3]    │ Result has [2], size 1
+       │ Elements                    │       │ and [2, 4]                   │
+   T18 │ testThreadSafetyConcurrentS │ BagOf │ 8 threads concurrently       │ All complete without race
+       │ treams                      │       │ calling bag.stream()         │ conditions
+   T19 │ testStreamsExtractTypeFromA │ Strea │ Pass array with mixed        │ Concatenates all matching
+       │ nyConcatenation             │ ms    │ Iterator and Iterable        │ elements (bug fix)
+   T20 │ testValueAsSeqOfSingleEleme │ Value │ value.asBag() and            │ Emits exactly one element
+       │ nt                          │       │ value.requireExactlyOne()    │
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, antigravity)
+    counts: stream_implementors=7, donor_defects=7, worktree_bag_refs=541, test_rows=20
+    top 5 findings:
+    1. SeqOf, ValueStream, ValueStreamOfType, Value, BagOf, and Attribute all extend/implement java.util.
+  stream.Stream, violating single-use stream lifecycle and causing stream exhaustion bugs.
+    2. SeqOf.asSingle() calls findFirst(), silently discarding multi-element bag errors and violating XACML
+  3.0 §A.3.5 cardinality validation.
+    3. BagOf and Value implement SeqOf, creating conflicting equals/hashCode semantics between scalar
+  values, multisets, and identity-based Stream references.
+    4. Lazy stream evaluation leaks PIP exceptions and thread-local MDC context across evaluation
+  boundaries.
+    5. Streams.java:63 contains a fatal defect discarding concatenated streams and returning only the raw
+  array stream.
+    files opened: 29
+    tool calls used: 59
+

@@ -1,0 +1,139 @@
+{
+  "result": "PASS",
+  "obsolete_api_search": {
+    "exit_code": 1,
+    "matches": 0,
+    "pattern": "org\\.junit\\.(Test|Assert|Before|After|Rule|Ignore|runner)|TemporaryFolder|@Ignore|@RunWith|junit-vintage-engine|Until task 2\\.1|no Jupiter dependency"
+  },
+  "requested_rule_search": {
+    "exit_code": 0,
+    "output": "docs/ai/TESTING.md:18:- **After task 2.7 (conductor confirmation pending):** JUnit 4, Vintage,\ndocs/ai/TESTING.md:19:  EasyMock, and Objenesis are removed.\ndocs/ai/TESTING.md:79:  time zone, or hash iteration order. Use `@TempDir` for files.\ndocs/ai/TESTING.md:88:Use `assertThrows` for expected exceptions. Wrap only the throwing call;\ndocs/ai/TESTING.md:89:put verifications after `assertThrows`.\ndocs/ai/TESTING.md:93:- Prefer `@ExtendWith(MockitoExtension.class)` with strict stubs. Any\ndocs/ai/TESTING.md:94:  `lenient()` stub needs a comment explaining why.\ndocs/ai/TESTING.md:97:  including stubbed calls. Keep total count checks alongside `InOrder`:\ndocs/ai/TESTING.md:99:- Use `InOrder` and `verifyNoMoreInteractions` where order or strictness\ndocs/ai/TESTING.md:101:- Use `verifyNoInteractions` for collaborators that must not be touched.\ndocs/ai/TESTING.md:102:- Assert the values captured by every `ArgumentCaptor`.\ndocs/ai/TESTING.md:115:Surefire; Vintage did. This accounts for the core count changing from\n"
+  },
+  "diff_check": {
+    "exit_code": 0,
+    "output": ""
+  },
+  "links_and_references": {
+    "result": "PASS",
+    "checked_references": 11,
+    "checks": [
+      {
+        "source": "AGENTS.md",
+        "line": 15,
+        "target": "#generated-and-vendored-files",
+        "passed": true
+      },
+      {
+        "source": "AGENTS.md",
+        "line": 75,
+        "target": "docs/ai/TESTING.md",
+        "passed": true
+      },
+      {
+        "source": "AGENTS.md",
+        "line": 77,
+        "target": "docs/ai/BENCHMARKS.md",
+        "passed": true
+      },
+      {
+        "source": "AGENTS.md",
+        "line": 124,
+        "target": "docs/ai/OPENSPEC.md",
+        "passed": true
+      },
+      {
+        "source": "AGENTS.md",
+        "line": 125,
+        "target": "docs/ai/BEADS.md",
+        "passed": true
+      },
+      {
+        "source": "AGENTS.md",
+        "line": 126,
+        "target": "docs/ai/SWARMS.md",
+        "passed": true
+      },
+      {
+        "source": "AGENTS.md",
+        "line": 127,
+        "target": "docs/ai/TESTING.md",
+        "passed": true
+      },
+      {
+        "source": "AGENTS.md",
+        "line": 128,
+        "target": "docs/ai/BENCHMARKS.md",
+        "passed": true
+      },
+      {
+        "source": "docs/ai/TESTING.md",
+        "line": 16,
+        "target": "../../openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/009-dual-engine/summary.md",
+        "passed": true
+      },
+      {
+        "source": "docs/ai/TESTING.md",
+        "line": 62,
+        "target": "docs/ai/BENCHMARKS.md",
+        "passed": true
+      },
+      {
+        "source": "docs/ai/TESTING.md",
+        "line": 122,
+        "target": "docs/ai/OPENSPEC.md",
+        "passed": true
+      }
+    ]
+  },
+  "scope": {
+    "result": "PASS",
+    "agents_prefix": {
+      "before_sha256": "0b6f38ace5561e528c817e7ec502d6dc13e170067637b290992ce1dfa8f6d3f4",
+      "after_sha256": "0b6f38ace5561e528c817e7ec502d6dc13e170067637b290992ce1dfa8f6d3f4",
+      "unchanged": true
+    },
+    "agents_suffix": {
+      "before_sha256": "73d528d59b06f8522922c53e6c62d6361ebb6e244ddb94c6257fe705905f5bfa",
+      "after_sha256": "73d528d59b06f8522922c53e6c62d6361ebb6e244ddb94c6257fe705905f5bfa",
+      "unchanged": true
+    },
+    "testing_preserved_sections": [
+      {
+        "section": "## Commands",
+        "before_sha256": "f5f003641dd307614140b0c234d4b05e432056376de317602990c0f12c966915",
+        "after_sha256": "f5f003641dd307614140b0c234d4b05e432056376de317602990c0f12c966915",
+        "unchanged": true
+      },
+      {
+        "section": "## Test layers",
+        "before_sha256": "c617f6234faed2a75b5e95df62a7198f81217f674a9e686693f0c9a94adc756d",
+        "after_sha256": "c617f6234faed2a75b5e95df62a7198f81217f674a9e686693f0c9a94adc756d",
+        "unchanged": true
+      },
+      {
+        "section": "## What to test by change type",
+        "before_sha256": "21f171e568455358c2ea6428b760ff1952fbf27d9e833c1ede1df051b93a2f42",
+        "after_sha256": "21f171e568455358c2ea6428b760ff1952fbf27d9e833c1ede1df051b93a2f42",
+        "unchanged": true
+      },
+      {
+        "section": "## Recording results",
+        "before_sha256": "d34687203e089a65f3455f87b01535d93261808ca7f8b06b83d13dc1a135d46d",
+        "after_sha256": "d34687203e089a65f3455f87b01535d93261808ca7f8b06b83d13dc1a135d46d",
+        "unchanged": true
+      }
+    ],
+    "core_tests": {
+      "before_files": 138,
+      "after_files": 138,
+      "changed_paths": []
+    },
+    "root_pom": {
+      "before_sha256": "3eea70fb4f0ac7a3797ca557a1399a5bb4ae5bc8c7099d37ac0dfc5c2a3c0410",
+      "after_sha256": "3eea70fb4f0ac7a3797ca557a1399a5bb4ae5bc8c7099d37ac0dfc5c2a3c0410",
+      "unchanged": true
+    },
+    "claude_is_symlink": true,
+    "claude_resolves_to_agents": true
+  }
+}

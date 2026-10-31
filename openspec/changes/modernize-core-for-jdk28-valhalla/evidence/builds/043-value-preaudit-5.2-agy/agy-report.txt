@@ -1,0 +1,350 @@
+  ## A. Defects in Donor 5.2 Files (b9f114a3)
+
+   file:line (donor) │ defect          │ scenario         │ required behavior (cite spec/design) │ severi…
+  ───────────────────┼─────────────────┼─────────────────┼──────────────────────────────────────┼──────────
+   b9f114a3:xacml-   │ union(BagOf)    │ bag1 = ["x",    │ XACML 3.0 §A.3.10 (type-union): The  │ CRITICAL
+   core/.../types/Ba │ strips          │ "x"], bag2 =    │ returned bag SHALL contain all       │
+   gOf.java:137-145  │ duplicate       │ ["x"];          │ values, and multiplicity of a value  │
+                     │ Sets.union,      │ bag1.union(bag2)  │ SHALL equal the sum of its          │
+                     │ turning bag into │ returns ["x"]     │ multiplicities in the argument      │
+                        │                       │ "x", "x"] (size 3)    │ value SHALL equal the │
+                        │                       │                       │ sum of its            │
+                        │                       │                       │ multiplicities in the │
+   b9f114a3:xacml-   │ intersection(Ba │ bag1 = ["x",     │ XACML 3.0 §A.3.11 (type-            │ CRITICAL
+   core/.../types/Ba │ gOf) collapses  │ "x", "x"], bag2  │ intersection): Multiplicity of a    │
+   gOf.java:154-162  │ duplicates via  │ = ["x", "x"];    │ value in the returned bag SHALL be  │
+                     │ Sets.intersecti │ bag1.intersectio │ the minimum of its multiplicities   │
+                     │ Sets.intersecti │ bag1.intersecti │ the minimum of its multiplicities in │
+                     │ on              │ on(bag2)        │ the argument bags.                   │
+                     │                 │ returns ["x"]   │                                      │
+                     │                 │ (size 1)        │                                      │
+                     │                 │ instead of      │                                      │
+                     │                 │ ["x", "x"]      │                                      │
+                     │                 │ (size 2)        │                                      │
+   b9f114a3:xacml-   │ Compile         │ Record          │ File must compile (value.lower()),   │ CRITICAL
+   core/.../types/Po │ failure:        │ component is    │ and contains(PortRange) must check   │
+   rtRange.java:152- │ references non- │ value, but      │ this.value.encloses(other.value)     │
+   206               │ existent range  │ methods call    │ without recursion.                   │
+                     │ field; line 175 │ range.lower(),  │                                      │
+                     │ has infinite    │ etc.;           │                                      │
+                     │ self-recursion  │ contains(PortRa │                                      │
+                     │                 │ nge) calls      │                                      │
+                     │                 │ range.contains( │                                      │
+                     │                 │ range)          │                                      │
+   b9f114a3:xacml-   │ SeqOf and       │ Evaluating or   │ Design D9: SeqOf and value streams   │ CRITICAL
+   core/.../types/Se │ ValueStreamOfTy │ inspecting      │ must be query views (Iterable +      │
+   qOf.java:39,      │ pe extend       │ BagOf or Value  │ explicit .stream()), never           │
+   ValueStreamOfType │ java.util.strea │ once closes the │ impersonating single-use pipelines.  │
+   .java:44          │ m.Stream<VT>    │ stream;         │                                      │
+                     │ directly        │ subsequent      │                                      │
+                     │                 │ calls throw     │                                      │
+   ration.java:184-  │ days() checks   │ getYears() is    │ must query duration.getDays().       │
+   194               │ getYears() ==   │ undefined, so    │                                      │
+                     │ FIELD_UNDEFINED  │ days() returns 0  │                                      │
+                     │                  │ unconditionally   │                                      │
+   b9f114a3:xacml-   │ UriVal.of(String │ UriVal.of("./a/.. │ rv038 & XML Schema anyURI: Preserve  │ HIGH
+   core/.../types/Ur │ ) performs lossy │ /b/") resolves    │ verbatim lexical string              │
+   iVal.java:95      │ path             │ dot segments and  │ representation without path          │
+                     │ normalization    │ strips trailing   │ normalization.                       │
+                     │ URI.create(v).nor │ slash, altering   │                                      │
+                     │ malize()          │ the raw lexical   │                                      │
+                     │                   │ identifier        │                                      │
+   b9f114a3:xacml-   │ Lax integer       │ Int64.of("foo+123 │ XACML / XML Schema integer: Strict   │ HIGH
+   core/.../types/In │ string lexing via │ ") parses as 123; │ integer lexing matching [+-]?[0-9]+; │
+   t64.java:106-110  │ v.trim().indexOf( │ Int64.of("12+34") │ internal signs and non-digits must   │
+                     │ '+') and          │ parses as 34      │ throw SyntaxException.               │
+                     │ substring         │                   │                                      │
+   b9f114a3:xacml-   │ Silent arithmetic │ Int64.of(Long.MAX │ Task 5.4 / XACML arithmetic:         │ HIGH
+   core/.../types/In │ overflow wrapping │ _VALUE).add(Int64 │ Overflow must fail fast with         │
+                       │ Math::multiplyExact │ of 10               │                                  │
+   core/.../types/In │ reduction identity │ (5), Int64.of(2))  │ be 1L.                               │ GH
+   t64.java:166      │ is 0L (reduce(0L,  │ returns 0 instead  │                                      │
+                     │ Math::multiplyExac │ of 10              │                                      │
+                     │ t))                │                    │                                      │
+   b9f114a3:xacml-   │ Literal return     │ Calling toInt16(), │ Eliminate null stubs; implement      │ HI
+   core/.../types/In │ null; stubs in     │ toInt32(),         │ proper conversion/comparison or      │ GH
+   t64.java:125-147, │ conversion and     │ toUInt32(),        │ throw UnsupportedOperationException. │
+                     │ ct))              │                   │                                      │
+   b9f114a3:xacml-   │ Literal return    │ Calling           │ Eliminate null stubs; implement      │ HIGH
+   core/.../types/In │ null; stubs in    │ toInt16(),        │ proper conversion/comparison or      │
+   t64.java:125-147, │ conversion and    │ toInt32(),        │ throw UnsupportedOperationException. │
+   :209-214, :240    │ boundary methods  │ toUInt32(),       │                                      │
+                     │                   │ toUInt64(),       │                                      │
+                     │                   │ min(), max(),     │                                      │
+   :203               │ truncating         │ losing sub-second  │                                     │
+                      │ fractional seconds │ precision          │                                     │
+   b9f114a3:xacml-    │ compareTo returns  │ a.compareTo(b) > 0 │ Java Comparable contract:           │ HI
+   core/.../types/Du │ represented as    │ has seconds       │ preserved with nanosecond /          │
+   ration.java:98,   │ @Unsigned int,    │ truncated to 1,   │ BigDecimal precision.                │
+   :203              │ truncating        │ losing sub-second │                                      │
+                     │ fractional        │ precision         │                                      │
+                     │ seconds           │                   │                                      │
+   b9f114a3:xacml-   │ compareTo returns │ a.compareTo(b) >  │ Java Comparable contract:            │ HIGH
+   core/.../types/Du │ 2 (INDETERMINATE) │ 0 AND             │ sgn(x.compareTo(y)) == -             │
+   ration.java:237-  │ for incomparable  │ b.compareTo(a) >  │ sgn(y.compareTo(x)).                 │
+   239               │ durations,        │ 0 for P1M vs P30D │                                      │
+                     │ breaking anti-    │                   │                                      │
+                     │ symmetry          │                   │                                      │
+   b9f114a3:xacml-   │ DOUBLE branch     │ XML/JSON          │ Bug 4.16 / rv037: Delegate to        │ HIGH
+   core/.../types/Ty │ calls             │ responses emit    │ d.toXacmlString().                   │
+   peToString.java:1 │ d.get().toString( │ "Infinity"        │                                      │
+   40                │ ), producing      │ instead of        │                                      │
+   core/.../types/Ty │ and missing       │ Primitives.IS8601D │ to toXacmlString().                │
+   peToString.java:1 │ toXacmlString()   │ ate (typo); calls  │                                    │
+   06, :116, :206    │ delegation        │ d.toTypeToString() │                                    │
+                     │                   │ ; X500Name uses    │                                    │
+                     │                   │ d.toString()       │                                    │
+   b9f114a3:xacml-   │ Broken array      │ Calling            │ Fix off-by-one check in            │ MEDIU
+                     │                   │ d.toTypeToString( │                                     │
+                     │                   │ ); X500Name uses  │                                     │
+                     │                   │ d.toString()      │                                     │
+   b9f114a3:xacml-   │ Broken array      │ Calling           │ Fix off-by-one check in             │ MEDIU
+   core/.../types/Co │ helpers: insertAt │ ConstructableType │ Objects.checkIndex or remove dead   │ M
+   nstructableType.j │ overwrites        │ .appendLast(arr,  │ array helpers.                      │
+   ava:60-77         │ element;          │ elem) throws      │                                     │
+                     │ appendLast always │ IndexOutOfBoundsE │                                     │
+                     │ throws            │ xception          │                                     │
+                     │ IndexOutOfBoundsE │                   │                                     │
+                     │ xception          │                   │                                     │
+   b9f114a3:xacml-   │ Int64.of(double)  │ Int64.of((double) │ Only throw when double value is     │ MEDIU
+   core/.../types/In │ rejects valid     │ Long.MAX_VALUE)   │ strictly outside [Long.MIN_VALUE,   │ M
+   t64.java:74-80    │ boundary values   │ throws            │ Long.MAX_VALUE].                    │
+                     │ Long.MAX_VALUE    │ ArithmeticExcepti │                                     │
+                     │ and               │ on                │                                     │
+                     │ Long.MIN_VALUE    │                   │                                     │
+   b9f114a3:xacml-   │ Groovy/Kotlin     │ Error message     │ Use Java format string placeholders │ LOW
+   core/.../types/Ba │ string template   │ outputs literal   │ (%s).                               │
+   gOf.java:156      │ syntax in         │ ${type()} instead │                                     │
+                     │ SyntaxException.a │ of the type       │                                     │
+                     │ ssertSyntax       │ string            │                                     │
+   b9f114a3:xacml-   │ Compact           │ new BagOf(null,   │ Standard Java contract:             │ LOW
+   core/.../types/Ba │ constructor       │ values) throws    │ Objects.requireNonNull(type, "type  │
+   gOf.java:59-61    │ throws Guava      │ VerifyException   │ is null").                          │
+                     │ VerifyException   │                   │                                     │
+                     │ instead of        │                   │                                     │
+                     │ NullPointerExcept │                   │                                     │
+                     │ ion               │                   │                                     │
+   b9f114a3:xacml-   │ Accessor          │ Parameter         │ Check parameter valueType directly. │ LOW
+   core/.../types/Ba │ valueType()       │ validation calls  │                                     │
+   gOfType.java:43   │ called in compact │ method accessor   │                                     │
+                     │ constructor       │ rather than       │                                     │
+                     │ before assignment │ parameter         │                                     │
+                     │                   │ variable          │                                     │
+   b9f114a3:xacml-   │ Compact           │ new               │ Add Objects.requireNonNull(typeId,  │ LOW
+   core/.../types/Ra │ constructor does  │ RangeType(null,   │ "typeId is null").                  │
+   ngeType.java:108  │ not null-check    │ valType) allows   │                                     │
+                     │ typeId            │ null typeId       │                                     │
+                     │                   │ component         │                                     │
+  ──────
+  ## B. Fixes from Groups 1–4 and Filed Bugs to Preserve
+
+    Working Tree Baseline (a8a90d46 + Groups 1-4)
+      ▲
+      ├─ Bug 4.16: TypeToString.java:166-173 delegates to .toXacmlString() ("INF", "-INF", "NaN")
+      ├─ Bug 4.10: DateTimeDurationUtils.java:77-83 & ISO8601Duration.java:57-63 (BigDecimal seconds)
+      ├─ Bug 4.25: BooleanVal.java:49, 61-75 (Strict "true", "1", "false", "0"; rejects invalid strings)
+      ├─ Bug 4.11: ISO8601Time.java:45-50 (timeZoneDefined flag; ISO_LOCAL_TIME for unzoned)
+      └─ rv038:    AnyURI raw lexical representation preserved without .normalize()
+
+  ### Hunks in Donor 5.2 Files That Would Undo Merged Fixes:
+
+  1. rv038 / AnyURI Lexical Form:
+      • Worktree: xacml-core/.../types/AnyURI.java:81 / pending rv038 repair preserves literal raw input
+      string.
+      • Donor: b9f114a3:xacml-core/.../types/UriVal.java:95 calls URI.create(v).normalize().
+      • Action: When adopting UriVal, strip .normalize() and store raw unnormalized lexical form.
+  2. Bug 4.16 / DoubleVal String Formatting:
+      • Worktree: xacml-core/.../types/TypeToString.java:166-173 calls d.toXacmlString().
+      • Donor: b9f114a3:xacml-core/.../types/TypeToString.java:140 calls d.get().toString(), outputting
+      "Infinity" / "-Infinity".
+      • Action: Reject donor TypeToString line 140; retain worktree delegation to toXacmlString().
+  3. Bug 4.10 / Duration Fractional Seconds:
+      • Worktree: xacml-core/.../types/ISO8601Duration.java:57-63 returns BigDecimal seconds.
+      • Donor: b9f114a3:xacml-core/.../types/Duration.java:98, 203 truncates to @Unsigned int seconds().
+      • Action: Duration must carry BigDecimal fractional seconds and nanosecond precision.
+
+
+  ### Filed Bugs Whose Fixes Must Be Carried into 5.2 Renamed Types:
+
+  1. Bug 4.25 (BooleanVal Lexical Parsing):
+      • Donor b9f114a3:BooleanVal.java:61-64 uses Boolean.parseBoolean(v).
+      • Must carry worktree BooleanVal.java:61-75 strict parsing ("true", "1", "false", "0").
+  2. Bug 4.28 (Temporal Equality with Context Timezone):
+      • Equality predicates for ISO8601Date, ISO8601DateTime, ISO8601Time must handle timezone
+      normalization against evaluation context.
+  3. Bug 4.29 (double-equal IEEE 754 NaN and Signed Zero):
+      • In DoubleVal / EqualityPredicates, double-equal must evaluate NaN == NaN as false and +0.0 == -0.0
+      as true per XACML §A.3.5, while DoubleVal.equals(Object) preserves Java Object identity.
+  4. Bug 4.31 (yearMonthDuration Formatting and Field Isolation):
+      • Fix donor Duration.java:185, 192 so months() and days() query their own fields, and year-month
+      duration omits time components (P[n]Y[n]M).
+
+  ──────
+  ## C. Migration Plan: Deprecated Bridge Types and Caller Breakdown
+
+  Because Java records are implicitly final and cannot be subclassed, temporary deprecated bridge classes
+  in org.xacml4j.v30 must act as adapters delegating to the new types.* records/interfaces.
+
+  ### Recommended Deprecated Bridge Hierarchy:
+
+  1. @Deprecated public class BagOfValues implements SeqOf<Object, Value<?, ?>>:
+      • Wraps an underlying BagOf<?, ?>.
+      • Forwards methods (values(), size(), isEmpty(), contains()) to BagOf.
+      • Provides toBag() / fromBag(BagOf<?, ?>) factory bridges.
+  2. @Deprecated public class BagOfValuesType:
+      • Forwards to BagOfType.
+      • Provides builder() delegating to BagOfType.Builder.
+  3. @Deprecated public interface ValueExp extends ValueExpr:
+      • Extends new ValueExpr, allowing old method signatures to accept new types.
+  4. @Deprecated public class AnyURI extends Value:
+      • Extends/wraps UriVal with get() returning java.net.URI for legacy callers.
+  5. @Deprecated public class IntegerVal:
+      • Bridges to Int64.
+  6. @Deprecated public class ISO8601Duration:
+      • Bridges to Duration.
+  7. @Deprecated public class ValueExpTypeInfo:
+      • Type alias / forwarding class to ValueTypeQualifier.
+
+
+  ### Caller Inventory by Module (rtk rg counts):
+
+   Type Renamed │ Bridge Type… │ xacml-core   │ xacml-pdp    │ xacml-test  │ xacml-confor… │ Total Callers
+  ──────────────┼──────────────┼──────────────┼──────────────┼─────────────┼───────────────┼───────────────
+   BagOfValues  │ BagOfValues  │ 438 (46      │ 71 (10       │ 9 (4 files) │ 7 (2 files)   │ 525
+   → BagOf      │              │ files)       │ files)       │             │               │
+   ValueExp →   │ ValueExp     │ 81 (26       │ 0            │ 0           │ 0             │ 81
+   ValueExpr    │              │ files)       │              │             │               │
+   AnyURI →     │ AnyURI       │ 53 (14       │ 0            │ 0           │ 0             │ 53
+   UriVal       │              │ files)       │              │             │               │
+   IntegerVal → │ IntegerVal   │ 119 (24      │ 0            │ 2 (1 file)  │ 0             │ 121
+   Int64        │              │ files)       │              │             │               │
+   ISO8601Durat │ ISO8601Durat │ 6 (3 files)  │ 0            │ 0           │ 0             │ 6
+   ion →        │ ion          │              │              │             │               │
+   Duration     │              │              │              │             │               │
+   BagOfValuesT │ BagOfValuesT │ 23 (6 files) │ 0            │ 0           │ 0             │ 23
+   ype →        │ ype          │              │              │             │               │
+   BagOfType    │              │              │              │             │               │
+   ValueExpType │ ValueExpType │ 78 (28       │ 0            │ 0           │ 0             │ 78
+   Info →       │ Info         │ files)       │              │             │               │
+   ValueTypeQua │              │              │              │             │               │
+   lifier       │              │              │              │             │               │
+
+  Bridge Order: Introduce new types.* records/interfaces first, deploy deprecated bridge adapters in root
+  package org.xacml4j.v30, verify full reactor compiles without editing callers, then migrate callers slice
+  by slice in Groups 6 and 7 before deleting adapters in Task 7.3.
+  ──────
+  ## D. Test List for Task 5.2 (38 Test Cases)
+
+   test                             │ inputs                           │ expected
+  ──────────────────────────────────┼──────────────────────────────────┼───────────────────────────────────
+   testBagOf_MultiplicityPreserved  │ bagOf("a", "a", "b")             │ size() == 3, count("a") == 2,
+                                    │                                  │ count("b") == 1
+   testBagOf_Equality_SameCounts    │ b1 = bagOf("a", "b", "a"), b2 =  │ b1.equals(b2) == true,
+                                    │ bagOf("b", "a", "a")             │ b1.hashCode() == b2.hashCode()
+   testBagOf_Equality_DifferentCoun │ b1 = bagOf("a", "a", "b"), b2 =  │ b1.equals(b2) == false
+   ts                               │ bagOf("a", "b")                  │
+   testBagOf_Union_SumsMultipliciti │ b1 = bagOf("x", "x"), b2 =       │ union contains "x" with count 3,
+   es                               │ bagOf("x", "y")                  │ "y" with count 1 (size 4)
+   testBagOf_Intersection_MinMultip │ b1 = bagOf("x", "x", "x"), b2 =  │ intersection contains "x" with
+   licities                         │ bagOf("x", "x")                  │ count 2 (size 2)
+   testBagOf_Intersection_Disjoint  │ b1 = bagOf("x"), b2 = bagOf("y") │ intersection.isEmpty() == true,
+                                    │                                  │ size 0
+   testBagOf_Empty_TypedDistinct    │ emptyStringBag, emptyIntegerBag  │ equals == false (empty bags carry
+                                    │                                  │ distinct types)
+   testBagOf_Empty_EqualitySameType │ b1 = StringType.emptyBag(), b2 = │ b1.equals(b2) == true
+                                    │ StringType.emptyBag()            │
+   testBagOf_ContainsAll_Multiset   │ b1 = bagOf("a", "a"), b2 =       │ b1.containsAll(b2) == true
+                                    │ bagOf("a")                       │
+   testBagOf_AtLeastOneOf           │ b1 = bagOf("a", "b"), b2 =       │ b1.atLeastOneOf(b2) == true
+                                    │ bagOf("b", "c")                  │
+   testUriVal_PreservesRawRelativeP │ UriVal.of("./a/../b/")           │ asString() equals "./a/../b/" (no
+   ath                              │                                  │ .normalize())
+   testUriVal_PreservesTrailingSlas │ UriVal.of("http://example.com/di │ Trailing slash retained
+   h                                │ r/")                             │
+   testUriVal_Equality              │ u1 = UriVal.of("http://a.com"),  │ u1.equals(u2) == true, hashCodes
+                                    │ u2 = UriVal.of("http://a.com")   │ match
+   testUriVal_SyntaxErrorOnInvalid  │ UriVal.of(":::invalid URI")      │ Throws SyntaxException
+   testInt64_AddExact_Overflow      │ Int64.of(Long.MAX_VALUE).add(Int │ Throws ArithmeticException
+                                    │ 64.of(1))                        │
+   testInt64_SubtractExact_Underflo │ Int64.of(Long.MIN_VALUE).subtrac │ Throws ArithmeticException
+   w                                │ t(Int64.of(1))                   │
+   testInt64_MultiplyExact_Overflow │ Int64.of(Long.MAX_VALUE).multipl │ Throws ArithmeticException
+                                    │ y(Int64.of(2))                   │
+   testInt64_Mul_Identity           │ Int64.mul(Int64.of(5),           │ Returns Int64.of(15) (identity is
+                                    │ Int64.of(3))                     │ 1L, not 0L)
+   testInt64_Sum                    │ Int64.sum(Int64.of(2),           │ Returns Int64.of(5)
+                                    │ Int64.of(3))                     │
+   testInt64_StrictLexing_Valid     │ Int64.of("+123"), Int64.of("-    │ Parses to 123L and -456L
+                                    │ 456")                            │
+   testInt64_StrictLexing_InvalidIn │ Int64.of("12+34")                │ Throws SyntaxException
+   ternalSign                       │                                  │
+   testInt64_StrictLexing_InvalidPr │ Int64.of("foo+123")              │ Throws SyntaxException
+   efix                             │                                  │
+   testInt64_StrictLexing_Empty     │ Int64.of("")                     │ Throws SyntaxException
+   testDuration_Days_NonZero        │ Duration.of(Period.ofDays(5))    │ days() == 5 (not 0)
+   testDuration_Months_NonZero      │ Duration.of(Period.ofMonths(7))  │ months() == 7 (not 0)
+   testDuration_FractionalSeconds   │ Duration.of("PT1.5S")            │ Sub-second precision retained
+   testDuration_Comparable_AntiSymm │ d1 = Duration.of("P1D"), d2 =    │ d1.compareTo(d2) < 0 and
+   etric                            │ Duration.of("P2D")               │ d2.compareTo(d1) > 0
+   testPortRange_SinglePort         │ PortRange.of(80)                 │ isSinglePort() == true,
+                                    │                                  │ contains(80) == true
+   testPortRange_ClosedRange        │ PortRange.of(80, 85)             │ contains(80) == true,
+                                    │                                  │ contains(85) == true,
+                                    │                                  │ contains(86) == false
+   testPortRange_ContainsPortRange  │ r1 = PortRange.of(80, 90), r2 =  │ r1.contains(r2) == true (no
+                                    │ PortRange.of(82, 85)             │ infinite recursion)
+   testRange_Open                   │ RangeType.open(1, 5)             │ contains(1) == false, contains(3)
+                                    │                                  │ == true, contains(5) == false
+   testRange_Closed                 │ RangeType.closed(1, 5)           │ contains(1) == true, contains(5)
+                                    │                                  │ == true
+   testTypeToString_DoubleCanonical │ TypeToString.DOUBLE.toString(Dou │ Outputs "INF"
+                                    │ bleVal.of(Double.POSITIVE_INFINI │
+                                    │ TY))                             │
+   testTypeToString_DoubleNaN       │ TypeToString.DOUBLE.toString(Dou │ Outputs "NaN"
+                                    │ bleVal.of(Double.NaN))           │
+   testTypeToString_Int64           │ TypeToString.INTEGER.toString(In │ Outputs "42"
+                                    │ t64.of(42))                      │
+   testBridge_BagOfValues_To_BagOf  │ oldBag =                         │ Converts to BagOf and equals
+                                    │ BagOfValues.builder().value(v).b │ BagOf
+                                    │ uild()                           │
+   testNullHandling_BagOf_TypeNull  │ new BagOf(null, values)          │ Throws NullPointerException
+   testNullHandling_UriVal_Null     │ UriVal.of((String) null)         │ Throws NullPointerException
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, gemini-2.5-pro)
+
+    Task: 5.2 Pre-audit of donor slice (Value/BagOf rename & core types)
+    Verdict: DEFECTS IDENTIFIED — DO NOT APPLY DONOR HUNKS AS-IS
+    Total Donor Files Inspected: 27 (+ Int64 and Duration cross-cutting types)
+    Total Defects Found: 20 (5 CRITICAL, 9 HIGH, 2 MEDIUM, 4 LOW)
+
+    Top 5 Defects:
+    1. BagOf.java:137-162: union() and intersection() collapse duplicates via Sets.union / Sets.
+  intersection, violating XACML §A.3.10 and §A.3.11 multiset sum/min multiplicity semantics.
+    2. PortRange.java:152-206: Does not compile (field `range` unresolved); contains infinite self-
+  recursion in contains(PortRange).
+    3. SeqOf.java:39 & ValueStreamOfType.java:44: Extends java.util.stream.Stream, causing bags and values
+  to become single-use closed pipelines (violates Design D9).
+    4. Duration.java:184-194: Copy-paste bug checks getYears() == FIELD_UNDEFINED in months() and days(),
+  causing all dayTimeDuration values to evaluate days() == 0.
+    5. UriVal.java:95: Calls .normalize() on input strings, destroying relative paths, dot-segments, and
+  trailing slashes (violates rv038 and XML Schema anyURI).
+
+    Donor Files Opened:
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/BagOf.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/BagOfType.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Value.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ValueExpr.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/SeqOf.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/UriVal.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Int64.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Duration.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/Range.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/RangeType.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/PortRange.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/ConstructableType.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/types/TypeToString.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/TypeCapability.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/TypeCapabilityFactory.java
+    - b9f114a3:xacml-core/src/main/java/org/xacml4j/v30/ValueStreamOfType.java
+

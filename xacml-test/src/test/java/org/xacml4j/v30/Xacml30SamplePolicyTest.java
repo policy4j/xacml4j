@@ -23,16 +23,15 @@ package org.xacml4j.v30;
  */
 
 
-import org.junit.Before;
-import org.junit.Test;
-import org.xacml4j.v30.pdp.PolicyDecisionPoint;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
 public class Xacml30SamplePolicyTest extends XacmlPolicyTestSupport
 {
 	private PolicyDecisionPoint pdp;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception{
 
 		this.pdp = builder(

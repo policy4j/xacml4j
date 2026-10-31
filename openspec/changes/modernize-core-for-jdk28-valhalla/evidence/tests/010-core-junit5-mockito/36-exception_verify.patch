@@ -1,0 +1,11 @@
+--- before/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java
++++ mutant/xacml-core/src/test/java/org/xacml4j/v30/policy/AttributeDesignatorTest.java
+@@ -86,7 +86,7 @@
+ 
+ 		InOrder order = inOrder(context);
+ 		AttributeReferenceEvaluationException e = assertThrows(
+-			AttributeReferenceEvaluationException.class, () -> desig.evaluate(context));
++			AttributeReferenceEvaluationException.class, () -> { throw AttributeReferenceEvaluationException.forDesignator(builder.build()); });
+ 		order.verify(context
+ 			).resolve(capture.capture());
+ 		order.verify(context).setEvaluationStatusIfAbsent(status.capture());

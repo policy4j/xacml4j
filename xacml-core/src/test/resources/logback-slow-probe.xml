@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  Xacml4J Core Engine Implementation
+  %%
+  Copyright (C) 2009 - 2026 Xacml4J.org
+  %%
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Lesser General Public License as
+  published by the Free Software Foundation, either version 3 of the
+  License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Lesser Public License for more details.
+
+  You should have received a copy of the GNU General Lesser Public
+  License along with this program.  If not, see
+  <http://www.gnu.org/licenses/lgpl-3.0.html>.
+  #L%
+  -->
+<!--
+  Probe configuration of LoggingConfigurationTest: the shared async settings of
+  build-support/logback (queue, discarding threshold, flush time from the same property and
+  default) in front of a downstream appender that takes 1 ms per event, so that a probe that
+  logs 2,000 events and returns still has a backlog of about two seconds at exit.
+  -->
+<configuration>
+	<shutdownHook/>
+	<appender name="SLOW" class="org.xacml4j.logging.SlowFileAppender">
+		<file>${xacml4j.log.dir}/slow.log</file>
+		<delayMillis>1</delayMillis>
+	</appender>
+	<appender name="ASYNC_SLOW" class="ch.qos.logback.classic.AsyncAppender">
+		<queueSize>${xacml4j.log.queue:-8192}</queueSize>
+		<discardingThreshold>0</discardingThreshold>
+		<neverBlock>${xacml4j.log.neverBlock:-false}</neverBlock>
+		<includeCallerData>false</includeCallerData>
+		<maxFlushTime>${xacml4j.log.maxFlushTime:-0}</maxFlushTime>
+		<appender-ref ref="SLOW"/>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="ASYNC_SLOW"/>
+	</root>
+</configuration>

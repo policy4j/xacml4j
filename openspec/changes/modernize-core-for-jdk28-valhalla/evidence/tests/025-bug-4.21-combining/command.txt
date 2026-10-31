@@ -1,0 +1,54 @@
+# Commands executed from <repo>
+# Maven commands were plain, with no pipeline or shell command separator.
+# Tests were added first; red runs used the packet-start production sources.
+# Java changes used native apply_patch; manifest/metadata receipts retain the before/after rows or hashes.
+# Native Tavily extract read the complete public XACML 3.0 OASIS Standard:
+# https://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html
+# Source/table inspections used focused rtk proxy sed and rtk rg reads.
+# -l saves Maven output directly; completed logs redact only checkout/home paths.
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=StringFunctionSemanticsTest -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/01-string-functions-red.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=OverrideDecisionTableTest -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/025-bug-4.21-combining/01-overrides-red.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=StringFunctionSemanticsTest,OverrideDecisionTableTest -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/02-focused-green.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=StringFunctionSemanticsTest -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/03-string-functions-green.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/04-core-gate.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -version
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/05-core-gate-retry.log clean test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml30ConformanceTest -Dsurefire.failIfNoSpecifiedTests=false -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/06-oasis30-case-probe.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/07-conformance-gate.log test
+
+JAVA_HOME="$(jenv prefix 21)" rtk mvn -Dlicense.skipUpdateLicense=true -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/08-full-reactor-clean-verify.log clean verify
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/capture-evidence.py cases 06-case-probe-results oasis30
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/capture-evidence.py modules 05-core-retry-results xacml-core
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/capture-evidence.py snapshot 08-before-full-gate
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/capture-evidence.py cases 07-conformance-results
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/capture-evidence.py modules 08-full-reactor-results
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/capture-evidence.py cases 08-final-case-results
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/capture-evidence.py snapshot 08-after-full-gate
+
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/024-bugs-string-functions/render-evidence.py
+
+rtk rg -n 'function:((string|anyURI|uri)-(starts-with|ends-with|contains|substring))"' xacml-core/src/main/java
+
+rtk git diff --check -- xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/StringFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/combine/impl/PermitOverrides.java xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/StringFunctionSemanticsTest.java xacml-core/src/test/java/org/xacml4j/v30/policy/combine/impl/OverrideDecisionTableTest.java xacml-conformance-tests/src/test/manifest/conformance-manifest.csv openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/023-conformance-manifest/inherited-skip-dispositions.csv
+
+rtk git status --short
+
+# Final structured Python audit: all 43 pre-receipt evidence files scanned for checkout/home paths;
+# required artifacts and 11 local summary links checked; all 3543 final source hashes rechecked.
+# Receipt: ../024-bugs-string-functions/final-evidence-check.json

@@ -1,0 +1,2644 @@
+{
+  "claude_binding": {
+    "chunk_id": "2f3486",
+    "wall_time_seconds": 1.664301541,
+    "exit_code": 0,
+    "original_token_count": 215,
+    "output": "{\"marker_body_nodes\":3,\"public_status_words\":[{\"flags\":[\"search\"],\"role\":\"AXButton\"},{\"flags\":[\"research\"],\"role\":\"AXButton\"},{\"flags\":[\"research\"],\"role\":\"AXButton\"},{\"flags\":[\"research\"],\"role\":\"AXStaticText\"},{\"flags\":[\"research\"],\"role\":\"AXStaticText\"},{\"flags\":[\"research\"],\"role\":\"AXButton\"},{\"flags\":[\"response\",\"finished\"],\"role\":\"AXStaticText\"},{\"flags\":[\"research\",\"sources\"],\"role\":\"AXHeading\"},{\"flags\":[\"research\",\"sources\"],\"role\":\"AXButton\"},{\"flags\":[\"research\",\"sources\"],\"role\":\"AXStaticText\"},{\"flags\":[\"research\",\"sources\"],\"role\":\"AXStaticText\"},{\"flags\":[\"research\",\"sources\"],\"role\":\"AXStaticText\"},{\"flags\":[\"sources\"],\"role\":\"AXStaticText\"},{\"flags\":[\"sources\"],\"role\":\"AXStaticText\"},{\"flags\":[\"stop\",\"response\"],\"role\":\"AXButton\"},{\"flags\":[\"research\"],\"role\":\"AXStaticText\"}],\"state\":\"RUNNING\",\"submitted_user_turn_verified\":true}\n"
+  },
+  "source_selection_after_mutations": {
+    "accessibility_trusted": true,
+    "allowlisted_controls": [
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "app",
+        "prefix_labels": [],
+        "role": "AXApplication",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 1021,
+        "path": "app/0",
+        "prefix_labels": [],
+        "role": "AXWindow",
+        "w": 1553,
+        "x": 31,
+        "y": 58
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 30,
+        "path": "menubar/1",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 66,
+        "x": -2516,
+        "y": -179
+      },
+      {
+        "exact_labels": [
+          "File"
+        ],
+        "h": 30,
+        "path": "menubar/2",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 42,
+        "x": -2450,
+        "y": -179
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 1021,
+        "path": "app/0/0",
+        "prefix_labels": [],
+        "role": "AXGroup",
+        "w": 1553,
+        "x": 31,
+        "y": 58
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 30,
+        "path": "app/1/1",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 66,
+        "x": -2516,
+        "y": -179
+      },
+      {
+        "exact_labels": [
+          "File"
+        ],
+        "h": 30,
+        "path": "app/1/2",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 42,
+        "x": -2450,
+        "y": -179
+      },
+      {
+        "exact_labels": [
+          "New chat"
+        ],
+        "h": 0,
+        "path": "menubar/2/0/0",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Copy"
+        ],
+        "h": 0,
+        "path": "menubar/3/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "menubar/5/0/3",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Code"
+        ],
+        "h": 0,
+        "path": "menubar/5/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/5/0/9",
+        "prefix_labels": [
+          "Search"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "menubar/6/0/17",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/7/0/0",
+        "prefix_labels": [
+          "Claude"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "New chat"
+        ],
+        "h": 0,
+        "path": "app/1/2/0/0",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Copy"
+        ],
+        "h": 0,
+        "path": "app/1/3/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "app/1/5/0/3",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Code"
+        ],
+        "h": 0,
+        "path": "app/1/5/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/5/0/9",
+        "prefix_labels": [
+          "Search"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "app/1/6/0/17",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/7/0/0",
+        "prefix_labels": [
+          "Claude"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/1/0/5/0/2",
+        "prefix_labels": [
+          "File"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/1/0/5/0/10",
+        "prefix_labels": [
+          "Send"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/4/0/10/0/0",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/4/0/10/0/1",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/7/0/3/0/2",
+        "prefix_labels": [
+          "Copy"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/1/0/5/0/2",
+        "prefix_labels": [
+          "File"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/1/0/5/0/10",
+        "prefix_labels": [
+          "Send"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/4/0/10/0/0",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/4/0/10/0/1",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/7/0/3/0/2",
+        "prefix_labels": [
+          "Copy"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 35,
+        "numeric_value": 1,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/3/0",
+        "prefix_labels": [],
+        "role": "AXRadioButton",
+        "w": 45,
+        "x": 351,
+        "y": 72
+      },
+      {
+        "exact_labels": [
+          "Code"
+        ],
+        "h": 35,
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/3/1",
+        "prefix_labels": [],
+        "role": "AXRadioButton",
+        "w": 45,
+        "x": 396,
+        "y": 72
+      },
+      {
+        "exact_labels": [
+          "Search"
+        ],
+        "h": 35,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/4/0",
+        "prefix_labels": [],
+        "role": "AXButton",
+        "w": 396,
+        "x": 44,
+        "y": 129
+      },
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 138,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/0/0/0",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "2499806c55ec18c5f1564e9331f7075dea1493e1e08958c426bd8ecee688cb11",
+        "value_length": 279,
+        "w": 810,
+        "x": 619,
+        "y": 532
+      },
+      {
+        "exact_labels": [],
+        "h": 42,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/0",
+        "prefix_labels": [
+          "Add"
+        ],
+        "role": "AXPopUpButton",
+        "w": 43,
+        "x": 608,
+        "y": 680
+      },
+      {
+        "exact_labels": [],
+        "h": 42,
+        "numeric_value": 1,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/1/0",
+        "prefix_labels": [],
+        "role": "AXCheckBox",
+        "w": 42,
+        "x": 656,
+        "y": 680
+      },
+      {
+        "exact_labels": [],
+        "h": 42,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/2/1/0/0/0",
+        "prefix_labels": [
+          "Send"
+        ],
+        "role": "AXButton",
+        "w": 42,
+        "x": 1387,
+        "y": 680
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "05740acf87b4eb87dde22425dda00c574211d433cc6c61f20d2f0b09dbe323fb",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/0",
+        "prefix_labels": [
+          "Add"
+        ],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 266
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "1c887e01daf3640bd5f1e16d113be46606b27d71b34f1f3cb8400e7e70f99c45",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/1",
+        "prefix_labels": [
+          "Add"
+        ],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 308
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "73e8b2eb73e9895bd4ba31ef750ecaf79cdbc6ac1e8a0a7b38e44504b3ce93f8",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/2",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 350
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "640a94c1e1deb1f5fd985bc5264b1021642d433789abdcf080a5efe1d31f9c11",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/4",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "skills"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 404
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [
+          "Connectors"
+        ],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [
+          "Connectors"
+        ],
+        "h": 42,
+        "label_hash": "fe2a271b4cd2a43cbf237830bf5d9165fc7483b5865ad86a54046278e02a56e5",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/5",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "connectors"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 446
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "d27763c7977fe78f8759c3fedebde1071fc1ffecb37e70abac0f92e08643151f",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/7",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 488
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "cf1574b7086482fc1f807ac7c96532a67dbe29fb62c2953d107aaf371d9d072f",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/8",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 530
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [
+          "Research"
+        ],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [
+          "Research"
+        ],
+        "h": 42,
+        "label_hash": "6ddced3f66af148aa63bfea340faa70ee72a92f4cc70b810b4ba1ec7a8297ef7",
+        "numeric_value": 1,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/10",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "research"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 584
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [
+          "memory"
+        ],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "bfca3e4674c459a57f579787ec5e19448243291d5e16e65fcc789c53799cc694",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/11",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "memory"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 626
+      },
+      {
+        "exact_labels": [
+          "Connectors"
+        ],
+        "h": 440,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0",
+        "prefix_labels": [],
+        "role": "AXMenu",
+        "w": 407,
+        "x": 911,
+        "y": 446
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "a50fd5275965e081244b57561b0c646f3c2d893542372332036f7ea40220e2af",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/0",
+        "prefix_labels": [
+          "Add"
+        ],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 451
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "ef5d1277286a26f900a43eddca856372c385035a378c554dcf239fbadc5b9933",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/1",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "connectors",
+          "manage"
+        ],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 493
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "da2e4b28d199f435d8627e8b612a3fb2195839cf7b516571afd96f28a8d39679",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/5",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 838
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "5eefd1bd77a5e484346eb9c903b51ae91506263631fe2aae631685b125f37c4c",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/0",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 547
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "39418e75846c7a37fdcee9a6413265e2fe7397ed2f9f5fcf365b8490b875de8e",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/1",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 589
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "680ed0b0c4795108307f8fffd023e9918f593a5b3ca3c1c2fd8d9b7b8edab1c7",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/2",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 631
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "822546e4ff1ff58c6912a9e9a3e5a125c226acc40eb8a33887a2efab66b6c7e7",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/3",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 673
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "4e232e832ecb89985f44b9e0f9a26319ad309e42143c4e9a9ae02bd47382a408",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/4",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 715
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "a0b12943119c66f3da14cf295629428f95bf2a5e14cece22a3c1f917ea1dabd6",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/5",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 757
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [
+          "tools"
+        ],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 32,
+        "label_hash": "26c35382c121eea33df53649b08f11e797beb7219f79e046c5af052d7687071e",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/6",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "tools"
+        ],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 800
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 1,
+        "label_hash": "749c1a01655a01316c5c401dc1150f3db04a9b18e164cc4f67326ef649901d31",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/7",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 831
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 1,
+        "label_hash": "0425f94babc490984734a098e943b3b7228e71f3191585d37193c748acb6adc4",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/8",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 831
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 1,
+        "label_hash": "4cde162072e42d76fc847624ee151e2d2168e42ac396ec4264ae82f77a53a419",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/9",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 831
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [
+          "tools"
+        ],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 1,
+        "label_hash": "b41cf72bcb99749815d70205e95c23e128631064c6b617c201a65c8beb955523",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/10",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "tools"
+        ],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 831
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 1,
+        "label_hash": "ecdcc59f441e9c08b6c03341e01ddac538a82dadee8863bf991b83f381d73545",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/11",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 831
+      }
+    ],
+    "any_input_idle_seconds": 1.144525708,
+    "nodes": 915,
+    "provider": "claude",
+    "truncated": false
+  },
+  "sources_after_scroll": {
+    "accessibility_trusted": true,
+    "allowlisted_controls": [
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "app",
+        "prefix_labels": [],
+        "role": "AXApplication",
+        "w": 0,
+        "x": 0,
+        "y": 0
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 1021,
+        "path": "app/0",
+        "prefix_labels": [],
+        "role": "AXWindow",
+        "w": 1553,
+        "x": 31,
+        "y": 58
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 33,
+        "path": "menubar/1",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 66,
+        "x": 44,
+        "y": 0
+      },
+      {
+        "exact_labels": [
+          "File"
+        ],
+        "h": 33,
+        "path": "menubar/2",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 42,
+        "x": 110,
+        "y": 0
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 1021,
+        "path": "app/0/0",
+        "prefix_labels": [],
+        "role": "AXGroup",
+        "w": 1553,
+        "x": 31,
+        "y": 58
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 33,
+        "path": "app/1/1",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 66,
+        "x": 44,
+        "y": 0
+      },
+      {
+        "exact_labels": [
+          "File"
+        ],
+        "h": 33,
+        "path": "app/1/2",
+        "prefix_labels": [],
+        "role": "AXMenuBarItem",
+        "w": 42,
+        "x": 110,
+        "y": 0
+      },
+      {
+        "exact_labels": [
+          "New chat"
+        ],
+        "h": 0,
+        "path": "menubar/2/0/0",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Copy"
+        ],
+        "h": 0,
+        "path": "menubar/3/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "menubar/5/0/3",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Code"
+        ],
+        "h": 0,
+        "path": "menubar/5/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/5/0/9",
+        "prefix_labels": [
+          "Search"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "menubar/6/0/20",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/7/0/0",
+        "prefix_labels": [
+          "Claude"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "New chat"
+        ],
+        "h": 0,
+        "path": "app/1/2/0/0",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Copy"
+        ],
+        "h": 0,
+        "path": "app/1/3/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "app/1/5/0/3",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Code"
+        ],
+        "h": 0,
+        "path": "app/1/5/0/4",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/5/0/9",
+        "prefix_labels": [
+          "Search"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 0,
+        "path": "app/1/6/0/20",
+        "prefix_labels": [],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/7/0/0",
+        "prefix_labels": [
+          "Claude"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/1/0/5/0/2",
+        "prefix_labels": [
+          "File"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/1/0/5/0/10",
+        "prefix_labels": [
+          "Send"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/4/0/10/0/0",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/4/0/10/0/1",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "menubar/7/0/3/0/2",
+        "prefix_labels": [
+          "Copy"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/1/0/5/0/2",
+        "prefix_labels": [
+          "File"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/1/0/5/0/10",
+        "prefix_labels": [
+          "Send"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/4/0/10/0/0",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/4/0/10/0/1",
+        "prefix_labels": [
+          "New session"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [],
+        "h": 0,
+        "path": "app/1/7/0/3/0/2",
+        "prefix_labels": [
+          "Copy"
+        ],
+        "role": "AXMenuItem",
+        "w": 0,
+        "x": 0,
+        "y": 1117
+      },
+      {
+        "exact_labels": [
+          "Claude"
+        ],
+        "h": 35,
+        "numeric_value": 1,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/3/0",
+        "prefix_labels": [],
+        "role": "AXRadioButton",
+        "w": 45,
+        "x": 351,
+        "y": 72
+      },
+      {
+        "exact_labels": [
+          "Code"
+        ],
+        "h": 35,
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/3/1",
+        "prefix_labels": [],
+        "role": "AXRadioButton",
+        "w": 45,
+        "x": 396,
+        "y": 72
+      },
+      {
+        "exact_labels": [
+          "Search"
+        ],
+        "h": 35,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/4/0",
+        "prefix_labels": [],
+        "role": "AXButton",
+        "w": 396,
+        "x": 44,
+        "y": 129
+      },
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 138,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/0/0/0",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "2499806c55ec18c5f1564e9331f7075dea1493e1e08958c426bd8ecee688cb11",
+        "value_length": 279,
+        "w": 810,
+        "x": 619,
+        "y": 532
+      },
+      {
+        "exact_labels": [],
+        "h": 42,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/0",
+        "prefix_labels": [
+          "Add"
+        ],
+        "role": "AXPopUpButton",
+        "w": 43,
+        "x": 608,
+        "y": 680
+      },
+      {
+        "exact_labels": [],
+        "h": 42,
+        "numeric_value": 1,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/1/0",
+        "prefix_labels": [],
+        "role": "AXCheckBox",
+        "w": 42,
+        "x": 656,
+        "y": 680
+      },
+      {
+        "exact_labels": [],
+        "h": 42,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/2/1/0/0/0",
+        "prefix_labels": [
+          "Send"
+        ],
+        "role": "AXButton",
+        "w": 42,
+        "x": 1387,
+        "y": 680
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "05740acf87b4eb87dde22425dda00c574211d433cc6c61f20d2f0b09dbe323fb",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/0",
+        "prefix_labels": [
+          "Add"
+        ],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 266
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "1c887e01daf3640bd5f1e16d113be46606b27d71b34f1f3cb8400e7e70f99c45",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/1",
+        "prefix_labels": [
+          "Add"
+        ],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 308
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "73e8b2eb73e9895bd4ba31ef750ecaf79cdbc6ac1e8a0a7b38e44504b3ce93f8",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/2",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 350
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "640a94c1e1deb1f5fd985bc5264b1021642d433789abdcf080a5efe1d31f9c11",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/4",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "skills"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 404
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [
+          "Connectors"
+        ],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [
+          "Connectors"
+        ],
+        "h": 42,
+        "label_hash": "fe2a271b4cd2a43cbf237830bf5d9165fc7483b5865ad86a54046278e02a56e5",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/5",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "connectors"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 446
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "d27763c7977fe78f8759c3fedebde1071fc1ffecb37e70abac0f92e08643151f",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/7",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 488
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "cf1574b7086482fc1f807ac7c96532a67dbe29fb62c2953d107aaf371d9d072f",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/8",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 530
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [
+          "Research"
+        ],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [
+          "Research"
+        ],
+        "h": 42,
+        "label_hash": "6ddced3f66af148aa63bfea340faa70ee72a92f4cc70b810b4ba1ec7a8297ef7",
+        "numeric_value": 1,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/10",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "research"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 584
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [
+          "memory"
+        ],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "bfca3e4674c459a57f579787ec5e19448243291d5e16e65fcc789c53799cc694",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/11",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "memory"
+        ],
+        "role": "AXMenuItem",
+        "w": 290,
+        "x": 614,
+        "y": 626
+      },
+      {
+        "exact_labels": [
+          "Connectors"
+        ],
+        "h": 440,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0",
+        "prefix_labels": [],
+        "role": "AXMenu",
+        "w": 407,
+        "x": 911,
+        "y": 446
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "a50fd5275965e081244b57561b0c646f3c2d893542372332036f7ea40220e2af",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/0",
+        "prefix_labels": [
+          "Add"
+        ],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 451
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 0,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "ef5d1277286a26f900a43eddca856372c385035a378c554dcf239fbadc5b9933",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/1",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "connectors",
+          "manage"
+        ],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 493
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "da2e4b28d199f435d8627e8b612a3fb2195839cf7b516571afd96f28a8d39679",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/5",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 838
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 1,
+        "label_hash": "5eefd1bd77a5e484346eb9c903b51ae91506263631fe2aae631685b125f37c4c",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/0",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 547
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 1,
+        "label_hash": "39418e75846c7a37fdcee9a6413265e2fe7397ed2f9f5fcf365b8490b875de8e",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/1",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 547
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "680ed0b0c4795108307f8fffd023e9918f593a5b3ca3c1c2fd8d9b7b8edab1c7",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/2",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 404
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "822546e4ff1ff58c6912a9e9a3e5a125c226acc40eb8a33887a2efab66b6c7e7",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/3",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 446
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 43,
+        "label_hash": "4e232e832ecb89985f44b9e0f9a26319ad309e42143c4e9a9ae02bd47382a408",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/4",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 488
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 26,
+        "label_hash": "a0b12943119c66f3da14cf295629428f95bf2a5e14cece22a3c1f917ea1dabd6",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/5",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 547
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [
+          "tools"
+        ],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "26c35382c121eea33df53649b08f11e797beb7219f79e046c5af052d7687071e",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/6",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "tools"
+        ],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 573
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "749c1a01655a01316c5c401dc1150f3db04a9b18e164cc4f67326ef649901d31",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/7",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 615
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "0425f94babc490984734a098e943b3b7228e71f3191585d37193c748acb6adc4",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/8",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 657
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "4cde162072e42d76fc847624ee151e2d2168e42ac396ec4264ae82f77a53a419",
+        "numeric_value": 0,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/9",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 699
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [
+          "tools"
+        ],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "b41cf72bcb99749815d70205e95c23e128631064c6b617c201a65c8beb955523",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/10",
+        "prefix_labels": [],
+        "public_word_flags": [
+          "tools"
+        ],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 741
+      },
+      {
+        "actions": [
+          "AXPress",
+          "AXShowMenu",
+          "AXScrollToVisible",
+          "AXCancel"
+        ],
+        "children_count": 2,
+        "descendant_public_labels": [],
+        "descendant_status_flags": [],
+        "enabled": true,
+        "exact_labels": [],
+        "h": 42,
+        "label_hash": "ecdcc59f441e9c08b6c03341e01ddac538a82dadee8863bf991b83f381d73545",
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/1/0/3/0/2/0/0/0/1/0/1/0/0/0/6/0/0/0/3/11",
+        "prefix_labels": [],
+        "public_word_flags": [],
+        "role": "AXMenuItem",
+        "w": 397,
+        "x": 916,
+        "y": 783
+      }
+    ],
+    "any_input_idle_seconds": 4.918191333,
+    "nodes": 921,
+    "provider": "claude",
+    "truncated": false
+  },
+  "user_submission": {
+    "nodes": 666,
+    "observations": [
+      {
+        "children": 3,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app",
+        "role": "AXApplication"
+      },
+      {
+        "children": 4,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0",
+        "role": "AXWindow"
+      },
+      {
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0",
+        "role": "AXGroup"
+      },
+      {
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/1/1",
+        "role": "AXMenuBarItem"
+      },
+      {
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "edit"
+        ],
+        "marker_present": false,
+        "path": "app/1/3",
+        "role": "AXMenuBarItem"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "copy"
+        ],
+        "marker_present": false,
+        "path": "app/1/3/0/4",
+        "role": "AXMenuItem"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/1/5/0/3",
+        "role": "AXMenuItem"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/1/6/0/17",
+        "role": "AXMenuItem"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/1/7/0/0",
+        "role": "AXMenuItem"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "copy"
+        ],
+        "marker_present": false,
+        "path": "app/1/7/0/3/0/2",
+        "role": "AXMenuItem"
+      },
+      {
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0",
+        "role": "AXWebArea"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/3/0",
+        "role": "AXRadioButton"
+      },
+      {
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/4/2/7/3/0/0/0",
+        "role": "AXButton"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/0/4/2/7/3/0/0/0/0/0",
+        "role": "AXStaticText"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/0/1",
+        "role": "AXButton"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/0/3/0",
+        "role": "AXStaticText"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/0/3/1",
+        "role": "AXButton"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/0/0",
+        "role": "AXStaticText"
+      },
+      {
+        "ancestry": [
+          {
+            "flags": [],
+            "role": "AXHeading"
+          },
+          {
+            "flags": [
+              "message"
+            ],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          }
+        ],
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "you"
+        ],
+        "marker_present": true,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/0/0/0",
+        "role": "AXHeading"
+      },
+      {
+        "ancestry": [
+          {
+            "flags": [],
+            "role": "AXStaticText"
+          },
+          {
+            "flags": [],
+            "role": "AXHeading"
+          },
+          {
+            "flags": [
+              "message"
+            ],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          }
+        ],
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "you"
+        ],
+        "marker_present": true,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/0/0/0/0",
+        "role": "AXStaticText"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "copy"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/0/0/2/1",
+        "role": "AXButton"
+      },
+      {
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/1/0/0/0",
+        "role": "AXHeading"
+      },
+      {
+        "children": 4,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/1/0/0/2",
+        "role": "AXButton"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/1/0/0/0/0",
+        "role": "AXStaticText"
+      },
+      {
+        "ancestry": [
+          {
+            "flags": [
+              "research"
+            ],
+            "role": "AXStaticText"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [
+              "message"
+            ],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          }
+        ],
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [],
+        "marker_present": true,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/1/0/0/1/0",
+        "role": "AXStaticText"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "copy"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/1/0/0/3/0",
+        "role": "AXButton"
+      },
+      {
+        "children": 1,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/3/2/1/0/1/2/0/0",
+        "role": "AXLink"
+      },
+      {
+        "ancestry": [
+          {
+            "flags": [],
+            "role": "AXStaticText"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [
+              "message"
+            ],
+            "role": "AXGroup"
+          }
+        ],
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [],
+        "marker_present": true,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/0/0/1/0/0/0/0",
+        "role": "AXStaticText"
+      },
+      {
+        "ancestry": [
+          {
+            "flags": [],
+            "role": "AXStaticText"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [],
+            "role": "AXGroup"
+          },
+          {
+            "flags": [
+              "message"
+            ],
+            "role": "AXGroup"
+          }
+        ],
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [],
+        "marker_present": true,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/0/0/1/0/0/0/2",
+        "role": "AXStaticText"
+      },
+      {
+        "children": 1,
+        "empty": true,
+        "full_prompt_exact": false,
+        "known_labels": [],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/3/2/1/0/0/0/0/0/0",
+        "role": "AXTextArea"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/3/2/1/0/1/2/0/0/0",
+        "role": "AXStaticText"
+      },
+      {
+        "children": 2,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/1/0/0/2/0/0/0/0",
+        "role": "AXGroup"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "stop",
+          "stop response"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/3/2/1/0/0/0/1/1/0/0",
+        "role": "AXButton"
+      },
+      {
+        "children": 0,
+        "full_prompt_exact": false,
+        "known_labels": [
+          "claude"
+        ],
+        "marker_present": false,
+        "path": "app/0/0/0/0/0/0/1/0/0/0/0/0/0/1/0/0/0/0/1/0/2/1/0/1/1/1/0/0/2/0/0/0/0/1/0",
+        "role": "AXStaticText"
+      }
+    ],
+    "truncated": false
+  },
+  "chatgpt_draft_probe": {
+    "nodes": 2731,
+    "truncated": false,
+    "composers": [
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 20,
+        "path": "app/0/0/0/0/0/0/0/0/0/0/0/1/0/1/1/0/0/1/0/1",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "727cfe349b9a59ef16f18641b1f14bfe03d7e7ffa22a395332a5942a4c3d68bf",
+        "value_length": 15,
+        "w": 72,
+        "x": 1626,
+        "y": 1083
+      },
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 44,
+        "path": "app/1/0/0/0/0/0/0/0/0/0/0/0/1/3/1/0/0/0/0/0/0/0/0/1/0/1/1/0/0/0",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "fb280cd67734099f9b808ae0b1bf551f41c4eab3dbe9eab16d8b58cc01301360",
+        "value_length": 12,
+        "w": 713,
+        "x": 621,
+        "y": 912
+      },
+      {
+        "empty_after_whitespace_trim": false,
+        "exact_labels": [],
+        "h": 44,
+        "path": "app/2/0/0/0/0/0/0/0/0/0/0/0/1/3/1/0/0/0/0/0/0/0/1/0/0/1/0/3/0/0/0/0",
+        "prefix_labels": [],
+        "role": "AXTextArea",
+        "value_hash": "fb280cd67734099f9b808ae0b1bf551f41c4eab3dbe9eab16d8b58cc01301360",
+        "value_length": 12,
+        "w": 508,
+        "x": -1979,
+        "y": 789
+      }
+    ]
+  }
+}

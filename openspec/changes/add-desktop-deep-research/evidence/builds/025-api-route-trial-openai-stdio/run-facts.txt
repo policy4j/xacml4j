@@ -1,0 +1,17 @@
+client_model=claude-haiku-5-5
+research_servers=[{"name": "deep-research-mcp", "status": "connected", "source": "user"}, {"name": "deep-research-gemini", "status": "connected", "source": "local"}, {"name": "deep-research-openai-stdio", "status": "connected", "source": "local"}]
+tool_called=True
+tool_input_keys=['query']
+tool_query="Using only public official OpenAI and Anthropic sources, compare ChatGPT Deep Research and Claude Research: available desktop interfaces, initiation, source control, and report export. Include dated citations."
+tool_result_is_error=None
+tool_result_chars=426
+session_duration_ms=432585
+session_result="FAILED: Research failed: Research task failed: ResponseError(code='rate_limit_exceeded', message='Rate limit reached for gpt-5.5-pro in organization org-<removed> on tokens per min (TPM): Limit 1000000, Used 988729, Requested 48026. Please try again in 2.205s. Visit https://platform.o"
+session_cost_usd=0.009994929999999999
+envelope=json object with the key result, decoded
+report_chars=413
+report_written=openai3.report.md
+
+start=2026-10-10 12:04:17 EDT
+exit=0
+end=2026-10-10 12:11:38 EDT

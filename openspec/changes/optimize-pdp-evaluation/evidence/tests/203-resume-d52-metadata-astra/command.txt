@@ -1,0 +1,372 @@
+D52 correction author command transcript — cod_3 / policy4j-cwtu.42.19.3
+This is a path-normalized transcript, not an executable shell script. Replace symbolic roots before replay.
+WORKTREE: .ntm/worktrees/xacml4j--remaining-g1-20261029/cod_3
+PACKET: .ntm/packets/remaining-g1-20261029
+ORIGINAL_CANDIDATE: .ntm/worktrees/xacml4j--batch2/cod_1
+Production edits were applied only after red-core.log and red-pdp.log completed.
+Native apply_patch created the owned regressions and changed only the two preparation guards.
+See correction.patch for all correction edits; it is relative to the eight-file frozen candidate.
+
+Build exit semantics:
+red-core (first attempt): runner sandbox denied build.lock before Maven started.
+red-core-escalated: 1, meaningful red, 6/12 expected failures.
+red-pdp: 1, meaningful red, 2/2 expected failures.
+green-focused: 0, 335 tests with zero failures/errors/skips.
+green-core-pdp-suites: 1, existing ISO8601DateTest error; PDP not reached.
+affected-suites-continued: 0 ONLY because maven.test.failure.ignore=true; core still has one error.
+The continued run completes affected downstream suites; it is not core/reactor acceptance.
+All builds use the shared runner with the required external lock approval.
+
+[helper] exit=0
+rtk proxy sed -n '1,260p' ${PACKET}/run-build.py
+
+[apply-skill] exit=0
+rtk proxy sed -n '1,230p' .codex/skills/openspec-apply-change/SKILL.md
+
+[memory] exit=0
+rtk rg -n -i 'D52|remaining-g1|HigherOrderMetadataCompatibilityTest|run-build.py' ${USER_HOME}/.codex/memories/MEMORY.md
+
+[state] exit=0
+rtk proxy git status --short --untracked-files=all
+
+[manifest] exit=0
+rtk proxy sed -n '1,180p' ${PACKET}/d52-manifest.json
+
+[brief] exit=0
+rtk proxy sed -n '1,220p' ${PACKET}/brief.md
+
+[openspec-status] exit=0
+rtk proxy openspec status --change optimize-pdp-evaluation --json
+
+[pdp-fixtures] exit=0
+rtk proxy sed -n '1,255p' xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java
+
+[value-interface] exit=0
+rtk proxy sed -n '1,240p' xacml-core/src/main/java/org/xacml4j/v30/types/Value.java
+
+[openspec-instructions] exit=0
+rtk proxy openspec instructions apply --change optimize-pdp-evaluation --json
+
+[test-fixtures] exit=0
+rtk proxy sed -n '1,250p' xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LaterDecidingOperandTest.java
+
+[overlay-hashes] exit=0
+rtk proxy python3 -c 'import pathlib,json,hashlib,subprocess
+p=pathlib.Path("${PACKET}")
+m=json.loads((p/'\''d52-manifest.json'\'').read_text())
+print('\''HEAD'\'',subprocess.check_output(['\''git'\'','\''rev-parse'\'','\''HEAD'\''],text=True).strip())
+errors=[]
+for f,want in m['\''files'\''].items():
+ actual=hashlib.sha256(pathlib.Path(f).read_bytes()).hexdigest()
+ print(f,actual,'\''manifest_match='\''+str(actual==want))
+ if actual!=want:errors.append(f)
+print('\''mismatches'\'',errors)
+print('\''manifest_sha256'\'',hashlib.sha256((p/'\''d52-manifest.json'\'').read_bytes()).hexdigest())
+assert not errors
+'
+
+[pdp-helper-body] exit=0
+rtk proxy sed -n '560,855p' xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java
+
+[observation-api] exit=0
+rtk proxy sed -n '1,175p' xacml-core/src/main/java/org/xacml4j/v30/spi/observe/DecisionObserver.java
+
+[custom-value-example] exit=0
+rtk proxy sed -n '155,235p' xacml-core/src/test/java/org/xacml4j/v30/BagStorageCompatibilityTest.java
+
+[pdp-helper-index] exit=0
+rtk rg -n 'static .*pdp|static .*observed|static .*decide|Field |getDeclaredField|getDeclaredMethod|prepared|validateFunc|validateFunction|Runtime' xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java
+
+[research-context] exit=0
+rtk proxy sed -n '1,115p' openspec/changes/optimize-pdp-evaluation/research/README.md
+
+[op-progress] exit=0
+rtk proxy python3 -c 'import subprocess,json; d=json.loads(subprocess.check_output(["rtk","proxy","openspec","instructions","apply","--change","optimize-pdp-evaluation","--json"],text=True)); print(json.dumps({k:d.get(k) for k in ["schemaName","contextFiles","progress","state","instruction"]},indent=2))'
+
+[new-impact] exit=0
+ripwire xacml-core/src/main/java --no-cache --impact=canPrepareHigherOrder --legend=compact
+
+[pdp-helpers] exit=0
+rtk proxy sed -n '450,562p' xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java
+
+[pdp-validation] exit=0
+rtk rg -n 'validate.*Func|Validate.*Func|functionParams|runtimeValidation' xacml-pdp/src/main/java/org/xacml4j/v30/pdp/PolicyDecisionPointBuilder.java xacml-core/src/main/java/org/xacml4j/v30/policy/RootEvaluationContext.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/InvalidApplyDecisionTest.java xacml-pdp/pom.xml
+
+[policy-preparation] exit=0
+rtk rg -n 'PreparedConditions|preparedConditions|preparedCondition|Condition prepared' xacml-core/src/main/java/org/xacml4j/v30/policy/Policy.java xacml-core/src/main/java/org/xacml4j/v30/policy/PreparedConditions.java
+
+[test-pom] exit=0
+rtk proxy sed -n '1,185p' xacml-pdp/pom.xml
+
+[prepared-predicate-access] exit=0
+rtk proxy sed -n '60,175p' xacml-core/src/main/java/org/xacml4j/v30/policy/PreparedConditions.java
+
+[validation-setting] exit=0
+rtk rg -n 'validateFunction|validateFunc|validate.*[Pp]aram|function.*validation' xacml-pdp/src/main/java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/InvalidApplyDecisionTest.java xacml-core/src/main/java/org/xacml4j/v30/PolicyDecisionPoint.java
+
+[pdp-builder] exit=0
+rtk proxy sed -n '60,220p' xacml-pdp/src/main/java/org/xacml4j/v30/pdp/PolicyDecisionPointBuilder.java
+
+[models-helper] exit=0
+rtk proxy sed -n '1,145p' xacml-core/src/test/java/org/xacml4j/v30/policy/ModelFixtures.java
+
+[prepare-checks] exit=0
+rtk proxy sed -n '310,350p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+
+[method-shapes] exit=0
+rtk proxy sed -n '55,110p' xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java
+
+[result-status] exit=0
+rtk rg -n 'getStatus\(' xacml-core/src/main/java/org/xacml4j/v30/Result.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/InvalidApplyDecisionTest.java
+
+[test-diff] exit=0
+rtk git diff --stat -- xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java
+
+[production-baseline] exit=0
+rtk proxy python3 -c 'import pathlib,json,hashlib; p=pathlib.Path("../../../../.ntm/packets/remaining-g1-20261029"); m=json.loads((p/"d52-manifest.json").read_text()); print(json.dumps({f:hashlib.sha256(pathlib.Path(f).read_bytes()).hexdigest()==h for f,h in m["files"].items() if "/src/main/" in f},indent=2))'
+
+[red-core] exit=1
+rtk proxy python3 '${PACKET}/run-build.py' --worktree '${WORKTREE}' --log '${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/red-core.log' --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am '-Dtest=HigherOrderMetadataCompatibilityTest#metadataChangedDuringEvaluationIsStillASyntaxError' -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+[red-core-escalated] exit=1
+rtk proxy python3 '${PACKET}/run-build.py' --worktree '${WORKTREE}' --log '${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/red-core.log' --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -am '-Dtest=HigherOrderMetadataCompatibilityTest#metadataChangedDuringEvaluationIsStillASyntaxError' -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+[new-regression] exit=0
+rtk proxy sed -n '1,360p' xacml-core/src/test/java/org/xacml4j/v30/policy/function/HigherOrderMetadataCompatibilityTest.java
+
+[pdp-regression] exit=0
+rtk git diff -- xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java
+
+[metadata-guards] exit=0
+rtk proxy sed -n '260,355p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+
+[higherorder-prepare] exit=0
+rtk proxy sed -n '1,245p' xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java
+
+[status-before-red] exit=0
+rtk git status --short
+
+[metadata-type-sources] exit=0
+rtk proxy sed -n '1,180p' xacml-core/src/main/java/org/xacml4j/v30/BagOfValuesType.java
+
+[canonical-type-shape] exit=0
+rtk rg -n 'enum XacmlTypes|DynamicType|class FunctionParam|isValidParamType|void validateSignature' xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSpec.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+
+[runner-contract] exit=0
+rtk proxy sed -n '1,200p' '${PACKET}/run-build.py'
+
+[manifest-schema] exit=0
+rtk proxy python3 -c 'import hashlib,json,os,pathlib,subprocess
+root=pathlib.Path.cwd()
+packet=pathlib.Path("${PACKET}")
+manifest=json.loads((packet/"d52-manifest.json").read_text())
+print(json.dumps(manifest))
+'
+
+[protected-baseline] exit=0
+rtk proxy python3 -c 'import hashlib,json,os,pathlib,subprocess
+root=pathlib.Path.cwd()
+owned=set(["xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java","xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java","xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java","xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LaterDecidingOperandTest.java","xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java"])
+env=dict(os.environ)
+for key in ("GIT_DIR","GIT_WORK_TREE","GIT_COMMON_DIR"):
+    env.pop(key,None)
+env["GIT_OPTIONAL_LOCKS"]="0"
+listed=subprocess.run(["rtk","proxy","git","ls-files","-z"],check=True,stdout=subprocess.PIPE,env=env).stdout
+protected={}
+for rel in (p.decode() for p in listed.split(b"\0") if p):
+    if rel not in owned:
+        p=root/rel
+        protected[rel]=hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else "MISSING"
+review=root/"openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra"
+for p in review.rglob("*"):
+    if p.is_file():
+        protected[str(p.relative_to(root))]=hashlib.sha256(p.read_bytes()).hexdigest()
+print(json.dumps({"files":len(protected),"sha256":hashlib.sha256(json.dumps(protected,sort_keys=True,separators=(",",":")).encode()).hexdigest()}))
+'
+
+[red-pdp] exit=1
+rtk proxy python3 '${PACKET}/run-build.py' --worktree '${WORKTREE}' --log '${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/red-pdp.log' --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=SharedConditionValuesPdpTest#mutableHigherOrderMetadataMakesAPermitRuleIndeterminate' -Dsurefire.failIfNoSpecifiedTests=false test
+
+[test-control-inventory] exit=0
+rtk rg --files xacml-core/src/test/java/org/xacml4j/v30/policy xacml-pdp/src/test/java/org/xacml4j/v30/pdp -g '*HigherOrder*' -g '*Regex*' -g '*LaterDeciding*' -g '*ApplyArgument*' -g '*SharedCondition*'
+
+[checked-runtime-validation] exit=0
+rtk proxy sed -n '400,480p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java
+
+[param-immutability] exit=0
+rtk proxy sed -n '30,125p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSpec.java
+
+[test-rule-support] exit=0
+rtk proxy sed -n '30,180p' xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java
+
+[builder-param-api] exit=0
+rtk proxy sed -n '90,180p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java
+
+[dynamic-consistency] exit=0
+rtk proxy sed -n '1,165p' xacml-core/src/main/java/org/xacml4j/v30/types/DynamicType.java
+
+[descriptor-contract] exit=0
+rtk proxy sed -n '1,130p' xacml-core/src/main/java/org/xacml4j/v30/ValueExpTypeInfo.java
+
+[preserve-red-proof] exit=0
+rtk proxy python3 -c 'import hashlib,json,pathlib,xml.etree.ElementTree as ET
+root=pathlib.Path.cwd()
+packet=pathlib.Path("${PACKET}")
+ev=root/"openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra"
+manifest=json.loads((packet/"d52-manifest.json").read_text())
+proof={"production_sha256":{},"red_test_sources":{},"tests":{}}
+for rel,expected in manifest["files"].items():
+    if "/src/main/" in rel:
+        actual=hashlib.sha256((root/rel).read_bytes()).hexdigest()
+        if actual!=expected: raise SystemExit("Production differs before correction: "+rel)
+        proof["production_sha256"][rel]=actual
+for rel in ("xacml-core/src/test/java/org/xacml4j/v30/policy/function/HigherOrderMetadataCompatibilityTest.java","xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java"):
+    source=root/rel
+    dest=ev/"red-sources"/rel
+    dest.parent.mkdir(parents=True,exist_ok=True)
+    dest.write_bytes(source.read_bytes())
+    proof["red_test_sources"][rel]=hashlib.sha256(source.read_bytes()).hexdigest()
+for module,name in (("xacml-core","org.xacml4j.v30.policy.function.HigherOrderMetadataCompatibilityTest"),
+                    ("xacml-pdp","org.xacml4j.v30.pdp.SharedConditionValuesPdpTest")):
+    suite=ET.parse(root/module/"target/surefire-reports"/("TEST-"+name+".xml")).getroot()
+    proof["tests"][name]={"tests":suite.get("tests"),"failures":suite.get("failures"),"errors":suite.get("errors"),
+        "cases":[{"name":case.get("name"),"failed":case.find("failure") is not None} for case in suite.findall("testcase")]}
+(ev/"red-proof.json").write_text(json.dumps(proof,indent=2)+"\n")
+print(json.dumps(proof,indent=2))
+'
+
+[green-focused] exit=0
+rtk proxy python3 '${PACKET}/run-build.py' --worktree '${WORKTREE}' --log '${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/green-focused.log' --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am '-Dtest=HigherOrderMetadataCompatibilityTest,ApplyArgumentValidationTest,LaterDecidingOperandTest,HigherOrderVariadicFunctionsTest,RegexBindingTest,SharedConditionValuesTest,SharedConditionValuesPdpTest,LaterDecidingOperandPdpTest' -Dsurefire.failIfNoSpecifiedTests=false test
+
+[baseline-evidence] exit=0
+rtk proxy sed -n '1,160p' openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/pre-correction-baseline.txt
+
+[correction-diff-whitespace] exit=0
+rtk git diff --check
+
+[red-results] exit=0
+rtk rg -n 'Tests run:|expected:|nothing was thrown|^Exit:|^Arguments:|^JDK:|^Maven:' openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/red-core.log openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/red-pdp.log
+
+[preserve-focused-proof] exit=0
+rtk proxy python3 -c 'import hashlib,json,pathlib,re,xml.etree.ElementTree as ET
+root=pathlib.Path.cwd()
+ev=root/"openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra"
+text=(ev/"green-focused.log").read_text()
+names=re.findall(r"Tests run: (\d+), Failures: (\d+), Errors: (\d+), Skipped: (\d+),.* -- in ([\w.]+)",text)
+proof={"evidence_type":"EXECUTED","log":"green-focused.log","source_sha256":{},"suites":[]}
+for rel in ["xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java","xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java","xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java","xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LaterDecidingOperandTest.java","xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java","xacml-core/src/test/java/org/xacml4j/v30/policy/function/HigherOrderMetadataCompatibilityTest.java"]:
+    proof["source_sha256"][rel]=hashlib.sha256((root/rel).read_bytes()).hexdigest()
+for tests,failures,errors,skipped,name in names:
+    proof["suites"].append(dict(name=name,tests=int(tests),failures=int(failures),errors=int(errors),skipped=int(skipped)))
+proof["totals"]={key:sum(s[key] for s in proof["suites"]) for key in ("tests","failures","errors","skipped")}
+(ev/"green-focused-proof.json").write_text(json.dumps(proof,indent=2)+"\n")
+print(json.dumps(proof,indent=2))
+'
+
+[green-core-pdp-suites] exit=1
+rtk proxy python3 '${PACKET}/run-build.py' --worktree '${WORKTREE}' --log '${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/green-core-pdp-suites.log' --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test
+
+[correction-source-locations] exit=0
+rtk rg -n 'canPrepareHigherOrder|wrapper is ours|Cache only canonical|Custom descriptors|instanceof XacmlTypes|metadataChangedDuring|canonicalTypesAndAny|stableCustom|aCustomOperator|aSharedOperand|mutableHigherOrderMetadata|assertSame\(operator|assertEquals\(shape.order' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java xacml-core/src/test/java/org/xacml4j/v30/policy/function/HigherOrderMetadataCompatibilityTest.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java
+
+[final-protected-hashes] exit=0
+rtk proxy python3 -c 'import hashlib,json,os,pathlib,subprocess
+root=pathlib.Path.cwd()
+owned=set(["xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java","xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java","xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java","xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java","xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LaterDecidingOperandTest.java","xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java"])
+env=dict(os.environ)
+for key in ("GIT_DIR","GIT_WORK_TREE","GIT_COMMON_DIR"):
+    env.pop(key,None)
+env["GIT_OPTIONAL_LOCKS"]="0"
+listed=subprocess.run(["rtk","proxy","git","ls-files","-z"],check=True,stdout=subprocess.PIPE,env=env).stdout
+protected={}
+for rel in (p.decode() for p in listed.split(b"\0") if p):
+    if rel not in owned:
+        p=root/rel
+        protected[rel]=hashlib.sha256(p.read_bytes()).hexdigest() if p.is_file() else "MISSING"
+review=root/"openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra"
+for p in review.rglob("*"):
+    if p.is_file():
+        protected[str(p.relative_to(root))]=hashlib.sha256(p.read_bytes()).hexdigest()
+print(json.dumps({"files":len(protected),"sha256":hashlib.sha256(json.dumps(protected,sort_keys=True,separators=(",",":")).encode()).hexdigest()}))
+'
+
+[date-gate-source] exit=0
+rtk proxy sed -n '25,90p' xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java
+
+[date-gate-conversion] exit=0
+rtk proxy sed -n '125,162p' xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java
+
+[affected-suite-totals] exit=0
+rtk rg -n 'Tests run: 7443|DateTime Invalid|Invalid date|SKIPPED|^Exit:' openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/green-core-pdp-suites.log
+
+[affected-suites-continued] exit=0
+rtk proxy python3 '${PACKET}/run-build.py' --worktree '${WORKTREE}' --log '${WORKTREE}/openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra/affected-suites-continued.log' --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dmaven.test.failure.ignore=true test
+
+[source-integrity-and-correction-patch] exit=0
+rtk proxy python3 -c 'import difflib,hashlib,json,os,pathlib,subprocess
+root=pathlib.Path.cwd()
+packet=pathlib.Path("${PACKET}")
+ev=root/"openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra"
+manifest=json.loads((packet/"d52-manifest.json").read_text())
+protected=pathlib.Path(manifest["candidate_root"])
+proof={"manifest_sha256":hashlib.sha256((packet/"d52-manifest.json").read_bytes()).hexdigest(),"frozen":{},"original_worktree":{},"owned_current":{},"correction_paths":[]}
+patch=[]
+for rel,expected in manifest["files"].items():
+    for key,base in (("frozen",packet/"d52-candidate"),("original_worktree",protected)):
+        actual=hashlib.sha256((base/rel).read_bytes()).hexdigest()
+        proof[key][rel]={"sha256":actual,"manifest_match":actual==expected}
+    now=(root/rel).read_bytes()
+    proof["owned_current"][rel]=hashlib.sha256(now).hexdigest()
+    before=(packet/"d52-candidate"/rel).read_bytes()
+    if before!=now:
+        proof["correction_paths"].append(rel)
+        patch.extend(difflib.unified_diff(before.decode().splitlines(keepends=True),now.decode().splitlines(keepends=True),fromfile="frozen/"+rel,tofile="corrected/"+rel))
+rel="xacml-core/src/test/java/org/xacml4j/v30/policy/function/HigherOrderMetadataCompatibilityTest.java"
+now=(root/rel).read_bytes()
+proof["owned_current"][rel]=hashlib.sha256(now).hexdigest()
+proof["correction_paths"].append(rel)
+patch.extend(difflib.unified_diff([],now.decode().splitlines(keepends=True),fromfile="/dev/null",tofile="corrected/"+rel))
+env=dict(os.environ)
+for key in ("GIT_DIR","GIT_WORK_TREE","GIT_COMMON_DIR"):
+    env.pop(key,None)
+env["GIT_OPTIONAL_LOCKS"]="0"
+proof["head"]=subprocess.run(["rtk","proxy","git","rev-parse","HEAD"],check=True,capture_output=True,text=True,env=env).stdout.strip()
+proof["date_failure_files_match_head"]={}
+for rel in ("xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java","xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java"):
+    before=subprocess.run(["rtk","proxy","git","show","HEAD:"+rel],check=True,capture_output=True,env=env).stdout
+    proof["date_failure_files_match_head"][rel]=before==(root/rel).read_bytes()
+(ev/"source-integrity.json").write_text(json.dumps(proof,indent=2)+"\n")
+(ev/"correction.patch").write_text("".join(patch))
+print(json.dumps(proof,indent=2))
+'
+
+[test-result-record] exit=0
+rtk proxy python3 -c 'import hashlib,json,pathlib,re
+root=pathlib.Path.cwd()
+ev=root/"openspec/changes/optimize-pdp-evaluation/evidence/tests/203-resume-d52-metadata-astra"
+proof={"evidence_type":"EXECUTED","runs":[]}
+for name in ("red-core.log","red-pdp.log","green-focused.log","green-core-pdp-suites.log","affected-suites-continued.log"):
+    data=(ev/name).read_text()
+    module=None
+    modules={}
+    for line in data.splitlines():
+        marker=re.search(r"--- surefire:.* @ ([^ ]+) ---",line)
+        if marker: module=marker.group(1)
+        total=re.fullmatch(r"\[(?:INFO|ERROR|WARNING)\] Tests run: (\d+), Failures: (\d+), Errors: (\d+), Skipped: (\d+)\s*",line)
+        if total and module:
+            modules[module]=dict(zip(("tests","failures","errors","skipped"),map(int,total.groups())))
+    proof["runs"].append({"log":name,"sha256":hashlib.sha256((ev/name).read_bytes()).hexdigest(),
+        "maven_exit":int(re.search(r"^Exit: (\d+)",data,re.M).group(1)),
+        "test_failure_ignore":"-Dmaven.test.failure.ignore=true" in data,
+        "modules":modules})
+proof["affected_gate"]="FAILED: ISO8601DateTest.testCreateFromCalendar: Invalid date SEPTEMBER 31"
+proof["continued_run_note"]="Maven test failure ignore only allowed downstream suites to execute. Exit 0 is not an acceptance result; the core error remains."
+(ev/"test-results.json").write_text(json.dumps(proof,indent=2)+"\n")
+print(json.dumps(proof,indent=2))
+'
+
+One initial read-only protected-hash inventory exceeded tool output limits; it was replaced by the bounded aggregate-hash command recorded above. No file change resulted from that read.
+Final evidence generation used native apply_patch for summary.md and candidate-ready.json.
+Final scope verification is recorded in scope-verification.json.
+No task tick, issue closure, stage, commit, branch change, protected-source edit, repository configuration change, or performance run occurred.
+

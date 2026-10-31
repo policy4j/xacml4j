@@ -25,16 +25,43 @@ package org.xacml4j.v30;
 import java.util.Collection;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 
 public class ResponseContext
 {
-	private ImmutableList<Result> results;
+	private static final ResponseContext PERMIT = new ResponseContext(ImmutableList.of(Result.plain(Decision.PERMIT)));
+	private static final ResponseContext DENY = new ResponseContext(ImmutableList.of(Result.plain(Decision.DENY)));
+	private static final ResponseContext NOT_APPLICABLE = new ResponseContext(ImmutableList.of(Result.plain(Decision.NOT_APPLICABLE)));
+
+	private final ImmutableList<Result> results;
 
 	private ResponseContext(Builder builder){
-		this.results = builder.b.build();
+		this(builder.b != null ? builder.b.build()
+				: builder.copied != null ? builder.copied : ImmutableList.of());
+	}
+
+	private ResponseContext(ImmutableList<Result> results){
+		this.results = results;
+	}
+
+	/** A response with one result. Plain successful results may share an immutable response. */
+	public static ResponseContext of(Result result){
+		Preconditions.checkNotNull(result);
+		return switch(result.getDecision()){
+			case PERMIT -> single(result, PERMIT);
+			case DENY -> single(result, DENY);
+			case NOT_APPLICABLE -> single(result, NOT_APPLICABLE);
+			default -> new ResponseContext(ImmutableList.of(result));
+		};
+	}
+
+	private static ResponseContext single(Result result, ResponseContext plain){
+		return result.getStatus() == plain.results.get(0).getStatus()
+				&& result.getIncludeInResultAttributes().isEmpty()
+				&& result.getObligations().isEmpty() && result.getAssociatedAdvice().isEmpty()
+				&& result.getPolicyIdentifiers().isEmpty() && result.getResolvedAttributes().isEmpty()
+				? plain : new ResponseContext(ImmutableList.of(result));
 	}
 
 	public static Builder builder(){
@@ -72,18 +99,36 @@ public class ResponseContext
 
 	public static class Builder
 	{
-		private ImmutableList.Builder<Result> b = ImmutableList.builder();
+		// The one collection given to a fresh builder is kept as it is; a list builder is
+		// created by the first add that cannot be kept that way (design D32)
+		private ImmutableList<Result> copied;
+		private ImmutableList.Builder<Result> b;
 
 		public Builder result(Result ... r){
 			Preconditions.checkNotNull(r);
-			this.b.add(r);
+			builder().add(r);
 			return this;
 		}
 
 		public Builder results(Iterable<Result> r){
 			Preconditions.checkNotNull(r);
-			this.b.addAll(r);
+			if(b == null && copied == null){
+				copied = ImmutableList.copyOf(r);
+				return this;
+			}
+			builder().addAll(r);
 			return this;
+		}
+
+		private ImmutableList.Builder<Result> builder(){
+			if(b == null){
+				b = ImmutableList.builder();
+				if(copied != null){
+					b.addAll(copied);
+					copied = null;
+				}
+			}
+			return b;
 		}
 
 		public ResponseContext build(){

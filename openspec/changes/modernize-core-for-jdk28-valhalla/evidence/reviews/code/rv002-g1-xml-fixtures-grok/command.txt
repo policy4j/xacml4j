@@ -1,0 +1,3 @@
+ntm send policy4j--g1 --pane=0 --base-prompt-file .ntm/roles/policy4j_code_review.md --file <scratch>/packet-review-g1-grok.md
+# Packet: same as rv001 plus the adversarial instruction to construct XACML 2.0/3.0 inputs where the
+# new xacml-xml mapping loses data or changes a decision versus the a8a90d46 core semantics.

@@ -1,0 +1,36 @@
+{
+  "xacml-xml": {
+    "counts": {
+      "tests": 85,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v30.xml.BooleanAttributeLexicalTest": {
+        "tests": 85,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": []
+  },
+  "xacml-conformance-tests": {
+    "counts": {
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "classes": {
+      "org.xacml4j.v20.ConformanceStaticRejectionTest": {
+        "tests": 16,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "failures": []
+  }
+}

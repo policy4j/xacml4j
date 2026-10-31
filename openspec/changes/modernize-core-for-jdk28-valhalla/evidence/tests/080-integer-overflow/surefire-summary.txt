@@ -1,0 +1,21 @@
+== Gate: clean build with the non-wrapping integer arithmetic ==
+
+xacml-core                 Tests run: 6373, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,828 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6,373 holds IntegerOverflowTest (43 tests); 4 skipped instead of 6: rows 35 and 36 of FunctionSafetyNet43Test run.
+
+== Gate 2: clean build after the review notes (cause kept; one more boundary row) ==
+
+xacml-core                 Tests run: 6374, Failures: 0, Errors: 0, Skipped: 4
+xacml-xml                  Tests run: 244, Failures: 0, Errors: 0, Skipped: 0
+xacml-json                 Tests run: 24, Failures: 0, Errors: 0, Skipped: 1
+xacml-pdp                  Tests run: 151, Failures: 0, Errors: 0, Skipped: 3
+xacml-test                 Tests run: 99, Failures: 0, Errors: 0, Skipped: 0
+xacml-conformance-tests    Tests run: 937, Failures: 0, Errors: 0, Skipped: 12
+BUILD SUCCESS. Total: 7,829 tests, 0 failures, 0 errors, 20 skipped.
+xacml-core 6,374 holds IntegerOverflowTest (44 tests).

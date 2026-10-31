@@ -1,0 +1,30 @@
+[
+  {
+    "file": "12-final-test-tree.log",
+    "reactor_projects": [
+      "xacml",
+      "xacml-core",
+      "xacml-xml-jaxb",
+      "xacml-xml",
+      "xacml-json",
+      "xacml-pdp",
+      "xacml-test",
+      "xacml-conformance-tests"
+    ],
+    "legacy_artifact_matches": []
+  },
+  {
+    "file": "13-final-junit-tree.log",
+    "reactor_projects": [
+      "xacml",
+      "xacml-core",
+      "xacml-xml-jaxb",
+      "xacml-xml",
+      "xacml-json",
+      "xacml-pdp",
+      "xacml-test",
+      "xacml-conformance-tests"
+    ],
+    "legacy_artifact_matches": []
+  }
+]

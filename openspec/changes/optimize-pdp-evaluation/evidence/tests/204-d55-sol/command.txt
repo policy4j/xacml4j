@@ -1,0 +1,69 @@
+D55 / task 42.21 / policy4j-cwtu.42.21 / actor ntm-sol-g1 / cod_2
+All commands were run from this cod_2 worktree. Symbolic bindings below expand to the exact
+absolute runner, worktree and log paths used, without retaining personal checkout paths.
+
+WORKTREE="$PWD"
+PACKET="$WORKTREE/../../../packets/remaining-g1-20261029"
+EVIDENCE="$WORKTREE/openspec/changes/optimize-pdp-evaluation/evidence/tests/204-d55-sol"
+
+The shared runner selects JDK 25 with: rtk proxy jenv prefix 25
+All four logs report Maven 3.10.0 / Oracle JDK 25.0.4 / release 25 / macOS aarch64.
+No raw Maven command, repository settings override or download was used.
+
+1. Characterization, before production changes. Test construction helpers use existing builders.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/baseline-characterization-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=AttributeIndexTest,ResolvedAttributesPdpTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+Result: exit 0, core 23 / PDP 7, failures 0, errors 0, skipped 0. Characterization, not red.
+
+2. Focused factory outcome tests after implementation.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/focused-factories-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=AttributeIndexTest,ResolvedAttributesPdpTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+Result: exit 0, core 23 / PDP 7, failures 0, errors 0, skipped 0.
+
+3. Normal affected-module gate.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/module-gate-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am clean test
+Result: exit 1, core 7379, failures 0, errors 1, skipped 2.
+Only error: ISO8601DateTest.testCreateFromCalendar:59, Invalid date 'SEPTEMBER 31'. Downstream skipped.
+
+4. Authorized continuation to reach PDP after the known date error.
+rtk proxy python3 "$PACKET/run-build.py" --worktree "$WORKTREE" --log "$EVIDENCE/module-gate-known-date-error-maven310-clean.log" --maven /opt/homebrew/bin/mvn -- -V -o -Dlicense.skipUpdateLicense=true -Dmaven.test.failure.ignore=true -pl xacml-pdp -am clean test
+Result: exit 0 with test-failure ignore; total 8473, failures 0, errors 1, skipped 6.
+Core 7379/0/1/2; XML 254/0/0/0; JSON 24/0/0/1; PDP 816/0/0/3.
+The known core date error remains; BUILD SUCCESS does not mean all tests passed.
+
+5. Read-only/static verification.
+scripts/agent-doctor.sh ripwire
+Result: PASS ripwire: doctor 7/7.
+ripwire . --for='AttributeIndex response attributes Entity Category lazy multimap' --exclude=/evidence/ --legend=compact
+Result: exit 0; PARTIAL name-based, low-confidence orientation, confirmed in the opened source.
+ast-grep scan xacml-core/src/main/java/org/xacml4j/v30/AttributeIndex.java xacml-core/src/main/java/org/xacml4j/v30/types/Entity.java xacml-core/src/main/java/org/xacml4j/v30/Category.java xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPoint.java xacml-core/src/test/java/org/xacml4j/v30/AttributeIndexTest.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/ResolvedAttributesPdpTest.java
+Result: exit 0, no findings.
+rtk openspec validate optimize-pdp-evaluation --strict
+Result: exit 0, Change 'optimize-pdp-evaluation' is valid.
+rtk git diff --check
+Result: exit 0.
+rtk git status --short
+Result: six D55 tracked edits, four preserved P-CPU2 tracked edits, evidence directories 202 and 204.
+
+6. Fingerprints, all read-only except the new evidence outputs.
+rtk proxy python3 "$EVIDENCE/capture-state.py" before
+rtk proxy python3 "$EVIDENCE/capture-state.py" characterization-ready
+rtk proxy python3 "$EVIDENCE/capture-state.py" focused-ready
+rtk proxy python3 "$EVIDENCE/capture-state.py" candidate
+rtk proxy python3 "$EVIDENCE/capture-state.py" final
+rtk proxy python3 "$EVIDENCE/finalize-evidence.py"
+The candidate and final snapshots match for all six owned Java files; protected tracked files
+and the prior lane's evidence match the before snapshot. Baseline test additions are retained
+as characterization-tests.patch, captured with rtk proxy git diff of the two owned test paths.
+
+Histograms, bytes and performance pair: UNRUN. No stage, commit, branch, task or Beads mutation.
+
+SHA-256 fingerprints follow.
+ece4207a6747adf90eb6b78c10cb30fa08994f5a96256afcf50460fbd61f3ab8  xacml-core/src/main/java/org/xacml4j/v30/AttributeIndex.java
+fbd98895aaae24453460e5d185b92e32be609c1e76833cc218793fb3d711e301  xacml-core/src/main/java/org/xacml4j/v30/types/Entity.java
+a572cf0483fd26bb1b8397bcb34ee1c77fb51597dd6dd8a4662a14970b8cf619  xacml-core/src/main/java/org/xacml4j/v30/Category.java
+91161e91325ebe3ba54a4d657c7cafe6855d9fbfd9cb12606c4f4fd7f2d4c99d  xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultPolicyDecisionPoint.java
+1a2df4ad3f1451f738a465bf3f4a5d445043f6c6dd86b555c3cb83a0f30e5403  xacml-core/src/test/java/org/xacml4j/v30/AttributeIndexTest.java
+a82dff216c98e383d4147ea3e7fc127111fa959e52c72a07b151311fd0a3631f  xacml-pdp/src/test/java/org/xacml4j/v30/pdp/ResolvedAttributesPdpTest.java
+67960ae4b759529cfc2b7a26c1a09222dbeb91db251a74fc9f64f7a98e266d2d  baseline-characterization-maven310-clean.log
+44b89dcdad4b7d573f4a8a1628865fbd409848d2095b47df2d80f61d0c5851ae  focused-factories-maven310-clean.log
+79a94f3687418ba69da1b4c9a0e07754519a4df304d228e265a743fd3aa398de  module-gate-maven310-clean.log
+c85e839c7f747aa2cc23ea916fff4cefdb8ef9c78a59e0c190a96054be50a536  module-gate-known-date-error-maven310-clean.log

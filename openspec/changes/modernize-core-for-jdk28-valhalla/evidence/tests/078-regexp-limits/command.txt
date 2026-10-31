@@ -1,0 +1,43 @@
+# Run from the repository root. JDK 21 selected per run.
+
+# Red: the new test with the limits declared but not enforced
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-core -am \
+  -Dtest=RegExpLimitsTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Probe: which patterns still backtrack for seconds on this JDK (stand-alone, 3 s cap per pattern)
+"$(jenv prefix 21)/bin/java" RegexProbe.java
+
+# Focused green
+JAVA_HOME="$(jenv prefix 21)" mvn -q -Dlicense.skipUpdateLicense=true \
+  -Dmaven.test.failure.ignore=true -pl xacml-core -am \
+  -Dtest='RegExpLimitsTest,RegularExpressionFunctionsTest,FunctionSafetyNet43Test,StringFunction*Test' \
+  -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Gate: full reactor with conformance
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true verify
+
+# Spec
+rtk openspec validate modernize-core-for-jdk28-valhalla --strict
+
+# Review (one shot, redacted packet = prompt + diff; run from a scratch directory)
+codex exec -s read-only --skip-git-repo-check - < packet.md
+
+# Round 2: probes of the constructs in the review (stand-alone, 5 s and 8 s caps)
+"$(jenv prefix 21)/bin/java" RegexProbe4.java
+"$(jenv prefix 21)/bin/java" RegexProbe5.java
+
+# Round 2 red: the same test command with the round-2 version of RegExpFunctions.java plus two
+# compile shims; then the file of this run was put back (cmp against the saved copy)
+
+# Round 2 gate: clean full reactor
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify
+
+# Round 3: probe of quantifiers next to each other
+"$(jenv prefix 21)/bin/java" RegexProbe6.java
+
+# Round 3 mutation check: one guard of RegExpFunctions.java removed, the test class run, the
+# file put back; three times (M1, M2, M3). See mutation-check.txt.
+
+# Round 3 gate: clean full reactor
+JAVA_HOME="$(jenv prefix 21)" mvn -Dlicense.skipUpdateLicense=true clean verify

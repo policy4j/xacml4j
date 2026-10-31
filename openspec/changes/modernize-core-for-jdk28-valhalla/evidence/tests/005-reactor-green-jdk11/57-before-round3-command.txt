@@ -1,0 +1,381 @@
+# Task 1.3 continued; commands run from <repo>; no br commands.
+# Further continuation: conductor approved exactly required-pom-fix.patch for xacml-test/pom.xml; see conductor-approval.md.
+JAVA_HOME="$(jenv prefix 11)" rtk proxy bash -c 'exec "$JAVA_HOME/bin/java" -version'
+# Protected file hashes captured before this continuation's Java edits:
+rtk proxy python3 -c 'from pathlib import Path
+import hashlib, json
+repo = Path.cwd()
+ev = repo / "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11"
+files = set(repo.glob("pom.xml"))
+files.update(repo.glob("*/pom.xml"))
+for rel in ["xacml-core/src", "xacml-xml/src/main/java", "xacml-xml/src/test/java", "xacml-xml-jaxb/src", "xacml-conformance-tests/src/test/resources", "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/003-xacml-xml-compile-jdk11"]:
+    files.update(p for p in (repo / rel).rglob("*") if p.is_file())
+data = {str(p.relative_to(repo)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)}
+(ev / "00-protected-files.json").write_text(json.dumps(data, indent=2) + "\n")
+print("Protected source/fixture/run-003 snapshots:", len(data))
+'
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am compile -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/01-pdp-baseline-compile.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 01-pdp-baseline-compile.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=MultipleResourcesViaXacmlXPathHandlerTest,DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/02-pdp-characterization-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 02-pdp-characterization-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am compile -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/03-pdp-compile-after-path-import.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 03-pdp-compile-after-path-import.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test-compile -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/04-pdp-test-compile.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 04-pdp-test-compile.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test-compile -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/05-pdp-test-compile.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 05-pdp-test-compile.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/06-pdp-tests.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 06-pdp-tests.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=MultipleResourcesViaXacmlXPathHandlerTest,DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/07-selector-characterization-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 07-selector-characterization-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=MultipleResourcesViaXacmlXPathHandlerTest,DefaultEvaluationContextHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/08-selector-characterization-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 08-selector-characterization-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true test-compile -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/09-reactor-test-compile.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 09-reactor-test-compile.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/10-reactor-verify.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 10-reactor-verify.txt
+rtk git diff --stat -- xacml-pdp/src xacml-test/src xacml-conformance-tests/src/test/java
+rtk git diff --check -- xacml-pdp/src
+rtk git status --short
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am dependency:tree -Dincludes=junit:junit -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/11-junit-dependency-tree.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 11-junit-dependency-tree.txt
+# Native escalation after the local Maven cache sandbox denial; succeeds.
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am dependency:tree -Dincludes=junit:junit -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/12-junit-dependency-tree.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 12-junit-dependency-tree.txt
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+# The first draft patch had incomplete context; corrected and rechecked below. No POM was edited.
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+# First evidence generation stopped at a diagnostic-context lookup; the helper was corrected.
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-evidence.py
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-evidence.py
+# The helper executes the following read-only checks, recording their output in scope-check.txt:
+rtk git diff --quiet a8a90d46 -- xacml-core
+rtk git diff --check -- xacml-pdp/src
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+rtk git status --short
+rtk proxy git diff --name-only -- xacml-pdp/src xacml-test/src xacml-conformance-tests/src/test/java
+# A concurrent protected XML file change was detected; rerun the required gate on the current tree.
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/13-reactor-verify-current-tree.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 13-reactor-verify-current-tree.txt
+# Evidence generation now records the observed concurrent XML change and checks for any further protected drift.
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-evidence.py
+# Final whitespace-only alignment of the new designator call, then final diff/scope checks.
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-evidence.py
+# Restore the pre-existing trailing blank line that the patch tool normalized:
+rtk proxy python3 -c 'from pathlib import Path
+p = Path("xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java")
+source = p.read_bytes()
+assert source.endswith(b"}\n")
+p.write_bytes(source + b"\n")
+'
+rtk git diff --check -- xacml-pdp/src
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-evidence.py
+
+# Conductor-approved POM continuation (runs 14 onward)
+rtk git apply openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true test-compile -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/14-reactor-compile-approved-pom.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 14-reactor-compile-approved-pom.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=ExpectedAttributeResolverBuilderTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/15-test-support-characterization-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 15-test-support-characterization-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=ExpectedAttributeResolverBuilderTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/16-test-support-characterization-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 16-test-support-characterization-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -q -Dlicense.skipUpdateLicense=true test-compile -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/17-reactor-conformance-compile.txt
+rtk proxy python3 -c 'from pathlib import Path
+import hashlib, json
+repo = Path.cwd()
+ev = repo / "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11"
+protected = json.loads((ev / "00-protected-files.json").read_text())
+protected.pop("xacml-test/pom.xml")
+for rel in ["openspec/changes/modernize-core-for-jdk28-valhalla/tasks.md", "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/README.md"]:
+    protected[rel] = ""
+data = {rel: hashlib.sha256((repo / rel).read_bytes()).hexdigest() for rel in protected}
+(ev / "14-protected-before-downstream.json").write_text(json.dumps(data, indent=2) + "\n")
+(ev / "14-approved-pom.txt").write_text((repo / "xacml-test/pom.xml").read_text())
+print("Protected files for approved continuation:", len(data))
+'
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 17-reactor-conformance-compile.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceAttributeResolverTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/18-conformance-resolver-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 18-conformance-resolver-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceAttributeResolverTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/19-conformance-resolver-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 19-conformance-resolver-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/20-reactor-verify-approved-pom.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 20-reactor-verify-approved-pom.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-conformance-tests -am -Dtest=Xacml20ConformanceAttributeResolverTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/21-conformance-resolver-after-cast.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 21-conformance-resolver-after-cast.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/22-reactor-verify-with-conformance.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 22-reactor-verify-with-conformance.txt
+rtk git status --short
+rtk proxy python3 -c 'from pathlib import Path
+import json, re, xml.etree.ElementTree as ET
+repo=Path.cwd()
+ev=repo / "openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11"
+suites={}
+for p in (repo / "xacml-conformance-tests/target/surefire-reports").glob("TEST-*.xml"):
+    root=ET.parse(p).getroot()
+    cases=[]
+    for tc in root.findall("testcase"):
+        out=tc.findtext("system-out", "")
+        ids=re.findall(r"Executing test=\"([^\"]+)\"", out)
+        failure=tc.find("failure")
+        if failure is None: failure=tc.find("error")
+        cases.append({"method":tc.attrib["name"], "case_ids":ids, "failure": None if failure is None else {"type":failure.attrib.get("type"),"message":failure.attrib.get("message"),"trace":(failure.text or "").replace(str(repo), "<repo>")}})
+    suites[root.attrib["name"]]={"counts":{k:root.attrib.get(k) for k in ["tests","failures","errors","skipped"]},"testcases":cases}
+(ev / "22-conformance-testcases.json").write_text(json.dumps(suites, indent=2)+"\n")
+for name,suite in suites.items():
+    print(name,suite["counts"],"case executions",sum(len(c["case_ids"]) for c in suite["testcases"]))
+    for c in suite["testcases"]:
+        if c["failure"]:
+            print(c["method"], "LAST CASE",c["case_ids"][-1:] or ["UNVERIFIED"],c["failure"]["message"],"\n".join(c["failure"]["trace"].splitlines()[:4]))
+'
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-conformance-diagnostics.py
+rtk proxy python3 -c 'from pathlib import Path
+import subprocess
+repo=Path.cwd()
+p="xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java"
+result=subprocess.run(["rtk","proxy","git","show","a8a90d46:"+p],text=True,capture_output=True)
+if result.returncode: raise SystemExit(result.stderr)
+lines=result.stdout.splitlines()
+for i,line in enumerate(lines):
+    if "private java.util.Optional<Content> getContent" in line:
+        print("Base a8a90d46 mapper content helper:")
+        print("\\n".join(str(j+1)+": "+lines[j] for j in range(i,min(i+20,len(lines)))))
+'
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-core-fix.patch
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=Xacml30TestUtilityTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/24-response-comparison-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 24-response-comparison-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-test -am -Dtest=Xacml30TestUtilityTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/25-response-comparison-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 25-response-comparison-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/26-reactor-verify-response-comparison.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 26-reactor-verify-response-comparison.txt
+rtk proxy python3 -c 'from pathlib import Path
+import json,re,xml.etree.ElementTree as ET
+repo=Path.cwd()
+ev=repo/"openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11"
+suites={}
+for p in (repo/"xacml-conformance-tests/target/surefire-reports").glob("TEST-*.xml"):
+    root=ET.parse(p).getroot()
+    cases=[]
+    for tc in root.findall("testcase"):
+        out=tc.findtext("system-out", "")
+        ids=re.findall(r"Executing test=\"([^\"]+)\"",out)
+        f=tc.find("failure")
+        if f is None: f=tc.find("error")
+        cases.append({"method":tc.attrib["name"],"case_ids":ids,"failure":None if f is None else {"type":f.attrib.get("type"),"message":f.attrib.get("message"),"trace":(f.text or "").replace(str(repo),"<repo>")}})
+    suites[root.attrib["name"]]={"counts":{k:root.attrib.get(k) for k in ["tests","failures","errors","skipped"]},"testcases":cases}
+(ev/"26-conformance-testcases.json").write_text(json.dumps(suites,indent=2)+"\n")
+for name,suite in suites.items():
+    print(name,suite["counts"],"case executions",sum(len(c["case_ids"]) for c in suite["testcases"]))
+    for c in suite["testcases"]:
+        print(c["method"],"executed",len(c["case_ids"]),"LAST",c["case_ids"][-1:],"failure",None if c["failure"] is None else c["failure"]["message"])
+'
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-approved-continuation.py
+# The finalizer executes these read-only scope checks:
+rtk git diff --quiet a8a90d46 -- xacml-core
+rtk git diff --check -- xacml-pdp/src xacml-test/pom.xml xacml-test/src xacml-conformance-tests/src/test/java
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-core-fix.patch
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+rtk git status --short
+rtk proxy git diff --name-only -- xacml-pdp/src xacml-test/pom.xml xacml-test/src xacml-conformance-tests/src/test/java
+rtk git diff --cached --name-only
+# Final evidence refresh after summary/path normalization updates:
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-approved-continuation.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-approved-continuation.py
+# Final required-artifact and totals check:
+rtk proxy python3 -c 'from pathlib import Path
+import json
+p=Path("openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11")
+required=["summary.md","command.txt","surefire-summary.txt","scope-check.txt","compiler-fixes.md","conductor-approval.md","26-conformance-testcases.json"]
+for name in required:
+    text=(p/name).read_text()
+    assert text.strip(), name
+    assert str(Path.cwd()) not in text, name
+counts=json.loads((p/"26-module-counts.json").read_text())
+assert [sum(v[i] for v in counts.values()) for i in range(4)]==[660,5,0,9]
+print("Required evidence files present; checkout paths normalized; per-module totals verified.")
+'
+
+# Conductor-approved core/XML baseline restoration (runs 27 onward)
+rtk proxy python3 -c 'from pathlib import Path
+import hashlib,json
+repo=Path.cwd()
+ev=repo/"openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11"
+protected=json.loads((ev/"14-protected-before-downstream.json").read_text())
+allowed=["xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java","xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java"]
+for name in allowed: protected.pop(name)
+protected={name:hashlib.sha256((repo/name).read_bytes()).hexdigest() for name in protected}
+(ev/"27-protected-before-baseline-restoration.json").write_text(json.dumps(protected,indent=2)+"\n")
+(ev/"27-approved-source-before.json").write_text(json.dumps({name:(repo/name).read_text() for name in allowed},indent=2)+"\n")
+print("Protected snapshots:",len(protected),"; newly authorized sources:",len(allowed))
+'
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=ISO8601DateTimeArithmeticTest,Xacml30RequestContentTest -Dsurefire.failIfNoSpecifiedTests=false -fae test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/28-baseline-restoration-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 28-baseline-restoration-before.txt
+rtk git status --short
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=Xacml30RequestContentTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/29-xml-content-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 29-xml-content-before.txt
+rtk git apply openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-core-fix.patch
+rtk git apply openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-xml -am -Dtest=ISO8601DateTimeArithmeticTest,Xacml30RequestContentTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/30-baseline-restoration-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 30-baseline-restoration-after.txt
+rtk git status --short
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/31-reactor-verify-baseline-restoration.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 31-reactor-verify-baseline-restoration.txt
+rtk git status --short
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 31
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-conformance-diagnostics.py DiagnoseDatePeriod.java 32-date-period-diagnostics.txt
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-conformance-diagnostics.py DiagnoseConformance.java 33-approved-diagnostics-after.txt
+rtk git diff --check -- xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-pdp/src xacml-test/pom.xml xacml-test/src xacml-conformance-tests/src/test/java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-baseline-restoration.py
+# Final scope refresh and case-exclusion/evidence checks:
+rtk proxy python3 -c 'from pathlib import Path
+import json,re
+repo=Path.cwd()
+ev=repo/"openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11"
+manifest={}
+for suite in ["Xacml20ConformanceTest","Xacml30ConformanceTest"]:
+    source=(repo/"xacml-conformance-tests/src/test/java/org/xacml4j/v20"/(suite+".java")).read_text()
+    groups={}
+    for method,body in re.findall(r"public void (test\w+)\(\) throws Exception\s*\{(.*?)\n\t\}",source,re.S):
+        match=re.search(r"executeXacmlConformanceTestCase\(skipTests, \"([^\"]+)\", (\d+)\)",body)
+        if match:
+            groups[match.group(1)]=[match.group(1)+str(int(n)).zfill(3) for n in re.findall(r"skipTests.add\((\d+)\)",body)]
+    manifest[suite]=groups
+    print(suite,"existing excluded case IDs",sum(len(ids) for ids in groups.values()),groups)
+(ev/"31-existing-case-exclusions.json").write_text(json.dumps(manifest,indent=2)+"\n")
+'
+rtk proxy python3 -c 'from pathlib import Path
+import json
+repo=Path.cwd()
+ev=repo/"openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11"
+for name in ["summary.md","command.txt","surefire-summary.txt","conformance-blockers.md","scope-check.txt"]:
+    text=(ev/name).read_text()
+    assert text.strip(),name
+    assert str(repo) not in text,name
+counts=json.loads((ev/"31-module-counts.json").read_text())
+assert [sum(v[i] for v in counts.values()) for i in range(4)]==[677,2,0,9]
+suites=json.loads((ev/"31-conformance-testcases.json").read_text())
+for name in ["Xacml20ConformanceTest","Xacml30ConformanceTest"]:
+    suite=suites["org.xacml4j.v20."+name]
+    assert sum(len(c["case_ids"]) for c in suite["testcases"])==221
+    assert [(c["case_ids"][-1],c["failure"]["type"]) for c in suite["testcases"] if c["failure"]]==[("IIC106","java.lang.AssertionError")]
+print("Evidence present and normalized; latest module totals and both failed case IDs verified.")
+'
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-baseline-restoration.py
+# The finalizer runs these read-only Git checks:
+rtk git diff --quiet a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java
+rtk git diff --check -- xacml-pdp/src xacml-test/pom.xml xacml-test/src xacml-conformance-tests/src/test/java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-core-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+rtk git status --short
+rtk git diff --cached --name-only
+
+# Conductor-approved expanded date arithmetic (runs 34 onward)
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-date-arithmetic.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DateTimeArithmeticBoundaryTest,ISO8601DateTimeArithmeticTest,DateTimeValueArithmeticFunctionTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/34-date-arithmetic-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 34-date-arithmetic-before.txt
+rtk git apply openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DateTimeArithmeticBoundaryTest,ISO8601DateTimeArithmeticTest,DateTimeValueArithmeticFunctionTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/35-date-arithmetic-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 35-date-arithmetic-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/36-reactor-verify-date-arithmetic.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 36-reactor-verify-date-arithmetic.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 36
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-conformance-diagnostics.py DiagnoseDurationBagFunctions.java 37-duration-bag-function-diagnostics.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-duration-bag-proposal.py
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+rtk git diff --quiet a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XacmlDefaultFunctions.java
+rtk git diff --quiet a8a90d46 -- xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC150Policy.xml
+rtk proxy "$(jenv prefix 11)/bin/java" -version > openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/38-jdk-version.txt 2>&1
+rtk git rev-parse HEAD
+rtk git branch --show-current
+
+# Final evidence and scope checks
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-date-arithmetic.py
+rtk git diff --quiet a8a90d46 -- xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/XacmlDefaultFunctions.java
+rtk git diff --quiet a8a90d46 -- xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC150Policy.xml
+rtk git diff --check -- xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java xacml-test/pom.xml
+rtk git apply --reverse --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+rtk git apply --reverse --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+rtk git apply --reverse --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+rtk git apply --check <repo>/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+rtk git status --short
+rtk git diff --cached --name-only
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/audit-final-date-arithmetic-evidence.py
+
+# Conductor-approved identifier repairs (runs 39 onward)
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-identifier-tests.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/39-duration-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 39-duration-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-identifier-red.py
+rtk git apply --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+rtk git apply openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest,BagFunctionsTest,SetFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/40-duration-identifiers-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 40-duration-identifiers-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest,BagFunctionsTest,SetFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/41-duration-identifiers-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 41-duration-identifiers-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/42-reactor-verify-duration-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 42-reactor-verify-duration-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 42
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-conformance-diagnostics.py DiagnoseHigherOrderIdentifiers.java 43-higher-order-registration-diagnostics.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-higher-order-tests.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=HigherOrderFunctionIdentifierTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/44-higher-order-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 44-higher-order-identifiers-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-higher-order-red.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=DurationFunctionIdentifierTest,HigherOrderFunctionIdentifierTest,HigherOrderFunctionsTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/45-higher-order-identifiers-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 45-higher-order-identifiers-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/46-reactor-verify-higher-order-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 46-reactor-verify-higher-order-identifiers.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 46
+# SetFunctions' ten annotation/alias replacements and import, HigherOrderFunctions' four annotation/alias replacements, and the new tests were applied with the native apply_patch tool; exact changes are in git diff and the captured pre-write source.
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/write-identifier-summary.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/audit-final-identifier-evidence.py
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/audit-final-identifier-evidence.py > openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/47-final-evidence-audit.txt
+
+# Final evidence and scope checks
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-identifiers.py
+rtk git diff --check -- xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java xacml-test/pom.xml
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+rtk git diff --quiet a8a90d46 -- xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC150Policy.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIC164Policy.xml
+rtk git status --short
+rtk git diff --cached --name-only
+
+# Review round 2 fixes: tests first (runs 48 onward)
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/prepare-review-tests.py
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601FractionalDateTimeArithmeticTest,ISO8601DurationReviewTest,ISO8601DateTimeArithmeticTest,DateTimeArithmeticBoundaryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/48-review-arithmetic-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 48-review-arithmetic-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest,MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/49-review-context-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 49-review-context-before.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-review-red.py
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-review-diagnostics.py DiagnoseXPathMultipleDecisions.java 50-IIIE3xx-before.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ISO8601FractionalDateTimeArithmeticTest,ISO8601DurationReviewTest,ISO8601DateTimeArithmeticTest,DateTimeArithmeticBoundaryTest test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/51-review-arithmetic-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 51-review-arithmetic-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=DefaultEvaluationContextHandlerTest,MultipleResourcesViaXacmlXPathHandlerTest -Dsurefire.failIfNoSpecifiedTests=false test -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/52-review-context-after.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 52-review-context-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk mvn -Dlicense.skipUpdateLicense=true verify -l openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/53-reactor-verify-review-fixes.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/summarize-run.py 53-reactor-verify-review-fixes.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/capture-conformance.py 53
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-review-diagnostics.py DiagnoseXPathMultipleDecisions.java 54-IIIE3xx-after.txt
+JAVA_HOME="$(jenv prefix 11)" rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/run-review-diagnostics.py DiagnoseFractionalDurationGaps.java 55-fractional-duration-gaps.txt
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/record-review-baselines.py
+
+# Final evidence and scope checks
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/finalize-review-fixes.py
+rtk git diff --check -- xacml-pdp/src/main/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandler.java xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionHandler.java xacml-pdp/src/main/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXPathExpressionLegacyHandler.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/DefaultEvaluationContextHandlerTest.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/request/MultipleResourcesViaXacmlXPathHandlerTest.java xacml-test/src/main/java/org/xacml4j/v30/ExpectedAttributeResolverBuilder.java xacml-test/src/main/java/org/xacml4j/v20/Xacml30TestUtility.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceAttributeResolver.java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java xacml-xml/src/main/java/org/xacml4j/v30/xml/Xacml30RequestContextFromJaxbToObjectModelMapper.java xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601Date.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/BagFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/SetFunctions.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java xacml-core/src/main/java/org/xacml4j/util/DateTimeDurationUtils.java xacml-test/pom.xml
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-duration-bag-alias-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-pom-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-xml-content-fix.patch
+rtk git apply --reverse --check openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/required-date-period-fix.patch
+rtk git diff --quiet a8a90d46 -- xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml30ConformanceTest.java xacml-conformance-tests/src/test/java/org/xacml4j/v20/Xacml20ConformanceTest.java xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE301Policy.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE301Request.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE301Response.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE302Policy.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE302Request.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE302Response.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE303Policy.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE303Request.xml xacml-conformance-tests/src/test/resources/xacml3.0-ct-v.0.4/IIIE303Response.xml
+rtk git branch --show-current
+rtk git rev-parse HEAD
+rtk git status --short
+rtk git diff --cached --name-only
+
+# Final review evidence audit
+rtk python3 openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/audit-final-review-evidence.py > openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/005-reactor-green-jdk11/56-final-review-evidence-audit.txt

@@ -1,0 +1,314 @@
+  ## A. Donor Date/Time/Duration Defects
+
+  The donor commit b9f114a3 introduced an incomplete and severely broken rewrite of temporal types into
+  Java records and a sealed interface Duration. None of the temporal types in b9f114a3 compile against
+  their own test files, and multiple methods contain catastrophic inverted logic or runtime exceptions.
+
+  ### Defect Table
+
+   #  │ Donor File:Line     │ Defect Summary      │ Failure Scenario     │ Required Behavior &… │ Severity
+  ────┼─────────────────────┼─────────────────────┼──────────────────────┼──────────────────────┼──────────
+   D1 │ b9f114a3:Duration.j │ Field erasure:      │ For P3M, getYears()  │ XML Schema Part 2    │ CRITICAL
+      │ ava:196-203         │ months() and days() │ is undefined, so     │ §3.2.6: duration     │
+      │                   │ days() check      │ undefined, so     │ independent. P3M has 3      │
+      │                   │ getYears() ==     │ months() returns  │ months; P5D has 5 days.     │
+      │                   │ FIELD_UNDEFINED   │ 0. For P5D,       │                             │
+      │                   │                   │ getYears() is     │                             │
+      │                   │                   │ undefined, so     │                             │
+      │                   │                   │ days() returns 0. │                             │
+   D2 │ b9f114a3:ISO8601D │ 100% inverted     │ Subtracting P1D   │ XACML 3.0 §A.3.7 & XPath    │ CRITICAL
+      │ ateTime.java:212- │ subtraction logic │ tests             │ F&O §10.5.2 op:subtract-    │
+      │ 224               │ in                │ d.isNegative().   │ dayTimeDuration-from-       │
+      │ 212-224         │ logic in       │ d.isNegative().  │ dayTimeDuration-from-dateTime:     │
+      │                 │ minus(ISO8601Da │ When positive,   │ subtracting a positive duration  │
+      │                 │ yTimeDuration)  │ it executes the  │ decreases dateTime.              │
+      │                 │                 │ false branch:    │                                  │
+      │                 │                 │ .plusDays(...)!  │                                  │
+      │                 │                 │ Subtracting      │                                  │
+      │                 │                 │ literally adds   │                                  │
+      │                 │                 │ time!            │                                  │
+   D3 │ b9f114a3:ISO860 │ Fatal runtime   │ Calls            │ XACML 3.0 §A.3.7 & XPath F&O     │ CRITICAL
+      │ 1Date.java:168- │ exception in    │ value.plus(durat │ §10.5.5 op:add-                  │
+      │ 172             │ plus(yearMonthD │ ion.value().toDu │ to-date: adding year-month         │
+      │                 │ uration) and    │ ration()).       │ duration to date must produce      │
+      │                 │ minus           │ toDuration() on  │ valid date.                        │
+      │                 │                 │ YearMonth        │                                    │
+      │                 │                 │ duration throws  │                                    │
+      │                 │                 │ SyntaxException  │                                    │
+      │                 │                 │ (or              │                                    │
+      │                 │                 │ UnsupportedTempo │                                    │
+      │                 │                 │ ralTypeException │                                    │
+      │                 │                 │ : Unsupported    │                                    │
+      │                  │                  │ unit: Seconds).  │                                    │
+   D4 │ b9f114a3:Duratio │ Comparable.compa │ Calls            │ XML Schema Part 2 §3.2.6.1: "The   │ HIGH
+      │ n.java:246-248   │ reTo violates    │ javax.xml.dataty │ value space of duration is a       │
+      │                  │ trichotomy /     │ pe.Duration.comp │ partially ordered set." Java       │
+      │                  │ partial order    │ are(). For       │ Comparable contract requires       │
+      │                  │ contract         │ incomparable     │ sgn(x.compareTo(y)) == -           │
+      │                  │                  │ durations (e.g.  │ sgn(y.compareTo(x)).               │
+      │                  │                  │ P1M vs P30D),    │                                    │
+      │                  │                  │ returns          │                                    │
+      │                  │                  │ INDETERMINATE    │                                    │
+      │                    │                    │ > 0 and            │                              │
+      │                    │                    │ b.compareTo(a) >   │                              │
+      │                    │                    │ 0.                 │                              │
+      │                  │                  │ b.compareTo(a) > │                                    │
+      │                  │                  │ 0.               │                                    │
+   D5 │ b9f114a3:Duratio │ Truncation of    │ Duration.seconds │ XML Schema Part 2 §3.2.6.1 & XPath │ HIGH
+      │ n.java:214-      │ fractional       │ () returns       │ F&O §10.3.2: "The seconds          │
+      │ 217b9f114a3:Date │ seconds to       │ @Unsigned int.   │ component is a decimal." Undoes    │
+      │ TimeDurationUtil │ integer seconds  │ toISO8601DayTime │ Task 4.10.                         │
+      │ s.java:204, 274  │                  │ Duration and     │                                    │
+      │                  │                  │ toXmlDayTimeDura │                                    │
+      │                  │                  │ tion discard     │                                    │
+      │                  │                  │ nanoseconds/frac │                                    │
+      │                  │                  │ tional seconds.  │                                    │
+   D6 │ b9f114a3:ISO8601 │ Timezone offset  │ Record wraps     │ XML Schema Part 2 §3.2.9: date has │ HIGH
+      │ Date.java:40,    │ lost on          │ ChronoLocalDate  │ optional timezone. XPath F&O       │
+      │ 140-142          │ ISO8601Date      │ value only. Zone │ §10.4.6 op:date-equal requires     │
+       │                 │                 │ offset is        │ timezone-aware comparison. Undoes  │
+       │                 │                 │ discarded on     │ Task 4.28.                         │
+       │                 │                 │ parse;           │                                    │
+       │                 │                 │ toString()       │                                    │
+       │                 │                 │ outputs local    │                                    │
+       │                 │                 │ date without     │                                    │
+       │                 │                 │ timezone.        │                                    │
+   D7  │ b9f114a3:ISO860 │ Non-UTC-        │ Default record   │ XPath F&O §10.4.1 op:dateTime-     │ HIGH
+       │ 1DateTime.java: │ normalized      │ equals and       │ equal: "Returns true if the two    │
+       │ 37,             │ equality and    │ delegating       │ xs:dateTime values refer to the    │
+       │ 179b9f114a3:ISO │ ordering        │ compareTo        │ same instant in time." Undoes Task │
+       │ 8601Time.java:3 │                 │ compare local    │ 4.28.                              │
+       │ 7, 108          │                 │ fields, not UTC  │                                    │
+       │                 │                 │ instant.         │                                    │
+       │                 │                 │ 12:00:00Z and    │                                    │
+       │                 │                 │ 14:00:00+02:00   │                                    │
+       │                 │                 │ compare unequal. │                                    │
+   D8  │ b9f114a3:NonNum │ timeInRange     │ Linear compare a │ XACML 3.0 §A.3.8: "If the second   │ HIGH
+       │ ericComparisonF │ regression      │ >= b && a <= c.  │ argument represents a time later   │
+       │ unctions.java:1 │ ignoring        │ Fails when b > c │ than the third argument, then the  │
+       │ 19-128          │ midnight wrap & │ (midnight wrap-  │ range wraps around midnight."      │
+       │                 │ unzoned context │ around).         │ Undoes Task 4.11.                  │
+       │                 │                 │ EvaluationContex │                                    │
+       │                 │                 │ t timezone is    │                                    │
+       │                 │                 │ unused.          │                                    │
+   D9  │ b9f114a3:DateTi │ Permissive      │ Lacks strict     │ XML Schema Part 2 §3.2.6 & XPath   │ HIGH
+       │ meDurationUtils │ yearMonthDurati │ regex            │ F&O §10.3.1: xs:yearMonthDuration  │
+       │ .java:252-258   │ on parsing      │ validation.      │ lexical space allows only year and │
+       │                 │ accepts         │ Accepts P30D or  │ month components. Undoes Task      │
+       │                 │ day/time        │ P1Y2M3D and      │ 4.31.                              │
+       │                 │ components      │ silently drops   │                                    │
+       │                 │                 │ days/times to    │                                    │
+       │                 │                 │ produce P0Y0M or │                                    │
+       │                  │                   │ NTH),             │                                │
+       │                  │                   │ v.get(Calendar.DA │                                │
+       │                  │                   │ Y_OF_MONTH))      │                                │
+       │ .java:135-138   │ off-by-one bug  │ ),               │                                    │
+       │                 │                 │ v.get(Calendar.M │                                    │
+       │                 │                 │ ONTH),           │                                    │
+       │                 │                 │ v.get(Calendar.D │                                    │
+       │                 │                 │ AY_OF_MONTH))    │                                    │
+       │                 │                 │ passes 0-based   │                                    │
+       │                 │                 │ month (0-11).    │                                    │
+       │                 │                 │ Throws in        │                                    │
+       │                 │                 │ January; off by  │                                    │
+       │                 │                 │ 1 in all months. │                                    │
+   D11 │ b9f114a3:ISO860 │ Uncompilable:   │ Record does not  │ Required by callers, test suite,   │ COMPI
+       │ 1DayTimeDuratio │ missing         │ implement        │ and function providers.            │ LATIO
+       │ n.java:37-92    │ Comparable and  │ Comparable.      │                                    │ N
+       │                 │ instance        │ Lacks days(),    │                                    │
+       │                 │ methods         │ getHours(),      │                                    │
+       │                 │                 │ getMinutes(),    │                                    │
+       │                 │                 │ getSeconds(),    │                                    │
+       │                 │                 │ toXacmlString(), │                                    │
+       │                 │                 │ plus(), minus(), │                                    │
+       │                 │                 │ negated().       │                                    │
+   D12 │ b9f114a3:TypeTo │ Uncompilable:   │ Calls            │ Methods do not exist on donor      │ COMPI
+       │ String.java:143 │ invokes non-    │ d.toTypeToString │ records.                           │ LATIO
+       │ , 154, 230      │ existent        │ () on            │                                    │ N
+       │                 │ methods on      │ ISO8601Date,     │                                    │
+       │                 │ temporal types  │ dateTime.toTypeS │                                    │
+       │                 │                 │ tring() on       │                                    │
+       │                 │                 │ ISO8601DateTime, │                                    │
+       │                 │                 │ duration.toXacml │                                    │
+       │                 │                 │ String() on      │                                    │
+       │                 │                 │ ISO8601DayTimeDu │                                    │
+       │                 │                 │ ration.          │                                    │
+   D13 │ b9f114a3:Primit │ Uncompilable:   │ Primitives       │ Java compiler symbol resolution    │ COMPI
+       │ ives.java:62    │ identifier      │ declares         │ failure.                           │ LATIO
+       │                 │ mismatch        │ Iso8601Date, but │                                    │ N
+       │                 │ Iso8601Date vs  │ tests,           │                                    │
+       │                 │ IS8601Date      │ TypeToString,    │                                    │
+       │                 │                 │ and              │                                    │
+       │                 │                 │ DateTimeDuration │                                    │
+       │                 │                 │ Utils call       │                                    │
+       │                 │                 │ Primitives.IS860 │                                    │
+       │                 │                 │ 1Date.           │                                    │
+  ──────
+  ## B. Group 4 Fixes the Donor Would Undo
+
+  The worktree on HEAD has four vital fixes merged from Group 4 (evidence evidence/tests/039-engine-
+  equality/ and evidence/tests/035-boolean-lexical/). Adopting the donor files would destroy all four:
+
+  1. Bug 4.10: Fractional Seconds
+      • Worktree Implementation:
+          • DateTimeDurationUtils.java:77-83, 226-233, 263-270, 306-326 parses and formats BigDecimal
+          seconds down to nanoseconds.
+          • ISO8601Duration.java:60-63 returns BigDecimal getSeconds().
+          • ISO8601DayTimeDurationTest.java:51, 83, 96 asserts BigDecimal seconds.
+      • Donor Reversion: b9f114a3:Duration.java:214 truncates seconds to @Unsigned int.
+      DateTimeDurationUtils.java:204 casts d.getSeconds() to int and ignores fractional seconds.
+  2. Bug 4.11: time-in-range and Unzoned Time
+      • Worktree Implementation:
+          • ISO8601Time.java:46, 89-93, 123-126 maintains timeZoneDefined boolean. Unzoned times format
+          without Z.
+          • NonNumericComparisonFunctions.java:114-136 implements XACML 2.0/3.0 time-in-range with midnight
+          wrap-around handling and evaluation context implicit offset.
+      • Donor Reversion: b9f114a3:ISO8601Time.java drops timeZoneDefined and forces ZoneOffset.UTC
+      (outputting "12:00:00Z" for "12:00:00"). b9f114a3:NonNumericComparisonFunctions.java:119-128 reverts
+      to naive linear compare ignoring wrap-around and context.
+  3. Bug 4.28: UTC-Normalized Temporal Equality/Hash/Order Preserving Zone
+      • Worktree Implementation:
+          • ISO8601Date.java:157-173: compareTo and equals compare instant() (value.atStartOfDay().
+          toInstant(offset)), preserving the parsed timezone offset for toXacmlString().
+          • ISO8601DateTime.java:150-164: compareTo and equals compare get().toInstant().
+          • ISO8601Time.java:154-170: compareTo and equals compare utcTime().
+          • Tested in TemporalEqualityTest.java:34-81.
+      • Donor Reversion: Donor records use default field-by-field equality and un-normalized compareTo
+      (b9f114a3:ISO8601DateTime.java:179, ISO8601Time.java:108), failing TemporalEqualityTest.
+  4. Bug 4.31: Strict yearMonthDuration Validation
+      • Worktree Implementation:
+          • DateTimeDurationUtils.java:292-295: Strict regex validation rejecting day/time fields:
+            if (!v.matches("[+-]?P(?:\\d+Y)?(?:\\d+M)?") || !v.matches(".*\\d[YM]$")) {
+                throw new SyntaxException(v, XacmlTypes.YEARMONTHDURATION);
+            }
+
+          • Tested in ISO8601YearMonthDurationTest.java:41-44 (rejectsDayComponentsInYearMonthDuration).
+      • Donor Reversion: b9f114a3:DateTimeDurationUtils.java:252-258 removes the regex and silently parses
+      P30D as P0Y0M.
+
+
+  ### Hunks to Drop from Donor
+
+  • DROP ENTIRELY: b9f114a3:Duration.java (flawed Comparable, field erasure bugs).
+  • DROP ENTIRELY: b9f114a3:ISO8601Date.java, ISO8601DateTime.java, ISO8601Time.java,
+  ISO8601DayTimeDuration.java, ISO8601YearMonthDuration.java.
+  • DROP ENTIRELY: b9f114a3:DateTimeDurationUtils.java (preserves worktree's 4.10, 4.31, and fixed Calendar
+  handling).
+  • DROP ENTIRELY: b9f114a3:NonNumericComparisonFunctions.java temporal functions (preserves worktree's 4.
+  11 and 4.28).
+  ──────
+  ## C. Plan for Task 6.6
+
+  1. Retain Worktree Base Architecture:
+      • Keep org.xacml4j.v30.types.ISO8601Duration<T>, ISO8601Date, ISO8601DateTime, ISO8601Time,
+      ISO8601DayTimeDuration, and ISO8601YearMonthDuration. They already contain the complete, passing
+      implementations of 4.10, 4.11, 4.28, and 4.31.
+      • Do NOT adopt donor Duration.java interface or the record conversions. They break binary
+      compatibility, fail Java Comparable laws, and discard timezone metadata.
+  2. Fix Pre-Existing Historical Defect in ISO8601Duration.java:
+      • In worktree:xacml-core/.../ISO8601Duration.java:45, 49:
+        // Defect: checks getYears() == FIELD_UNDEFINED for months and days
+        public int getMonths() {
+            return duration.getYears() == DatatypeConstants.FIELD_UNDEFINED ? 0 : duration.getMonths();
+        }
+        public final int getDays() {
+            return duration.getYears() == DatatypeConstants.FIELD_UNDEFINED ? 0 : duration.getDays();
+        }
+      Fix to check the field itself:
+        public int getMonths() {
+            return duration.getMonths() == DatatypeConstants.FIELD_UNDEFINED ? 0 : duration.getMonths();
+        }
+        public final int getDays() {
+            return duration.getDays() == DatatypeConstants.FIELD_UNDEFINED ? 0 : duration.getDays();
+        }
+
+  3. Fix Pre-Existing Off-By-One Calendar Month in DateTimeDurationUtils.java:
+      • In worktree:DateTimeDurationUtils.java:152:
+        // Defect: Calendar.MONTH is 0-indexed
+        return LocalDate.of(v.get(Calendar.YEAR),
+                v.get(Calendar.MONTH) + 1,
+                v.get(Calendar.DAY_OF_MONTH));
+
+  4. Ensure Arithmetic and Comparison Function Coverage:
+      • In DateTimeArithmeticFunctions.java and NonNumericComparisonFunctions.java, ensure all XACML 3.0
+      URNs are bound with correct typing (ValueExprType from Task 6.1).
+
+  ──────
+  ## D. Test List for Task 6.6 (24 Rows)
+
+  The following test matrix specifies tests beyond existing suites to lock down month-end clamping,
+  fractional second arithmetic, mixed signs, and edge cases:
+
+   #   │ Test Name              │ Input / Operation      │ Expected Result        │ Target Class
+  ─────┼────────────────────────┼────────────────────────┼────────────────────────┼────────────────────────
+   T01 │ testDateAddYearMonthCl │ 2000-01-31 + P1M       │ 2000-02-29 (clamped to │ ISO8601Date /
+       │ ampingLeapYear         │                        │ leap day)              │ DateTimeArithmetic
+   T02 │ testDateAddYearMonthCl │ 2001-01-31 + P1M       │ 2001-02-28 (clamped to │ ISO8601Date /
+       │ ampingNonLeapYear      │                        │ 28)                    │ DateTimeArithmetic
+   T03 │ testDateSubtractYearMo │ 2004-03-31 - P1M       │ 2004-02-29             │ ISO8601Date /
+       │ nthClampingLeapYear    │                        │                        │ DateTimeArithmetic
+   T04 │ testDateAddYearMonthLe │ 2000-02-29 + P1Y       │ 2001-02-28             │ ISO8601Date /
+       │ apDayToNextYear        │                        │                        │ DateTimeArithmetic
+   T05 │ testDateAddNegativeYea │ 2002-03-31 + -P1M      │ 2002-02-28             │ ISO8601Date /
+       │ rMonth                 │                        │                        │ DateTimeArithmetic
+   T06 │ testDateTimeAddDayTime │ 2002-10-10T12:00:00Z + │ 2002-10-               │ ISO8601DateTime /
+       │ FractionalSeconds      │ PT0.5S                 │ 10T12:00:00.500Z       │ DateTimeArithmetic
+   T07 │ testDateTimeSubtractDa │ 2002-10-               │ 2002-10-               │ ISO8601DateTime /
+       │ yTimeFractionalSeconds │ 10T12:00:00.100Z -     │ 10T11:59:59.950Z       │ DateTimeArithmetic
+       │                        │ PT0.150S               │                        │
+   T08 │ testDateTimeSubtractDa │ 2002-03-01T00:00:00Z - │ 2002-02-28T00:00:00Z   │ ISO8601DateTime /
+       │ yTimePositiveRollback  │ P1D                    │ (verifies not          │ DateTimeArithmetic
+       │                        │                        │ plusDays!)             │
+   T09 │ testDateTimeAddNegativ │ 2002-03-22T08:23:47Z + │ 2002-03-21T08:23:47Z   │ ISO8601DateTime /
+       │ eDayTime               │ -P1D                   │                        │ DateTimeArithmetic
+   T10 │ testDateTimeAddYearMon │ 2000-01-31T10:00:00-   │ 2000-02-29T10:00:00-   │ ISO8601DateTime /
+       │ thClamping             │ 05:00 + P1M            │ 05:00                  │ DateTimeArithmetic
+   T11 │ testTimeInRangeMidnigh │ 23:30:00 in [23:00:00, │ true                   │ NonNumericComparisonFu
+       │ tWrapBeforeMidnight    │ 01:00:00]              │                        │ nctions
+   T12 │ testTimeInRangeMidnigh │ 00:30:00 in [23:00:00, │ true                   │ NonNumericComparisonFu
+       │ tWrapAfterMidnight     │ 01:00:00]              │                        │ nctions
+   T13 │ testTimeInRangeMidnigh │ 01:00:01 in [23:00:00, │ false                  │ NonNumericComparisonFu
+       │ tWrapOutside           │ 01:00:00]              │                        │ nctions
+   T14 │ testTimeInRangeUnzoned │ 23:00:00 (unzoned)     │ Normalized against     │ NonNumericComparisonFu
+       │ EvaluationContextOffse │ evaluated with context │ context timezone       │ nctions
+       │ t                      │ -05:00                 │                        │
+   T15 │ testDurationGetMonthsW │ ISO8601YearMonthDurati │ 3 (not 0!)             │ ISO8601YearMonthDurati
+       │ ithoutYears            │ on.of("P3M").getMonths │                        │ on
+       │                        │ ()                     │                        │
+   T16 │ testDurationGetDaysWit │ ISO8601DayTimeDuration │ 5 (not 0!)             │ ISO8601DayTimeDuration
+       │ houtYears		│ .of("P5D").getDays()   │                        │
+   T17 │ testDurationGetSeconds │ ISO8601DayTimeDuration │ BigDecimal.valueOf(1.2 │ ISO8601DayTimeDuration
+       │ Fractional		│ .of("PT1.234S").getSec │ 34)                    │
+       │			│ onds()		 │                        │
+   T18 │ testStrictYearMonthRej │ ISO8601YearMonthDurati │ Throws SyntaxException │ ISO8601YearMonthDurati
+       │ ectsDays		│ on.of("P1Y2M3D")       │                        │ on
+   T19 │ testStrictDayTimeRejec │ ISO8601DayTimeDuration │ Throws SyntaxException │ ISO8601DayTimeDuration
+       │ tsMonths		│ .of("P1M2D")           │                        │
+   T20 │ testInstantEqualityDif │ 2002-10-10T12:00:00Z   │ true, hashCodes equal  │ ISO8601DateTime
+       │ ferentOffsets          │ eq 2002-10-            │                        │
+       │			│ 10T14:00:00+02:00      │                        │
+   T21 │ testTimeInstantEqualit │ 12:00:00Z eq           │ true, hashCodes equal  │ ISO8601Time
+       │ yDifferentOffsets      │ 14:00:00+02:00         │                        │
+   T22 │ testDateFromCalendarJa │ Calendar with month 0  │ date.getMonthValue()   │ ISO8601Date /
+       │ nuary			│ (January)		 │ == 1 (no crash)        │ DateTimeDurationUtils
+   T23 │ testDateFromCalendarDe │ Calendar with month 11 │ date.getMonthValue()   │ ISO8601Date /
+       │ cember			│ (December)             │ == 12		  │ DateTimeDurationUtils
+   T24 │ testDayTimeDurationCom │ PT1H vs PT60M vs PT61M │ Total ordering         │ ISO8601DayTimeDuration
+       │ parable		│			 │ consistent with equals │
+  ──────
+    FINAL REPORT (policy4j_code_review_agy, antigravity)
+    counts: defects=13 (critical=3, high=7, compilation=3), group4_reversions=4, test_rows=24
+    top 5 defects:
+    1. Duration.java:196-203: field erasure in months() and days() when years is undefined (returns 0 for
+  P3M and P5D)
+    2. ISO8601DateTime.java:212-224: inverted subtraction logic in minus(dayTimeDuration) adding days
+  instead of subtracting
+    3. ISO8601Date.java:168-172: fatal runtime exception in plus/minus(yearMonthDuration) via invalid
+  toDuration() call
+    4. Duration.java:246-248: Comparable.compareTo violates Java partial-order contract on INDETERMINATE
+  (returns 2 for both a>b and b>a)
+    5. ISO8601DateTime.java / ISO8601Time.java: default record equals/compareTo destroys UTC instant
+  normalization (reverts 4.28)
+    files opened: 27
+    tool calls used: 60
+

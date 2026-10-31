@@ -1,0 +1,27 @@
+{
+  "scope": "xacml-core/src/test/java",
+  "rg_thenAnswer_doAnswer": {
+    "exit_code": 1,
+    "matches": 0
+  },
+  "ast_grep_thenAnswer": {
+    "language": "java",
+    "exit_code": 1,
+    "matches": []
+  },
+  "ast_grep_doAnswer": {
+    "language": "java",
+    "exit_code": 1,
+    "matches": []
+  },
+  "ast_grep_health": "PASS: rule tests and project scan",
+  "source_inventory": {
+    "baseline_exception_sites": 26,
+    "current_throw_sites": 48,
+    "status_return_fixtures": 22
+  },
+  "coverage": "SUPPORTED: Java AST and source inventories, confirmed against the opened baseline/current methods and production catches.",
+  "diff_check": {
+    "exit_code": 0
+  }
+}

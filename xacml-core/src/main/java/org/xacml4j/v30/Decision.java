@@ -22,6 +22,11 @@ package org.xacml4j.v30;
  * #L%
  */
 
+/**
+ * XACML decision types
+ *
+ * @author Giedrius Trumpickas
+ */
 public enum Decision
 {
 	PERMIT(false),
@@ -34,7 +39,7 @@ public enum Decision
 
 	private boolean indeterminate;
 
-	private Decision(boolean indeterminate){
+	Decision(boolean indeterminate){
 		this.indeterminate = indeterminate;
 	}
 

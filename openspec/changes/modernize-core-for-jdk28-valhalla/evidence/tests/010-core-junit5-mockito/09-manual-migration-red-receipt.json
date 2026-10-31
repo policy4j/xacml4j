@@ -1,0 +1,87 @@
+{
+  "log": "09-manual-migration-red.log",
+  "build_success": false,
+  "counts": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "tests_executed": false,
+  "reports": {},
+  "problems": [],
+  "compiler_diagnostics": [
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyTest.java",
+      "line": "70",
+      "column": "78",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ModelFixtures.java",
+      "line": "55",
+      "column": "42",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/ModelFixtures.java",
+      "line": "70",
+      "column": "44",
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "line": "101",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "line": "78",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "line": "82",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/AnnotationBasedFunctionFactoryTest.java",
+      "line": "97",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "line": "80",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "130",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "146",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "176",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    },
+    {
+      "file": "xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/XPathFunctionsTest.java",
+      "line": "194",
+      "column": "17",
+      "message": "reference to assertEquals is ambiguous"
+    }
+  ]
+}

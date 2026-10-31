@@ -1,0 +1,423 @@
+{
+  "coverage": "SUPPORTED: source inventory and baseline/current method comparison; exception paths confirmed in opened production source and the JDK 21 gate.",
+  "baseline_exception_sites": 26,
+  "current_throw_sites": 48,
+  "baseline_exception_mappings": [
+    {
+      "file": "org/xacml4j/v30/policy/ApplyTest.java",
+      "method": "testApplyEvaluationFunctionThrowsRuntimeException",
+      "before_line": 52,
+      "before": "expect(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L))) .andThrow(new IllegalArgumentException());",
+      "after_line": 54,
+      "after": "when(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L))) .thenThrow(new IllegalArgumentException());",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/ApplyTest.java",
+      "method": "testApplyEvaluationFunctionThrowsFunctionInvocationException",
+      "before_line": 63,
+      "before": "expect(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L))). andThrow(new FunctionInvocationException(function, new IllegalArgumentException()));",
+      "after_line": 69,
+      "after": "when(function.invoke(context, XacmlTypes.INTEGER.ofAny(10L))). thenThrow(new FunctionInvocationException(function, new IllegalArgumentException()));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentTrueContextHandlerThrowsAttributeReferenceEvaluationException",
+      "before_line": 190,
+      "before": "expect(context.resolve(capture(c))).andThrow(new AttributeReferenceEvaluationException(desig.getReferenceKey(), \"Errror\"));",
+      "after_line": 214,
+      "after": "when(context.resolve(c.capture())).thenThrow(new AttributeReferenceEvaluationException(desig.getReferenceKey(), \"Errror\"));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentFalseContextHandlerThrowsAttributeReferenceEvaluationException",
+      "before_line": 205,
+      "before": "expect(context.resolve(capture(c))).andThrow( AttributeReferenceEvaluationException.forDesignator(builder.build()));",
+      "after_line": 234,
+      "after": "when(context.resolve(c.capture())).thenThrow( AttributeReferenceEvaluationException.forDesignator(builder.build()));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentTrueContextHandlerThrowsRuntimeException",
+      "before_line": 224,
+      "before": "expect(context.resolve(capture(c))).andThrow(new NullPointerException(\"Null\"));",
+      "after_line": 258,
+      "after": "when(context.resolve(c.capture())).thenThrow(new NullPointerException(\"Null\"));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeDesignatorTest.java",
+      "method": "testMustBePresentFalseContextHandlerThrowsRuntimeException",
+      "before_line": 239,
+      "before": "expect(context.resolve(capture(c))).andThrow(new NullPointerException(\"Null\"));",
+      "after_line": 278,
+      "after": "when(context.resolve(c.capture())).thenThrow(new NullPointerException(\"Null\"));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentFalseAndContextThrowsAttributeReferenceEvaluationException",
+      "before_line": 205,
+      "before": "expect(context.resolve(capture(c))).andThrow( AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));",
+      "after_line": 229,
+      "after": "when(context.resolve(c.capture())).thenThrow( AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentFalseAndContextThrowsRuntimeException",
+      "before_line": 231,
+      "before": "expect(context.resolve(capture(c))).andThrow(new NullPointerException());",
+      "after_line": 259,
+      "after": "when(context.resolve(c.capture())).thenThrow(new NullPointerException());",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentTrueAndContextThrowsRuntimeException",
+      "before_line": 255,
+      "before": "expect(context.resolve(capture(c))).andThrow(new NullPointerException());",
+      "after_line": 287,
+      "after": "when(context.resolve(c.capture())).thenThrow(new NullPointerException());",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/AttributeSelectorTest.java",
+      "method": "testMustBePresentTrueAndContextThrowsAttributeReferenceEvaluationException",
+      "before_line": 278,
+      "before": "expect(context.resolve(capture(c))).andThrow( AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));",
+      "after_line": 315,
+      "after": "when(context.resolve(c.capture())).thenThrow( AttributeReferenceEvaluationException.forSelector(ref.getReferenceKey()));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/ConditionTest.java",
+      "method": "testExpressionThrowsEvaluationException",
+      "before_line": 75,
+      "before": "expect(exp.evaluate(context)).andThrow(new FunctionInvocationException( ctl.createMock(FunctionSpec.class), new NullPointerException()));",
+      "after_line": 81,
+      "after": "when(exp.evaluate(context)).thenThrow(new FunctionInvocationException( mock(FunctionSpec.class), new NullPointerException()));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/ConditionTest.java",
+      "method": "testExpressionThrowsRuntimeException",
+      "before_line": 90,
+      "before": "expect(exp.evaluate(context)).andThrow(new IllegalArgumentException());",
+      "after_line": 104,
+      "after": "when(exp.evaluate(context)).thenThrow(new IllegalArgumentException());",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/MatchTest.java",
+      "method": "testMatchEvaluationFailedToResolveAttributeException",
+      "before_line": 106,
+      "before": "expect(ref.evaluate(context)).andThrow(new AttributeReferenceEvaluationException(key, \"Failed\"));",
+      "after_line": 122,
+      "after": "when(context.resolve(ref.getReferenceKey())).thenThrow(new AttributeReferenceEvaluationException(key, \"Failed\"));",
+      "disposition": "PRESERVED caller boundary: real mustBePresent AttributeReference rethrows the same resolver exception (AttributeReference.java:125-129); Match.match catches it (Match.java:131-137). Missing-attribute code, Failed message and captured Rule remain asserted."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/ObligationExpressionTest.java",
+      "method": "testAttributeAssignmentThrowsEvaluationException",
+      "before_line": 128,
+      "before": "expect(expression.evaluate(context)).andThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));",
+      "after_line": 128,
+      "after": "when(expression.evaluate(context)).thenThrow(new EvaluationException(Status.processingError().build(), new NullPointerException()));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+      "method": "testEvaluateFailedToResolveReference",
+      "before_line": 72,
+      "before": "expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));",
+      "after_line": 67,
+      "after": "when(context.resolve(ref)).thenThrow(new PolicyResolutionException(null));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+      "method": "testEvaluateIfApplicableFailedToResolveReferenceViaException",
+      "before_line": 141,
+      "before": "expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));",
+      "after_line": 151,
+      "after": "when(context.resolve(ref)).thenThrow(new PolicyResolutionException(null));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyIDReferenceTest.java",
+      "method": "testIsApplicableFailedToResolveReference",
+      "before_line": 185,
+      "before": "expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));",
+      "after_line": 207,
+      "after": "when(context.resolve(ref)).thenThrow(new PolicyResolutionException(null));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+      "method": "testEvaluateFailToResolveReferenceViaException",
+      "before_line": 70,
+      "before": "expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));",
+      "after_line": 68,
+      "after": "when(context.resolve(ref)).thenThrow(new PolicyResolutionException(null));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetIDReferenceTest.java",
+      "method": "testIsApplicableFailToResolveReference",
+      "before_line": 122,
+      "before": "expect(context.resolve(ref)).andThrow(new PolicyResolutionException(null));",
+      "after_line": 122,
+      "after": "when(context.resolve(ref)).thenThrow(new PolicyResolutionException(null));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetTest.java",
+      "method": "testIsApplicableTargetException",
+      "before_line": 159,
+      "before": "expect(target.match(policyContext)).andThrow(new NullPointerException());",
+      "after_line": 178,
+      "after": "doThrow(new NullPointerException()).when(throwingTarget).match(policyContext);",
+      "disposition": "FIXED: Target.match spy throws NullPointerException directly; isMatch catches it."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyTest.java",
+      "method": "testIsApplicableTargetException",
+      "before_line": 160,
+      "before": "expect(target.match(policyContext)).andThrow(new NullPointerException());",
+      "after_line": 181,
+      "after": "doThrow(new NullPointerException()).when(throwingTarget).match(policyContext);",
+      "disposition": "FIXED: Target.match spy throws NullPointerException directly; isMatch catches it."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testDenyRuleObligationOrAdviceEvaluationFails",
+      "before_line": 237,
+      "before": "expect(denyObligationAttributeExp.evaluate(ruleContext)).andThrow( new EvaluationException(Status.processingError().build(), new NullPointerException()));",
+      "after_line": 269,
+      "after": "when(denyObligationAttributeExp.evaluate(ruleContext)).thenThrow( new EvaluationException(Status.processingError().build(), new NullPointerException()));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testPermitRuleEvaluateIfApplicableWithTargetEvaluationException",
+      "before_line": 402,
+      "before": "expect(target.match(ruleContext)).andThrow(new EvaluationException(b.build(), \"Bad\"));",
+      "after_line": 504,
+      "after": "doThrow(failure).when(throwingTarget).match(ruleContext);",
+      "disposition": "FIXED: Target.match spy throws EvaluationException directly; isMatch catches it. No context status is set in the stub."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/function/impl/DefaultFunctionFunctionInvocationTest.java",
+      "method": "testInvokeInvocationThrowsRuntimeException",
+      "before_line": 91,
+      "before": "expect(inv0.invoke(p.toArray())).andThrow(new RuntimeException());",
+      "after_line": 101,
+      "after": "when(inv0.invoke(p.toArray())).thenThrow(new RuntimeException());",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testInvokeSpecFailsWithInvocationException",
+      "before_line": 86,
+      "before": "expect(invocation.invoke(spec, context, params)).andThrow(new FunctionInvocationException(spec, \"Fail\"));",
+      "after_line": 95,
+      "after": "when(invocation.invoke(spec, context, params)).thenThrow(new FunctionInvocationException(spec, \"Fail\"));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/function/impl/DefaultFunctionSpecTest.java",
+      "method": "testInvokeSpecFailsWithRuntimeException",
+      "before_line": 100,
+      "before": "expect(invocation.invoke(spec, context, params)).andThrow(new NullPointerException(\"Fail\"));",
+      "after_line": 115,
+      "after": "when(invocation.invoke(spec, context, params)).thenThrow(new NullPointerException(\"Fail\"));",
+      "disposition": "PRESERVED: same collaborator method throws to the same production caller; no model replacement moved this exception."
+    }
+  ],
+  "baseline_status_return_fixtures": [
+    {
+      "file": "org/xacml4j/v30/policy/MatchAllOfTest.java",
+      "method": "testAtLeastOneNoMatchAndIndeterminate",
+      "before_method_line": 109,
+      "after_line": 149,
+      "after": "when(m2Expression.evaluate(context)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/MatchAllOfTest.java",
+      "method": "testAllMatchAndAtLeastOneIndeterminate",
+      "before_method_line": 128,
+      "after_line": 179,
+      "after": "when(m2Expression.evaluate(context)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/MatchAnyOfTest.java",
+      "method": "testAtLeastOneMatch2",
+      "before_method_line": 72,
+      "after_line": 93,
+      "after": "when(m2Expression.evaluate(context)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/MatchAnyOfTest.java",
+      "method": "testNoMatchAndAtLeastOneIndeterminate",
+      "before_method_line": 91,
+      "after_line": 124,
+      "after": "when(m3Expression.evaluate(context)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetTest.java",
+      "method": "testIsApplicableTargetIndeterminate",
+      "before_method_line": 146,
+      "after_line": 161,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "before_method_line": 190,
+      "after_line": 230,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "before_method_line": 203,
+      "after_line": 252,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "before_method_line": 217,
+      "after_line": 273,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicySetTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "before_method_line": 231,
+      "after_line": 294,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyTest.java",
+      "method": "testIsApplicableTargetIndeterminate",
+      "before_method_line": 147,
+      "after_line": 164,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsNotApplicable",
+      "before_method_line": 189,
+      "after_line": 233,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsDeny",
+      "before_method_line": 202,
+      "after_line": 255,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsPermit",
+      "before_method_line": 216,
+      "after_line": 276,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/PolicyTest.java",
+      "method": "testEvaluateTargetIndeterminateCombiningAlgoReturnsindeterminate",
+      "before_method_line": 230,
+      "after_line": 297,
+      "after": "when(targetExpression.evaluate(policyContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testPermitRuleIsApplicableWithTargetIndeterminate",
+      "before_method_line": 159,
+      "after_line": 168,
+      "after": "when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testDenyRuleIsApplicableWithTargetIndeterminate",
+      "before_method_line": 169,
+      "after_line": 182,
+      "after": "when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testDenyRuleConditionIndeterminate",
+      "before_method_line": 259,
+      "after_line": 311,
+      "after": "when(conditionExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testPermitRuleConditionIndeterminate",
+      "before_method_line": 315,
+      "after_line": 389,
+      "after": "when(conditionExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testDenyRuleEvaluateIfApplicableWithTargetIndeterminate",
+      "before_method_line": 326,
+      "after_line": 406,
+      "after": "when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/RuleTest.java",
+      "method": "testPermitRuleEvaluateIfApplicableWithTargetIndeterminate",
+      "before_method_line": 383,
+      "after_line": 481,
+      "after": "when(targetExpression.evaluate(ruleContext)).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/TargetTest.java",
+      "method": "testFirstMatchAndSecondIsIndeterminate",
+      "before_method_line": 102,
+      "after_line": 139,
+      "after": "when(m2Expression.evaluate(c2.capture())).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    },
+    {
+      "file": "org/xacml4j/v30/policy/TargetTest.java",
+      "method": "testFirstIsIndeterminate",
+      "before_method_line": 138,
+      "after_line": 189,
+      "after": "when(m1Expression.evaluate(c1.capture())).thenThrow(ModelFixtures.evaluationError());",
+      "disposition": "PRESERVED result: baseline returned INDETERMINATE, without throwing. The real Match/Condition catches a fixture expression failure and returns that same result to its caller. This test asserts the result, not the caller's exception catch."
+    }
+  ],
+  "thenAnswer_doAnswer_sites": [],
+  "direct_model_exception_sites_fixed": 3,
+  "attribute_reference_boundary_preserved": 1,
+  "remaining_interface_exception_sites_unchanged": 22
+}

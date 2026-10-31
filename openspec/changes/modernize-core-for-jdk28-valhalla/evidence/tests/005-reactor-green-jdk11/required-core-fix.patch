@@ -1,0 +1,12 @@
+diff --git a/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java b/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+--- a/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
++++ b/xacml-core/src/main/java/org/xacml4j/v30/types/ISO8601DateTime.java
+@@ -188,7 +188,7 @@ public final class ISO8601DateTime
+ 
+     }
+     public ISO8601DateTime minus(ISO8601DayTimeDuration v){
+-        return v.isNegative()?new ISO8601DateTime(value.minus(v.getDays(), ChronoUnit.DAYS)
++        return !v.isNegative()?new ISO8601DateTime(value.minus(v.getDays(), ChronoUnit.DAYS)
+                 .minus(v.getHours(), ChronoUnit.HOURS)
+                 .minus(v.getMinutes(), ChronoUnit.MINUTES)
+                 .minus(v.getSeconds(), ChronoUnit.SECONDS)):

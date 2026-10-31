@@ -1,0 +1,117 @@
+{
+  "log": "02-missing-dependencies-red.log",
+  "build_success": false,
+  "tests_executed": false,
+  "module_counts": {},
+  "totals": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "compiler_diagnostics": [
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 25,
+      "column": 36,
+      "message": "package org.junit.jupiter.api does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 25,
+      "column": 1,
+      "message": "static import only from classes and interfaces"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 26,
+      "column": 36,
+      "message": "package org.junit.jupiter.api does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 26,
+      "column": 1,
+      "message": "static import only from classes and interfaces"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 27,
+      "column": 26,
+      "message": "package org.mockito does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 27,
+      "column": 1,
+      "message": "static import only from classes and interfaces"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 28,
+      "column": 26,
+      "message": "package org.mockito does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 28,
+      "column": 1,
+      "message": "static import only from classes and interfaces"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 32,
+      "column": 29,
+      "message": "package org.junit.jupiter.api does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 33,
+      "column": 39,
+      "message": "package org.junit.jupiter.api.extension does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 34,
+      "column": 19,
+      "message": "package org.mockito does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 35,
+      "column": 33,
+      "message": "package org.mockito.junit.jupiter does not exist"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 37,
+      "column": 2,
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 37,
+      "column": 13,
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 40,
+      "column": 10,
+      "message": "cannot find symbol"
+    },
+    {
+      "file": "xacml-json/src/test/java/org/xacml4j/v30/marshal/json/DualEngineTransitionProbeTest.java",
+      "line": 43,
+      "column": 10,
+      "message": "cannot find symbol"
+    }
+  ],
+  "reports": {},
+  "jdk_properties": {},
+  "problems": [],
+  "conformance": {},
+  "root_pom_sha256": "4a86c38b20bc654acad0197d914ad8854b72e2355f94c66b6f752c0d8d6e13d1",
+  "root_pom_matches_before": true,
+  "probe_present": true
+}

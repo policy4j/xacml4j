@@ -1,0 +1,21 @@
+rtk br update policy4j-ba4s.3.2 --claim --actor policy4j_implementer_codex_astra
+Error: Validation failed: claim: cannot claim blocked issue: policy4j-ba4s.3.1
+exit_code=4
+
+rtk br update --help
+--force: Force update even if issue is blocked.
+exit_code=0
+
+rtk br update policy4j-ba4s.3.2 --claim --force --actor policy4j_implementer_codex_astra
+Updated policy4j-ba4s.3.2: 3.2 snapshot store (lane Astra)
+  status: open -> in_progress
+  assignee: (none) -> policy4j_implementer_codex_astra
+exit_code=0
+
+rtk br sync --flush-only
+Nothing to export (no dirty issues)
+exit_code=0
+
+rtk proxy br show policy4j-ba4s.3.2 --json
+Final relevant fields: status=in_progress; assignee=policy4j_implementer_codex_astra.
+exit_code=0
