@@ -2,7 +2,9 @@
 
 Layout: `tests/`, `reviews/<lane>/`, `benchmarks/jmh/`, `builds/`, `final/`.
 One directory per run: `<NNN>-<scope>` (reviews: `rvNNN-<scope>-<lane>`).
-Each run holds `summary.md`, `command.txt`, and its raw output. See
+Each run holds `summary.md` and `command.txt`
+and cites tests, benchmarks, and specifications by reference, with no execution
+output; runs before 2026-10-31 keep their files. See
 docs/ai/OPENSPEC.md "Evidence".
 
 Work runs on branch `integration/modernize-core-jdk28-valhalla` (worktree
@@ -237,8 +239,8 @@ task 1.6.
 | `builds/089-history-scrub` | bead policy4j-the.12, 2026-10-26 | rewrite of the 35 unpushed commits in a scratch clone (dry run, then signed), checks, `reset --keep`; tracker database scrubbed from an online backup (see command.txt) | REWRITTEN, local only: `feature_xacml_20` at `f9d99aed`, still a fast-forward from `origin/feature_xacml_20`; 29 commits rewritten and signed again as before (30 G, 5 N), map in `commit-map.txt`; account name, proxy lists, internal mirror, and a `.pyc` removed from every version; 115 commit references and 2 sha256 receipts updated; no file outside `openspec/` and `.beads/` changed; tracker events and claims kept; br upgraded to 0.7.6, which no longer exports `source_repo_path` (field removed from all 177 rows) |
 
 Raw `*.log` files are excluded by the maintainer's global git ignore, so they
-stay local; the committed raw output is each run's `surefire-summary.txt` and
-JSON receipts.
+stay local. Older runs also keep their `surefire-summary.txt` and JSON receipts;
+new runs commit neither (docs/ai/OPENSPEC.md "Evidence").
 
 Review-found gaps tracked as beads bugs (not part of group 1): policy4j-the.3.7
 (IIIE301-303 outside loop bounds), policy4j-the.3.8 (no AssociatedAdvice

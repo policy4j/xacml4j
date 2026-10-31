@@ -1,8 +1,9 @@
 # Evidence
 
 Layout: `tests/`, `reviews/<lane>/`, `builds/`, `final/`. One directory per
-run: `<NNN>-<scope>`. Each run holds `summary.md`, `command.txt`, and its raw
-output. See docs/ai/OPENSPEC.md "Evidence".
+run: `<NNN>-<scope>`. Each run holds `summary.md` and `command.txt`
+and cites tests, benchmarks, and specifications by reference, with no execution
+output; runs before 2026-10-31 keep their files. See docs/ai/OPENSPEC.md "Evidence".
 
 ## Requirements to proof
 

@@ -2,7 +2,9 @@
 
 Layout: `tests/`, `reviews/<lane>/`, `benchmarks/jmh/`, `builds/`, `final/`.
 One directory per run: `<NNN>-<scope>` (reviews: `rvNNN-<scope>-<lane>`).
-Each run holds `summary.md`, `command.txt`, and its raw output. Every JMH run
+Each run holds `summary.md` and `command.txt`
+and cites tests, benchmarks, and specifications by reference, with no execution
+output; runs before 2026-10-31 keep their files. Every JMH run
 is also a row of `benchmarks/jmh/LEDGER.md`. See docs/ai/OPENSPEC.md
 "Evidence".
 
