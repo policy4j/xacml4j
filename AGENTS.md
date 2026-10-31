@@ -156,6 +156,10 @@ Rules that hold everywhere:
   then code, then the gate (reviews, tests, conformance, JMH decision). A
   task is done only when its proof is indexed in the change's
   `evidence/README.md`.
+- Evidence is a reference, not a recording. Cite tests and JMH or JCStress
+  benchmarks by repository-relative path and test case, and specifications
+  or external resources by link. Commit no logs, reports, JMH JSON, receipts,
+  or copies of source (`docs/ai/OPENSPEC.md`, "Evidence").
 - Swarms: one conductor per change, disjoint files per writer, reviewers
   from other model families than the author, every lane's report stored as
   evidence, sessions shut down when done.

@@ -259,8 +259,9 @@ Implement the OpenSpec task(s) in your task packet (docs/ai/OPENSPEC.md,
    scope. Follow AGENTS.md conventions (indentation of the file, license
    header, SLF4J, Guava Preconditions, annotation-driven extension points).
 4. Run the module tests, and the conformance suites when behavior can
-   change (docs/ai/TESTING.md). Record each run: `summary.md`,
-   `command.txt`, raw output.
+   change (docs/ai/TESTING.md). Record each run: `summary.md` and
+   `command.txt`. Cite tests by relative path and test case; commit no
+   logs or other execution output (docs/ai/OPENSPEC.md "Evidence").
 5. Do not check the task or close the issue; the conductor or maintainer
    does that after review. Report the files changed, runs, results, and
    anything you could not finish.""",

@@ -2,8 +2,10 @@
 
 Layout: `tests/`, `reviews/<lane>/`, `benchmarks/jmh/`, `builds/`, `final/`.
 One directory per run: `<NNN>-<scope>` (reviews: `rvNNN-<scope>-<lane>`).
-Each run holds `summary.md`, `command.txt`, and its raw output. See
-docs/ai/OPENSPEC.md "Evidence".
+Each run holds `summary.md` and `command.txt`, and cites its proof by reference:
+tests and benchmarks by repository-relative path and test case, specifications
+and external resources by link. No execution output. See docs/ai/OPENSPEC.md
+"Evidence".
 
 ## Requirements to proof
 

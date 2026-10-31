@@ -160,10 +160,13 @@ artifacts:
       - Layout: evidence/tests/, evidence/reviews/<lane>/, evidence/benchmarks/jmh/,
         evidence/builds/, evidence/final/. One directory per run, named
         <NNN>-<scope> (reviews: rvNNN-<scope>-<lane>); never overwrite a run.
-      - Each run keeps summary.md (what ran, result, counts), command.txt
-        (exact portable command), and the relevant raw output (Surefire
-        summary lines, JMH JSON, review report). Do not commit whole
-        target/ trees, per-suite XML trees, or tool caches.
+      - Evidence is a reference, not a recording: cite each test, JMH or
+        JCStress benchmark by repository-relative path and test case, and
+        each specification or external resource by link.
+      - Each run keeps summary.md (what it proves, references, result, counts)
+        and command.txt (exact portable command); a review also keeps
+        report.md. Do not commit logs, Surefire reports, JMH JSON, receipts,
+        snapshots, copies of source, target/ trees, or tool caches.
       - Record failed, cancelled, or empty review lanes too, with the reason.
       - A checked task without an indexed run is not done. Write
         "NOT APPLICABLE: <reason>" instead of inventing evidence.

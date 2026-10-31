@@ -135,10 +135,10 @@ Each run is a directory under the change's `evidence/tests/`
 (docs/ai/OPENSPEC.md "Evidence"):
 
 - `command.txt`: the exact command, including the JDK selector.
-- `summary.md`: JDK build (`java -version`), modules, tests run, failures,
-  errors, skipped, and for conformance the executed, skipped, and failed
-  case counts.
-- `surefire-summary.txt`: the Maven `Results:` section and the per-module
-  `Tests run:` lines. Replace the checkout path with `<repo>`.
+- `summary.md`: what the run proves, each test by repository-relative path
+  and test case (`<path>/RuleTest.java#<method>`), the JDK build, modules,
+  tests run, failures, errors, skipped, and for conformance the executed,
+  skipped, and failed case counts.
 
-Do not commit `target/`, full Maven logs, or per-suite report trees.
+Cite tests, not their output. Do not commit `target/`, Maven logs, or
+Surefire reports (docs/ai/OPENSPEC.md "Evidence").

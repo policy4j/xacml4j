@@ -296,6 +296,6 @@ A corpus works the same way: implement
 ## Recording results
 
 See `docs/ai/BENCHMARKS.md`: one directory per run with `command.txt`,
-`env.txt`, the JSON results, and `summary.md`; baseline and candidate back to
-back on one quiet machine; claim a difference only when the error intervals do
+`env.txt`, and `summary.md`, with the numbers in the ledger and no logs or JSON;
+baseline and candidate back to back on one quiet machine; claim a difference only when the error intervals do
 not overlap.

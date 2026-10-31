@@ -66,8 +66,10 @@ JDK 25 (the project baseline; JDK 28 EA with `--enable-preview` once the build m
 JAVA_HOME="$(jenv prefix 25)" rtk mvn -o -q -pl xacml-jmh -am -DskipTests package
 "$(jenv prefix 25)/bin/java" -jar xacml-jmh/target/benchmarks.jar '<regex>' \
   -jvmArgs -XX:-UseJVMCICompiler -prof gc -foe true \
-  -rf json -rff <run-dir>/results.json -o <run-dir>/jmh.log
+  -rf json -rff <scratch>/results.json -o <scratch>/jmh.log
 ```
+
+Write results and logs outside the repository.
 
 - One benchmark run on the machine at a time: no build, no other
   benchmark, no swarm lane compiling. Plug in the laptop and close heavy
@@ -106,10 +108,15 @@ holds:
 - `command.txt`: the build and run commands;
 - `env.txt`: `java -version`, the CPU model, the OS version, and the JMH
   version;
-- `results.json`: the JMH JSON output;
-- `summary.md`: a table of benchmark, parameters, baseline score ± error,
-  candidate score ± error, the change in percent, and allocation per
-  operation; the baseline run it compares against; and the conclusion.
+- `summary.md`: each benchmark by repository-relative path and method
+  (`xacml-jmh/src/main/java/org/xacml4j/jmh/pdp/PdpDecideBenchmark.java#decide`),
+  and a table of parameters, baseline score ± error, candidate score ± error,
+  the change in percent, and allocation per operation; the baseline run it
+  compares against; and the conclusion.
+
+The same numbers go in `benchmarks/jmh/LEDGER.md`. Cite benchmarks, not their
+output: do not commit JMH logs or JSON (docs/ai/OPENSPEC.md "Evidence"). The
+same holds for a JCStress test: cite its class and the outcome it pins.
 
 Claim an improvement or regression only when the error intervals do not
 overlap. Otherwise write "no significant difference". A second JMH engineer

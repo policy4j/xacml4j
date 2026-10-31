@@ -96,19 +96,33 @@ Evidence lives in the change: `openspec/changes/<id>/evidence/`.
 | `builds/` | Baselines, dependency trees, JDK identity |
 | `final/` | The closing audit |
 
+Evidence is a reference that a reader can open and rerun, not a recording of
+a run. Cite the proof itself:
+
+| Proof | Cite |
+| --- | --- |
+| Test | Repository-relative path and test case: `xacml-core/src/test/java/org/xacml4j/v30/types/ISO8601DateTest.java#testCreateFromJanuaryCalendar` |
+| Conformance case | Suite path and case id |
+| JMH benchmark | Benchmark path, method, and parameters: `xacml-jmh/src/main/java/org/xacml4j/jmh/pdp/PdpDecideBenchmark.java#decide`, `corpus=rsa2008`, `request=all` |
+| JCStress test | Test class path and the outcome it pins |
+| Specification | Link with the section: XACML 3.0 Core, section 7.11 |
+| External resource | URL, version, and fetch date |
+
 Rules:
 
 - One directory per run, `<NNN>-<scope>` (reviews: `rvNNN-<scope>-<lane>`).
   Number runs in order within the change; never reuse or overwrite a run.
 - Each run holds:
-  - `summary.md`: what ran, on which JDK, the result, counts, and for
-    reviews the reviewer profile and model with a severity-ordered finding
-    list;
+  - `summary.md`: what it proves, the references above, the JDK, the result
+    and counts, and for reviews the reviewer profile and model with a
+    severity-ordered finding list;
   - `command.txt`: the exact command, with repository-relative paths;
-  - the raw output that supports the summary (Surefire summary lines, the
-    conformance manifest totals, JMH JSON, the review report).
-- Do not commit `target/` trees, per-suite Surefire XML trees, IDE files, or
-  tool caches.
+  - for reviews, `report.md`.
+- Do not commit execution output: build and test logs, Surefire reports, JMH
+  logs or JSON, lane receipts, state snapshots, patches, or copies of source.
+  Numbers that matter go in `summary.md` or `benchmarks/jmh/LEDGER.md`. Keep
+  raw output outside the repository. Runs before 2026-10-31 keep their files.
+- Do not commit `target/` trees, IDE files, or tool caches.
 - A review lane that failed, timed out, or produced nothing is still a run.
   Record it with the reason. A three-lane review where two lanes died is a
   one-lane review.

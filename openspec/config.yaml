@@ -61,5 +61,6 @@ rules:
     - Keep conformance fixtures read-only; a task that needs a fixture change asks the maintainer.
   evidence:
     - Map every requirement/scenario and every gate task to an indexed run.
-    - One directory per run with summary.md, command.txt, and raw output; never overwrite a run.
+    - Evidence is a reference, not a recording. Cite tests and JMH or JCStress benchmarks by repository-relative path and test case, and specifications or external resources by link.
+    - One directory per run with summary.md and command.txt; never overwrite a run. Do not commit logs, reports, JMH JSON, receipts, snapshots, or copies of source.
     - Record failed or empty review lanes with the reason; write NOT APPLICABLE with a reason instead of inventing proof.
