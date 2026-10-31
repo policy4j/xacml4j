@@ -148,7 +148,7 @@ public class DateTimeDurationUtils {
                     .invalidAttributeValue(null, XacmlTypes.DATE);
         }
         return LocalDate.of(v.get(Calendar.YEAR),
-                v.get(Calendar.MONTH),
+                v.get(Calendar.MONTH) + 1,
                 v.get(Calendar.DAY_OF_MONTH));
     }
 

@@ -160,7 +160,7 @@ public interface ValueType extends ValueExpTypeInfo, Function<Object, Value<?>>
 								Arrays.toString(array), this);
 			}
 			if(array.length == 1){
-				return ofAny(o);
+				return ofAny(array[0]);
 			}
 			return ofAny(array[0],
 					Arrays.copyOfRange(array,

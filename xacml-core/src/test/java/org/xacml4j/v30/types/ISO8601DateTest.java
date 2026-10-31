@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.junit.jupiter.api.Test;
 
@@ -53,17 +53,40 @@ public class ISO8601DateTest
 	}
 
 	@Test
-	public void testCreateFromCalendar()
+	public void testCreateFromJanuaryCalendar()
 	{
-		Calendar now = Calendar.getInstance();
-		ISO8601Date d1 = XacmlTypes.DATE.ofAny(now);
-		ISO8601Date d2 = XacmlTypes.DATE.ofAny(now);
-		System.out.println(d1.toStringExp());
-		System.out.println(now);
-		assertEquals(d1, d2);
-		assertEquals(d1.getDayOfMonth(), now.get(Calendar.DAY_OF_MONTH));
-		assertEquals(d1.getYear(), now.get(Calendar.YEAR));
-		assertEquals(d1.getMonthValue(), now.get(Calendar.MONTH));
+		assertCalendarDate(new GregorianCalendar(2024, GregorianCalendar.JANUARY, 31),
+				2024, 1, 31);
+	}
+
+	@Test
+	public void testCreateFromOctoberCalendar()
+	{
+		assertCalendarDate(new GregorianCalendar(2024, GregorianCalendar.OCTOBER, 31),
+				2024, 10, 31);
+	}
+
+	@Test
+	public void testCreateFromDecemberCalendar()
+	{
+		assertCalendarDate(new GregorianCalendar(2024, GregorianCalendar.DECEMBER, 31),
+				2024, 12, 31);
+	}
+
+	@Test
+	public void testCreateFromLeapDayCalendar()
+	{
+		assertCalendarDate(new GregorianCalendar(2024, GregorianCalendar.FEBRUARY, 29),
+				2024, 2, 29);
+	}
+
+	private void assertCalendarDate(GregorianCalendar calendar,
+			int expectedYear, int expectedMonth, int expectedDay)
+	{
+		ISO8601Date date = XacmlTypes.DATE.ofAny(calendar);
+		assertEquals(expectedYear, date.getYear());
+		assertEquals(expectedMonth, date.getMonthValue());
+		assertEquals(expectedDay, date.getDayOfMonth());
 	}
 
 	@Test

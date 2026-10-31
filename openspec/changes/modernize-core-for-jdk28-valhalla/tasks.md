@@ -58,7 +58,8 @@ Note (2026-10-27): the project baseline moved to JDK 25 (change `adopt-jdk25-bas
 - [ ] 5.4 Fix numeric semantics from the donor before adopting it: one owner of `xs:integer`; non-wrapping arithmetic; strict integer lexing; product identity 1; no null stubs
 - [ ] 5.5 Gate: full reactor and conformance green on JDK 21 (covers 5.1-5.7)
 - [x] 5.6 Tighten the generic bounds of `ValueType.ofAny` and `DynamicType.ofAny` (`<T extends Value<?>>`), make `ValueType` a `Function<Object, Value<?>>`, self-type the `TypeCapability` family (`T extends TypeCapability<T>`), and give `TypeToString`, `TypeToGSon`, and `TypeToXacml30` `Value<?>` parameters and results, in `xacml-core`, `xacml-json`, and `xacml-xml` (design D13); compile-time API change only; check: full reactor and conformance unchanged (evidence/builds/087 and 088, evidence/reviews/code/rv098; commit `265be3a0`)
-- [ ] 5.7 Fix `ValueType.apply` to convert `array[0]` for a one-element `Object[]`, not the array itself; test first
+- [x] 5.7 Fix `ValueType.apply` to convert `array[0]` for a one-element `Object[]`, not the array itself; test first
+- [x] 5.8 Fix `DateTimeDurationUtils.toISO860Date(GregorianCalendar)` to pass a one-based month to `LocalDate.of` (`policy4j-the.5.8`); `ISO8601DateTest` pins fixed dates, not the zero-based month
 
 ## 6. Re-apply the refactor: expressions, functions, algorithms, and attribute resolution
 

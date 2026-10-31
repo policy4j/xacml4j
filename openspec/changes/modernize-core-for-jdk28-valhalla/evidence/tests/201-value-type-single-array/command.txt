@@ -1,0 +1,16 @@
+Worktree: current cod_4 checkout at base 759d90a6c75510d55127d8e22870f9edd985c991
+Task: policy4j-the.5.7; assigned actor ntm-luna-g1 (claim receipt: luna-modernization-claim.json)
+
+Focused red, before editing production:
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${WORKTREE}/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/201-value-type-single-array/focused-red-mvn310-clean.log --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ValueTypeApplyTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+Exit: 1 (Surefire: 8 run, 4 errors, 0 failures, 0 skipped)
+
+Focused green, after the one-line correction:
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${WORKTREE}/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/201-value-type-single-array/focused-green-mvn310-clean.log --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core -Dtest=ValueTypeApplyTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+Exit: 0 (Surefire: 8 run, 0 errors, 0 failures, 0 skipped)
+
+Full xacml-core module suite:
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${WORKTREE}/openspec/changes/modernize-core-for-jdk28-valhalla/evidence/tests/201-value-type-single-array/core-suite-green-mvn310-clean.log --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-core clean test
+Exit: 0 (Surefire: 7,365 run, 0 errors, 0 failures, 2 skipped)
+
+The earlier default-Maven attempt is preserved in focused-red.log. It stopped during offline dependency resolution before compilation and is not counted as a test result.
