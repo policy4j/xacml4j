@@ -110,10 +110,7 @@ READ_ONLY = """\
 
 Do not create, edit, or delete files anywhere. Do not run builds,
 formatters, or git commands that write. Inspect with file reads, `rtk rg`,
-`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena. Serena's
-symbol-editing tools (`rename_symbol`, `replace_symbol_body`,
-`insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) write
-files: do not call them."""
+`rtk git diff|log|show`, ast-grep, ripwire, and tgrep."""
 
 PLAN_WRITE = """\
 ## Access: OpenSpec artifacts and beads only
@@ -140,11 +137,8 @@ poms when the task says so) plus your run directories under the change's
 file outside your packet, and stop with `BLOCKER:` if the task needs one.
 You may run focused Maven builds and tests (docs/ai/TESTING.md).
 
-For a refactoring inside your packet you may use Serena's symbol tools
-(`rename_symbol`, `replace_symbol_body`, `insert_before_symbol`,
-`insert_after_symbol`, `safe_delete_symbol`). A rename edits every
-reference: list them first with `find_referencing_symbols`, and stop with
-`BLOCKER:` when one is outside your packet."""
+Before a rename, list every reference with ripwire and `rtk rg`, and stop
+with `BLOCKER:` when one is outside your packet."""
 
 ACCESS_TEXT = {
     "read": READ_ONLY,
@@ -908,15 +902,12 @@ Enforcement differs by provider:
   `provider_init_timeout: 3600`; an operator answers the trust prompt and
   types the task into the Grok terminal. Fixing the provider's
   `PROCESSING_PATTERN` in CAO removes the second problem.
-- The code-intelligence MCP servers (Serena, ast-grep, ripwire) are declared
+- The code-intelligence MCP servers (ast-grep, ripwire) are declared
   once per CLI: `.mcp.json` (Claude, Kimi, Copilot), `.codex/config.toml`
   (Codex), and `.grok/config.toml` (Grok). Keep the three files in step.
   Agy has no project MCP file; Agy agents use the CLI forms in AGENTS.md.
   Approve the servers once per checkout so headless launches do not stop on
   the approval prompt.
-- Serena starts on first use and stops when idle. When an agent exits, it
-  can end the Serena that other agents share; repeat the call, and it starts
-  again.
 - Codex `plan`/`acceptEdits` profiles can call only the CAO callback tools;
   other MCP tools are rejected by Codex's approval policy.
 """

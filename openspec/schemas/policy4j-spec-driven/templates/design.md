@@ -28,7 +28,7 @@
 
 ## Code Intelligence Plan
 
-<!-- For cross-file or rename work: ripwire, ast-grep, Serena, rtk rg, and compile checks that prove completeness. -->
+<!-- For cross-file or rename work: ripwire, ast-grep, rtk rg, and compile checks that prove completeness. -->
 
 ## Execution Plan
 

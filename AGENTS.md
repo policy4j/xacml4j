@@ -198,7 +198,7 @@ Check tool health before you rely on a tool:
 
 ```sh
 scripts/agent-doctor.sh            # all tools
-scripts/agent-doctor.sh serena     # one tool: ast-grep | ripwire | tgrep | serena
+scripts/agent-doctor.sh ripwire    # one tool: ast-grep | ripwire | tgrep
 ```
 
 A `PASS` says that the tool answers. It does not say that the answer covers
@@ -210,15 +210,18 @@ newer than its snapshot index.
 | Orient in the codebase, rank the code for a task | ripwire | `ripwire . --for="<task>"`, or `--pack-task="<task>"` for one-call context; MCP `for`, `explore` |
 | Callers, blast radius, call paths | ripwire | `--callers=SYM`, `--impact=SYM` (transitive), `--uses=SYM`, `--path=A,B`; MCP `find_referencing_symbols`, `impact`, `uses`, `path_between`, and `batch` for several queries in one call |
 | Check your change before you call it done | ripwire | `ripwire . --edit-check=SYM`, `ripwire . --quality-delta`; MCP `edit_check`, `quality_delta` |
-| Java symbols, references, hierarchy (type-aware) | Serena | MCP `serena`: `find_symbol`, `find_declaration`, `find_referencing_symbols`, `find_implementations`, `get_symbols_overview`, `get_diagnostics_for_file` |
 | Structural code patterns, lint rules | ast-grep | `ast-grep run --lang java --pattern '<pattern>' <path>`, `ast-grep scan`; MCP `ast-grep`: `find_code`, `find_code_by_rule`, `dump_syntax_tree`, `test_match_code_rule` |
 | Literal or regex text search | `rtk rg` | Default for one-off searches |
 | Repeated whole-repo regex searches | tgrep | `tgrep '<pattern>' .` from the repository root (ripgrep flags) |
 
-Project MCP servers `serena`, `ast-grep`, and `ripwire` (all stdio) are
-declared once per CLI: `.mcp.json` (Claude, Kimi, Copilot),
-`.codex/config.toml` (Codex), and `.grok/config.toml` (Grok). Keep the three
-files in step. Agy has no project MCP file; use the CLI forms above.
+No listed tool resolves Java types. For type-aware questions, read the source
+and let the compiler confirm the result.
+
+Project MCP servers `ast-grep` and `ripwire` (both stdio) are declared once per
+CLI: `.mcp.json` (Claude, Kimi, Copilot), `.codex/config.toml` (Codex), and
+`.grok/config.toml` (Grok). Keep the three files in step. Agy has no project
+MCP file; use the CLI forms above. Serena is off in this repository; do not
+start it or add it back.
 
 Each stanza finds the checkout with `git rev-parse --show-toplevel` in the
 directory where the client was started. The MCP tools serve that checkout.
@@ -227,18 +230,13 @@ When you edit another worktree from the same client:
 - ripwire: pass the worktree (MCP `path`, CLI `ripwire <worktree> ...`).
 - ast-grep: pass the worktree (MCP `project_folder`, CLI path argument).
 - tgrep: run it inside the worktree. Each checkout has its own index.
-- Serena cannot be pointed at another checkout. Its answers describe the
-  checkout of the client, which can hold another code line. Start the
-  client in the worktree, or label Serena `UNAVAILABLE` for the worktree. To
-  check which checkout Serena serves, ask it for a file that exists only in
-  the worktree.
 
 ### ripwire
 
 - No project config. It honors `.gitignore` and keeps a warm cache in
   `$TMPDIR/ripwire`.
 - Call edges are name based. Rows marked `amb=` or `prov="split"` are
-  guesses; confirm them with Serena or in source. The `incompatible=` rows
+  guesses; confirm them with ast-grep or in source. The `incompatible=` rows
   of `--edit-check` are name based too: a caller of another method with the
   same name can be listed.
 - Every count is a floor (`counts_floor="1"`). An empty result is not proof
@@ -252,34 +250,6 @@ When you edit another worktree from the same client:
 - `--quality-delta` reports JUnit test methods as dead code, and also
   methods that nothing calls by name, such as `equals` and `toString`. Read
   each finding before you act on it.
-
-### Serena
-
-- Semantic Java lane backed by Eclipse JDTLS. JDTLS imports the Maven
-  reactor through m2e.
-- Config: `.serena/project.yml`. Other files in `.serena/` are local
-  (gitignored).
-- Starts on first use. The `.mcp.json` stanza runs `mcp.sh -m serena attach`
-  for the current checkout, so each worktree has its own Serena and port.
-  The controller stops an idle Serena. `mcp.sh -m serena status` shows the
-  checkout (`project=`), the port, and the URL.
-- If the client reports `serena` as not connected, run
-  `scripts/agent-doctor.sh serena`, then reconnect the server in the client
-  (Claude Code: `/mcp`). Until its tools are listed, label the lane
-  `UNAVAILABLE` and work with ripwire and the source.
-- After changes to a `pom.xml`, the JDK, or `.serena/project.yml`, stop it
-  with `mcp.sh -m serena stop`. The next call starts it again.
-- Serena's symbol tools (`rename_symbol`, `replace_symbol_body`,
-  `insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) are
-  enabled for refactoring. Its file-creation, text-replace, shell, and memory
-  tools are disabled; use the agent's native tools for those.
-- JDTLS results can be incomplete when the working tree has compile errors;
-  `get_diagnostics_for_file` shows them. Then label Serena results `PARTIAL`
-  and confirm them in source.
-- An empty result is not proof of absence, also on a tree that compiles.
-  `find_implementations` on an interface method can return an empty list
-  while classes override the method. Ask for the implementations of the
-  type, then read the overrides.
 
 ### ast-grep
 
@@ -329,9 +299,9 @@ State which tool produced each claim, and label its coverage:
 - `UNAVAILABLE`: the tool or service cannot be reached, or it serves another
   checkout. Name the fallback.
 
-"No callers" and "unused" are `SUPPORTED` only when two lanes agree: Serena
-references, and a text search that includes configuration and resources.
-ripwire alone never supports an absence claim.
+"No callers" and "unused" are `SUPPORTED` only when two lanes agree: ripwire or
+ast-grep references, and a text search that includes configuration and
+resources. ripwire alone never supports an absence claim.
 
 A passing compile shows only that the code compiles. It does not prove that
 a caller, reference, or rename inventory is complete.

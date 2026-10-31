@@ -106,7 +106,7 @@ artifacts:
       - **Benchmark Plan**: JMH applicability with a reason; when applicable,
         the benchmarks and the baseline (docs/ai/BENCHMARKS.md).
       - **Code Intelligence Plan**: for cross-file or rename work, the
-        ripwire, ast-grep, Serena, rtk rg, and compile checks that prove the
+        ripwire, ast-grep, rtk rg, and compile checks that prove the
         change complete (AGENTS.md "Code Intelligence Tools").
       - **Execution Plan**: task lanes for swarms: which tasks can run in
         parallel, file ownership per lane, and reviewer lanes

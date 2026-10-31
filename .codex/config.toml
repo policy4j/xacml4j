@@ -9,8 +9,3 @@ args = ["-lc", "exec ast-grep-mcp-server --config \"$(git rev-parse --show-tople
 [mcp_servers.ripwire]
 command = "bash"
 args = ["-lc", "exec ripwire \"$(git rev-parse --show-toplevel)\" --mcp"]
-
-[mcp_servers.serena]
-command = "bash"
-args = ["-lc", "exec mcp.sh -q -m serena attach --project \"$(git rev-parse --show-toplevel)\""]
-startup_timeout_sec = 30

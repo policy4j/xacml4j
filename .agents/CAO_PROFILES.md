@@ -169,14 +169,11 @@ Limits:
   `provider_init_timeout: 3600`; an operator answers the trust prompt and
   types the task into the Grok terminal. Fixing the provider's
   `PROCESSING_PATTERN` in CAO removes the second problem.
-- The code-intelligence MCP servers (Serena, ast-grep, ripwire) are declared
+- The code-intelligence MCP servers (ast-grep, ripwire) are declared
   once per CLI: `.mcp.json` (Claude, Kimi, Copilot), `.codex/config.toml`
   (Codex), and `.grok/config.toml` (Grok). Keep the three files in step.
   Agy has no project MCP file; Agy agents use the CLI forms in AGENTS.md.
   Approve the servers once per checkout so headless launches do not stop on
   the approval prompt.
-- Serena starts on first use and stops when idle. When an agent exits, it
-  can end the Serena that other agents share; repeat the call, and it starts
-  again.
 - Codex `plan`/`acceptEdits` profiles can call only the CAO callback tools;
   other MCP tools are rejected by Codex's approval policy.

@@ -15,14 +15,6 @@
         "-lc",
         "exec ripwire \"$(git rev-parse --show-toplevel)\" --mcp"
       ]
-    },
-    "serena": {
-      "type": "stdio",
-      "command": "bash",
-      "args": [
-        "-lc",
-        "exec mcp.sh -q -m serena attach --project \"$(git rev-parse --show-toplevel)\""
-      ]
     }
   }
 }

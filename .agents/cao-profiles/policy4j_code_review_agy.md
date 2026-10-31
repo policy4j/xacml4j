@@ -50,10 +50,7 @@ with Valhalla, JEP 401 value classes, `--enable-preview`).
 
 Do not create, edit, or delete files anywhere. Do not run builds,
 formatters, or git commands that write. Inspect with file reads, `rtk rg`,
-`rtk git diff|log|show`, ast-grep, ripwire, tgrep, and Serena. Serena's
-symbol-editing tools (`rename_symbol`, `replace_symbol_body`,
-`insert_before_symbol`, `insert_after_symbol`, `safe_delete_symbol`) write
-files: do not call them.
+`rtk git diff|log|show`, ast-grep, ripwire, and tgrep.
 
 This provider cannot enforce tool restrictions under CAO; the read-only rule above is binding on you.
 
