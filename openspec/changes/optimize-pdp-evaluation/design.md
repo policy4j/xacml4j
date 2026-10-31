@@ -1813,6 +1813,22 @@ restriction is needed: D47 caches no values. Custom algorithms, foreign contexts
 `RuleEvaluationContext` subclasses, observed decisions, worker threads, and reentrant entry keep the
 existing path.
 
+Reviews r-D47-sol, rv205, and rv206 added two rules, confirmed by rv212 and rv213:
+
+- **Runtime values (`Rule.EngineOnly`).** A designator, a selector, and the result of every built-in
+  `Apply` count as runtime values, with no list of function ids, because `attribute-designator`
+  returns request values from literal arguments and can extract them from an `Entity` literal. A
+  call that combines a runtime value with a function reference keeps a real rule context, because a
+  higher-order function evaluates each value with the context it receives.
+- **Targets (`TargetBeforeContext.evaluateIfMatch`).** A rule whose target holds a `Match` borrows
+  only after the precheck answers MATCH. The precheck scans request bags without evaluating their
+  values, and `BaseDecisionRule.isMatch` takes its answer, so the target is never matched in the
+  policy context. An undecided target, such as a PIP-backed attribute or a bag with a custom value,
+  keeps a real rule context. D53 must keep this guard.
+
+So a rule whose condition is a higher-order call over a designator is not eligible. `multi-valued`,
+and part of rsa2008, may lose the saving below; the controlled pair decides.
+
 **Mechanism.** Two private fields on `PolicyDescendantEvaluationContext`: the active Rule and its
 local Status. Package-private entry and exit; no new public API, scope object, captured supplier, or
 per-rule holder. At the shared evaluation boundary of the built-in combining loops
@@ -2161,10 +2177,13 @@ category the same way.
    eight), it builds through `AttributeIndex.Builder` as today. `EMPTY` stays shared.
 3. `AttributeIndex(Builder)` stays eager: request entities are queried by id during `decide`.
 4. **Accessors.**
-   - `attributes()`, `isEmpty()`, `size()`, `contains`, and `getIncludeInResultAttributes()` read the
-     list.
-   - `get(id)`, `attributes(id)`, `containsAttributeId`, `getAttributesIds`, `resolve`, and `toString`
-     build the multimap on first demand.
+   - `attributes()`, `isEmpty()`, and `includeInResultAttributes()` read the list.
+   - `get(id)`, the `find` and `findValues` families, `resolve`, and `toString` build the multimap on
+     first demand.
+   - As built, `resolve(AttributeDesignatorKey)` keeps at most 64 designator aliases per index
+     (review RV209-ASTRA-1): the key's category plays no part in the result, so an unbounded alias
+     map would grow with distinct categories. Past the bound, a demand resolves through the lookup
+     and keeps nothing; it allocates one `Lookup` and sees the same `Optional`.
    - The hash is computed over the runs, bit for bit equal to the multimap's (`asMap().hashCode()`);
      `equals` compares the lists as the multimap's `values()` comparison does.
    - The lazy multimap is published as in D48: a `volatile` field, built from immutable state, with

@@ -407,10 +407,7 @@ final class DefaultPolicyDecisionPoint
 	}
 
 	private static Category category(CategoryId c, Collection<Attribute> attributes){
-		return Category
-				.builder(c)
-				.entity(Entity.builder().attributes(attributes).build())
-				.build();
+		return Category.of(c, Entity.of(attributes));
 	}
 
 	@Override

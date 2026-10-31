@@ -30,11 +30,44 @@ is also a row of `benchmarks/jmh/LEDGER.md`. See docs/ai/OPENSPEC.md
 | 8.3 Cycle E gate | see tasks.md 8.3 | done: JMH pair, reactor and conformance (`tests/017`), reviews rv006 to rv012 (final APPROVE or APPROVE WITH CHANGES, applied); final-tree pair `017`/`018`: no claim |
 | 9.3 Cycle F gate | see tasks.md 9.3 | done: JMH pair, reactor and conformance (`tests/017`), reviews rv006 to rv012 (final APPROVE or APPROVE WITH CHANGES, applied); final-tree pair `017`/`018`: no claim |
 | 12.3 Cycle H gate | `tests/018-cycleH-red-green`, `019-reactor-cycleH`; `benchmarks/jmh/019-cycleH-before`, `020-cycleH-after` | JMH done (full scan -46% bytes, -10% time); reactor done; review pending |
+| 26.2, 31.2, 32.2, 38.2 review gates | `reviews/code/rv209-gate-audit-astra`, `tests/209-integration-gate` | done 2026-10-31: D29 reviewed; earlier findings checked closed in source; reactor and conformance green on the combined tree |
+| 28.4, 36.4, 39.2, 41.5 review parts | `reviews/code/rv209-gate-audit-astra`, `rv214-ak-luna`, `tests/206-rv209-sol` | review findings closed; measurement open |
 
 ## Runs
 
+Runs from 201 on follow the reference rule of docs/ai/OPENSPEC.md "Evidence": they cite tests and
+benchmarks and keep no execution output, so a summary can name a log that is not in the repository.
+
 | Run | Kind | Command | Result |
 | --- | --- | --- | --- |
+| `benchmarks/jmh/027-pair-d47` | controlled pair, D47 eligibility off against on, C2, `-prof gc`, 3 forks | `PdpDecideBenchmark.decide`, rsa2008 and rules:100, index off and on | allocation saving on all but multi-valued; time no significant difference; the remaining pairs are left to the maintainer |
+| `tests/209-integration-gate` | combined reactor and conformance, conductor, detached tree at `759d90a6` with the 34 reviewed files | shared runner, `-o clean test`, no failure-ignore | PASS: 10,836 tests, 0 failures, 0 errors, 36 skipped; conformance module 1,818; no performance claim |
+| `tests/208-d49-benchmark-terra` | D49 benchmark `StringValEqualsBenchmark` (Codex Terra) | `-pl xacml-jmh -am -DskipTests clean package` | packaged, listed in the jar metadata; not run; first-use mode exploratory |
+| `tests/207-d51-fix-astra` | D51 default-zero fix and two D52 regression tests (Codex Astra) | focused red, green, and module runs; three mutants | PASS: D51 red then 154 green; modules core 7,504 (known date error only), PDP 810; mutants killed; 160 focused green |
+| `tests/206-rv209-sol` | RV209-ASTRA-1, alias bound of 64 per index (Codex Sol) | focused red, green, module run | red 1,025 aliases, then green; modules core 7,383 (known date error only), PDP 816 |
+| `tests/205-d47-correction-terra` | D47 correction, runtime values and target guard (Codex Terra) | focused red, green, module run; two mutants | red 4 of 44, green 56; modules core 7,357 (known date error only), PDP 851; mutants killed |
+| `tests/204-d55-sol` | D55 lazy response index (Codex Sol) | characterization, focused, module run | 30 characterization tests, 8,473 module tests (known date error only); byte figures UNRUN |
+| `tests/203-resume-d52-metadata-astra` | D52 metadata correction (Codex Astra) | focused red and green, suites | red 6 of 12 and 2 of 2, green 335; PDP 810; XML 254; JSON 24 |
+| `tests/202-resume-variable-dag-sol` | P-CPU2 variable-DAG walk (Codex Sol) | red probe, focused, module gate | red 4,096 leaf reads, green 1; module 8,449 tests, 0 failures |
+| `tests/201-resume-d47-terra` | first D47 runtime-value correction (Codex Terra) | focused and module runs | superseded by run 205, rejected by rv205 and rv206 |
+| `reviews/code/rv215-d51-recheck-argon` | D51 fix re-review, Agy Gemini 4 Argon | source review | APPROVE, P2-1 closed |
+| `reviews/plan/pr-D35-argon` | D35 draft plan review, task 37.2, Agy Gemini 4 Argon | source and official library documentation | APPROVE WITH CHANGES: 2 P1, 5 P2, 2 P3; folded into the draft; 37.3 waits for the maintainer |
+| `reviews/code/rv214-ak-luna` | cycle AK review, Codex GPT-6 Luna | source review | APPROVE; two optional coverage notes |
+| `reviews/code/rv211-d55-opus` | D55 and the RV209 bound, Claude Opus 5.5 | source review of the `cod_2` bytes | APPROVE, no findings; main's `AttributeIndex.java` differs by the maintainer's enhanced `for` |
+| `reviews/code/rv213-d47-recheck-argon` | corrected D47 re-review, Agy Gemini 4 Argon | source review, author results supplied | APPROVE, no findings; selector path traced by source |
+| `reviews/code/rv212-d47-recheck-opus` | corrected D47 adversarial re-review, Claude Opus 5.5 | source review of all eleven algorithm routes | APPROVE, no findings; allocation gate may still fail |
+| `reviews/code/rv210-ba-argon` | cycle BA review, Agy Gemini 4 Argon | source review | D49 APPROVE, D50 APPROVE, D51 REJECT (P2-1 default zero); fixed in run 207 |
+| `reviews/code/rv209-gate-audit-astra` | D29 review and gate audit, Codex GPT-6 Astra | source review of 28.4, 31.2, 32.2, 36.4, 38.2, 39.2, 41.5 | D29 APPROVE; those review gates CLOSED except 41.5 (RV209-ASTRA-1, fixed in run 206; AK, reviewed in rv214) |
+| `reviews/code/rv208-d52-opus` | corrected D52 and task 5.8 review, Claude Opus 5.5 | source review | APPROVE both; two P3 test gaps, closed in run 207 |
+| `reviews/code/rv207-d52-argon` | corrected D52 review, Agy Gemini 4 Argon | source review | APPROVE, no findings |
+| `reviews/code/rv206-d47-opus` | D47 and P-CPU2 review, Claude Opus 5.5 | source review | Sol APPROVE; Terra REJECT (`attribute-designator` P2, one P3); estimates D47's allocation risk |
+| `reviews/code/rv205-d47-argon` | D47 and P-CPU2 review, Agy Gemini 4 Argon | source review | Sol APPROVE; Terra REJECT (P2-1, P2-2); author models, one hash, and test counts in it are wrong, the source findings stand |
+| `builds/202-worktree-audit` | live Git/Beads/OpenSpec inventory, conductor | twelve attached worktrees; tracked-file byte comparisons; tracker and checklist counts | old candidates preserved, current five lanes isolated; remaining gates and tracker discrepancies recorded; no implementation or performance acceptance |
+| `builds/201-ntm-resume-preflight` | fresh NTM launch, model and packet checks for group 42 | scoped launch/recovery and five Beads packets; actual CLI model headers | five isolated lanes working; initial fish-pane launch failure retained; no implementation acceptance, tests or JMH claimed |
+| `reviews/tests/rv202-resume-d47-luna` | terminal baseline coverage review, Codex GPT-6 Luna high, validated by the conductor | source review at `759d90a6`; no builds/tests | request/PIP runtime-value gap confirmed; bounded review packet complete; D47 candidate and parent task 42.14 remain unaccepted |
+| `reviews/code/rv203-resume-d52-argon` | terminal D52 source review, Agy Gemini 4 Argon High | frozen candidate source review; no builds/tests | APPROVE reported, HELD by conductor: supplied-test counts, source citations and benchmark references require correction; fresh re-review requested |
+| `reviews/code/rv201-resume-d52-astra` | terminal independent D52 source review, Codex GPT-6 Astra max | frozen candidate hashes and source trace | REJECT: D52-ASTRA-1, mutable custom parameter metadata can invalidate the cached signature proof; counterexample/runtime tests UNRUN; correction required before integration |
+| `reviews/code/rv204-resume-d52-argon-recheck` | corrected terminal D52 source review, Agy Gemini 4 Argon High | frozen source review; no builds/tests | REJECT: custom/mutable metadata invalidates the static proof; supersedes rv203's held approval; agrees with Astra's blocking boundary; corrected candidate and performance remain unaccepted |
 | `tests/001-correlation-red` | test (task 1.1) | `rtk proxy mvn -B -o -pl xacml-pdp -am -Dtest=CorrelationIdTest test`; `ast-grep test` | RED as intended: 2 failures, 2 errors (random suffix) |
 | `tests/002-correlation-green` | test (task 1.2) | same | GREEN: 4 tests; `ast-grep test` and `scan` pass |
 | `tests/003-reactor-after-group1` | reactor (task 1.3) | `rtk proxy mvn -B -o clean test` | PASS: 8,013 tests, 0 failures, 18 skipped; conformance 937/12 |

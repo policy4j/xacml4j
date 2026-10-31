@@ -1,0 +1,500 @@
+D52 independent adversarial static review — cod_3
+Bead: policy4j-cwtu.42.19.1
+Verdict: REJECT; finding D52-ASTRA-1 (P2)
+Actual model/effort from session turn metadata: gpt-6-astra / max
+Date: 2026-10-29
+
+Working directory: .ntm/worktrees/xacml4j--remaining-g1-20261029/cod_3
+Path normalization: absolute main-checkout prefixes below are written as ../../../..,
+which resolves to the same main checkout from this reviewer directory. The agent
+home prefix in the model-attestation-only command is <agent-home>. No source was
+sent externally. Shell commands used RTK; ripwire was invoked directly.
+
+The packet brief was read before source review. AGENTS.md, the common TOOLS/RTK
+guidance, docs/ai/{SWARMS,TESTING,BEADS,OPENSPEC}.md and the scoped OpenSpec artifacts
+were read. The top-level RTK.md lookup was absent; the common .agents/RTK.md was
+then read. No native local-file reader or Serena tools were exposed; source was
+read with rtk proxy sed. No builds, tests, Java probes, Maven, benchmarks,
+OpenSpec validation, Beads mutations or mutating Git commands were run.
+New writes are restricted to this directory's report.md, summary.md, command.txt.
+
+Source integrity (executed, before and after review):
+
+hashes: exit 0
+manifest_sha256 ec670f5c305fb484f4c8df6370accd931ebbf32e2953806a7e5a0b9e0fe02ee4
+xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java frozen=222342ac35a484e587360eb473290e1547c6001b46b554e0b14586d484fa074e manifest_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java frozen=ae7b46cb690ddf289adaf3a47398102334626032ff1be037c3aad0d286aa8955 manifest_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java frozen=647f64d3e648ed538fb15ea6f5514ed0142a5c7a325e4a85343f7b460ebb271d manifest_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java frozen=cadc93aa1855de78607c7e8351137fe2715276caba33dd1a43c1ea0855a993e2 manifest_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java frozen=238dafcd13ce7b8ad502b39e29e93695f2e565d8435a596687e407b2bff84169 manifest_match=True protected_match=True
+xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java frozen=c56f68aced2414252fe4a5f4068fd3a9738057f2e16b140a8f1f2df4311a2ddc manifest_match=True protected_match=True
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LaterDecidingOperandTest.java frozen=d5ea6a7f12a77ff95325b42bfc7872aa421a815b44f0a636859621090a2fbf09 manifest_match=True protected_match=True
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java frozen=12d0fa547f66662d48e4314e41c7f9b731a9c3045cc889664b5a261bb16df689 manifest_match=True protected_match=True
+protected_HEAD cd443805c3044e7412c25aae71dd02127994d418
+
+final-hashes-before-report: exit 0
+manifest_sha256 ec670f5c305fb484f4c8df6370accd931ebbf32e2953806a7e5a0b9e0fe02ee4
+xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java 222342ac35a484e587360eb473290e1547c6001b46b554e0b14586d484fa074e frozen_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java ae7b46cb690ddf289adaf3a47398102334626032ff1be037c3aad0d286aa8955 frozen_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java 647f64d3e648ed538fb15ea6f5514ed0142a5c7a325e4a85343f7b460ebb271d frozen_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java cadc93aa1855de78607c7e8351137fe2715276caba33dd1a43c1ea0855a993e2 frozen_match=True protected_match=True
+xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java 238dafcd13ce7b8ad502b39e29e93695f2e565d8435a596687e407b2bff84169 frozen_match=True protected_match=True
+xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java c56f68aced2414252fe4a5f4068fd3a9738057f2e16b140a8f1f2df4311a2ddc frozen_match=True protected_match=True
+xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LaterDecidingOperandTest.java d5ea6a7f12a77ff95325b42bfc7872aa421a815b44f0a636859621090a2fbf09 frozen_match=True protected_match=True
+xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java 12d0fa547f66662d48e4314e41c7f9b731a9c3045cc889664b5a261bb16df689 frozen_match=True protected_match=True
+source_mismatches []
+reviewer_HEAD 759d90a6c75510d55127d8e22870f9edd985c991
+protected_HEAD cd443805c3044e7412c25aae71dd02127994d418
+report_sha256 63ba69d8638b5a8d13b5e94478629f5c39763b6a53116e7b89d877ca1152a1b3
+report_matches_protected True
+output_exists report.md False
+output_exists summary.md False
+output_exists command.txt False
+
+post-report-verification: exit 0
+post_report_source_mismatches []
+post_report_manifest_sha256 ec670f5c305fb484f4c8df6370accd931ebbf32e2953806a7e5a0b9e0fe02ee4
+report.md bytes=8673 has_REJECT=True has_UNRUN=True
+summary.md bytes=1589 has_REJECT=True has_UNRUN=True
+reviewer_HEAD 759d90a6c75510d55127d8e22870f9edd985c991
+protected_HEAD cd443805c3044e7412c25aae71dd02127994d418
+
+Protected candidate status inventory comparison: initial and closing outputs are byte-identical.
+Reviewer worktree started clean. The before-main / current-main source comparison
+changed only xacml-core/src/test/java/org/xacml4j/v30/types/IntegerTypeTest.java.
+
+Executed inspection commands (read/search/diff outputs confirmed in opened source):
+
+[1] config
+rtk proxy sed -n '1,220p' openspec/config.yaml
+Result: exit 0 (completed).
+
+[2] review
+rtk proxy sed -n '1,240p' openspec/changes/optimize-pdp-evaluation/evidence/reviews/plan/pr-D52-argon/report.md
+Result: exit 0 (completed).
+
+[3] index
+rtk rg -n 'D52|PR-D52|42\.19|higher.order|HigherOrderCall|40.byte' openspec/changes/optimize-pdp-evaluation/design.md openspec/changes/optimize-pdp-evaluation/tasks.md openspec/changes/optimize-pdp-evaluation/evidence/README.md openspec/changes/optimize-pdp-evaluation/specs
+Result: exit 0 (completed).
+
+[4] proposal
+rtk proxy sed -n '1,220p' openspec/changes/optimize-pdp-evaluation/proposal.md
+Result: exit 0 (completed).
+
+[5] candidate-report
+rtk proxy sed -n '1,280p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/REPORT-I-D52-terra.md'
+Result: exit 0 (completed).
+
+[6] manifest
+rtk proxy sed -n '1,260p' '../../../../.ntm/packets/remaining-g1-20261029/d52-manifest.json'
+Result: exit 0 (completed).
+
+[7] nested-guidance
+rtk rg --files --hidden -g AGENTS.md -g TOOLS.md xacml-core xacml-pdp openspec
+Result: exit 1 (no matches).
+
+[8] apply
+rtk proxy sed -n '1,360p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java'
+Result: exit 0 (completed).
+
+[9] hashes
+rtk proxy python3 -c 'import json, pathlib, hashlib, subprocess
+p=pathlib.Path("../../../../.ntm/packets/remaining-g1-20261029")
+m=json.loads((p/'\''d52-manifest.json'\'').read_text())
+print('\''manifest_sha256'\'',hashlib.sha256((p/'\''d52-manifest.json'\'').read_bytes()).hexdigest())
+for name, expected in m['\''files'\''].items():
+ frozen=p/'\''d52-candidate'\''/name
+ original=pathlib.Path(m['\''candidate_root'\''])/name
+ actual=hashlib.sha256(frozen.read_bytes()).hexdigest()
+ live=hashlib.sha256(original.read_bytes()).hexdigest() if original.exists() else '\''MISSING'\''
+ print(name, '\''frozen='\''+actual, '\''manifest_match='\''+str(actual==expected), '\''protected_match='\''+str(live==expected))
+print('\''protected_HEAD'\'',subprocess.check_output(['\''git'\'','\''-C'\'',m['\''candidate_root'\''],'\''rev-parse'\'','\''HEAD'\''],text=True).strip())'
+Result: exit 0 (completed).
+
+[10] ripwire-health
+ripwire . --doctor
+Result: exit 0 (completed).
+
+[11] spec-list
+rtk rg --files openspec/changes/optimize-pdp-evaluation/specs
+Result: exit 0 (completed).
+
+[12] index-focused
+rtk rg -n 'D52|I-D52|PR-D52|42.19' openspec/changes/optimize-pdp-evaluation/evidence/README.md
+Result: exit 1 (no matches).
+
+[13] call
+rtk proxy sed -n '1,320p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java'
+Result: exit 0 (completed).
+
+[14] d52
+rtk proxy sed -n '2040,2128p' openspec/changes/optimize-pdp-evaluation/design.md
+Result: exit 0 (completed).
+
+[15] builder-top
+rtk proxy sed -n '1,380p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java'
+Result: exit 0 (completed).
+
+[16] production-diff
+rtk proxy python3 -c 'import pathlib, json, subprocess, difflib
+p=pathlib.Path("../../../../.ntm/packets/remaining-g1-20261029")
+m=json.loads((p/'\''d52-manifest.json'\'').read_text())
+for f in m['\''files'\'']:
+ if '\''/src/main/'\'' not in f or f.endswith('\''Apply.java'\'') or f.endswith('\''HigherOrderCall.java'\''): continue
+ print('\''\nFILE'\'',f)
+ r=subprocess.run(['\''git'\'','\''show'\'',m['\''candidate_base'\'']+'\'':'\''+f],capture_output=True,text=True)
+ old=r.stdout if r.returncode==0 else '\'''\''
+ new=(p/'\''d52-candidate'\''/f).read_text()
+ print('\'''\''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='\''base/'\''+f,tofile='\''frozen/'\''+f)))
+ current=pathlib.Path(f)
+ print('\''CURRENT_MAIN_EQUALS_BASE'\'',current.read_text()==old)
+'
+Result: exit 0 (completed).
+
+[17] report-integrity
+rtk proxy git -C '../../../../.ntm/worktrees/xacml4j--batch2/cod_1' status --short
+Result: exit 0 (completed).
+
+[18] planreview-rest
+rtk proxy sed -n '120,300p' openspec/changes/optimize-pdp-evaluation/evidence/reviews/plan/pr-D52-argon/report.md
+Result: exit 0 (completed).
+
+[19] spec1
+rtk proxy sed -n '1,200p' openspec/changes/optimize-pdp-evaluation/specs/pdp-attribute-resolution/spec.md
+Result: exit 0 (completed).
+
+[20] evidence-head
+rtk proxy sed -n '1,100p' openspec/changes/optimize-pdp-evaluation/evidence/README.md
+Result: exit 0 (completed).
+
+[21] builder-middle
+rtk proxy sed -n '380,790p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java'
+Result: exit 0 (completed).
+
+[22] builder-end
+rtk proxy sed -n '790,1120p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java'
+Result: exit 0 (completed).
+
+[23] ripwire-map
+ripwire '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate' --no-cache --for='HigherOrderCall prepare invokeHigherOrderSingle invokeHigherOrderPair' --legend=compact
+Result: exit 0 (completed).
+
+[24] dfi-start
+rtk proxy sed -n '70,400p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java'
+Result: exit 0 (completed).
+
+[25] higherorder-1
+rtk proxy sed -n '1,330p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java'
+Result: exit 0 (completed).
+
+[26] delta-to-main
+rtk proxy git diff --stat cd443805c3044e7412c25aae71dd02127994d418..759d90a6c75510d55127d8e22870f9edd985c991 -- xacml-core/src xacml-pdp/src
+Result: exit 0 (completed).
+ .../test/java/org/xacml4j/v30/types/IntegerTypeTest.java   | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+[27] paramtype
+rtk proxy sed -n '1,250p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSpec.java
+Result: exit 0 (completed).
+
+[28] functionref
+rtk proxy sed -n '1,250p' xacml-core/src/main/java/org/xacml4j/v30/policy/FunctionReference.java
+Result: exit 0 (completed).
+
+[29] higherorder-2
+rtk proxy sed -n '330,700p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java'
+Result: exit 0 (completed).
+
+[30] related-types
+rtk rg -n '^(public|final|sealed|abstract)|getReturnType|resolveReturnType|isValidReturnValue|instanceof' xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java xacml-core/src/main/java/org/xacml4j/v30/ValueExpTypeInfo.java xacml-core/src/main/java/org/xacml4j/v30/BagOfValuesType.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/StaticFunctionReturnTypeResolver.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionReturnTypeResolver.java xacml-core/src/main/java/org/xacml4j/v30/policy/FunctionSpec.java
+Result: exit 0 (completed).
+
+[31] spec2
+rtk proxy sed -n '1,150p' openspec/changes/optimize-pdp-evaluation/specs/pdp-decision-correlation/spec.md
+Result: exit 0 (completed).
+
+[32] value-type
+rtk proxy sed -n '1,230p' xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java
+Result: exit 0 (completed).
+
+[33] dynamic
+rtk proxy sed -n '1,260p' xacml-core/src/main/java/org/xacml4j/v30/types/DynamicType.java
+Result: exit 0 (completed).
+
+[34] bagtype
+rtk proxy sed -n '25,150p' xacml-core/src/main/java/org/xacml4j/v30/BagOfValuesType.java
+Result: exit 0 (completed).
+
+[35] deciding
+rtk proxy sed -n '1,310p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DecidingOperands.java
+Result: exit 0 (completed).
+
+[36] new-tests
+rtk proxy python3 -c 'import pathlib,json,subprocess,difflib
+p=pathlib.Path("../../../../.ntm/packets/remaining-g1-20261029")
+m=json.loads((p/'\''d52-manifest.json'\'').read_text())
+for f in m['\''files'\'']:
+ if '\''/src/test/'\'' not in f: continue
+ old=subprocess.check_output(['\''git'\'','\''show'\'',m['\''candidate_base'\'']+'\'':'\''+f],text=True)
+ new=(p/'\''d52-candidate'\''/f).read_text()
+ print('\'''\''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='\''base/'\''+f,tofile='\''frozen/'\''+f)))
+'
+Result: exit 0 (completed).
+
+[37] validation-tests
+rtk proxy sed -n '250,450p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java'
+Result: exit 0 (completed).
+
+[38] binding-and-invocation
+rtk rg -n 'bound|invokeFast|bind\(|invocationCause|public ValueExp invoke|class FunctionInvocationFactory' xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/FunctionInvocationFactory.java
+Result: exit 2 (lookup error; the correct FunctionInvocationFactory.java path was read by the factories command).
+
+[39] prepared-conditions
+rtk rg -n 'class Shared|isCrossable|rebuildSpine|clone|Apply.builder|FunctionReference|canPrepare' xacml-core/src/main/java/org/xacml4j/v30/policy/PreparedConditions.java
+Result: exit 0 (completed).
+
+[40] parameter-siblings
+rtk proxy sed -n '1,190p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamAnyValueSpec.java
+Result: exit 0 (completed).
+
+[41] typeinfo
+rtk proxy sed -n '1,150p' xacml-core/src/main/java/org/xacml4j/v30/ValueExpTypeInfo.java
+Result: exit 0 (completed).
+
+[42] metadata-tests
+rtk rg -n 'ValueExpTypeInfo|ValueType|mutable|custom|optional|lazy|validation|FunctionInvocationFactory' xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java xacml-core/src/test/java/org/xacml4j/v30/policy/function/FunctionSpecBuilderTest.java
+Result: exit 0 (completed).
+
+[43] shared-crossing
+rtk proxy sed -n '200,250p' xacml-core/src/main/java/org/xacml4j/v30/policy/PreparedConditions.java
+Result: exit 0 (completed).
+
+[44] custom-tests
+rtk proxy sed -n '210,440p' xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicFunctionsTest.java
+Result: exit 0 (completed).
+
+[45] shared-rebuild
+rtk proxy sed -n '360,505p' xacml-core/src/main/java/org/xacml4j/v30/policy/PreparedConditions.java
+Result: exit 0 (completed).
+
+[46] metadata-analogues
+rtk rg -n -g '*.java' 'implements ValueExpTypeInfo|implements ValueType|mock\(ValueExpTypeInfo|mock\(ValueType|Mutable.*Type|mutable.*[Tt]ype' xacml-core/src/main xacml-core/src/test
+Result: exit 0 (completed).
+
+[47] factories
+rtk proxy sed -n '1,210p' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionInvocationFactory.java
+Result: exit 0 (completed).
+
+[48] binding-body
+rtk proxy sed -n '470,650p' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java'
+Result: exit 0 (completed).
+
+[49] binding-tests
+rtk rg --files xacml-core/src/test xacml-pdp/src/test -g '*Bind*' -g '*Regex*' -g '*Apply*' -g '*Direct*' -g '*Invocation*'
+Result: exit 0 (completed).
+
+[50] model-evidence
+rtk proxy python3 -c 'import os,json; print(json.dumps({k:os.environ[k] for k in ["CODEX_THREAD_ID","CODEX_SESSION_ID","CODEX_MODEL","NTM_AGENT","NTM_SESSION"] if k in os.environ}))'
+Result: exit 0 (completed).
+
+[51] dfi-cause
+rtk rg -n -A 28 'Throwable invocationCause|invocationCause\(Throwable' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java'
+Result: exit 0 (completed).
+
+[52] source-locations
+rtk rg -n -C 4 'canPrepareHigherOrder|FunctionParamValueTypeSpec typed|DynamicType.isDynamic|expectedBagType.equals|expectedScalarType.equals' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java'
+Result: exit 0 (completed).
+
+[53] regex-test-read
+rtk proxy sed -n '1,225p' xacml-core/src/test/java/org/xacml4j/v30/policy/function/regex/RegexBindingTest.java
+Result: exit 0 (completed).
+
+[54] test-invocation-shapes
+rtk proxy sed -n '1,245p' xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/HigherOrderVariadicInvocationTest.java
+Result: exit 0 (completed).
+
+[55] core-failure
+rtk proxy sed -n '1,150p' xacml-core/src/main/java/org/xacml4j/v30/policy/FunctionInvocationException.java
+Result: exit 0 (completed).
+
+[56] model-attestation
+rtk proxy python3 -c 'import os,json,pathlib
+sid=os.environ.get('\''CODEX_THREAD_ID'\'','\'''\'')
+root=pathlib.Path('\''<agent-home>/.codex/sessions/2026/10/29'\'')
+found=list(root.glob('\''*'\''+sid+'\''.jsonl'\'')) if sid else []
+print('\''session_files'\'',len(found))
+for p in found:
+ seen=[]
+ with p.open() as f:
+  for line in f:
+   try:r=json.loads(line)
+   except ValueError:continue
+   if r.get('\''type'\'')=='\''turn_context'\'':
+    d=r.get('\''payload'\'',{})
+    row={k:d[k] for k in ['\''model'\'','\''effort'\'','\''reasoning_effort'\''] if k in d}
+    if isinstance(d.get('\''collaboration_mode'\''),dict):
+     settings=d['\''collaboration_mode'\''].get('\''settings'\'',{})
+     row.update({k:settings[k] for k in ['\''model'\'','\''reasoning_effort'\''] if k in settings})
+    if row and (not seen or seen[-1]!=row):seen.append(row)
+ print(json.dumps(seen))
+'
+Result: exit 0 (completed).
+session_files 1
+[{"model": "gpt-6-astra", "effort": "max", "reasoning_effort": "max"}]
+
+[57] lane-procedure
+rtk proxy sed -n '1,200p' docs/ai/OPENSPEC.md
+Result: exit 0 (completed).
+
+[58] bag-builder
+rtk proxy sed -n '430,585p' xacml-core/src/main/java/org/xacml4j/v30/BagOfValues.java
+Result: exit 0 (completed).
+
+[59] diff-apply
+rtk proxy git diff --no-index xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java'
+Result: exit 1 (expected: files differ).
+
+[60] rule-outcome
+rtk rg -n -C 3 'condition.evaluate|ConditionResult|INDETERMINATE|case TRUE|case FALSE' xacml-core/src/main/java/org/xacml4j/v30/policy/Rule.java
+Result: exit 0 (completed).
+
+[61] pr-review-tail
+rtk proxy sed -n '300,370p' openspec/changes/optimize-pdp-evaluation/evidence/reviews/plan/pr-D52-argon/report.md
+Result: exit 0 (completed).
+
+[62] bag-builders
+rtk proxy sed -n '345,440p' xacml-core/src/main/java/org/xacml4j/v30/BagOfValues.java
+Result: exit 0 (completed).
+
+[63] bag-construction
+rtk proxy sed -n '45,135p' xacml-core/src/main/java/org/xacml4j/v30/BagOfValues.java
+Result: exit 0 (completed).
+
+[64] condition-path
+rtk proxy sed -n '45,170p' xacml-core/src/main/java/org/xacml4j/v30/policy/Condition.java
+Result: exit 0 (completed).
+
+[65] pending-report
+rtk proxy git status --short --untracked-files=all
+Result: exit 0 (completed).
+
+[66] source-proof-lines
+rtk rg -n 'param\(ValueExpTypeInfo|this.type =|DynamicType.isConsistent|public static boolean isDynamic|return expected.equals|return type != null|return type.equals|return this;|condition == null|ConditionResult.TRUE|ConditionResult.INDETERMINATE' xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSpec.java xacml-core/src/main/java/org/xacml4j/v30/types/DynamicType.java xacml-core/src/main/java/org/xacml4j/v30/BagOfValuesType.java xacml-core/src/main/java/org/xacml4j/v30/policy/Condition.java xacml-core/src/main/java/org/xacml4j/v30/policy/Rule.java
+Result: exit 0 (completed).
+
+[67] failure-boundary-lines
+rtk rg -n 'isValidateFuncParamsAtRuntime|Expression first|Expression second|invokeHigherOrderSingle|invokeHigherOrderPair|requireValidArguments|takesOneValuePerParameter|private static boolean single|ref.getParamSpecAt|return !deciding' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java'
+Result: exit 0 (completed).
+
+[68] review-middle-gap
+rtk proxy sed -n '89,124p' openspec/changes/optimize-pdp-evaluation/evidence/reviews/plan/pr-D52-argon/report.md
+Result: exit 0 (completed).
+
+[69] baseline-fields
+rtk rg -n 'private.*(FunctionSpec|List<Expression>|Optional<String>|boolean listInvocation|BoundCall bound|int hashCode)' xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java
+Result: exit 0 (completed).
+
+[70] frozen-fields
+rtk rg -n 'private.*(FunctionSpec|List<Expression>|Optional<String>|boolean listInvocation|Object callSite|int hashCode)' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java'
+Result: exit 0 (completed).
+
+[71] final-hashes-before-report
+rtk proxy python3 -c 'import pathlib,json,hashlib,subprocess
+p=pathlib.Path("../../../../.ntm/packets/remaining-g1-20261029")
+m=json.loads((p/'\''d52-manifest.json'\'').read_text())
+print('\''manifest_sha256'\'',hashlib.sha256((p/'\''d52-manifest.json'\'').read_bytes()).hexdigest())
+errors=[]
+for name,want in m['\''files'\''].items():
+ a=hashlib.sha256((p/'\''d52-candidate'\''/name).read_bytes()).hexdigest()
+ b=hashlib.sha256((pathlib.Path(m['\''candidate_root'\''])/name).read_bytes()).hexdigest()
+ print(name+'\'' '\''+a+'\'' frozen_match='\''+str(a==want)+'\'' protected_match='\''+str(b==want))
+ if a!=want or b!=want:errors.append(name)
+print('\''source_mismatches'\'',errors)
+for role,path in [('\''reviewer'\'','\''.'\''),('\''protected'\'',m['\''candidate_root'\''])]:
+ print(role+'\''_HEAD'\'',subprocess.check_output(['\''git'\'','\''-C'\'',path,'\''rev-parse'\'','\''HEAD'\''],text=True).strip())
+print('\''report_sha256'\'',hashlib.sha256((p/'\''d52-candidate'\''/'\''REPORT-I-D52-terra.md'\'').read_bytes()).hexdigest())
+print('\''report_matches_protected'\'',(p/'\''d52-candidate'\''/'\''REPORT-I-D52-terra.md'\'').read_bytes()==(pathlib.Path(m['\''candidate_root'\''])/'\''REPORT-I-D52-terra.md'\'').read_bytes())
+for f in ['\''report.md'\'','\''summary.md'\'','\''command.txt'\'']:
+ print('\''output_exists'\'',f,(pathlib.Path("openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra")/f).exists())
+'
+Result: exit 0 (completed).
+
+[72] runtime-path-anchors
+rtk rg -n -A 37 'private static boolean validateArguments\(FunctionReference ref, Expression first' '../../../../.ntm/packets/remaining-g1-20261029/d52-candidate/xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java'
+Result: exit 0 (completed).
+
+[73] protected-final-state
+rtk proxy git -C '../../../../.ntm/worktrees/xacml4j--batch2/cod_1' status --short
+Result: exit 0 (completed).
+
+[74] report-read
+rtk proxy sed -n '1,90p' openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra/report.md
+Result: exit 0 (completed).
+
+[75] post-report-verification
+rtk proxy python3 -c 'import pathlib,hashlib,json,subprocess
+p=pathlib.Path("../../../../.ntm/packets/remaining-g1-20261029")
+m=json.loads((p/'\''d52-manifest.json'\'').read_text())
+changed=[]
+for name,want in m['\''files'\''].items():
+ for role,base in [('\''frozen'\'',p/'\''d52-candidate'\''),('\''protected'\'',pathlib.Path(m['\''candidate_root'\'']))]:
+  if hashlib.sha256((base/name).read_bytes()).hexdigest()!=want:changed.append(role+'\'':'\''+name)
+print('\''post_report_source_mismatches'\'',changed)
+print('\''post_report_manifest_sha256'\'',hashlib.sha256((p/'\''d52-manifest.json'\'').read_bytes()).hexdigest())
+for name in ['\''report.md'\'','\''summary.md'\'']:
+ path=pathlib.Path("openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra")/name
+ s=path.read_text()
+ print(name,'\''bytes='\''+str(path.stat().st_size),'\''has_REJECT='\''+str('\''REJECT'\'' in s),'\''has_UNRUN='\''+str('\''UNRUN'\'' in s))
+print('\''reviewer_HEAD'\'',subprocess.check_output(['\''git'\'','\''rev-parse'\'','\''HEAD'\''],text=True).strip())
+print('\''protected_HEAD'\'',subprocess.check_output(['\''git'\'','\''-C'\'',m['\''candidate_root'\''],'\''rev-parse'\'','\''HEAD'\''],text=True).strip())
+'
+Result: exit 0 (completed).
+
+[76] tracked-diff-check
+rtk proxy git diff --check
+Result: exit 0 (completed).
+
+[77] post-report-state
+rtk proxy git status --short --untracked-files=all
+Result: exit 0 (completed).
+?? openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra/report.md
+?? openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra/summary.md
+
+Ripwire health: 7 checks passed. Frozen-source map ran with --no-cache; coverage is
+PARTIAL (only the supplied subset, name-based edges). It was followed by opened
+source inspection. Tool health is not behavioral or compilation proof.
+
+Artifact writes: apply_patch added only report.md, summary.md and command.txt in
+openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra/.
+The report and summary were read back. git diff --check returned 0 for tracked
+content; these evidence files are untracked and that command does not validate them.
+
+Residual gates: mutable-metadata regression, focused tests, reactor/conformance,
+compilation, fresh Apply size probe, and the controlled D52-only JMH pair/profile
+are all UNRUN. The supplied Terra test and size-probe claims were not rerun.
+
+Final artifact and protection check (exit 0):
+rtk proxy python3 -c 'import pathlib,subprocess,json,hashlib
+prefix="openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra"
+expected={prefix+'\''/'\''+f for f in ['\''report.md'\'','\''summary.md'\'','\''command.txt'\'']}
+rows=subprocess.check_output(['\''git'\'','\''status'\'','\''--porcelain=v1'\'','\''--untracked-files=all'\''],text=True).splitlines()
+print('\''\n'\''.join(rows))
+print('\''only_owned_outputs'\'',set(r[3:] for r in rows)==expected and all(r.startswith('\''?? '\'') for r in rows))
+for f in sorted(expected):
+ data=pathlib.Path(f).read_text()
+ print(pathlib.Path(f).name,'\''bytes='\''+str(len(data.encode())),'\''absolute_home_paths='\''+str('\''/Users/'\'' in data),'\''trailing_whitespace_lines='\''+str(sum(s!=s.rstrip() for s in data.splitlines())))
+p=pathlib.Path("../../../../.ntm/packets/remaining-g1-20261029")
+m=json.loads((p/'\''d52-manifest.json'\'').read_text())
+print('\''final_frozen_and_protected_match'\'',all(hashlib.sha256((base/f).read_bytes()).hexdigest()==h for f,h in m['\''files'\''].items() for base in [p/'\''d52-candidate'\'',pathlib.Path(m['\''candidate_root'\''])]))
+'
+?? openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra/command.txt
+?? openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra/report.md
+?? openspec/changes/optimize-pdp-evaluation/evidence/reviews/code/rv201-resume-d52-astra/summary.md
+only_owned_outputs True
+command.txt bytes=27324 absolute_home_paths=False trailing_whitespace_lines=0
+report.md bytes=8673 absolute_home_paths=False trailing_whitespace_lines=0
+summary.md bytes=1589 absolute_home_paths=False trailing_whitespace_lines=0
+final_frozen_and_protected_match True
+
+
+

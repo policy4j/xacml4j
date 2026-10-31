@@ -1,0 +1,29 @@
+PROJECT_ROOT = the main checkout containing .ntm/
+PACKET = ${PROJECT_ROOT}/.ntm/packets/remaining-g1-20261029
+WORKTREE = ${PROJECT_ROOT}/.ntm/worktrees/xacml4j--remaining-g1-20261029/cod_1
+EVIDENCE = openspec/changes/optimize-pdp-evaluation/evidence/tests/201-resume-d47-terra
+
+# Initial sandboxed invocation: failed opening the shared lock before a log was created.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/01-focused-red.log -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=RulesInPolicyContextPdpTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+# The same command with access to the shared lock: offline dependency resolution failed under Maven 3.9.
+
+# Earlier diagnostic only; the task-local settings file was removed. This is not the authoritative red run.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/02-focused-red.log -- -o -s ${EVIDENCE}/offline-settings.xml -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=RulesInPolicyContextPdpTest -Dsurefire.failIfNoSpecifiedTests=false test
+
+# Authoritative red, before Rule.java was edited.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/04-focused-clean-red.log --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=RulesInPolicyContextPdpTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Focused green.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/05-focused-clean-green.log --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am -Dtest=RulesInPolicyContextPdpTest -Dsurefire.failIfNoSpecifiedTests=false clean test
+
+# Affected modules and prerequisites.
+rtk proxy python3 ${PACKET}/run-build.py --worktree ${WORKTREE} --log ${EVIDENCE}/06-modules-clean.log --maven /opt/homebrew/bin/mvn -- -o -Dlicense.skipUpdateLicense=true -pl xacml-pdp -am clean test
+
+# After the runs, each of the five runner-created .log files was renamed byte-for-byte
+# to the corresponding .txt file under EVIDENCE because the user Git ignore hides *.log.
+rtk proxy python3 -c 'from pathlib import Path; e=Path("openspec/changes/optimize-pdp-evaluation/evidence/tests/201-resume-d47-terra"); names=["01-focused-red","02-focused-red","04-focused-clean-red","05-focused-clean-green","06-modules-clean"]; pairs=[(e/(n+".log"),e/(n+".txt")) for n in names]; assert all(a.is_file() and not b.exists() for a,b in pairs); [a.rename(b) for a,b in pairs]; print("Renamed five logs byte-for-byte to .txt so the evidence is not hidden by the global log ignore rule")'
+
+rtk git status --short
+rtk git diff --check
+rtk proxy shasum -a 256 xacml-core/src/main/java/org/xacml4j/v30/policy/Rule.java xacml-pdp/src/test/java/org/xacml4j/v30/pdp/RulesInPolicyContextPdpTest.java

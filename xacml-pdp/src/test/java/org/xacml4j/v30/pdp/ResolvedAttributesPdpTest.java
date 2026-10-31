@@ -24,6 +24,7 @@ package org.xacml4j.v30.pdp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -140,10 +141,10 @@ class ResolvedAttributesPdpTest
 		}
 	}
 
-	/** One to seven attributes of one category, then attributes of three categories with two issuers */
+	/** One to ten attributes of one category, then attributes of three categories with two issuers */
 	@Test
 	void categoriesAndAttributesComeInTheOrderOfAHashMultimapOfThem(){
-		for(int n = 1; n <= 7; n++){
+		for(int n = 1; n <= 10; n++){
 			List<AttributeDesignatorKey> keys = new ArrayList<>();
 			for(int i = 0; i < n; i++){
 				keys.add(key(CategoryId.SUBJECT_ACCESS, "urn:example:attribute-" + i, null, XacmlTypes.STRING));
@@ -158,12 +159,65 @@ class ResolvedAttributesPdpTest
 		assertInTheOrderOfAHashMultimap(keys);
 	}
 
+	@Test
+	void sharedIdsWithDifferentIssuersAndTypesKeepTheirResolvedOrder(){
+		AttributeDesignatorKey text = key(CategoryId.RESOURCE, "urn:example:shared", null, XacmlTypes.STRING);
+		AttributeDesignatorKey issued = key(CategoryId.RESOURCE, "urn:example:shared", ISSUER, XacmlTypes.STRING);
+		AttributeDesignatorKey number = key(CategoryId.RESOURCE, "urn:example:shared", null, XacmlTypes.INTEGER);
+		AttributeDesignatorKey other = key(CategoryId.RESOURCE, "urn:example:other", null, XacmlTypes.STRING);
+		Map<AttributeDesignatorKey, BagOfValues> bags = Map.of(
+				text, XacmlTypes.STRING.bagOf(StringVal.of("text")),
+				issued, XacmlTypes.STRING.bagOf(StringVal.of("issued")),
+				number, XacmlTypes.INTEGER.bagOf(XacmlTypes.INTEGER.ofAny(5)),
+				other, XacmlTypes.STRING.bagOf(StringVal.of("other")));
+		assertResolvedOrder(decide(List.of(text, other, issued, number), bags, false), List.of(text, other, issued, number));
+	}
+
+	@Test
+	void includedAttributesKeepCategoryReferencesGroupingAndOrderAfterLookup(){
+		Attribute first = Attribute.builder("urn:example:shared").value(StringVal.of("first")).includeInResult(true).build();
+		Attribute other = Attribute.builder("urn:example:other").value(StringVal.of("other")).includeInResult(true).build();
+		Attribute issued = Attribute.builder("urn:example:shared").issuer(ISSUER)
+				.value(StringVal.of("issued")).includeInResult(true).build();
+		Attribute hidden = Attribute.builder("urn:example:hidden").value(StringVal.of("hidden")).build();
+		Category subject = Category.subjectAccess().id("subject")
+				.entity(Entity.builder().attribute(hidden, other).build()).build();
+		Category resource = Category.resource().id("resource")
+				.entity(Entity.builder().xmlContent("<record/>").attribute(first, hidden, other, issued).build()).build();
+		Category expectedSubject = Category.subjectAccess().id("subject")
+				.entity(Entity.builder().attribute(other).build()).build();
+		Category expectedResource = Category.resource().id("resource")
+				.entity(Entity.builder().attribute(first, issued, other).build()).build();
+		RequestContext request = RequestContext.builder().attributes(subject, resource).build();
+		for(int i = 0; i < 2; i++){
+			Result result = decide(List.of(), Map.of(), false, request).result();
+			List<Category> categories = List.copyOf(result.getIncludeInResultAttributes());
+			assertEquals(List.of(expectedSubject, expectedResource), categories);
+			for(int j = 0; j < categories.size(); j++){
+				Category actual = categories.get(j);
+				Category expected = List.of(expectedSubject, expectedResource).get(j);
+				List<Attribute> order = List.copyOf(expected.getEntity().attributes());
+				assertEquals(order, List.copyOf(actual.getEntity().attributes()));
+				assertEquals(order, List.copyOf(actual.getIncludeInResultAttributes()));
+				assertEquals(expected.getReference(), actual.getReference());
+				assertFalse(actual.getEntity().hasContent());
+				assertEquals(expected.getEntity().find("urn:example:shared"), actual.getEntity().find("urn:example:shared"));
+				assertEquals(order, List.copyOf(actual.getEntity().attributes()));
+				assertEquals(expected.hashCode(), actual.hashCode());
+			}
+		}
+	}
+
 	private static void assertInTheOrderOfAHashMultimap(List<AttributeDesignatorKey> keys){
 		Map<AttributeDesignatorKey, BagOfValues> bags = new HashMap<>();
 		for(int i = 0; i < keys.size(); i++){
 			bags.put(keys.get(i), XacmlTypes.STRING.bagOf(StringVal.of("value-" + i)));
 		}
 		Decided decided = decide(keys, bags, false);
+		assertResolvedOrder(decided, keys);
+	}
+
+	private static void assertResolvedOrder(Decided decided, List<AttributeDesignatorKey> keys){
 		Multimap<CategoryId, Attribute> model = HashMultimap.create();
 		for(AttributeDesignatorKey k : decided.resolved().keySet()){
 			model.put(k.getCategory(), attribute(k, decided.resolved()));
@@ -171,8 +225,15 @@ class ResolvedAttributesPdpTest
 		List<CategoryId> order = new ArrayList<>();
 		for(Category category : decided.result().getResolvedAttributes()){
 			order.add(category.getCategoryId());
-			assertEquals(List.copyOf(Entity.builder().attributes(model.get(category.getCategoryId())).build().attributes()),
-					List.copyOf(category.getEntity().attributes()), keys::toString);
+			Entity expected = Entity.builder().attributes(model.get(category.getCategoryId())).build();
+			List<Attribute> attributes = List.copyOf(expected.attributes());
+			assertEquals(attributes, List.copyOf(category.getEntity().attributes()), keys::toString);
+			assertEquals(expected, category.getEntity());
+			assertEquals(expected.hashCode(), category.getEntity().hashCode());
+			for(Attribute attribute : attributes){
+				assertEquals(expected.find(attribute.getAttributeId()), category.getEntity().find(attribute.getAttributeId()));
+			}
+			assertEquals(attributes, List.copyOf(category.getEntity().attributes()), keys::toString);
 		}
 		assertEquals(List.copyOf(model.keySet()), order, keys::toString);
 	}
@@ -183,6 +244,11 @@ class ResolvedAttributesPdpTest
 	/** A decision whose policy resolves the keys in order, or each on a thread of a pool of four */
 	private static Decided decide(List<AttributeDesignatorKey> keys, Map<AttributeDesignatorKey, BagOfValues> bags,
 			boolean threads){
+		return decide(keys, bags, threads, RequestContext.builder().build());
+	}
+
+	private static Decided decide(List<AttributeDesignatorKey> keys, Map<AttributeDesignatorKey, BagOfValues> bags,
+			boolean threads, RequestContext request){
 		AtomicReference<Map<AttributeDesignatorKey, BagOfValues>> resolved = new AtomicReference<>();
 		ExecutorService pool = Executors.newFixedThreadPool(4);
 		try{
@@ -208,7 +274,7 @@ class ResolvedAttributesPdpTest
 			when(pip.resolve(any(), any(AttributeDesignatorKey.class)))
 					.thenAnswer(call -> Optional.ofNullable(bags.get(call.<AttributeDesignatorKey>getArgument(1))));
 			Result result = PolicyDecisionPointBuilder.builder("resolved-attributes").policyRepository(mock(PolicyRepository.class))
-					.pip(pip).rootPolicy(root).build().decide(RequestContext.builder().build()).getResults().iterator().next();
+					.pip(pip).rootPolicy(root).build().decide(request).getResults().iterator().next();
 			assertEquals(Decision.PERMIT, result.getDecision());
 			return new Decided(result, resolved.get());
 		}finally{

@@ -23,6 +23,7 @@ package org.xacml4j.v30;
  */
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,38 @@ public class RequestFixedCostCharacterizationTest
 		assertThat(RequestContext.builder().attributes(subject, resource1).build().containsRepeatingCategories()).isFalse();
 		assertThat(RequestContext.builder().attributes(subject, resource1, resource2).build().containsRepeatingCategories()).isTrue();
 		assertThat(RequestContext.builder().attributes(resource1, subject, resource2).build().getCategoryOccurrences(CategoryId.RESOURCE)).isEqualTo(2);
+	}
+
+	@Test
+	public void entityLookupUsesEqualIdentifiersAndTheFirstCategory()
+	{
+		for(int count = 0; count <= 6; count++){
+			RequestContext.Builder builder = RequestContext.builder();
+			List<Category> categories = new ArrayList<>();
+			for(int i = 0; i < count; i++){
+				CategoryId id = CategoryId.parse("urn:test:category:" + i).orElseThrow();
+				Category entry = category(id, attribute("value", null, false, "value-" + i));
+				categories.add(entry);
+				builder.attributes(entry);
+			}
+			RequestContext request = builder.build();
+			for(Category entry : categories){
+				CategoryId equal = CategoryId.parse(new String(entry.getCategoryId().getId())).orElseThrow();
+				assertThat(equal).isNotSameInstanceAs(entry.getCategoryId());
+				assertThat(request.getEntity(equal).orElseThrow()).isEqualTo(entry.getEntity());
+				assertThat(request.getEntity(entry.getCategoryId()).orElseThrow()).isEqualTo(entry.getEntity());
+			}
+			assertThat(request.getEntity(CategoryId.parse("urn:test:absent").orElseThrow()).isEmpty()).isTrue();
+			assertThrows(NullPointerException.class, () -> request.getEntity(null));
+			if(!categories.isEmpty()){
+				Category first = categories.get(0);
+				builder.attributes(category(CategoryId.parse(first.getCategoryId().getId()).orElseThrow(),
+						attribute("value", null, false, "later")));
+				RequestContext repeated = builder.build();
+				assertThat(repeated.getEntity(first.getCategoryId()).orElseThrow()).isEqualTo(first.getEntity());
+				assertThat(repeated.getCategoryOccurrences(first.getCategoryId())).isEqualTo(2);
+			}
+		}
 	}
 
 	@Test

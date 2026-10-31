@@ -174,6 +174,19 @@ public final class HigherOrderFunctions
 		return BooleanVal.of(single(context, ref, argument, false));
 	}
 
+	static BooleanVal invokeSingle(org.xacml4j.v30.EvaluationContext context, FunctionReference ref,
+			BagOfValues bag, boolean deciding) throws EvaluationException
+	{
+		return BooleanVal.of(single(context, ref, bag, deciding));
+	}
+
+	static BooleanVal invokePair(org.xacml4j.v30.EvaluationContext context, FunctionReference ref,
+			Value<?> scalar, BagOfValues bag, boolean bagFirst, boolean deciding) throws EvaluationException
+	{
+		return BooleanVal.of(deciding ? DecidingOperands.anyTrue(context, ref, scalar, bag, bagFirst)
+				: DecidingOperands.allTrue(context, ref, scalar, bag, bagFirst));
+	}
+
 	@XacmlFuncSpec(id="urn:oasis:names:tc:xacml:3.0:function:any-of-any")
 	@XacmlLegacyFunc(id="urn:oasis:names:tc:xacml:1.0:function:any-of-any")
 	@XacmlFuncReturnType(typeId="http://www.w3.org/2001/XMLSchema#boolean")

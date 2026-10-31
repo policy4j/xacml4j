@@ -238,7 +238,7 @@ public class PolicySet extends
 				LegacyOrderedPermitOverridesPolicyCombineAlgorithm.class);
 
 		private static List<CompositeDecisionRule> children(EvaluationContext context, PolicySet set){
-			if(!ALGORITHMS.contains(set.combiningAlgorithm.getClass())) return set.decisionRules;
+			if(!set.builtInAlgorithm) return set.decisionRules;
 			EvaluationContext top = DescendantEvaluationContext.topOf(context);
 			if(!(top instanceof RootEvaluationContext decision) || decision.generation().isEmpty()) return set.decisionRules;
 			Generation generation = decision.generation().orElseThrow();

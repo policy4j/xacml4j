@@ -1,0 +1,16 @@
+Run from the main checkout; read-only Git inspection through RTK:
+  rtk proxy git worktree list --porcelain
+  rtk git status --short
+  rtk proxy git -C <each-worktree> status --porcelain=v1 -z
+  rtk proxy git -C <each-preserved-batch2-worktree> diff --name-only -z HEAD
+
+Python compared bytes of tracked modified files against current main,
+counted Beads JSONL statuses, and counted task checkboxes without changing
+source or interpreting counts as implementation proof. inventory.json
+retains the structured worktree/tracker/checklist snapshot with paths
+relative to the main checkout.
+
+Tracker export:
+  rtk proxy br --db .beads/beads.db --no-auto-import --no-auto-flush sync --flush-only
+
+No build, test, benchmark, or source integration was run by this audit.

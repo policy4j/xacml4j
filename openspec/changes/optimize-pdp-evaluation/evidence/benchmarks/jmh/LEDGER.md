@@ -226,3 +226,19 @@ when they come from runs on the same machine, JDK, and flags, back to back.
 | 025 | 025-batch3-after scan | PdpDecideBenchmark.decide | corpus=synthetic:1000, request=last-permit, store=in-memory | 85.45 | 4.684 | us/op | 5.875e+04 | 31.82 | 3 x 5 |
 | 025 | 025-batch3-after scan | PdpDecideBenchmark.decide | corpus=synthetic:1000, request=last-deny, store=in-memory | 83.53 | 1.717 | us/op | 5.867e+04 | 120.6 | 3 x 5 |
 | 025 | 025-batch3-after scan | PdpDecideBenchmark.decide | corpus=synthetic:1000, request=unknown-notapplicable, store=in-memory | 91.45 | 3.145 | us/op | 5.779e+04 | 109.7 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rsa2008, request=all, store=in-memory, targetIndex=false | 1.577 | 0.09887 | us/op | 751.7 | 0.9858 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rsa2008, request=all, store=in-memory, targetIndex=true | 1.635 | 0.07002 | us/op | 782.2 | 0.05862 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rules:100, request=multi-valued, store=in-memory, targetIndex=false | 9.109 | 0.8477 | us/op | 744.9 | 1.759 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rules:100, request=multi-valued, store=in-memory, targetIndex=true | 2.966 | 0.1929 | us/op | 864.3 | 0.5859 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rules:100, request=responses, store=in-memory, targetIndex=false | 4.916 | 0.3755 | us/op | 1104 | 0.9384 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rules:100, request=responses, store=in-memory, targetIndex=true | 0.9562 | 0.05285 | us/op | 1160 | 25.04 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rules:100, request=narrow, store=in-memory, targetIndex=false | 0.3571 | 0.0149 | us/op | 288 | 0.06801 | 3 x 5 |
+| 027 | 027-pair-d47 D47 eligibility off | PdpDecideBenchmark.decide | corpus=rules:100, request=narrow, store=in-memory, targetIndex=true | 0.2685 | 0.06571 | us/op | 288 | 0.04598 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rsa2008, request=all, store=in-memory, targetIndex=false | 1.619 | 0.05346 | us/op | 717.2 | 0.05965 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rsa2008, request=all, store=in-memory, targetIndex=true | 1.589 | 0.04535 | us/op | 748.3 | 0.05584 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rules:100, request=multi-valued, store=in-memory, targetIndex=false | 9.323 | 0.7605 | us/op | 744.8 | 1.697 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rules:100, request=multi-valued, store=in-memory, targetIndex=true | 3.018 | 0.3267 | us/op | 864.3 | 0.6248 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rules:100, request=responses, store=in-memory, targetIndex=false | 5.155 | 0.2612 | us/op | 1064 | 37.56 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rules:100, request=responses, store=in-memory, targetIndex=true | 0.8833 | 0.02582 | us/op | 1112 | 0.1608 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rules:100, request=narrow, store=in-memory, targetIndex=false | 0.3721 | 0.01315 | us/op | 256 | 0.06958 | 3 x 5 |
+| 027 | 027-pair-d47 D47 on | PdpDecideBenchmark.decide | corpus=rules:100, request=narrow, store=in-memory, targetIndex=true | 0.2368 | 0.00783 | us/op | 256 | 0.0428 | 3 x 5 |

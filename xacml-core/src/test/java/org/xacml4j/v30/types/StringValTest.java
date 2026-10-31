@@ -22,7 +22,9 @@ package org.xacml4j.v30.types;
  * #L%
  */
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -39,5 +41,46 @@ public class StringValTest
 		Value v2 = XacmlTypes.STRING.ofAny("v0");
 		assertFalse(v1.equals(v2));
 		assertTrue(v0.equals(v2));
+	}
+
+	@Test
+	public void longHashCollisionsDoNotMakeDifferentStringsEqual()
+	{
+		String left = "Aa".repeat(20);
+		String right = "BB".repeat(20);
+		assertEquals(left.hashCode(), right.hashCode());
+		assertNotEquals(StringVal.of(left), StringVal.of(right));
+		assertNotEquals(StringVal.of(right), StringVal.of(left));
+	}
+
+	@Test
+	public void equalDistinctStringsAndUnicodeKeepTheirEquality()
+	{
+		for(String text : new String[]{"a".repeat(31), "a".repeat(32), "a".repeat(64),
+				"\u00e9".repeat(40), "\u4e2d".repeat(40), "\ud83d\ude00".repeat(20)}){
+			StringVal value = StringVal.of(text);
+			StringVal equal = StringVal.of(new String(text.toCharArray()));
+			assertEquals(value, value);
+			assertEquals(value, equal);
+			assertEquals(equal, value);
+			assertEquals(value.hashCode(), equal.hashCode());
+			assertNotEquals(value, StringVal.of("b" + text.substring(1)));
+			assertNotEquals(value, StringVal.of(text.substring(0, text.length() - 1) + "b"));
+			assertNotEquals(value, StringVal.of(text + "b"));
+		}
+	}
+
+	@Test
+	public void equalityWithOtherValueKeepsTheTypeCheck()
+	{
+		String text = "external string value with more than thirty-two characters";
+		StringVal value = StringVal.of(text);
+		Value<?> equal = new Value.OtherValue<String>(XacmlTypes.STRING, new String(text.toCharArray())) {};
+		assertEquals(value, equal);
+		assertEquals(equal, value);
+		assertEquals(value.hashCode(), equal.hashCode());
+		assertNotEquals(value, new Value.OtherValue<String>(XacmlTypes.ANYURI, text) {});
+		assertNotEquals(value, text);
+		assertNotEquals(value, null);
 	}
 }

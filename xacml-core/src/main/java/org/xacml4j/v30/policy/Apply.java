@@ -78,12 +78,8 @@ public final class Apply implements Expression
 	 */
 	private final boolean listInvocation;
 
-	/**
-	 * The function with the literal first argument of a type-correct two-argument expression bound
-	 * at this call site (design D6 of add-regex-engine-spi), or null when the expression has no such
-	 * argument or the function binds none
-	 */
-	private final BoundCall bound;
+	/** A literal binding or a higher-order plan: their first operands cannot have both shapes. */
+	private final Object callSite;
 
 	/** The status message of an expression that is not type correct. It names the function only. */
 	static final String NOT_TYPE_CORRECT = "Function=\"%s\" is applied to arguments that do not fit it";
@@ -104,9 +100,11 @@ public final class Apply implements Expression
 		this.typeError = inside.isPresent()?inside:typeErrorOf(spec, arguments);
 		this.invocationArguments = typeError.isPresent()?arguments:withTypeAssertions(spec, arguments);
 		this.listInvocation = FunctionSpecBuilder.readsArgumentLists(spec);
-		this.bound = (typeError.isEmpty() && arguments.size() == 2 && arguments.get(0) instanceof Value<?> literal)
+		BoundCall bound = (typeError.isEmpty() && arguments.size() == 2 && arguments.get(0) instanceof Value<?> literal)
 				?spec.bind(literal).orElse(null)
 				:null;
+		this.callSite = bound != null ? bound : typeError.isEmpty() && invocationArguments == arguments
+				? HigherOrderCall.prepare(spec, arguments).orElse(null) : null;
 	}
 
 	/**
@@ -287,8 +285,13 @@ public final class Apply implements Expression
 			throw failure;
 		}
 		try{
-			if(bound != null){
-				return bound.invoke(context, invocationArguments.get(1));
+			if(callSite != null){
+				if(callSite instanceof BoundCall bound){
+					return bound.invoke(context, invocationArguments.get(1));
+				}
+				if(!context.isValidateFuncParamsAtRuntime()){
+					return ((HigherOrderCall)callSite).evaluate(context);
+				}
 			}
 			return listInvocation
 					?spec.invokeWithList(context, invocationArguments)

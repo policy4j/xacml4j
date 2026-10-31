@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -300,19 +301,27 @@ public class ApplyArgumentValidationTest
 		Expression wrongBag = mock(Expression.class);
 		when(wrongBag.getEvaluatesTo()).thenReturn(XacmlTypes.STRING.bagType());
 		when(wrongBag.<Expression>evaluate(context)).thenReturn(XacmlTypes.INTEGER.bagOf());
+		Expression scalar = mock(Expression.class);
+		when(scalar.getEvaluatesTo()).thenReturn(XacmlTypes.STRING);
+		when(scalar.<Expression>evaluate(context)).thenReturn(string("a"));
 
 		for(String name : new String[]{"any-of", "all-of", "any-of-any"}){
-			Apply expression = (Apply) apply(F3 + name, function(F1 + "string-equal"), string("a"), wrongBag);
+			Apply expression = (Apply) apply(F3 + name, function(F1 + "string-equal"), scalar, wrongBag);
 			assertTrue(expression.isTypeCorrect());
+			clearInvocations(scalar, wrongBag);
 			EvaluationException error = assertThrows(EvaluationException.class, () -> expression.evaluate(context));
 			assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
 			assertEquals("Invalid higher-order function arguments", error.getMessage());
+			verify(scalar, times(1)).evaluate(context);
+			verify(wrongBag, times(1)).evaluate(context);
 		}
 		Apply map = (Apply) apply(F3 + "map", function(F1 + "string-normalize-space"), wrongBag);
 		assertTrue(map.isTypeCorrect());
+		clearInvocations(wrongBag);
 		EvaluationException error = assertThrows(EvaluationException.class, () -> map.evaluate(context));
 		assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
 		assertEquals("Invalid higher-order function arguments", error.getMessage());
+		verify(wrongBag, times(1)).evaluate(context);
 
 		Apply dynamic = (Apply) apply(F3 + "any-of", function(F1 + "string-equal"), string("a"),
 				dynamicBag(XacmlTypes.INTEGER));
@@ -320,6 +329,42 @@ public class ApplyArgumentValidationTest
 		EvaluationException dynamicError = assertThrows(EvaluationException.class, () -> dynamic.evaluate(context));
 		assertEquals(StatusCodeId.SYNTAX_ERROR, dynamicError.getStatus().getStatusCode().getValue());
 		assertEquals("Invalid higher-order function arguments", dynamicError.getMessage());
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	public void higherOrderChecksTheEvaluatedScalarAndNullBag(boolean runtimeValidation)
+	{
+		EvaluationContext context = mock(EvaluationContext.class);
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(runtimeValidation);
+		Expression wrongScalar = mock(Expression.class);
+		when(wrongScalar.getEvaluatesTo()).thenReturn(XacmlTypes.STRING);
+		when(wrongScalar.<Expression>evaluate(context)).thenReturn(integer(1));
+		Expression nullBag = mock(Expression.class);
+		when(nullBag.getEvaluatesTo()).thenReturn(XacmlTypes.BOOLEAN.bagType());
+
+		for(String name : new String[]{"any-of", "all-of"}){
+			for(boolean bagFirst : new boolean[]{false, true}){
+				Expression bag = mock(Expression.class);
+				when(bag.getEvaluatesTo()).thenReturn(XacmlTypes.STRING.bagType());
+				when(bag.<Expression>evaluate(context)).thenReturn(XacmlTypes.STRING.bagOf());
+				Apply expression = (Apply) (bagFirst
+						? apply(F3 + name, function(F1 + "string-equal"), bag, wrongScalar)
+						: apply(F3 + name, function(F1 + "string-equal"), wrongScalar, bag));
+				clearInvocations(bag, wrongScalar);
+				EvaluationException error = assertThrows(EvaluationException.class, () -> expression.evaluate(context));
+				assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
+				assertEquals("Invalid higher-order function arguments", error.getMessage());
+				verify(bag, times(1)).evaluate(context);
+				verify(wrongScalar, times(1)).evaluate(context);
+			}
+			Apply unary = (Apply) apply(F3 + name, function(F1 + "not"), nullBag);
+			clearInvocations(nullBag);
+			EvaluationException error = assertThrows(EvaluationException.class, () -> unary.evaluate(context));
+			assertEquals(StatusCodeId.SYNTAX_ERROR, error.getStatus().getStatusCode().getValue());
+			assertEquals("Invalid higher-order function arguments", error.getMessage());
+			verify(nullBag, times(1)).evaluate(context);
+		}
 	}
 
 	@ParameterizedTest

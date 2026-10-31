@@ -1,0 +1,26 @@
+scripts/agent-doctor.sh
+rtk python3 -c '<sha256 comparison of d52-manifest.json, d52-candidate/, cod_1 working tree, candidate base cd443805c3044e7412c25aae71dd02127994d418, and current-main baseline 759d90a6c75510d55127d8e22870f9edd985c991>'
+read_file openspec/changes/optimize-pdp-evaluation/design.md (lines 1980-2292)
+read_file openspec/changes/optimize-pdp-evaluation/tasks.md (lines 300-350, task 42.19)
+read_file openspec/changes/optimize-pdp-evaluation/evidence/reviews/plan/pr-D52-argon/report.md
+read_file xacml-jmh/README.md (lines 1-301)
+read_file xacml-jmh/src/main/java/org/xacml4j/jmh/pdp/PdpDecideBenchmark.java (lines 1-205)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/Apply.java (candidate vs 759d90a6)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/HigherOrderCall.java (candidate)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionSpecBuilder.java (candidate vs 759d90a6)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/DefaultFunctionInvocation.java (candidate vs 759d90a6)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/function/impl/HigherOrderFunctions.java (candidate vs 759d90a6)
+read_file xacml-core/src/test/java/org/xacml4j/v30/policy/ApplyArgumentValidationTest.java (candidate vs 759d90a6)
+read_file xacml-core/src/test/java/org/xacml4j/v30/policy/function/impl/LaterDecidingOperandTest.java (candidate vs 759d90a6)
+read_file xacml-pdp/src/test/java/org/xacml4j/v30/pdp/SharedConditionValuesPdpTest.java (candidate vs 759d90a6)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/FunctionReference.java (lines 1-205)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/PreparedConditions.java (lines 1-505)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/Rule.java (lines 1-375)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/TypeAssertion.java
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamValueTypeSpec.java (lines 1-138)
+read_file xacml-core/src/main/java/org/xacml4j/v30/policy/function/FunctionParamAnyValueSpec.java (lines 1-108)
+read_file xacml-core/src/main/java/org/xacml4j/v30/ValueExpTypeInfo.java (lines 1-58)
+read_file xacml-core/src/main/java/org/xacml4j/v30/BagOfValuesType.java (lines 1-106)
+read_file xacml-core/src/main/java/org/xacml4j/v30/types/ValueType.java (lines 1-172)
+read_file xacml-core/src/main/java/org/xacml4j/v30/types/DynamicType.java (lines 1-111)
+read_file xacml-core/src/main/java/org/xacml4j/v30/types/XacmlTypes.java (lines 1-281)

@@ -64,14 +64,28 @@ public final class Category implements Serializable
 	 * @param b a category builder
 	 */
 	private Category(Builder b) {
-		this.refId = b.id;
-		this.categoryId = java.util.Objects.requireNonNull(b.category,
+		this(b.category, b.id, b.entity);
+	}
+
+	private Category(CategoryId category, String refId, Entity entity){
+		this.refId = refId;
+		this.categoryId = java.util.Objects.requireNonNull(category,
 				"Category identifier must be specified");
-		this.entity = java.util.Objects.requireNonNull(b.entity,
+		this.entity = java.util.Objects.requireNonNull(entity,
 				"Category entity must be specified");
-		this.cachedRef = (b.id == null)
+		this.cachedRef = (refId == null)
 				? null
-				: CategoryReference.builder().id(b.id).build();
+				: CategoryReference.builder().id(refId).build();
+	}
+
+	/** Creates a category with no reference id. */
+	public static Category of(CategoryId category, Entity entity){
+		return new Category(category, null, entity);
+	}
+
+	/** Creates a category with the given reference id and entity (design D55). */
+	public static Category of(CategoryId category, String refId, Entity entity){
+		return new Category(category, refId, entity);
 	}
 
 	/**
@@ -127,7 +141,7 @@ public final class Category implements Serializable
 		if(included == null){
 			Collection<Attribute> attributes = getIncludeInResultAttributes();
 			included = attributes.size() == entity.attributes().size() && !entity.hasContent() ? this
-					: Category.builder(categoryId).id(refId).entity(Entity.builder().attributes(attributes).build()).build();
+					: Category.of(categoryId, refId, Entity.of(attributes));
 			includedInResult = included;
 		}
 		return included;

@@ -22,6 +22,10 @@ package org.xacml4j.v30.policy;
  * #L%
  */
 
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
+
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.types.Value;
 
@@ -34,6 +38,9 @@ import org.xacml4j.v30.types.Value;
  */
 final class ResponseWriters
 {
+	/** Exact engine definitions already visited in this walk; allocated at the first reference. */
+	private Set<VariableDefinition> variables;
+
 	private ResponseWriters(){
 	}
 
@@ -44,10 +51,11 @@ final class ResponseWriters
 		if(target.getClass() != Target.class){
 			return true;
 		}
+		ResponseWriters walk = new ResponseWriters();
 		for(MatchAnyOf anyOf : target.getAnyOf()){
 			for(MatchAllOf allOf : anyOf.getAllOf()){
 				for(Match match : allOf.getMatch()){
-					if(canWrite(match)){
+					if(walk.writes(match)){
 						return true;
 					}
 				}
@@ -62,6 +70,10 @@ final class ResponseWriters
 	}
 
 	static boolean canWrite(Expression expression){
+		return new ResponseWriters().writes(expression);
+	}
+
+	private boolean writes(Expression expression){
 		if(expression == null
 				|| expression instanceof AttributeDesignator
 				|| expression instanceof AttributeSelector){
@@ -72,7 +84,7 @@ final class ResponseWriters
 				return true;
 			}
 			for(Expression argument : apply.getArguments()){
-				if(canWrite(argument)){
+				if(writes(argument)){
 					return true;
 				}
 			}
@@ -84,7 +96,14 @@ final class ResponseWriters
 		if(expression instanceof VariableReference reference && reference.getClass() == VariableReference.class){
 			// A definition of another class can evaluate otherwise than by its expression
 			VariableDefinition definition = reference.getDefinition();
-			return definition.getClass() != VariableDefinition.class || canWrite(definition.getExpression());
+			if(definition.getClass() != VariableDefinition.class){
+				return true;
+			}
+			if(variables == null){
+				variables = Collections.newSetFromMap(new IdentityHashMap<>());
+			}
+			// A response-writing path ends the whole walk, so revisits need no further scan.
+			return variables.add(definition) && writes(definition.getExpression());
 		}
 		if(expression instanceof Value<?>){
 			return expression.getClass().getPackage() != Value.class.getPackage();
@@ -92,9 +111,9 @@ final class ResponseWriters
 		return true;
 	}
 
-	private static boolean canWrite(Match match){
+	private boolean writes(Match match){
 		return !match.predicate().writesNoResponses()
-				|| canWrite(match.getReference())
-				|| canWrite(match.getAttributeValue());
+				|| writes(match.getReference())
+				|| writes(match.getAttributeValue());
 	}
 }

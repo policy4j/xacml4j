@@ -23,7 +23,10 @@ package org.xacml4j.v30.pdp;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockingDetails;
+import static org.mockito.Mockito.spy;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -31,10 +34,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.Advice;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeAssignment;
@@ -88,6 +93,9 @@ import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.XacmlTypes;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 
 /**
  * Bead policy4j-the.4.54, scenario 3 through the PDP and a real policy
@@ -435,6 +443,170 @@ class NestedResponseStagingPdpTest
 		assertEquals(List.of(), orderedIds(result.getAssociatedAdvice()));
 	}
 
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	void sharedVariableDagKeepsNestedResponseOrderAcrossDecisions(boolean targetIndex){
+		withoutDebugLog(() -> {
+			List<VariableDefinition> variables = sharedVariableDag(new VariableDefinition("level-0", BooleanVal.of(true)), 16);
+			Policy silent = Policy.builder("dag-silent").version("1.0")
+					.combiningAlgorithm(ALGORITHMS.getRuleAlgorithm(
+							URN + "1.0:rule-combining-algorithm:first-applicable"))
+					.vars(variables)
+					.rule(Rule.builder("dag-rule", Effect.PERMIT)
+							.condition(Condition.condition(new VariableReference(variables.getLast())))).build();
+			PolicySet nested = PolicySet.builder("dag-nested").version("1.0")
+					.withCombiningAlgorithm(ALGORITHMS.getPolicyAlgorithm(
+							URN + "3.0:policy-combining-algorithm:deny-overrides"))
+					.policy(silent).policy(orderedPolicy("a"))
+					.obligation(obligation("b", "b"))
+					.advice(AdviceExpression.builder("b", Effect.PERMIT).attribute("origin", StringVal.of("b")))
+					.build();
+			PolicySet root = PolicySet.builder("dag-root").version("1.0")
+					.withCombiningAlgorithm(ALGORITHMS.getPolicyAlgorithm(
+							URN + "3.0:policy-combining-algorithm:deny-overrides"))
+					.policySet(nested).policy(orderedPolicy("c")).build();
+			PolicyDecisionPoint pdp = pdp(root, PolicyRepository.build("dag-staging").build(), targetIndex);
+			for(int decision = 0; decision < 2; decision++){
+				Result result = decide(pdp);
+				assertEquals(Decision.PERMIT, result.getDecision());
+				assertEquals(StatusCodeId.OK, result.getStatus().getStatusCode().getValue());
+				assertEquals(List.of("a", "b", "c"), orderedIds(result.getObligations()));
+				assertEquals(List.of("a", "b", "c"), orderedIds(result.getAssociatedAdvice()));
+			}
+			return null;
+		});
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	void customDefinitionAfterSharedVariableDagKeepsResponsesWithItsDecision(boolean denied){
+		Result result = withoutDebugLog(() -> {
+			List<VariableDefinition> variables = sharedVariableDag(new VariableDefinition("level-0", BooleanVal.of(true)), 16);
+			VariableDefinition writes = new VariableDefinition("writes", BooleanVal.of(true)){
+				@Override public ValueExp evaluate(EvaluationContext context){
+					addPermitResponses(context, "definition");
+					return super.evaluate(context);
+				}
+			};
+			Expression condition = and(new VariableReference(variables.getLast()), new VariableReference(writes));
+			variables.add(writes);
+			Policy custom = Policy.builder("dag-custom").version("1.0")
+					.combiningAlgorithm(ALGORITHMS.getRuleAlgorithm(
+							URN + "1.0:rule-combining-algorithm:first-applicable"))
+					.vars(variables).rule(Rule.builder("custom-rule", denied ? Effect.DENY : Effect.PERMIT)
+							.condition(Condition.condition(condition))).build();
+			PolicySet nested = PolicySet.builder("dag-custom-nested").version("1.0")
+					.withCombiningAlgorithm(ALGORITHMS.getPolicyAlgorithm(
+							URN + "1.0:policy-combining-algorithm:first-applicable"))
+					.policy(custom).build();
+			PolicySet root = PolicySet.builder("dag-custom-root").version("1.0")
+					.withCombiningAlgorithm(ALGORITHMS.getPolicyAlgorithm(URN + "3.0:policy-combining-algorithm:"
+							+ (denied ? "permit-overrides" : "deny-overrides")))
+					.policySet(nested).policy(orderedPolicy("winner")).build();
+			return decide(pdp(root, PolicyRepository.build("dag-custom-staging").build()));
+		});
+		assertEquals(Decision.PERMIT, result.getDecision());
+		assertEquals(StatusCodeId.OK, result.getStatus().getStatusCode().getValue());
+		assertEquals(denied ? List.of("winner") : List.of("definition-obligation", "winner"), orderedIds(result.getObligations()));
+		assertEquals(denied ? List.of("winner") : List.of("definition-advice", "winner"), orderedIds(result.getAssociatedAdvice()));
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	void customAlgorithmsKeepAllChildrenWhenTargetIndexIsEnabled(boolean policySet){
+		Target otherResource = Target.builder().anyOf(MatchAnyOf.builder().anyOf(MatchAllOf.builder()
+				.match(StringVal.of("other"), resourceId(), FUNCTIONS.getFunction(URN + "1.0:function:string-equal").orElseThrow())
+				.build()).build()).build();
+		CompositeDecisionRule custom = policySet
+				? PolicySet.builder("inventory-set").version("1.0").withCombiningAlgorithm(fullChildrenCombiner())
+						.policy(Policy.builder("other-policy").version("1.0").target(otherResource)
+								.combiningAlgorithm(ALGORITHMS.getRuleAlgorithm(URN + "1.0:rule-combining-algorithm:first-applicable"))
+								.rule(Rule.builder("other-rule", Effect.PERMIT)).build())
+						.policy(silentPolicy("matching-policy", Effect.PERMIT)).build()
+				: Policy.builder("inventory-policy").version("1.0").combiningAlgorithm(fullChildrenCombiner())
+						.rule(Rule.builder("other-rule", Effect.PERMIT).target(otherResource))
+						.rule(Rule.builder("matching-rule", Effect.PERMIT)).build();
+		PolicySet root = PolicySet.builder("inventory-root").version("1.0")
+				.withCombiningAlgorithm(ALGORITHMS.getPolicyAlgorithm(URN + "3.0:policy-combining-algorithm:deny-overrides"))
+				.compositeDecisionRules(custom).build();
+		PolicyDecisionPoint pdp = pdp(root, PolicyRepository.build("inventory-staging").build(), true);
+		RequestContext request = RequestContext.builder().attributes(Category.builder(CategoryId.RESOURCE)
+				.entity(Entity.builder().attribute(Attribute.builder(RESOURCE_ID).value(StringVal.of("doc")).build()).build()).build()).build();
+		for(int decision = 0; decision < 2; decision++){
+			Result result = pdp.decide(request).getResults().iterator().next();
+			assertEquals(Decision.PERMIT, result.getDecision());
+			assertEquals(StatusCodeId.OK, result.getStatus().getStatusCode().getValue());
+			assertEquals(List.of("inventory-obligation"), orderedIds(result.getObligations()));
+			assertEquals(List.of("inventory-advice"), orderedIds(result.getAssociatedAdvice()));
+		}
+	}
+
+	/** A legitimate extension can decide from the full child inventory, including nonmatching targets. */
+	private static <D extends DecisionRule> DecisionCombiningAlgorithm<D> fullChildrenCombiner(){
+		return new DecisionCombiningAlgorithm<>() {
+			@Override public String getId(){ return "inventory"; }
+			@Override public Decision combine(EvaluationContext context, List<D> children){
+				if(children.size() != 2){
+					return Decision.DENY;
+				}
+				addPermitResponses(context, "inventory");
+				return Decision.PERMIT;
+			}
+		};
+	}
+
+	/**
+	 * Independent deterministic work probe, separate from the response outcomes above. The inline
+	 * spy retains the exact engine class and the real getter; only its calls are counted. There is
+	 * no elapsed-time assertion and no subclass that would trigger conservative fallback.
+	 */
+	@Test
+	void responseCapabilityTraversalProbeReadsSharedDefinitionOncePerWalk() throws Exception{
+		VariableDefinition leaf = spy(new VariableDefinition("level-0", BooleanVal.of(true)));
+		assertEquals(VariableDefinition.class, leaf.getClass());
+		Expression root = withoutDebugLog(() -> new VariableReference(sharedVariableDag(leaf, 12).getLast()));
+		Method canWrite = Class.forName("org.xacml4j.v30.policy.ResponseWriters").getDeclaredMethod("canWrite", Expression.class);
+		canWrite.setAccessible(true);
+		// Building Apply arguments can inspect definitions too; count only the walk under test.
+		long setupReads = expressionReads(leaf);
+		for(int walk = 1; walk <= 2; walk++){
+			assertFalse((boolean)canWrite.invoke(null, root));
+			long reads = expressionReads(leaf) - setupReads;
+			System.out.println("RESPONSE_CAPABILITY_PROBE depth=12 definitions=13 walk=" + walk + " cumulativeLeafReads=" + reads);
+			assertEquals(walk, reads, "each walk must scan a shared exact definition once");
+		}
+	}
+
+	private static long expressionReads(VariableDefinition definition){
+		return mockingDetails(definition).getInvocations().stream()
+				.filter(invocation -> invocation.getMethod().getName().equals("getExpression")).count();
+	}
+
+	private static List<VariableDefinition> sharedVariableDag(VariableDefinition leaf, int depth){
+		List<VariableDefinition> variables = new ArrayList<>(List.of(leaf));
+		for(int level = 1; level <= depth; level++){
+			VariableDefinition below = variables.getLast();
+			variables.add(new VariableDefinition("level-" + level, and(new VariableReference(below), new VariableReference(below))));
+		}
+		return variables;
+	}
+
+	private static Apply and(Expression first, Expression second){
+		return Apply.builder(FUNCTIONS.getFunction(URN + "1.0:function:and").orElseThrow()).param(first, second).build();
+	}
+
+	/** A reference's debug text expands its whole DAG; suppress that unrelated work and restore logging. */
+	private static <T> T withoutDebugLog(Supplier<T> work){
+		Logger log = (Logger)LoggerFactory.getLogger("org.xacml4j");
+		Level previous = log.getLevel();
+		log.setLevel(Level.INFO);
+		try{
+			return work.get();
+		}finally{
+			log.setLevel(previous);
+		}
+	}
+
 	/** A Deny rule with the given condition, beside a Permit policy, under permit-overrides */
 	private static PolicySet denyBesideAPermit(Condition condition){
 		Policy conditional = Policy.builder("conditional").version("1.0")
@@ -508,8 +680,16 @@ class NestedResponseStagingPdpTest
 	}
 
 	private static PolicyDecisionPoint pdp(PolicySet root, PolicyRepository repository){
-		return PolicyDecisionPointBuilder.builder("staging-capabilities")
-				.policyRepository(repository).pip(mock(PolicyInformationPoint.class)).rootPolicy(root).build();
+		return pdp(root, repository, false);
+	}
+
+	private static PolicyDecisionPoint pdp(PolicySet root, PolicyRepository repository, boolean targetIndex){
+		PolicyDecisionPointBuilder builder = PolicyDecisionPointBuilder.builder("staging-capabilities")
+				.policyRepository(repository).pip(mock(PolicyInformationPoint.class)).rootPolicy(root);
+		if(targetIndex){
+			builder.targetIndex();
+		}
+		return builder.build();
 	}
 
 	private static Result decide(PolicyDecisionPoint pdp){

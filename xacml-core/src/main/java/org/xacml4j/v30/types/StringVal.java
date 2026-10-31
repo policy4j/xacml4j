@@ -70,6 +70,19 @@ public final class StringVal extends Value.OtherValue<String>
         return v;
     }
 
+    @Override
+    public boolean equals(Object other){
+        if(other == this){
+            return true;
+        }
+        if(other instanceof StringVal string && value.length() >= 32
+                && value.length() == string.value.length()
+                && value.hashCode() != string.value.hashCode()){
+            return false;
+        }
+        return super.equals(other);
+    }
+
 
     public BooleanVal equalsIgnoreCase(StringVal v){
         return BooleanVal.of(get().equalsIgnoreCase(v.get()));

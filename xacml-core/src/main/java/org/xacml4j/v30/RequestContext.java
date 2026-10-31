@@ -282,8 +282,17 @@ public class RequestContext
 
 
 	public Optional<Entity> getEntity(CategoryId category){
-		// No stream over a transformed view: this runs for every attribute lookup of a decision
-		// (change optimize-pdp-evaluation, D6). The first entity of the category, as before.
+		Preconditions.checkNotNull(category);
+		if(categories.size() <= 4){
+			for(int i = 0; i < categories.size(); i++){
+				Category found = categories.get(i);
+				CategoryId id = found.getCategoryId();
+				if(id == category || category.equals(id)){
+					return found.optionalEntity();
+				}
+			}
+			return Optional.empty();
+		}
 		Collection<Category> found = getCategory(category);
 		if(found.isEmpty()){
 			return Optional.empty();

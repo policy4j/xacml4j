@@ -23,10 +23,9 @@ package org.xacml4j.v30.policy;
  */
 
 
-import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Decision;
@@ -51,6 +50,8 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	 * built-in combining algorithm may evaluate it in the context of its policy (design D47)
 	 */
 	private final boolean inPolicyContext;
+	/** A target with a match needs a successful precheck before its rule may borrow the policy context. */
+	private final boolean targetHasMatch;
 	/**
 	 * The hash code once computed; every field that it reads is fixed when the rule is built (cycle AR).
 	 * Hash inputs must remain immutable, including values supplied by trusted extensions.
@@ -60,7 +61,9 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	private Rule(Builder b){
 		super(b);
 		this.effect = b.effect;
-		this.inPolicyContext = new EngineOnly().rule(this);
+		EngineOnly eligibility = new EngineOnly();
+		this.inPolicyContext = eligibility.rule(this);
+		this.targetHasMatch = eligibility.targetHasMatch;
 	}
 
 	public static Builder builder(String ruleId, Effect effect){
@@ -92,6 +95,11 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	/** Whether a built-in combining algorithm may evaluate this rule in the context of its policy (design D47) */
 	final boolean evaluatesInPolicyContext(){
 		return inPolicyContext;
+	}
+
+	/** Whether an undecided target must be matched in this rule's own context. */
+	final boolean targetNeedsPrecheck(){
+		return targetHasMatch;
 	}
 
 	@Override
@@ -240,14 +248,20 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 	 * Tells whether no code of another implementation can receive the context of a rule (design D47, plan
 	 * review PR-D47-argon): its target, condition and responses, and the variable definitions that they
 	 * reference, are of the engine's classes; every match predicate, applied function and referenced
-	 * function is a trusted built-in; and every literal is a value of the engine. Any other expression, a
-	 * type assertion or a quantified expression among them, counts as one that can. Each definition is
-	 * walked once, so that a diamond of definitions takes linear time and a cycle ends.
+	 * function is a trusted built-in; and every literal is a value of the engine. A match can pass an
+	 * unchecked runtime value to its predicate, so a target with a match also needs a successful
+	 * precheck. A higher-order call over unchecked values keeps a rule context. Any other expression, a type assertion or a
+	 * quantified expression among them, counts as one that can. Each definition is walked once, so
+	 * that a diamond of definitions takes linear time and a cycle ends conservatively.
 	 */
 	private static final class EngineOnly
 	{
-		/** The definitions walked so far, by identity; made at the first reference */
-		private Set<VariableDefinition> walked;
+		private static final int UNSAFE = 1;
+		private static final int RUNTIME_VALUE = 2;
+		private static final int FUNCTION_REFERENCE = 4;
+		/** The provenance of definitions walked so far, by identity; made at the first reference */
+		private Map<VariableDefinition, Integer> walked;
+		private boolean targetHasMatch;
 
 		boolean rule(Rule rule){
 			return target(rule.getTarget()) && condition(rule.getCondition())
@@ -271,6 +285,7 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 						return false;
 					}
 					for(Match match : allOf.getMatch()){
+						targetHasMatch = true;
 						if(match.getClass() != Match.class || !FunctionSpecBuilder.usesBuiltInInvocation(match.predicate())
 								|| !expression(match.getReference()) || !expression(match.getAttributeValue())){
 							return false;
@@ -300,51 +315,68 @@ public class Rule extends BaseDecisionRule implements PolicyElement
 		}
 
 		private boolean expression(Expression e){
+			return (provenance(e) & UNSAFE) == 0;
+		}
+
+		/**
+		 * Summarizes whether an expression can supply unchecked runtime values or a function reference.
+		 * A call that combines the two can evaluate such values with its context. A built-in Apply
+		 * returns a ValueExp, so its function-reference arguments do not escape as a reference. Its
+		 * result may contain unchecked values even when all its arguments are literals, so every built-in
+		 * call supplies runtime provenance, which also passes through variable definitions.
+		 */
+		private int provenance(Expression e){
 			Class<?> type = e.getClass();
 			if(type == AttributeDesignator.class || type == AttributeSelector.class){
-				return true;
+				return RUNTIME_VALUE;
 			}
 			if(e instanceof Value<?>){
-				return type.getPackage() == Value.class.getPackage();
+				return type.getPackage() == Value.class.getPackage() ? 0 : UNSAFE;
 			}
 			if(type == BagOfValues.class){
 				// A higher-order function evaluates each value of a literal bag with the context of the rule
 				BagOfValues bag = (BagOfValues)e;
+				int flags = 0;
 				for(int i = 0; i < bag.size(); i++){
-					if(!expression(bag.valueAt(i))){
-						return false;
-					}
+					flags |= provenance(bag.valueAt(i));
 				}
-				return true;
+				return flags;
 			}
 			if(type == FunctionReference.class){
 				// A higher-order function calls it with the context of the rule
-				return FunctionSpecBuilder.usesBuiltInInvocation(((FunctionReference)e).function());
+				return FunctionSpecBuilder.usesBuiltInInvocation(((FunctionReference)e).function())
+						? FUNCTION_REFERENCE : UNSAFE;
 			}
 			if(type == Apply.class){
 				Apply apply = (Apply)e;
 				if(!FunctionSpecBuilder.usesBuiltInInvocation(apply.function())){
-					return false;
+					return UNSAFE;
 				}
+				int flags = 0;
 				for(Expression argument : apply.getArguments()){
-					if(!expression(argument)){
-						return false;
-					}
+					flags |= provenance(argument);
 				}
-				return true;
+				if((flags & UNSAFE) != 0 || (flags & (RUNTIME_VALUE | FUNCTION_REFERENCE))
+						== (RUNTIME_VALUE | FUNCTION_REFERENCE)) return UNSAFE;
+				return RUNTIME_VALUE;
 			}
 			if(type == VariableReference.class){
 				VariableDefinition definition = ((VariableReference)e).getDefinition();
 				if(definition.getClass() != VariableDefinition.class){
-					return false;
+					return UNSAFE;
 				}
 				if(walked == null){
-					walked = Collections.newSetFromMap(new IdentityHashMap<>());
+					walked = new IdentityHashMap<>();
 				}
-				// A definition walked before, or being walked, adds nothing
-				return !walked.add(definition) || expression(definition.getExpression());
+				Integer flags = walked.get(definition);
+				if(flags != null) return flags;
+				// A cycle is not proven safe. A completed definition retains its provenance on reuse.
+				walked.put(definition, UNSAFE);
+				int result = provenance(definition.getExpression());
+				walked.put(definition, result);
+				return result;
 			}
-			return false;
+			return UNSAFE;
 		}
 	}
 

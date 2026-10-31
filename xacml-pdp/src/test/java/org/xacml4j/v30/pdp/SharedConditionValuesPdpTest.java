@@ -23,6 +23,9 @@ package org.xacml4j.v30.pdp;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -34,7 +37,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,9 +54,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.xacml4j.v30.Attribute;
 import org.xacml4j.v30.AttributeDesignatorKey;
 import org.xacml4j.v30.AttributeReferenceKey;
+import org.xacml4j.v30.BagOfValues;
 import org.xacml4j.v30.Category;
 import org.xacml4j.v30.CategoryId;
 import org.xacml4j.v30.CompositeDecisionRule;
@@ -60,17 +67,20 @@ import org.xacml4j.v30.DecisionRule;
 import org.xacml4j.v30.Effect;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.Expression;
+import org.xacml4j.v30.ExpressionVisitor;
 import org.xacml4j.v30.PolicyDecisionPoint;
 import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Result;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.ValueExp;
+import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.Apply;
 import org.xacml4j.v30.policy.AttributeDesignator;
 import org.xacml4j.v30.policy.Condition;
 import org.xacml4j.v30.policy.ConditionResult;
 import org.xacml4j.v30.policy.DecisionCombiningAlgorithm;
 import org.xacml4j.v30.policy.FunctionSpec;
+import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.MatchAllOf;
 import org.xacml4j.v30.policy.MatchAnyOf;
 import org.xacml4j.v30.policy.Policy;
@@ -96,6 +106,8 @@ import org.xacml4j.v30.spi.repository.PolicyRepository;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.Entity;
 import org.xacml4j.v30.types.StringVal;
+import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 /**
@@ -154,6 +166,103 @@ class SharedConditionValuesPdpTest
 		assertEquals(Decision.PERMIT, decide(pdp, request(subject("department-5", List.of(EMAIL)))).getDecision());
 		assertEquals(Decision.NOT_APPLICABLE, decide(pdp, request(subject("department-5", List.of("  Bob@Example.ORG ")))).getDecision());
 		assertEquals(Decision.PERMIT, decide(pdp, request(subject("department-2", List.of(" carol@example.com")))).getDecision());
+	}
+
+	@Test
+	void aSharedOperandInsideAHigherOrderConditionKeepsItsDecision() throws Exception {
+		Policy.Builder policy = Policy.builder("higher-order-shared").version("1.0")
+				.combiningAlgorithm(ALGORITHMS.getRuleAlgorithm(FIRST_APPLICABLE));
+		FunctionSpec anyOf = STANDARD.functions().getFunction("urn:oasis:names:tc:xacml:3.0:function:any-of").orElseThrow();
+		FunctionReference equals = new FunctionReference(STANDARD.function("string-equal"));
+		for(int i = 0; i < RULES; i++){
+			String address = i == RULES - 1 ? "alice.smith@example.com" : "other" + i + "@example.com";
+			Expression predicate = Apply.builder(anyOf).param(equals, STANDARD.normalized(designator(SUBJECT_EMAIL, false)),
+					XacmlTypes.STRING.bagOf(StringVal.of(address))).build();
+			policy.rule(Rule.builder("rule-" + i, Effect.PERMIT).condition(new Condition(predicate)));
+		}
+		Policy built = policy.build();
+		for(List<String> emails : List.of(List.of(EMAIL), List.of("bob@example.org"), List.<String>of())){
+			RequestContext request = request(subject("department-0", emails));
+			Result shared = decide(pdp(built), request);
+			assertEquals(decide(observed(built), request), shared);
+			assertEquals(emails.isEmpty() ? Decision.INDETERMINATE_P
+					: emails.get(0).equals(EMAIL) ? Decision.PERMIT : Decision.NOT_APPLICABLE, shared.getDecision());
+		}
+		// A metadata correction must preserve both optimizations; equal decisions alone do not prove that.
+		Field preparedField = Policy.class.getDeclaredField("preparedConditions");
+		preparedField.setAccessible(true);
+		Object prepared = preparedField.get(built);
+		assertNotNull(prepared);
+		Field predicatesField = prepared.getClass().getDeclaredField("predicates");
+		predicatesField.setAccessible(true);
+		Map<?, ?> predicates = (Map<?, ?>)predicatesField.get(prepared);
+		assertEquals(RULES, predicates.size());
+		Field callSite = Apply.class.getDeclaredField("callSite");
+		callSite.setAccessible(true);
+		for(Object value : predicates.values()){
+			Apply copy = assertInstanceOf(Apply.class, ((Optional<?>)value).orElseThrow());
+			assertEquals("org.xacml4j.v30.policy.PreparedConditions$Shared", copy.getArguments().get(1).getClass().getName());
+			Object higherOrder = callSite.get(copy);
+			assertNotNull(higherOrder);
+			assertEquals("org.xacml4j.v30.policy.HigherOrderCall", higherOrder.getClass().getName());
+		}
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"any-of", "all-of"})
+	void mutableHigherOrderMetadataMakesAPermitRuleIndeterminate(String name){
+		MetadataType expected = new MetadataType("A");
+		MetadataType actual = new MetadataType("A");
+		List<String> calls = new ArrayList<>();
+		FunctionSpec predicate = FunctionSpecBuilder.builder("urn:test:d52:predicate").param(expected)
+				.build(XacmlTypes.BOOLEAN, new FunctionInvocation(){
+					@Override
+					public ValueExp invoke(FunctionSpec spec, EvaluationContext context, Expression... arguments){
+						return invoke(spec, context, Arrays.asList(arguments));
+					}
+					@Override
+					public ValueExp invoke(FunctionSpec spec, EvaluationContext context, List<Expression> arguments){
+						calls.add("predicate");
+						return BooleanVal.of(true);
+					}
+				});
+		BagOfValues empty = actual.emptyBag();
+		Expression operand = new Expression(){
+			@Override public ValueExpTypeInfo getEvaluatesTo(){ return empty.getEvaluatesTo(); }
+			@Override @SuppressWarnings("unchecked")
+			public <T extends Expression> T evaluate(EvaluationContext context){
+				calls.add("operand");
+				expected.key = "B";
+				return (T)empty;
+			}
+			@Override public void accept(ExpressionVisitor visitor){}
+		};
+		Apply condition = Apply.builder(STANDARD.functions().getFunction(
+				"urn:oasis:names:tc:xacml:3.0:function:" + name).orElseThrow())
+				.param(new FunctionReference(predicate), operand).build();
+		assertTrue(condition.isTypeCorrect());
+		Policy policy = Policy.builder("metadata-policy").version("1.0")
+				.combiningAlgorithm(ALGORITHMS.getRuleAlgorithm(FIRST_APPLICABLE))
+				.rule(Rule.builder("metadata-rule", Effect.PERMIT).condition(new Condition(condition))).build();
+
+		Result result = decide(pdp(policy), request());
+		assertEquals(Decision.INDETERMINATE_P, result.getDecision());
+		assertEquals(StatusCodeId.SYNTAX_ERROR, result.getStatus().getStatusCode().getValue());
+		assertEquals(Optional.of("Invalid higher-order function arguments"), result.getStatus().getMessage());
+		assertEquals(List.of("operand"), calls);
+	}
+
+	private static final class MetadataType implements ValueType {
+		private String key;
+		MetadataType(String key){ this.key = key; }
+		@Override public String getTypeId(){ return "urn:test:d52:" + key; }
+		@Override public String getShortTypeId(){ return key; }
+		@Override public Set<String> getTypeIdAliases(){ return Set.of(); }
+		@Override public <T extends Value<?>> T ofAny(Object value, Object... params){
+			throw new UnsupportedOperationException("Only an empty bag is needed");
+		}
+		@Override public boolean equals(Object other){ return other instanceof MetadataType type && key.equals(type.key); }
+		@Override public int hashCode(){ return key.hashCode(); }
 	}
 
 	static Stream<Arguments> otherDesignators(){

@@ -62,6 +62,20 @@ final class BagStorages
 	}
 
 	/**
+	 * A positive engine size, -1 for an engine empty bag, or 0 for custom storage.
+	 * Zero also denotes an uninitialized cache, so it must delegate to the storage.
+	 */
+	static int cardinality(BagStorage storage) {
+		if (storage instanceof Empty) return -1;
+		if (storage instanceof Single) return 1;
+		if (storage instanceof Values values) return values.size;
+		if (storage instanceof Integers integers) return integers.size;
+		if (storage instanceof Doubles doubles) return doubles.size;
+		if (storage instanceof Booleans booleans) return booleans.trueCount + booleans.falseCount;
+		return 0;
+	}
+
+	/**
 	 * Collects the values. A bag of no value or of one value gets a storage without arrays, and
 	 * the values of a larger bag are grouped at {@link #build()} (change optimize-pdp-evaluation,
 	 * cycles X and AF).

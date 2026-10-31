@@ -82,8 +82,10 @@ public final class TargetBeforeContext
 		if(known.isPresent() && known.get() == MatchResult.NOMATCH){
 			return root(context).evaluatePrechecked(context, child, known.get());
 		}
-		// After the precheck, which leaves an active rule to its own evaluation
-		if(context instanceof Policy.PolicyDescendantEvaluationContext policy && policy.enterRule(child)){
+		// An undecided Match can evaluate unchecked values with the rule's context. A successful
+		// precheck leaves its answer for this child, so its target will not be matched again.
+		if((known.isPresent() || child.getClass() != Rule.class || !((Rule)child).targetNeedsPrecheck())
+				&& context instanceof Policy.PolicyDescendantEvaluationContext policy && policy.enterRule(child)){
 			try{
 				return evaluate(context, child, known);
 			}finally{

@@ -27,6 +27,7 @@ import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -47,6 +48,7 @@ import org.xacml4j.v30.types.ISO8601DateTime;
 import org.xacml4j.v30.types.ISO8601Time;
 import org.xacml4j.v30.types.StringVal;
 import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -188,6 +190,45 @@ public final class DefaultFunctionInvocation implements FunctionInvocation
 	public boolean isTrustedBuiltIn()
 	{
 		return builtIn;
+	}
+
+	/** Whether this direct binding implements a prepared any-of or all-of call (design D52). */
+	public boolean isPreparedHigherOrderOperator(int dataOperands)
+	{
+		return (dataOperands == 1 || dataOperands == 2)
+				&& (callShape == CallShape.ANY_OF || callShape == CallShape.ALL_OF);
+	}
+
+	/** Calls the prepared body, or the checked body on the same evaluated operand. */
+	public BooleanVal invokeHigherOrderSingle(FunctionSpec spec, EvaluationContext context,
+			List<Expression> arguments, FunctionReference ref, Expression value, BagOfValuesType expectedBagType)
+	{
+		try{
+			if(value instanceof BagOfValues bag && expectedBagType.equals(bag.getEvaluatesTo())){
+				return HigherOrderFunctions.invokeSingle(context, ref, bag, callShape == CallShape.ANY_OF);
+			}
+		}catch(Throwable e){
+			throw new FunctionInvocationException(spec, invocationCause(e));
+		}
+		return (BooleanVal)invokeFast(spec, context, arguments, ref, value, null, null);
+	}
+
+	/** Calls the prepared body, or the checked body on the same evaluated operands. */
+	public BooleanVal invokeHigherOrderPair(FunctionSpec spec, EvaluationContext context,
+			List<Expression> arguments, FunctionReference ref, Expression first, Expression second,
+			ValueType expectedScalarType, BagOfValuesType expectedBagType, boolean bagFirst)
+	{
+		try{
+			Expression bagValue = bagFirst ? first : second;
+			Expression scalarValue = bagFirst ? second : first;
+			if(bagValue instanceof BagOfValues bag && expectedBagType.equals(bag.getEvaluatesTo())
+					&& scalarValue instanceof Value<?> scalar && expectedScalarType.equals(scalar.getEvaluatesTo())){
+				return HigherOrderFunctions.invokePair(context, ref, scalar, bag, bagFirst, callShape == CallShape.ANY_OF);
+			}
+		}catch(Throwable e){
+			throw new FunctionInvocationException(spec, invocationCause(e));
+		}
+		return (BooleanVal)invokeFast(spec, context, arguments, ref, first, second, null);
 	}
 
 	public int fixedArgumentCount()

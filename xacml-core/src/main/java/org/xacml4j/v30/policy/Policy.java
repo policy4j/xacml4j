@@ -232,7 +232,7 @@ public class Policy extends BaseCompositeDecisionRule
 	private static final class Prepared
 	{
 		private static List<Rule> children(EvaluationContext context, Policy policy){
-			if(!BUILT_IN_ALGORITHMS.contains(policy.combiningAlgorithm.getClass())) return policy.rules;
+			if(!policy.builtInAlgorithm) return policy.rules;
 			EvaluationContext top = DescendantEvaluationContext.topOf(context);
 			if(!(top instanceof RootEvaluationContext decision) || decision.generation().isEmpty()) return policy.rules;
 			Generation generation = decision.generation().orElseThrow();

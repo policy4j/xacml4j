@@ -175,6 +175,16 @@ public final class Entity extends Value.SelfValue<Entity>
 		return new Entity(content, index);
 	}
 
+	/** Creates an entity without content from an immutable attribute index. */
+	public static Entity of(AttributeIndex index){
+		return new Entity(null, index);
+	}
+
+	/** Snapshots response attributes, building their id index only on demand (design D55). */
+	public static Entity of(Collection<Attribute> attributes){
+		return new Entity(null, AttributeIndex.of(attributes));
+	}
+
 	public static Entity of(Content content){
 		return new Entity(content, AttributeIndex.empty());
 	}

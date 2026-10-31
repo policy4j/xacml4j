@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -138,6 +139,63 @@ class BagStorageCompatibilityTest
 		assertTrue(bag.contains(first));
 	}
 
+	static Stream<Arguments> cardinalityBags() {
+		Stream<Arguments> custom = Stream.of(0, 1, 3).map(size -> {
+			List<Value<?>> input = new ArrayList<>(size);
+			for (int i = 0; i < size; i++) input.add(CustomType.INSTANCE.ofAny("value"));
+			return Arguments.of("custom-" + size, CustomType.INSTANCE, input);
+		});
+		return Stream.concat(bagsOfTheSmallAndThresholdSizes(), custom).flatMap(arguments -> {
+			Object[] fixture = arguments.get();
+			return Stream.of(false, true).map(deserialized ->
+					Arguments.of(fixture[0], fixture[1], fixture[2], deserialized));
+		});
+	}
+
+	@ParameterizedTest(name = "{0}, deserialized={3}")
+	@MethodSource("cardinalityBags")
+	void defaultCardinalityStillUsesStorage(String name, ValueType type, List<Value<?>> input,
+			boolean deserialized) throws Exception {
+		BagOfValues bag = type.bagBuilder().attributes(input).build();
+		if (deserialized) {
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			try (ObjectOutputStream out = new ObjectOutputStream(bytes)) {
+				out.writeObject(bag);
+			}
+			try (ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bytes.toByteArray()))) {
+				bag = (BagOfValues) in.readObject();
+			}
+		}
+		assertEquals(input.size(), bag.size());
+		assertEquals(input.isEmpty(), bag.isEmpty());
+		int cached = resetCardinality(bag);
+		assertEquals(input.size(), bag.size());
+		assertEquals(input.isEmpty(), bag.isEmpty());
+		// Engine storage has a nonzero encoding, so ordinary calls need no storage dispatch.
+		assertEquals(type == CustomType.INSTANCE ? 0 : input.isEmpty() ? -1 : input.size(), cached);
+	}
+
+	private static int resetCardinality(BagOfValues bag) throws ReflectiveOperationException {
+		Field cardinality = BagOfValues.class.getDeclaredField("cardinality");
+		cardinality.setAccessible(true);
+		int cached = cardinality.getInt(bag);
+		// Deterministically model a default-field read under unsafe publication; do not race threads.
+		cardinality.setInt(bag, 0);
+		return cached;
+	}
+
+	@Test
+	void customStorageCardinalityIsRequestedOnlyWhenUsed() throws Exception {
+		Value<?> value = CustomType.UNKNOWN_SIZE.ofAny("value");
+		BagOfValues bag = CustomType.UNKNOWN_SIZE.bagBuilder().attribute(value).build();
+		assertSame(value, bag.valueAt(0));
+		assertEquals("Cardinality is unavailable", assertThrows(UnsupportedOperationException.class, bag::size).getMessage());
+		assertEquals("Cardinality is unavailable", assertThrows(UnsupportedOperationException.class, bag::isEmpty).getMessage());
+		resetCardinality(bag);
+		assertEquals("Cardinality is unavailable", assertThrows(UnsupportedOperationException.class, bag::size).getMessage());
+		assertEquals("Cardinality is unavailable", assertThrows(UnsupportedOperationException.class, bag::isEmpty).getMessage());
+	}
+
 	@Test
 	void largeBagsPreserveSetResults() {
 		BagOfValues.Builder left = XacmlTypes.DOUBLE.bagBuilder();
@@ -165,13 +223,13 @@ class BagStorageCompatibilityTest
 	}
 
 	private enum CustomType implements ValueType {
-		INSTANCE;
+		INSTANCE, UNKNOWN_SIZE;
 		@Override public String getTypeId() { return "urn:test:custom"; }
 		@Override public String getShortTypeId() { return "custom"; }
 		@Override public Set<String> getTypeIdAliases() { return Set.of("custom"); }
 		@SuppressWarnings("unchecked")
 		@Override public <T extends Value<?>> T ofAny(Object value, Object... params) {
-			return (T) new CustomValue(value.toString());
+			return (T) new CustomValue(this, value.toString());
 		}
 		@Override public BagStorage.Builder bagStorageBuilder() {
 			BagStorage.Builder delegate = BagStorage.values();
@@ -180,8 +238,11 @@ class BagStorageCompatibilityTest
 				@Override public BagStorage build() {
 					BagStorage original = delegate.build();
 					return new BagStorage() {
-						@Override public int size() { return original.size(); }
-						@Override public Value<?> valueAt(int i) { return original.valueAt(size() - 1 - i); }
+						@Override public int size() {
+							if (CustomType.this == UNKNOWN_SIZE) throw new UnsupportedOperationException("Cardinality is unavailable");
+							return original.size();
+						}
+						@Override public Value<?> valueAt(int i) { return original.valueAt(original.size() - 1 - i); }
 						@Override public int distinctSize() { return original.distinctSize(); }
 						@Override public Value<?> distinctValueAt(int i) { return original.distinctValueAt(distinctSize() - 1 - i); }
 						@Override public int distinctCountAt(int i) { return original.distinctCountAt(distinctSize() - 1 - i); }
@@ -192,7 +253,7 @@ class BagStorageCompatibilityTest
 	}
 
 	private static final class CustomValue extends Value.OtherValue<String> {
-		private CustomValue(String value) { super(CustomType.INSTANCE, value); }
+		private CustomValue(CustomType type, String value) { super(type, value); }
 	}
 
 	@ParameterizedTest(name = "{0}")

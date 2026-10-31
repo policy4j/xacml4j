@@ -32,6 +32,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xacml4j.v30.BagOfValues;
+import org.xacml4j.v30.BagOfValuesType;
 import org.xacml4j.v30.BagStorage;
 import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
@@ -42,11 +43,14 @@ import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.BoundCall;
 import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionParamSpec;
+import org.xacml4j.v30.policy.FunctionReference;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.PolicySyntaxException;
 import org.xacml4j.v30.policy.RootEvaluationContext;
 import org.xacml4j.v30.policy.function.impl.DefaultFunctionInvocation;
+import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.Value;
+import org.xacml4j.v30.types.ValueType;
 import org.xacml4j.v30.types.XacmlTypes;
 
 import com.google.common.base.CharMatcher;
@@ -310,6 +314,48 @@ public final class FunctionSpecBuilder {
 		return spec instanceof FunctionSpecImpl built
 				&& built.invocation instanceof DefaultFunctionInvocation invocation
 				&& invocation.isTrustedBuiltIn();
+	}
+
+	/** Whether the operator and predicate have the fixed parameter signatures needed by a prepared call (design D52). */
+	public static boolean canPrepareHigherOrder(FunctionSpec operator, FunctionSpec predicate, int dataOperands) {
+		if (!(operator instanceof FunctionSpecImpl op) || op.fast == null || !op.fastShape(dataOperands + 1)
+				|| !op.fast.isPreparedHigherOrderOperator(dataOperands)
+				|| !(predicate instanceof FunctionSpecImpl pred) || pred.isVariadic()
+				|| pred.getNumberOfParams() != dataOperands) return false;
+		for (FunctionParamSpec parameter : pred.parameters) {
+			if (parameter.isOptional() || parameter.isVariadic()) return false;
+			if (parameter instanceof FunctionParamValueTypeSpec typed) {
+				// The wrapper is ours, but its descriptor can belong to a caller and change during evaluation.
+				if (!(typed.getParamType() instanceof XacmlTypes)) return false;
+			} else if (!(parameter instanceof FunctionParamAnyValueSpec)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/** Invokes a prepared unary higher-order call with its already evaluated operand. */
+	public static BooleanVal invokeHigherOrderSingle(FunctionSpec operator, EvaluationContext context,
+			List<Expression> arguments, FunctionReference ref, Expression value, BagOfValuesType expectedBagType) {
+		FunctionSpecImpl built = (FunctionSpecImpl) operator;
+		try {
+			return built.fast.invokeHigherOrderSingle(built, context, arguments, ref, value, expectedBagType);
+		} catch (Exception e) {
+			throw built.failed(context, e);
+		}
+	}
+
+	/** Invokes a prepared binary higher-order call with its already evaluated operands. */
+	public static BooleanVal invokeHigherOrderPair(FunctionSpec operator, EvaluationContext context,
+			List<Expression> arguments, FunctionReference ref, Expression first, Expression second,
+			ValueType expectedScalarType, BagOfValuesType expectedBagType, boolean bagFirst) {
+		FunctionSpecImpl built = (FunctionSpecImpl) operator;
+		try {
+			return built.fast.invokeHigherOrderPair(built, context, arguments, ref, first, second,
+					expectedScalarType, expectedBagType, bagFirst);
+		} catch (Exception e) {
+			throw built.failed(context, e);
+		}
 	}
 
 	/** Invokes one operand as the variadic method does, using a trusted direct binding when available. */

@@ -50,6 +50,7 @@ import java.util.stream.Stream;
  */
 public final class AttributeIndex
 {
+	private static final int MAX_DESIGNATOR_ALIASES = 64;
 	private static final VarHandle BAGS;
 
 	static {
@@ -60,28 +61,105 @@ public final class AttributeIndex
 		}
 	}
 
-	private final Multimap<String, Attribute> attributes;
+	private volatile Multimap<String, Attribute> attributes;
+	private final ImmutableList<Attribute> attributeList;
 	/** Whether an attribute is marked to be included in the result; known since the index was built (design D32) */
 	private final boolean includeInResult;
 	/** The attributes marked to be included in the result, in the order of {@link #attributes()} (cycle AM) */
 	private final ImmutableList<Attribute> includedInResult;
 	/**
-	 * The bags resolved against this index, by lookup and by designator, each built on the first
-	 * demand and kept, so that a reused index costs no bag per decision; created on the first bag
-	 * (change optimize-pdp-evaluation, cycle AF). Only a key with values is kept, so the map is
-	 * bounded by the stored attributes: an attribute id, a type of its values, and no issuer or
-	 * its issuer (review R-FABLE2-sol), and by the designators that found them (cycle AM).
+	 * Positive bags, created on first demand and kept by category-free Lookup: an attribute id,
+	 * a type of its values, and no issuer or its issuer, bounded by the stored attributes
+	 * (cycle AF). At most MAX_DESIGNATOR_ALIASES full designators are also kept for allocation-free
+	 * repeat demands (cycle AM, review RV209). Further designators use the canonical Lookup without
+	 * retaining an alias; category does not bound the number of designators that can match.
 	 */
 	private transient volatile ConcurrentMap<Object, Optional<BagOfValues>> bags;
+	/** Written under the bags monitor; the volatile read skips admission once the cache is full. */
+	private transient volatile int designatorAliasCount;
 
 	private transient int hashCode;
 
 	private final static AttributeIndex EMPTY = AttributeIndex.builder().build();
 
 	private AttributeIndex(Builder b){
-		this.attributes = b.attrsBuilder.build();
+		ImmutableListMultimap<String, Attribute> attributes = b.attrsBuilder.build();
+		this.attributes = attributes;
+		this.attributeList = attributes.values().asList();
 		this.includeInResult = b.includeInResult;
 		this.includedInResult = includedInResult(b);
+	}
+
+	private AttributeIndex(ImmutableList<Attribute> attributes){
+		this.attributeList = attributes;
+		int included = 0;
+		for(int i = 0; i < attributes.size(); i++){
+			if(attributes.get(i).isIncludeInResult()){
+				included++;
+			}
+		}
+		this.includeInResult = included != 0;
+		if(included == attributes.size()){
+			this.includedInResult = attributes;
+		}else if(included == 0){
+			this.includedInResult = ImmutableList.of();
+		}else{
+			ImmutableList.Builder<Attribute> marked = ImmutableList.builder();
+			for(int i = 0; i < attributes.size(); i++){
+				Attribute a = attributes.get(i);
+				if(a.isIncludeInResult()){
+					marked.add(a);
+				}
+			}
+			this.includedInResult = marked.build();
+		}
+	}
+
+	/**
+	 * Snapshots attributes in the builder's first-seen id order. Small, already grouped
+	 * collections keep only their list until an id lookup needs the multimap (design D55).
+	 *
+	 * @param attributes the attributes, or {@code null} for an empty index
+	 * @return an immutable index
+	 */
+	public static AttributeIndex of(Collection<Attribute> attributes){
+		if(attributes == null || attributes.isEmpty()){
+			return EMPTY;
+		}
+		ImmutableList<Attribute> values = ImmutableList.copyOf(attributes);
+		return isGroupedById(values) ? new AttributeIndex(values) : builder().attributes(values).build();
+	}
+
+	private static boolean isGroupedById(ImmutableList<Attribute> attributes){
+		if(attributes.size() > 8){
+			return false;
+		}
+		for(int i = 1; i < attributes.size(); i++){
+			String id = attributes.get(i).getAttributeId();
+			if(!id.equals(attributes.get(i - 1).getAttributeId())){
+				for(int j = 0; j < i - 1; j++){
+					if(id.equals(attributes.get(j).getAttributeId())){
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/** Derived from immutable state; concurrent first lookups may build equal maps (D48). */
+	private Multimap<String, Attribute> multimap(){
+		Multimap<String, Attribute> values = attributes;
+		if(values == null){
+			ImmutableListMultimap.Builder<String, Attribute> grouped = ImmutableListMultimap.builder();
+			for(int i = 0; i < attributeList.size(); i++){
+				Attribute a = attributeList.get(i);
+				grouped.put(a.getAttributeId(), a);
+			}
+			values = grouped.build();
+			attributes = values;
+		}
+		return values;
 	}
 
 	/**
@@ -121,7 +199,7 @@ public final class AttributeIndex
 	 * is returned
 	 */
 	public Collection<Attribute> get(String attributeId){
-		return attributes.get(attributeId);
+		return multimap().get(attributeId);
 	}
 
 	/**
@@ -138,7 +216,7 @@ public final class AttributeIndex
 	}
 
 	public boolean isEmpty(){
-		return attributes.isEmpty();
+		return attributeList.isEmpty();
 	}
 
 	/** @return whether an attribute of this index is marked to be included in the result (design D32) */
@@ -183,7 +261,7 @@ public final class AttributeIndex
 	public Collection<Attribute> find(Predicate<Attribute> attributePredicate){
 		Objects.requireNonNull(attributePredicate);
 		List<Attribute> found = new ArrayList<>(0);
-		for(Attribute a : attributes.values()){
+		for(Attribute a : attributeList){
 			if(attributePredicate.test(a)){
 				found.add(a);
 			}
@@ -193,7 +271,7 @@ public final class AttributeIndex
 
 	public Optional<Attribute> findFirst(Predicate<Attribute> attributePredicate){
 		Objects.requireNonNull(attributePredicate);
-		for(Attribute a : attributes.values()){
+		for(Attribute a : attributeList){
 			if(attributePredicate.test(a)){
 				return Optional.of(a);
 			}
@@ -215,7 +293,7 @@ public final class AttributeIndex
 	}
 
 	public Stream<Attribute> stream(){
-		return attributes.values()
+		return attributeList
 				.stream();
 	}
 
@@ -227,7 +305,7 @@ public final class AttributeIndex
 	 * instances
 	 */
 	public Collection<Attribute> attributes() {
-		return attributes.values();
+		return attributeList;
 	}
 
 
@@ -318,7 +396,7 @@ public final class AttributeIndex
 	 */
 	public Optional<BagOfValues> resolve(String attributeId, ValueType type, String issuer){
 		Preconditions.checkNotNull(type);
-		if(!attributes.containsKey(attributeId)){
+		if(!multimap().containsKey(attributeId)){
 			// Absent: no lookup to build (cycle AM)
 			return Optional.empty();
 		}
@@ -342,8 +420,9 @@ public final class AttributeIndex
 	 * of the designator. The category of the designator plays no part: the index belongs to
 	 * whatever category holds it, as with
 	 * {@link org.xacml4j.v30.types.Entity#resolve(AttributeSelectorKey)}. The bag is kept under the
-	 * designator too, so a later demand by the designator builds no lookup; every demand sees the
-	 * one {@code Optional} that the lookup kept (design D17, cycle AM).
+	 * first 64 distinct positive designators too, so their later demands build no lookup. Other
+	 * designators still resolve through the lookup without keeping an alias; every demand sees
+	 * the one {@code Optional} that the lookup kept (design D17, cycle AM, review RV209).
 	 *
 	 * @param key an attribute designator
 	 * @return the bag of the designator's values, if there are any
@@ -355,11 +434,21 @@ public final class AttributeIndex
 			return bag;
 		}
 		bag = resolve(key.getAttributeId(), key.getDataType(), key.getIssuer());
-		if(bag.isEmpty()){
+		if(bag.isEmpty() || designatorAliasCount >= MAX_DESIGNATOR_ALIASES){
 			return bag;
 		}
-		Optional<BagOfValues> first = bags().putIfAbsent(key, bag);
-		return first != null? first: bag;
+		kept = bags();
+		// Only first admission takes the monitor; cached hits and overflow demands do not.
+		synchronized(kept){
+			if(designatorAliasCount < MAX_DESIGNATOR_ALIASES){
+				Optional<BagOfValues> first = kept.putIfAbsent(key, bag);
+				if(first != null){
+					return first;
+				}
+				designatorAliasCount++;
+			}
+		}
+		return bag;
 	}
 
 	/** The kept bags, created on the first one; concurrent first demands keep one map */
@@ -367,7 +456,7 @@ public final class AttributeIndex
 	private ConcurrentMap<Object, Optional<BagOfValues>> bags(){
 		ConcurrentMap<Object, Optional<BagOfValues>> kept = bags;
 		if(kept == null){
-			kept = new ConcurrentHashMap<>(attributes.keySet().size());
+			kept = new ConcurrentHashMap<>(multimap().keySet().size());
 			ConcurrentMap<Object, Optional<BagOfValues>> raced =
 					(ConcurrentMap<Object, Optional<BagOfValues>>) BAGS.compareAndExchange(this, null, kept);
 			if(raced != null){
@@ -382,7 +471,7 @@ public final class AttributeIndex
 
 	/** @return the attributes with the id, as stored (an immutable list of the multimap) */
 	private List<Attribute> attributes(String attributeId){
-		Collection<Attribute> found = attributes.get(attributeId);
+		Collection<Attribute> found = multimap().get(attributeId);
 		return found instanceof List ? (List<Attribute>)found : ImmutableList.copyOf(found);
 	}
 
@@ -451,14 +540,25 @@ public final class AttributeIndex
 			return false;
 		}
 		AttributeIndex a = (AttributeIndex) o;
-		return attributes.values().containsAll(a.attributes.values()) &&
-				a.attributes.values().containsAll(attributes.values());
+		return attributeList.containsAll(a.attributeList) &&
+				a.attributeList.containsAll(attributeList);
 	}
 
 	@Override
 	public int hashCode(){
 		if(hashCode == 0){
-			hashCode = attributes.hashCode();;
+			// Map hash: sum of id hash XOR the list hash of that id's contiguous run.
+			int mapHash = 0;
+			int i = 0;
+			while(i < attributeList.size()){
+				String id = attributeList.get(i).getAttributeId();
+				int listHash = 1;
+				do{
+					listHash = 31 * listHash + attributeList.get(i++).hashCode();
+				}while(i < attributeList.size() && id.equals(attributeList.get(i).getAttributeId()));
+				mapHash += id.hashCode() ^ listHash;
+			}
+			hashCode = mapHash;
 		}
 		return hashCode;
 	}
@@ -466,7 +566,7 @@ public final class AttributeIndex
 	@Override
 	public String toString(){
 		return MoreObjects.toStringHelper(this)
-				.add("attr", attributes.toString())
+				.add("attr", multimap().toString())
 				.toString();
 	}
 

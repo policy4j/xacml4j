@@ -71,6 +71,7 @@ public final class BagOfValues
 	private transient volatile BagOfValuesType type;
 	private transient volatile BagStorage storage;
 	private transient volatile Multiset<Value<?>> values;
+	private transient volatile int cardinality;
 	private int hashCode;
 	
 	/**
@@ -81,6 +82,7 @@ public final class BagOfValues
 	 */
 	private BagOfValues(BagOfValuesType type, BagStorage storage){
 		this.type = type;
+		this.cardinality = BagStorages.cardinality(storage);
 		this.storage = storage;
 	}
 
@@ -176,7 +178,9 @@ public final class BagOfValues
 	 * in this bag
 	 */
 	public int size() {
-		return storage.size();
+		int size = cardinality;
+		if (size == 0) return storage.size();
+		return size > 0 ? size : 0;
 	}
 
 	/**
@@ -185,7 +189,7 @@ public final class BagOfValues
 	 * @return {@code true} if bag is empty
 	 */
 	public boolean isEmpty(){
-		return storage.size() == 0;
+		return size() == 0;
 	}
 
 	/**
@@ -329,8 +333,10 @@ public final class BagOfValues
 		}
 		BagStorage.Builder builder = readType.getValueType().bagStorageBuilder();
 		for (Value<?> value : readValues) builder.add(value);
+		BagStorage readStorage = builder.build();
 		this.type = readType;
-		this.storage = builder.build();
+		this.cardinality = BagStorages.cardinality(readStorage);
+		this.storage = readStorage;
 		this.hashCode = fields.get("hashCode", 0);
 	}
 

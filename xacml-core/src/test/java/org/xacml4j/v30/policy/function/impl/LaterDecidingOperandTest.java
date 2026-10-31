@@ -23,6 +23,7 @@ package org.xacml4j.v30.policy.function.impl;
  */
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
@@ -41,15 +42,20 @@ import org.xacml4j.v30.EvaluationContext;
 import org.xacml4j.v30.EvaluationException;
 import org.xacml4j.v30.Expression;
 import org.xacml4j.v30.ExpressionVisitor;
+import org.xacml4j.v30.PolicyDecisionPoint;
+import org.xacml4j.v30.RequestContext;
 import org.xacml4j.v30.Status;
 import org.xacml4j.v30.StatusCodeId;
 import org.xacml4j.v30.ValueExp;
 import org.xacml4j.v30.ValueExpTypeInfo;
 import org.xacml4j.v30.policy.FunctionReference;
+import org.xacml4j.v30.policy.FunctionInvocationException;
 import org.xacml4j.v30.policy.FunctionSpec;
 import org.xacml4j.v30.policy.Apply;
+import org.xacml4j.v30.policy.function.FunctionInvocation;
 import org.xacml4j.v30.policy.function.FunctionProvider;
 import org.xacml4j.v30.policy.function.FunctionProviderBuilder;
+import org.xacml4j.v30.policy.function.FunctionSpecBuilder;
 import org.xacml4j.v30.policy.function.XacmlFuncParam;
 import org.xacml4j.v30.policy.function.XacmlFuncReturnType;
 import org.xacml4j.v30.policy.function.XacmlFuncSpec;
@@ -57,6 +63,8 @@ import org.xacml4j.v30.policy.function.XacmlFunctionProvider;
 import org.xacml4j.v30.types.BooleanVal;
 import org.xacml4j.v30.types.IntegerVal;
 import org.xacml4j.v30.types.XacmlTypes;
+import org.xacml4j.v30.spi.observe.DecisionObservation;
+import org.xacml4j.v30.spi.observe.DecisionObserver;
 
 import static org.mockito.Mockito.when;
 
@@ -114,6 +122,69 @@ public class LaterDecidingOperandTest
 		assertApply('T', F + "1.0:function:all-of-all", predicate, ints(), ints(3));
 		assertApply('F', F + "1.0:function:all-of-all", predicate, ints(-2, 1), ints(3));
 		assertApply('M', F + "1.0:function:all-of-all", predicate, ints(-2, 5), ints(3));
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	public void higherOrderKeepsOperandAndBodyFailureAttribution(boolean validate)
+	{
+		List<String> failures = new ArrayList<>();
+		DecisionObserver<String> observer = new DecisionObserver<>() {
+			@Override
+			public String requestStarted(PolicyDecisionPoint pdp, RequestContext request) { return "request"; }
+
+			@Override
+			public void functionFailed(String current, EvaluationContext evaluation, FunctionSpec function, Throwable failure) {
+				failures.add(function.getId());
+			}
+		};
+		when(context.getDecisionObservation()).thenReturn(DecisionObservation.start(observer, "request",
+				RequestContext.builder().build(), 1, 1));
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(validate);
+		FunctionSpec outer = require(F + "3.0:function:any-of");
+		FunctionSpec inner = require(F + "1.0:function:integer-one-and-only");
+		FunctionReference predicate = new FunctionReference(require(PREDICATE));
+
+		Apply badOperand = Apply.builder(inner).param(ints()).build();
+		Apply expression = Apply.builder(outer).param(predicate, badOperand, ints(3)).build();
+		FunctionInvocationException operandFailure = assertThrows(FunctionInvocationException.class,
+				() -> expression.evaluate(context));
+		assertSame(inner, operandFailure.getSpec());
+		assertEquals(StatusCodeId.STATUS_PROCESSING_ERROR, operandFailure.getStatus().getStatusCode().getValue());
+		assertEquals(List.of(inner.getId()), failures);
+
+		failures.clear();
+		Apply badBody = Apply.builder(outer).param(predicate, integer(5), ints(-2)).build();
+		FunctionInvocationException bodyFailure = assertThrows(FunctionInvocationException.class,
+				() -> badBody.evaluate(context));
+		assertSame(outer, bodyFailure.getSpec());
+		assertEquals(StatusCodeId.MISSING_ATTRIBUTE, bodyFailure.getStatus().getStatusCode().getValue());
+		assertEquals("operand is missing an attribute", bodyFailure.getMessage());
+		assertEquals(List.of(PREDICATE, outer.getId()), failures);
+	}
+
+	@ParameterizedTest
+	@ValueSource(booleans = {false, true})
+	public void higherOrderAcceptsAFixedPredicateWithAResolvedBooleanReturn(boolean validate)
+	{
+		when(context.isValidateFuncParamsAtRuntime()).thenReturn(validate);
+		FunctionInvocation invocation = new FunctionInvocation() {
+			@Override
+			public ValueExp invoke(FunctionSpec spec, EvaluationContext evaluation, Expression... arguments) {
+				return invoke(spec, evaluation, List.of(arguments));
+			}
+
+			@Override
+			public ValueExp invoke(FunctionSpec spec, EvaluationContext evaluation, List<Expression> arguments) {
+				return BooleanVal.of(((IntegerVal)arguments.get(0)).get() > ((IntegerVal)arguments.get(1)).get());
+			}
+		};
+		FunctionSpec predicate = FunctionSpecBuilder.builder("urn:test:function:resolved-boolean")
+				.param(XacmlTypes.INTEGER).param(XacmlTypes.INTEGER)
+				.build((spec, arguments) -> XacmlTypes.BOOLEAN, invocation);
+		FunctionReference ref = new FunctionReference(predicate);
+		assertApply('T', F + "3.0:function:any-of", ref, integer(5), ints(9, 3));
+		assertApply('F', F + "3.0:function:all-of", ref, integer(5), ints(3, 9));
 	}
 
 	private void assertApply(char expected, String function, Expression... arguments)
